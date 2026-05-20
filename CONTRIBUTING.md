@@ -18,9 +18,11 @@ This is the *one* hard rule in this repo. Everything else is taste; this is mech
 
 ### The rule
 
-> **All changes — including changes by maintainers — must go through a pull request from a feature branch. No direct commits to `main`. Only maintainers may merge.**
+> **Contributors:** all changes go through a pull request from a feature branch. No direct commits to `main`. Only a maintainer can approve and merge.
+>
+> **Maintainers:** the same workflow is the default — review each other's PRs, don't self-approve casual changes. But maintainers *may* bypass the PR flow and commit directly to `main` when the situation calls for it (see [Maintainer bypass](#maintainer-bypass-when-direct-commits-are-ok), below).
 
-The maintainer list lives in [`MAINTAINERS.md`](MAINTAINERS.md). The rule applies to maintainers too.
+The maintainer list lives in [`MAINTAINERS.md`](MAINTAINERS.md).
 
 ### The workflow
 
@@ -70,22 +72,40 @@ The `<name>` part is short, kebab-case, descriptive — `feat/threat-model-skill
 | Review another contributor's PR | ✅ (review comments welcome) | ✅ (approval counts) |
 | Approve a PR | ❌ | ✅ |
 | Merge a PR | ❌ | ✅ |
-| Push directly to `main` | ❌ | ❌ — even maintainers go through a PR |
+| Push directly to `main` | ❌ | ✅ — discouraged, but allowed for the cases below |
 | Force-push to a feature branch *you own* | ✅ | ✅ |
-| Force-push to `main` | ❌ | ❌ — disabled at the protection layer |
+| Force-push to `main` | ❌ | ❌ — disabled at the protection layer for everyone |
 
-### Why the rule applies to maintainers too
+### Maintainer bypass: when direct commits are OK
 
-Two reasons:
+The default for maintainers is still: open a PR, request review from the other maintainer, merge after approval. The PR audit trail, the worked-example field, and the CODEOWNERS sign-off are how the project's quality bar stays calibrated — going through that flow even for your own changes is the right habit.
 
-1. **CODEOWNERS + branch protection only does its job if there's no shortcut around it.** A maintainer who direct-pushes is bypassing the same review that would have caught the mistake.
-2. **History reads cleanly.** Every change has an associated PR with the reasoning, the worked example, and the discussion. Going through a PR for your own change is a few extra clicks; the audit trail it leaves is worth it.
+That said, there are legitimate cases for committing directly to `main`:
 
-If you're a maintainer making a change, request review from the other maintainer rather than self-approving. For tiny changes (typo, version bump) the review can be quick, but the second pair of eyes is the point of the rule — don't skip it just because the change looks safe.
+| Scenario | Why direct commit is fine |
+|---|---|
+| **Trivial repo hygiene** — typo in a comment, fixing a broken link, version bump after a merged PR | The change has no semantic content for an LLM to misinterpret or a contributor to misread. |
+| **Urgent fix** — broken main, leaked secret, vulnerable dependency to patch in minutes | The cost of waiting for a second review exceeds the cost of bypassing it. |
+| **Recovery from a bad merge** — reverting a PR that broke something | A PR-of-a-PR for an emergency revert is bureaucracy. |
+| **Maintainer is the only one online** — solo + non-trivial change that can't wait | Document in the commit body why the bypass was used and what to verify post-hoc. |
+
+When you bypass, the **commit message earns its keep**. The body should answer the questions a PR description would have:
+
+```
+chore: bump python-pptx to 0.7.0
+
+Why: CVE-2024-XXXX in 0.6.x; production decks fail to render.
+Verification: regenerated the worked example in deck-builder/examples/ — output matches.
+Skipping PR: solo maintainer online, fix needed before EOD.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+```
+
+When you bypass *casually* — for changes that don't fit the table above — you're spending the audit trail's value for a few minutes of saved time. Don't make a habit of it. If you find yourself bypassing for non-urgent skill changes, that's a signal the PR flow is too heavy and worth tightening, not a signal to keep bypassing.
 
 ### Recommended branch-protection settings (for maintainers setting this up on GitHub)
 
-These enforce the rule above. Configure them once at **Settings → Branches → Branch protection rules → Add rule** for `main`:
+These enforce the rule above for contributors, while leaving the maintainer bypass intact for emergencies. Configure once at **Settings → Branches → Branch protection rules → Add rule** for `main`:
 
 - ✅ **Require a pull request before merging**
   - ✅ Require approvals — `1`
@@ -96,8 +116,7 @@ These enforce the rule above. Configure them once at **Settings → Branches →
 - ✅ **Require branches to be up to date before merging**
 - ✅ **Require conversation resolution before merging**
 - ✅ **Require linear history** (avoids merge-commit clutter; choose squash or rebase merge in repo settings)
-- ✅ **Do not allow bypassing the above settings** — even for admins
-- ✅ **Restrict who can push to matching branches** — empty allow-list (no direct pushes; PR-only)
+- ❌ **Do *not* enable "Include administrators"** — this is the setting that lets maintainers bypass when needed. Keeping it off means the PR/review rule is enforced for everyone *except* repo admins (i.e. the maintainers). Contributors still hit the rule.
 - ✅ **Block force pushes** to `main`
 - ✅ **Block deletions** of `main`
 
@@ -108,7 +127,7 @@ gh api -X PUT repos/sanjay-ananth/skilldrop/branches/main/protection \
   --input - <<'EOF'
 {
   "required_status_checks": null,
-  "enforce_admins": true,
+  "enforce_admins": false,
   "required_pull_request_reviews": {
     "dismiss_stale_reviews": true,
     "require_code_owner_reviews": true,
@@ -123,7 +142,9 @@ gh api -X PUT repos/sanjay-ananth/skilldrop/branches/main/protection \
 EOF
 ```
 
-If you're a non-maintainer contributor reading this, you don't need to do any of this — the rules apply to you whether or not you can see the settings.
+The key field is `"enforce_admins": false` — that's what preserves the maintainer bypass. Flipping it to `true` would also block maintainers from direct commits.
+
+If you're a non-maintainer contributor reading this, the bypass doesn't apply to you — your changes still go through a PR. GitHub will block any push to `main` from a non-admin account.
 
 ---
 
@@ -337,10 +358,11 @@ See `skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 
 Before opening a PR, run through this list:
 
-### Branch & merge policy (non-negotiable)
+### Branch & merge policy
 - [ ] **This PR is from a feature branch**, not from `main`.
 - [ ] **Branch is up to date** with `upstream/main` (rebased or merged).
-- [ ] **I will not self-merge.** Only maintainers (see [`MAINTAINERS.md`](MAINTAINERS.md)) can merge.
+- [ ] **Contributors:** I will not self-merge. Only a maintainer (see [`MAINTAINERS.md`](MAINTAINERS.md)) can approve and merge.
+- [ ] **Maintainers:** if self-merging without peer review, the change fits one of the bypass cases in [Maintainer bypass](#maintainer-bypass-when-direct-commits-are-ok) — and I've explained why in the PR description.
 
 ### Skill basics
 - [ ] **Folder name = SKILL.md `name` = manifest.json `name`.** Kebab-case, no version suffix.

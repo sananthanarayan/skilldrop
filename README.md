@@ -221,7 +221,7 @@ The skill parses `$ARGUMENTS` to figure out which Figma URL you mean and which a
 
 PRs welcome — especially for new architect-flavoured skills (BPMN, threat-model first drafts, Lucidchart export, draw.io XML, capacity / napkin-math estimation, etc.). Each new skill should ship with at least one worked example and a populated `manifest.json`.
 
-**Workflow in one sentence:** fork or branch off `main` → push to a feature branch → open a PR → a maintainer reviews, approves, and merges. **No direct commits to `main`; only maintainers can merge** (even the maintainers themselves go through a PR). Maintainers are listed in [MAINTAINERS.md](MAINTAINERS.md).
+**Workflow in one sentence:** fork or branch off `main` → push to a feature branch → open a PR → a maintainer reviews, approves, and merges. **Contributors:** no direct commits to `main`; only maintainers can approve and merge. **Maintainers** default to the same workflow, with a documented [bypass](CONTRIBUTING.md#maintainer-bypass-when-direct-commits-are-ok) for trivial / urgent changes. Maintainers are listed in [MAINTAINERS.md](MAINTAINERS.md).
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide — branching & merge policy, anatomy of a skill, voice & tone, the PR checklist, and rules for adding a new README section.
 

@@ -2,7 +2,9 @@
 Thanks for contributing to skilldrop. A couple of policy rules before you submit:
 
 1. PRs must come from a feature branch in a fork or in this repo — never directly from `main`.
-2. Only maintainers can merge (see MAINTAINERS.md). Please don't self-merge even if you have access.
+2. Only maintainers can approve and merge (see MAINTAINERS.md).
+   - Contributors: do not self-merge even if you have access.
+   - Maintainers: self-merge is allowed for the bypass cases documented in CONTRIBUTING.md → "Maintainer bypass". For everything else, request review from the other maintainer.
 3. Make sure your branch is up to date with `main` before requesting review.
 -->
 
@@ -65,7 +67,8 @@ N/A with a one-line reason — don't silently skip.
 ### Branch & merge policy
 - [ ] This PR is from a feature branch, **not** from `main`.
 - [ ] Branch is up to date with `main` (rebase or merge before requesting review).
-- [ ] I understand only a maintainer can merge this PR — I will not self-merge.
+- [ ] **Contributor:** I will not self-merge — only a maintainer can.
+- [ ] **Maintainer:** if self-merging without peer review, the change fits a documented [Maintainer bypass](../CONTRIBUTING.md#maintainer-bypass-when-direct-commits-are-ok) case, and I've explained why above.
 
 ## Linked issues / context
 

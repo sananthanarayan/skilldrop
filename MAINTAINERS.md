@@ -23,7 +23,27 @@ Both lead maintainers have equal authority. Either may review, approve, and merg
 
 - Open a branch, make changes, open a PR — see [CONTRIBUTING.md](CONTRIBUTING.md#branching-prs-and-merging) for the full rules.
 - Respond to review feedback. Push fixes to the same branch.
-- **Do not self-merge**, even with admin access. The protected-branch rule and the maintainer review are the same safety net; bypassing one is bypassing both.
+- **Do not self-merge.** The bypass that maintainers have (see below) doesn't apply to contributors — the protected-branch rule blocks direct pushes to `main` from non-admin accounts.
+
+## Maintainer bypass: direct commits to `main`
+
+Maintainers have admin on the repo, and branch protection is configured with `enforce_admins: false` — meaning a maintainer *can* push directly to `main` without going through a PR.
+
+This is deliberate. The PR flow is the right default and the right shape for substantive changes (and maintainers should still use it most of the time, ideally with peer review from the other maintainer). But there are situations where the audit cost of a PR exceeds its value:
+
+- **Trivial repo hygiene** — typos in comments, fixing a broken link, version bumps after a merged PR.
+- **Urgent fix** — broken `main`, leaked secret, vulnerable dependency to patch quickly.
+- **Recovery** — reverting a PR that broke something.
+- **Solo + can't wait** — only one maintainer online, change is non-trivial but time-sensitive.
+
+When you bypass, the **commit message earns its keep**: explain *why* you skipped the PR, what you did to verify, and what (if anything) should be double-checked post-hoc. The audit trail moves from the PR description into the commit body.
+
+The full guidance — including a worked-example commit message — is in [CONTRIBUTING.md → Maintainer bypass](CONTRIBUTING.md#maintainer-bypass-when-direct-commits-are-ok).
+
+**The bypass does not extend to:**
+- Force-pushing to `main` — blocked at the protection layer for everyone, including admins.
+- Deleting `main` — same.
+- Bypassing other maintainers' explicit objections on an in-flight PR — that's not a bypass, that's a conflict; resolve it in the PR.
 
 ## Becoming a maintainer
 
