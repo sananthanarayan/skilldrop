@@ -26,8 +26,10 @@ Each skill is a plain directory of `SKILL.md` + supporting files + `manifest.jso
 
 | Skill | What it does |
 |---|---|
-| [`exec-summary`](skills/exec-summary/SKILL.md) | Compress a long technical document into a one-page executive summary structured around an Ask, business impact, cost/timeline, risks, and what you need from the audience. |
+| [`audience-profile`](skills/audience-profile/SKILL.md) | Translate an audience type (exec, board, technical, sales, investor, internal, partner, customer) into structural rules — slide count, density, tone, must-have sections. Reusable input for the next three skills. |
 | [`slide-outliner`](skills/slide-outliner/SKILL.md) | Outline an architecture-review or pitch deck — slide titles, key points, and speaker notes — sized to a target time budget. Doesn't generate PPTX. |
+| [`deck-builder`](skills/deck-builder/SKILL.md) | Generate a real PowerPoint (`.pptx`) file from content + audience + color palette. Uses `python-pptx`; supports 7 layout types and audience-tuned density. Pairs naturally with `audience-profile` + `slide-outliner`. |
+| [`exec-summary`](skills/exec-summary/SKILL.md) | Compress a long technical document into a one-page executive summary structured around an Ask, business impact, cost/timeline, risks, and what you need from the audience. |
 | [`decision-log`](skills/decision-log/SKILL.md) | Extract decisions, action items, owners, and due dates from meeting notes, Slack threads, or transcripts into a structured log with source attribution. |
 
 ## What's in a skill
@@ -146,6 +148,7 @@ Per-skill quick reference:
 | Skill | Install command (run from inside the copied skill folder) |
 |---|---|
 | `figma-diagrams` | `python3 -m pip install -r requirements.txt` + `export FIGMA_TOKEN=figd_...` |
+| `deck-builder` | `python3 -m pip install -r requirements.txt` (installs `python-pptx`) |
 | _all other skills_ | _no runtime deps — pure markdown skills_ |
 
 For `figma-diagrams`, you also need a [Figma Personal Access Token](https://www.figma.com/developers/api#access-tokens) exported as the `FIGMA_TOKEN` env var.

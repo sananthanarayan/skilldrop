@@ -1,0 +1,15 @@
+{
+  "name": "deck-builder",
+  "version": "0.1.0",
+  "description": "Generate a real PowerPoint (.pptx) file from content, target audience, and a color palette. Structurally tunes the deck (slide count, density, layout choice) to the audience archetype.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": ["python-pptx>=0.6.21"]
+  },
+  "env": { "required": [], "optional": [] },
+  "install": {
+    "pip": "python3 -m pip install -r requirements.txt"
+  },
+  "tags": ["powerpoint", "pptx", "deck", "presentation", "stakeholder-communication"]
+}

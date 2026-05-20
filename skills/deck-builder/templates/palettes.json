@@ -1,0 +1,67 @@
+{
+  "_comment": "Pre-built palettes. Reference by name in a deck spec via `palette: \"corporate-blue\"` (the script resolves the name to these values), or copy/paste the block into the spec's `palette` field.",
+
+  "corporate-blue": {
+    "primary": "#1A2A6C",
+    "secondary": "#4A5A8C",
+    "accent": "#FDBB2D",
+    "background": "#FFFFFF",
+    "text": "#222222"
+  },
+
+  "accenture-purple": {
+    "primary": "#A100FF",
+    "secondary": "#7500C0",
+    "accent": "#FFD200",
+    "background": "#FFFFFF",
+    "text": "#1C1C1C"
+  },
+
+  "monochrome": {
+    "primary": "#212121",
+    "secondary": "#555555",
+    "accent": "#888888",
+    "background": "#FFFFFF",
+    "text": "#1A1A1A"
+  },
+
+  "vibrant": {
+    "primary": "#FF3366",
+    "secondary": "#FF9933",
+    "accent": "#33CCFF",
+    "background": "#FFFFFF",
+    "text": "#1F1F1F"
+  },
+
+  "dark-mode": {
+    "primary": "#4FC3F7",
+    "secondary": "#7E57C2",
+    "accent": "#FFD54F",
+    "background": "#121212",
+    "text": "#EAEAEA"
+  },
+
+  "editorial": {
+    "primary": "#2C3E50",
+    "secondary": "#7F8C8D",
+    "accent": "#E67E22",
+    "background": "#FDFBF7",
+    "text": "#2C3E50"
+  },
+
+  "forest": {
+    "primary": "#1B5E20",
+    "secondary": "#558B2F",
+    "accent": "#FBC02D",
+    "background": "#FFFFFF",
+    "text": "#1B1B1B"
+  },
+
+  "sunset": {
+    "primary": "#C2185B",
+    "secondary": "#F57C00",
+    "accent": "#FFEB3B",
+    "background": "#FFF8F0",
+    "text": "#2A1A1A"
+  }
+}

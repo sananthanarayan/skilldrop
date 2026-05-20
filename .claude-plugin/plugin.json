@@ -1,7 +1,7 @@
 {
   "name": "architect-skills",
-  "description": "A collection of Claude Skills that save architects time on common deliverables — diagrams (Mermaid/PlantUML/C4, Figma), documentation (ADRs, design docs, runbooks, tech-comparison matrices), and stakeholder communication (exec summaries, deck outlines, decision logs).",
-  "version": "0.2.0",
+  "description": "A collection of Claude Skills that save architects time on common deliverables — diagrams (Mermaid/PlantUML/C4, Figma), documentation (ADRs, design docs, runbooks, tech-comparison matrices), and stakeholder communication (audience profiles, deck outlines, real .pptx generation, exec summaries, decision logs).",
+  "version": "0.3.0",
   "author": {
     "name": "S. Ananthanarayan",
     "email": "s.ananthanarayan@accenture.com"
@@ -21,6 +21,10 @@
     "runbook",
     "tech-comparison",
     "exec-summary",
-    "decision-log"
+    "decision-log",
+    "deck-builder",
+    "pptx",
+    "powerpoint",
+    "audience-profile"
   ]
 }

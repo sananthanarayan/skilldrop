@@ -1,0 +1,9 @@
+{
+  "name": "audience-profile",
+  "version": "0.1.0",
+  "description": "Translate an audience type (exec, board, technical, sales, investor, internal, partner, customer) into structural rules — slide count, density, tone, must-have sections — for use by deck-builder, slide-outliner, and exec-summary.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["audience", "stakeholder-communication", "reference"]
+}

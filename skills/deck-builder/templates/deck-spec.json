@@ -1,0 +1,97 @@
+{
+  "_comment": "Full deck-spec schema. The build_deck.py script consumes this. Top-level fields: title, audience, palette, slides[].",
+
+  "title": "ProjectX Migration — Board Update",
+  "audience": "board",
+
+  "palette": {
+    "primary": "#1A2A6C",
+    "secondary": "#4A5A8C",
+    "accent": "#FDBB2D",
+    "background": "#FFFFFF",
+    "text": "#222222"
+  },
+
+  "slides": [
+    {
+      "layout": "title",
+      "title": "ProjectX Migration",
+      "subtitle": "Board update — Q3 FY26",
+      "presenter": "S. Ananthanarayan",
+      "date": "2026-09-15",
+      "notes": "Set the scene in one sentence — we're 60% through, ask is to approve overrun budget."
+    },
+
+    {
+      "layout": "section",
+      "title": "Where we are",
+      "notes": "Quick orientation before diving into the numbers."
+    },
+
+    {
+      "layout": "content",
+      "title": "Migration is 60% complete and on track for Q1 close",
+      "bullets": [
+        "8 of 14 services cut over with zero customer-visible incidents",
+        "Performance up 22% on migrated services (p99 latency)",
+        "Two services pushed to phase 3 — schema rewrite needed first"
+      ],
+      "notes": "Lead with the positive — zero incidents matters. Note the slipped services so it isn't a surprise later."
+    },
+
+    {
+      "layout": "big_number",
+      "title": "Cost savings already realised",
+      "number": "$2.4M",
+      "caption": "Annualised infra savings from the 8 migrated services",
+      "notes": "Pause here. Let the number land. Then say: we expect $5.8M annualised at full completion."
+    },
+
+    {
+      "layout": "two_column",
+      "title": "What's left vs. what's added",
+      "left": {
+        "title": "Original scope",
+        "bullets": [
+          "14 services migrated",
+          "Legacy DB decommissioned",
+          "Single-region active"
+        ]
+      },
+      "right": {
+        "title": "Discovered in flight",
+        "bullets": [
+          "2 services need schema rewrite",
+          "Multi-region requirement (regulatory)",
+          "Auth refactor coupled with cut-over"
+        ]
+      },
+      "notes": "Frame the scope additions honestly. Multi-region was a regulator change, not a planning miss."
+    },
+
+    {
+      "layout": "quote",
+      "quote": "The migration went smoother than any I've seen in 20 years — and our team learned more in 6 months than the prior 2.",
+      "attribution": "VP Engineering, after phase 2 cut-over",
+      "notes": "Optional, but lands well with a board that's worried about morale."
+    },
+
+    {
+      "layout": "content",
+      "title": "Top risks for the remaining 40%",
+      "bullets": [
+        "Schema rewrite — 6 weeks, narrowly de-risked by dry runs",
+        "Auth refactor coupling — increases coordination overhead",
+        "Holiday-period freeze cuts available calendar by 4 weeks"
+      ],
+      "notes": "Don't soften the risks. Boards trust presenters who name them."
+    },
+
+    {
+      "layout": "closing",
+      "title": "Asking for $620k FY26 budget overrun",
+      "subtitle": "Covers schema rewrite + multi-region; payback < 8 months",
+      "notes": "Land on the Ask. Take questions here, not after a thank-you slide."
+    }
+  ]
+}
