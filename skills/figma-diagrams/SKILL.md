@@ -38,18 +38,28 @@ If `FIGMA_TOKEN` is not set, tell the user how to set it before running the scri
 
 1. **Detect the URL.** Figma URLs look like `https://www.figma.com/file/<FILE_KEY>/<name>` or `https://www.figma.com/design/<FILE_KEY>/<name>`. Extract `<FILE_KEY>` — that's what the API takes.
 
-2. **Pick the right script.** Helper scripts live in `${CLAUDE_SKILL_DIR}/scripts/`:
+2. **Pick the right script.** Helper scripts live in `scripts/` next to this `SKILL.md`:
 
    - `inspect_file.py <FILE_KEY>` — prints a tree of pages → frames → top-level groups
    - `list_comments.py <FILE_KEY>` — lists existing comments with author + timestamp
    - `post_comment.py <FILE_KEY> "<message>"` — adds a comment at the file root (or `--node-id N` to pin to a node)
    - `frame_to_mermaid.py <FILE_KEY> <NODE_ID>` — exports a frame's structure as a first-pass Mermaid diagram (best-effort)
 
-   Invoke them via Bash:
+   The path you use depends on where this skill is installed:
+
    ```bash
-   uv run python "${CLAUDE_SKILL_DIR}/scripts/inspect_file.py" <FILE_KEY>
+   # Claude Code exposes the skill's folder as $CLAUDE_SKILL_DIR
+   python3 "${CLAUDE_SKILL_DIR}/scripts/inspect_file.py" <FILE_KEY>
+
+   # In any other IDE (Cursor, Kiro, Continue, …) cd into the copied skill folder first
+   cd path/to/figma-diagrams && python3 scripts/inspect_file.py <FILE_KEY>
    ```
-   (or `python3 …` if `uv` isn't installed — the scripts only depend on `requests`).
+
+   Dependencies (just `requests`) are declared in `manifest.json` and `requirements.txt`. Install once with:
+
+   ```bash
+   python3 -m pip install -r requirements.txt
+   ```
 
 3. **For "I want my Mermaid diagram in Figma":** the cleanest path is the [Mermaid → Figma/FigJam community plugin](https://www.figma.com/community/plugin/1222021271365394457). Generate the Mermaid first (via the [`architecture-diagrams`](../architecture-diagrams/SKILL.md) skill), then guide the user to paste it. Don't pretend to push it via REST.
 
@@ -59,6 +69,7 @@ If `FIGMA_TOKEN` is not set, tell the user how to set it before running the scri
 
 - [`reference.md`](reference.md) — Figma REST API endpoints, auth, rate limits, common gotchas
 - [`templates/figjam-import.json`](templates/figjam-import.json) — example shape of a JSON spec that a FigJam plugin could consume to materialize a diagram
+- [`manifest.json`](manifest.json) — declared dependencies and required env vars (read by some IDEs at install time)
 
 ## Quality bar
 

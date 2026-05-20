@@ -1,0 +1,18 @@
+{
+  "name": "figma-diagrams",
+  "version": "0.1.0",
+  "description": "Work with Figma and FigJam files via the Figma REST API — read file structure, list frames, post comments, generate FigJam-importable diagram specs.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": ["requests>=2.28"]
+  },
+  "env": {
+    "required": ["FIGMA_TOKEN"],
+    "optional": []
+  },
+  "install": {
+    "pip": "python3 -m pip install -r requirements.txt"
+  },
+  "tags": ["figma", "figjam", "diagrams", "design", "api"]
+}
