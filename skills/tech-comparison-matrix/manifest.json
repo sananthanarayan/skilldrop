@@ -1,0 +1,9 @@
+{
+  "name": "tech-comparison-matrix",
+  "version": "0.1.0",
+  "description": "Produce a weighted comparison matrix for a technology or vendor selection question, with criteria, weights, per-option scores, and a recommendation.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["decisions", "comparison", "tech-selection", "vendor-evaluation"]
+}

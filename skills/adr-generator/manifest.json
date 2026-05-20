@@ -1,0 +1,9 @@
+{
+  "name": "adr-generator",
+  "version": "0.1.0",
+  "description": "Generate an Architecture Decision Record (ADR) in MADR or Nygard format from a context-decision-consequences brief.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["adr", "documentation", "decisions", "architecture"]
+}

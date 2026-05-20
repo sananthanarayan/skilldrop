@@ -1,0 +1,9 @@
+{
+  "name": "decision-log",
+  "version": "0.1.0",
+  "description": "Extract decisions, action items, owners, and due dates from meeting notes, Slack threads, or transcripts into a structured log.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["meetings", "decisions", "action-items", "stakeholder-communication"]
+}

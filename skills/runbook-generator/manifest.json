@@ -1,0 +1,9 @@
+{
+  "name": "runbook-generator",
+  "version": "0.1.0",
+  "description": "Generate an operational runbook for a service covering deploy/rollback, common incidents, on-call escalation, SLOs, dashboards, and dependencies.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["runbook", "operations", "on-call", "sre"]
+}

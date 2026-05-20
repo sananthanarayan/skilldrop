@@ -1,0 +1,9 @@
+{
+  "name": "slide-outliner",
+  "version": "0.1.0",
+  "description": "Outline an architecture review or technical pitch deck — slide titles, key points per slide, and speaker notes. Does not generate PPTX/Keynote files.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["presentation", "deck", "outline", "stakeholder-communication"]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "exec-summary",
+  "version": "0.1.0",
+  "description": "Compress a long technical document or proposal into a one-page executive summary aimed at non-technical or time-poor stakeholders.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["executive", "summary", "stakeholder-communication", "one-pager"]
+}

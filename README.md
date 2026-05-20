@@ -1,4 +1,4 @@
-# architect-skills
+# Claude Skills Kit
 
 A collection of portable **Claude Skills** aimed at making **solution architects** faster on the deliverables they do most: diagrams, design artifacts, and visual specs.
 
@@ -6,10 +6,29 @@ Each skill is a plain directory of `SKILL.md` + supporting files + `manifest.jso
 
 ## Skills in this repo
 
+### Diagrams
+
 | Skill | What it does |
 |---|---|
 | [`architecture-diagrams`](skills/architecture-diagrams/SKILL.md) | Turn a written description of a system into a renderable Mermaid, PlantUML, or C4 diagram. Supports AWS / Azure / GCP cloud shapes, sequence flows, container diagrams, and ER models. |
 | [`figma-diagrams`](skills/figma-diagrams/SKILL.md) | Read structure from existing Figma/FigJam files and produce FigJam-importable diagram specs (and comments) via the Figma REST API. Useful when your final deliverable lives in Figma. |
+
+### Documentation
+
+| Skill | What it does |
+|---|---|
+| [`adr-generator`](skills/adr-generator/SKILL.md) | Generate an Architecture Decision Record in MADR or Nygard format from a context-decision-consequences brief, with sensible numbering and filename. |
+| [`design-doc`](skills/design-doc/SKILL.md) | Generate a Google-style engineering design doc (problem → goals/non-goals → alternatives → proposal → risks → rollout) from a feature brief. |
+| [`runbook-generator`](skills/runbook-generator/SKILL.md) | Generate an operational runbook for a service — deploy/rollback, top 5 incident playbooks, SLOs, on-call escalation, dependencies. |
+| [`tech-comparison-matrix`](skills/tech-comparison-matrix/SKILL.md) | Produce a weighted comparison matrix for a tech-selection question (e.g. "Postgres vs DynamoDB") with criteria, weights, scores, and a recommendation. |
+
+### Stakeholder communication
+
+| Skill | What it does |
+|---|---|
+| [`exec-summary`](skills/exec-summary/SKILL.md) | Compress a long technical document into a one-page executive summary structured around an Ask, business impact, cost/timeline, risks, and what you need from the audience. |
+| [`slide-outliner`](skills/slide-outliner/SKILL.md) | Outline an architecture-review or pitch deck — slide titles, key points, and speaker notes — sized to a target time budget. Doesn't generate PPTX. |
+| [`decision-log`](skills/decision-log/SKILL.md) | Extract decisions, action items, owners, and due dates from meeting notes, Slack threads, or transcripts into a structured log with source attribution. |
 
 ## What's in a skill
 
@@ -126,8 +145,8 @@ Per-skill quick reference:
 
 | Skill | Install command (run from inside the copied skill folder) |
 |---|---|
-| `architecture-diagrams` | _(no runtime deps — pure markdown skill)_ |
 | `figma-diagrams` | `python3 -m pip install -r requirements.txt` + `export FIGMA_TOKEN=figd_...` |
+| _all other skills_ | _no runtime deps — pure markdown skills_ |
 
 For `figma-diagrams`, you also need a [Figma Personal Access Token](https://www.figma.com/developers/api#access-tokens) exported as the `FIGMA_TOKEN` env var.
 

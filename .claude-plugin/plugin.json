@@ -1,7 +1,7 @@
 {
   "name": "architect-skills",
-  "description": "A collection of Claude Skills that save architects time on common deliverables — starting with architecture-diagram generation (Mermaid/PlantUML/C4) and programmatic Figma file editing via the Figma API.",
-  "version": "0.1.0",
+  "description": "A collection of Claude Skills that save architects time on common deliverables — diagrams (Mermaid/PlantUML/C4, Figma), documentation (ADRs, design docs, runbooks, tech-comparison matrices), and stakeholder communication (exec summaries, deck outlines, decision logs).",
+  "version": "0.2.0",
   "author": {
     "name": "S. Ananthanarayan",
     "email": "28323323+sananthanarayan@users.noreply.github.com"
@@ -10,11 +10,17 @@
   "license": "MIT",
   "keywords": [
     "architecture",
+    "architects",
     "diagrams",
     "mermaid",
     "plantuml",
     "c4",
     "figma",
-    "architects"
+    "adr",
+    "design-doc",
+    "runbook",
+    "tech-comparison",
+    "exec-summary",
+    "decision-log"
   ]
 }
