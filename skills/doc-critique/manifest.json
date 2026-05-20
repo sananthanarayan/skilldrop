@@ -1,0 +1,9 @@
+{
+  "name": "doc-critique",
+  "version": "0.1.0",
+  "description": "Critique an existing knowledge-worker artifact (ADR, design doc, runbook, exec summary, comparison matrix, deck, decision log) against the same opinionated rubrics the skilldrop generators enforce. Produces a structured review — verdict, severity-tagged findings with quoted evidence and concrete fixes, plus what's working.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["review", "critique", "quality", "rubric", "feedback"]
+}
