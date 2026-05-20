@@ -1,7 +1,7 @@
 {
   "name": "skilldrop",
-  "description": "A collection of Claude Skills that save architects time on common deliverables — diagrams (Mermaid/PlantUML/C4, Figma, reverse-engineered from code/IaC), documentation (ADRs, design docs, runbooks, tech-comparison matrices), stakeholder communication (audience profiles, deck outlines, real .pptx generation, exec summaries, decision logs), and pipeline glue (raw-input intake, structured doc critique).",
-  "version": "0.4.0",
+  "description": "A collection of Claude Skills that save architects and dev teams time on common deliverables — diagrams (Mermaid/PlantUML/C4, Figma, reverse-engineered from code/IaC), documentation (ADRs, design docs, runbooks, tech-comparison matrices), stakeholder communication (audience profiles, deck outlines, real .pptx generation, exec summaries, decision logs), pipeline glue (raw-input intake, structured doc critique), and dev-workflow review (devil's-advocate adversarial code review).",
+  "version": "0.5.0",
   "author": {
     "name": "S. Ananthanarayan",
     "email": "28323323+sananthanarayan@users.noreply.github.com"
@@ -29,6 +29,8 @@
     "audience-profile",
     "brief-intake",
     "doc-critique",
+    "devils-advocate",
+    "code-review",
     "review"
   ]
 }

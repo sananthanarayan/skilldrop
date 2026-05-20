@@ -15,6 +15,12 @@ Each skill is a plain directory of `SKILL.md` + supporting files + `manifest.jso
 | [`brief-intake`](skills/brief-intake/SKILL.md) | Upstream collector. Takes raw mess — a Slack thread, meeting transcript, ticket, email chain, paragraph of notes — and emits a structured brief shaped for whichever downstream skill comes next (ADR, design doc, runbook, exec summary, deck, comparison matrix, decision log). Every field is tagged `[explicit] / [implied] / [inferred] / [missing]` with verbatim quotes from the source. |
 | [`doc-critique`](skills/doc-critique/SKILL.md) | Counterpart reviewer. Takes an existing doc (ADR, design doc, runbook, exec summary, comparison matrix, deck, decision log) and produces a structured critique against the same rubrics the generators enforce — verdict + severity-tagged findings (blocker / major / minor / nit) with quoted evidence and concrete fixes, plus a "what's working" section. |
 
+### Dev workflow
+
+| Skill | What it does |
+|---|---|
+| [`devils-advocate`](skills/devils-advocate/SKILL.md) | Adversarial review of *just-generated* code, run right after an agent (or human) declares a feature done. Sweeps four lenses — edge cases the first pass missed, assumptions baked in that won't survive 6 months, what a staff engineer would push back on in review (concurrency, error handling, security, observability, blast radius), and test-coverage gaps. Produces severity-tagged findings (blocker / major / minor / nit) with file:line evidence, reproducible scenarios, and concrete fixes — plus a "what's solid" section. The code counterpart to `doc-critique`. |
+
 ### Diagrams
 
 | Skill | What it does |
@@ -213,7 +219,11 @@ The skill parses `$ARGUMENTS` to figure out which Figma URL you mean and which a
 
 ## Contributing
 
-PRs welcome — especially for new architect-flavoured skills (BPMN, ADR generation, threat-model first drafts, Lucidchart export, draw.io XML, etc.). Each new skill should ship with at least one worked example and a populated `manifest.json`.
+PRs welcome — especially for new architect-flavoured skills (BPMN, threat-model first drafts, Lucidchart export, draw.io XML, capacity / napkin-math estimation, etc.). Each new skill should ship with at least one worked example and a populated `manifest.json`.
+
+**Workflow in one sentence:** fork or branch off `main` → push to a feature branch → open a PR → a maintainer reviews, approves, and merges. **No direct commits to `main`; only maintainers can merge** (even the maintainers themselves go through a PR). Maintainers are listed in [MAINTAINERS.md](MAINTAINERS.md).
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide — branching & merge policy, anatomy of a skill, voice & tone, the PR checklist, and rules for adding a new README section.
 
 ## License
 

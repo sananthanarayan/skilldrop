@@ -1,0 +1,9 @@
+{
+  "name": "devils-advocate",
+  "version": "0.1.0",
+  "description": "Adversarial review of just-generated code through four lenses — edge cases the first pass missed, baked-in assumptions that won't survive 6 months, what a staff engineer would push back on in code review, and test-coverage gaps. Run immediately after an agent or human declares a feature done. Produces severity-tagged findings with file:line evidence, reproducible scenarios, and concrete fixes.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["review", "code-review", "adversarial", "edge-cases", "future-proofing", "test-coverage", "dev-workflow"]
+}
