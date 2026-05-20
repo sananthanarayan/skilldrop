@@ -1,7 +1,7 @@
 {
   "name": "skilldrop",
-  "description": "A collection of Claude Skills that save architects time on common deliverables — diagrams (Mermaid/PlantUML/C4, Figma), documentation (ADRs, design docs, runbooks, tech-comparison matrices), and stakeholder communication (audience profiles, deck outlines, real .pptx generation, exec summaries, decision logs).",
-  "version": "0.3.0",
+  "description": "A collection of Claude Skills that save architects time on common deliverables — diagrams (Mermaid/PlantUML/C4, Figma, reverse-engineered from code/IaC), documentation (ADRs, design docs, runbooks, tech-comparison matrices), stakeholder communication (audience profiles, deck outlines, real .pptx generation, exec summaries, decision logs), and pipeline glue (raw-input intake, structured doc critique).",
+  "version": "0.4.0",
   "author": {
     "name": "S. Ananthanarayan",
     "email": "s.ananthanarayan@accenture.com"
@@ -16,6 +16,7 @@
     "plantuml",
     "c4",
     "figma",
+    "reverse-architecture",
     "adr",
     "design-doc",
     "runbook",
@@ -25,6 +26,9 @@
     "deck-builder",
     "pptx",
     "powerpoint",
-    "audience-profile"
+    "audience-profile",
+    "brief-intake",
+    "doc-critique",
+    "review"
   ]
 }

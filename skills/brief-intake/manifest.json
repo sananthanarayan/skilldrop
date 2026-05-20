@@ -1,0 +1,9 @@
+{
+  "name": "brief-intake",
+  "version": "0.1.0",
+  "description": "Turn raw unstructured input (Slack threads, transcripts, tickets, free-form notes) into a structured brief shaped for a specific downstream skilldrop skill — ADR, design doc, runbook, exec summary, deck, comparison matrix, decision log, or generic.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["intake", "brief", "extraction", "preprocessing", "pipeline"]
+}

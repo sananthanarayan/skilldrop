@@ -8,11 +8,19 @@ Each skill is a plain directory of `SKILL.md` + supporting files + `manifest.jso
 
 ## Skills in this repo
 
+### Pipeline glue
+
+| Skill | What it does |
+|---|---|
+| [`brief-intake`](skills/brief-intake/SKILL.md) | Upstream collector. Takes raw mess — a Slack thread, meeting transcript, ticket, email chain, paragraph of notes — and emits a structured brief shaped for whichever downstream skill comes next (ADR, design doc, runbook, exec summary, deck, comparison matrix, decision log). Every field is tagged `[explicit] / [implied] / [inferred] / [missing]` with verbatim quotes from the source. |
+| [`doc-critique`](skills/doc-critique/SKILL.md) | Counterpart reviewer. Takes an existing doc (ADR, design doc, runbook, exec summary, comparison matrix, deck, decision log) and produces a structured critique against the same rubrics the generators enforce — verdict + severity-tagged findings (blocker / major / minor / nit) with quoted evidence and concrete fixes, plus a "what's working" section. |
+
 ### Diagrams
 
 | Skill | What it does |
 |---|---|
 | [`architecture-diagrams`](skills/architecture-diagrams/SKILL.md) | Turn a written description of a system into a renderable Mermaid, PlantUML, or C4 diagram. Supports AWS / Azure / GCP cloud shapes, sequence flows, container diagrams, and ER models. |
+| [`reverse-architecture`](skills/reverse-architecture/SKILL.md) | Reverse-engineer a system's "as-is" architecture from existing code, IaC (Terraform / CloudFormation / CDK / Pulumi / Bicep), Kubernetes manifests, docker-compose, package manifests, database schema, or OpenAPI. Emits a structured node/edge extraction, a written description suitable for `architecture-diagrams`, and a first-draft Mermaid / C4 diagram with every node tied to a source-of-truth file path. |
 | [`figma-diagrams`](skills/figma-diagrams/SKILL.md) | Read structure from existing Figma/FigJam files and produce FigJam-importable diagram specs (and comments) via the Figma REST API. Useful when your final deliverable lives in Figma. |
 
 ### Documentation

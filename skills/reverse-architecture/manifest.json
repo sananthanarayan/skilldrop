@@ -1,0 +1,9 @@
+{
+  "name": "reverse-architecture",
+  "version": "0.1.0",
+  "description": "Reverse-engineer an architecture diagram from existing code, IaC (Terraform/CloudFormation/CDK/Pulumi/Bicep), Kubernetes manifests, docker-compose, package manifests, database schemas, or OpenAPI specs. Emits a structured extraction, a written description suitable for architecture-diagrams, and a first-draft Mermaid or C4 diagram with every node tied to a source-of-truth file path.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["diagrams", "reverse-engineering", "architecture", "as-is", "terraform", "kubernetes", "c4", "mermaid"]
+}
