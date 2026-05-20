@@ -1,0 +1,34 @@
+# macOS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+
+# Python (for the figma-diagrams skill scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+*.egg-info/
+
+# Local secrets — never commit
+.env
+.env.local
+*.figmatoken
+
+# Test renders / scratch output
+out/
+renders/
+*.png
+*.svg
+*.pdf
+!skills/**/examples/**/*.png
+!skills/**/examples/**/*.svg
+
+# Claude local state
+.claude/settings.local.json
