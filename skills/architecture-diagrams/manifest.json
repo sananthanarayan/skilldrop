@@ -1,0 +1,15 @@
+{
+  "name": "architecture-diagrams",
+  "version": "0.1.0",
+  "description": "Generate architecture diagrams (Mermaid, PlantUML, C4) from a written description of a system. Supports AWS/Azure/GCP topologies, microservice landscapes, sequence flows, container diagrams, and ER models.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "tags": ["diagrams", "mermaid", "plantuml", "c4", "architecture"]
+}

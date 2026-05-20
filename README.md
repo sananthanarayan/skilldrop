@@ -1,8 +1,8 @@
 # architect-skills
 
-A collection of [Claude Skills](https://code.claude.com/docs/en/skills.md) aimed at making **solution architects** faster on the deliverables they do most: diagrams, design artifacts, and visual specs.
+A collection of portable **Claude Skills** aimed at making **solution architects** faster on the deliverables they do most: diagrams, design artifacts, and visual specs.
 
-Each skill is self-contained in `skills/<skill-name>/` and follows the standard `SKILL.md` format. The repo is also structured as a Claude Code **plugin** (see `.claude-plugin/plugin.json`), so the whole bundle can be installed in one command.
+Each skill is a plain directory of `SKILL.md` + supporting files + `manifest.json`. It works in **Claude Code** natively, and ports cleanly to **Cursor**, **Kiro**, **Continue**, **Cline**, **Aider**, and any other AI coding tool that accepts custom instructions or rules.
 
 ## Skills in this repo
 
@@ -11,56 +11,136 @@ Each skill is self-contained in `skills/<skill-name>/` and follows the standard 
 | [`architecture-diagrams`](skills/architecture-diagrams/SKILL.md) | Turn a written description of a system into a renderable Mermaid, PlantUML, or C4 diagram. Supports AWS / Azure / GCP cloud shapes, sequence flows, container diagrams, and ER models. |
 | [`figma-diagrams`](skills/figma-diagrams/SKILL.md) | Read structure from existing Figma/FigJam files and produce FigJam-importable diagram specs (and comments) via the Figma REST API. Useful when your final deliverable lives in Figma. |
 
-## Try it locally (no install)
+## What's in a skill
 
-From the repo root:
+Every skill folder follows the same layout, so installation is the same anywhere:
 
-```bash
-claude --plugin-dir .
+```
+skills/<skill-name>/
+├── SKILL.md              # The instructions the AI agent reads — entry point
+├── manifest.json         # Name, description, version, declared deps, required env vars
+├── requirements.txt      # (optional) Python deps if the skill has scripts
+├── reference.md          # (optional) Long-form reference material
+├── examples/             # (optional) Worked examples the agent can study
+├── templates/            # (optional) Starter snippets the agent can copy from
+└── scripts/              # (optional) Executable helpers the agent invokes
 ```
 
-Claude will pick up both skills. Then just ask:
+The `manifest.json` is the canonical machine-readable summary: its `deps` block lists `pip` / `npm` packages, and `env.required` lists env vars that must be set before the skill works.
 
-> "Draw me a Mermaid diagram of a three-tier web app on AWS with an ALB, two ECS services, and an RDS Postgres backend."
+## Installing a skill into your IDE
 
-> "Read https://figma.com/file/abc123/MyArchitecture and tell me what frames are in there."
+Each skill is a plain directory. Installation is always the same two steps: (1) copy the skill folder into your IDE's skills/rules location, then (2) install the skill's dependencies (the commands are in `manifest.json` under `deps`, or run the install line from the skill's SKILL.md).
 
-## Install as a plugin
+### Claude Code
 
-Once this repo is pushed to GitHub:
+Claude Code reads skills from two locations:
+
+- **User-scope** (available in every project): `~/.claude/skills/<skill-name>/`
+- **Project-scope** (tracked with the repo): `<project>/.claude/skills/<skill-name>/`
+
+Install a skill by copying its folder — drop the directory directly into the skills location, **not** its parent category folder:
+
+```bash
+# user-scope (recommended for personal use)
+mkdir -p ~/.claude/skills
+cp -R skills/architecture-diagrams ~/.claude/skills/
+cp -R skills/figma-diagrams ~/.claude/skills/
+
+# project-scope (recommended when sharing with a team)
+mkdir -p .claude/skills
+cp -R skills/architecture-diagrams .claude/skills/
+cp -R skills/figma-diagrams .claude/skills/
+```
+
+Claude Code discovers the skill via its `SKILL.md` frontmatter `name` field. Invoke it in chat with `/<skill-name>` or by describing the task — Claude will route to the matching skill automatically.
+
+**Alternative — install the whole repo as a plugin:**
+
+This repo also ships a `.claude-plugin/plugin.json`, so you can install all skills in one shot via Claude Code's plugin marketplace:
 
 ```
 /plugin marketplace add <github-user>/architect-skills
 /plugin install architect-skills@<github-user>
 ```
 
-Skills will then be available as:
+Skills are then available as `/architect-skills:architecture-diagrams` and `/architect-skills:figma-diagrams`.
 
-- `/architect-skills:architecture-diagrams`
-- `/architect-skills:figma-diagrams`
+### Cursor
 
-…or invoked automatically by Claude when your prompt matches their descriptions.
+Cursor does not have a native "skills" concept, but you can install a skill as a **project rule**:
 
-## Repo layout
+1. Copy the skill folder somewhere in the repo (e.g. `.cursor/skills/<skill-name>/`):
+   ```bash
+   mkdir -p .cursor/skills
+   cp -R skills/architecture-diagrams .cursor/skills/
+   ```
 
+2. Create `.cursor/rules/<skill-name>.mdc` that points Cursor at it:
+   ```markdown
+   ---
+   description: <paste the skill's description from manifest.json>
+   globs:
+   alwaysApply: false
+   ---
+   Follow the instructions in .cursor/skills/<skill-name>/SKILL.md when the user requests this task.
+   ```
+
+3. In chat, attach `SKILL.md` with `@` or simply describe the task — the rule will fire when the description matches.
+
+### Kiro
+
+Kiro supports agent instructions via **steering files** and **custom agents**:
+
+1. Copy the skill folder to `.kiro/skills/<skill-name>/`:
+   ```bash
+   mkdir -p .kiro/skills
+   cp -R skills/figma-diagrams .kiro/skills/
+   ```
+
+2. Add a steering file at `.kiro/steering/<skill-name>.md` that tells Kiro to defer to the skill's `SKILL.md` when the matching task is requested.
+
+3. Alternatively, paste the contents of `SKILL.md` directly into a custom Kiro agent definition — this is cleaner if you want the skill to be one-click-invocable.
+
+### Continue, Cline, Aider, and other agents
+
+These tools don't have a standard skills directory yet. Two patterns work:
+
+- **Context attachment.** Copy the skill folder anywhere in the repo, then attach `SKILL.md` to your prompt (Continue: `@file`, Cline: `@file`, Aider: `/add <path>`) and tell the agent to follow it.
+- **Custom prompt / agent.** Paste `SKILL.md` into the IDE's custom-agent or system-prompt configuration. The skill's `manifest.json` `description` field is a good seed for the agent's name/summary.
+
+In all cases, the scripts are invoked from the **copied** folder, so keep the directory structure intact — don't flatten `scripts/` or `templates/` out of the skill folder.
+
+### VS Code (Continue / Cline extensions)
+
+These behave like the "Other agents" path above. For Continue, you can also add the skill folder to `.continue/config.json` under `contextProviders` so `SKILL.md` shows up in `@` suggestions.
+
+## Installing dependencies
+
+Each skill declares its deps in `manifest.json`:
+
+- **`deps.npm`** → run `npm install <packages>` before using the skill (or let `SKILL.md` step 1 install them on demand).
+- **`deps.pip`** → run `python3 -m pip install -r <skill>/requirements.txt`.
+
+Per-skill quick reference:
+
+| Skill | Install command (run from inside the copied skill folder) |
+|---|---|
+| `architecture-diagrams` | _(no runtime deps — pure markdown skill)_ |
+| `figma-diagrams` | `python3 -m pip install -r requirements.txt` + `export FIGMA_TOKEN=figd_...` |
+
+For `figma-diagrams`, you also need a [Figma Personal Access Token](https://www.figma.com/developers/api#access-tokens) exported as the `FIGMA_TOKEN` env var.
+
+## Try it locally before installing
+
+If you have Claude Code, you can run the whole repo as a plugin without copying anything:
+
+```bash
+claude --plugin-dir .
 ```
-architect-skills/
-├── .claude-plugin/
-│   └── plugin.json              # Plugin manifest (name, version, author)
-├── skills/
-│   ├── architecture-diagrams/
-│   │   ├── SKILL.md             # Entry point — short, references other files
-│   │   ├── examples/            # Concrete worked examples
-│   │   └── templates/           # Reusable Mermaid / PlantUML / C4 starters
-│   └── figma-diagrams/
-│       ├── SKILL.md
-│       ├── reference.md         # Figma REST API quick reference
-│       ├── scripts/             # Python helpers Claude invokes via Bash
-│       └── templates/
-├── README.md
-├── LICENSE
-└── .gitignore
-```
+
+Then ask:
+> "Draw me a Mermaid diagram of a three-tier web app on AWS with an ALB, two ECS services, and an RDS Postgres backend."
 
 ## Adding a new skill
 
@@ -68,17 +148,18 @@ architect-skills/
    ```yaml
    ---
    name: your-skill
-   description: One sentence, use-case-first. Claude matches this against user prompts to decide when to invoke.
+   description: One sentence, use-case-first. AI agents match this against user prompts to decide when to invoke.
    ---
    ```
-2. Keep `SKILL.md` short (under ~500 lines). Move long reference material into sibling files like `reference.md`, `examples.md`, or `templates/`.
-3. If your skill needs scripts, drop them in `scripts/` and invoke them via `${CLAUDE_SKILL_DIR}/scripts/your_script.py` so paths resolve regardless of the user's working directory.
-4. Add an entry to the **Skills in this repo** table above.
-5. Bump the `version` in `.claude-plugin/plugin.json`.
+2. Add `skills/<your-skill>/manifest.json` with the same `name` + `description` plus declared `deps` and required env vars — this is what makes the skill portable across IDEs.
+3. Keep `SKILL.md` short (under ~500 lines). Move long reference material into sibling files like `reference.md`, `examples.md`, or `templates/`.
+4. If your skill needs scripts, drop them in `scripts/` and reference them with a path relative to the skill folder — **avoid hard-coding `${CLAUDE_SKILL_DIR}` only**; show both paths so non–Claude-Code users aren't stuck.
+5. Add an entry to the **Skills in this repo** table above and to the **Installing dependencies** table.
+6. Bump the `version` in `.claude-plugin/plugin.json`.
 
 ## Contributing
 
-PRs welcome — especially for new architect-flavoured skills (BPMN, ADR generation, threat-model first drafts, Lucidchart export, etc.). Each new skill should ship with at least one worked example.
+PRs welcome — especially for new architect-flavoured skills (BPMN, ADR generation, threat-model first drafts, Lucidchart export, draw.io XML, etc.). Each new skill should ship with at least one worked example and a populated `manifest.json`.
 
 ## License
 
