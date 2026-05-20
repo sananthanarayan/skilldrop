@@ -1,8 +1,10 @@
-# Claude Skills Kit
+# skilldrop
 
-A collection of portable **Claude Skills** aimed at making **solution architects** faster on the deliverables they do most: diagrams, design artifacts, and visual specs.
+A collection of portable **Claude Skills** you can drop into any IDE — for the deliverables knowledge workers actually ship: diagrams, design docs, ADRs, runbooks, decks, decision logs, comparison matrices, and exec summaries.
 
-Each skill is a plain directory of `SKILL.md` + supporting files + `manifest.json`. It works in **Claude Code** natively, and ports cleanly to **Cursor**, **Kiro**, **Continue**, **Cline**, **Aider**, and any other AI coding tool that accepts custom instructions or rules.
+Originally scoped to solution architects, now broadly useful to PMs, founders, consultants, engineering leaders, exec assistants — anyone who turns ideas into stakeholder-ready artifacts.
+
+Each skill is a plain directory of `SKILL.md` + supporting files + `manifest.json`. Works in **Claude Code** natively, and ports cleanly to **Cursor**, **Kiro**, **Continue**, **Cline**, **Aider**, and any other AI coding tool that accepts custom instructions or rules.
 
 ## Skills in this repo
 
@@ -81,11 +83,11 @@ Claude Code discovers the skill via its `SKILL.md` frontmatter `name` field. Inv
 This repo also ships a `.claude-plugin/plugin.json`, so you can install all skills in one shot via Claude Code's plugin marketplace:
 
 ```
-/plugin marketplace add <github-user>/architect-skills
-/plugin install architect-skills@<github-user>
+/plugin marketplace add <github-user>/skilldrop
+/plugin install skilldrop@<github-user>
 ```
 
-Skills are then available as `/architect-skills:architecture-diagrams` and `/architect-skills:figma-diagrams`.
+Skills are then available as `/skilldrop:architecture-diagrams` and `/skilldrop:figma-diagrams`.
 
 ### Cursor
 
