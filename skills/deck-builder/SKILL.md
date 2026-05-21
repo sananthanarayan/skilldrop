@@ -19,7 +19,20 @@ For a single fast pipeline, use all three in order: profile → outline → buil
 
    - **Content.** Either a finished outline (from `slide-outliner`), a long doc the user wants compressed into slides, or a list of points. If the content is thin ("here's the topic, you fill in"), pause and ask — *making slides up is the easiest way to make a bad deck*.
    - **Audience.** One of: `exec`, `board`, `technical`, `sales`, `internal`, `investor`, `partner`, `customer`. If the user gives a free-form description ("VP of Eng + their staff at a partner"), map to the closest archetype and call out your choice. Use [`audience-profile`](../audience-profile/SKILL.md) for the structural rules.
-   - **Palette.** Either a named preset (see [`templates/palettes.json`](templates/palettes.json)) or hex values for `primary` / `secondary` / `accent` / `background` / `text`. If the user says "use our brand colors" without giving them, ask.
+   - **Palette.** Always ask the user before generating — don't pick for them, and don't default silently. Present the choice like this:
+
+     > Pick a palette before I generate the deck:
+     > - `corporate-blue` — default for B2B / enterprise audiences
+     > - `monochrome` — restrained / when content is sensitive
+     > - `vibrant` — internal / sales / pitch decks
+     > - `dark-mode` — engineering audiences, live demos
+     > - `editorial` — long-form / read-ahead decks
+     > - `forest` — calm, nature-leaning
+     > - `sunset` — warm, narrative-leaning
+     > - Or give me hex values for `primary` / `secondary` / `accent` / `background` / `text`
+     > - Or paste your brand colors and I'll map them into the five roles
+
+     If the user gives brand colors as a partial set (e.g. just a primary), derive the missing roles using the rules in [`reference.md`](reference.md#color-palette-principles) and call out what you filled in.
 
 2. **Plan the slide list against the audience archetype.** For example:
 
@@ -77,7 +90,7 @@ For a single fast pipeline, use all three in order: profile → outline → buil
 
 - [`reference.md`](reference.md) — Color palette principles + layout-vs-content matching guide
 - [`templates/deck-spec.json`](templates/deck-spec.json) — Full JSON schema with every layout demonstrated
-- [`templates/palettes.json`](templates/palettes.json) — Pre-built color palettes (corporate-blue, corporate-purple, monochrome, vibrant, dark-mode)
+- [`templates/palettes.json`](templates/palettes.json) — Pre-built color palettes (corporate-blue, monochrome, vibrant, dark-mode, editorial, forest, sunset)
 - [`examples/exec-board-update.md`](examples/exec-board-update.md) — Worked example: brief → spec → resulting deck
 - [`scripts/build_deck.py`](scripts/build_deck.py) — The generator (don't edit unless extending layouts)
 

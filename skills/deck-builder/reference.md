@@ -25,7 +25,6 @@ These are bundled in [`templates/palettes.json`](templates/palettes.json) and se
 | Name | When to use |
 |---|---|
 | `corporate-blue` | Default for B2B / enterprise audiences when no brand colour is given |
-| `corporate-purple` | Corporate-branded materials |
 | `monochrome` | When the deck needs to feel restrained / when content is sensitive |
 | `vibrant` | Internal / sales / pitch decks — energetic |
 | `dark-mode` | Engineering audiences who prefer dark, or for live demos |

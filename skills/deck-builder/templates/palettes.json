@@ -9,14 +9,6 @@
     "text": "#222222"
   },
 
-  "corporate-purple": {
-    "primary": "#A100FF",
-    "secondary": "#7500C0",
-    "accent": "#FFD200",
-    "background": "#FFFFFF",
-    "text": "#1C1C1C"
-  },
-
   "monochrome": {
     "primary": "#212121",
     "secondary": "#555555",
