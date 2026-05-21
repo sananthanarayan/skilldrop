@@ -32,3 +32,6 @@ renders/
 
 # Claude local state
 .claude/settings.local.json
+
+# Plugin manifest — local-only; each contributor sets up their own
+.claude-plugin/plugin.json
