@@ -6,7 +6,7 @@ This file lists the people authorised to **review, approve, and merge** pull req
 
 | Name | GitHub | Role | Scope |
 |---|---|---|---|
-| Sanjay Ananthanarayan | [@sanjay-ananth](https://github.com/sanjay-ananth) | Lead maintainer | All skills, repo policy, releases |
+| Sanjay Ananthanarayan | [@sanjay-ananth](https://github.com/sanjay-ananth) | All skills, repo policy, releases |
 | Sanjay Ananthanarayan | [@sananthanarayan](https://github.com/sananthanarayan) | Lead maintainer | All skills, repo policy, releases |
 
 Both lead maintainers have equal authority. Either may review, approve, and merge a PR; approval from one is sufficient under the current branch-protection policy (`required_approving_review_count: 1`).
