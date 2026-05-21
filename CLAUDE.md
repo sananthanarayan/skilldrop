@@ -29,14 +29,9 @@ Run: `python3 ${CLAUDE_SKILL_DIR}/scripts/build_deck.py <args>`
 
 Always show **both** forms — `${CLAUDE_SKILL_DIR}` for Claude Code, plain relative for Cursor / Continue / Cline / Aider. Hard-coding only one breaks portability, which is the whole point of skilldrop.
 
-## Installing the whole repo as a plugin
+## Project settings
 
-```text
-/plugin marketplace add <github-user>/skilldrop
-/plugin install skilldrop@<github-user>
-```
-
-Skills are then invocable as `/skilldrop:<skill-name>` (note the namespace). When `.claude-plugin/plugin.json` `version` bumps, users get the new version on next `/plugin update`.
+`.claude/settings.json` exists at the repo root and is currently empty (`{}`). It's the canonical place to add Claude-Code-specific configuration scoped to this project — hooks, permissions allowlists, `enabledPlugins`, `extraKnownMarketplaces`, or environment overrides. Add config when you have something concrete to configure; an empty file is honest about the current state.
 
 ## When NOT to use a skill
 

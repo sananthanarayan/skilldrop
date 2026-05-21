@@ -16,7 +16,7 @@ Both lead maintainers have equal authority. Either may review, approve, and merg
 - Review every incoming PR against the [CONTRIBUTING.md](CONTRIBUTING.md) PR checklist.
 - Approve PRs that pass the checklist and quality bar.
 - Merge approved PRs. **Only maintainers may merge.**
-- Cut releases by bumping `.claude-plugin/plugin.json` and tagging.
+- Cut releases by tagging `main` with a semver version after a substantive merge.
 - Triage issues and proposals; close out-of-scope or stale work.
 
 ## What contributors do
@@ -58,4 +58,4 @@ We don't have a formal nomination process yet because the repo is small. As a ro
 
 ## Emergency / security contact
 
-For security-sensitive issues (vulnerable dependencies, leaked credentials in templates, etc.) — **don't open a public issue**. Contact either lead maintainer directly via GitHub, or by the email in [`.claude-plugin/plugin.json`](.claude-plugin/plugin.json).
+For security-sensitive issues (vulnerable dependencies, leaked credentials in templates, etc.) — **don't open a public issue**. Contact either lead maintainer directly via GitHub.

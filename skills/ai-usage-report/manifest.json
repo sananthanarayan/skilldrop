@@ -1,0 +1,9 @@
+{
+  "name": "ai-usage-report",
+  "version": "0.1.0",
+  "description": "Generate a per-user or team-level report on how AI tools are being used — volume, breadth, and effectiveness signals (e.g. whether AI outputs landed in shipped artifacts vs were generated and discarded). Consumes usage-event logs exported from an MCP server or other telemetry source. Use when a manager or team lead needs to understand AI adoption beyond raw counts — including spotting 'AI theater' where people invoke AI to claim usage but don't act on the outputs.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["ai-usage", "reporting", "telemetry", "adoption", "observability", "manager-tools"]
+}

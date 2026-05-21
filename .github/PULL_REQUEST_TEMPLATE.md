@@ -16,7 +16,7 @@ Thanks for contributing to skilldrop. A couple of policy rules before you submit
 
 - [ ] New skill
 - [ ] Improvement to an existing skill (tightened rubric / new template / new example / bug fix)
-- [ ] Repo / docs / governance change (README, CONTRIBUTING, CODEOWNERS, plugin.json, etc.)
+- [ ] Repo / docs / governance change (README, CONTRIBUTING, CODEOWNERS, .claude/settings.json, etc.)
 - [ ] Other — please describe
 
 ## Worked example (required for new skills, encouraged for existing-skill changes)
@@ -56,8 +56,6 @@ N/A with a one-line reason — don't silently skip.
 
 ### Repo housekeeping
 - [ ] **`README.md` updated** — table row added in the right section; install line added if there are runtime deps.
-- [ ] **`.claude-plugin/plugin.json` version bumped** (patch for fix, minor for new skill, major for breaking layout change).
-- [ ] Relevant keywords added to `plugin.json`.
 
 ### Quality gates
 - [ ] **Manual test pass** — installed into Claude Code and invoked end-to-end on the example above; output meets the skill's own quality bar.
