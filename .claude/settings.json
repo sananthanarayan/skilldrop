@@ -1,1 +1,13 @@
-{}
+{
+  "enabledPlugins": {
+    "skilldrop@skilldrop-local": true
+  },
+  "extraKnownMarketplaces": {
+    "skilldrop-local": {
+      "source": {
+        "source": "directory",
+        "path": "."
+      }
+    }
+  }
+}
