@@ -38,6 +38,12 @@ Each skill is a plain directory of `SKILL.md` + supporting files + `manifest.jso
 | [`runbook-generator`](skills/runbook-generator/SKILL.md) | Generate an operational runbook for a service — deploy/rollback, top 5 incident playbooks, SLOs, on-call escalation, dependencies. |
 | [`tech-comparison-matrix`](skills/tech-comparison-matrix/SKILL.md) | Produce a weighted comparison matrix for a tech-selection question (e.g. "Postgres vs DynamoDB") with criteria, weights, scores, and a recommendation. |
 
+### AI adoption & observability
+
+| Skill | What it does |
+|---|---|
+| [`ai-usage-report`](skills/ai-usage-report/SKILL.md) | Turn a CSV/JSONL of AI usage events (exported from an MCP server or other telemetry source) into a per-user, team-rollup, or effectiveness-focused report. Surfaces volume, breadth, session depth, and — where the data supports it — whether AI outputs were actually consumed in shipped artifacts vs generated and discarded (the "AI theater" question). Refuses to generate an aggregate rollup for teams smaller than 5 to preserve anonymity. |
+
 ### Stakeholder communication
 
 | Skill | What it does |
@@ -91,17 +97,6 @@ cp -R skills/figma-diagrams .claude/skills/
 ```
 
 Claude Code discovers the skill via its `SKILL.md` frontmatter `name` field. Invoke it in chat with `/<skill-name>` or by describing the task — Claude will route to the matching skill automatically.
-
-**Alternative — install the whole repo as a plugin:**
-
-This repo also ships a `.claude-plugin/plugin.json`, so you can install all skills in one shot via Claude Code's plugin marketplace:
-
-```
-/plugin marketplace add <github-user>/skilldrop
-/plugin install skilldrop@<github-user>
-```
-
-Skills are then available as `/skilldrop:architecture-diagrams` and `/skilldrop:figma-diagrams`.
 
 ### Cursor
 
@@ -215,7 +210,6 @@ The skill parses `$ARGUMENTS` to figure out which Figma URL you mean and which a
 3. Keep `SKILL.md` short (under ~500 lines). Move long reference material into sibling files like `reference.md`, `examples.md`, or `templates/`.
 4. If your skill needs scripts, drop them in `scripts/` and reference them with a path relative to the skill folder — **avoid hard-coding `${CLAUDE_SKILL_DIR}` only**; show both paths so non–Claude-Code users aren't stuck.
 5. Add an entry to the **Skills in this repo** table above and to the **Installing dependencies** table.
-6. Bump the `version` in `.claude-plugin/plugin.json`.
 
 ## Contributing
 

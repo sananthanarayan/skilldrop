@@ -4,12 +4,12 @@
 
 ## Repo in one paragraph
 
-**skilldrop** is a collection of portable **Claude Skills** for the deliverables knowledge workers actually ship: diagrams, ADRs, design docs, runbooks, decks, decision logs, comparison matrices, exec summaries, structured critiques, and adversarial code review. Each skill is a plain directory under `skills/` containing a `SKILL.md` + `manifest.json` (+ optional `reference.md`, `templates/`, `lenses/`, `rubrics/`, `examples/`, `scripts/`, `requirements.txt`). The repo ships a `.claude-plugin/plugin.json` so the whole set can be installed as a single Claude Code plugin, and individual skills port cleanly to Cursor, Kiro, Continue, Cline, and Aider via documented per-IDE install steps in `README.md`.
+**skilldrop** is a collection of portable **Claude Skills** for the deliverables knowledge workers actually ship: diagrams, ADRs, design docs, runbooks, decks, decision logs, comparison matrices, exec summaries, structured critiques, and adversarial code review. Each skill is a plain directory under `skills/` containing a `SKILL.md` + `manifest.json` (+ optional `reference.md`, `templates/`, `lenses/`, `rubrics/`, `examples/`, `scripts/`, `requirements.txt`). Installation is per-folder copy into the target IDE's skills/rules location — documented per-IDE install steps live in `README.md` (Claude Code, Cursor, Kiro, Continue, Cline, Aider).
 
 ## Golden rules
 
-1. **Folder name = `SKILL.md` `name` = `manifest.json` `name`.** Kebab-case, use-case-first, no version suffix. Changing any of the three without the others breaks plugin discovery and slash-command invocation.
-2. **Do not move** `skills/`, `.claude-plugin/`, `CONTRIBUTING.md`, `MAINTAINERS.md`, `LICENSE`, or `README.md`. Skills are discovered by path; moving the directory breaks every install instruction the README documents.
+1. **Folder name = `SKILL.md` `name` = `manifest.json` `name`.** Kebab-case, use-case-first, no version suffix. Changing any of the three without the others breaks slash-command invocation.
+2. **Do not move** `skills/`, `CONTRIBUTING.md`, `MAINTAINERS.md`, `LICENSE`, or `README.md`. Skills are discovered by path; moving the directory breaks every install instruction the README documents.
 3. **Keep `SKILL.md` under ~500 lines.** Spill into `reference.md`, `templates/`, `lenses/`, `rubrics/`, or `examples/`. Agent context is the binding constraint — a bloated `SKILL.md` crowds out the user's actual prompt.
 4. **Never invent commands, env vars, or file conventions.** Use those documented below and in `CONTRIBUTING.md`. This repo has no test runner, no CI, no linter at the root — don't pretend it does.
 5. **No secrets, no real customer names, no personal data** in templates, examples, or sample inputs. Placeholder data only.
@@ -25,10 +25,6 @@ mkdir -p ~/.claude/skills && cp -R skills/<skill-name> ~/.claude/skills/
 
 # Install a single skill into Claude Code — project-scope (tracked with repo)
 mkdir -p .claude/skills && cp -R skills/<skill-name> .claude/skills/
-
-# Install the whole set as a Claude Code plugin (run inside Claude Code)
-/plugin marketplace add <github-user>/skilldrop
-/plugin install skilldrop@<github-user>
 
 # Install Python deps for a skill that has them (currently figma-diagrams, deck-builder)
 cd skills/<skill-name> && python3 -m pip install -r requirements.txt
@@ -53,10 +49,10 @@ There is **no `make` target, no test command, no lint command, no CI gate** at t
 | Per-archetype quality bar (doc-critique style) | `skills/<skill-name>/rubrics/<archetype>.md` |
 | Executable helper | `skills/<skill-name>/scripts/<name>.py` (or `.js`, `.sh`) |
 | Python dep manifest for a skill | `skills/<skill-name>/requirements.txt` |
-| Plugin metadata | `.claude-plugin/plugin.json` — bump `version` and update `keywords` whenever a skill is added |
+| Claude Code project settings | `.claude/settings.json` — optional config (hooks, permissions, env). Inert for non-Claude tools. |
 | Repo policy | `CONTRIBUTING.md`, `MAINTAINERS.md` |
 
-Anything outside `skills/` and `.claude-plugin/` is repo policy or hygiene. New top-level directories should be proposed in a PR with rationale, not added silently.
+Anything outside `skills/` is repo policy or hygiene. New top-level directories should be proposed in a PR with rationale, not added silently.
 
 ## SKILL.md frontmatter (required, exactly this shape)
 
@@ -94,7 +90,6 @@ If the skill has no scripts, leave `deps` empty. `env.required` is for vars the 
 - [ ] At least one **worked example** for new diagram, deck, or review skills.
 - [ ] Description **leads with the use case** and **ends with trigger phrases**.
 - [ ] `README.md` updated — row added to **Skills in this repo**, and to **Installing dependencies** if the skill has runtime deps.
-- [ ] `.claude-plugin/plugin.json` `version` bumped (patch / minor / major per the rules in `CONTRIBUTING.md`) and `keywords` updated.
 - [ ] **Manual test pass** — installed the skill into a clean Claude Code session and ran it on a realistic input. Output meets the skill's own quality bar.
 - [ ] Scripts (if any) reference both `${CLAUDE_SKILL_DIR}/scripts/…` **and** a plain relative `scripts/…` so non-Claude IDEs can find them.
 - [ ] No secrets, no real customer data — placeholder values only.
@@ -132,5 +127,5 @@ A new section needs a use-case-first name, a one-sentence definition of what bel
 - Branching, PRs, and merge rules: [CONTRIBUTING.md → Branching, PRs, and merging](CONTRIBUTING.md#branching-prs-and-merging)
 - Maintainer roster + bypass policy: [MAINTAINERS.md](MAINTAINERS.md)
 - Repo overview & per-IDE install steps: [README.md](README.md)
-- Plugin metadata (bump on every skill add): [.claude-plugin/plugin.json](.claude-plugin/plugin.json)
+- Claude Code project settings: [.claude/settings.json](.claude/settings.json) — currently empty
 - Reference implementations for skill scripts: [`skills/deck-builder/scripts/`](skills/deck-builder/scripts/), [`skills/figma-diagrams/scripts/`](skills/figma-diagrams/scripts/)

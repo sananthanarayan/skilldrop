@@ -257,7 +257,7 @@ Not every skill needs every section, but **Quality bar** and **Anti-patterns to 
 
 - `deps.npm` / `deps.pip` — lists the packages a user must install before the skill works. If the skill has no scripts, leave empty.
 - `env.required` — env vars the skill cannot work without (e.g. `FIGMA_TOKEN` for `figma-diagrams`). `env.optional` — vars that change behaviour but aren't required.
-- `tags` — 3–6 keywords that help the plugin marketplace and other IDEs surface this skill.
+- `tags` — 3–6 keywords that help IDEs surface this skill in search and discovery surfaces.
 
 `name` in `manifest.json` **must** match `name` in `SKILL.md` frontmatter and the folder name.
 
@@ -280,14 +280,7 @@ Open `README.md` and:
 - If the skill has runtime deps, add a row to the **Installing dependencies** table.
 - If the skill has env vars, mention them inline in the install row.
 
-### 6. Bump `plugin.json`
-
-In `.claude-plugin/plugin.json`:
-
-- Bump `version` (semver) — patch for fixes, minor for new skills, major for breaking layout changes.
-- Add 1–3 representative `keywords` for your skill.
-
-### 7. Test the skill manually
+### 6. Test the skill manually
 
 Before opening a PR, **install your skill into a clean Claude Code instance** and run it end-to-end on at least one realistic input:
 
@@ -371,7 +364,6 @@ Before opening a PR, run through this list:
 - [ ] **Description leads with the use case** and ends with trigger phrases.
 - [ ] **At least one worked example** (`examples/…` or inline) — especially important for diagram, deck, and review skills.
 - [ ] **README updated** — table row added, install line added if there are deps.
-- [ ] **`plugin.json` version bumped** and keywords updated.
 - [ ] **Manual test pass** — invoked the skill in Claude Code on a realistic input and got an output that meets its own quality bar.
 - [ ] **No secrets / personal info** in templates, examples, or test data. Use placeholder data only.
 - [ ] **License compatibility** — any code or template adapted from elsewhere is MIT-compatible and attributed if non-trivial.
@@ -393,7 +385,7 @@ Smaller PRs are easier to merge. Useful kinds of improvements:
 - **Catching an anti-pattern.** Found a mistake the skill kept making? Add it to `Anti-patterns to avoid`.
 - **Cross-skill polish.** Making sure two skills that pair together (`audience-profile` → `slide-outliner` → `deck-builder`) hand off cleanly.
 
-If the change is purely stylistic or a single typo, no version bump needed. If it changes the skill's behaviour (new templates, new rules, new sections), bump the patch version of `plugin.json` and note it in the PR.
+Note any behavioural change (new templates, new rules, new sections) in the PR description so reviewers can spot-check the affected rubric. Purely stylistic or typo-level changes don't need extra callout.
 
 ---
 
