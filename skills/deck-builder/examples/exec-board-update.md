@@ -25,7 +25,7 @@ Board update → use `audience-profile.board` archetype:
       "layout": "title",
       "title": "ProjectX Migration",
       "subtitle": "Board update — Q3 FY26",
-      "presenter": "S. Ananthanarayan",
+      "presenter": "John Doe",
       "date": "2026-09-15",
       "notes": "Open with: 'We're 60% through, on track, and asking for an overrun. Here's why it's still a good deal.'"
     },
