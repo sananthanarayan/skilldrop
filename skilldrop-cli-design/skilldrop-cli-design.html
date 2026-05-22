@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>skilldrop CLI — design sketch</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">skilldrop CLI — design sketch</h1>
+</header>
+<h1 id="skilldrop-cli-design-sketch">skilldrop CLI — design sketch</h1>
+<blockquote>
+<p>A proposal for distributing skilldrop skills via an npm-published CLI
+that installs into any supported IDE (Claude Code, Cursor, Kiro,
+Continue, Cline, Aider, Codex) and updates in place when new versions
+ship. This is a design sketch for review, not a build plan — the goal is
+to get reactions on shape and scope before committing to the work.</p>
+</blockquote>
+<h2 id="why-npm-and-why-not-the-others">Why npm (and why not the
+others)</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Option</th>
+<th>Verdict</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>npm</strong></td>
+<td>✅ Recommended</td>
+<td>Universally installed on dev machines; <code>npx</code> gives
+zero-install UX; skills are text + small scripts, which npm packages
+perfectly</td>
+</tr>
+<tr>
+<td>Maven</td>
+<td>❌</td>
+<td>JVM-ecosystem; devs in Cursor/Kiro/Codex won’t have it. Wrong
+audience.</td>
+</tr>
+<tr>
+<td>PyPI</td>
+<td>⚠️ Possible alternative</td>
+<td>Reasonable — Python is also broadly installed, and several skills
+already have <code>pip</code> deps. But <code>npx</code> UX beats
+<code>pipx run</code> for one-shot install.</td>
+</tr>
+<tr>
+<td>Artifactory</td>
+<td>❌ (as primary)</td>
+<td>Hosting, not a distribution format. Could <em>mirror</em> the npm
+package internally for orgs that need it, but the public-facing channel
+should be npm.</td>
+</tr>
+<tr>
+<td>Claude Code plugin marketplace</td>
+<td>✅ (in parallel)</td>
+<td>Native path for Claude Code users. Already wired via
+<code>.claude-plugin/plugin.json</code>. The npm CLI is the multi-IDE
+complement, not a replacement.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Decision:</strong> npm as the primary CLI distribution. Keep
+the Claude Code plugin marketplace entry as the native path for that one
+IDE.</p>
+<h2 id="cli-command-surface">CLI command surface</h2>
+<p>Package name: <code>skilldrop</code> (or <code>@skilldrop/cli</code>
+if scoped). Invoked via <code>npx skilldrop &lt;cmd&gt;</code> (no
+global install required) or <code>npm i -g skilldrop</code> for users
+who want <code>skilldrop &lt;cmd&gt;</code> directly.</p>
+<h3 id="core-commands">Core commands</h3>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Discover</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> list                          <span class="co"># all skills in the registry</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> list <span class="at">--installed</span>              <span class="co"># skills installed on this machine</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> search <span class="op">&lt;</span>query<span class="op">&gt;</span>                <span class="co"># keyword/tag search</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> info <span class="op">&lt;</span>skill<span class="op">&gt;</span>                  <span class="co"># description, version, deps, install paths</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Install</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> install <span class="op">&lt;</span>skill<span class="op">&gt;</span>               <span class="co"># install into auto-detected IDE</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> install <span class="op">&lt;</span>skill<span class="op">&gt;</span> --ide=cursor  <span class="co"># explicit target</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> install <span class="op">&lt;</span>skill<span class="op">&gt;</span> --ide=all     <span class="co"># install into every detected IDE</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> install <span class="op">&lt;</span>skill<span class="op">&gt;</span>@<span class="op">&lt;</span>version<span class="op">&gt;</span>     <span class="co"># pin to a specific version</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> install <span class="at">--all</span>                 <span class="co"># install the whole catalog</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Update</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> update                        <span class="co"># update all installed skills to latest</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> update <span class="op">&lt;</span>skill<span class="op">&gt;</span>                <span class="co"># update one skill</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> outdated                      <span class="co"># show installed vs latest, no changes</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> pin <span class="op">&lt;</span>skill<span class="op">&gt;</span>@<span class="op">&lt;</span>version<span class="op">&gt;</span>         <span class="co"># opt out of auto-update for one skill</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> uninstall <span class="op">&lt;</span>skill<span class="op">&gt;</span>             <span class="co"># remove from all IDEs it was installed in</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> uninstall <span class="op">&lt;</span>skill<span class="op">&gt;</span> --ide=kiro  <span class="co"># remove from one IDE only</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Diagnostics</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> doctor                        <span class="co"># detect installed IDEs, report install paths, flag drift</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> where <span class="op">&lt;</span>skill<span class="op">&gt;</span>                 <span class="co"># print the install path(s) for a skill</span></span></code></pre></div>
+<h3 id="ide-detection">IDE detection</h3>
+<p><code>skilldrop doctor</code> and the auto-detect path used by
+<code>install</code> look for:</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>IDE</th>
+<th>Detection signal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Code</td>
+<td><code>~/.claude/</code> exists, or <code>.claude/</code> in cwd</td>
+</tr>
+<tr>
+<td>Cursor</td>
+<td><code>~/Library/Application Support/Cursor/</code> (macOS),
+<code>%APPDATA%/Cursor/</code> (Windows); or <code>.cursor/</code> in
+cwd</td>
+</tr>
+<tr>
+<td>Kiro</td>
+<td>Kiro config dir (TBD — confirm with Kiro docs)</td>
+</tr>
+<tr>
+<td>Continue</td>
+<td><code>~/.continue/</code></td>
+</tr>
+<tr>
+<td>Cline</td>
+<td>VS Code extensions dir + Cline workspace markers</td>
+</tr>
+<tr>
+<td>Aider</td>
+<td><code>.aider*</code> files in cwd or <code>~/.aider*</code></td>
+</tr>
+<tr>
+<td>Codex</td>
+<td>Codex CLI config dir</td>
+</tr>
+</tbody>
+</table>
+<p>If multiple IDEs are detected, <code>install</code> without
+<code>--ide</code> prompts (TTY) or errors (non-TTY) asking the user to
+pick. <code>--ide=all</code> skips the prompt.</p>
+<h3 id="scope-user-vs-project">Scope: user vs project</h3>
+<p>Mirror npm’s <code>--global</code> vs project-local distinction:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> install adr-generator                  <span class="co"># user-scope (default; installs to ~/.claude/skills/, etc.)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> install adr-generator <span class="at">--project</span>        <span class="co"># project-scope (installs to .claude/skills/ in cwd)</span></span></code></pre></div>
+<p>User-scope is the default because the README already steers users
+toward user-scope installs for development.</p>
+<h2 id="per-ide-install-logic">Per-IDE install logic</h2>
+<p>The CLI’s main value is translating a single source skill into the
+right format/location per IDE. The mapping is the load-bearing
+piece.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>IDE</th>
+<th>Install path</th>
+<th>Format transformation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Code</td>
+<td><code>~/.claude/skills/&lt;name&gt;/</code> or
+<code>.claude/skills/&lt;name&gt;/</code></td>
+<td>Copy folder as-is. SKILL.md is already the native format.</td>
+</tr>
+<tr>
+<td>Cursor</td>
+<td><code>.cursor/rules/&lt;name&gt;.mdc</code></td>
+<td>Wrap <code>SKILL.md</code> content in MDC frontmatter
+(<code>description</code>, <code>globs</code>,
+<code>alwaysApply</code>). Bundle supporting files into the rule’s
+referenced paths.</td>
+</tr>
+<tr>
+<td>Kiro</td>
+<td>Kiro agent definition</td>
+<td>Paste <code>SKILL.md</code> content into Kiro’s agent definition
+format (TBD — confirm Kiro’s file layout)</td>
+</tr>
+<tr>
+<td>Continue</td>
+<td><code>~/.continue/rules/</code> or <code>config.json</code>
+<code>customCommands</code></td>
+<td>Translate SKILL.md to a Continue rule.</td>
+</tr>
+<tr>
+<td>Cline</td>
+<td>Workspace rules or <code>.clinerules/</code></td>
+<td>Copy SKILL.md into the rules folder.</td>
+</tr>
+<tr>
+<td>Aider</td>
+<td><code>.aider.conf.yml</code> <code>read</code> list, or
+<code>--read &lt;path&gt;</code></td>
+<td>Copy folder under repo, register in conf.</td>
+</tr>
+<tr>
+<td>Codex</td>
+<td>Codex equivalent (TBD)</td>
+<td>TBD</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Critical:</strong> the source of truth stays the same —
+<code>SKILL.md</code> + supporting files + <code>manifest.json</code>.
+The CLI does the format adaptation at install time. This is what gives
+users a single mental model across IDEs.</p>
+<h3 id="dependency-install">Dependency install</h3>
+<p>After the file copy, the CLI runs the dep install step from
+<code>manifest.json</code>:</p>
+<ul>
+<li><code>deps.pip</code> →
+<code>python3 -m pip install -r requirements.txt</code> in the installed
+folder (or warn if no python found)</li>
+<li><code>deps.npm</code> → <code>npm install</code> in the installed
+folder</li>
+<li><code>env.required</code> → print a clear “set these env vars before
+using” message; exit non-zero if <code>--strict</code> is passed</li>
+</ul>
+<p><code>skilldrop install &lt;skill&gt; --no-deps</code> skips this
+step for users who manage deps themselves.</p>
+<h2 id="registry-distribution-model">Registry &amp; distribution
+model</h2>
+<h3 id="v1-single-monolithic-package">v1: single monolithic package</h3>
+<p>The simplest shape: <code>skilldrop</code> npm package contains the
+CLI <strong>and</strong> all skills, baked in.</p>
+<ul>
+<li><strong>Pros:</strong> one package, one version, atomic updates,
+trivial publishing (<code>npm publish</code> from this repo’s CI).</li>
+<li><strong>Cons:</strong> every skill update bumps the whole package;
+users always get all skills (~MB of markdown — still small).</li>
+</ul>
+<p>This is the right v1. Skills are small; coupling them into one
+release artifact is fine until the catalog grows past ~50.</p>
+<h3 id="v2-split-cli-per-skill-packages">v2: split CLI + per-skill
+packages</h3>
+<p>If the catalog grows or third parties want to publish their own
+skills:</p>
+<ul>
+<li><code>skilldrop</code> (CLI only)</li>
+<li><code>@skilldrop/&lt;skill-name&gt;</code> for each first-party
+skill</li>
+<li>Third parties publish <code>&lt;their-scope&gt;/&lt;skill&gt;</code>
+following the same <code>manifest.json</code> contract</li>
+<li><code>skilldrop install &lt;foo&gt;</code> resolves: first-party
+catalog → npm scope lookup → install</li>
+</ul>
+<p>Defer this until there’s actual demand. Pre-building plugin
+architecture is the classic skilldrop trap (see
+<code>AGENTS.md</code>).</p>
+<h3 id="registry-metadata">Registry metadata</h3>
+<p>A <code>registry.json</code> (generated from each skill’s
+<code>manifest.json</code> at build time) lives at the package root:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;generated_at&quot;</span><span class="fu">:</span> <span class="st">&quot;2026-05-22T00:00:00Z&quot;</span><span class="fu">,</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;schema_version&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;skills&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;adr-generator&quot;</span><span class="fu">,</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="st">&quot;0.1.0&quot;</span><span class="fu">,</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="st">&quot;...&quot;</span><span class="fu">,</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;tags&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;adr&quot;</span><span class="ot">,</span> <span class="st">&quot;architecture&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;deps&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;pip&quot;</span><span class="fu">:</span> <span class="ot">[]</span><span class="fu">,</span> <span class="dt">&quot;npm&quot;</span><span class="fu">:</span> <span class="ot">[]</span> <span class="fu">},</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;env&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;required&quot;</span><span class="fu">:</span> <span class="ot">[]</span><span class="fu">,</span> <span class="dt">&quot;optional&quot;</span><span class="fu">:</span> <span class="ot">[]</span> <span class="fu">},</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;ide_support&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;claude-code&quot;</span><span class="ot">,</span> <span class="st">&quot;cursor&quot;</span><span class="ot">,</span> <span class="st">&quot;kiro&quot;</span><span class="ot">,</span> <span class="st">&quot;continue&quot;</span><span class="ot">,</span> <span class="st">&quot;cline&quot;</span><span class="ot">,</span> <span class="st">&quot;aider&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;skills/adr-generator&quot;</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><code>skilldrop list</code> reads this; no network call needed once
+the package is installed.</p>
+<h2 id="manifest.json-extensions"><code>manifest.json</code>
+extensions</h2>
+<p>The current manifest is close. Additions needed:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;adr-generator&quot;</span><span class="fu">,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="st">&quot;0.1.0&quot;</span><span class="fu">,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="st">&quot;...&quot;</span><span class="fu">,</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;entrypoint&quot;</span><span class="fu">:</span> <span class="st">&quot;SKILL.md&quot;</span><span class="fu">,</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;deps&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;npm&quot;</span><span class="fu">:</span> <span class="ot">[]</span><span class="fu">,</span> <span class="dt">&quot;pip&quot;</span><span class="fu">:</span> <span class="ot">[]</span> <span class="fu">},</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;env&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;required&quot;</span><span class="fu">:</span> <span class="ot">[]</span><span class="fu">,</span> <span class="dt">&quot;optional&quot;</span><span class="fu">:</span> <span class="ot">[]</span> <span class="fu">},</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;install&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;pip&quot;</span><span class="fu">:</span> <span class="st">&quot;python3 -m pip install -r requirements.txt&quot;</span> <span class="fu">},</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;tags&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;adr&quot;</span><span class="ot">,</span> <span class="st">&quot;architecture&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="er">//</span> <span class="er">---</span> <span class="er">NEW</span> <span class="er">FIELDS</span> <span class="er">---</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;ide_support&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;claude-code&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;supported&quot;</span><span class="fu">:</span> <span class="kw">true</span> <span class="fu">},</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;cursor&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;supported&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span> <span class="dt">&quot;format&quot;</span><span class="fu">:</span> <span class="st">&quot;mdc&quot;</span> <span class="fu">},</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;kiro&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;supported&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span> <span class="dt">&quot;format&quot;</span><span class="fu">:</span> <span class="st">&quot;agent-paste&quot;</span> <span class="fu">},</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;continue&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;supported&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span> <span class="dt">&quot;format&quot;</span><span class="fu">:</span> <span class="st">&quot;rule&quot;</span> <span class="fu">},</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;cline&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;supported&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span> <span class="dt">&quot;format&quot;</span><span class="fu">:</span> <span class="st">&quot;rule&quot;</span> <span class="fu">},</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;aider&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;supported&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span> <span class="dt">&quot;format&quot;</span><span class="fu">:</span> <span class="st">&quot;read-file&quot;</span> <span class="fu">},</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;codex&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;supported&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span> <span class="dt">&quot;reason&quot;</span><span class="fu">:</span> <span class="st">&quot;not yet mapped&quot;</span> <span class="fu">}</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;files&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;required&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;SKILL.md&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;include&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;scripts/**&quot;</span><span class="ot">,</span> <span class="st">&quot;reference/**&quot;</span><span class="ot">,</span> <span class="st">&quot;requirements.txt&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;exclude&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;**/__pycache__/**&quot;</span><span class="ot">,</span> <span class="st">&quot;**/.DS_Store&quot;</span><span class="ot">]</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;post_install&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;message&quot;</span><span class="fu">:</span> <span class="st">&quot;Set FIGMA_TOKEN before invoking this skill.&quot;</span><span class="fu">,</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;verify&quot;</span><span class="fu">:</span> <span class="st">&quot;python3 -c &#39;import requests&#39;&quot;</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;compat&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;min_skilldrop_cli&quot;</span><span class="fu">:</span> <span class="st">&quot;0.1.0&quot;</span><span class="fu">,</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;platforms&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;darwin&quot;</span><span class="ot">,</span> <span class="st">&quot;linux&quot;</span><span class="ot">,</span> <span class="st">&quot;win32&quot;</span><span class="ot">]</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;deprecated&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;replaced_by&quot;</span><span class="fu">:</span> <span class="kw">null</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Field-by-field rationale:</strong></p>
+<ul>
+<li><code>ide_support</code> — per-IDE format hints. Lets the CLI know
+how to transform the skill at install time and lets
+<code>skilldrop info</code> show “works in: X, Y, Z.” Without this the
+CLI has to guess (defaulting to “supported everywhere” is wrong — some
+skills genuinely don’t make sense in Aider).</li>
+<li><code>files.include</code> / <code>files.exclude</code> — explicit
+allowlist of what to copy. Avoids shipping <code>__pycache__</code>,
+editor scratch files, etc. The current “copy the folder” approach works
+but is sloppy.</li>
+<li><code>post_install</code> — message printed after install; optional
+verify command. Saves users from “I installed it but it doesn’t work
+because I missed an env var.”</li>
+<li><code>compat.min_skilldrop_cli</code> — guards against
+schema-version drift if the manifest format evolves. Mirrors how npm
+packages declare <code>engines.node</code>.</li>
+<li><code>deprecated</code> / <code>replaced_by</code> — lets the
+registry retire skills cleanly. <code>skilldrop update</code> can
+surface “this skill was renamed; do you want to install <new>?”</li>
+</ul>
+<p><strong>What does NOT need to change:</strong></p>
+<ul>
+<li><code>name</code>, <code>version</code>, <code>description</code>,
+<code>entrypoint</code>, <code>tags</code>, <code>deps</code>,
+<code>env</code>, <code>install</code> — already present and correctly
+shaped.</li>
+<li>No need for a separate per-IDE manifest. One source of truth,
+transformed at install time.</li>
+</ul>
+<h2 id="update-flow">Update flow</h2>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">skilldrop</span> update</span></code></pre></div>
+<ol type="1">
+<li>Read the installed-skills index (a JSON file in
+<code>~/.skilldrop/state.json</code> recording what’s installed where
+and at what version).</li>
+<li>For each installed skill, compare local version vs registry
+version.</li>
+<li>For each out-of-date skill:
+<ul>
+<li>If pinned (<code>skilldrop pin</code>), skip with a notice.</li>
+<li>If not pinned, re-run the install logic into the same IDE(s) it was
+previously installed in.</li>
+<li>Detect local edits (hash mismatch on <code>SKILL.md</code>); prompt
+before overwriting (or warn and skip if <code>--no-prompt</code>).</li>
+</ul></li>
+<li>Print a summary: updated / skipped / failed.</li>
+</ol>
+<p><strong>State file</strong>
+(<code>~/.skilldrop/state.json</code>):</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;schema_version&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;installations&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;skill&quot;</span><span class="fu">:</span> <span class="st">&quot;adr-generator&quot;</span><span class="fu">,</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="st">&quot;0.1.0&quot;</span><span class="fu">,</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;ide&quot;</span><span class="fu">:</span> <span class="st">&quot;claude-code&quot;</span><span class="fu">,</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;scope&quot;</span><span class="fu">:</span> <span class="st">&quot;user&quot;</span><span class="fu">,</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;path&quot;</span><span class="fu">:</span> <span class="st">&quot;/Users/.../.claude/skills/adr-generator&quot;</span><span class="fu">,</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;installed_at&quot;</span><span class="fu">:</span> <span class="st">&quot;2026-05-22T10:00:00Z&quot;</span><span class="fu">,</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;pinned&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;source_hash&quot;</span><span class="fu">:</span> <span class="st">&quot;sha256:abc...&quot;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>The state file is what makes <code>update</code>,
+<code>uninstall</code>, and <code>doctor</code> work cleanly. Without it
+the CLI has to scan every possible install location on every
+invocation.</p>
+<h2 id="build-effort-honest-estimate">Build effort — honest
+estimate</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Scope</th>
+<th>Effort (single engineer, focused)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Phase 1: MVP</strong></td>
+<td>npm package; <code>list</code> / <code>install</code> /
+<code>uninstall</code> / <code>update</code>; Claude Code + Cursor only;
+monolithic registry</td>
+<td><strong>~1 week</strong></td>
+</tr>
+<tr>
+<td><strong>Phase 2: Multi-IDE</strong></td>
+<td>Kiro, Continue, Cline, Aider adapters; <code>doctor</code>; state
+file; pin/unpin</td>
+<td><strong>~1 week</strong></td>
+</tr>
+<tr>
+<td><strong>Phase 3: Polish</strong></td>
+<td><code>info</code>, <code>search</code>, <code>where</code>,
+format-verification tests, CI publish workflow, docs</td>
+<td><strong>~3–5 days</strong></td>
+</tr>
+<tr>
+<td><strong>Phase 4 (optional)</strong></td>
+<td>Codex support, per-skill packages, third-party skill registry</td>
+<td><strong>Defer</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Total realistic MVP-to-shippable: <strong>~2.5 weeks of focused
+work</strong>. Most of the surface area is the per-IDE adapter logic and
+getting the format transformations right — the CLI scaffolding itself is
+straightforward.</p>
+<h2 id="tradeoffs-open-questions">Tradeoffs &amp; open questions</h2>
+<ul>
+<li><strong>CLI vs shell script.</strong> The lighter alternative is
+<code>install.sh</code> / <code>install.ps1</code> in this repo doing
+the same thing. Lower maintenance, worse UX, no <code>update</code>
+story. If you only care about getting skills installed once and never
+updating, the script is enough. If you want “package manager for AI
+skills” positioning with versioning + updates, the CLI is the right
+investment.</li>
+<li><strong>Who owns per-IDE format drift?</strong> Cursor’s MDC format,
+Kiro’s agent format, Continue’s rule format — these evolve independently
+of skilldrop. The CLI’s adapter layer becomes the maintenance hot-spot.
+Plan for monthly check-ins on each format.</li>
+<li><strong>Telemetry on installs?</strong> Tempting to track which
+skills get installed where. Strongly recommend <em>not</em> doing this
+in v1 — adds privacy surface and the data is low-value early. If it
+becomes useful later, opt-in.</li>
+<li><strong>Org-internal skill catalogs.</strong> Some teams will want a
+private catalog. Easy path: support a
+<code>--registry &lt;url&gt;</code> flag that points at an alternate
+<code>registry.json</code>. Don’t build auth / private npm tokens in v1
+— most orgs can host a static JSON file behind their VPN.</li>
+<li><strong>Versioning across IDEs.</strong> If a user has
+<code>adr-generator@0.1.0</code> in Claude Code and
+<code>adr-generator@0.2.0</code> in Cursor (because they installed at
+different times), do we surface the drift? Yes —
+<code>skilldrop doctor</code> should flag it. <code>update</code>
+resolves by default.</li>
+<li><strong>What’s the “official” registry URL?</strong> v1 ships the
+registry inside the npm package itself, so there’s no URL. v2 would need
+one (GitHub Pages on this repo? A <code>skilldrop.dev</code> site?).
+Decide at v2 time, not now.</li>
+<li><strong>Schema validation in CI.</strong> Worth adding a CI step in
+this repo that validates every skill’s <code>manifest.json</code>
+against the extended schema. Catches drift before publish.</li>
+</ul>
+<h2 id="what-to-decide-before-building">What to decide before
+building</h2>
+<ol type="1">
+<li><strong>Go / no-go on the npm CLI vs the shell-script
+alternative.</strong> Most consequential choice. CLI is the better
+product, the script is faster to ship.</li>
+<li><strong>Scope of v1 IDE support.</strong> Claude Code + Cursor only
+is realistic for an MVP. Adding more is incremental.</li>
+<li><strong>Monolithic vs split packages.</strong> Recommend monolithic
+for v1; revisit when catalog grows.</li>
+<li><strong>Who maintains it.</strong> A CLI is an ongoing commitment —
+per-IDE format drift, security advisories, npm publish hygiene. Confirm
+an owner before starting.</li>
+</ol>
+</body>
+</html>
