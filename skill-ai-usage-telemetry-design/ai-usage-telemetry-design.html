@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>AI Usage Telemetry — design doc</title>
+  <style>
+
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <style type="text/css">body {
+font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+max-width: 820px;
+margin: 2rem auto;
+padding: 0 1.5rem 4rem;
+color: #1a1a1a;
+line-height: 1.6;
+font-size: 16px;
+}
+h1 { font-size: 2rem; border-bottom: 2px solid #1a1a1a; padding-bottom: 0.4rem; margin-top: 2.5rem; }
+h2 { font-size: 1.45rem; border-bottom: 1px solid #ccc; padding-bottom: 0.3rem; margin-top: 2.2rem; }
+h3 { font-size: 1.15rem; margin-top: 1.8rem; }
+h4 { font-size: 1rem; margin-top: 1.4rem; }
+blockquote {
+border-left: 4px solid #888;
+padding: 0.1rem 1rem;
+color: #555;
+background: #f5f5f5;
+margin: 1rem 0;
+}
+code {
+background: #f0f0f0;
+padding: 0.1rem 0.35rem;
+border-radius: 3px;
+font-family: "SF Mono", Menlo, Consolas, monospace;
+font-size: 0.92em;
+}
+pre {
+background: #1f2330;
+color: #e6e6e6;
+padding: 0.9rem 1rem;
+border-radius: 6px;
+overflow-x: auto;
+font-size: 0.88em;
+line-height: 1.45;
+}
+pre code { background: transparent; padding: 0; color: inherit; }
+table {
+border-collapse: collapse;
+margin: 1rem 0;
+width: 100%;
+font-size: 0.94em;
+}
+th, td { border: 1px solid #ddd; padding: 0.5rem 0.7rem; text-align: left; vertical-align: top; }
+th { background: #f5f5f5; font-weight: 600; }
+tbody tr:nth-child(even) { background: #fafafa; }
+ul, ol { padding-left: 1.5rem; }
+li { margin: 0.2rem 0; }
+hr { border: none; border-top: 1px solid #ccc; margin: 2rem 0; }
+a { color: #1a5fd4; text-decoration: none; }
+a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">AI Usage Telemetry — design doc</h1>
+</header>
+<h1 id="ai-usage-telemetry--design-doc">AI Usage Telemetry — design
+doc</h1>
+<blockquote>
+<p>Companion to the <code>ai-usage-report</code> skill in skilldrop.
+This doc covers the <em>collection</em> side: what an MCP server (or any
+telemetry pipeline) needs to log so the report skill has signal to work
+with. It is the spec for a separate repo, not for skilldrop.</p>
+</blockquote>
+<h2 id="goals">Goals</h2>
+<ul>
+<li>Capture AI usage events from the IDEs / tools developers actually
+use (Claude Code, Cursor, Copilot, ChatGPT, internal Claude API
+apps).</li>
+<li>Capture <em>enough downstream signal</em> to distinguish &quot;AI output
+landed in something shipped&quot; from &quot;AI output was generated and
+abandoned.&quot;</li>
+<li>Make the per-event payload small, the schema stable, and the privacy
+posture explicit.</li>
+<li>Expose the data via an MCP server so report-generators (skilldrop&#39;s
+<code>ai-usage-report</code>, dashboards, ad-hoc queries) can consume
+it.</li>
+</ul>
+<h2 id="non-goals">Non-goals</h2>
+<ul>
+<li><strong>Not</strong> an AI grading system. The data surfaces
+patterns; humans interpret them.</li>
+<li><strong>Not</strong> real-time content inspection. We log metadata;
+the prompt and output text never leave the user&#39;s device.</li>
+<li><strong>Not</strong> a replacement for IDE-level telemetry the
+vendor already collects (GitHub for Copilot, Anthropic for Claude Code).
+This is a <em>unified</em> layer across tools.</li>
+<li><strong>Not</strong> a productivity-measurement system. Volume
+metrics are <em>adoption</em> signals, not output-quality signals.</li>
+</ul>
+<h2 id="event-schema-the-contract">Event schema (the contract)</h2>
+<p>The schema is the load-bearing piece — the report skill consumes it,
+the MCP server emits it, the IDEs / tools populate it. Keep it
+stable.</p>
+<h3 id="required-fields">Required fields</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;timestamp&quot;</span><span class="fu">:</span> <span class="st">&quot;2026-05-21T14:32:11Z&quot;</span><span class="fu">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;user&quot;</span><span class="fu">:</span> <span class="st">&quot;alice@acme.com&quot;</span><span class="fu">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;tool&quot;</span><span class="fu">:</span> <span class="st">&quot;claude-code&quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>timestamp</code></td>
+<td>ISO 8601</td>
+<td>UTC, second precision is enough</td>
+</tr>
+<tr>
+<td><code>user</code></td>
+<td>string</td>
+<td>Stable identifier; email or employee ID. Hash if the org doesn&#39;t
+want raw emails in storage.</td>
+</tr>
+<tr>
+<td><code>tool</code></td>
+<td>string</td>
+<td><code>claude-code</code>, <code>cursor</code>, <code>copilot</code>,
+<code>chatgpt</code>, <code>internal-app:&lt;name&gt;</code>, or a skill
+name</td>
+</tr>
+</tbody>
+</table>
+<h3 id="recommended-fields-ship-these-unless-theres-a-reason-not-to">Recommended
+fields (ship these unless there&#39;s a reason not to)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>session_id</code></td>
+<td>string</td>
+<td>Groups events into sessions (a single Claude Code conversation, a
+Cursor edit session, etc.)</td>
+</tr>
+<tr>
+<td><code>output_consumed</code></td>
+<td>bool</td>
+<td>See &quot;Classification heuristics&quot; below</td>
+</tr>
+<tr>
+<td><code>consumed_at</code></td>
+<td>ISO 8601</td>
+<td>When the output landed in a shipped artifact (commit, PR, doc)</td>
+</tr>
+<tr>
+<td><code>output_size</code></td>
+<td>int</td>
+<td>Tokens or chars</td>
+</tr>
+<tr>
+<td><code>prompt_size</code></td>
+<td>int</td>
+<td>Tokens or chars (the text itself is <strong>not</strong> sent)</td>
+</tr>
+<tr>
+<td><code>outcome</code></td>
+<td>enum: <code>success</code> / <code>error</code> /
+<code>cancelled</code></td>
+<td>Filter for errors</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fields-explicitly-excluded">Fields explicitly excluded</h3>
+<ul>
+<li>The prompt text</li>
+<li>The output text</li>
+<li>File paths beyond the repo level</li>
+<li>Any customer data referenced in the prompt</li>
+</ul>
+<p>These never leave the device. If your collector needs them
+transiently to compute consumption (e.g. diff matching), do it locally
+and ship only the boolean.</p>
+<h2 id="additional-metrics-worth-tracking-gap-analysis-on-v1-schema">Additional
+metrics worth tracking (gap analysis on v1 schema)</h2>
+<p>The v1 schema above is the <em>minimum</em> to produce a useful
+adoption report. The fields below significantly expand what questions
+the data can answer. Add them when you can populate them honestly —
+partial fields (some events have them, others don&#39;t) are fine as long as
+downstream reports degrade gracefully.</p>
+<h3 id="cost--model">Cost &amp; model</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>What it unlocks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>model</code></td>
+<td>string</td>
+<td>Per-model effectiveness comparison (Opus vs Sonnet vs Haiku, Claude
+vs GPT-4 vs Copilot). Without this, you can&#39;t answer &quot;is the team using
+the right model for the task?&quot;</td>
+</tr>
+<tr>
+<td><code>provider</code></td>
+<td>enum: <code>anthropic</code> / <code>openai</code> /
+<code>github</code> / <code>cursor</code> / etc.</td>
+<td>Multi-vendor cost rollups</td>
+</tr>
+<tr>
+<td><code>tokens_input</code> / <code>tokens_output</code></td>
+<td>int</td>
+<td>Cost calculation; also a proxy for prompt depth</td>
+</tr>
+<tr>
+<td><code>cost_usd</code></td>
+<td>float</td>
+<td>Direct cost per invocation (pre-computed if the vendor exposes it;
+otherwise derive from token counts × model price)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why this is the biggest gap in v1.</strong> Without
+<code>model</code>, every effectiveness number is averaged across
+whatever the user happens to be running. A team migrating from Sonnet to
+Opus looks identical to a team using both arbitrarily.</p>
+<h3 id="engagement-depth">Engagement depth</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>What it unlocks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tool_call_count</code></td>
+<td>int</td>
+<td>For agentic tools (Claude Code, Cursor agents), the number of
+internal tool calls (Bash, Read, Edit, etc.) inside one invocation.
+Distinguishes &quot;one-shot Q&amp;A&quot; from &quot;deep agent loop.&quot;</td>
+</tr>
+<tr>
+<td><code>iteration_count</code></td>
+<td>int</td>
+<td>Turns within the session before the user moved on</td>
+</tr>
+<tr>
+<td><code>regenerations</code></td>
+<td>int</td>
+<td>Explicit &quot;try again&quot; actions (separate from natural follow-up
+prompts)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why this matters.</strong> The current
+<code>single_shot_rate</code> metric only counts session length, not
+depth. A 1-event session with 30 internal tool calls is very different
+from a 1-event session with one tool call.</p>
+<h3 id="output-quality-beyond-binary-consumed">Output quality (beyond
+binary consumed)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>What it unlocks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>output_edit_distance</code></td>
+<td>int or float</td>
+<td>Token-level edit distance between the AI output and what actually
+shipped. Captures &quot;kept but heavily rewritten&quot; — a 5% edit-distance ship
+is very different from a 90% edit-distance &quot;I rewrote it all&quot; ship.</td>
+</tr>
+<tr>
+<td><code>output_retention_days</code></td>
+<td>int</td>
+<td>Was the AI&#39;s contribution still in the codebase N days later?
+Computed by a periodic sweep.</td>
+</tr>
+<tr>
+<td><code>regeneration_followed</code></td>
+<td>bool</td>
+<td>Did the user regenerate immediately after this invocation? If yes,
+this output was implicitly judged insufficient.</td>
+</tr>
+<tr>
+<td><code>output_consumed_source</code></td>
+<td>enum: <code>diff-attribution</code> / <code>accept-event</code> /
+<code>self-reported</code></td>
+<td>Which heuristic populated <code>output_consumed</code>. Same metric
+can mean very different things by source — surface it.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="latency--ux">Latency &amp; UX</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>What it unlocks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>latency_ms</code></td>
+<td>int</td>
+<td>Total wait time. Slow AI isn&#39;t useful even if outputs are good.</td>
+</tr>
+<tr>
+<td><code>time_to_first_token_ms</code></td>
+<td>int</td>
+<td>Streaming UX signal</td>
+</tr>
+<tr>
+<td><code>interrupted</code></td>
+<td>bool</td>
+<td>User cancelled mid-response (different from
+<code>outcome: cancelled</code> which is API-level)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="errors--friction">Errors &amp; friction</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>What it unlocks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>error_type</code></td>
+<td>enum: <code>rate_limit</code> / <code>safety_filter</code> /
+<code>tool_error</code> / <code>network</code> / <code>quota</code></td>
+<td>Diagnose adoption blockers — a rash of <code>rate_limit</code>
+errors means the team&#39;s hitting plan caps</td>
+</tr>
+<tr>
+<td><code>permission_prompts_count</code></td>
+<td>int</td>
+<td>Claude-Code-specific friction proxy. High counts = users getting
+interrupted frequently.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="context">Context</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>What it unlocks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>task_type</code></td>
+<td>enum: <code>bug</code> / <code>feature</code> /
+<code>refactor</code> / <code>docs</code> / <code>test</code> /
+<code>exploration</code></td>
+<td>Answer &quot;what is AI good at vs bad at?&quot; Either self-tagged by the
+user, inferred from prompt heuristics, or backfilled from commit message
+keywords.</td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td>string</td>
+<td>Python / TS / Go / etc. — different languages show very different AI
+effectiveness</td>
+</tr>
+<tr>
+<td><code>repo</code></td>
+<td>string</td>
+<td>Per-codebase adoption views; useful for orgs with many repos</td>
+</tr>
+</tbody>
+</table>
+<h3 id="downstream-outcome-the-big-one">Downstream outcome (the big
+one)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>What it unlocks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pr_id</code> / <code>commit_sha</code></td>
+<td>string</td>
+<td>Linkage from the AI invocation to the artifact it became part
+of</td>
+</tr>
+<tr>
+<td><code>pr_merged</code></td>
+<td>bool</td>
+<td>Did the AI-assisted PR actually ship?</td>
+</tr>
+<tr>
+<td><code>pr_review_iterations</code></td>
+<td>int</td>
+<td>How many review rounds before merge? High counts on AI-assisted code
+= &quot;AI got us 80% but reviewers had to do real work.&quot;</td>
+</tr>
+<tr>
+<td><code>tests_passed_on_ai_diff</code></td>
+<td>bool</td>
+<td>At merge time, did CI pass on the AI-touched diff?</td>
+</tr>
+<tr>
+<td><code>reverted_within_n_days</code></td>
+<td>bool</td>
+<td>Did the AI-touched code get reverted within 30 days?
+<strong>Strongest negative outcome signal</strong> — a high revert rate
+means the AI is shipping plausible code that doesn&#39;t survive.</td>
+</tr>
+<tr>
+<td><code>bugs_filed_against_ai_change</code></td>
+<td>int</td>
+<td>Bugs filed against files touched by AI-assisted commits within N
+days</td>
+</tr>
+</tbody>
+</table>
+<p><strong>These are the metrics that turn adoption tracking into
+outcome tracking.</strong> v1 of the schema answers &quot;are people using
+AI?&quot; — these fields answer &quot;is AI actually helping the org ship better
+software?&quot; They require a backfill daemon that watches the team&#39;s
+PR/issue tracker, not just IDE events.</p>
+<h3 id="implementing-additional-fields">Implementing additional
+fields</h3>
+<p>The collector and report can both handle a growing schema
+gracefully:</p>
+<ul>
+<li><strong>Collector side</strong>: every additional field is optional.
+If a particular vendor or tool can&#39;t populate it, the field is absent.
+Don&#39;t reject events for missing optional fields.</li>
+<li><strong>Storage side</strong>: SQLite/Postgres accept NULL columns.
+Don&#39;t make additional fields NOT NULL.</li>
+<li><strong>Report side</strong>: the report skill already follows the
+&quot;omit columns with insufficient signal&quot; pattern. Extending it to handle
+the new fields is mostly adding aggregation logic, not changing the
+contract.</li>
+</ul>
+<h3 id="what-not-to-track">What NOT to track</h3>
+<p>Resist the urge to capture:</p>
+<ul>
+<li>❌ <strong>Sentiment / &quot;did you find this helpful?&quot; inline
+buttons</strong> — high reporting burden, low signal, creates survey
+fatigue</li>
+<li>❌ <strong>Keystroke- or screen-level activity</strong> —
+surveillance-tier, will be opposed</li>
+<li>❌ <strong>The actual prompt text &quot;for context&quot;</strong> —
+privacy-violating; once it&#39;s in the store, you&#39;re responsible for
+everything in there</li>
+<li>❌ <strong>&quot;Productivity scores&quot; combining multiple metrics into one
+number</strong> — fake precision, hides the signal you actually
+need</li>
+</ul>
+<h2 id="classification-heuristics--populating-output_consumed">Classification
+heuristics — populating <code>output_consumed</code></h2>
+<p>This is the hard problem. Three approaches, ranked.</p>
+<h3 id="1-diff-based-attribution-best-signal">1. Diff-based attribution
+(best signal)</h3>
+<ul>
+<li>After each AI invocation, the collector records a fingerprint of the
+AI output (hash of normalized tokens, or a short n-gram set).</li>
+<li>A daemon watches <code>git</code> activity. When the user commits,
+the collector compares each AI output fingerprint against the committed
+diff.</li>
+<li>If overlap &gt; threshold (say 30% of AI output tokens appear in the
+commit, or fuzzy match passes), mark <code>output_consumed: true</code>
+and record <code>consumed_at</code>.</li>
+</ul>
+<p><strong>Pros:</strong> High signal, hard to game.
+<strong>Cons:</strong> Requires git daemon, fingerprint storage,
+fuzzy-match tuning. Doesn&#39;t catch outputs that landed in non-git
+artifacts (Notion, Slack, design docs).</p>
+<h3 id="2-explicit-acceptreject-events-good-signal">2. Explicit
+accept/reject events (good signal)</h3>
+<ul>
+<li>The IDE/tool emits &quot;user accepted the suggestion&quot; / &quot;user rejected
+it&quot; events alongside invocations.</li>
+<li><code>output_consumed</code> = accept event recorded within N
+minutes of the invocation.</li>
+</ul>
+<p><strong>Pros:</strong> Direct, low-overhead. <strong>Cons:</strong>
+Accepting and then deleting still counts as consumed. Not all tools emit
+these events.</p>
+<h3 id="3-self-reported-weakest-signal">3. Self-reported (weakest
+signal)</h3>
+<ul>
+<li>The user is prompted occasionally: &quot;did you use the output of your
+last AI invocation?&quot;</li>
+<li>Stored as
+<code>output_consumed_self_reported: true/false</code>.</li>
+</ul>
+<p><strong>Pros:</strong> Cheap to implement. <strong>Cons:</strong>
+High reporting burden. Easy to game. Most users will skip.</p>
+<h3 id="recommendation">Recommendation</h3>
+<p>Ship (1) for git-tracked artifacts. Augment with (2) for IDE-level
+events when the vendor supports it. Treat (3) as a stop-gap for tools
+that lack instrumentation, and flag self-reported events distinctly in
+the schema (<code>source: &quot;self-reported&quot;</code>).</p>
+<p>The report skill&#39;s <code>output_consumed</code> rate should be read
+with awareness of <em>which heuristic populated it</em>. If you&#39;re
+running a mix, surface the breakdown.</p>
+<h2 id="mcp-server-tool-surface">MCP server tool surface</h2>
+<p>Minimum viable tool set the server exposes:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log_event</code></td>
+<td>Append a single event to storage. Called by IDE collectors.</td>
+</tr>
+<tr>
+<td><code>query_events</code></td>
+<td>Read events with filters (<code>user</code>, <code>tool</code>,
+<code>from</code>, <code>to</code>). Returns JSONL.</td>
+</tr>
+<tr>
+<td><code>export_csv</code></td>
+<td>Same as <code>query_events</code> but emits CSV — what feeds
+<code>ai-usage-report</code>.</td>
+</tr>
+<tr>
+<td><code>health</code></td>
+<td>Liveness; row counts; signal-availability summary.</td>
+</tr>
+</tbody>
+</table>
+<p>Optional but useful:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>register_consumption</code></td>
+<td>Backfill an <code>output_consumed</code> / <code>consumed_at</code>
+event from a diff daemon.</td>
+</tr>
+<tr>
+<td><code>redact_user</code></td>
+<td>Right-to-be-forgotten: delete all events for a user.</td>
+</tr>
+<tr>
+<td><code>purge_older_than</code></td>
+<td>Retention policy enforcement.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="storage">Storage</h2>
+<p>Three viable choices, depending on scale:</p>
+<table>
+<thead>
+<tr>
+<th>Scale</th>
+<th>Choice</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&lt; 1M events</td>
+<td>SQLite</td>
+<td>Single file, trivial backup, query with SQL. Good for a team of &lt;
+50.</td>
+</tr>
+<tr>
+<td>1M – 100M</td>
+<td>Postgres</td>
+<td>Indexable on <code>user</code> + <code>timestamp</code>, supports
+retention policies.</td>
+</tr>
+<tr>
+<td>&gt; 100M</td>
+<td>ClickHouse / DuckDB</td>
+<td>Columnar; common for telemetry workloads.</td>
+</tr>
+</tbody>
+</table>
+<p>Default to SQLite. Migrate when you actually need to. Don&#39;t pick
+ClickHouse for 200 events/day.</p>
+<h2 id="privacy-posture-the-part-that-gets-you-in-trouble-if-you-skip">Privacy
+posture (the part that gets you in trouble if you skip)</h2>
+<ul>
+<li><strong>Schema declared up-front</strong>: every field captured is
+in this doc. No silent additions.</li>
+<li><strong>Prompts and outputs never leave the device.</strong> Even
+hashing is local.</li>
+<li><strong>Per-user opt-out</strong> must be supported. Users who
+disable telemetry produce zero events; downstream reports show them as
+<code>inactive</code>, not absent.</li>
+<li><strong>Retention</strong>: default 90 days. Aggregated rollups can
+be kept longer; raw per-event data should not.</li>
+<li><strong>Access control</strong>: the <code>query_events</code>
+endpoint requires auth. Per-user-named exports require manager-tier
+role; team-rollup exports require a lower bar.</li>
+<li><strong>The data is for adoption insight, not performance
+review.</strong> This boundary is policy, not technology — write it
+down, surface it in onboarding, and revisit if managers start asking for
+it as performance data.</li>
+<li><strong>Audit</strong>: every <code>query_events</code> and
+<code>export_csv</code> call is itself logged (who, when, what filter).
+The reviewer should expect to be reviewable.</li>
+</ul>
+<h2 id="open-questions--risks">Open questions / risks</h2>
+<ul>
+<li><strong>Cross-tool identity.</strong> If Alice is
+<code>alice@acme.com</code> in Claude Code and <code>alice-acme</code>
+in Cursor, the report shows two users. Need an identity-mapping table or
+a canonical resolver.</li>
+<li><strong>Multi-IDE sessions.</strong> A single task may span Claude
+Code + manual Cursor edits. <code>session_id</code> becomes blurry
+across tools. Probably accept it and don&#39;t try to unify.</li>
+<li><strong>What counts as a shipped artifact?</strong> Git is easy;
+Slack, Notion, Figma, decks are not. Either build connectors per surface
+or accept that effectiveness rates are biased toward git-shippable
+work.</li>
+<li><strong>Goodhart&#39;s law.</strong> Once teams know
+<code>output_consumed</code> is measured, expect adversarial behavior —
+pasting AI output into trivial commits to game the metric. The skill
+flags single-shot + low-effectiveness as a starting place for
+conversation specifically because the metric will get gamed.</li>
+<li><strong>Vendor lock vs unified layer.</strong> Anthropic and GitHub
+each have first-party telemetry. Reconcile this layer against vendor
+exports rather than duplicating their work.</li>
+</ul>
+<h2 id="implementation-guide--what-it-takes-to-actually-build-this">Implementation
+guide — what it takes to actually build this</h2>
+<p>The earlier draft of this doc had a &quot;2-week build&quot; milestone. Be
+honest: 2 weeks is enough for the <em>core server + one collector + stub
+data</em>. A version with multiple collectors, real diff attribution,
+identity resolution, and access control is <strong>4–8 weeks of focused
+work</strong> for one engineer, longer if parts of it are part-time.
+This section breaks down what&#39;s actually involved.</p>
+<h3 id="tech-stack-recommendation">Tech-stack recommendation</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Choice</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Language</td>
+<td><strong>Python 3.11+</strong></td>
+<td>Matches the official MCP Python SDK; easy to share schema code with
+the skilldrop report skill</td>
+</tr>
+<tr>
+<td>MCP framework</td>
+<td><strong><code>mcp</code> (Anthropic SDK)</strong></td>
+<td>Official, supports <code>stdio</code> and HTTP transports.
+Alternative: <code>@modelcontextprotocol/sdk</code> in TypeScript if
+your stack is JS.</td>
+</tr>
+<tr>
+<td>Schema</td>
+<td><strong><code>pydantic</code> v2</strong></td>
+<td>Models double as runtime validation + JSON schema export for
+documentation</td>
+</tr>
+<tr>
+<td>Storage (start)</td>
+<td><strong>SQLite (stdlib <code>sqlite3</code>)</strong></td>
+<td>Zero-ops; one file; queryable with any SQL tool</td>
+</tr>
+<tr>
+<td>Storage (grow)</td>
+<td>Postgres or DuckDB</td>
+<td>Migrate when SQLite locking becomes a bottleneck — usually &gt; 1M
+events</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td><strong>Bearer tokens</strong> loaded from env</td>
+<td>Don&#39;t roll your own session management for an internal tool</td>
+</tr>
+<tr>
+<td>Tests</td>
+<td><strong><code>pytest</code></strong> +
+<code>pytest-asyncio</code></td>
+<td>The MCP SDK is async</td>
+</tr>
+<tr>
+<td>Deploy</td>
+<td><strong>Single container</strong> behind your existing reverse
+proxy</td>
+<td>Don&#39;t build a Kubernetes operator for ~10 req/sec</td>
+</tr>
+</tbody>
+</table>
+<h3 id="project-scaffold">Project scaffold</h3>
+<pre><code>ai-usage-telemetry/
+├── README.md
+├── pyproject.toml
+├── docs/
+│   ├── schema.md            # Mirror of &quot;Event schema&quot; section
+│   ├── privacy.md           # Mirror of &quot;Privacy posture&quot; section
+│   └── operators.md         # How to deploy, back up, restore
+├── src/ai_usage_telemetry/
+│   ├── __init__.py
+│   ├── server.py            # MCP server entrypoint
+│   ├── schema.py            # Pydantic models for events
+│   ├── store/
+│   │   ├── sqlite.py        # CRUD + migration runner
+│   │   └── migrations/
+│   │       └── 001_init.sql
+│   ├── tools/
+│   │   ├── log_event.py
+│   │   ├── query_events.py
+│   │   ├── export_csv.py
+│   │   ├── register_consumption.py
+│   │   └── redact_user.py
+│   ├── collectors/
+│   │   ├── claude_code/     # Hook scripts + setup docs
+│   │   ├── cursor/          # Extension shim
+│   │   ├── copilot/         # GitHub export ingester
+│   │   └── git_diff_daemon.py
+│   ├── identity.py          # Canonical-ID resolver
+│   ├── auth.py              # Bearer-token verification
+│   └── audit.py             # Audit logger for query/export calls
+└── tests/
+    ├── test_schema.py
+    ├── test_store.py
+    ├── test_tools.py
+    ├── test_diff_matcher.py
+    └── fixtures/             # Synthetic events, fake commits</code></pre>
+<h3 id="pyprojecttoml-minimum"><code>pyproject.toml</code> minimum</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[project]</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">name</span> <span class="op">=</span> <span class="st">&quot;ai-usage-telemetry&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dt">version</span> <span class="op">=</span> <span class="st">&quot;0.1.0&quot;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="dt">requires-python</span> <span class="op">=</span> <span class="st">&quot;&gt;=3.11&quot;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="dt">dependencies</span> <span class="op">=</span> <span class="op">[</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;mcp&gt;=1.0.0&quot;</span><span class="op">,</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;pydantic&gt;=2.5&quot;</span><span class="op">,</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;click&gt;=8.1&quot;</span><span class="op">,</span>        <span class="co"># For the diff-daemon CLI</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="kw">[project.optional-dependencies]</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="dt">dev</span> <span class="op">=</span> <span class="op">[</span><span class="st">&quot;pytest&gt;=8&quot;</span><span class="op">,</span> <span class="st">&quot;pytest-asyncio&gt;=0.23&quot;</span><span class="op">,</span> <span class="st">&quot;ruff&gt;=0.5&quot;</span><span class="op">]</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="kw">[project.scripts]</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="dt">ai-telemetry-server</span> <span class="op">=</span> <span class="st">&quot;ai_usage_telemetry.server:main&quot;</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="dt">ai-telemetry-daemon</span> <span class="op">=</span> <span class="st">&quot;ai_usage_telemetry.collectors.git_diff_daemon:main&quot;</span></span></code></pre></div>
+<h3 id="schema-in-code">Schema in code</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># src/ai_usage_telemetry/schema.py</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel, Field</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Literal, Optional</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> UsageEvent(BaseModel):</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Required</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    timestamp: datetime</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    user: <span class="bu">str</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    tool: <span class="bu">str</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Recommended</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    session_id: Optional[<span class="bu">str</span>] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    output_consumed: Optional[<span class="bu">bool</span>] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    consumed_at: Optional[datetime] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    output_size: Optional[<span class="bu">int</span>] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    prompt_size: Optional[<span class="bu">int</span>] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    outcome: Optional[Literal[<span class="st">&quot;success&quot;</span>, <span class="st">&quot;error&quot;</span>, <span class="st">&quot;cancelled&quot;</span>]] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cost &amp; model</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    model: Optional[<span class="bu">str</span>] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    provider: Optional[<span class="bu">str</span>] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    tokens_input: Optional[<span class="bu">int</span>] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    tokens_output: Optional[<span class="bu">int</span>] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    cost_usd: Optional[<span class="bu">float</span>] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Engagement depth</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    tool_call_count: Optional[<span class="bu">int</span>] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    iteration_count: Optional[<span class="bu">int</span>] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    regenerations: Optional[<span class="bu">int</span>] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ... (additional fields from the gap analysis)</span></span></code></pre></div>
+<h3 id="sqlite-schema">SQLite schema</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- migrations/001_init.sql</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="kw">events</span> (</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">timestamp</span> TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,           <span class="co">-- ISO 8601 UTC</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">user</span> TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    tool TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    session_id TEXT,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    output_consumed <span class="dt">INTEGER</span>,           <span class="co">-- 0/1/NULL</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    consumed_at TEXT,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    outcome TEXT,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    model TEXT,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    provider TEXT,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    tokens_input <span class="dt">INTEGER</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    tokens_output <span class="dt">INTEGER</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- ... rest of columns</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    raw_json TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>             <span class="co">-- Full event for forward-compat</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> idx_events_user_ts <span class="kw">ON</span> <span class="kw">events</span>(<span class="fu">user</span>, <span class="dt">timestamp</span>);</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> idx_events_tool_ts <span class="kw">ON</span> <span class="kw">events</span>(tool, <span class="dt">timestamp</span>);</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> idx_events_session  <span class="kw">ON</span> <span class="kw">events</span>(session_id);</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> audit_log (</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">id</span> <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="dt">timestamp</span> TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    caller TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,              <span class="co">-- who called</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    tool TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,                <span class="co">-- query_events, export_csv, etc.</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    args_json TEXT,                    <span class="co">-- redacted; never includes raw event bodies</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    result_count <span class="dt">INTEGER</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> identity_map (</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    canonical_user TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    alias_user TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">source</span> TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,              <span class="co">-- which tool emits this alias</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (alias_user, <span class="kw">source</span>)</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
+<p>Storing the full event as <code>raw_json</code> is a forward-compat
+trick — schema changes don&#39;t lose data. The structured columns are
+denormalized for query speed.</p>
+<h3 id="mcp-server-skeleton">MCP server skeleton</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># src/ai_usage_telemetry/server.py</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mcp.server <span class="im">import</span> Server</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mcp.server.stdio <span class="im">import</span> stdio_server</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> .schema <span class="im">import</span> UsageEvent</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> .store.sqlite <span class="im">import</span> Store</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> .auth <span class="im">import</span> require_role</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Server(<span class="st">&quot;ai-usage-telemetry&quot;</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>store <span class="op">=</span> Store(<span class="st">&quot;/var/lib/ai-telemetry/events.db&quot;</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="at">@app.tool</span>()</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> log_event(event: <span class="bu">dict</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Append a single usage event to the store. Called by IDE collectors.&quot;&quot;&quot;</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    validated <span class="op">=</span> UsageEvent.model_validate(event)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    store.insert(validated)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">&quot;ok&quot;</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="at">@app.tool</span>()</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="at">@require_role</span>(<span class="st">&quot;reader&quot;</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> query_events(</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    user: <span class="bu">str</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    tool: <span class="bu">str</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    since: <span class="bu">str</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    until: <span class="bu">str</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    limit: <span class="bu">int</span> <span class="op">=</span> <span class="dv">1000</span>,</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">dict</span>]:</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Read events with filters. Returns JSONL-ready dicts.&quot;&quot;&quot;</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> store.query(user<span class="op">=</span>user, tool<span class="op">=</span>tool, since<span class="op">=</span>since, until<span class="op">=</span>until, limit<span class="op">=</span>limit)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="at">@app.tool</span>()</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="at">@require_role</span>(<span class="st">&quot;reader&quot;</span>)</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> export_csv(</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    since: <span class="bu">str</span>,</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    until: <span class="bu">str</span>,</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    columns: <span class="bu">list</span>[<span class="bu">str</span>] <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Emit a CSV ready for the skilldrop ai-usage-report skill.&quot;&quot;&quot;</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> store.export_csv(since<span class="op">=</span>since, until<span class="op">=</span>until, columns<span class="op">=</span>columns)</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> main():</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> asyncio</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>    asyncio.run(stdio_server(app))</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&quot;__main__&quot;</span>:</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>    main()</span></code></pre></div>
+<p>The <code>@require_role</code> decorator reads a bearer token from
+the MCP request context and gates access. Bearer tokens are issued
+out-of-band (manual; a few users for an internal tool).</p>
+<h3 id="collectors--the-messy-part">Collectors — the messy part</h3>
+<p>Collectors are the most varied piece. Each tool needs its own
+approach. Honest survey:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Realistic collection path</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Claude Code</strong></td>
+<td>Hooks (<code>Stop</code>, <code>PreToolUse</code>,
+<code>PostToolUse</code>) in <code>.claude/settings.json</code> calling
+a shell script that POSTs to the MCP server</td>
+<td>Low — ~1 day</td>
+</tr>
+<tr>
+<td><strong>Cursor</strong></td>
+<td>Custom extension (<code>vscode-extension</code> style) that wraps
+the chat panel and emits events</td>
+<td>Medium — 3-5 days</td>
+</tr>
+<tr>
+<td><strong>GitHub Copilot</strong></td>
+<td>Vendor doesn&#39;t expose per-event hooks for IDE users; use GitHub&#39;s
+<em>Copilot usage</em> API for aggregated data instead</td>
+<td>Low for org-level; impossible for per-event</td>
+</tr>
+<tr>
+<td><strong>Anthropic API direct</strong></td>
+<td>Wrap the SDK in your org with a thin layer that posts events
+alongside calls</td>
+<td>Medium — 2-3 days</td>
+</tr>
+<tr>
+<td><strong>ChatGPT (web)</strong></td>
+<td>No reasonable collection path; user-facing — accept it as
+unobservable</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Claude Code hook example</strong>
+(collectors/claude_code/setup.md):</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="er">//</span> <span class="er">.claude/settings.json</span> <span class="er">on</span> <span class="er">the</span> <span class="er">developer&#39;s</span> <span class="er">machine</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;hooks&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;Stop&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">{</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;matcher&quot;</span><span class="fu">:</span> <span class="st">&quot;*&quot;</span><span class="fu">,</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;/usr/local/bin/ai-telemetry-emit claude-code stop&quot;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>The <code>ai-telemetry-emit</code> script reads env vars Claude Code
+exposes (<code>CLAUDE_SESSION_ID</code>, etc.) and POSTs a minimal event
+to the local MCP server.</p>
+<p><strong>Cursor extension</strong> is heavier — you need to publish
+(or sideload) a VS Code-style extension that subscribes to chat-panel
+lifecycle events. The official Cursor extension API is the constraint
+here.</p>
+<h3 id="diff-attribution-daemon--the-hard-part">Diff-attribution daemon
+— the hard part</h3>
+<p>This is what makes <code>output_consumed</code> meaningful instead of
+self-reported. Algorithm:</p>
+<pre><code>1. Subscribe to local git commits (via post-commit hook, fswatch on .git/refs, or polling).
+2. For each new commit on a tracked repo:
+   a. Get the diff (git diff &lt;prev&gt;..&lt;commit&gt;)
+   b. Pull recent fingerprints from the store (last 24 hours, this user)
+   c. For each fingerprint, compute overlap with the diff:
+      - Normalize whitespace, strip comments
+      - Token-set Jaccard or fuzzy n-gram match
+   d. If overlap &gt; threshold (start with 30%):
+      - Call register_consumption(event_id, commit_sha, consumed_at=now)
+3. Periodic backfill: for any fingerprint older than 24h, mark output_consumed=false (it didn&#39;t ship).</code></pre>
+<p><strong>Subtleties that bite you:</strong></p>
+<ul>
+<li>Reformatters (prettier, black) destroy literal matches → use
+AST-level fingerprints for code, not raw text</li>
+<li>Squash-merges erase the per-commit history → also watch PR merge
+events</li>
+<li>AI-generated code is often &quot;edited and adapted&quot; → 30% overlap
+threshold catches partial use but creates false positives; tune
+per-language</li>
+</ul>
+<p>This piece alone is 1–2 weeks of work. It&#39;s the difference between
+&quot;we tracked AI usage&quot; and &quot;we tracked AI value.&quot;</p>
+<h3 id="identity-resolution">Identity resolution</h3>
+<p>Mapping different per-tool IDs to one canonical person:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Approach: explicit mapping table, no inference</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="at">@app.tool</span>()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="at">@require_role</span>(<span class="st">&quot;admin&quot;</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> map_identity(canonical: <span class="bu">str</span>, alias: <span class="bu">str</span>, source: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Register that &lt;alias&gt; from &lt;source&gt; resolves to &lt;canonical&gt;.&quot;&quot;&quot;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    store.add_identity_mapping(canonical, alias, source)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">&quot;ok&quot;</span></span></code></pre></div>
+<p>At query time, all <code>user</code> values are resolved through the
+table before grouping. Aliases without an explicit mapping are treated
+as their own users (better than wrong attribution).</p>
+<h3 id="privacy-controls--implementation-specifics">Privacy controls —
+implementation specifics</h3>
+<ul>
+<li><strong>Opt-out</strong>: ship a <code>disable.sh</code> script that
+creates a marker file (<code>~/.ai-telemetry-disabled</code>). The hook
+script reads this and short-circuits before emitting.</li>
+<li><strong>Right to be forgotten</strong>: implement
+<code>redact_user(user)</code> that deletes all events for that user.
+Test it; ensure foreign keys (audit log) don&#39;t keep stale
+references.</li>
+<li><strong>Retention</strong>: cron-based
+<code>purge_older_than(days=90)</code> daily. Test the cron.</li>
+<li><strong>Audit immutability</strong>: audit_log inserts only; no
+UPDATE/DELETE in code. Periodic backup to write-once storage if your org
+needs it.</li>
+</ul>
+<h3 id="honest-phased-timeline">Honest phased timeline</h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Duration</th>
+<th>Deliverable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Schema + store + MCP server</strong></td>
+<td>Week 1</td>
+<td><code>log_event</code>, <code>query_events</code>,
+<code>export_csv</code> working against SQLite; integration test with
+synthetic data; one team member can POST events from a curl command</td>
+</tr>
+<tr>
+<td><strong>2. First collector (Claude Code)</strong></td>
+<td>Week 2</td>
+<td>Hook-based collector running on 1–2 dev machines; real events
+arriving in store; ai-usage-report skill consuming the CSV</td>
+</tr>
+<tr>
+<td><strong>3. Diff-attribution daemon (basic)</strong></td>
+<td>Week 3</td>
+<td>git post-commit hook → fingerprint match →
+<code>register_consumption</code> calls. Tuned for one language to
+start.</td>
+</tr>
+<tr>
+<td><strong>4. Second collector (Cursor or Anthropic API
+wrapper)</strong></td>
+<td>Week 4</td>
+<td>Whichever tool the team actually uses most after Claude Code</td>
+</tr>
+<tr>
+<td><strong>5. Identity resolution + access control</strong></td>
+<td>Week 5</td>
+<td>Mapping table, role-gated tools, audit log working</td>
+</tr>
+<tr>
+<td><strong>6. PR/commit outcome metrics</strong></td>
+<td>Week 6+</td>
+<td>Periodic sweep against the PR API to populate
+<code>pr_merged</code>, <code>reverted_within_n_days</code>, etc.</td>
+</tr>
+<tr>
+<td><strong>7. Privacy + operational hardening</strong></td>
+<td>Ongoing</td>
+<td>Opt-out script, retention cron, backups, on-call docs</td>
+</tr>
+</tbody>
+</table>
+<p>A team that wants to ship &quot;v1, all tools, all metrics&quot; in 2 weeks
+should expect to ship &quot;v1, one tool, half the metrics.&quot; Better to ship
+the half that works honestly.</p>
+<h3 id="common-failure-modes-read-before-starting">Common failure modes
+(read before starting)</h3>
+<ol type="1">
+<li><strong>You ship volume metrics first and nothing else.</strong>
+Volume is the cheap signal; people read it as effectiveness. Hold the
+effectiveness work in scope or accept that the project will get judged
+on the easy numbers.</li>
+<li><strong>You skip the diff-attribution daemon because it&#39;s
+hard.</strong> Then <code>output_consumed</code> is forever
+self-reported, and the effectiveness rate is decorative.</li>
+<li><strong>You add fields faster than you populate them.</strong> A
+schema with 25 optional fields where 3 are populated produces reports
+full of <code>—</code>. Limit additions to fields that have a real
+source.</li>
+<li><strong>You let access creep.</strong> Once two managers can query,
+eventually everyone will. Decide the access model upfront and enforce it
+in code, not policy.</li>
+<li><strong>You let one tool dominate.</strong> If 80% of your events
+are from Claude Code, the report becomes a Claude Code report. Diversify
+collection or scope the report to one tool explicitly.</li>
+</ol>
+<h3 id="what-to-ship-to-skilldrop-from-this-project">What to ship to
+skilldrop from this project</h3>
+<p>Nothing automatic. The seam between this project and skilldrop is the
+CSV that <code>export_csv</code> produces. Practical contract:</p>
+<ul>
+<li>The CSV columns are a subset of this doc&#39;s schema</li>
+<li>skilldrop&#39;s <code>templates/usage-event-schema.md</code> is the
+consumer-facing version of this contract</li>
+<li>When this doc&#39;s schema changes, update both files in the same PR
+(one in each repo) and bump the skilldrop skill&#39;s manifest version</li>
+</ul>
+<p>The two projects stay loosely coupled. Don&#39;t import this project&#39;s
+Python from skilldrop, or vice versa.</p>
+</body>
+</html>
