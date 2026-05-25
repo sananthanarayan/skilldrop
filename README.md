@@ -211,14 +211,6 @@ The skill parses `$ARGUMENTS` to figure out which Figma URL you mean and which a
 4. If your skill needs scripts, drop them in `scripts/` and reference them with a path relative to the skill folder — **avoid hard-coding `${CLAUDE_SKILL_DIR}` only**; show both paths so non–Claude-Code users aren't stuck.
 5. Add an entry to the **Skills in this repo** table above and to the **Installing dependencies** table.
 
-## Contributing
-
-PRs welcome — especially for new architect-flavoured skills (BPMN, threat-model first drafts, Lucidchart export, draw.io XML, capacity / napkin-math estimation, etc.). Each new skill should ship with at least one worked example and a populated `manifest.json`.
-
-**Workflow in one sentence:** fork or branch off `main` → push to a feature branch → open a PR → a maintainer reviews, approves, and merges. **Contributors:** no direct commits to `main`; only maintainers can approve and merge. **Maintainers** default to the same workflow, with a documented [bypass](CONTRIBUTING.md#maintainer-bypass-when-direct-commits-are-ok) for trivial / urgent changes. Maintainers are listed in [MAINTAINERS.md](MAINTAINERS.md).
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide — branching & merge policy, anatomy of a skill, voice & tone, the PR checklist, and rules for adding a new README section.
-
 ## License
 
 MIT — see [LICENSE](LICENSE).
