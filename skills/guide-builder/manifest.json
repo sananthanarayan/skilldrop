@@ -1,0 +1,9 @@
+{
+  "name": "guide-builder",
+  "version": "0.1.0",
+  "description": "Turn raw notes, specs, or design material into an easy-to-follow guide, auto-styled to the content — a setup/quickstart, a design walkthrough, or an API/event-schema reference.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["guide", "setup", "documentation", "api-reference", "onboarding", "walkthrough"]
+}

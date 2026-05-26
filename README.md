@@ -36,6 +36,7 @@ Each skill is a plain directory of `SKILL.md` + supporting files + `manifest.jso
 | [`adr-generator`](skills/adr-generator/SKILL.md) | Generate an Architecture Decision Record in MADR or Nygard format from a context-decision-consequences brief, with sensible numbering and filename. |
 | [`design-doc`](skills/design-doc/SKILL.md) | Generate a Google-style engineering design doc (problem → goals/non-goals → alternatives → proposal → risks → rollout) from a feature brief. |
 | [`runbook-generator`](skills/runbook-generator/SKILL.md) | Generate an operational runbook for a service — deploy/rollback, top 5 incident playbooks, SLOs, on-call escalation, dependencies. |
+| [`guide-builder`](skills/guide-builder/SKILL.md) | Turn raw notes or a spec into an easy-to-follow guide, auto-styled to the content: a setup/quickstart (prerequisites → steps → verify → troubleshooting), a design walkthrough (mental model → flow → key decisions → where the code lives), or an API/event-schema reference (typed contracts + example payloads + error catalog). Distinct from `runbook-generator` (SRE/on-call) and `design-doc` (proposal for review). |
 | [`tech-comparison-matrix`](skills/tech-comparison-matrix/SKILL.md) | Produce a weighted comparison matrix for a tech-selection question (e.g. "Postgres vs DynamoDB") with criteria, weights, scores, and a recommendation. |
 
 ### AI adoption & observability
