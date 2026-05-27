@@ -1,0 +1,12 @@
+{
+  "name": "sonar-review",
+  "version": "0.1.0",
+  "description": "Run a Sonar scan against just-changed code on the current branch and produce a structured compliance report — quality-gate verdict, then severity-tagged findings (blocker/critical/major/minor/info) with file:line, Sonar rule ID, category (bug/vulnerability/hotspot/code smell), why it matters, and concrete fix. Works against both SonarQube server (self-hosted) and SonarCloud (SaaS) — mode is detected from `sonar-project.properties`. Use before opening a PR, when CI shows a failed gate, or whenever the user asks 'is this Sonar-compliant?'.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": {
+    "required": ["SONAR_TOKEN"],
+    "optional": ["SONAR_HOST_URL"]
+  },
+  "tags": ["sonarqube", "sonarcloud", "sonar", "code-quality", "review", "quality-gate", "compliance", "security", "dev-workflow"]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "sonar-onboard",
+  "version": "0.1.0",
+  "description": "Scaffold a repo for Sonar compliance — supports both SonarQube server (self-hosted) and SonarCloud (SaaS); user picks at setup. Generates `sonar-project.properties` with language-correct paths, a CI workflow that runs the scanner on push and PR and fails on quality-gate failure, and a README snippet documenting the gate. One-shot setup. Use when the user says 'set up Sonar', 'add SonarQube to this repo', 'wire up SonarCloud', or 'set up the quality gate'.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": ["SONAR_HOST_URL"] },
+  "tags": ["sonarqube", "sonarcloud", "sonar", "code-quality", "ci", "quality-gate", "scaffold", "dev-workflow"]
+}
