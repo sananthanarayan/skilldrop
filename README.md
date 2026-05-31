@@ -167,6 +167,17 @@ Per-skill quick reference:
 
 For `figma-diagrams`, you also need a [Figma Personal Access Token](https://www.figma.com/developers/api#access-tokens) exported as the `FIGMA_TOKEN` env var.
 
+## Reviewer agents
+
+The [`agents/`](agents/) folder ships **portable reviewer personas** — single-file agents you delegate code and test review to, packaged in Claude Code subagent format (frontmatter + system prompt) but written so the body pastes into Cursor, Codex, Kiro, Continue, Cline, or Aider just as cleanly.
+
+| Agent | Reviews for | Question it answers |
+|---|---|---|
+| [`devils-advocate`](agents/devils-advocate.md) | Correctness — edge cases, broken assumptions, staff-engineer pushback, test gaps | "Will this break?" |
+| [`code-quality`](agents/code-quality.md) | Craft — naming, structure, duplication, complexity, readability | "Will the next engineer hate this?" |
+
+No tool auto-discovers a folder named `agents/`; it's the canonical source of truth. See [`agents/README.md`](agents/README.md) for where to copy each file in your tool — `.claude/agents/` for Claude Code, a custom mode for Cursor, an `AGENTS.md` section for Codex, a steering file or custom agent for Kiro.
+
 ## Skill Usage
 
 All skills are invoked in chat. Arguments are passed as plain text after the skill's trigger phrase (or via `$ARGUMENTS` when invoked as a slash command in Claude Code).
