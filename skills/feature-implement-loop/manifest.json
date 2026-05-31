@@ -1,0 +1,9 @@
+{
+  "name": "feature-implement-loop",
+  "version": "0.1.0",
+  "description": "Implement a feature or story so it ends up verified, not just generated. Takes a description + acceptance criteria, writes code and tests, then runs an adversarial review pass that hunts for gaps (broken edge cases, baked-in assumptions, uncovered acceptance criteria) and re-generates to close them — looping until the review is clean or a 3-round cap is hit. Use when handed a ticket/story/feature spec with acceptance criteria and the goal is shippable, self-checked code.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["dev-workflow", "implementation", "tdd", "acceptance-criteria", "adversarial", "self-correcting", "code-generation"]
+}
