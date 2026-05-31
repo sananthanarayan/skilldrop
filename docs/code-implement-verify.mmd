@@ -1,0 +1,17 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef input  fill:#FFF4E0,stroke:#E8A93B,stroke-width:2px,color:#7A4E00,font-weight:bold;
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    IN(["Feature / story<br/>description + acceptance criteria"]):::input
+    gC["Write and update<br/>code and tests"]:::gen
+    revC["Challenge the code"]:::review
+    gate{"Gaps found?"}:::gate
+    SHIP(["Feature ready<br/>to be shipped"]):::ship
+
+    IN --> gC --> revC --> gate
+    gate -- "yes (up to 3 rounds)" --> gC
+    gate == "no" ==> SHIP

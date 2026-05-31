@@ -6,6 +6,57 @@ Originally scoped to solution architects, now broadly useful to PMs, founders, c
 
 Each skill is a plain directory of `SKILL.md` + supporting files + `manifest.json`. Works in **Claude Code** natively, and ports cleanly to **Cursor**, **Kiro**, **Continue**, **Cline**, **Aider**, and any other AI coding tool that accepts custom instructions or rules.
 
+## How skilldrop works
+
+skilldrop runs two value streams, and **nothing comes out of either until it passes a review gate.** Both diagrams render on GitHub; the Mermaid sources live in [`docs/`](docs/) for easy re-rendering.
+
+### Knowledge-work pipeline
+
+Raw input becomes a stakeholder-ready artifact — and loops back through review until it's approved.
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef input  fill:#FFF4E0,stroke:#E8A93B,stroke-width:2px,color:#7A4E00,font-weight:bold;
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    IN(["Raw input<br/>notes · ticket · transcript"]):::input
+    brief["Structure the brief"]:::gen
+    gens["Draft the artifact"]:::gen
+    crit["Review and refine"]:::review
+    ART(["Stakeholder-ready<br/>artifact"]):::ship
+
+    IN --> brief --> gens --> crit
+    crit -- "revise" --> brief
+    crit == "approved" ==> ART
+```
+
+### Code: implement and verify
+
+A feature spec becomes shippable code through a self-correcting loop — generate, adversarially challenge, close the gaps, re-check — until the review is clean or a 3-round cap is hit. This is the [`feature-implement-loop`](skills/feature-implement-loop/SKILL.md) skill.
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef input  fill:#FFF4E0,stroke:#E8A93B,stroke-width:2px,color:#7A4E00,font-weight:bold;
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    IN(["Feature / story<br/>description + acceptance criteria"]):::input
+    gC["Write and update<br/>code and tests"]:::gen
+    revC["Challenge the code"]:::review
+    gate{"Gaps found?"}:::gate
+    SHIP(["Feature ready<br/>to be shipped"]):::ship
+
+    IN --> gC --> revC --> gate
+    gate -- "yes (up to 3 rounds)" --> gC
+    gate == "no" ==> SHIP
+```
+
 ## Skills in this repo
 
 ### Pipeline glue
