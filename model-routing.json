@@ -1,0 +1,121 @@
+{
+  "$comment": "Provider-neutral, cost-aware model routing for skilldrop skills. Skills declare an ABSTRACT tier (light/standard/heavy) describing how much reasoning the task needs. The `providers` map resolves that tier to a concrete model for whatever tool you use (Claude Code, Cursor, Codex, Kiro, ...). Set `active_provider` to your tool. Tier is decided ONCE per skill (the decision is stable), not re-derived per call — that keeps routing free. Runtime heuristics in `escalation_rules` handle the cases that actually vary.",
+  "version": "0.2.0",
+  "active_provider": "claude-code",
+  "tiers": {
+    "light": {
+      "use_for": "Mechanical mapping, extraction, and lookup against a fixed rubric. Deterministic enough that a small/cheap model matches a large one.",
+      "relative_cost": 1
+    },
+    "standard": {
+      "use_for": "Most generation. Synthesizing a structured artifact from a brief, where quality matters but the reasoning is not adversarial. The default tier.",
+      "relative_cost": 4
+    },
+    "heavy": {
+      "use_for": "Adversarial reasoning and weighted judgment, where a cheaper model demonstrably misses edge cases, under-calls severity, or mis-weights tradeoffs. Spend here only when the hard thinking IS the value.",
+      "relative_cost": 20
+    }
+  },
+  "providers": {
+    "claude-code": {
+      "label": "Claude Code (Anthropic)",
+      "models": {
+        "light": "claude-haiku-4-5-20251001",
+        "standard": "claude-sonnet-4-6",
+        "heavy": "claude-opus-4-8"
+      },
+      "select_via": "`/model <model-id>` in the session, or hand the skill to the model-router agent for automatic dispatch.",
+      "automation": ".claude/agents/model-router.md"
+    },
+    "cursor": {
+      "label": "Cursor",
+      "models": {
+        "light": "<your cheapest capable model, e.g. a small Claude/GPT/Gemini>",
+        "standard": "<your default model>",
+        "heavy": "<your most capable model>"
+      },
+      "select_via": "Pick the model in the chat/composer model dropdown before invoking the skill. Cursor rules cannot switch models programmatically — this is a manual lookup.",
+      "automation": null,
+      "note": "Cursor exposes whatever models your plan enables (Claude, GPT, Gemini). Fill in the three you actually use."
+    },
+    "openai-codex": {
+      "label": "OpenAI Codex CLI",
+      "models": {
+        "light": "<your cheapest OpenAI model>",
+        "standard": "<your default OpenAI model>",
+        "heavy": "<your most capable OpenAI model>"
+      },
+      "select_via": "Set the model via the Codex `--model` flag or its config before running the skill.",
+      "automation": null,
+      "note": "Fill in with the model identifiers your Codex install accepts. Model names change — verify against `codex --help` / your config."
+    },
+    "kiro": {
+      "label": "Kiro",
+      "models": {
+        "light": "<your cheapest capable model>",
+        "standard": "<your default model>",
+        "heavy": "<your most capable model>"
+      },
+      "select_via": "Select the model in Kiro's model picker, or pin it in the custom-agent / steering definition that loads the skill.",
+      "automation": null
+    },
+    "generic": {
+      "label": "Any other tool",
+      "models": {
+        "light": "<your cheapest capable model>",
+        "standard": "<your default model>",
+        "heavy": "<your most capable model>"
+      },
+      "select_via": "However your tool selects a model. The tier tells you which of your three to pick.",
+      "automation": null
+    }
+  },
+  "escalation_rules": [
+    {
+      "id": "large-input",
+      "rule": "Escalate one tier (light→standard, standard→heavy) when the input the skill must reason over exceeds ~30 pages / ~20k words / ~15 source files. Large context degrades small models faster than large ones.",
+      "type": "heuristic_no_llm"
+    },
+    {
+      "id": "reasoning-floor",
+      "rule": "Never downgrade a skill whose tier is 'heavy'. These are the reasoning skills; downgrading defeats their purpose. The router may upgrade but never demote below the skill's declared tier.",
+      "type": "hard_constraint"
+    },
+    {
+      "id": "ambiguous-input",
+      "rule": "Escalate one tier when the input is contradictory, underspecified, or the user explicitly asks for the most rigorous output ('be thorough', 'this is going to the board'). Do NOT escalate just because the topic sounds important.",
+      "type": "heuristic_no_llm"
+    },
+    {
+      "id": "downgrade-trivial",
+      "rule": "Downgrade one tier (never below 'light', never below the skill's declared floor) when the input is tiny and templated — e.g. a one-paragraph brief into adr-generator, a 3-line note into decision-log.",
+      "type": "heuristic_no_llm"
+    },
+    {
+      "id": "user-override",
+      "rule": "An explicit user model choice always wins. The router reports what it would have picked, then honors the override.",
+      "type": "hard_constraint"
+    }
+  ],
+  "skills": {
+    "audience-profile": { "tier": "light", "rationale": "Maps a fixed set of audience archetypes to structural rules. Lookup against a rubric, not synthesis." },
+    "decision-log": { "tier": "light", "rationale": "Extracts decisions/owners/dates from notes. Pattern extraction; escalate on long transcripts via large-input rule." },
+    "sonar-onboard": { "tier": "light", "rationale": "Scaffolds config from detected language + a template. Deterministic fill-in; little judgment." },
+    "adr-generator": { "tier": "standard", "rationale": "Structures a decision into MADR/Nygard. Some judgment on title/consequences; not adversarial." },
+    "architecture-diagrams": { "tier": "standard", "rationale": "Translates prose to diagram syntax. Correctness matters; reasoning is bounded." },
+    "brief-intake": { "tier": "standard", "rationale": "Extraction + tagging [explicit]/[implied]/[inferred]. The tagging needs care — above light, below heavy." },
+    "deck-builder": { "tier": "standard", "rationale": "Generates pptx content + runs a script. Content shaping, not hard reasoning." },
+    "design-doc": { "tier": "standard", "rationale": "Synthesizes a design doc from a brief. Escalate to heavy via large-input or ambiguous-input when alternatives are genuinely contested." },
+    "exec-summary": { "tier": "standard", "rationale": "Compression to one page. Needs to keep the right signal; escalate on very long source docs." },
+    "figma-diagrams": { "tier": "standard", "rationale": "API calls + spec generation. Bounded transformation." },
+    "guide-builder": { "tier": "standard", "rationale": "Shapes notes into a styled guide. Generation, not adversarial review." },
+    "reverse-architecture": { "tier": "standard", "rationale": "Extracts architecture from code/IaC. Escalate to heavy on large codebases where cross-file inference is heavy." },
+    "runbook-generator": { "tier": "standard", "rationale": "Operational doc from service facts. Bounded synthesis." },
+    "slide-outliner": { "tier": "standard", "rationale": "Outlines a deck to a time budget. Structuring, not deep reasoning." },
+    "sonar-review": { "tier": "standard", "rationale": "Formats Sonar API findings into a report. The hard analysis is Sonar's; this is synthesis. Escalate on very large diffs." },
+    "ai-usage-report": { "tier": "standard", "rationale": "Tabulates telemetry into a report. Mostly mechanical, but the 'AI theater' effectiveness call needs judgment." },
+    "devils-advocate": { "tier": "heavy", "rationale": "Adversarial code review across four lenses. Cheaper models miss edge cases and under-call severity — the whole value is the hard thinking. Never downgrade." },
+    "doc-critique": { "tier": "heavy", "rationale": "Adversarial doc review against rubrics. Same as devils-advocate: the value is catching what a fast pass misses. Never downgrade." },
+    "tech-comparison-matrix": { "tier": "heavy", "rationale": "Weighted multi-criteria judgment with a recommendation. Mis-weighting is the failure mode; heavy is worth it. Never downgrade." }
+  }
+}

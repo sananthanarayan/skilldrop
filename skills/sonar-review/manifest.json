@@ -8,5 +8,6 @@
     "required": ["SONAR_TOKEN"],
     "optional": ["SONAR_HOST_URL"]
   },
-  "tags": ["sonarqube", "sonarcloud", "sonar", "code-quality", "review", "quality-gate", "compliance", "security", "dev-workflow"]
+  "tags": ["sonarqube", "sonarcloud", "sonar", "code-quality", "review", "quality-gate", "compliance", "security", "dev-workflow"],
+  "model": { "tier": "standard", "rationale": "Formats Sonar API findings into a report. The hard analysis is Sonar's; this is synthesis. Escalates on very large diffs." }
 }

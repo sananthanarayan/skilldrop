@@ -14,5 +14,6 @@
   "install": {
     "pip": "python3 -m pip install -r requirements.txt"
   },
-  "tags": ["figma", "figjam", "diagrams", "design", "api"]
+  "tags": ["figma", "figjam", "diagrams", "design", "api"],
+  "model": { "tier": "standard", "rationale": "API calls + spec generation. Bounded transformation." }
 }

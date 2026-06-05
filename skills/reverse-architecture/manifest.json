@@ -5,5 +5,6 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
-  "tags": ["diagrams", "reverse-engineering", "architecture", "as-is", "terraform", "kubernetes", "c4", "mermaid"]
+  "tags": ["diagrams", "reverse-engineering", "architecture", "as-is", "terraform", "kubernetes", "c4", "mermaid"],
+  "model": { "tier": "standard", "rationale": "Extracts architecture from code/IaC. Escalates to opus on large codebases where cross-file inference is heavy." }
 }

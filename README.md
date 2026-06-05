@@ -124,7 +124,39 @@ skills/<skill-name>/
 └── scripts/              # (optional) Executable helpers the agent invokes
 ```
 
-The `manifest.json` is the canonical machine-readable summary: its `deps` block lists `pip` / `npm` packages, and `env.required` lists env vars that must be set before the skill works.
+The `manifest.json` is the canonical machine-readable summary: its `deps` block lists `pip` / `npm` packages, and `env.required` lists env vars that must be set before the skill works. Its `model` block declares the cost-effective model tier for the skill (see below).
+
+## Cost-aware model routing (provider-neutral)
+
+Different skills need different horsepower — `decision-log` is mechanical extraction, `devils-advocate` is adversarial reasoning. Running both on the same frontier model wastes money on the cheap one; running both cheap loses the hard one. So each skill carries an **abstract tier** describing the *task*, decided once:
+
+| Tier | For |
+|---|---|
+| 🟢 `light` | Mechanical mapping / extraction |
+| 🔵 `standard` | Most generation (the default) |
+| 🟣 `heavy` | Adversarial reasoning / weighted judgment (never downgraded) |
+
+The tier is **not tied to Claude.** A `providers` map in [`model-routing.json`](model-routing.json) resolves each tier to a concrete model for whatever tool you use — Claude Code, Cursor, Codex, Kiro, or anything else. Set `active_provider` to your tool and fill in its three model names (Claude Code ships filled in; the rest are templates). The same routing decisions then work everywhere.
+
+The tier lives in each skill's `manifest.json` (`model` block, travels with the skill) and in `model-routing.json` (the source of truth). [`MODEL-ROUTING.md`](MODEL-ROUTING.md) is the human-readable table, the provider setup, and the mechanical escalation rules (escalate on large/ambiguous input; honor explicit user model choice).
+
+**Three ways to use it:**
+
+- **Manual (any tool):** look up the skill's tier in [`MODEL-ROUTING.md`](MODEL-ROUTING.md) → look up your tool's model for that tier → set it → invoke the skill.
+- **Pure-rules CLI (any tool, no API key, no network):** [`route.py`](route.py) decides the tier deterministically from keyword + length signals with transparent, tunable weights, and prints the resolved model:
+
+  ```bash
+  python3 route.py --skill devils-advocate --input diff.txt
+  git diff | python3 route.py --skill sonar-review --files 12 --json
+  ```
+
+- **Automated agent (Claude Code today):** the [`model-router`](.claude/agents/model-router.md) agent — pinned to the lightest model so routing is nearly free — runs `route.py`, resolves your active provider's model, and runs the skill on a subagent at that model:
+
+  > Use the model-router agent to run `decision-log` on these meeting notes: …
+
+  Other tools read the **same table** / call the **same `route.py`**, so routing decisions are identical everywhere.
+
+Why not have an LLM pick the model live on every call? Because that pays tokens and latency *every time* to answer a question whose answer is fixed per skill. Routing is a table lookup; the model budget is spent on the work, not on deciding.
 
 ## Installing a skill into your IDE
 

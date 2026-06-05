@@ -5,5 +5,6 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
-  "tags": ["intake", "brief", "extraction", "preprocessing", "pipeline"]
+  "tags": ["intake", "brief", "extraction", "preprocessing", "pipeline"],
+  "model": { "tier": "standard", "rationale": "Extraction + [explicit]/[implied]/[inferred] tagging. The tagging needs care — above haiku, below opus." }
 }
