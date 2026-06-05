@@ -11,5 +11,6 @@
     "required": [],
     "optional": []
   },
-  "tags": ["diagrams", "mermaid", "plantuml", "c4", "architecture"]
+  "tags": ["diagrams", "mermaid", "plantuml", "c4", "architecture"],
+  "model": { "tier": "standard", "rationale": "Prose to diagram syntax. Correctness matters; reasoning is bounded." }
 }

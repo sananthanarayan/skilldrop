@@ -11,5 +11,6 @@
   "install": {
     "pip": "python3 -m pip install -r requirements.txt"
   },
-  "tags": ["powerpoint", "pptx", "deck", "presentation", "stakeholder-communication"]
+  "tags": ["powerpoint", "pptx", "deck", "presentation", "stakeholder-communication"],
+  "model": { "tier": "standard", "rationale": "Generates pptx content + runs a script. Content shaping, not hard reasoning." }
 }

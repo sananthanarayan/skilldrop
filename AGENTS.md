@@ -73,11 +73,14 @@ description: One sentence, use-case-first. First half says *what it does*; secon
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
-  "tags": ["tag1", "tag2", "tag3"]
+  "tags": ["tag1", "tag2", "tag3"],
+  "model": { "tier": "standard", "rationale": "One sentence — why this tier fits what the skill does." }
 }
 ```
 
 If the skill has no scripts, leave `deps` empty. `env.required` is for vars the skill cannot work without (e.g. `FIGMA_TOKEN` for `figma-diagrams`); `env.optional` is for vars that change behaviour but aren't blockers.
+
+The `model` block is the colocated cost-routing hint — an **abstract, provider-neutral tier** (`light` / `standard` / `heavy`), never a vendor model name. It travels with the skill when copied into another IDE, and must match the skill's entry in the repo-root [`model-routing.json`](model-routing.json). See **Model routing** below.
 
 ## Anatomy of a skill
 
@@ -162,6 +165,7 @@ See `skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 - [ ] Scripts (if any) reference both `${CLAUDE_SKILL_DIR}/scripts/…` **and** a plain relative `scripts/…` so non-Claude IDEs can find them.
 - [ ] No secrets, no real customer data — placeholder values only.
 - [ ] Voice matches the established opinionated tone (see below).
+- [ ] **Model tier set** — new skill has a `model` block in `manifest.json` AND a matching entry in `model-routing.json`. The two agree.
 
 ## Voice & tone (non-negotiable)
 
@@ -205,8 +209,22 @@ The README groups skills into five categories. Prefer adding to one of these ove
 
 A new section needs a use-case-first name, a one-sentence definition of what belongs in it, and at least one existing skill that would also fit there. Sections are cheap; ungrouped skills make the README harder to scan.
 
+## Model routing
+
+The repo ships a **cost-aware, provider-neutral model-selection layer**: each skill has an abstract tier (`light` / `standard` / `heavy`) describing how much reasoning the task needs, and a `providers` map resolves that tier to a concrete model for whatever tool the user runs (Claude Code, Cursor, Codex, Kiro, …). The premise — *the right tier for a skill is stable*, so the tier is decided **once per skill** and stored, never re-derived by an LLM per call (that would cost tokens to answer a fixed question). Pieces:
+
+- [`model-routing.json`](model-routing.json) — **source of truth.** Per-skill tier + rationale, the `providers` tier→model map, `active_provider`, and mechanical escalation rules (large input, ambiguity, user override, never-downgrade-heavy).
+- [`route.py`](route.py) — **pure-rules engine.** No API key, no network, instant. Keyword + length signals with small, transparent weights you tune at the top of the file. Resolves tier + concrete model from `model-routing.json`. Usable from any tool, CI, or a git hook (`python3 route.py --skill <name> --input <file>`).
+- [`MODEL-ROUTING.md`](MODEL-ROUTING.md) — human-readable view + how to point it at a non-Claude tool.
+- [`.claude/agents/model-router.md`](.claude/agents/model-router.md) — the **Claude Code implementation** of the spec (a dispatcher pinned to the lightest model) that runs `route.py`, resolves the active provider's model, and runs a skill on a subagent at that model. Other tools call the same `route.py` or consult the table directly.
+
+Tier rule of thumb: **light** = mechanical mapping/extraction; **standard** = most generation (the default); **heavy** = adversarial reasoning / weighted judgment, never downgraded. Tiers are abstract — **never put a vendor model name in a skill's `model.tier`**; the provider map is the only place concrete models live.
+
+When you add or change a skill, set its tier in **both** `model-routing.json` and the skill's `manifest.json` `model` block — they must agree (`light`/`standard`/`heavy`). A small Python loop validating the two against each other is the quick consistency check.
+
 ## Pointers
 
 - Repo overview & per-IDE install steps: [README.md](README.md)
+- Model routing: [MODEL-ROUTING.md](MODEL-ROUTING.md) + [model-routing.json](model-routing.json)
 - Claude Code project settings: [.claude/settings.json](.claude/settings.json) — currently empty
 - Reference implementations for skill scripts: [`skills/deck-builder/scripts/`](skills/deck-builder/scripts/), [`skills/figma-diagrams/scripts/`](skills/figma-diagrams/scripts/)
