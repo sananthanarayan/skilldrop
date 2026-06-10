@@ -66,6 +66,14 @@ flowchart LR
 | [`brief-intake`](skills/brief-intake/SKILL.md) | Upstream collector. Takes raw mess — a Slack thread, meeting transcript, ticket, email chain, paragraph of notes — and emits a structured brief shaped for whichever downstream skill comes next (ADR, design doc, runbook, exec summary, deck, comparison matrix, decision log). Every field is tagged `[explicit] / [implied] / [inferred] / [missing]` with verbatim quotes from the source. |
 | [`doc-critique`](skills/doc-critique/SKILL.md) | Counterpart reviewer. Takes an existing doc (ADR, design doc, runbook, exec summary, comparison matrix, deck, decision log) and produces a structured critique against the same rubrics the generators enforce — verdict + severity-tagged findings (blocker / major / minor / nit) with quoted evidence and concrete fixes, plus a "what's working" section. |
 
+### Planning & delivery
+
+Skills for the SDLC steps around the code itself — turning raw requirements into shippable, testable units of work and tracking them to release. (`feature-implement-loop` under Dev workflow is the natural downstream of these.)
+
+| Skill | What it does |
+|---|---|
+| [`user-story-splitter`](skills/user-story-splitter/SKILL.md) | Split an epic, feature request, or PRD chunk into independently shippable vertical-slice user stories — SPIDR slicing patterns, walking-skeleton-first build order, 3–7 Gherkin acceptance criteria per story (always including an edge case), tagged `[assumption]`s, and an explicit "out of scope / not covered" ledger so nothing silently disappears. Each emitted story is shaped to hand straight to `feature-implement-loop`. |
+
 ### Dev workflow
 
 | Skill | What it does |
