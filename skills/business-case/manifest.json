@@ -1,0 +1,10 @@
+{
+  "name": "business-case",
+  "version": "0.1.0",
+  "description": "Build a business case for a build/buy/defer investment decision — do-nothing always included as the baseline, benefits quantified as re-runnable calculations with confidence tags, full costs (build + run + opportunity), ranges instead of false precision, and the flip-assumption named. Use when the user needs to justify an investment, write a business case, compare build vs buy vs defer, or get budget/sponsor approval for an initiative.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["business-case", "investment", "build-vs-buy", "roi", "cost-benefit", "decision"],
+  "model": { "tier": "heavy", "rationale": "Weighted multi-option judgment with a committal recommendation — same failure mode as tech-comparison-matrix: cheaper models mis-weight costs, inflate benefits, and miss the flip-assumption. Never downgrade." }
+}
