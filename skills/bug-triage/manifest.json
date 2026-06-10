@@ -1,0 +1,10 @@
+{
+  "name": "bug-triage",
+  "version": "0.1.0",
+  "description": "Turn a vague bug report (Slack message, support ticket, \"it's broken on mobile sometimes\") into an actionable ticket — searchable symptom title, numbered repro steps from a clean state, expected vs actual, severity separated from priority, evidence tagged reported-vs-verified, and labeled hypotheses instead of root-cause guesses. Use when the user wants to triage a bug, write up a bug report, turn a complaint into a ticket, or make a flaky issue actionable.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["bug-triage", "bug-report", "ticket", "qa", "repro", "severity"],
+  "model": { "tier": "standard", "rationale": "Extraction plus judgment calls (severity vs priority, hypothesis ranking) — same shape as brief-intake: above light, below heavy." }
+}
