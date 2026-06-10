@@ -1,0 +1,147 @@
+# OpenAPI 3.1 skeleton — one fully-worked resource (refunds) showing every convention.
+# Replace the resource; keep the structure, the Problem schema, and the security wiring.
+openapi: 3.1.0
+info:
+  title: "{Service} API"
+  version: "1.0.0"
+  description: |
+    Versioning policy: additive changes (new optional fields, new endpoints, new enum
+    values on open enums) do not bump the major version; removals, renames, type
+    changes, and semantic changes do. Deprecated operations carry `deprecated: true`,
+    a Sunset header, and a named replacement.
+servers:
+  - url: https://api.example.com/v1
+security:
+  - bearerAuth: []
+paths:
+  /refunds:
+    post:
+      operationId: createRefund
+      summary: Request a refund for a captured payment
+      description: |
+        Retry guidance: retryable on 429 (honor Retry-After) and 503; never retryable
+        on other 4xx. Replays with the same Idempotency-Key return the original response.
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema: { type: string, format: uuid }
+          description: Retained 24h. Same key + different body returns 409.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/RefundCreateRequest" }
+            example:
+              payment_id: "pay_8f4k2mq7"
+              amount: 2500
+              currency: "EUR"
+              reason: "customer_request"
+      responses:
+        "201":
+          description: Refund created and queued for processing.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Refund" }
+              example:
+                id: "ref_3j9x1pd4"
+                payment_id: "pay_8f4k2mq7"
+                amount: 2500
+                currency: "EUR"
+                reason: "customer_request"
+                status: "pending"
+                created_at: "2026-06-10T14:02:11Z"
+        "400":
+          description: "Validation failed. codes: validation_failed"
+          content: { application/problem+json: { schema: { $ref: "#/components/schemas/Problem" } } }
+        "402":
+          description: "Refund exceeds refundable balance. codes: insufficient_refundable_amount"
+          content: { application/problem+json: { schema: { $ref: "#/components/schemas/Problem" } } }
+        "404":
+          description: "Payment not found. codes: payment_not_found"
+          content: { application/problem+json: { schema: { $ref: "#/components/schemas/Problem" } } }
+        "409":
+          description: "Idempotency conflict. codes: idempotency_key_reused"
+          content: { application/problem+json: { schema: { $ref: "#/components/schemas/Problem" } } }
+    get:
+      operationId: listRefunds
+      summary: List refunds
+      parameters:
+        - { name: cursor, in: query, schema: { type: string } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 25 } }
+        - { name: payment_id, in: query, schema: { type: string } }
+        - { name: status, in: query, schema: { $ref: "#/components/schemas/RefundStatus" } }
+        - { name: sort, in: query, schema: { type: string, enum: ["created_at", "-created_at"], default: "-created_at" } }
+      responses:
+        "200":
+          description: Paginated refunds, newest first by default.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, next_cursor]
+                properties:
+                  data: { type: array, items: { $ref: "#/components/schemas/Refund" } }
+                  next_cursor: { type: [string, "null"] }
+  /refunds/{refund_id}:
+    get:
+      operationId: getRefund
+      summary: Fetch one refund
+      parameters:
+        - { name: refund_id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: The refund.
+          content: { application/json: { schema: { $ref: "#/components/schemas/Refund" } } }
+        "404":
+          description: "codes: refund_not_found"
+          content: { application/problem+json: { schema: { $ref: "#/components/schemas/Problem" } } }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+  schemas:
+    RefundStatus:
+      type: string
+      description: "Closed enum — clients may exhaustively switch."
+      enum: [pending, processing, succeeded, failed]
+    RefundCreateRequest:
+      type: object
+      required: [payment_id, amount, currency]
+      properties:
+        payment_id: { type: string, maxLength: 64 }
+        amount: { type: integer, minimum: 1, description: "Minor units (cents)." }
+        currency: { type: string, pattern: "^[A-Z]{3}$", description: "ISO 4217." }
+        reason:
+          type: string
+          description: "Open enum — clients must tolerate unknown values."
+          enum: [customer_request, duplicate, fraud, other]
+    Refund:
+      type: object
+      required: [id, payment_id, amount, currency, status, created_at]
+      properties:
+        id: { type: string }
+        payment_id: { type: string }
+        amount: { type: integer, minimum: 1 }
+        currency: { type: string, pattern: "^[A-Z]{3}$" }
+        reason: { type: string, enum: [customer_request, duplicate, fraud, other] }
+        status: { $ref: "#/components/schemas/RefundStatus" }
+        failure_code: { type: [string, "null"], description: "Set only when status=failed." }
+        created_at: { type: string, format: date-time }
+    Problem:
+      type: object
+      required: [type, title, status, code]
+      properties:
+        type: { type: string, format: uri }
+        title: { type: string }
+        status: { type: integer }
+        code: { type: string, pattern: "^[a-z0-9_]+$" }
+        detail: { type: string }
+        errors:
+          type: array
+          items:
+            type: object
+            required: [field, code]
+            properties:
+              field: { type: string }
+              code: { type: string }
+              message: { type: string }
