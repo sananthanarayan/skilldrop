@@ -122,6 +122,7 @@
     "migration-plan": { "tier": "standard", "rationale": "Phased plan synthesis with a strong template. Ordering judgment is bounded by the expand/migrate/contract pattern; escalate via ambiguous-input on contested, high-stakes cutovers." },
     "api-contract-draft": { "tier": "standard", "rationale": "Schema synthesis against fixed conventions. The resource modeling needs judgment; the conventions bound it. Escalate via ambiguous-input on contested multi-team contracts." },
     "bug-triage": { "tier": "standard", "rationale": "Extraction plus judgment calls (severity vs priority, hypothesis ranking) — same shape as brief-intake: above light, below heavy." },
+    "prd-draft": { "tier": "standard", "rationale": "Synthesizes a structured requirements doc from a brief. The solution-language discipline needs care; bounded by the template. Escalate via ambiguous-input on contested scope." },
     "council-review": { "tier": "heavy", "rationale": "Multi-perspective deliberation + weighted reconciliation across distinct expert seats. Cheaper models collapse the seats into one voice and either manufacture or miss the real cruxes. Never downgrade." },
     "devils-advocate": { "tier": "heavy", "rationale": "Adversarial code review across four lenses. Cheaper models miss edge cases and under-call severity — the whole value is the hard thinking. Never downgrade." },
     "doc-critique": { "tier": "heavy", "rationale": "Adversarial doc review against rubrics. Same as devils-advocate: the value is catching what a fast pass misses. Never downgrade." },

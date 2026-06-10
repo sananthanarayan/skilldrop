@@ -1,0 +1,10 @@
+{
+  "name": "prd-draft",
+  "version": "0.1.0",
+  "description": "Draft a Product Requirements Document from a feature idea or brief — evidence-backed problem statement with zero solution language, testable MoSCoW-prioritized requirements, mandatory non-goals, and a success line per goal. Use when the user needs a PRD, wants to capture business requirements for a feature, or asks to turn an idea, pitch, or brief into a requirements doc.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["prd", "requirements", "product", "discovery", "moscow", "non-goals"],
+  "model": { "tier": "standard", "rationale": "Synthesizes a structured requirements doc from a brief. The solution-language discipline needs care; bounded by the template. Escalate via ambiguous-input on contested scope." }
+}
