@@ -1,0 +1,10 @@
+{
+  "name": "requirements-interview",
+  "version": "0.1.0",
+  "description": "Generate per-stakeholder interview kits for feature discovery — ≤7 questions per stakeholder ranked by how much the answer changes the design, each naming the decision it informs, with at least one disconfirming question per script and an assumptions-to-validate ledger. Use when the user is gathering business requirements, preparing stakeholder or user interviews, or asks \"what should I ask the sponsor/users/ops before we build this\".",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["discovery", "interviews", "requirements", "elicitation", "stakeholders", "user-research"],
+  "model": { "tier": "standard", "rationale": "Question banks are rubric-shaped, but ranking by design impact and deriving falsification conditions for the specific feature is synthesis — above light." }
+}
