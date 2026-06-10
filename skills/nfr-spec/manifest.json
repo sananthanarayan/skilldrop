@@ -1,0 +1,10 @@
+{
+  "name": "nfr-spec",
+  "version": "0.1.0",
+  "description": "Sweep a feature or system through the full non-functional requirements catalog — performance, availability, durability, privacy/retention, accessibility, i18n, observability, operability, cost — forcing every category to a measurable target, an explicit n/a, or a tagged default. Use when the user needs NFRs, quality attributes, \"how fast/reliable does it need to be\", SLO targets for a feature, or the requirements everyone forgets until they're incidents.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["nfr", "requirements", "slo", "performance", "availability", "quality-attributes"],
+  "model": { "tier": "standard", "rationale": "Rubric-driven sweep with archetype defaults; the judgment is calibrating targets to business reality. Bounded by the catalog; escalate via ambiguous-input on contested SLOs." }
+}
