@@ -1,0 +1,10 @@
+{
+  "name": "test-plan-generator",
+  "version": "0.1.0",
+  "description": "Generate a risk-based test plan for a feature, PR, or release — risks ranked by likelihood × impact, test cases pushed to the lowest pyramid level that catches the failure, every acceptance criterion mapped to a test, and an explicit \"not tested\" list. Use when the user asks for a test plan, test cases, a QA strategy for a change, \"how should we test this\", or pre-release test coverage.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["testing", "test-plan", "qa", "risk-based", "test-cases", "quality"],
+  "model": { "tier": "standard", "rationale": "Synthesizes a structured plan from a change description. Risk ranking needs judgment but is bounded; escalate via ambiguous-input on contested or high-stakes releases." }
+}

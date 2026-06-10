@@ -73,6 +73,7 @@ Skills for the SDLC steps around the code itself — turning raw requirements in
 | Skill | What it does |
 |---|---|
 | [`user-story-splitter`](skills/user-story-splitter/SKILL.md) | Split an epic, feature request, or PRD chunk into independently shippable vertical-slice user stories — SPIDR slicing patterns, walking-skeleton-first build order, 3–7 Gherkin acceptance criteria per story (always including an edge case), tagged `[assumption]`s, and an explicit "out of scope / not covered" ledger so nothing silently disappears. Each emitted story is shaped to hand straight to `feature-implement-loop`. |
+| [`test-plan-generator`](skills/test-plan-generator/SKILL.md) | Generate a risk-based test plan for a feature, PR, or release. Risks ranked likelihood × impact before any test case is written (effort tracks priority); each case pushed to the lowest pyramid level that catches the failure (unit > integration > e2e, with e2e placement justified); every acceptance criterion mapped in a coverage table; edge-case taxonomy sweep (boundaries, idempotency, concurrency, dependency failure, timezones, …); observable entry/exit criteria; and a mandatory "Not tested — accepted risks" section. Takes `user-story-splitter` output, a diff/PR, or a prose brief. |
 
 ### Dev workflow
 
