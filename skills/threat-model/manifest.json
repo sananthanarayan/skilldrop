@@ -1,0 +1,10 @@
+{
+  "name": "threat-model",
+  "version": "0.1.0",
+  "description": "Produce a STRIDE threat model from a design doc, architecture description, or feature spec — assets and trust boundaries first, threats anchored to boundary crossings with concrete attack scenarios, severity-ranked with verifiable mitigations. Use when the user asks to threat-model a design, run a security review of an architecture, ask \"how could this be attacked\", or needs security sign-off input before build.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["threat-model", "security", "stride", "architecture", "design-review", "trust-boundaries"],
+  "model": { "tier": "heavy", "rationale": "Adversarial reasoning over a design — cheaper models emit checklist residue, miss authz/insider paths, and inflate severity. Never downgrade." }
+}
