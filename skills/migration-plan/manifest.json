@@ -1,0 +1,10 @@
+{
+  "name": "migration-plan",
+  "version": "0.1.0",
+  "description": "Generate a phased migration or rollout plan (schema change, API version, datastore swap, platform move, auth-provider switch) — expand→migrate→contract by default, every phase reversible or its point of no return named, observable gates between phases, idempotent backfill with parity checks. Use when the user needs a migration plan, cutover plan, rollout strategy, or asks \"how do we get from X to Y without downtime\".",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["migration", "rollout", "cutover", "backfill", "zero-downtime", "deployment"],
+  "model": { "tier": "standard", "rationale": "Phased plan synthesis with a strong template. Ordering judgment is bounded by the expand/migrate/contract pattern; escalate via ambiguous-input on contested, high-stakes cutovers." }
+}
