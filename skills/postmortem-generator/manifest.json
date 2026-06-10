@@ -1,0 +1,10 @@
+{
+  "name": "postmortem-generator",
+  "version": "0.1.0",
+  "description": "Generate a blameless incident postmortem from raw material (Slack thread, pager timeline, notes) — quantified impact, UTC timeline with detection/mitigation gaps, contributing factors instead of a single root cause, and ≤8 verifiable action items. Use after an incident or outage when the user needs a postmortem, RCA, incident review, or \"lessons learned\" doc.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["postmortem", "incident", "rca", "sre", "blameless", "outage"],
+  "model": { "tier": "standard", "rationale": "Synthesizes a structured doc from incident notes. Contributing-factor chains need judgment but are bounded; escalate via large-input on huge scrollbacks." }
+}
