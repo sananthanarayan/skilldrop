@@ -120,6 +120,7 @@ Skills for the SDLC steps around the code itself — turning raw requirements in
 | Skill | What it does |
 |---|---|
 | [`ai-usage-report`](skills/ai-usage-report/SKILL.md) | Turn a CSV/JSONL of AI usage events (exported from an MCP server or other telemetry source) into a per-user, team-rollup, or effectiveness-focused report. Surfaces volume, breadth, session depth, and — where the data supports it — whether AI outputs were actually consumed in shipped artifacts vs generated and discarded (the "AI theater" question). Refuses to generate an aggregate rollup for teams smaller than 5 to preserve anonymity. |
+| [`llm-eval-harness`](skills/llm-eval-harness/SKILL.md) | Design the **dev-loop quality gate** for an LLM-powered feature (prompt, RAG, agent, classifier) — so prompt and model changes ship on numbers, not vibes. A versioned golden set in three deliberate buckets (representative from real logs, adversarial/edge, and regression cases frozen from every past failure); the **cheapest adequate grading method per case** (programmatic → structured assertions → LLM-as-judge only when quality is genuinely subjective, and then validated against human labels with bias controls); a metric matched to the task with **both gates set before the first run** (no-regression + critical-subset-at-100%); a failure taxonomy that points iteration at the biggest bucket; and cost/latency tracked beside quality. Enforces the held-out split and the no-tuning-on-test rule. Provider-neutral. |
 
 ### Stakeholder communication
 

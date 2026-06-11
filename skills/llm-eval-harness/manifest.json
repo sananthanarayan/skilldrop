@@ -1,0 +1,10 @@
+{
+  "name": "llm-eval-harness",
+  "version": "0.1.0",
+  "description": "Design an evaluation harness for an LLM-powered feature — a versioned golden set (representative + adversarial + regression cases), the cheapest adequate grading method per case, a metric with a pre-set pass bar and regression gate, and a failure taxonomy that targets iteration. Use when the user is building or tuning an LLM feature (prompt, RAG, agent, classifier) and needs evals, a way to test prompt/model changes, or to stop shipping quality regressions on vibes.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["llm", "evals", "ai-engineering", "testing", "llm-as-judge", "regression-gate"],
+  "model": { "tier": "standard", "rationale": "Methodology synthesis against a fixed decision tree and pitfall catalog. Grading-method and metric choices need judgment but are bounded; escalate via ambiguous-input on novel task types." }
+}
