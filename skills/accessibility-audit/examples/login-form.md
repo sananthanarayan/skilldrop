@@ -50,8 +50,8 @@ Fix: darken to ≥ `#767676` (4.54:1) or darker.
 ### 🟨 Minor
 
 **A11Y-5 — Submit button color contrast borderline / unverifiable focus ring** · `1.4.3 [AA]`, `2.4.7 Focus Visible [AA]` · `[auto]`+`[manual]`
-White text `#fff` on `#5b9` (`#55bb99`) = **2.3:1** — fails 4.5:1 for the button label. Also, once it's a real `<button>`, confirm a visible focus indicator exists (can't verify from static code).
-Fix: darken the button background (e.g. `#2e8b6f` ≈ 4.5:1) and ensure a visible `:focus-visible` outline.
+White text `#fff` on `#5b9` (`#55bb99`) = **2.35:1** — fails 4.5:1 for the button label. Also, once it's a real `<button>`, confirm a visible focus indicator exists (can't verify from static code).
+Fix: darken the button background to clear 4.5:1 — e.g. `#1f7a57` = 5.28:1 (`#2e8b6f` is only 4.17:1 and still fails, the classic "looks dark enough" trap) — and ensure a visible `:focus-visible` outline.
 
 ### ⚪ Nits
 

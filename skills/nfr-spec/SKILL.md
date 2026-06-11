@@ -1,6 +1,6 @@
 ---
 name: nfr-spec
-description: Sweep a feature or system through the full non-functional requirements catalog — performance, availability, durability, privacy/retention, accessibility, i18n, observability, operability, cost — forcing every category to a measurable target, an explicit n/a, or a tagged default. Use when the user needs NFRs, quality attributes, "how fast/reliable does it need to be", SLO targets for a feature, or the requirements everyone forgets until they're incidents.
+description: Sweep a feature or system through the full non-functional requirements catalog — performance, throughput, availability, durability, privacy/retention, accessibility, i18n, observability, operability, compatibility, cost — forcing every category to a measurable target, an explicit n/a, or a tagged default. Use when the user needs NFRs, quality attributes, "how fast/reliable does it need to be", SLO targets for a feature, or the requirements everyone forgets until they're incidents.
 ---
 
 # nfr-spec
@@ -37,7 +37,7 @@ Gathers the requirements nobody volunteers: the business says what the feature d
 - **Availability matches the down-for-an-hour answer**, not the marketing instinct. The cost of each extra nine is named when the target exceeds the archetype default.
 - **Every data class has a retention period and a deletion mechanism.** "Indefinite" is written as the decision it is.
 - **Accessibility names level and scope** — "WCAG 2.2 AA on all agent-facing screens, axe + manual screen-reader pass" — not "accessible".
-- **Cost has a number at target volume.** An NFR spec that's silent on cost has delegated it to the first invoice.
+- **Cost has a number at target volume**, or a tagged `[assumption]` placeholder that explicitly hands the sizing to `capacity-cost-model`. Either way the line is present — an NFR spec that's silent on cost has delegated it to the first invoice.
 
 ## When to use this skill
 

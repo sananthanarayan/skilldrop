@@ -56,4 +56,3 @@ A judge is a model grading a model. Untreated, that's an opinion with a confiden
 - **Frozen eval rot** — product evolves, eval doesn't; the score stays green on yesterday's product. New failure → new regression case, always.
 - **Single-run noise** — non-zero temperature makes one run unrepresentative. Fix temperature for eval, or run N times and report variance.
 - **Aggregate myopia** — celebrating 94% while a critical 6% silently fails. Always slice by bucket and by critical flag.
-```
