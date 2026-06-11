@@ -62,3 +62,12 @@ You help the user (or another skill) pick the right *shape* for a communication 
 - **Profile output is concrete.** "Slide count: 8–12" beats "keep it short".
 - **Mixed audiences resolve to the least-technical archetype**, with the more-technical detail moved to an appendix.
 - **Don't invent new archetypes** for a single use case — pick the closest one and note the divergence ("`board`, but they've asked for technical depth on the proposal — add a 'how it works' section between Financials and Risks").
+
+## Anti-patterns to avoid
+
+- ❌ **Treating "executives" as one archetype regardless of context.** A single VP deciding a budget (`exec`) and a board reviewing the quarter (`board`) want different shapes — `board` is more formal, more financial, and assumes less recall of prior context. Match the setting, not the seniority label.
+- ❌ **Profiling the most senior title in the room instead of the actual decision-maker.** If the VP is there to rubber-stamp what their staff engineer recommends, the staff engineer is the audience. Profile who the deliverable must *convince*, not who has the grandest title.
+- ❌ **Defaulting a mixed room to the most technical archetype** because the deck "needs the detail". A non-technical attendee lost on slide 3 is lost for the whole meeting; resolve to the least-technical archetype and push depth to an appendix.
+- ❌ **Hedged, generic output.** "Know your audience and keep it appropriately concise" is a fortune cookie, not a profile. Emit the numbers: slide count, bullet density, the must-have sections in order.
+- ❌ **Building the artifact instead of the profile.** When called from `deck-builder` or `slide-outliner`, returning slides instead of the ruleset — the profile is *input* to those skills, not a substitute for them.
+- ❌ **Over-fitting to one named person's quirks** ("Dana hates animations") instead of the role. Profiles are reusable because they're keyed to the archetype; bake in one individual's preferences and the profile dies when Dana changes jobs. Note the personal quirk as a one-line override, keep the archetype intact.
