@@ -28,7 +28,7 @@ One primary. Everything else exists to steer toward it or to catch it lying.
 
 | Metric | Current | Alert threshold | Action on breach |
 |---|---|---|---|
-| {error rate / latency / adjacent conversion / support volume} | {value} | {value} | pause rollout / page owner |
+| {error rate / latency / adjacent conversion / support volume} | {value, or "measure wk 1" for a new surface} | {value} | pause rollout / page owner |
 
 ## Counter-metric (the gaming catch)
 

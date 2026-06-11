@@ -42,7 +42,7 @@ Access patterns first, schema second, verification last — every query must end
 | Index | Columns (order matters) | Serves | Type |
 |---|---|---|---|
 | idx_orders_customer_created | (customer_id, created_at) | Q2 (equality then sort) | btree |
-| pk_orders | (id) | Q1 | clustered |
+| pk_orders | (id) | Q1 | primary key (clustered/index-organized only on engines that support it — Postgres heaps don't) |
 
 {Note any covering/partial index and why. No index without a query.}
 

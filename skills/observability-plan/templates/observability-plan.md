@@ -19,7 +19,7 @@ SLIs from the user's side, SLOs with budgets and a policy, pages that are action
 | SLI | Definition (good/valid) | SLO (target / window) | Error budget | Measured at |
 |---|---|---|---|---|
 | checkout availability | 2xx / valid checkout req | 99.9% / 28d | ~40 min/28d | load balancer |
-| checkout latency | < 1s / valid checkout req | 99% < 1s / 28d | — | load balancer |
+| checkout latency | < 1s / valid checkout req | 99% < 1s / 28d | 1% of checkout req/28d may exceed 1s | load balancer |
 
 **Error-budget policy:** {>50% remaining → ship freely; <25% → freeze risky releases; exhausted → release freeze + reliability focus until recovered}.
 

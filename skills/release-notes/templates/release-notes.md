@@ -4,6 +4,8 @@ Two artifacts, two readers. Customer notes sell nothing and explain everything; 
 
 ## Artifact 1 — customer-facing release notes
 
+> Note the deliberate rename for a non-technical reader: the Keep-a-Changelog categories **Added → New** and **Changed → Improved** here; Fixed/Security keep their names. The internal changelog (Artifact 2) uses the canonical Keep-a-Changelog headings.
+
 ```markdown
 # {Product} {version} — {YYYY-MM-DD}
 

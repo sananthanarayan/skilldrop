@@ -4,6 +4,7 @@ openapi: 3.1.0
 info:
   title: "{Service} API"
   version: "1.0.0"
+  license: { name: "{license, e.g. Proprietary}" }
   description: |
     Versioning policy: additive changes (new optional fields, new endpoints, new enum
     values on open enums) do not bump the major version; removals, renames, type

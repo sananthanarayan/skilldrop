@@ -20,7 +20,7 @@ Turns one oversized requirement into a set of vertical slices a team can ship an
 
 3. **Make story #1 the walking skeleton.** The thinnest end-to-end path through the whole feature, even if it's embarrassingly minimal. It de-risks integration and gives every later story something working to build on.
 
-4. **Write each story with [`templates/story.md`](templates/story.md).** Per story: Connextra statement ("As a… I want… so that…"), 3–7 Gherkin acceptance criteria, out-of-scope list, and dependencies. Every story must include **at least one negative or edge-case criterion** — a story with only happy-path ACs is not done being written.
+4. **Write each story with [`templates/story.md`](templates/story.md).** Per story: Connextra statement ("As a… I want… so that…"), 3–7 Gherkin acceptance criteria, out-of-scope list, and dependencies. Every story must include **at least one negative or edge-case criterion** — a story with only happy-path ACs is not done being written. (Spikes are the one exception: they carry a question and a timebox instead of acceptance criteria — see the spike variant in the template.)
 
 5. **Apply the split-again rule.** A story with more than 7 acceptance criteria, more than one persona, or an "and" in its title is two stories. Split until each one fits; stop splitting when a further cut would no longer be demoable on its own.
 
