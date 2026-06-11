@@ -1,0 +1,10 @@
+{
+  "name": "observability-plan",
+  "version": "0.1.0",
+  "description": "Design an observability plan for a service — user-journey SLIs, SLOs with error budgets, symptom-based burn-rate alerting (page vs ticket, every page actionable and runbook-linked), and a deliberate metrics/logs/traces split with a cardinality and cost budget. Use when the user needs SLOs, alerting design, a monitoring/observability strategy, dashboards, or wants to fix alert fatigue and know what to measure.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["observability", "slo", "sli", "alerting", "monitoring", "sre"],
+  "model": { "tier": "standard", "rationale": "Methodology synthesis against fixed SRE practices (golden signals, burn-rate alerting, pillar split). SLO calibration needs judgment but is bounded; escalate via ambiguous-input on contested reliability targets." }
+}
