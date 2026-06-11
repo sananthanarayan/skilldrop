@@ -1,0 +1,10 @@
+{
+  "name": "capacity-cost-model",
+  "version": "0.1.0",
+  "description": "Build a capacity and cost model for a service or feature — sized from a demand driver and its growth curve, not from instance types; unit economics (cost per request/tenant/GB); peak-vs-average and headroom as explicit decisions; cost at 1×/3×/10× with scaling cliffs named; and the forgotten line items (egress, logging, NAT, non-prod) checklisted. Use when the user needs to estimate cloud/infra cost, size capacity for launch or growth, project the bill at scale, or find what's driving a cost.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["capacity-planning", "cost", "cloud", "finops", "sizing", "unit-economics"],
+  "model": { "tier": "standard", "rationale": "Quantitative projection from a demand model against a fixed cost catalog. Headroom and scaling-cliff judgment is bounded by the reference; escalate via ambiguous-input on novel architectures." }
+}
