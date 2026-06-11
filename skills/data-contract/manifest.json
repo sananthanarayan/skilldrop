@@ -1,0 +1,10 @@
+{
+  "name": "data-contract",
+  "version": "0.1.0",
+  "description": "Draft a data contract for a dataset, table, or event stream consumed by others — schema with per-field semantics and units, measurable quality SLAs (freshness, completeness, validity, distribution), a schema-evolution policy that says what breaks consumers, a named owner, and PII classification. Use when the user is publishing a dataset/table/topic other teams depend on, needs a data contract, or wants to stop downstream pipelines breaking on silent schema or quality changes.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["data-contract", "data-engineering", "schema", "data-quality", "data-mesh", "governance"],
+  "model": { "tier": "standard", "rationale": "Schema + SLA synthesis against fixed quality dimensions and an evolution matrix. Semantics capture needs care; bounded by the catalog. Escalate via large-input on wide schemas." }
+}
