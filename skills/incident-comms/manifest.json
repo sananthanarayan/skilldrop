@@ -1,0 +1,10 @@
+{
+  "name": "incident-comms",
+  "version": "0.1.0",
+  "description": "Draft audience-segmented updates during a live incident — customer status-page posts, internal stakeholder updates, and exec notifications — each leading with user-facing impact, never speculative cause or ETA, always naming the next-update time. Use when an incident is in progress and the user needs a status page post, customer notification, internal update, exec brief, or the resolved/all-clear message.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["incident", "communication", "status-page", "outage", "stakeholder", "sre"],
+  "model": { "tier": "standard", "rationale": "Audience-segmented message generation under a strict don't-retract discipline. Same shape as exec-summary/audience-profile — translation and altitude, not adversarial reasoning." }
+}

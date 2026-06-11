@@ -129,6 +129,7 @@ Skills for the SDLC steps around the code itself — turning raw requirements in
 | [`deck-builder`](skills/deck-builder/SKILL.md) | Generate a real PowerPoint (`.pptx`) file from content + audience + color palette. Uses `python-pptx`; supports 7 layout types and audience-tuned density. Pairs naturally with `audience-profile` + `slide-outliner`. |
 | [`exec-summary`](skills/exec-summary/SKILL.md) | Compress a long technical document into a one-page executive summary structured around an Ask, business impact, cost/timeline, risks, and what you need from the audience. |
 | [`decision-log`](skills/decision-log/SKILL.md) | Extract decisions, action items, owners, and due dates from meeting notes, Slack threads, or transcripts into a structured log with source attribution. |
+| [`incident-comms`](skills/incident-comms/SKILL.md) | Draft the messages you send *while an incident is still burning* — audience-segmented into customer status-page posts, internal stakeholder updates that arm the relayer, and three-sentence exec briefs (business impact + the ask). Every message leads with reader-facing impact (not internal symptom), uses the precise status vocabulary (investigating / identified / monitoring / resolved), commits only to the **next-update time** (never a fix ETA or speculative cause you'd have to retract), and stays blameless and screenshot-safe. Acknowledge → update-on-committed-cadence → verified resolve. Completes the operate triad with `runbook-generator` (how to fix) and `postmortem-generator` (what to say after). |
 
 ## What's in a skill
 
