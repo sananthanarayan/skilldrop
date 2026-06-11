@@ -1,0 +1,10 @@
+{
+  "name": "accessibility-audit",
+  "version": "0.1.0",
+  "description": "Adversarially audit a UI (component code, page markup, screenshot, or flow) against WCAG 2.2 AA — findings cited to specific success criteria, centered on the user and assistive tech each one blocks, severity-tagged, with a concrete fix and what a scanner would miss. Use when the user wants an accessibility review, a11y audit, WCAG check, or to find what blocks screen-reader / keyboard / low-vision users before shipping.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["accessibility", "a11y", "wcag", "audit", "review", "inclusive-design"],
+  "model": { "tier": "heavy", "rationale": "Adversarial review against WCAG success criteria — cheaper models fault alt-text presence over quality, under-call severity, miss focus-order/name-role-value issues, and claim AT passes from screenshots. Never downgrade." }
+}
