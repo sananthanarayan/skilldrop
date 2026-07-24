@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["business-case", "migration-plan", "nfr-spec", "success-metrics"],
   "tags": ["capacity-planning", "cost", "cloud", "finops", "sizing", "unit-economics"],
   "model": { "tier": "standard", "rationale": "Quantitative projection from a demand model against a fixed cost catalog. Headroom and scaling-cliff judgment is bounded by the reference; escalate via ambiguous-input on novel architectures." }
 }

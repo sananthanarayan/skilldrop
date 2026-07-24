@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["design-doc", "doc-critique"],
   "tags": ["review", "code-review", "adversarial", "edge-cases", "future-proofing", "test-coverage", "dev-workflow"],
   "model": { "tier": "heavy", "rationale": "Adversarial code review across four lenses. Cheaper models miss edge cases and under-call severity. Never downgrade." }
 }

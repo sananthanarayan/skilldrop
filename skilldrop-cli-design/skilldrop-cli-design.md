@@ -49,6 +49,18 @@ skilldrop doctor                        # detect installed IDEs, report install 
 skilldrop where <skill>                 # print the install path(s) for a skill
 ```
 
+### Companion skills
+
+Every skill's `manifest.json` carries a `related` block — the flat list of sibling skills it hands off to, builds on, or names as alternatives (kept in sync with `SKILL.md` references by `validate.py`). The CLI uses it in three places:
+
+```bash
+skilldrop install <skill> --with-related   # install the skill plus its related companions (one level, not transitive)
+skilldrop install <skill>                  # TTY: after installing, prompt "also install related: a, b, c? [y/N]"; non-TTY: print them, install nothing extra
+skilldrop info <skill>                     # lists related, marking each installed / not installed
+```
+
+One level deep only — `related` closures span most of the catalog (38+ of the skills reference at least one sibling), and transitive install would surprise users with a near-full catalog pull. `--all` already exists for that intent.
+
 ### IDE detection
 
 `skilldrop doctor` and the auto-detect path used by `install` look for:

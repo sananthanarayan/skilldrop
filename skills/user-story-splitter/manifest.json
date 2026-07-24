@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["feature-implement-loop"],
   "tags": ["user-stories", "agile", "backlog", "acceptance-criteria", "planning", "sprint"],
   "model": { "tier": "standard", "rationale": "Decomposes an epic into INVEST slices with testable ACs. Structured synthesis; escalation rules cover large or contradictory PRDs." }
 }

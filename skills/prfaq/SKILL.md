@@ -9,7 +9,7 @@ The working-backwards forcing function: write the launch press release *before* 
 
 ## How to respond
 
-1. **Pin the three anchors** — customer, problem, differentiator. Ask at most 2 questions, spent on the weakest anchors: *"Who exactly is the customer, and what do they do today instead?"* and *"What does this do that the thing they use today doesn't?"* A PRFAQ for "everyone" with a problem stated in industry jargon produces a marketing document, not a forcing function — don't start drafting until all three anchors are concrete.
+1. **Pin the three anchors** — customer, problem, differentiator. Ask at most 2 questions, spent on the weakest anchors: *"Who exactly is the customer, and what do they do today instead?"* and *"What does this do that the thing they use today doesn't?"* A PRFAQ for "everyone" with a problem stated in industry jargon produces a marketing document, not a forcing function — don't start drafting until all three anchors are concrete. Non-interactive run (no user to ask): derive missing anchors from the input where defensible and tag them `[assumption]` at the top; an anchor with no defensible derivation → emit `BLOCKED: need <anchor>` naming what to rerun with, instead of fabricating a customer.
 
 2. **Write the press release** — one page, datelined with a city and a realistic launch date; no product name exists yet → invent a plausible working name and mark it as a placeholder. The blocks:
    - **Headline**: product name + the customer benefit in one sentence. ✅ *"Acme Contracts cuts routine contract review from three days to twenty minutes for in-house legal teams"* — ❌ *"Acme launches AI-powered legal platform"*.

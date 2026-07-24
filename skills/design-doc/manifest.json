@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["architecture-diagrams"],
   "tags": ["design-doc", "documentation", "engineering", "review"],
   "model": { "tier": "standard", "rationale": "Synthesizes a design doc from a brief. Escalates to opus on big or genuinely contested inputs." }
 }

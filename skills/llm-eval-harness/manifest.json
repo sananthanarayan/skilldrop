@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["ai-usage-report", "success-metrics", "tech-comparison-matrix"],
   "tags": ["llm", "evals", "ai-engineering", "testing", "llm-as-judge", "regression-gate"],
   "model": { "tier": "standard", "rationale": "Methodology synthesis against a fixed decision tree and pitfall catalog. Grading-method and metric choices need judgment but are bounded; escalate via ambiguous-input on novel task types." }
 }

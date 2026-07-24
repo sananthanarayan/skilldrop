@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": [],
   "tags": ["presentation", "deck", "outline", "stakeholder-communication"],
   "model": { "tier": "standard", "rationale": "Outlines a deck to a time budget. Structuring, not deep reasoning." }
 }

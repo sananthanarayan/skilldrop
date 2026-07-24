@@ -164,7 +164,7 @@ skills/<skill-name>/
 └── scripts/              # (optional) Executable helpers the agent invokes
 ```
 
-The `manifest.json` is the canonical machine-readable summary: its `deps` block lists `pip` / `npm` packages, and `env.required` lists env vars that must be set before the skill works. Its `model` block declares the cost-effective model tier for the skill (see below).
+The `manifest.json` is the canonical machine-readable summary: its `deps` block lists `pip` / `npm` packages, and `env.required` lists env vars that must be set before the skill works. Its `related` block lists the sibling skills this one hands off to, builds on, or names as alternatives — the companions to install if you want the pipelines to work end-to-end. Its `model` block declares the cost-effective model tier for the skill (see below).
 
 ## Cost-aware model routing (provider-neutral)
 
@@ -200,7 +200,7 @@ Why not have an LLM pick the model live on every call? Because that pays tokens 
 
 ## Installing a skill into your IDE
 
-Each skill is a plain directory. Installation is always the same two steps: (1) copy the skill folder into your IDE's skills/rules location, then (2) install the skill's dependencies (the commands are in `manifest.json` under `deps`, or run the install line from the skill's SKILL.md).
+Each skill is a plain directory. Installation is always the same two steps: (1) copy the skill folder into your IDE's skills/rules location, then (2) install the skill's dependencies (the commands are in `manifest.json` under `deps`, or run the install line from the skill's SKILL.md). Optionally, also copy the companions listed under `related` in the skill's `manifest.json` — skills reference each other, and while a hand-off to an uninstalled sibling degrades gracefully to inline guidance, the pipelines work best complete.
 
 ### Claude Code
 
@@ -349,6 +349,7 @@ The skill parses `$ARGUMENTS` to figure out which Figma URL you mean and which a
 4. If your skill needs scripts, drop them in `scripts/` and reference them with a path relative to the skill folder — **avoid hard-coding `${CLAUDE_SKILL_DIR}` only**; show both paths so non–Claude-Code users aren't stuck.
 5. Add an `evals/` folder: `evals.json` (at least one realistic prompt with a list of assertions the output must satisfy) and `eval_queries.json` (phrases that should and should **not** trigger the skill). These double as the checklist for the manual test pass and keep the `description` honest about when the skill fires.
 6. Add an entry to the **Skills in this repo** table above and to the **Installing dependencies** table.
+7. Run `python3 validate.py` from the repo root — it checks name consistency, the tier sync with `model-routing.json`, the `related`↔SKILL.md reference sync, and eval file shape.
 
 ## License
 

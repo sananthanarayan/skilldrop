@@ -5,15 +5,31 @@
   "entrypoint": "SKILL.md",
   "deps": {
     "npm": [],
-    "pip": ["requests>=2.28"]
+    "pip": [
+      "requests>=2.28"
+    ]
   },
   "env": {
-    "required": ["FIGMA_TOKEN"],
+    "required": [
+      "FIGMA_TOKEN"
+    ],
     "optional": []
   },
+  "related": [
+    "architecture-diagrams"
+  ],
   "install": {
     "pip": "python3 -m pip install -r requirements.txt"
   },
-  "tags": ["figma", "figjam", "diagrams", "design", "api"],
-  "model": { "tier": "standard", "rationale": "API calls + spec generation. Bounded transformation." }
+  "tags": [
+    "figma",
+    "figjam",
+    "diagrams",
+    "design",
+    "api"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "API calls + spec generation. Bounded transformation."
+  }
 }

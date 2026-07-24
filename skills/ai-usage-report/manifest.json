@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": [],
   "tags": ["ai-usage", "reporting", "telemetry", "adoption", "observability", "manager-tools"],
   "model": { "tier": "standard", "rationale": "Tabulates telemetry; the 'AI theater' effectiveness call needs some judgment." }
 }

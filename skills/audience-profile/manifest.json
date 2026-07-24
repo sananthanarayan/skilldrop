@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["deck-builder", "slide-outliner"],
   "tags": ["audience", "stakeholder-communication", "reference"],
   "model": { "tier": "light", "rationale": "Maps fixed audience archetypes to structural rules. Lookup against a rubric, not synthesis." }
 }

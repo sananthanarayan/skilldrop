@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": [],
   "tags": ["runbook", "operations", "on-call", "sre"],
   "model": { "tier": "standard", "rationale": "Operational doc from service facts. Bounded synthesis." }
 }

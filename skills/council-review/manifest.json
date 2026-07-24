@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["devils-advocate", "doc-critique", "tech-comparison-matrix"],
   "tags": ["review", "deliberation", "council", "decision", "architecture", "pre-mortem", "multi-perspective", "dev-workflow"],
   "model": { "tier": "heavy", "rationale": "Multi-perspective deliberation + weighted reconciliation. Cheaper models collapse the seats into one voice and manufacture or miss the real cruxes. Never downgrade." }
 }

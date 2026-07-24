@@ -14,6 +14,15 @@
         "The north-star is user-behavioral, not 'features shipped' or another output",
         "Next steps route team KRs to success-metrics for measurement design and gaps to a named decision owner"
       ]
+    },
+    {
+      "id": 2,
+      "prompt": "[Non-interactive run — no user available to answer questions] Cascade our OKRs to the teams.",
+      "assertions": [
+        "No company OKRs are invented — the output is BLOCKED: need the company OKRs, verbatim",
+        "The BLOCKED output states what to rerun with (the top 3-5 objectives and their KRs, plus teams in scope)",
+        "No cascade tables, gap registry, or metric tree appear"
+      ]
     }
   ]
 }

@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["capacity-cost-model", "design-doc", "prd-draft", "test-plan-generator", "threat-model"],
   "tags": ["nfr", "requirements", "slo", "performance", "availability", "quality-attributes"],
   "model": { "tier": "standard", "rationale": "Rubric-driven sweep with archetype defaults; the judgment is calibrating targets to business reality. Bounded by the catalog; escalate via ambiguous-input on contested SLOs." }
 }

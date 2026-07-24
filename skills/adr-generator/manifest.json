@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": [],
   "tags": ["adr", "documentation", "decisions", "architecture"],
   "model": { "tier": "standard", "rationale": "Structures a decision into MADR/Nygard. Bounded judgment, not adversarial." }
 }

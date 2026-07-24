@@ -16,6 +16,15 @@
         "Opportunities are ranked and exactly 1-2 are named as targets; the rest are explicitly deprioritized with reasons",
         "Hand-offs route committed work to prd-draft/user-story-splitter and measurement to success-metrics"
       ]
+    },
+    {
+      "id": 2,
+      "prompt": "[Non-interactive run — no user available to answer questions] Map the journey.",
+      "assertions": [
+        "No journey is drafted — with no persona or outcome derivable, the output is BLOCKED: need persona + outcome",
+        "The BLOCKED output names both missing anchors and what to rerun with",
+        "No invented persona, stages, or Mermaid diagram appear"
+      ]
     }
   ]
 }

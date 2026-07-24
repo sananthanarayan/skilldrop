@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["exec-summary", "prd-draft", "tech-comparison-matrix"],
   "tags": ["business-case", "investment", "build-vs-buy", "roi", "cost-benefit", "decision"],
   "model": { "tier": "heavy", "rationale": "Weighted multi-option judgment with a committal recommendation — same failure mode as tech-comparison-matrix: cheaper models mis-weight costs, inflate benefits, and miss the flip-assumption. Never downgrade." }
 }

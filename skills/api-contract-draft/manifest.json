@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["council-review", "doc-critique", "guide-builder", "tech-comparison-matrix", "user-story-splitter"],
   "tags": ["api-design", "openapi", "contract-first", "rest", "swagger", "asyncapi"],
   "model": { "tier": "standard", "rationale": "Schema synthesis against fixed conventions. The resource modeling needs judgment; the conventions bound it. Escalate via ambiguous-input on contested multi-team contracts." }
 }

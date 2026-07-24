@@ -11,7 +11,7 @@
 1. **Folder name = `SKILL.md` `name` = `manifest.json` `name`.** Kebab-case, use-case-first, no version suffix. Changing any of the three without the others breaks slash-command invocation.
 2. **Do not move** `skills/`, `LICENSE`, or `README.md`. Skills are discovered by path; moving the directory breaks every install instruction the README documents.
 3. **Keep `SKILL.md` under ~500 lines.** Spill into `reference.md`, `templates/`, `lenses/`, `rubrics/`, or `examples/`. Agent context is the binding constraint — a bloated `SKILL.md` crowds out the user's actual prompt.
-4. **Never invent commands, env vars, or file conventions.** Use those documented below. This repo has no test runner, no CI, no linter at the root — don't pretend it does.
+4. **Never invent commands, env vars, or file conventions.** Use those documented below. This repo has no test runner and no CI; the only automated check is `python3 validate.py` (consistency lint) — don't pretend others exist.
 5. **No secrets, no real customer names, no personal data** in templates, examples, or sample inputs. Placeholder data only.
 6. **Voice is opinionated, not hedged.** Strip "generally", "consider", "you might want to". The `✅` / `❌` markers have semantic meaning — don't use them decoratively, don't add other decorative emoji.
 7. **Every new skill ships with `Quality bar` and `Anti-patterns to avoid` sections.** A skill without them is a description, not a generator. Both are enforced by the **Before you commit** checklist below.
@@ -28,13 +28,16 @@ mkdir -p .claude/skills && cp -R skills/<skill-name> .claude/skills/
 # Install Python deps for a skill that has them (currently figma-diagrams, deck-builder)
 cd skills/<skill-name> && python3 -m pip install -r requirements.txt
 
+# Consistency lint — run from the repo root before committing
+python3 validate.py
+
 # Branch + PR workflow
 git checkout -b feat/<short-kebab-name>      # or fix/… docs/… chore/…
 git push origin feat/<short-kebab-name>
 gh pr create --base main --head <handle>:feat/<short-kebab-name>
 ```
 
-There is **no `make` target, no test command, no lint command, no CI gate** at the repo root. Quality assurance is the manual-test pass documented in **Authoring a new skill** below: install the skill into a clean Claude Code session, run it end-to-end on a realistic input, and verify the output meets the skill's own quality bar.
+There is **no `make` target, no test command, and no CI gate** at the repo root. The one automated check is [`validate.py`](validate.py) — a stdlib-only consistency lint (name triple-match, tier sync with `model-routing.json`, `related`↔SKILL.md reference sync, evals shape); run it before every commit. Everything beyond that is the manual-test pass documented in **Authoring a new skill** below: install the skill into a clean Claude Code session, run it end-to-end on a realistic input, and verify the output meets the skill's own quality bar.
 
 ## File placement
 
@@ -74,12 +77,15 @@ description: One sentence, use-case-first. First half says *what it does*; secon
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": [],
   "tags": ["tag1", "tag2", "tag3"],
   "model": { "tier": "standard", "rationale": "One sentence — why this tier fits what the skill does." }
 }
 ```
 
 If the skill has no scripts, leave `deps` empty. `env.required` is for vars the skill cannot work without (e.g. `FIGMA_TOKEN` for `figma-diagrams`); `env.optional` is for vars that change behaviour but aren't blockers.
+
+`related` is the flat list of sibling skills this skill's `SKILL.md` references — hand-off targets, upstream feeders, and named alternatives alike (direction lives in the SKILL.md prose, not here). It exists so installers and users can grab a skill's companions in one pass. `validate.py` enforces the sync in both directions: every backticked sibling reference in `SKILL.md` must appear in `related`, and every `related` entry must be a real skill folder that `SKILL.md` actually references.
 
 The `model` block is the colocated cost-routing hint — an **abstract, provider-neutral tier** (`light` / `standard` / `heavy`), never a vendor model name. It travels with the skill when copied into another IDE, and must match the skill's entry in the repo-root [`model-routing.json`](model-routing.json). See **Model routing** below.
 
@@ -147,6 +153,21 @@ The folder name is the slug used for `/`-invocation: kebab-case, descriptive, us
 
 **6. Test it manually.** Install into a clean Claude Code session (`cp -R skills/<name> ~/.claude/skills/`), then run the `evals/evals.json` prompt and check each assertion against the output; spot-check a `should_trigger: false` query routes elsewhere. Also verify: the agent finds `SKILL.md` without confusion; templates/lenses/rubrics are read at the right moment; scripts work from both `${CLAUDE_SKILL_DIR}/scripts/…` *and* a plain relative path. If you can, run it in a second IDE to catch portability issues.
 
+## Sibling hand-offs are advisory
+
+Skills install à la carte — never assume a referenced sibling is present in the target environment. Two rules follow:
+
+- **Authoring:** reference siblings freely (hand-offs, upstream feeders, "use X instead" alternatives) — the pipeline story is a feature. List every referenced sibling in the manifest's `related` block; `validate.py` enforces the sync.
+- **Executing** (for any agent running an installed skill): a hand-off target that isn't installed degrades gracefully — name the missing skill and skilldrop as its source, then do the minimal inline version of what the hand-off would have done. A dangling hand-off is never an error and never a reason to stop.
+
+## Non-interactive invocation
+
+Skills cap clarifying questions at 2, and some hard-block on a missing anchor (a goal, a decision, a persona). In non-interactive contexts — a subagent dispatched by `model-router`, CI, a one-shot headless run — there is no user to ask. The convention:
+
+- **Questions degrade to tagged assumptions.** Derive the most defensible answer from the input, tag it `[assumption]`, and state it at the top of the output as the first thing to confirm.
+- **Blockers degrade to a structured `BLOCKED` output**, not a guess. When the missing anchor is one whose fabrication would corrupt the artifact (inventing the company's OKRs, the feature's goal, the customer), emit `BLOCKED: need <X>` naming exactly what's missing and what to rerun with — the same shape as `feature-implement-loop`'s `BLOCKED` status. A useful refusal beats a confident fabrication.
+- **The rule must travel with the skill.** Each skill with a stop condition carries its own self-contained non-interactive line in `SKILL.md` — never a reference to this file, which doesn't get copied on install.
+
 ## Scripts must be portable
 
 If a skill has executable scripts (Python, Node, shell):
@@ -174,6 +195,9 @@ See `skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 - [ ] No secrets, no real customer data — placeholder values only.
 - [ ] Voice matches the established opinionated tone (see below).
 - [ ] **Model tier set** — new skill has a `model` block in `manifest.json` AND a matching entry in `model-routing.json`. The two agree.
+- [ ] **`related` synced** — every sibling skill referenced in `SKILL.md` is in the manifest's `related` list.
+- [ ] **Non-interactive line present** if the skill has a hard-stop condition — a self-contained sentence saying which inputs degrade to `[assumption]` and which emit `BLOCKED: need <X>`.
+- [ ] **`python3 validate.py` passes** with no failures.
 
 ## Voice & tone (non-negotiable)
 
@@ -231,7 +255,7 @@ The repo ships a **cost-aware, provider-neutral model-selection layer**: each sk
 
 Tier rule of thumb: **light** = mechanical mapping/extraction; **standard** = most generation (the default); **heavy** = adversarial reasoning / weighted judgment, never downgraded. Tiers are abstract — **never put a vendor model name in a skill's `model.tier`**; the provider map is the only place concrete models live.
 
-When you add or change a skill, set its tier in **both** `model-routing.json` and the skill's `manifest.json` `model` block — they must agree (`light`/`standard`/`heavy`). A small Python loop validating the two against each other is the quick consistency check.
+When you add or change a skill, set its tier in **both** `model-routing.json` and the skill's `manifest.json` `model` block — they must agree (`light`/`standard`/`heavy`). `python3 validate.py` checks the two against each other.
 
 ## Pointers
 

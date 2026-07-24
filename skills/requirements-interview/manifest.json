@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["brief-intake", "decision-log", "prd-draft"],
   "tags": ["discovery", "interviews", "requirements", "elicitation", "stakeholders", "user-research"],
   "model": { "tier": "standard", "rationale": "Question banks are rubric-shaped, but ranking by design impact and deriving falsification conditions for the specific feature is synthesis — above light." }
 }

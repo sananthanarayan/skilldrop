@@ -1,0 +1,140 @@
+#!/usr/bin/env python3
+"""Consistency lint for skilldrop. No deps, no network. Run from the repo root:
+
+    python3 validate.py            # exit 0 = clean, 1 = failures
+    python3 validate.py --quiet    # failures only, no warnings
+
+Checks (FAIL):
+  - folder name == SKILL.md frontmatter `name` == manifest.json `name`
+  - manifest has all required fields (name, version, description, entrypoint,
+    deps, env, related, tags, model)
+  - manifest `model.tier` == model-routing.json tier, both directions
+  - manifest `related`: every entry is a real skill folder, and every sibling
+    skill referenced in SKILL.md (backticked) appears in `related` — and vice versa
+  - evals/ files, when present, parse and have the right shape: evals.json has
+    >=1 eval with prompt + assertions; eval_queries.json has both should_trigger
+    true and false rows
+
+Warnings (non-fatal):
+  - SKILL.md over ~500 lines (golden rule 3)
+  - manifest description != SKILL.md frontmatter description (they should be
+    kept in sync; pre-existing drift is tracked here until cleaned up)
+"""
+import json
+import os
+import re
+import sys
+
+ROOT = os.path.dirname(os.path.abspath(__file__))
+SKILLS = os.path.join(ROOT, "skills")
+REQUIRED_FIELDS = ["name", "version", "description", "entrypoint", "deps", "env", "related", "tags", "model"]
+
+failures, warnings = [], []
+
+
+def fail(skill, msg):
+    failures.append(f"{skill}: {msg}")
+
+
+def warn(skill, msg):
+    warnings.append(f"{skill}: {msg}")
+
+
+def frontmatter(md_text):
+    parts = md_text.split("---")
+    return parts[1] if len(parts) >= 3 else ""
+
+
+def main():
+    routing = json.load(open(os.path.join(ROOT, "model-routing.json")))["skills"]
+    skill_dirs = sorted(d for d in os.listdir(SKILLS) if os.path.isdir(os.path.join(SKILLS, d)))
+    dir_set = set(skill_dirs)
+
+    for d in skill_dirs:
+        p = os.path.join(SKILLS, d)
+        try:
+            manifest = json.load(open(os.path.join(p, "manifest.json")))
+        except (OSError, json.JSONDecodeError) as e:
+            fail(d, f"manifest.json unreadable: {e}")
+            continue
+        try:
+            md = open(os.path.join(p, "SKILL.md")).read()
+        except OSError:
+            fail(d, "SKILL.md missing")
+            continue
+
+        fm = frontmatter(md)
+        m_name = re.search(r"^name:\s*(\S+)", fm, re.M)
+        if not m_name or not (d == manifest.get("name") == m_name.group(1)):
+            fail(d, f"name triple mismatch: folder={d} manifest={manifest.get('name')} "
+                    f"frontmatter={m_name.group(1) if m_name else None}")
+
+        for field in REQUIRED_FIELDS:
+            if field not in manifest:
+                fail(d, f"manifest missing required field '{field}'")
+
+        tier = manifest.get("model", {}).get("tier")
+        if d not in routing:
+            fail(d, "no entry in model-routing.json")
+        elif tier != routing[d].get("tier"):
+            fail(d, f"tier mismatch: manifest={tier} routing={routing[d].get('tier')}")
+
+        refs = {r for r in re.findall(r"`([a-z][a-z0-9-]+)`", md) if r in dir_set and r != d}
+        related = manifest.get("related")
+        if isinstance(related, list):
+            rel_set = set(related)
+            for r in rel_set - dir_set:
+                fail(d, f"related entry '{r}' is not a skill folder")
+            for r in sorted(refs - rel_set):
+                fail(d, f"SKILL.md references `{r}` but manifest related omits it")
+            for r in sorted(rel_set & dir_set - refs):
+                fail(d, f"manifest related lists '{r}' but SKILL.md never references it")
+        elif related is not None:
+            fail(d, "related must be a flat list of skill names")
+
+        evals_path = os.path.join(p, "evals", "evals.json")
+        queries_path = os.path.join(p, "evals", "eval_queries.json")
+        if os.path.exists(evals_path):
+            try:
+                ev = json.load(open(evals_path))
+                if ev.get("skill_name") != d:
+                    fail(d, f"evals.json skill_name={ev.get('skill_name')} != {d}")
+                if not ev.get("evals") or any(not e.get("prompt") or not e.get("assertions") for e in ev["evals"]):
+                    fail(d, "evals.json needs >=1 eval, each with prompt + assertions")
+            except json.JSONDecodeError as e:
+                fail(d, f"evals.json invalid JSON: {e}")
+        if os.path.exists(queries_path):
+            try:
+                qs = json.load(open(queries_path))
+                flags = {q.get("should_trigger") for q in qs}
+                if flags != {True, False}:
+                    fail(d, "eval_queries.json needs both should_trigger true and false rows")
+            except json.JSONDecodeError as e:
+                fail(d, f"eval_queries.json invalid JSON: {e}")
+
+        n_lines = md.count("\n") + 1
+        if n_lines > 500:
+            warn(d, f"SKILL.md is {n_lines} lines (golden rule: ~500 max)")
+
+        m_desc = re.search(r"^description:\s*(.+?)(?=^\w+:|\Z)", fm, re.M | re.S)
+        if m_desc and " ".join(m_desc.group(1).split()) != " ".join(manifest.get("description", "").split()):
+            warn(d, "manifest description differs from SKILL.md frontmatter description")
+
+    for r in sorted(set(routing) - dir_set):
+        fail("model-routing.json", f"entry '{r}' has no skill folder")
+
+    quiet = "--quiet" in sys.argv
+    if warnings and not quiet:
+        print(f"-- {len(warnings)} warning(s) --")
+        for w in warnings:
+            print("  WARN", w)
+    if failures:
+        print(f"-- {len(failures)} FAILURE(s) --")
+        for f in failures:
+            print("  FAIL", f)
+        sys.exit(1)
+    print(f"OK: {len(skill_dirs)} skills validated" + ("" if quiet else f", {len(warnings)} warning(s)"))
+
+
+if __name__ == "__main__":
+    main()

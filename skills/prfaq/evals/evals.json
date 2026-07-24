@@ -18,6 +18,15 @@
         "No acceptance criteria, API shapes, or backlog items appear anywhere",
         "The output ends with a hand-off pointing to prd-draft or business-case"
       ]
+    },
+    {
+      "id": 2,
+      "prompt": "[Non-interactive run — no user available to answer questions] Write a PRFAQ.",
+      "assertions": [
+        "No press release is fabricated — with no customer, problem, or differentiator derivable, the output is a BLOCKED response",
+        "The BLOCKED output names the missing anchors (customer, problem, differentiator) and what to rerun with",
+        "No invented product, customer segment, or problem statement appears"
+      ]
     }
   ]
 }

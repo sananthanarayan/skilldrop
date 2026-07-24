@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["devils-advocate", "exec-summary", "sonar-review"],
   "tags": ["release-notes", "changelog", "git", "release", "deploy", "communication"],
   "model": { "tier": "standard", "rationale": "Classifies commits and rewrites them for a reader. The audience translation needs judgment; escalate via large-input on very long ranges." }
 }

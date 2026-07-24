@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["council-review", "tech-comparison-matrix", "test-plan-generator"],
   "tags": ["migration", "rollout", "cutover", "backfill", "zero-downtime", "deployment"],
   "model": { "tier": "standard", "rationale": "Phased plan synthesis with a strong template. Ordering judgment is bounded by the expand/migrate/contract pattern; escalate via ambiguous-input on contested, high-stakes cutovers." }
 }

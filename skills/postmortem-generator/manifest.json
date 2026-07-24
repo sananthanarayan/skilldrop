@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["runbook-generator"],
   "tags": ["postmortem", "incident", "rca", "sre", "blameless", "outage"],
   "model": { "tier": "standard", "rationale": "Synthesizes a structured doc from incident notes. Contributing-factor chains need judgment but are bounded; escalate via large-input on huge scrollbacks." }
 }

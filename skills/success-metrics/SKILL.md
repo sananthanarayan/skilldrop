@@ -9,7 +9,7 @@ Answers "how will we know it worked?" *before* build, when the answer can still 
 
 ## How to respond
 
-1. **Extract the goal** from the PRD, brief, or conversation. Ask at most 2 questions, spent on **baseline** ("what's the number today, and where does it live?") and **decision authority** ("who acts if the target is missed?"). No goal articulated yet → stop and route to `prd-draft`; metrics for an unstated goal measure noise.
+1. **Extract the goal** from the PRD, brief, or conversation. Ask at most 2 questions, spent on **baseline** ("what's the number today, and where does it live?") and **decision authority** ("who acts if the target is missed?"). No goal articulated yet → stop and route to `prd-draft`; metrics for an unstated goal measure noise. Non-interactive run (no user to ask): a stated-but-vague goal gets sharpened and tagged `[assumption]`; no goal at all → emit `BLOCKED: need the feature's goal` — never invent one.
 
 2. **Pick exactly one primary metric.** More than one primary means none — when they diverge, nobody pre-agreed which wins. The primary is an **outcome the user experiences or the business banks**, not an output the team ships. ✅ *"Median support-ticket handle time"* — ❌ *"Number of dashboard features launched"* — ❌ *"Dashboard page views"* (attention is not outcome). Every other contender becomes a secondary, guardrail, or gets cut.
 

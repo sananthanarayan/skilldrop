@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["brief-intake", "design-doc", "exec-summary", "runbook-generator"],
   "tags": ["guide", "setup", "documentation", "api-reference", "onboarding", "walkthrough"],
   "model": { "tier": "standard", "rationale": "Shapes notes into a styled guide. Generation, not adversarial review." }
 }

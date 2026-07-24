@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["architecture-diagrams", "prd-draft", "reverse-architecture", "success-metrics", "user-story-splitter"],
   "tags": ["journey-map", "customer-experience", "ux", "touchpoints", "mermaid", "personas"],
   "model": { "tier": "standard", "rationale": "Structured synthesis into a fixed four-row stage model plus bounded ranking judgment. Escalate via ambiguous-input when the persona or outcome is contested or research inputs conflict." }
 }

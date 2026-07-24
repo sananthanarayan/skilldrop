@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": [],
   "tags": ["executive", "summary", "stakeholder-communication", "one-pager"],
   "model": { "tier": "standard", "rationale": "One-page compression. Needs to keep the right signal; escalates on very long source docs." }
 }

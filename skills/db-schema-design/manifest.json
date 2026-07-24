@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["api-contract-draft", "data-contract", "migration-plan", "tech-comparison-matrix"],
   "tags": ["database", "schema-design", "data-model", "indexing", "sql", "nosql"],
   "model": { "tier": "standard", "rationale": "Design synthesis from access patterns against a fixed paradigm/indexing/anti-pattern reference. Paradigm and denormalization judgment is bounded; escalate via ambiguous-input on contested scale/consistency tradeoffs." }
 }
