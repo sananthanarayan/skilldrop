@@ -1,7 +1,7 @@
 {
   "name": "council-review",
   "version": "0.1.0",
-  "description": "Convene a council of distinct senior-engineer personas (Architect, Security, Operator/SRE, Pragmatist, User-Advocate, + optional bench seats) to deliberate a decision, design, or code change — each takes an independent stance, genuine disagreements surface as named cruxes, and a Chair issues a reconciled verdict that records dissents and states what would change the decision. Use when a choice has real tradeoffs and one reviewer isn't enough: architecture decisions, risky changes before merge, RFC scrutiny, 'should we adopt X?', rewrite-vs-refactor, or a pre-mortem.",
+  "description": "Convene a council of distinct senior-engineer personas (Architect, Security, Operator/SRE, Pragmatist, User-Advocate, plus optional bench seats) to deliberate a decision, design, or code change — each takes an independent stance, the genuine disagreements are surfaced as named cruxes, and a Chair issues a reconciled verdict that records dissents and states what would change the decision. The \"Claude Council.\" Use when a choice has real tradeoffs and one reviewer's voice isn't enough: architecture decisions, risky changes before merge, RFC/design scrutiny, \"should we adopt X?\", rewrite-vs-refactor, or a pre-mortem.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },

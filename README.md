@@ -198,6 +198,29 @@ The tier lives in each skill's `manifest.json` (`model` block, travels with the 
 
 Why not have an LLM pick the model live on every call? Because that pays tokens and latency *every time* to answer a question whose answer is fixed per skill. Routing is a table lookup; the model budget is spent on the work, not on deciding.
 
+## Skill packs — install a role's toolkit in one command
+
+Categories (above) say what a skill *is*; packs say *who needs it*. [`packs.json`](packs.json) defines six role-based bundles — packs overlap where a skill serves several roles, and every skill belongs to at least one:
+
+| Pack | Skills | For |
+|---|---|---|
+| `solution-architect` | 15 | Design-phase artifacts: diagrams, ADRs, design docs, contracts, schemas, threat models, and the reviews that gate them |
+| `product-manager` | 12 | Direction to requirements: PR/FAQs, strategy frameworks, OKRs, PRDs, journey maps, story splitting, success measurement |
+| `dev-team` | 11 | Build-and-ship loop: implementation with adversarial review, test plans, triage, migrations, release notes, quality gates |
+| `stakeholder-comms` | 8 | Non-technical audiences: audience profiling, deck outlines and real `.pptx` decks, exec summaries, decision logs, guides |
+| `sre-oncall` | 5 | Operate the service: runbooks, observability design, incident comms, postmortems, capacity/cost models |
+| `ai-engineering` | 3 | Ship and measure AI features: eval harnesses, AI-usage reporting, data contracts |
+
+```bash
+python3 pack.py                                  # list packs
+python3 pack.py product-manager                  # list a pack's skills
+python3 pack.py product-manager --install        # install into ~/.claude/skills/ (user scope)
+python3 pack.py product-manager --install --project      # into .claude/skills/ (project scope)
+python3 pack.py product-manager --install --dest .cursor/skills   # any dir, for non-Claude IDEs
+```
+
+For non-Claude IDEs, `--dest` drops the folders where your tool expects them; the per-IDE wiring steps below still apply. Packs are metadata only — skills stay in flat `skills/<name>` folders, so per-skill `cp -R` installs keep working unchanged ([RFC-0001](docs/rfcs/0001-skill-packs.md) records the design decision).
+
 ## Installing a skill into your IDE
 
 Each skill is a plain directory. Installation is always the same two steps: (1) copy the skill folder into your IDE's skills/rules location, then (2) install the skill's dependencies (the commands are in `manifest.json` under `deps`, or run the install line from the skill's SKILL.md). Optionally, also copy the companions listed under `related` in the skill's `manifest.json` — skills reference each other, and while a hand-off to an uninstalled sibling degrades gracefully to inline guidance, the pipelines work best complete.
@@ -337,6 +360,7 @@ The skill parses `$ARGUMENTS` to figure out which Figma URL you mean and which a
 
 ## Adding a new skill
 
+0. Write a one-page RFC first — copy [`docs/rfcs/0000-template.md`](docs/rfcs/0000-template.md) to `docs/rfcs/NNNN-<slug>.md` and record the problem, the fit check, and the alternatives. New skills and structural changes need one; fixes to existing skills don't.
 1. Create `skills/<your-skill>/SKILL.md` with this frontmatter:
    ```yaml
    ---
@@ -349,7 +373,8 @@ The skill parses `$ARGUMENTS` to figure out which Figma URL you mean and which a
 4. If your skill needs scripts, drop them in `scripts/` and reference them with a path relative to the skill folder — **avoid hard-coding `${CLAUDE_SKILL_DIR}` only**; show both paths so non–Claude-Code users aren't stuck.
 5. Add an `evals/` folder: `evals.json` (at least one realistic prompt with a list of assertions the output must satisfy) and `eval_queries.json` (phrases that should and should **not** trigger the skill). These double as the checklist for the manual test pass and keep the `description` honest about when the skill fires.
 6. Add an entry to the **Skills in this repo** table above and to the **Installing dependencies** table.
-7. Run `python3 validate.py` from the repo root — it checks name consistency, the tier sync with `model-routing.json`, the `related`↔SKILL.md reference sync, and eval file shape.
+7. Add the skill to at least one pack in `packs.json`.
+8. Run `python3 validate.py` from the repo root — it checks name consistency, the tier sync with `model-routing.json`, the `related`↔SKILL.md reference sync, description sync, pack membership, and eval file shape.
 
 ## License
 

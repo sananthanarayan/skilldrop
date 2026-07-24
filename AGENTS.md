@@ -31,6 +31,13 @@ cd skills/<skill-name> && python3 -m pip install -r requirements.txt
 # Consistency lint — run from the repo root before committing
 python3 validate.py
 
+# Skill packs — list packs / list a pack's skills / install a pack
+python3 pack.py
+python3 pack.py <pack-name>
+python3 pack.py <pack-name> --install              # user scope (~/.claude/skills/)
+python3 pack.py <pack-name> --install --project    # project scope (.claude/skills/)
+python3 pack.py <pack-name> --install --dest <dir> # any dir (e.g. .cursor/skills)
+
 # Branch + PR workflow
 git checkout -b feat/<short-kebab-name>      # or fix/… docs/… chore/…
 git push origin feat/<short-kebab-name>
@@ -50,6 +57,8 @@ There is **no `make` target, no test command, and no CI gate** at the repo root.
 | Adversarial-sweep checklist (devils-advocate style) | `skills/<skill-name>/lenses/<name>.md` |
 | Per-archetype quality bar (doc-critique style) | `skills/<skill-name>/rubrics/<archetype>.md` |
 | Acceptance checks for a skill | `skills/<skill-name>/evals/evals.json` (prompt + assertions) + `evals/eval_queries.json` (should/shouldn't-trigger phrases) |
+| RFC for a new skill or structural change | `docs/rfcs/NNNN-<kebab-slug>.md` — copy [`docs/rfcs/0000-template.md`](docs/rfcs/0000-template.md), next sequential number |
+| Pack membership for a skill | `packs.json` — add the skill to at least one pack |
 | Executable helper | `skills/<skill-name>/scripts/<name>.py` (or `.js`, `.sh`) |
 | Python dep manifest for a skill | `skills/<skill-name>/requirements.txt` |
 | Claude Code project settings | `.claude/settings.json` — optional config (hooks, permissions, env). Inert for non-Claude tools. |
@@ -110,6 +119,8 @@ skills/<skill-name>/
 The folder name is the slug used for `/`-invocation: kebab-case, descriptive, use-case-first (`runbook-generator`, not `runbook-helper-v2`).
 
 ## Authoring a new skill
+
+**0. Write the RFC first.** New skills, new top-level files/directories, changes to the skill anatomy or manifest schema, and new repo-wide conventions all start as an RFC: copy [`docs/rfcs/0000-template.md`](docs/rfcs/0000-template.md) to `docs/rfcs/NNNN-<slug>.md` (next sequential number), fill in the problem, fit check, proposal, and alternatives — under a page — and mark it `accepted` before building, `implemented` when the PR merges. Fixes and improvements to an existing skill, doc corrections, and eval additions do **not** need one. The RFC is where step 1's fit decision gets recorded, so a rejected idea leaves a trace and doesn't get re-litigated.
 
 **1. Decide if it belongs here.** A skill belongs in skilldrop if its output is a *concrete artifact* (doc, diagram, deck, structured review, brief), it's *portable* (works in Claude Code and installs into Cursor / Kiro / Continue / Cline / Aider), it's *opinionated* (makes decisions instead of asking five questions), and it fits an existing category or justifies a new one. It does **not** belong if it's a generic chat helper with no artifact, depends on a proprietary internal service contributors can't reach, is a thin wrapper around one CLI command, or duplicates an existing skill — improve that one instead.
 
@@ -183,6 +194,7 @@ See `skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 ## Before you commit
 
 - [ ] PR is from a **feature branch**, not from `main`.
+- [ ] **RFC exists and is `accepted`** for a new skill or structural change (`docs/rfcs/NNNN-*.md`); mark it `implemented` in the same PR.
 - [ ] Folder name = `SKILL.md` `name` = `manifest.json` `name`.
 - [ ] `SKILL.md` is **≤ ~500 lines** — long material moved into siblings.
 - [ ] `Quality bar` and `Anti-patterns to avoid` sections are present.
@@ -197,6 +209,7 @@ See `skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 - [ ] **Model tier set** — new skill has a `model` block in `manifest.json` AND a matching entry in `model-routing.json`. The two agree.
 - [ ] **`related` synced** — every sibling skill referenced in `SKILL.md` is in the manifest's `related` list.
 - [ ] **Non-interactive line present** if the skill has a hard-stop condition — a self-contained sentence saying which inputs degrade to `[assumption]` and which emit `BLOCKED: need <X>`.
+- [ ] **Pack membership** — new skill added to at least one pack in `packs.json`.
 - [ ] **`python3 validate.py` passes** with no failures.
 
 ## Voice & tone (non-negotiable)
@@ -244,6 +257,14 @@ The README groups skills into these categories. Prefer adding to one of them ove
 
 A new section needs a use-case-first name, a one-sentence definition of what belongs in it, and at least one existing skill that would also fit there. Sections are cheap; ungrouped skills make the README harder to scan.
 
+## Skill packs
+
+Categories say what a skill *is*; packs say *who needs it*. [`packs.json`](packs.json) defines role-based bundles (`solution-architect`, `product-manager`, `dev-team`, `sre-oncall`, `stakeholder-comms`, `ai-engineering`) installed in one command via [`pack.py`](pack.py). Rules — rationale in [RFC-0001](docs/rfcs/0001-skill-packs.md):
+
+- **Packs are metadata only.** Skills never move out of flat `skills/<name>` folders (golden rules 1–2); a pack is a named list, nothing more.
+- **Packs may overlap** — `brief-intake` legitimately serves three roles. A skill listed in every pack is a smell (it means the packs aren't choosing).
+- **Every skill belongs to at least one pack.** A skill with no audience shouldn't have passed the RFC. `validate.py` enforces both this and that every pack entry is a real skill folder.
+
 ## Model routing
 
 The repo ships a **cost-aware, provider-neutral model-selection layer**: each skill has an abstract tier (`light` / `standard` / `heavy`) describing how much reasoning the task needs, and a `providers` map resolves that tier to a concrete model for whatever tool the user runs (Claude Code, Cursor, Codex, Kiro, …). The premise — *the right tier for a skill is stable*, so the tier is decided **once per skill** and stored, never re-derived by an LLM per call (that would cost tokens to answer a fixed question). Pieces:
@@ -260,6 +281,8 @@ When you add or change a skill, set its tier in **both** `model-routing.json` an
 ## Pointers
 
 - Repo overview & per-IDE install steps: [README.md](README.md)
+- RFCs (template + decisions): [docs/rfcs/](docs/rfcs/)
+- Skill packs: [packs.json](packs.json) + [pack.py](pack.py)
 - Model routing: [MODEL-ROUTING.md](MODEL-ROUTING.md) + [model-routing.json](model-routing.json)
 - Claude Code project settings: [.claude/settings.json](.claude/settings.json) — currently empty
 - Reference implementations for skill scripts: [`skills/deck-builder/scripts/`](skills/deck-builder/scripts/), [`skills/figma-diagrams/scripts/`](skills/figma-diagrams/scripts/)

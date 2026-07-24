@@ -1,7 +1,7 @@
 {
   "name": "devils-advocate",
   "version": "0.1.0",
-  "description": "Adversarial review of just-generated code through four lenses — edge cases the first pass missed, baked-in assumptions that won't survive 6 months, what a staff engineer would push back on in code review, and test-coverage gaps. Run immediately after an agent or human declares a feature done. Produces severity-tagged findings with file:line evidence, reproducible scenarios, and concrete fixes.",
+  "description": "Adversarial review of just-generated code, run *after* an agent (or human) declares a feature done. Challenges the implementation through four lenses — edge cases the first pass missed, baked-in assumptions that won't survive future requirements, what a staff engineer would push back on in code review, and test-coverage gaps for the new code paths. Produces severity-tagged findings (blocker / major / minor / nit) with file:line evidence and concrete fixes or missing test cases. Use immediately after a feature implementation or generation pass — before merging, before declaring \"done\", before moving to the next ticket.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },

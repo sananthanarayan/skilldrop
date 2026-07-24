@@ -1,7 +1,7 @@
 {
   "name": "guide-builder",
   "version": "0.1.0",
-  "description": "Turn raw notes, specs, or design material into an easy-to-follow guide, auto-styled to the content — a setup/quickstart, a design walkthrough, or an API/event-schema reference.",
+  "description": "Turn raw notes, specs, or design material into an easy-to-follow guide, auto-styled to the content — a setup/quickstart, a design walkthrough, or an API/event-schema reference. Use when the user wants setup or getting-started instructions, an onboarding walkthrough of how a system works, or developer reference docs for an API or event schema — and it is NOT an SRE operational runbook (use runbook-generator) or a design proposal for review (use design-doc).",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },

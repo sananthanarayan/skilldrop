@@ -1,7 +1,7 @@
 {
   "name": "reverse-architecture",
   "version": "0.1.0",
-  "description": "Reverse-engineer an architecture diagram from existing code, IaC (Terraform/CloudFormation/CDK/Pulumi/Bicep), Kubernetes manifests, docker-compose, package manifests, database schemas, or OpenAPI specs. Emits a structured extraction, a written description suitable for architecture-diagrams, and a first-draft Mermaid or C4 diagram with every node tied to a source-of-truth file path.",
+  "description": "Reverse-engineer a system's architecture from what already exists — a code repo, Terraform / CloudFormation / Pulumi / Bicep, Kubernetes manifests, docker-compose, a database schema, an OpenAPI spec, or a package manifest — and produce a renderable diagram (Mermaid / C4 / PlantUML) plus a written description suitable for handing to architecture-diagrams. Use when the user wants to draw the system that *exists*, not one they're proposing — for onboarding docs, audit reviews, migration planning, or filling in a missing \"as-is\" architecture diagram.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },

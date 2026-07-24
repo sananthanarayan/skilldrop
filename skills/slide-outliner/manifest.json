@@ -1,7 +1,7 @@
 {
   "name": "slide-outliner",
   "version": "0.1.0",
-  "description": "Outline an architecture review or technical pitch deck — slide titles, key points per slide, and speaker notes. Does not generate PPTX/Keynote files.",
+  "description": "Outline an architecture review or technical pitch deck — slide titles, key points per slide, and speaker notes. Does NOT generate PowerPoint/Keynote files; produces a structured outline the user can paste into any deck tool. Use when the user is preparing for an architecture review, design review, sales pitch, partner meeting, or steering-committee presentation.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },

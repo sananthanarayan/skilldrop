@@ -14,11 +14,12 @@ Checks (FAIL):
   - evals/ files, when present, parse and have the right shape: evals.json has
     >=1 eval with prompt + assertions; eval_queries.json has both should_trigger
     true and false rows
+  - manifest description == SKILL.md frontmatter description (whitespace-normalized)
+  - packs.json: every pack entry is a real skill folder, and every skill
+    belongs to at least one pack
 
 Warnings (non-fatal):
   - SKILL.md over ~500 lines (golden rule 3)
-  - manifest description != SKILL.md frontmatter description (they should be
-    kept in sync; pre-existing drift is tracked here until cleaned up)
 """
 import json
 import os
@@ -118,10 +119,20 @@ def main():
 
         m_desc = re.search(r"^description:\s*(.+?)(?=^\w+:|\Z)", fm, re.M | re.S)
         if m_desc and " ".join(m_desc.group(1).split()) != " ".join(manifest.get("description", "").split()):
-            warn(d, "manifest description differs from SKILL.md frontmatter description")
+            fail(d, "manifest description differs from SKILL.md frontmatter description")
 
     for r in sorted(set(routing) - dir_set):
         fail("model-routing.json", f"entry '{r}' has no skill folder")
+
+    packs = json.load(open(os.path.join(ROOT, "packs.json")))["packs"]
+    packed = set()
+    for pname, pack in packs.items():
+        for s in pack.get("skills", []):
+            if s not in dir_set:
+                fail("packs.json", f"pack '{pname}' lists '{s}', which is not a skill folder")
+            packed.add(s)
+    for s in sorted(dir_set - packed):
+        fail("packs.json", f"skill '{s}' belongs to no pack — every skill needs an audience")
 
     quiet = "--quiet" in sys.argv
     if warnings and not quiet:

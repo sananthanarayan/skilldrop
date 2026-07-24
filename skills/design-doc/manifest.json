@@ -1,7 +1,7 @@
 {
   "name": "design-doc",
   "version": "0.1.0",
-  "description": "Generate a Google-style engineering design doc (problem, goals/non-goals, alternatives, proposal, risks, rollout) from a feature brief.",
+  "description": "Generate a Google-style engineering design doc (problem, goals/non-goals, options considered, recommended approach, risks, rollout) from a feature brief or short description. Use when the user wants to draft a design doc, technical proposal, or one-pager for an engineering review.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
