@@ -14,7 +14,7 @@ The repo's skills are meant to be used from Claude Code, Cursor, Kiro, Codex, Co
 
 ## Fit check
 
-Structural change — adds `package.json` and `bin/` at the repo root (new top-level files need an RFC). Golden rules hold: `skills/` doesn't move, per-skill `cp -R` and `pack.py` keep working, and the CLI performs **copy, not projection** — the installed artifact is byte-identical to the repo folder, preserving the portability premise. The full command surface was already designed in `skilldrop-cli-design/skilldrop-cli-design.md`; this RFC scopes the MVP and corrects one fact: **`skilldrop` is taken on npm**, so the package is **`skilldrop-cli`** (the bin command remains `skilldrop`).
+Structural change — adds `package.json` and `bin/` at the repo root (new top-level files need an RFC). Golden rules hold: `skills/` doesn't move, per-skill `cp -R` and `pack.py` keep working, and the CLI performs **copy, not projection** — the installed artifact is byte-identical to the repo folder, preserving the portability premise. The full command surface was already designed in [`docs/designs/skilldrop-cli-design.md`](../designs/skilldrop-cli-design.md); this RFC scopes the MVP and corrects one fact: **`skilldrop` is taken on npm**, so the package is **`skilldrop-cli`** (the bin command remains `skilldrop`).
 
 ## Proposal
 

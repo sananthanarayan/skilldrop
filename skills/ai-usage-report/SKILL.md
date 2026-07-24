@@ -95,7 +95,7 @@ The skill has **no magic classifier**. It exposes a set of signals the user inte
 
 ## When NOT to use this skill
 
-- ❌ You don't have usage telemetry yet — the skill consumes data, doesn't collect it. See [[ai-usage-telemetry-design]] for the collection side.
+- ❌ You don't have usage telemetry yet — the skill consumes data, doesn't collect it. The collection-side spec (event schema, MCP server) lives in the skilldrop repo at `docs/designs/ai-usage-telemetry-design.md`.
 - ❌ You want to *judge* specific named people. The skill surfaces patterns; performance judgments based on AI usage are a different (and harder) decision.
 - ❌ The input lacks every effectiveness field. You can still produce a volume report, but call out the limitation explicitly — don't ship a report that looks like effectiveness analysis when it isn't.
 - ❌ Your team is < 5 people *and* the view is team-rollup. Aggregate views aren't anonymous at that size.

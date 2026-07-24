@@ -68,6 +68,7 @@ The npm package (`skilldrop-cli`) releases automatically: bump `version` in [`pa
 | Per-archetype quality bar (doc-critique style) | `skills/<skill-name>/rubrics/<archetype>.md` |
 | Acceptance checks for a skill | `skills/<skill-name>/evals/evals.json` (prompt + assertions) + `evals/eval_queries.json` (should/shouldn't-trigger phrases) |
 | RFC for a new skill or structural change | `docs/rfcs/NNNN-<kebab-slug>.md` — copy [`docs/rfcs/0000-template.md`](docs/rfcs/0000-template.md), next sequential number |
+| Long-form design doc (bigger than an RFC, not a skill) | `docs/designs/<name>.md` — e.g. the CLI command surface, the telemetry collection spec |
 | Pack membership for a skill | `packs.json` — add the skill to at least one pack |
 | Executable helper | `skills/<skill-name>/scripts/<name>.py` (or `.js`, `.sh`) |
 | Python dep manifest for a skill | `skills/<skill-name>/requirements.txt` |

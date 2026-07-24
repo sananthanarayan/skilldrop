@@ -254,7 +254,7 @@ npx skilldrop-cli outdated && npx skilldrop-cli update  # skills improve; cp -R 
 npx skilldrop-cli list | skilldrop info <skill> | skilldrop packs | skilldrop uninstall <skill>
 ```
 
-`--with-related` also pulls each skill's companions. From a clone (or before the package is published): `node bin/skilldrop.js <same args>`. Scope and design: [RFC-0002](docs/rfcs/0002-skilldrop-cli.md), full command surface in [`skilldrop-cli-design/`](skilldrop-cli-design/skilldrop-cli-design.md).
+`--with-related` also pulls each skill's companions. From a clone (or before the package is published): `node bin/skilldrop.js <same args>`. Scope and design: [RFC-0002](docs/rfcs/0002-skilldrop-cli.md), full command surface in [`docs/designs/skilldrop-cli-design.md`](docs/designs/skilldrop-cli-design.md).
 
 ### Third-party catalogs — publish your own skills through the same CLI
 
