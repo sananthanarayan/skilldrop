@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write # OIDC trusted publishing + --provenance
-      contents: read
+      contents: write # push the v<version> tag after a successful publish
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -47,3 +47,10 @@ jobs:
           fi
           echo "publishing skilldrop-cli@$LOCAL (registry has $PUBLISHED)"
           npm publish --provenance
+          if git rev-parse "v$LOCAL" >/dev/null 2>&1; then
+            echo "tag v$LOCAL already exists — skipping"
+          else
+            git tag "v$LOCAL"
+            git push origin "v$LOCAL"
+            echo "tagged v$LOCAL"
+          fi

@@ -256,6 +256,17 @@ npx skilldrop-cli list | skilldrop info <skill> | skilldrop packs | skilldrop un
 
 `--with-related` also pulls each skill's companions. From a clone (or before the package is published): `node bin/skilldrop.js <same args>`. Scope and design: [RFC-0002](docs/rfcs/0002-skilldrop-cli.md), full command surface in [`docs/designs/skilldrop-cli-design.md`](docs/designs/skilldrop-cli-design.md).
 
+### Hooks (opt-in) — wire a skill to an event
+
+Some loop-shaped skills declare **hooks** — event-triggered nudges the CLI wires into your environment when you pass `--with-hooks` ([RFC-0006](docs/rfcs/0006-per-ide-hooks.md)). It's off by default, so a plain install never touches your git repo or editor settings.
+
+```bash
+npx skilldrop-cli install devils-advocate --with-hooks --project
+# → appends a marker-fenced reminder to .git/hooks/pre-commit: "run /devils-advocate on staged changes"
+```
+
+The CLI emits per target and **degrades gracefully** — a `pre-commit-review` hook becomes an IDE-agnostic git hook (needs a git repo); a `session-start` hook becomes a Claude Code `settings.json` entry, and is cleanly skipped where the target has no equivalent (Cursor, Kiro, plain `--dest`), printing what it did and where. Hooks are reminders/context, not autonomous execution — skilldrop skills are agent instructions, so the hook prompts *you* to run the review, it doesn't silently run an AI pass. `skilldrop uninstall` removes any hook artifacts it wrote. Vocabulary and the per-target mapping are in the RFC.
+
 ### Third-party catalogs — publish your own skills through the same CLI
 
 Any git repo or directory shaped like this one is a **catalog**: `skills/<name>/` folders each holding `SKILL.md` + `manifest.json`, optionally a root `packs.json`. That's the whole contract ([RFC-0003](docs/rfcs/0003-third-party-catalogs.md)):
