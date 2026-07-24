@@ -238,6 +238,21 @@ npx skilldrop-cli list | skilldrop info <skill> | skilldrop packs | skilldrop un
 
 `--with-related` also pulls each skill's companions. From a clone (or before the package is published): `node bin/skilldrop.js <same args>`. Scope and design: [RFC-0002](docs/rfcs/0002-skilldrop-cli.md), full command surface in [`skilldrop-cli-design/`](skilldrop-cli-design/skilldrop-cli-design.md).
 
+### Third-party catalogs — publish your own skills through the same CLI
+
+Any git repo or directory shaped like this one is a **catalog**: `skills/<name>/` folders each holding `SKILL.md` + `manifest.json`, optionally a root `packs.json`. That's the whole contract ([RFC-0003](docs/rfcs/0003-third-party-catalogs.md)):
+
+```bash
+npx skilldrop-cli list --from https://github.com/you/your-skills
+npx skilldrop-cli install my-skill --from https://github.com/you/your-skills#v1.2   # #ref pins a branch/tag
+npx skilldrop-cli install --pack starter --from ../local-catalog
+npx skilldrop-cli update      # updates bundled and third-party skills side by side — the ledger remembers each skill's source
+```
+
+Safety model: installs **copy files only — nothing from a catalog is ever executed**; every skill passes a structural check before copying (broken folders are refused with reasons); and third-party installs print a review-before-use warning, because skills are instructions your AI agent will follow — read a stranger's `SKILL.md` before letting your agent obey it.
+
+**Authoring a catalog:** mirror the layout above, then check it with `npx skilldrop-cli validate --from <your-repo-or-path>` before publishing. `related`, `packs.json`, and `requirements.txt` all work in third-party catalogs exactly as they do here.
+
 ### Manual install
 
 Each skill is a plain directory. Installation is always the same two steps: (1) copy the skill folder into your IDE's skills/rules location, then (2) install the skill's dependencies (the commands are in `manifest.json` under `deps`, or run the install line from the skill's SKILL.md). Optionally, also copy the companions listed under `related` in the skill's `manifest.json` — skills reference each other, and while a hand-off to an uninstalled sibling degrades gracefully to inline guidance, the pipelines work best complete.
