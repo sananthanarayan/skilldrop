@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["decision-log", "tech-comparison-matrix"],
   "tags": ["review", "critique", "quality", "rubric", "feedback"],
   "model": { "tier": "heavy", "rationale": "Adversarial doc review against rubrics. The value is catching what a fast pass misses. Never downgrade." }
 }

@@ -9,7 +9,7 @@ Turns company objectives into team OKRs that actually roll up — and surfaces w
 
 ## How to respond
 
-1. **Get the company OKRs and the cycle.** From the input or by asking (at most 2 questions, spent on: *"what are the company's top 3–5 objectives this cycle, verbatim?"* and *"which teams are in scope?"*). Record company OKRs **verbatim** — rewriting the company's words without saying so corrupts the roll-up. No company objectives exist at all → stop; that's a strategy conversation (`strategy-analysis`), not a cascade.
+1. **Get the company OKRs and the cycle.** From the input or by asking (at most 2 questions, spent on: *"what are the company's top 3–5 objectives this cycle, verbatim?"* and *"which teams are in scope?"*). Record company OKRs **verbatim** — rewriting the company's words without saying so corrupts the roll-up. No company objectives exist at all → stop; that's a strategy conversation (`strategy-analysis`), not a cascade. Non-interactive run (no user to ask): an unstated cycle or team list gets assumed and tagged `[assumption]`; absent company OKRs are never invented — emit `BLOCKED: need the company OKRs, verbatim — rerun with the top 3–5 objectives, their KRs, and the teams in scope` instead.
 
 2. **Grade the company KRs before cascading them.** Each company KR is either an **outcome** (a customer or business result: retention, revenue, time-to-value) or an **output** (a thing shipped: "launch v2", "migrate to k8s"). Outputs at company level get flagged with the outcome they presumably serve — ✅ *"'Launch self-serve onboarding' → presumably serves activation rate; recommend restating as the activation target"*. Cascading an output produces teams that hit every KR while the business stands still.
 

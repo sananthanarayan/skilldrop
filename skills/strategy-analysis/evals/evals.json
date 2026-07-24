@@ -22,6 +22,15 @@
         "If Five Forces is run, all five forces get a pressure rating with the mechanism (who holds power and why) — no force rated 'N/A'",
         "The output ends with a committal verdict on entering, not 'it depends'"
       ]
+    },
+    {
+      "id": 3,
+      "prompt": "[Non-interactive run — no user available to answer questions] Run a Porter's Five Forces on the European ride-sharing market. This feeds our decision on whether to expand our driver-scheduling SaaS into that segment next year.",
+      "assertions": [
+        "The skill proceeds (the decision IS named in the input) instead of blocking",
+        "Assumptions replacing the capped clarifying questions (e.g. competitive set) are tagged [assumption] and stated at the top",
+        "Market facts drawn from general knowledge are tagged [market: ...], distinguishable from user-supplied facts and assumptions"
+      ]
     }
   ]
 }

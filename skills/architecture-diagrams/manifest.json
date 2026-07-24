@@ -11,6 +11,18 @@
     "required": [],
     "optional": []
   },
-  "tags": ["diagrams", "mermaid", "plantuml", "c4", "architecture"],
-  "model": { "tier": "standard", "rationale": "Prose to diagram syntax. Correctness matters; reasoning is bounded." }
+  "related": [
+    "figma-diagrams"
+  ],
+  "tags": [
+    "diagrams",
+    "mermaid",
+    "plantuml",
+    "c4",
+    "architecture"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Prose to diagram syntax. Correctness matters; reasoning is bounded."
+  }
 }

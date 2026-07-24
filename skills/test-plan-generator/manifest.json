@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["devils-advocate", "feature-implement-loop", "sonar-review", "user-story-splitter"],
   "tags": ["testing", "test-plan", "qa", "risk-based", "test-cases", "quality"],
   "model": { "tier": "standard", "rationale": "Synthesizes a structured plan from a change description. Risk ranking needs judgment but is bounded; escalate via ambiguous-input on contested or high-stakes releases." }
 }

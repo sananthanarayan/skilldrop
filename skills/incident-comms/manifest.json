@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["postmortem-generator", "runbook-generator"],
   "tags": ["incident", "communication", "status-page", "outage", "stakeholder", "sre"],
   "model": { "tier": "standard", "rationale": "Audience-segmented message generation under a strict don't-retract discipline. Same shape as exec-summary/audience-profile — translation and altitude, not adversarial reasoning." }
 }

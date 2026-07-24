@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": ["SONAR_HOST_URL"] },
+  "related": ["sonar-review"],
   "tags": ["sonarqube", "sonarcloud", "sonar", "code-quality", "ci", "quality-gate", "scaffold", "dev-workflow"],
   "model": { "tier": "light", "rationale": "Scaffolds config from detected language + a template. Deterministic fill-in; little judgment." }
 }

@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["api-contract-draft", "migration-plan", "nfr-spec"],
   "tags": ["data-contract", "data-engineering", "schema", "data-quality", "data-mesh", "governance"],
   "model": { "tier": "standard", "rationale": "Schema + SLA synthesis against fixed quality dimensions and an evolution matrix. Semantics capture needs care; bounded by the catalog. Escalate via large-input on wide schemas." }
 }

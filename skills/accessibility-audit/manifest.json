@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["devils-advocate", "doc-critique", "feature-implement-loop", "nfr-spec", "threat-model"],
   "tags": ["accessibility", "a11y", "wcag", "audit", "review", "inclusive-design"],
   "model": { "tier": "heavy", "rationale": "Adversarial review against WCAG success criteria — cheaper models fault alt-text presence over quality, under-call severity, miss focus-order/name-role-value issues, and claim AT passes from screenshots. Never downgrade." }
 }

@@ -8,6 +8,7 @@
     "pip": ["python-pptx>=0.6.21"]
   },
   "env": { "required": [], "optional": [] },
+  "related": ["audience-profile", "slide-outliner"],
   "install": {
     "pip": "python3 -m pip install -r requirements.txt"
   },

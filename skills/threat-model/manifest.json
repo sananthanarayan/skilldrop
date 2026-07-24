@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["design-doc", "devils-advocate", "postmortem-generator", "reverse-architecture", "sonar-review"],
   "tags": ["threat-model", "security", "stride", "architecture", "design-review", "trust-boundaries"],
   "model": { "tier": "heavy", "rationale": "Adversarial reasoning over a design — cheaper models emit checklist residue, miss authz/insider paths, and inflate severity. Never downgrade." }
 }

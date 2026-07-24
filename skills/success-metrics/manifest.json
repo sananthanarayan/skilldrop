@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["prd-draft"],
   "tags": ["metrics", "kpi", "instrumentation", "measurement", "analytics", "success-criteria"],
   "model": { "tier": "standard", "rationale": "Structured measurement design; the primary-metric and counter-metric choices need judgment but the template bounds it. Escalate via ambiguous-input when the goal itself is contested." }
 }

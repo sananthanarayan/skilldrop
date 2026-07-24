@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["business-case", "prd-draft", "strategy-analysis"],
   "tags": ["prfaq", "working-backwards", "press-release", "product-strategy", "product-direction", "amazon"],
   "model": { "tier": "standard", "rationale": "Synthesizes a press release and FAQs from a product concept against a fixed format. The specificity discipline needs care but the template bounds it; escalate via ambiguous-input when the concept itself is contested." }
 }

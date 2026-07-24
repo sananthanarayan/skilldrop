@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["business-case", "okr-cascade", "prfaq", "tech-comparison-matrix"],
   "tags": ["strategy", "swot", "tows", "five-forces", "pestle", "competitive-analysis", "market-analysis"],
   "model": { "tier": "heavy", "rationale": "Framework selection plus evidenced multi-factor judgment ending in a ranked, committal verdict. Cheaper models fill cells with generic filler, skip the TOWS crossings, and refuse to take a side. Never downgrade." }
 }

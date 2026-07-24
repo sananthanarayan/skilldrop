@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["brief-intake", "bug-triage", "business-case", "design-doc", "nfr-spec", "success-metrics", "user-story-splitter"],
   "tags": ["prd", "requirements", "product", "discovery", "moscow", "non-goals"],
   "model": { "tier": "standard", "rationale": "Synthesizes a structured requirements doc from a brief. The solution-language discipline needs care; bounded by the template. Escalate via ambiguous-input on contested scope." }
 }

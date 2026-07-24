@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["prfaq", "strategy-analysis", "success-metrics"],
   "tags": ["okr", "goals", "alignment", "north-star", "metric-tree", "quarterly-planning"],
   "model": { "tier": "standard", "rationale": "Structured derivation against a fixed roll-up discipline; the causal-sentence and gap judgments need care but the template bounds them. Escalate via ambiguous-input when the company objectives themselves are contested." }
 }

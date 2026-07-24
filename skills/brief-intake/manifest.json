@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["adr-generator", "decision-log", "deck-builder", "design-doc", "exec-summary", "runbook-generator", "slide-outliner", "tech-comparison-matrix"],
   "tags": ["intake", "brief", "extraction", "preprocessing", "pipeline"],
   "model": { "tier": "standard", "rationale": "Extraction + [explicit]/[implied]/[inferred] tagging. The tagging needs care — above haiku, below opus." }
 }

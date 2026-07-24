@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": [],
   "tags": ["meetings", "decisions", "action-items", "stakeholder-communication"],
   "model": { "tier": "light", "rationale": "Extracts decisions/owners/dates from notes. Pattern extraction; escalates on long transcripts." }
 }

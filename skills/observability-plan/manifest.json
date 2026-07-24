@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["capacity-cost-model", "incident-comms", "nfr-spec", "postmortem-generator", "runbook-generator", "success-metrics"],
   "tags": ["observability", "slo", "sli", "alerting", "monitoring", "sre"],
   "model": { "tier": "standard", "rationale": "Methodology synthesis against fixed SRE practices (golden signals, burn-rate alerting, pillar split). SLO calibration needs judgment but is bounded; escalate via ambiguous-input on contested reliability targets." }
 }

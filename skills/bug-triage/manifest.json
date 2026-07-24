@@ -5,6 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
+  "related": ["feature-implement-loop", "postmortem-generator", "user-story-splitter"],
   "tags": ["bug-triage", "bug-report", "ticket", "qa", "repro", "severity"],
   "model": { "tier": "standard", "rationale": "Extraction plus judgment calls (severity vs priority, hypothesis ranking) — same shape as brief-intake: above light, below heavy." }
 }
