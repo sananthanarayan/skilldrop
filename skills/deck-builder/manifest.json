@@ -1,7 +1,7 @@
 {
   "name": "deck-builder",
   "version": "0.1.0",
-  "description": "Generate a real PowerPoint (.pptx) file from content, target audience, and a color palette. Structurally tunes the deck (slide count, density, layout choice) to the audience archetype.",
+  "description": "Generate a real PowerPoint (.pptx) file from content, target audience, and a color palette. Produces structurally-appropriate decks (slide count, density, layout choice) tuned for the audience — execs, technical reviewers, sales prospects, investors, internal teams. Use when the user wants an actual editable .pptx, not just an outline.",
   "entrypoint": "SKILL.md",
   "deps": {
     "npm": [],

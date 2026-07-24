@@ -1,7 +1,7 @@
 {
   "name": "doc-critique",
   "version": "0.1.0",
-  "description": "Critique an existing knowledge-worker artifact (ADR, design doc, runbook, exec summary, comparison matrix, deck, decision log) against the same opinionated rubrics the skilldrop generators enforce. Produces a structured review — verdict, severity-tagged findings with quoted evidence and concrete fixes, plus what's working.",
+  "description": "Review an existing document — ADR, design doc, runbook, exec summary, tech-comparison matrix, deck outline, decision log — and produce a structured critique against the same quality bars the skilldrop generators enforce. Categorizes findings by severity (blocker / major / minor / nit), points to the exact section/line, and suggests a concrete fix for each. Use when the user wants a second-pair-of-eyes review before sharing a doc, or has been handed someone else's artifact and wants to know what to push back on.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },

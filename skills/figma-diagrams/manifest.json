@@ -1,7 +1,7 @@
 {
   "name": "figma-diagrams",
   "version": "0.1.0",
-  "description": "Work with Figma and FigJam files via the Figma REST API — read file structure, list frames, post comments, generate FigJam-importable diagram specs.",
+  "description": "Work with Figma and FigJam files via the Figma REST API — read existing file structure, list frames/pages, post comments, and produce FigJam-importable diagram specs. Use when the user mentions a Figma URL, asks to inspect/audit a Figma file, wants to comment on a design programmatically, or wants their architecture diagram in Figma.",
   "entrypoint": "SKILL.md",
   "deps": {
     "npm": [],

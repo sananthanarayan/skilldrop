@@ -1,7 +1,7 @@
 {
   "name": "decision-log",
   "version": "0.1.0",
-  "description": "Extract decisions, action items, owners, and due dates from meeting notes, Slack threads, or transcripts into a structured log.",
+  "description": "Extract decisions, action items, owners, and due dates from meeting notes, Slack threads, design-review transcripts, or any unstructured discussion. Produces a clean structured log the user can paste into a doc, tracker, or ADR queue. Use when the user has notes/threads/transcripts and asks for a \"decision log\", \"action items\", \"what did we agree\", or \"follow-ups\".",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },

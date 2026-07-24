@@ -1,7 +1,7 @@
 {
   "name": "brief-intake",
   "version": "0.1.0",
-  "description": "Turn raw unstructured input (Slack threads, transcripts, tickets, free-form notes) into a structured brief shaped for a specific downstream skilldrop skill — ADR, design doc, runbook, exec summary, deck, comparison matrix, decision log, or generic.",
+  "description": "Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder, tech-comparison-matrix) can consume without further intake. Use whenever the user has unstructured source material and is about to invoke another skilldrop skill, or when a draft is missing the load-bearing context the next step will need.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },

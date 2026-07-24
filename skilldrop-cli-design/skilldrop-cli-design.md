@@ -61,6 +61,18 @@ skilldrop info <skill>                     # lists related, marking each install
 
 One level deep only — `related` closures span most of the catalog (38+ of the skills reference at least one sibling), and transitive install would surprise users with a near-full catalog pull. `--all` already exists for that intent.
 
+### Packs
+
+The repo-root `packs.json` defines role-based bundles (see RFC-0001); the interim installer is `pack.py`. The CLI supersedes it:
+
+```bash
+skilldrop packs                          # list packs with descriptions and skill counts
+skilldrop install --pack sre-oncall      # install every skill in the pack (union with any --with-related)
+skilldrop update --pack sre-oncall       # update just that pack's skills
+```
+
+`packs.json` is the single source of truth — the CLI ships a copy in the npm package and refreshes it from the registry, so pack membership updates don't require a CLI release.
+
 ### IDE detection
 
 `skilldrop doctor` and the auto-detect path used by `install` look for:

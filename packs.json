@@ -1,0 +1,90 @@
+{
+  "$comment": "Virtual skill packs — role-based bundles for one-command install. Packs are METADATA ONLY: skills stay in flat skills/<name> folders (golden rule: skills are discovered by path), a skill may belong to several packs, and every skill must belong to at least one (validate.py enforces both directions). Install a pack with `python3 pack.py <pack> --install`; see README. Rationale: docs/rfcs/0001-skill-packs.md.",
+  "version": "0.1.0",
+  "packs": {
+    "solution-architect": {
+      "description": "Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.",
+      "skills": [
+        "brief-intake",
+        "architecture-diagrams",
+        "reverse-architecture",
+        "figma-diagrams",
+        "adr-generator",
+        "design-doc",
+        "tech-comparison-matrix",
+        "threat-model",
+        "api-contract-draft",
+        "data-contract",
+        "db-schema-design",
+        "nfr-spec",
+        "capacity-cost-model",
+        "council-review",
+        "doc-critique"
+      ]
+    },
+    "product-manager": {
+      "description": "Direction to requirements: PR/FAQs, strategy frameworks, OKRs, PRDs, journey maps, story splitting, and success measurement.",
+      "skills": [
+        "brief-intake",
+        "prfaq",
+        "strategy-analysis",
+        "okr-cascade",
+        "business-case",
+        "requirements-interview",
+        "prd-draft",
+        "user-journey-map",
+        "user-story-splitter",
+        "success-metrics",
+        "exec-summary",
+        "doc-critique"
+      ]
+    },
+    "dev-team": {
+      "description": "Build-and-ship loop: story implementation with adversarial review, test plans, triage, migrations, release notes, and code-quality gates.",
+      "skills": [
+        "user-story-splitter",
+        "feature-implement-loop",
+        "devils-advocate",
+        "council-review",
+        "test-plan-generator",
+        "bug-triage",
+        "migration-plan",
+        "release-notes",
+        "sonar-onboard",
+        "sonar-review",
+        "accessibility-audit"
+      ]
+    },
+    "sre-oncall": {
+      "description": "Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.",
+      "skills": [
+        "runbook-generator",
+        "observability-plan",
+        "incident-comms",
+        "postmortem-generator",
+        "capacity-cost-model"
+      ]
+    },
+    "stakeholder-comms": {
+      "description": "Non-technical audiences: audience profiling, deck outlines and real .pptx decks, exec summaries, decision logs, and guides.",
+      "skills": [
+        "brief-intake",
+        "audience-profile",
+        "slide-outliner",
+        "deck-builder",
+        "exec-summary",
+        "decision-log",
+        "guide-builder",
+        "doc-critique"
+      ]
+    },
+    "ai-engineering": {
+      "description": "Ship and measure AI features: eval harness design, AI-usage reporting, and the data contracts AI pipelines depend on.",
+      "skills": [
+        "llm-eval-harness",
+        "ai-usage-report",
+        "data-contract"
+      ]
+    }
+  }
+}
