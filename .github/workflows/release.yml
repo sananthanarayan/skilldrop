@@ -1,0 +1,49 @@
+# Lint on every push/PR; publish to npm when the package.json version is new.
+# Auth: npm OIDC trusted publishing (no token) — one-time setup on npmjs.com:
+# package skilldrop-cli -> Settings -> Trusted Publisher -> GitHub Actions,
+# repository sananthanarayan/skilldrop, workflow release.yml. See RFC-0004.
+name: release
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Repo consistency lint
+        run: python3 validate.py
+      - name: Catalog structural check
+        run: node bin/skilldrop.js validate
+
+  publish:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: lint
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # OIDC trusted publishing + --provenance
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+      - name: Upgrade npm (OIDC trusted publishing needs a recent client)
+        run: npm install -g npm@latest
+      - name: Publish if version is new
+        run: |
+          LOCAL=$(node -p "require('./package.json').version")
+          PUBLISHED=$(npm view skilldrop-cli version 2>/dev/null || echo none)
+          if [ "$LOCAL" = "$PUBLISHED" ]; then
+            echo "skilldrop-cli@$LOCAL already on the registry — nothing to publish"
+            exit 0
+          fi
+          echo "publishing skilldrop-cli@$LOCAL (registry has $PUBLISHED)"
+          npm publish --provenance
