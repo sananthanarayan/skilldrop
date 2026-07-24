@@ -1,29 +1,39 @@
 #!/usr/bin/env node
 /* skilldrop — install portable AI-agent skills into Claude Code, Cursor, Kiro,
- * or any directory. Zero dependencies; skills ship inside this package.
- * Design: skilldrop-cli-design/skilldrop-cli-design.md · Scope: docs/rfcs/0002-skilldrop-cli.md
+ * or any directory, from the bundled catalog or any third-party catalog
+ * (--from <path | git-url[#ref]>). Zero dependencies; copy-only, never executes
+ * catalog content at install time.
+ * Design: skilldrop-cli-design/skilldrop-cli-design.md
+ * Scope:  docs/rfcs/0002-skilldrop-cli.md, docs/rfcs/0003-third-party-catalogs.md
  */
 "use strict";
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
+const { execFileSync } = require("child_process");
 
 const ROOT = path.resolve(__dirname, "..");
-const SKILLS = path.join(ROOT, "skills");
 const LEDGER = ".skilldrop.json";
+const BUNDLED = "bundled";
 
 const HELP = `skilldrop — portable AI-agent skills for Claude Code, Cursor, Kiro, and more
 
 Usage:
-  skilldrop list                          all skills (name, version, tier)
-  skilldrop info <skill>                  description, related, packs, deps
-  skilldrop packs                         role-based packs
+  skilldrop list [--from <src>]           all skills in a catalog (name, version, tier)
+  skilldrop info <skill> [--from <src>]   description, related, packs, deps
+  skilldrop packs [--from <src>]          role-based packs
   skilldrop install <skill...>            install skills (default: Claude Code, user scope)
   skilldrop install --pack <name>         install a whole pack
-  skilldrop install --all                 install every skill
+  skilldrop install --all                 install every skill in the catalog
   skilldrop update                        re-copy installed skills whose version changed
   skilldrop outdated                      show installed vs current versions, change nothing
   skilldrop uninstall <skill...>          remove skills (and wiring files this tool wrote)
+  skilldrop validate [--from <src>]       structural check of a catalog (for catalog authors)
+
+Catalogs:
+  (default)          the catalog bundled with this package
+  --from <dir>       any local directory shaped like skills/<name>/{SKILL.md,manifest.json}
+  --from <git-url>   any git repo with that shape; append #<branch-or-tag> to pin
 
 Install/update/uninstall targets (pick one):
   (default)          ~/.claude/skills           Claude Code, user scope
@@ -38,22 +48,83 @@ Options:
 
 function die(msg) { console.error("error: " + msg); process.exit(1); }
 function readJSON(p) { return JSON.parse(fs.readFileSync(p, "utf8")); }
-function allSkills() {
-  return fs.readdirSync(SKILLS).filter((d) => fs.statSync(path.join(SKILLS, d)).isDirectory()).sort();
-}
-function manifest(s) { return readJSON(path.join(SKILLS, s, "manifest.json")); }
-function packs() { return readJSON(path.join(ROOT, "packs.json")).packs; }
 
 function parseArgs(argv) {
   const out = { _: [], flags: {} };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a === "--pack" || a === "--ide" || a === "--dest") out.flags[a.slice(2)] = argv[++i];
+    if (a === "--pack" || a === "--ide" || a === "--dest" || a === "--from") out.flags[a.slice(2)] = argv[++i];
     else if (a.startsWith("--")) out.flags[a.slice(2)] = true;
     else out._.push(a);
   }
   return out;
 }
+
+/* ---------- catalogs ---------- */
+
+const catalogCache = {};
+function resolveCatalog(source) {
+  const key = source || BUNDLED;
+  if (catalogCache[key]) return catalogCache[key];
+  let dir;
+  if (!source) dir = ROOT;
+  else if (fs.existsSync(source)) dir = path.resolve(source);
+  else {
+    const [url, ref] = source.split("#");
+    dir = fs.mkdtempSync(path.join(os.tmpdir(), "skilldrop-cat-"));
+    try {
+      execFileSync("git", ["clone", "--depth", "1", ...(ref ? ["--branch", ref] : []), url, dir], { stdio: ["ignore", "ignore", "pipe"] });
+    } catch (e) {
+      die(`could not fetch catalog '${source}' — not a local path, and git clone failed`);
+    }
+  }
+  const skillsDir = path.join(dir, "skills");
+  if (!fs.existsSync(skillsDir)) die(`'${source || dir}' is not a skilldrop catalog — no skills/ directory`);
+  return (catalogCache[key] = { dir, skillsDir, source: source || BUNDLED });
+}
+function skillsIn(cat) {
+  return fs.readdirSync(cat.skillsDir).filter((d) => fs.statSync(path.join(cat.skillsDir, d)).isDirectory()).sort();
+}
+function manifestOf(cat, s) { return readJSON(path.join(cat.skillsDir, s, "manifest.json")); }
+function packsOf(cat) {
+  const p = path.join(cat.dir, "packs.json");
+  return fs.existsSync(p) ? readJSON(p).packs : null;
+}
+
+/* Structural gate (RFC-0003): a skill must pass before it is copied anywhere. */
+function checkSkill(cat, s) {
+  const problems = [];
+  const dir = path.join(cat.skillsDir, s);
+  if (!fs.existsSync(path.join(dir, "SKILL.md"))) problems.push("SKILL.md missing");
+  let m = null;
+  try { m = manifestOf(cat, s); } catch (e) { problems.push("manifest.json missing or invalid JSON"); }
+  if (m) {
+    if (m.name !== s) problems.push(`manifest name '${m.name}' != folder '${s}'`);
+    if (!m.description) problems.push("manifest missing description");
+    if (!m.version) problems.push("manifest missing version");
+    if (!m.model || !m.model.tier) problems.push("manifest missing model.tier");
+    const fmName = (() => {
+      try {
+        const fm = fs.readFileSync(path.join(dir, "SKILL.md"), "utf8").split("---")[1] || "";
+        const match = fm.match(/^name:\s*(\S+)/m);
+        return match && match[1];
+      } catch (e) { return null; }
+    })();
+    if (fmName && fmName !== s) problems.push(`SKILL.md frontmatter name '${fmName}' != folder '${s}'`);
+  }
+  return problems;
+}
+function gate(cat, names) {
+  let bad = 0;
+  for (const s of names) {
+    const problems = checkSkill(cat, s);
+    for (const p of problems) console.error(`refused ${s}: ${p}`);
+    if (problems.length) bad++;
+  }
+  if (bad) die(`${bad} skill(s) failed the structural check — nothing was installed`);
+}
+
+/* ---------- install targets & ledger ---------- */
 
 function target(flags) {
   if (flags.dest) return { dest: path.resolve(flags.dest), ide: "generic" };
@@ -72,6 +143,9 @@ function ledger(dest) {
   return { path: p, data: fs.existsSync(p) ? readJSON(p) : {} };
 }
 function saveLedger(l) { fs.writeFileSync(l.path, JSON.stringify(l.data, null, 2) + "\n"); }
+/* Ledger values: {version, source}; legacy plain strings mean a bundled install. */
+function lver(v) { return typeof v === "string" ? v : v.version; }
+function lsrc(v) { return typeof v === "string" ? BUNDLED : v.source || BUNDLED; }
 
 function wiringPath(ide, dest, s) {
   const base = path.dirname(dest); // .cursor/ or .kiro/
@@ -89,39 +163,56 @@ function writeWiring(ide, dest, s, desc) {
     fs.writeFileSync(p, `When the user requests the following, defer to the instructions in .kiro/skills/${s}/SKILL.md:\n\n${desc}\n`);
 }
 
-function expandNames(args) {
-  if (args.flags.all) return allSkills();
+/* ---------- commands ---------- */
+
+function expandNames(args, cat) {
+  if (args.flags.all) return skillsIn(cat);
   if (args.flags.pack) {
-    const p = packs()[args.flags.pack];
-    if (!p) die(`unknown pack '${args.flags.pack}' — run: skilldrop packs`);
+    const ps = packsOf(cat);
+    if (!ps) die(`catalog '${cat.source}' has no packs.json — install skills by name`);
+    const p = ps[args.flags.pack];
+    if (!p) die(`unknown pack '${args.flags.pack}' in catalog '${cat.source}'`);
     return p.skills.slice();
   }
   if (!args._.length) die("nothing to install — pass skill names, --pack <name>, or --all");
-  for (const s of args._) if (!fs.existsSync(path.join(SKILLS, s))) die(`unknown skill '${s}' — run: skilldrop list`);
+  for (const s of args._) if (!fs.existsSync(path.join(cat.skillsDir, s))) die(`unknown skill '${s}' in catalog '${cat.source}'`);
   return args._.slice();
 }
 
+function copyOne(cat, s, dest, ide, l) {
+  const m = manifestOf(cat, s);
+  fs.cpSync(path.join(cat.skillsDir, s), path.join(dest, s), { recursive: true });
+  writeWiring(ide, dest, s, m.description);
+  l.data[s] = { version: m.version, source: cat.source };
+  return m;
+}
+
 function install(args) {
-  let names = expandNames(args);
+  const cat = resolveCatalog(args.flags.from);
+  let names = expandNames(args, cat);
   if (args.flags["with-related"]) {
     const seen = new Set(names);
-    for (const s of names.slice()) for (const r of manifest(s).related || []) if (!seen.has(r)) { seen.add(r); names.push(r); }
+    for (const s of names.slice()) {
+      let related = [];
+      try { related = manifestOf(cat, s).related || []; } catch (e) { /* gated below */ }
+      for (const r of related) if (!seen.has(r) && fs.existsSync(path.join(cat.skillsDir, r))) { seen.add(r); names.push(r); }
+    }
   }
+  gate(cat, names);
   const { dest, ide } = target(args.flags);
   fs.mkdirSync(dest, { recursive: true });
   const l = ledger(dest);
   const pipDeps = [], suggestions = new Set();
   for (const s of names) {
-    const m = manifest(s);
-    fs.cpSync(path.join(SKILLS, s), path.join(dest, s), { recursive: true });
-    writeWiring(ide, dest, s, m.description);
-    l.data[s] = m.version;
-    if (fs.existsSync(path.join(SKILLS, s, "requirements.txt"))) pipDeps.push(s);
+    const m = copyOne(cat, s, dest, ide, l);
+    if (fs.existsSync(path.join(cat.skillsDir, s, "requirements.txt"))) pipDeps.push(s);
     for (const r of m.related || []) if (!names.includes(r) && !l.data[r]) suggestions.add(r);
     console.log(`installed ${s}@${m.version} -> ${dest}`);
   }
   saveLedger(l);
   console.log(`\n${names.length} skill(s) installed (${ide}).`);
+  if (cat.source !== BUNDLED)
+    console.log(`\nWARNING: third-party catalog '${cat.source}'. Skills are instructions your AI agent will follow — review each installed SKILL.md under ${dest} before first use. Install copied files only; nothing was executed.`);
   if (ide === "generic")
     console.log("wiring: attach each skill's SKILL.md to your agent (Continue/Cline: @file, Aider: /add, Codex: reference it from AGENTS.md) — see the repo README's per-IDE steps.");
   for (const s of pipDeps)
@@ -130,41 +221,44 @@ function install(args) {
     console.log(`related (not installed): ${[...suggestions].sort().join(", ")} — add --with-related or install by name.`);
 }
 
-function eachInstalled(flags, fn) {
+function installedRows(flags) {
   const { dest, ide } = target(flags);
   const l = ledger(dest);
-  const rows = Object.keys(l.data).sort().map((s) => ({
-    s, installed: l.data[s],
-    current: fs.existsSync(path.join(SKILLS, s)) ? manifest(s).version : null,
-  }));
-  return fn({ dest, ide, l, rows });
+  const rows = Object.keys(l.data).sort().map((s) => {
+    const src = lsrc(l.data[s]);
+    let current = null, cat = null;
+    try {
+      cat = resolveCatalog(src === BUNDLED ? undefined : src);
+      if (fs.existsSync(path.join(cat.skillsDir, s))) current = manifestOf(cat, s).version;
+    } catch (e) { /* unreachable source: current stays null */ }
+    return { s, src, cat, installed: lver(l.data[s]), current };
+  });
+  return { dest, ide, l, rows };
 }
 
 function update(args) {
-  eachInstalled(args.flags, ({ dest, ide, l, rows }) => {
-    if (!rows.length) return console.log(`nothing installed at ${dest}`);
-    let n = 0;
-    for (const r of rows) {
-      if (!r.current) { console.log(`skip ${r.s}: no longer in the catalog`); continue; }
-      if (r.current === r.installed) continue;
-      fs.cpSync(path.join(SKILLS, r.s), path.join(dest, r.s), { recursive: true });
-      writeWiring(ide, dest, r.s, manifest(r.s).description);
-      l.data[r.s] = r.current;
-      console.log(`updated ${r.s} ${r.installed} -> ${r.current}`);
-      n++;
-    }
-    saveLedger(l);
-    console.log(n ? `\n${n} skill(s) updated.` : "everything up to date.");
-  });
+  const { dest, ide, l, rows } = installedRows(args.flags);
+  if (!rows.length) return console.log(`nothing installed at ${dest}`);
+  let n = 0;
+  for (const r of rows) {
+    if (!r.current) { console.log(`skip ${r.s}: source '${r.src}' unreachable or skill gone from it`); continue; }
+    if (r.current === r.installed) continue;
+    const problems = checkSkill(r.cat, r.s);
+    if (problems.length) { console.log(`skip ${r.s}: fails structural check in '${r.src}' (${problems[0]})`); continue; }
+    copyOne(r.cat, r.s, dest, ide, l);
+    console.log(`updated ${r.s} ${r.installed} -> ${r.current} (${r.src})`);
+    n++;
+  }
+  saveLedger(l);
+  console.log(n ? `\n${n} skill(s) updated.` : "everything up to date.");
 }
 
 function outdated(args) {
-  eachInstalled(args.flags, ({ dest, rows }) => {
-    if (!rows.length) return console.log(`nothing installed at ${dest}`);
-    const stale = rows.filter((r) => r.current && r.current !== r.installed);
-    for (const r of stale) console.log(`${r.s}: installed ${r.installed}, current ${r.current}`);
-    console.log(stale.length ? `\n${stale.length} outdated — run: skilldrop update` : "everything up to date.");
-  });
+  const { dest, rows } = installedRows(args.flags);
+  if (!rows.length) return console.log(`nothing installed at ${dest}`);
+  const stale = rows.filter((r) => r.current && r.current !== r.installed);
+  for (const r of stale) console.log(`${r.s}: installed ${r.installed}, current ${r.current} (${r.src})`);
+  console.log(stale.length ? `\n${stale.length} outdated — run: skilldrop update` : "everything up to date.");
 }
 
 function uninstall(args) {
@@ -181,37 +275,64 @@ function uninstall(args) {
   saveLedger(l);
 }
 
-function list() {
-  const rows = allSkills().map((s) => { const m = manifest(s); return [s, m.version, m.model.tier]; });
+function list(args) {
+  const cat = resolveCatalog(args.flags.from);
+  const rows = skillsIn(cat).map((s) => {
+    try { const m = manifestOf(cat, s); return [s, m.version || "?", (m.model && m.model.tier) || "?"]; }
+    catch (e) { return [s, "?", "?"]; }
+  });
   const w = Math.max(...rows.map((r) => r[0].length));
   for (const [s, v, t] of rows) console.log(`${s.padEnd(w)}  ${v}  ${t}`);
-  console.log(`\n${rows.length} skills. Details: skilldrop info <skill>`);
+  console.log(`\n${rows.length} skills in catalog '${cat.source}'. Details: skilldrop info <skill>`);
 }
 
 function info(args) {
+  const cat = resolveCatalog(args.flags.from);
   const s = args._[0] || die("pass a skill name");
-  if (!fs.existsSync(path.join(SKILLS, s))) die(`unknown skill '${s}'`);
-  const m = manifest(s);
-  const inPacks = Object.entries(packs()).filter(([, p]) => p.skills.includes(s)).map(([n]) => n);
-  console.log(`${m.name}@${m.version}  (tier: ${m.model.tier})\n\n${m.description}\n`);
+  if (!fs.existsSync(path.join(cat.skillsDir, s))) die(`unknown skill '${s}' in catalog '${cat.source}'`);
+  const m = manifestOf(cat, s);
+  const ps = packsOf(cat) || {};
+  const inPacks = Object.entries(ps).filter(([, p]) => p.skills.includes(s)).map(([n]) => n);
+  console.log(`${m.name}@${m.version}  (tier: ${m.model && m.model.tier})\n\n${m.description}\n`);
+  console.log(`catalog: ${cat.source}`);
   console.log(`packs:   ${inPacks.join(", ") || "-"}`);
   console.log(`related: ${(m.related || []).join(", ") || "-"}`);
-  if ((m.deps.pip || []).length || fs.existsSync(path.join(SKILLS, s, "requirements.txt")))
+  if (((m.deps || {}).pip || []).length || fs.existsSync(path.join(cat.skillsDir, s, "requirements.txt")))
     console.log("deps:    python (requirements.txt)");
-  if ((m.env.required || []).length) console.log(`env:     ${m.env.required.join(", ")} (required)`);
+  if (((m.env || {}).required || []).length) console.log(`env:     ${m.env.required.join(", ")} (required)`);
 }
 
-function listPacks() {
-  const ps = packs();
+function listPacks(args) {
+  const cat = resolveCatalog(args.flags.from);
+  const ps = packsOf(cat);
+  if (!ps) return console.log(`catalog '${cat.source}' defines no packs.`);
   const w = Math.max(...Object.keys(ps).map((n) => n.length));
   for (const [n, p] of Object.entries(ps))
     console.log(`${n.padEnd(w)}  (${p.skills.length} skills)  ${p.description}`);
   console.log("\nInstall one: skilldrop install --pack <name>");
 }
 
+function validateCmd(args) {
+  const cat = resolveCatalog(args.flags.from);
+  const names = skillsIn(cat);
+  let bad = 0;
+  for (const s of names) {
+    const problems = checkSkill(cat, s);
+    for (const p of problems) console.log(`FAIL ${s}: ${p}`);
+    if (problems.length) bad++;
+  }
+  const ps = packsOf(cat);
+  if (ps)
+    for (const [n, p] of Object.entries(ps))
+      for (const s of p.skills)
+        if (!names.includes(s)) { console.log(`FAIL packs.json: pack '${n}' lists unknown skill '${s}'`); bad++; }
+  if (bad) { console.log(`\n${bad} problem(s) in catalog '${cat.source}'.`); process.exit(1); }
+  console.log(`OK: ${names.length} skills in catalog '${cat.source}' pass the structural check.`);
+}
+
 const args = parseArgs(process.argv.slice(2));
 const cmd = args._.shift();
-const commands = { list, info, packs: listPacks, install, update, outdated, uninstall };
+const commands = { list, info, packs: listPacks, install, update, outdated, uninstall, validate: validateCmd };
 if (!cmd || cmd === "help" || args.flags.help) console.log(HELP);
 else if (commands[cmd]) commands[cmd](args);
 else die(`unknown command '${cmd}' — run: skilldrop help`);
