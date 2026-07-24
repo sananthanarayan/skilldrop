@@ -1,0 +1,19 @@
+{
+  "skill_name": "okr-cascade",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Cascade these company OKRs to our three teams (platform, growth, mobile). O1: Become the default choice for mid-market DevOps teams — KR1: net revenue retention 115%, KR2: launch the v2 platform. O2: Operational excellence — KR1: 99.95% availability. Cycle: Q4.",
+      "assertions": [
+        "Company OKRs appear verbatim; 'launch the v2 platform' is flagged as an output KR with the outcome it presumably serves",
+        "Each team KR has a written causal sentence naming the company KR it feeds and the mechanism",
+        "Each team KR has baseline → target and is scorable 0.0–1.0 — no binary 'complete the migration' KRs",
+        "Not every team is forced under every objective — teams with no credible contribution are omitted from that objective",
+        "A ranked gap registry is present (or explicitly states none found and why that is suspicious)",
+        "A causal metric tree with exactly one north-star is emitted; every team KR is attached, labeled guardrail, or explicitly cut",
+        "The north-star is user-behavioral, not 'features shipped' or another output",
+        "Next steps route team KRs to success-metrics for measurement design and gaps to a named decision owner"
+      ]
+    }
+  ]
+}

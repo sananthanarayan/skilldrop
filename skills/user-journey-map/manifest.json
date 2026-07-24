@@ -1,0 +1,10 @@
+{
+  "name": "user-journey-map",
+  "version": "0.1.0",
+  "description": "Map a customer's end-to-end journey toward an outcome — 3–6 stages, each with actions, emotions, pains, and opportunities, plus a rendered Mermaid emotion arc and the ranked pain points design should attack first. Use when the user wants a journey map, customer experience map, \"map the user's path through onboarding\", touchpoint analysis, or \"where do users feel friction\".",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["journey-map", "customer-experience", "ux", "touchpoints", "mermaid", "personas"],
+  "model": { "tier": "standard", "rationale": "Structured synthesis into a fixed four-row stage model plus bounded ranking judgment. Escalate via ambiguous-input when the persona or outcome is contested or research inputs conflict." }
+}

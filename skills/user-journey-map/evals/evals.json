@@ -1,0 +1,21 @@
+{
+  "skill_name": "user-journey-map",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Map the customer journey for freelance designers trying our invoicing app. We believe they drop off between signup and sending their first invoice. No research data yet — this is the team's hypothesis.",
+      "assertions": [
+        "One specific persona and one outcome are named in the map's title",
+        "Evidence level is declared as assumption-based at the top and framed as a hypothesis that directs research",
+        "The start trigger is an event in the persona's life (e.g. a client asks for an invoice), not 'visits the landing page'",
+        "3-6 stages, each a phase of the persona's goal — not one stage per screen",
+        "Every stage has all four rows: actions (persona's words, frontstage only), emotion score 1-5 with a reason, pains, opportunities",
+        "Opportunities are outcome-shaped, not feature suggestions like 'add a button'",
+        "The steepest dips, the highest peak, and the ending emotion are explicitly marked",
+        "A Mermaid journey diagram is emitted with valid syntax: one section per stage, actions scored 1-5",
+        "Opportunities are ranked and exactly 1-2 are named as targets; the rest are explicitly deprioritized with reasons",
+        "Hand-offs route committed work to prd-draft/user-story-splitter and measurement to success-metrics"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "skill_name": "prfaq",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write a PRFAQ for an AI-powered contract review tool aimed at in-house legal teams at mid-market companies. The problem: legal teams spend 60% of their time on low-complexity contract review that blocks deal closure.",
+      "assertions": [
+        "Press release contains all blocks: headline, sub-headline, problem paragraph, solution paragraph, leadership quote, customer quote, call to action",
+        "The headline names the product and a customer benefit — not a category claim like 'launches AI-powered platform'",
+        "The problem paragraph is in the customer's words with no industry jargon",
+        "The solution paragraph names a mechanism, not just 'uses AI'",
+        "The leadership quote is attributed to a role (not a placeholder name) and states a strategic rationale",
+        "An adoption hypothesis names a first-success event that is a customer action, observable within a session — not 'signs up', 'completes onboarding', or a team action like 'launch'",
+        "A repeat-value behavior is named",
+        "Customer FAQ has 3-5 questions and at least one answer concedes a real trade-off",
+        "Internal FAQ names the riskiest assumption with a test, the hardest technical problem, a concrete acquisition path, and a kill condition",
+        "The internal-FAQ success metric counts the first-success event, not a vanity metric",
+        "No acceptance criteria, API shapes, or backlog items appear anywhere",
+        "The output ends with a hand-off pointing to prd-draft or business-case"
+      ]
+    }
+  ]
+}
