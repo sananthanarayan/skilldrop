@@ -1,6 +1,8 @@
 # skilldrop CLI — design sketch
 
-> A proposal for distributing skilldrop skills via an npm-published CLI that installs into any supported IDE (Claude Code, Cursor, Kiro, Continue, Cline, Aider, Codex) and updates in place when new versions ship. This is a design sketch for review, not a build plan — the goal is to get reactions on shape and scope before committing to the work.
+> A proposal for distributing skilldrop skills via an npm-published CLI that installs into any supported IDE (Claude Code, Cursor, Kiro, Continue, Cline, Aider, Codex) and updates in place when new versions ship.
+>
+> **Status (2026-07): MVP implemented** — see [RFC-0002](../docs/rfcs/0002-skilldrop-cli.md) and [`bin/skilldrop.js`](../bin/skilldrop.js). Shipped: `list`, `info`, `packs`, `install` (skills / `--pack` / `--all`, `--with-related`, Claude user+project, Cursor and Kiro with wiring files, `--dest`), `update`, `outdated`, `uninstall`, per-destination `.skilldrop.json` ledger. Still design-only: `search`, `doctor`, IDE auto-detection, `@version` pinning, `--ide all`. **Naming correction:** `skilldrop` is taken on npm — the package is `skilldrop-cli`; the bin command stays `skilldrop`.
 
 ## Why npm (and why not the others)
 

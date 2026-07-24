@@ -31,6 +31,11 @@ cd skills/<skill-name> && python3 -m pip install -r requirements.txt
 # Consistency lint — run from the repo root before committing
 python3 validate.py
 
+# CLI (npm package skilldrop-cli; from a clone use node bin/skilldrop.js)
+node bin/skilldrop.js list | info <skill> | packs
+node bin/skilldrop.js install <skill...> [--pack <name>] [--all] [--with-related] [--project | --ide cursor|kiro | --dest <dir>]
+node bin/skilldrop.js update | outdated | uninstall <skill...>   # same target flags
+
 # Skill packs — list packs / list a pack's skills / install a pack
 python3 pack.py
 python3 pack.py <pack-name>
@@ -283,6 +288,7 @@ When you add or change a skill, set its tier in **both** `model-routing.json` an
 - Repo overview & per-IDE install steps: [README.md](README.md)
 - RFCs (template + decisions): [docs/rfcs/](docs/rfcs/)
 - Skill packs: [packs.json](packs.json) + [pack.py](pack.py)
+- CLI (npm `skilldrop-cli`): [bin/skilldrop.js](bin/skilldrop.js) + [package.json](package.json) — copies skills verbatim, never transforms them; the npm `files` list must keep `skills/`, `packs.json`, `model-routing.json`
 - Model routing: [MODEL-ROUTING.md](MODEL-ROUTING.md) + [model-routing.json](model-routing.json)
 - Claude Code project settings: [.claude/settings.json](.claude/settings.json) — currently empty
 - Reference implementations for skill scripts: [`skills/deck-builder/scripts/`](skills/deck-builder/scripts/), [`skills/figma-diagrams/scripts/`](skills/figma-diagrams/scripts/)
