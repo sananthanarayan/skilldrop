@@ -1,7 +1,7 @@
 ---
 rfc: 0006
 title: Per-IDE hooks with graceful degradation
-status: accepted
+status: implemented
 date: 2026-07-24
 author: sananthanarayan
 ---
@@ -44,4 +44,9 @@ The crux this RFC commits to: **graceful degradation, not parity.** Claude Code'
 
 ## Decision
 
-Accepted as design. Implementation — the manifest `hooks` schema, CLI emission per target with degradation, the two validator rules, and docs — is a follow-on PR that flips this to `implemented` and bumps the CLI minor version. Initial targets Claude Code + Kiro + git hooks; everything else degrades to a clean skip. The maintenance cost (a translator per hook-capable target, tracking format drift) is accepted as proportionate only for the loop-shaped skills that opt in; artifact-generator skills carry no `hooks` block.
+Implemented in `skilldrop-cli@0.4.0`. Manifest `hooks` schema (`{ event, action, description }`), CLI emission behind an opt-in `--with-hooks` flag, and the two `validate.py` rules all shipped; `devils-advocate` carries the first real hook (`pre-commit-review`). Two implementation decisions refine the design:
+
+- **Opt-in, not automatic.** Hooks wire only under `--with-hooks`; a plain install prints "declares hooks — re-run with --with-hooks" instead of silently editing the user's git repo or settings. Least surprise beat the RFC's implied auto-emit.
+- **Nudge semantics, not autonomous execution.** skilldrop skills are agent instructions with no CLI runner, so a hook can't *run* an AI review from a git hook. v1 hooks emit a **reminder** (git pre-commit) or **context** (Claude Code `SessionStart`) that prompts the human/agent to invoke the skill. Documented as such; a blocking gate is left as a user edit.
+
+Targets shipped: `pre-commit-review` → IDE-agnostic `.git/hooks/pre-commit` (marker-fenced, idempotent, removed on uninstall); `session-start` → Claude Code `settings.json` (defensive JSON merge, never clobbers malformed files). Cursor / Kiro / `--dest` degrade to a printed skip. Kiro-native agent hooks and Codex remain future work — the degradation contract means they can be added without touching skills.

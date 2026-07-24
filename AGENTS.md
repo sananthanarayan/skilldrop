@@ -107,6 +107,8 @@ If the skill has no scripts, leave `deps` empty. `env.required` is for vars the 
 
 `related` is the flat list of sibling skills this skill's `SKILL.md` references — hand-off targets, upstream feeders, and named alternatives alike (direction lives in the SKILL.md prose, not here). It exists so installers and users can grab a skill's companions in one pass. `validate.py` enforces the sync in both directions: every backticked sibling reference in `SKILL.md` must appear in `related`, and every `related` entry must be a real skill folder that `SKILL.md` actually references.
 
+`hooks` is optional and only for loop-shaped skills that benefit from event automation (RFC-0006) — artifact generators carry none. Each entry is `{ event, action, description }`: `event` is one of `session-start`, `pre-commit-review`, `on-demand`; `action` is a real skill folder the hook points at; `description` is a short human line. The CLI wires these only under `--with-hooks`, projecting per install target and degrading where a target has no mechanism. `validate.py` checks the event vocabulary and that `action` resolves to a skill.
+
 The `model` block is the colocated cost-routing hint — an **abstract, provider-neutral tier** (`light` / `standard` / `heavy`), never a vendor model name. It travels with the skill when copied into another IDE, and must match the skill's entry in the repo-root [`model-routing.json`](model-routing.json). See **Model routing** below.
 
 ## Anatomy of a skill

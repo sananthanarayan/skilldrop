@@ -17,6 +17,8 @@ Checks (FAIL):
   - manifest description == SKILL.md frontmatter description (whitespace-normalized)
   - packs.json: every pack entry is a real skill folder, and every skill
     belongs to at least one pack
+  - manifest hooks (optional): each entry's event is in the RFC-0006 vocabulary,
+    its action is a real skill folder, and it carries a description
 
 Warnings (non-fatal):
   - SKILL.md over ~500 lines (golden rule 3)
@@ -29,6 +31,7 @@ import sys
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SKILLS = os.path.join(ROOT, "skills")
 REQUIRED_FIELDS = ["name", "version", "description", "entrypoint", "deps", "env", "related", "tags", "model"]
+HOOK_EVENTS = {"session-start", "pre-commit-review", "on-demand"}  # RFC-0006; kept in sync with bin/skilldrop.js
 
 failures, warnings = [], []
 
@@ -92,6 +95,17 @@ def main():
                 fail(d, f"manifest related lists '{r}' but SKILL.md never references it")
         elif related is not None:
             fail(d, "related must be a flat list of skill names")
+
+        for h in manifest.get("hooks", []) or []:
+            if not isinstance(h, dict):
+                fail(d, "each hooks entry must be an object with event/action/description")
+                continue
+            if h.get("event") not in HOOK_EVENTS:
+                fail(d, f"hook event {h.get('event')!r} not in {sorted(HOOK_EVENTS)}")
+            if h.get("action") not in dir_set:
+                fail(d, f"hook action {h.get('action')!r} is not a skill folder")
+            if not h.get("description"):
+                fail(d, f"hook for event {h.get('event')!r} needs a description")
 
         evals_path = os.path.join(p, "evals", "evals.json")
         queries_path = os.path.join(p, "evals", "eval_queries.json")

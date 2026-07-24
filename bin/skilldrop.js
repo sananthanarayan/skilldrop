@@ -15,6 +15,8 @@ const { execFileSync } = require("child_process");
 const ROOT = path.resolve(__dirname, "..");
 const LEDGER = ".skilldrop.json";
 const BUNDLED = "bundled";
+// Neutral hook vocabulary (RFC-0006). Kept in sync with validate.py's HOOK_EVENTS.
+const HOOK_EVENTS = ["session-start", "pre-commit-review", "on-demand"];
 
 const HELP = `skilldrop — portable AI-agent skills for Claude Code, Cursor, Kiro, and more
 
@@ -44,6 +46,10 @@ Install/update/uninstall targets (pick one):
 
 Options:
   --with-related     also install each skill's related companions (one level)
+  --with-hooks       also wire any hooks a skill declares (RFC-0006) — git pre-commit
+                     reminders and Claude Code session-start context; degrades where the
+                     target has no hook mechanism. Off by default so installs never touch
+                     your git repo or settings unasked.
 `;
 
 function die(msg) { console.error("error: " + msg); process.exit(1); }
@@ -163,6 +169,106 @@ function writeWiring(ide, dest, s, desc) {
     fs.writeFileSync(p, `When the user requests the following, defer to the instructions in .kiro/skills/${s}/SKILL.md:\n\n${desc}\n`);
 }
 
+/* ---------- hooks (RFC-0006: emit per target, degrade where unsupported) ---------- */
+
+function gitRoot(startDir) {
+  let d = path.resolve(startDir);
+  for (;;) {
+    if (fs.existsSync(path.join(d, ".git"))) return d;
+    const up = path.dirname(d);
+    if (up === d) return null;
+    d = up;
+  }
+}
+
+// Append an idempotent, marker-fenced reminder to .git/hooks/pre-commit. IDE-agnostic.
+function writeGitPreCommitHook(root, skill, hook) {
+  const p = path.join(root, ".git", "hooks", "pre-commit");
+  const marker = `skilldrop-hook:${skill}:pre-commit-review`;
+  let body = fs.existsSync(p) ? fs.readFileSync(p, "utf8") : "";
+  if (!body.startsWith("#!")) body = "#!/bin/sh\n" + body;
+  if (body.includes(marker)) return p; // already wired
+  const line = `echo "skilldrop: run /${hook.action} on your staged changes before committing — ${hook.description}"`;
+  body += `\n# >>> ${marker} >>>\n${line}\n# <<< ${marker} <<<\n`;
+  fs.mkdirSync(path.dirname(p), { recursive: true });
+  fs.writeFileSync(p, body);
+  fs.chmodSync(p, 0o755);
+  return p;
+}
+
+// Merge a SessionStart command into Claude Code settings.json. Returns the path,
+// or null if the file exists but is malformed (we never clobber unparseable JSON).
+function writeClaudeSessionHook(settingsPath, skill, hook) {
+  let data = {};
+  if (fs.existsSync(settingsPath)) {
+    try { data = JSON.parse(fs.readFileSync(settingsPath, "utf8")); }
+    catch (e) { return null; }
+  }
+  data.hooks = data.hooks || {};
+  data.hooks.SessionStart = data.hooks.SessionStart || [];
+  const marker = `skilldrop-hook:${skill}:session-start`;
+  if (!JSON.stringify(data.hooks.SessionStart).includes(marker)) {
+    const cmd = `echo "skilldrop: /${hook.action} is available — ${hook.description}" # ${marker}`;
+    data.hooks.SessionStart.push({ hooks: [{ type: "command", command: cmd }] });
+    fs.mkdirSync(path.dirname(settingsPath), { recursive: true });
+    fs.writeFileSync(settingsPath, JSON.stringify(data, null, 2) + "\n");
+  }
+  return settingsPath;
+}
+
+// Wire one skill's declared hooks; returns human-readable status lines.
+function emitHooks(cat, skill, dest, ide) {
+  let hooks = [];
+  try { hooks = manifestOf(cat, skill).hooks || []; } catch (e) { return []; }
+  const lines = [];
+  for (const h of hooks) {
+    if (h.event === "pre-commit-review") {
+      const root = gitRoot(process.cwd());
+      if (root) lines.push(`  ${skill}: pre-commit reminder -> ${path.join(root, ".git/hooks/pre-commit")}`);
+      else lines.push(`  ${skill}: pre-commit-review skipped — no git repo at ${process.cwd()}`);
+      if (root) writeGitPreCommitHook(root, skill, h);
+    } else if (h.event === "session-start") {
+      if (ide === "claude") {
+        const sp = path.join(path.dirname(dest), "settings.json");
+        const written = writeClaudeSessionHook(sp, skill, h);
+        lines.push(written ? `  ${skill}: session-start context -> ${sp}`
+                           : `  ${skill}: session-start skipped — ${sp} is not valid JSON`);
+      } else {
+        lines.push(`  ${skill}: session-start skipped — no hook mechanism for ${ide}`);
+      }
+    } else if (h.event === "on-demand") {
+      lines.push(`  ${skill}: on-demand — invoke /${h.action} manually (no artifact needed)`);
+    }
+  }
+  return lines;
+}
+
+function removeHooksFor(skill, dest, ide) {
+  const root = gitRoot(process.cwd());
+  if (root) {
+    const p = path.join(root, ".git", "hooks", "pre-commit");
+    if (fs.existsSync(p)) {
+      const body = fs.readFileSync(p, "utf8");
+      const re = new RegExp(`\\n?# >>> skilldrop-hook:${skill}:[^\\n]* >>>[\\s\\S]*?# <<< skilldrop-hook:${skill}:[^\\n]* <<<\\n?`, "g");
+      const next = body.replace(re, "\n");
+      if (next !== body) fs.writeFileSync(p, next);
+    }
+  }
+  if (ide === "claude") {
+    const sp = path.join(path.dirname(dest), "settings.json");
+    if (fs.existsSync(sp)) {
+      try {
+        const data = JSON.parse(fs.readFileSync(sp, "utf8"));
+        const arr = data.hooks && data.hooks.SessionStart;
+        if (Array.isArray(arr)) {
+          const kept = arr.filter((e) => !JSON.stringify(e).includes(`skilldrop-hook:${skill}:`));
+          if (kept.length !== arr.length) { data.hooks.SessionStart = kept; fs.writeFileSync(sp, JSON.stringify(data, null, 2) + "\n"); }
+        }
+      } catch (e) { /* leave malformed settings untouched */ }
+    }
+  }
+}
+
 /* ---------- commands ---------- */
 
 function expandNames(args, cat) {
@@ -211,6 +317,18 @@ function install(args) {
   }
   saveLedger(l);
   console.log(`\n${names.length} skill(s) installed (${ide}).`);
+
+  const withHooks = names.filter((s) => { try { return (manifestOf(cat, s).hooks || []).length; } catch (e) { return false; } });
+  if (withHooks.length && args.flags["with-hooks"]) {
+    const lines = withHooks.flatMap((s) => emitHooks(cat, s, dest, ide));
+    console.log(`\nHooks wired (RFC-0006):\n${lines.join("\n")}`);
+    if (cat.source !== BUNDLED)
+      console.log(`  NOTE: these hooks run commands from third-party catalog '${cat.source}' — read them before trusting them.`);
+    console.log(`  Undo any of these with: skilldrop uninstall <skill> ${ide === "claude" ? "" : "--ide " + ide}`.trimEnd());
+  } else if (withHooks.length) {
+    console.log(`\n${withHooks.join(", ")} declare hooks — re-run with --with-hooks to wire them (git pre-commit reminders / session-start context).`);
+  }
+
   if (cat.source !== BUNDLED)
     console.log(`\nWARNING: third-party catalog '${cat.source}'. Skills are instructions your AI agent will follow — review each installed SKILL.md under ${dest} before first use. Install copied files only; nothing was executed.`);
   if (ide === "generic")
@@ -269,6 +387,7 @@ function uninstall(args) {
     fs.rmSync(path.join(dest, s), { recursive: true, force: true });
     const w = wiringPath(ide, dest, s);
     if (w) fs.rmSync(w, { force: true });
+    removeHooksFor(s, dest, ide);
     delete l.data[s];
     console.log(`removed ${s} from ${dest}`);
   }
