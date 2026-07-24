@@ -11,7 +11,7 @@
 1. **Folder name = `SKILL.md` `name` = `manifest.json` `name`.** Kebab-case, use-case-first, no version suffix. Changing any of the three without the others breaks slash-command invocation.
 2. **Do not move** `skills/`, `LICENSE`, or `README.md`. Skills are discovered by path; moving the directory breaks every install instruction the README documents.
 3. **Keep `SKILL.md` under ~500 lines.** Spill into `reference.md`, `templates/`, `lenses/`, `rubrics/`, or `examples/`. Agent context is the binding constraint — a bloated `SKILL.md` crowds out the user's actual prompt.
-4. **Never invent commands, env vars, or file conventions.** Use those documented below. This repo has no test runner and no CI; the only automated check is `python3 validate.py` (consistency lint) — don't pretend others exist.
+4. **Never invent commands, env vars, or file conventions.** Use those documented below. The only automated checks are `python3 validate.py` and `node bin/skilldrop.js validate`, run locally and by CI (`.github/workflows/release.yml`, which also publishes to npm on version bump — see **Releasing**). Don't pretend other test runners or linters exist.
 5. **No secrets, no real customer names, no personal data** in templates, examples, or sample inputs. Placeholder data only.
 6. **Voice is opinionated, not hedged.** Strip "generally", "consider", "you might want to". The `✅` / `❌` markers have semantic meaning — don't use them decoratively, don't add other decorative emoji.
 7. **Every new skill ships with `Quality bar` and `Anti-patterns to avoid` sections.** A skill without them is a description, not a generator. Both are enforced by the **Before you commit** checklist below.
@@ -50,7 +50,11 @@ git push origin feat/<short-kebab-name>
 gh pr create --base main --head <handle>:feat/<short-kebab-name>
 ```
 
-There is **no `make` target, no test command, and no CI gate** at the repo root. The one automated check is [`validate.py`](validate.py) — a stdlib-only consistency lint (name triple-match, tier sync with `model-routing.json`, `related`↔SKILL.md reference sync, evals shape); run it before every commit. Everything beyond that is the manual-test pass documented in **Authoring a new skill** below: install the skill into a clean Claude Code session, run it end-to-end on a realistic input, and verify the output meets the skill's own quality bar.
+There is **no `make` target and no test command**. The automated checks are [`validate.py`](validate.py) — a stdlib-only consistency lint (name triple-match, tier sync with `model-routing.json`, `related`↔SKILL.md reference sync, description sync, pack membership, evals shape) — and the CLI's structural check (`node bin/skilldrop.js validate`); both run locally before every commit and in CI on every push/PR ([`.github/workflows/release.yml`](.github/workflows/release.yml)). Everything beyond that is the manual-test pass documented in **Authoring a new skill** below:
+
+## Releasing
+
+The npm package (`skilldrop-cli`) releases automatically: bump `version` in [`package.json`](package.json), merge to `main`, and CI publishes via npm OIDC trusted publishing with provenance — version-gated, so a push without a bump publishes nothing (see [RFC-0004](docs/rfcs/0004-release-automation.md)). Bump the version whenever a skill change is worth shipping; users' `skilldrop outdated` only lights up on releases. The manual fallback (`npm publish` with the 2FA browser step) still works from the repo root. install the skill into a clean Claude Code session, run it end-to-end on a realistic input, and verify the output meets the skill's own quality bar.
 
 ## File placement
 
@@ -258,8 +262,9 @@ The README groups skills into these categories. Prefer adding to one of them ove
 4. **Dev workflow** — skills that act on code (`devils-advocate`, `feature-implement-loop`, `council-review`).
 5. **Diagrams** — visual artifacts (`architecture-diagrams`, `reverse-architecture`, `figma-diagrams`, `user-journey-map`).
 6. **Documentation** — written technical artifacts (`adr-generator`, `design-doc`, `runbook-generator`, `tech-comparison-matrix`).
-7. **AI adoption & observability** — measuring and gating AI usage itself (`ai-usage-report`, `llm-eval-harness`).
-8. **Stakeholder communication** — non-technical audiences (`audience-profile`, `slide-outliner`, `deck-builder`, `exec-summary`, `decision-log`, `incident-comms`).
+7. **Agent engineering** — designing agentic systems themselves (`agent-loop-design`, `subagent-design`, `agent-budget`).
+8. **AI adoption & observability** — measuring and gating AI usage itself (`ai-usage-report`, `llm-eval-harness`).
+9. **Stakeholder communication** — non-technical audiences (`audience-profile`, `slide-outliner`, `deck-builder`, `exec-summary`, `decision-log`, `incident-comms`).
 
 A new section needs a use-case-first name, a one-sentence definition of what belongs in it, and at least one existing skill that would also fit there. Sections are cheap; ungrouped skills make the README harder to scan.
 

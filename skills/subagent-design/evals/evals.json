@@ -1,0 +1,29 @@
+{
+  "skill_name": "subagent-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Design a multi-agent workflow to audit our 40-repo GitHub org for secrets committed to git history, hardcoded credentials, and misconfigured CI permissions. Results should end up as one prioritized report.",
+      "assertions": [
+        "The fan-out is justified by name (context separation across 40 repos) rather than assumed",
+        "Every role card has a one-sentence single mission with no 'and'",
+        "Every output contract is a typed schema, not 'reports its findings'",
+        "Each card states what the agent is denied seeing (isolation) and least-privilege tools (read-only for auditors)",
+        "The topology is named with its reason; any barrier names the cross-item dependency (e.g. dedup before prioritization)",
+        "A separate adversarial verification stage gates findings before the report — verifier is not a generator",
+        "Contract-invalid subagent output routes to a failure path, not the merged report",
+        "Depth is capped at one level",
+        "A budget line gives per-agent tiers and a fleet cap, sourced or tagged [assumption]",
+        "A Mermaid flowchart of the topology is emitted with valid syntax"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Should I use multiple agents to write a single 500-word blog post from an outline I already have?",
+      "assertions": [
+        "The skill recommends a single agent — the task fits one context and no fan-out reason applies",
+        "The three-reasons test is applied explicitly rather than a fan-out being designed anyway"
+      ]
+    }
+  ]
+}

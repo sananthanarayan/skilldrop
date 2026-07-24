@@ -1,0 +1,28 @@
+{
+  "skill_name": "agent-budget",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Budget our nightly agent workflow: it reviews the day's merged PRs for security issues. Stages: collect diffs, one reviewer agent per PR (typically 15 PRs), an adversarial verifier on each finding, and a summary report. One outcome = a verified finding report delivered by 8am. We got a $900 bill last week and nobody can say if that's bad.",
+      "assertions": [
+        "The outcome unit is the verified report (or per-PR-reviewed), and every cost divides by it",
+        "Every stage has a tier with a one-line rationale — collection is light, review standard/heavy, verification heavy and explicitly never downgraded",
+        "Every stage has expected spend, a hard cap (roughly 3-5x expected), and an on-cap action that is abort or degrade — no warn-and-continue",
+        "A run-level cap exists and is less than the sum of stage caps, with the reason stated",
+        "The degradation ladder is ordered scope -> parallelism -> non-verification stages, with verification explicitly last/never",
+        "Cost-per-outcome gets a target and a comparison line against the manual alternative (e.g. engineer review time), addressing whether $900/week is bad",
+        "Estimates are tagged [assumption] with a calibration step after ~20 runs",
+        "Measurement includes per-stage spend logging, a review cadence, and an alert on rising cap-hit rate",
+        "Hand-offs route caps to agent-loop-design and per-agent tiers to subagent-design"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "[Non-interactive run — no user available to answer questions] Set a token budget.",
+      "assertions": [
+        "No budget is fabricated — the output is BLOCKED: need the workflow and its outcome unit",
+        "No stage table or caps appear"
+      ]
+    }
+  ]
+}

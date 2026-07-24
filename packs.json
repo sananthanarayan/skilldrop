@@ -79,8 +79,11 @@
       ]
     },
     "ai-engineering": {
-      "description": "Ship and measure AI features: eval harness design, AI-usage reporting, and the data contracts AI pipelines depend on.",
+      "description": "Build and run AI systems: agent loop design, subagent orchestration, spend budgets, eval harnesses, AI-usage reporting, and the data contracts AI pipelines depend on.",
       "skills": [
+        "agent-loop-design",
+        "subagent-design",
+        "agent-budget",
         "llm-eval-harness",
         "ai-usage-report",
         "data-contract"

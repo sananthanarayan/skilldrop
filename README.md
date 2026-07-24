@@ -1,10 +1,18 @@
 # skilldrop
 
-A collection of portable **Claude Skills** you can drop into any IDE — for the deliverables knowledge workers actually ship: diagrams, design docs, ADRs, runbooks, decks, decision logs, comparison matrices, and exec summaries.
+[![npm](https://img.shields.io/npm/v/skilldrop-cli)](https://www.npmjs.com/package/skilldrop-cli)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+**48 portable AI-agent skills for the deliverables knowledge workers actually ship** — diagrams, design docs, ADRs, PRDs, runbooks, decks, decision logs, threat models, adversarial reviews — installable into **Claude Code**, **Cursor**, **Kiro**, and any AI tool that accepts custom instructions, one skill or one role-based pack at a time:
+
+```bash
+npx skilldrop-cli install --pack product-manager     # or: solution-architect, dev-team,
+npx skilldrop-cli list                               #     sre-oncall, stakeholder-comms, ai-engineering
+```
 
 Originally scoped to solution architects, now broadly useful to PMs, founders, consultants, engineering leaders, exec assistants — anyone who turns ideas into stakeholder-ready artifacts.
 
-Each skill is a plain directory of `SKILL.md` + supporting files + `manifest.json`. Works in **Claude Code** natively, and ports cleanly to **Cursor**, **Kiro**, **Continue**, **Cline**, **Aider**, and any other AI coding tool that accepts custom instructions or rules.
+**Why skilldrop over heavier agent platforms:** every skill is a plain folder (`SKILL.md` + `manifest.json` + supporting files) and installs by *copy, never transformation* — what runs in your IDE is byte-identical to what's reviewed in this repo. The flat layout doubles as an open catalog contract: [any repo shaped like this one](#third-party-catalogs--publish-your-own-skills-through-the-same-cli) is installable through the same CLI. Skills are *opinionated* — each ships a quality bar, anti-patterns, and acceptance evals, so the output is an artifact, not a vibe.
 
 ## How skilldrop works
 
@@ -130,6 +138,16 @@ Skills for the direction-setting layer above any single feature — testing whet
 | [`data-contract`](skills/data-contract/SKILL.md) | Draft a data contract for a dataset, table, or event stream others depend on — the data-engineering counterpart to `api-contract-draft`. Schema specified with **per-field semantics and units** (the cents-vs-dollars, UTC-vs-local, gross-vs-net firewall), measurable quality SLAs across freshness / completeness / validity / uniqueness / distribution — each with a threshold, a check, and a **breach action** — a schema-evolution policy that names the silent killer (changing a field's *meaning* under a stable name/type is breaking, and no validator catches it), enumerated consumers (so "breaking" is defined and notices have an address), a named owner, and per-field PII classification. Marks aspirational-vs-met SLAs honestly on existing assets. |
 | [`tech-comparison-matrix`](skills/tech-comparison-matrix/SKILL.md) | Produce a weighted comparison matrix for a tech-selection question (e.g. "Postgres vs DynamoDB") with criteria, weights, scores, and a recommendation. |
 
+### Agent engineering
+
+Designing the agentic systems themselves — the loops, orchestrations, and budgets that turn "prompting an agent" into infrastructure a team can run unattended. (`feature-implement-loop` under Dev workflow is the in-repo worked example of a supervised loop; `llm-eval-harness` below builds the verifier's quality gate.)
+
+| Skill | What it does |
+|---|---|
+| [`agent-loop-design`](skills/agent-loop-design/SKILL.md) | Design a supervised agent loop as an implementable **loop spec**: a strict generate→verify→gate state machine (no mushy "reflect" states), an **observable done-condition** (never "output looks good"), verifier structurally ≠ generator (self-grading inflates), **both caps as numbers** (revision cap defaulting to 3, budget cap per run), human gates at every irreversible action with **decision-shaped digests** (never transcripts), findings flowing into the next round (else it's retry, not iteration), three specified failure routes (cap-hit / can't-judge / systemic early-stop), and a telemetry row so the loop's degradation shows up before its output does. |
+| [`subagent-design`](skills/subagent-design/SKILL.md) | Decompose a task into orchestrator + subagents — starting from **"the default answer is one agent"**: fan-out must earn itself via context separation, independence, or role conflict, or the plan says so. One-mission **role cards** (typed output contracts, explicit context-isolation lines, least-privilege tools, structured failure behavior), topology chosen with the reason attached (pipeline default; barriers only for named cross-item dependencies; judge panels with a vote rule), depth capped at one level, an **adversarial verification stage that is never a generator**, and a budget line per fleet. |
+| [`agent-budget`](skills/agent-budget/SKILL.md) | The spend spec for an agentic workflow: cheapest-adequate **tier per stage** (light/standard/heavy — heavy verification is never downgraded to save money), three numbers per stage (expected, hard cap, on-cap action — "warn and continue" banned), a run-level cap *below* the sum of stage caps, a **degradation ladder where verification is last and never cut**, and **cost-per-outcome** as the governing metric with a comparison line against the manual alternative — so "$900/week" becomes answerable. Estimates tagged `[assumption]` until calibrated on real runs. |
+
 ### AI adoption & observability
 
 | Skill | What it does |
@@ -209,7 +227,7 @@ Categories (above) say what a skill *is*; packs say *who needs it*. [`packs.json
 | `dev-team` | 11 | Build-and-ship loop: implementation with adversarial review, test plans, triage, migrations, release notes, quality gates |
 | `stakeholder-comms` | 8 | Non-technical audiences: audience profiling, deck outlines and real `.pptx` decks, exec summaries, decision logs, guides |
 | `sre-oncall` | 5 | Operate the service: runbooks, observability design, incident comms, postmortems, capacity/cost models |
-| `ai-engineering` | 3 | Ship and measure AI features: eval harnesses, AI-usage reporting, data contracts |
+| `ai-engineering` | 6 | Build and run AI systems: agent loop design, subagent orchestration, spend budgets, eval harnesses, usage reporting, data contracts |
 
 ```bash
 python3 pack.py                                  # list packs

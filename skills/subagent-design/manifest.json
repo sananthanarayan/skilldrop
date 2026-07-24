@@ -1,0 +1,11 @@
+{
+  "name": "subagent-design",
+  "version": "0.1.0",
+  "description": "Decompose a task into an orchestrator and subagents — one-mission role cards with typed output contracts, a topology (pipeline / parallel / judge panel) chosen with a reason, context-isolation rationale, and a verification stage that is never a generator. Use when the user wants to fan work out across multiple agents, design a multi-agent workflow or orchestration, or asks \"should this be one agent or several\".",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": ["agent-budget", "agent-loop-design", "council-review", "devils-advocate", "feature-implement-loop"],
+  "tags": ["subagents", "orchestration", "multi-agent", "fan-out", "agentic", "role-cards"],
+  "model": { "tier": "standard", "rationale": "Design synthesis against a fixed topology catalog and role-card template. The fan-out-or-refuse judgment is bounded by the three-reasons rule; escalate via ambiguous-input on genuinely novel workflow shapes." }
+}

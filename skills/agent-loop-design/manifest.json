@@ -1,0 +1,11 @@
+{
+  "name": "agent-loop-design",
+  "version": "0.1.0",
+  "description": "Design a supervised agent loop — the generate→verify→gate cycle, observable exit criteria, hard iteration cap, human gates at irreversible steps, and failure routes — as a loop spec a team can implement in any agent harness. Use when the user wants to automate a recurring task with an AI agent loop, design a work loop / review loop / research loop, or asks \"how do I stop my agent from running forever or shipping junk\".",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": ["agent-budget", "devils-advocate", "feature-implement-loop", "llm-eval-harness", "subagent-design"],
+  "tags": ["agent-loop", "loop-engineering", "automation", "supervised-loop", "agentic", "guardrails"],
+  "model": { "tier": "standard", "rationale": "Design synthesis against a fixed state-machine pattern and exit-criteria catalog. The gate-placement judgment is bounded by the blast-radius rule; escalate via ambiguous-input when the task itself is contested." }
+}
