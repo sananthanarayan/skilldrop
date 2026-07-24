@@ -223,6 +223,23 @@ For non-Claude IDEs, `--dest` drops the folders where your tool expects them; th
 
 ## Installing a skill into your IDE
 
+### Quickest: the skilldrop CLI
+
+The repo ships as the npm package **`skilldrop-cli`** (command: `skilldrop`) — a zero-dependency installer that copies skills byte-identical into your tool's location and writes the wiring files Cursor and Kiro need:
+
+```bash
+npx skilldrop-cli install --pack product-manager        # Claude Code, user scope (~/.claude/skills)
+npx skilldrop-cli install prfaq --ide cursor            # + writes .cursor/rules/prfaq.mdc
+npx skilldrop-cli install --pack sre-oncall --ide kiro  # + writes .kiro/steering/*.md
+npx skilldrop-cli install adr-generator --dest my/skills-dir   # Codex / Continue / Cline / Aider
+npx skilldrop-cli outdated && npx skilldrop-cli update  # skills improve; cp -R never tells you
+npx skilldrop-cli list | skilldrop info <skill> | skilldrop packs | skilldrop uninstall <skill>
+```
+
+`--with-related` also pulls each skill's companions. From a clone (or before the package is published): `node bin/skilldrop.js <same args>`. Scope and design: [RFC-0002](docs/rfcs/0002-skilldrop-cli.md), full command surface in [`skilldrop-cli-design/`](skilldrop-cli-design/skilldrop-cli-design.md).
+
+### Manual install
+
 Each skill is a plain directory. Installation is always the same two steps: (1) copy the skill folder into your IDE's skills/rules location, then (2) install the skill's dependencies (the commands are in `manifest.json` under `deps`, or run the install line from the skill's SKILL.md). Optionally, also copy the companions listed under `related` in the skill's `manifest.json` — skills reference each other, and while a hand-off to an uninstalled sibling degrades gracefully to inline guidance, the pipelines work best complete.
 
 ### Claude Code

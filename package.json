@@ -1,0 +1,36 @@
+{
+  "name": "skilldrop-cli",
+  "version": "0.1.0",
+  "description": "Portable AI-agent skills for the deliverables knowledge workers ship — diagrams, ADRs, PRDs, runbooks, decks, reviews — installable into Claude Code, Cursor, Kiro, and any IDE that takes custom instructions. One command per skill or per role-based pack.",
+  "bin": {
+    "skilldrop": "bin/skilldrop.js"
+  },
+  "files": [
+    "bin/",
+    "skills/",
+    "packs.json",
+    "model-routing.json"
+  ],
+  "engines": {
+    "node": ">=16.7.0"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "cursor",
+    "kiro",
+    "codex",
+    "ai-agent",
+    "skills",
+    "prompts",
+    "adr",
+    "prd",
+    "runbook",
+    "diagrams"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sananthanarayan/skilldrop.git"
+  },
+  "license": "MIT"
+}
