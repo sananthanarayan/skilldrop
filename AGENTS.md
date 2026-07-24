@@ -46,6 +46,7 @@ There is **no `make` target, no test command, no lint command, no CI gate** at t
 | Worked example (input → output) | `skills/<skill-name>/examples/<name>.md` |
 | Adversarial-sweep checklist (devils-advocate style) | `skills/<skill-name>/lenses/<name>.md` |
 | Per-archetype quality bar (doc-critique style) | `skills/<skill-name>/rubrics/<archetype>.md` |
+| Acceptance checks for a skill | `skills/<skill-name>/evals/evals.json` (prompt + assertions) + `evals/eval_queries.json` (should/shouldn't-trigger phrases) |
 | Executable helper | `skills/<skill-name>/scripts/<name>.py` (or `.js`, `.sh`) |
 | Python dep manifest for a skill | `skills/<skill-name>/requirements.txt` |
 | Claude Code project settings | `.claude/settings.json` — optional config (hooks, permissions, env). Inert for non-Claude tools. |
@@ -96,6 +97,7 @@ skills/<skill-name>/
 ├── templates/            # (optional) Starter snippets the agent copies from
 ├── lenses/               # (optional — devils-advocate style) Checklist files applied as a sweep
 ├── rubrics/              # (optional — doc-critique style) Per-archetype quality bars
+├── evals/                # (recommended for new skills) evals.json + eval_queries.json — see below
 └── scripts/              # (optional) Executable helpers the agent invokes
 ```
 
@@ -136,9 +138,14 @@ The folder name is the slug used for `/`-invocation: kebab-case, descriptive, us
 
 **3. Add supporting files as needed.** `templates/` = paste-able starting points; `reference.md` = long-form material that won't fit in `SKILL.md`; `lenses/<name>.md` = sweep checklists (devils-advocate); `rubrics/<archetype>.md` = per-archetype quality bars (doc-critique); `examples/<name>.md` = input → output for a non-obvious case. Always reference them from `SKILL.md` with a relative link.
 
-**4. Update the README.** Add a row to the **Skills in this repo** table (under the right category), and to **Installing dependencies** if the skill has runtime deps.
+**4. Add `evals/` — the skill's acceptance checks.** Two small JSON files, no runner required (this repo has no CI; they're executed by reading them during the manual test pass):
 
-**5. Test it manually.** Install into a clean Claude Code session (`cp -R skills/<name> ~/.claude/skills/`), then invoke it on a realistic input and verify: the agent finds `SKILL.md` without confusion; the output matches the `Quality bar`; templates/lenses/rubrics are read at the right moment; scripts work from both `${CLAUDE_SKILL_DIR}/scripts/…` *and* a plain relative path. If you can, run it in a second IDE to catch portability issues.
+- `evals/evals.json` — `{ "skill_name": …, "evals": [ { "id", "prompt", "assertions": [ … ] } ] }`. At least one realistic prompt; assertions are the checkable statements a passing output satisfies (they should restate the skill's own `Quality bar` as verifiable claims about one concrete output).
+- `evals/eval_queries.json` — `[ { "query": …, "should_trigger": true|false } ]`. 4+ phrases that should invoke the skill and 3+ near-misses that should route to a sibling skill instead. The `false` rows are the discipline: they force the `description` to draw a real boundary against sibling skills.
+
+**5. Update the README.** Add a row to the **Skills in this repo** table (under the right category), and to **Installing dependencies** if the skill has runtime deps.
+
+**6. Test it manually.** Install into a clean Claude Code session (`cp -R skills/<name> ~/.claude/skills/`), then run the `evals/evals.json` prompt and check each assertion against the output; spot-check a `should_trigger: false` query routes elsewhere. Also verify: the agent finds `SKILL.md` without confusion; templates/lenses/rubrics are read at the right moment; scripts work from both `${CLAUDE_SKILL_DIR}/scripts/…` *and* a plain relative path. If you can, run it in a second IDE to catch portability issues.
 
 ## Scripts must be portable
 
@@ -158,6 +165,7 @@ See `skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 - [ ] Folder name = `SKILL.md` `name` = `manifest.json` `name`.
 - [ ] `SKILL.md` is **≤ ~500 lines** — long material moved into siblings.
 - [ ] `Quality bar` and `Anti-patterns to avoid` sections are present.
+- [ ] **`evals/` present** — `evals.json` with ≥1 prompt + assertions, `eval_queries.json` with trigger *and* no-trigger queries.
 - [ ] At least one **worked example** for new diagram, deck, or review skills.
 - [ ] Description **leads with the use case** and **ends with trigger phrases**.
 - [ ] `README.md` updated — row added to **Skills in this repo**, and to **Installing dependencies** if the skill has runtime deps.
@@ -199,13 +207,16 @@ The `description` in frontmatter and `manifest.json` is the *most-read* string i
 
 ## Skill categories (extend an existing one before proposing a new one)
 
-The README groups skills into five categories. Prefer adding to one of these over inventing a new section:
+The README groups skills into these categories. Prefer adding to one of them over inventing a new section:
 
 1. **Pipeline glue** — skills that hand off to other skills (`brief-intake`, `doc-critique`).
-2. **Dev workflow** — skills that act on code (`devils-advocate`).
-3. **Diagrams** — visual artifacts (`architecture-diagrams`, `reverse-architecture`, `figma-diagrams`).
-4. **Documentation** — written technical artifacts (`adr-generator`, `design-doc`, `runbook-generator`, `tech-comparison-matrix`).
-5. **Stakeholder communication** — non-technical audiences (`audience-profile`, `slide-outliner`, `deck-builder`, `exec-summary`, `decision-log`).
+2. **Product strategy** — direction-setting above any single feature (`prfaq`, `strategy-analysis`, `okr-cascade`).
+3. **Planning & delivery** — SDLC steps around the code itself (`prd-draft`, `user-story-splitter`, `test-plan-generator`, `migration-plan`).
+4. **Dev workflow** — skills that act on code (`devils-advocate`, `feature-implement-loop`, `council-review`).
+5. **Diagrams** — visual artifacts (`architecture-diagrams`, `reverse-architecture`, `figma-diagrams`, `user-journey-map`).
+6. **Documentation** — written technical artifacts (`adr-generator`, `design-doc`, `runbook-generator`, `tech-comparison-matrix`).
+7. **AI adoption & observability** — measuring and gating AI usage itself (`ai-usage-report`, `llm-eval-harness`).
+8. **Stakeholder communication** — non-technical audiences (`audience-profile`, `slide-outliner`, `deck-builder`, `exec-summary`, `decision-log`, `incident-comms`).
 
 A new section needs a use-case-first name, a one-sentence definition of what belongs in it, and at least one existing skill that would also fit there. Sections are cheap; ungrouped skills make the README harder to scan.
 

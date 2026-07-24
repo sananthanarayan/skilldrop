@@ -1,0 +1,10 @@
+{
+  "name": "prfaq",
+  "version": "0.1.0",
+  "description": "Write an Amazon-style PR/FAQ — the launch press release for a product that doesn't exist yet, plus the customer FAQ and internal FAQ that force the hard questions before engineering starts. Use when the user wants a PRFAQ, a working-backwards document, a \"write the press release first\" exercise, or needs to align stakeholders on what a product must be before committing a team to build it.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["prfaq", "working-backwards", "press-release", "product-strategy", "product-direction", "amazon"],
+  "model": { "tier": "standard", "rationale": "Synthesizes a press release and FAQs from a product concept against a fixed format. The specificity discipline needs care but the template bounds it; escalate via ambiguous-input when the concept itself is contested." }
+}

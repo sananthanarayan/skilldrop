@@ -138,6 +138,10 @@
     "devils-advocate": { "tier": "heavy", "rationale": "Adversarial code review across four lenses. Cheaper models miss edge cases and under-call severity — the whole value is the hard thinking. Never downgrade." },
     "doc-critique": { "tier": "heavy", "rationale": "Adversarial doc review against rubrics. Same as devils-advocate: the value is catching what a fast pass misses. Never downgrade." },
     "tech-comparison-matrix": { "tier": "heavy", "rationale": "Weighted multi-criteria judgment with a recommendation. Mis-weighting is the failure mode; heavy is worth it. Never downgrade." },
-    "threat-model": { "tier": "heavy", "rationale": "Adversarial reasoning over a design — cheaper models emit checklist residue, miss authz/insider paths, and inflate severity. Never downgrade." }
+    "threat-model": { "tier": "heavy", "rationale": "Adversarial reasoning over a design — cheaper models emit checklist residue, miss authz/insider paths, and inflate severity. Never downgrade." },
+    "prfaq": { "tier": "standard", "rationale": "Synthesizes a press release and FAQs from a product concept against a fixed format. The specificity discipline needs care but the template bounds it; escalate via ambiguous-input when the concept itself is contested." },
+    "okr-cascade": { "tier": "standard", "rationale": "Structured derivation against a fixed roll-up discipline; the causal-sentence and gap judgments need care but the template bounds them. Escalate via ambiguous-input when the company objectives themselves are contested." },
+    "user-journey-map": { "tier": "standard", "rationale": "Structured synthesis into a fixed four-row stage model plus bounded ranking judgment. Escalate via ambiguous-input when the persona or outcome is contested or research inputs conflict." },
+    "strategy-analysis": { "tier": "heavy", "rationale": "Framework selection plus evidenced multi-factor judgment ending in a ranked, committal verdict. Cheaper models fill cells with generic filler, skip the TOWS crossings, and refuse to take a side. Never downgrade." }
   }
 }

@@ -84,6 +84,16 @@ Skills for the SDLC steps around the code itself — turning raw requirements in
 | [`bug-triage`](skills/bug-triage/SKILL.md) | Turn a vague bug report ("it's broken on mobile sometimes") into a ticket an engineer can start without contacting the reporter: searchable symptom-plus-condition title, numbered repro steps from a clean state (or an explicit "no repro yet" with the exact diagnostics to collect), expected-vs-actual with the verbatim error string, every claim tagged `[reported]` / `[verified]` / `[assumption]`, severity and priority judged independently (S4/P1 is a legitimate combination), ≤3 hypotheses each with a 5-minute check, and duplicate-search hints. One bug per ticket — multi-symptom reports get split. |
 | [`migration-plan`](skills/migration-plan/SKILL.md) | Phased migration/rollout plan (schema change with live backfill, API version, datastore/auth/platform swap) built on the parallel-change pattern: expand → migrate → contract. One change per phase (a failed phase implicates exactly one thing); every phase carries an observable gate with bake time, a tested rollback with an explicit data story, and a blast radius; at most one **named point of no return**; backfill specified idempotent + resumable + rate-limited with 3-depth parity checks; dual-write requires a named reconciler; the contract phase gets a date and an owner so "we'll remove the old path later" actually happens. |
 
+### Product strategy
+
+Skills for the direction-setting layer above any single feature — testing whether a product idea deserves a team, analyzing a market position, and turning strategy into aligned goals. (`business-case` under Planning & delivery is the natural costed follow-on.)
+
+| Skill | What it does |
+|---|---|
+| [`prfaq`](skills/prfaq/SKILL.md) | Write an Amazon-style PR/FAQ — the launch press release for a product that doesn't exist yet, plus customer and internal FAQs that force the hard questions before engineering starts. Problem stated in the customer's words (no jargon-laundering); solution names a **mechanism**, not a category; an **adoption hypothesis** with a behavioral first-success event (never "ships to beta" — that's the team's action, not the customer's); at least one customer-FAQ answer concedes a real trade-off; the internal FAQ names the riskiest assumption, a concrete acquisition path, a success metric that counts the first-success event, and a **kill condition**. Zero spec content — hands off to `prd-draft` or `business-case` if the idea survives. |
+| [`strategy-analysis`](skills/strategy-analysis/SKILL.md) | Run a strategy framework — SWOT/TOWS, Porter's Five Forces, or PESTLE — chosen to fit the question, not the request (a "SWOT" that's really "should we enter this market" gets Five Forces suggested). Every cell must be **specific, evidence-tagged, and carry a so-what** — horoscope cells ("strong team") are banned; SWOT never ships without TOWS crossings; every Five Forces rating names the mechanism (who holds the power and why). Ends with **ranked, action-shaped implications** tied to a named decision and a verdict that takes a side and states what would change it. |
+| [`okr-cascade`](skills/okr-cascade/SKILL.md) | Cascade company OKRs to team level with the two things cascades usually hide: a **ranked gap registry** (objectives no team credibly owns) and a **causal metric tree** (Mermaid) connecting every team KR to the north-star via a written causal sentence. Output KRs flagged at intake ("launch v2" → what outcome does it serve?); every team KR scorable 0.0–1.0 and measurable at the team's own scope; no alignment theater (teams with no credible contribution to an objective simply don't appear under it); company OKRs kept verbatim so the roll-up stays honest. Org-level counterpart to `success-metrics`, which takes each team KR into full feature-level measurement design. |
+
 ### Dev workflow
 
 | Skill | What it does |
@@ -103,6 +113,7 @@ Skills for the SDLC steps around the code itself — turning raw requirements in
 | [`architecture-diagrams`](skills/architecture-diagrams/SKILL.md) | Turn a written description of a system into a renderable Mermaid, PlantUML, or C4 diagram. Supports AWS / Azure / GCP cloud shapes, sequence flows, container diagrams, and ER models. |
 | [`reverse-architecture`](skills/reverse-architecture/SKILL.md) | Reverse-engineer a system's "as-is" architecture from existing code, IaC (Terraform / CloudFormation / CDK / Pulumi / Bicep), Kubernetes manifests, docker-compose, package manifests, database schema, or OpenAPI. Emits a structured node/edge extraction, a written description suitable for `architecture-diagrams`, and a first-draft Mermaid / C4 diagram with every node tied to a source-of-truth file path. |
 | [`figma-diagrams`](skills/figma-diagrams/SKILL.md) | Read structure from existing Figma/FigJam files and produce FigJam-importable diagram specs (and comments) via the Figma REST API. Useful when your final deliverable lives in Figma. |
+| [`user-journey-map`](skills/user-journey-map/SKILL.md) | Map one persona's end-to-end journey toward one outcome — 3–6 goal-phase stages (never one-per-screen), each with actions / reasoned emotion scores / pains / **outcome-shaped opportunities** (no solutioning — "add SSO" belongs downstream), rendered as a Mermaid `journey` emotion arc. Declares its **evidence level** up front (`[observational]` / `[survey/analytics]` / `[assumption-based]`) so a hypothesis never masquerades as research; marks the steepest dips, the peak, and the *ending* emotion (peak-end rule); and ranks opportunities down to **1–2 named improvement targets** instead of an unranked pain inventory. Hands committed targets to `prd-draft` / `user-story-splitter` and measurement to `success-metrics`. |
 
 ### Documentation
 
@@ -149,6 +160,7 @@ skills/<skill-name>/
 ├── reference.md          # (optional) Long-form reference material
 ├── examples/             # (optional) Worked examples the agent can study
 ├── templates/            # (optional) Starter snippets the agent can copy from
+├── evals/                # (optional) Acceptance checks — evals.json (prompt + assertions) + eval_queries.json (trigger phrases)
 └── scripts/              # (optional) Executable helpers the agent invokes
 ```
 
@@ -335,7 +347,8 @@ The skill parses `$ARGUMENTS` to figure out which Figma URL you mean and which a
 2. Add `skills/<your-skill>/manifest.json` with the same `name` + `description` plus declared `deps` and required env vars — this is what makes the skill portable across IDEs.
 3. Keep `SKILL.md` short (under ~500 lines). Move long reference material into sibling files like `reference.md`, `examples.md`, or `templates/`.
 4. If your skill needs scripts, drop them in `scripts/` and reference them with a path relative to the skill folder — **avoid hard-coding `${CLAUDE_SKILL_DIR}` only**; show both paths so non–Claude-Code users aren't stuck.
-5. Add an entry to the **Skills in this repo** table above and to the **Installing dependencies** table.
+5. Add an `evals/` folder: `evals.json` (at least one realistic prompt with a list of assertions the output must satisfy) and `eval_queries.json` (phrases that should and should **not** trigger the skill). These double as the checklist for the manual test pass and keep the `description` honest about when the skill fires.
+6. Add an entry to the **Skills in this repo** table above and to the **Installing dependencies** table.
 
 ## License
 

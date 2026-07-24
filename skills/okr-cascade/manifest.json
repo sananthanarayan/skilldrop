@@ -1,0 +1,10 @@
+{
+  "name": "okr-cascade",
+  "version": "0.1.0",
+  "description": "Cascade company OKRs to team-level OKRs — with a gap registry for objectives no team credibly owns, and a causal metric tree connecting each team KR to the north-star it's supposed to move. Use when the user wants to set or cascade OKRs, align team goals to company goals, \"turn strategy into quarterly objectives\", or audit existing OKRs for gaps and vanity metrics.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "tags": ["okr", "goals", "alignment", "north-star", "metric-tree", "quarterly-planning"],
+  "model": { "tier": "standard", "rationale": "Structured derivation against a fixed roll-up discipline; the causal-sentence and gap judgments need care but the template bounds them. Escalate via ambiguous-input when the company objectives themselves are contested." }
+}
