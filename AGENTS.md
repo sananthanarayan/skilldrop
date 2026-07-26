@@ -50,11 +50,13 @@ git push origin feat/<short-kebab-name>
 gh pr create --base main --head <handle>:feat/<short-kebab-name>
 ```
 
-There is **no `make` target and no test command**. The automated checks are [`validate.py`](validate.py) — a stdlib-only consistency lint (name triple-match, tier sync with `model-routing.json`, `related`↔SKILL.md reference sync, description sync, pack membership, evals shape) — and the CLI's structural check (`node bin/skilldrop.js validate`); both run locally before every commit and in CI on every push/PR ([`.github/workflows/release.yml`](.github/workflows/release.yml)). Everything beyond that is the manual-test pass documented in **Authoring a new skill** below:
+There is **no `make` target and no test command**. The automated checks are [`validate.py`](validate.py) — a stdlib-only consistency lint (name triple-match, tier sync with `model-routing.json`, `related`↔SKILL.md reference sync, description sync, pack membership, evals shape) — and the CLI's structural check (`node bin/skilldrop.js validate`); both run locally before every commit and in CI on every push/PR ([`.github/workflows/release.yml`](.github/workflows/release.yml)). Everything beyond that is the manual-test pass documented in **Authoring a new skill** below: install the skill into a clean Claude Code session, run it end-to-end on a realistic input, and verify the output meets the skill's own quality bar.
 
 ## Releasing
 
-The npm package (`skilldrop-cli`) releases automatically: bump `version` in [`package.json`](package.json), merge to `main`, and CI publishes via npm OIDC trusted publishing with provenance — version-gated, so a push without a bump publishes nothing (see [RFC-0004](docs/rfcs/0004-release-automation.md)). Bump the version whenever a skill change is worth shipping; users' `skilldrop outdated` only lights up on releases. The manual fallback (`npm publish` with the 2FA browser step) still works from the repo root. install the skill into a clean Claude Code session, run it end-to-end on a realistic input, and verify the output meets the skill's own quality bar.
+The npm package (`skilldrop-cli`) releases automatically: bump `version` in [`package.json`](package.json), merge to `main`, and CI publishes via npm OIDC trusted publishing with provenance, then pushes a `v<version>` tag — version-gated, so a push without a bump publishes nothing (see [RFC-0004](docs/rfcs/0004-release-automation.md)). Bump the version whenever a skill change is worth shipping; users' `skilldrop outdated` only lights up on releases. The manual fallback (`npm publish` with the 2FA browser step) still works from the repo root.
+
+**Bump the patch digit, one step at a time.** `0.4.0` → `0.4.1` → `0.4.2`. Never skip a number, and don't reach for a minor bump because a release *feels* big — new skills, skill edits, pack changes, tier changes, docs, and CLI bug fixes are all patch releases. **Minor** (`0.4.x` → `0.5.0`) is reserved for a change to the CLI's public surface: a new command, a new flag, or a changed default. **Major** waits for `1.0.0` and a deliberate stability commitment.
 
 ## File placement
 
@@ -294,6 +296,7 @@ When you add or change a skill, set its tier in **both** `model-routing.json` an
 
 ## Pointers
 
+- Human-facing contributor entry point (lanes, gates, release): [CONTRIBUTING.md](CONTRIBUTING.md) — a router over this file, which stays the source of truth
 - Repo overview & per-IDE install steps: [README.md](README.md)
 - RFCs (template + decisions): [docs/rfcs/](docs/rfcs/)
 - Skill packs: [packs.json](packs.json) + [pack.py](pack.py)
