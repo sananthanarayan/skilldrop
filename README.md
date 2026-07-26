@@ -3,7 +3,9 @@
 [![npm](https://img.shields.io/npm/v/skilldrop-cli)](https://www.npmjs.com/package/skilldrop-cli)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-**48 portable AI-agent skills for the deliverables knowledge workers actually ship** — diagrams, design docs, ADRs, PRDs, runbooks, decks, decision logs, threat models, adversarial reviews — installable into **Claude Code**, **Cursor**, **Kiro**, and any AI tool that accepts custom instructions, one skill or one role-based pack at a time:
+**[Browse the catalogue →](https://sananthanarayan.github.io/skilldrop/)** — all 49 skills, filterable by pack, tag, and model tier.
+
+**49 portable AI-agent skills for the deliverables knowledge workers actually ship** — diagrams, design docs, ADRs, PRDs, runbooks, decks, decision logs, threat models, adversarial reviews — installable into **Claude Code**, **Cursor**, **Kiro**, **Codex**, **GitHub Copilot**, and any AI tool that accepts custom instructions, one skill or one role-based pack at a time:
 
 ```bash
 npx skilldrop-cli install --pack product-manager     # or: solution-architect, dev-team,
