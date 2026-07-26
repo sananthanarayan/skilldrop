@@ -421,6 +421,8 @@ The skill parses `$ARGUMENTS` to figure out which Figma URL you mean and which a
 
 ## Adding a new skill
 
+Full contributor guide — the three lanes, the PR gates, and the release flow — is in [CONTRIBUTING.md](CONTRIBUTING.md). The short version:
+
 0. Write a one-page RFC first — copy [`docs/rfcs/0000-template.md`](docs/rfcs/0000-template.md) to `docs/rfcs/NNNN-<slug>.md` and record the problem, the fit check, and the alternatives. New skills and structural changes need one; fixes to existing skills don't.
 1. Create `skills/<your-skill>/SKILL.md` with this frontmatter:
    ```yaml
