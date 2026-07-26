@@ -133,7 +133,8 @@ def collect():
             print("  FAIL", p, file=sys.stderr)
         sys.exit(1)
 
-    pack_meta = [{"name": k, "description": v["description"], "count": len(v["skills"])}
+    pack_meta = [{"name": k, "description": v["description"],
+                  "count": len(v["skills"]), "skills": sorted(v["skills"])}
                  for k, v in packs.items()]
     return skills, pack_meta
 
@@ -143,28 +144,20 @@ def esc(s):
 
 
 def card(s):
+    """One compact row. The full description is one clamped line — the whole point of the
+    redesign is that the page does not dump 49 paragraphs at a reader who hasn't chosen yet.
+    Tags and `related` are deliberately absent: they live in catalogue.json and on GitHub."""
     tier = s["tier"]
-    packs = "".join(f'<span class="pill pill--pack">{esc(p)}</span>' for p in s["packs"])
-    tags = "".join(f'<span class="pill">{esc(t)}</span>' for t in s["tags"][:6])
-    related = "".join(f'<a class="rel" href="#{esc(r)}">{esc(r)}</a>' for r in s["related"])
-    flags = ""
-    if s["deps"]:
-        flags += '<span class="pill pill--flag">deps</span>'
-    for e in s["env"]:
-        flags += f'<span class="pill pill--flag">env: {esc(e)}</span>'
-    for h in s["hooks"]:
-        flags += f'<span class="pill pill--flag">hook: {esc(h)}</span>'
-    return f"""<article class="skill" id="{esc(s['name'])}"
+    return f"""<li class="skill" id="{esc(s['name'])}"
    data-tier="{esc(tier)}" data-packs="{esc(' '.join(s['packs']))}"
    data-text="{esc((s['name'] + ' ' + s['description'] + ' ' + ' '.join(s['tags'])).lower())}">
-  <div class="skill__head">
-    <h3 class="skill__name"><a href="{REPO_URL}/blob/main/skills/{esc(s['name'])}/SKILL.md">{esc(s['name'])}</a></h3>
-    <span class="tier tier--{esc(tier)}" title="{esc(s['rationale'])}">{esc(tier)}</span>
-  </div>
-  <p class="skill__desc">{esc(s['description'])}</p>
-  <div class="pills">{packs}{flags}{tags}</div>
-  {f'<div class="pills rels"><span class="rels__lbl">pairs with</span>{related}</div>' if related else ''}
-</article>"""
+  <a class="skill__link" href="{REPO_URL}/blob/main/skills/{esc(s['name'])}/SKILL.md"
+     title="{esc(s['description'])}">
+    <span class="skill__name">{esc(s['name'])}</span>
+    <span class="skill__desc">{esc(s['description'])}</span>
+  </a>
+  <span class="tier tier--{esc(tier)}" title="{esc(s['rationale'])}">{esc(tier)}</span>
+</li>"""
 
 
 def terminal(lines):
@@ -208,11 +201,14 @@ def render(skills, packs):
         for _, c, n in INSTALL_TABS)
 
     pack_cards = "".join(
-        f"""<article class="pack">
-      <h3 class="pack__name">{esc(p['name'])} <span class="pack__n">{p['count']}</span></h3>
+        f"""<li class="pack">
+      <div class="pack__head">
+        <h3 class="pack__name">{esc(p['name'])}</h3><span class="pack__n">{p['count']} skills</span>
+      </div>
       <p class="pack__desc">{esc(p['description'])}</p>
-      <button class="pack__cta" data-filter="pack" data-value="{esc(p['name'])}">Show these skills &rarr;</button>
-    </article>""" for p in packs)
+      <p class="pack__install"><code>skilldrop install --pack {esc(p['name'])}</code></p>
+      <button class="pack__cta" data-filter="pack" data-value="{esc(p['name'])}">See what's inside &rarr;</button>
+    </li>""" for p in packs)
 
     pack_chips = "".join(
         f'<button class="chip" data-filter="pack" data-value="{esc(p["name"])}">{esc(p["name"])} <b>{p["count"]}</b></button>'
@@ -350,26 +346,46 @@ a {{ color:var(--accent-700); }}
 .tabs__label:focus-within, .tabs__radio:focus-visible+.tabs__labels {{ outline:2px solid var(--accent); }}
 
 /* packs */
-.grid-3 {{ display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); }}
+.grid-3 {{ display:grid; gap:1rem; list-style:none; margin:0; padding:0;
+  grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); }}
 .pack {{
   background:var(--card); border:1px solid var(--border); border-radius:var(--r);
-  padding:1.35rem; display:flex; flex-direction:column;
+  padding:1.4rem; display:flex; flex-direction:column;
 }}
-.pack__name {{ margin:0 0 .5rem; font-size:1rem; font-family:var(--mono); letter-spacing:-.01em; }}
+.pack__head {{ display:flex; align-items:baseline; gap:.6rem; margin-bottom:.55rem; }}
+.pack__name {{ margin:0; font-size:1rem; font-family:var(--mono); letter-spacing:-.01em; }}
 .pack__n {{
-  font-family:inherit; font-size:.7rem; color:var(--accent-700);
-  background:var(--accent-10); border-radius:999px; padding:2px 8px; margin-left:.3rem;
+  margin-left:auto; font-size:.68rem; text-transform:uppercase; letter-spacing:.07em;
+  color:var(--accent-700); background:var(--accent-10); border-radius:999px; padding:2px 9px; white-space:nowrap;
 }}
-.pack__desc {{ margin:0 0 1.1rem; font-size:.88rem; color:var(--fg-muted); flex:1; }}
+.pack__desc {{ margin:0 0 1rem; font-size:.88rem; color:var(--fg-muted); flex:1; }}
+.pack__install {{ margin:0 0 1rem; }}
+.pack__install code {{
+  display:block; font:.76rem/1.5 var(--mono); color:var(--fg-muted);
+  background:var(--surface-alt); border:1px solid var(--border); border-radius:var(--r-sm);
+  padding:.45rem .6rem; overflow-x:auto;
+}}
 .pack__cta {{
   align-self:flex-start; cursor:pointer; font:600 .84rem/1 inherit; color:var(--accent-700);
   background:none; border:0; padding:0;
 }}
 .pack__cta:hover {{ text-decoration:underline; }}
 
+/* progressive disclosure — the 49-row list stays closed until asked for */
+.more {{ margin-top:2.6rem; border-top:1px solid var(--border); }}
+.more__summary {{
+  cursor:pointer; list-style:none; display:flex; align-items:center; gap:.5rem;
+  padding:1.4rem 0 .2rem; font-weight:600; font-size:1rem; color:var(--accent-700);
+}}
+.more__summary::-webkit-details-marker {{ display:none; }}
+.more__summary:hover {{ text-decoration:underline; }}
+.more__summary:focus-visible {{ outline:2px solid var(--accent); outline-offset:3px; }}
+.more__arrow {{ transition:transform .18s ease; }}
+.more[open] .more__arrow {{ transform:rotate(90deg); }}
+
 /* catalogue */
-.controls {{ position:sticky; top:0; z-index:5; background:var(--surface-alt);
-  border-bottom:1px solid var(--border); padding:1rem 0; margin-bottom:1.6rem; }}
+.controls {{ position:sticky; top:0; z-index:5; background:var(--surface);
+  border-bottom:1px solid var(--border); padding:1rem 0; margin-bottom:1.2rem; }}
 #q {{
   width:100%; padding:.7rem .9rem; font-size:1rem; color:var(--fg); background:var(--card);
   border:1px solid var(--border); border-radius:var(--r-sm);
@@ -385,27 +401,32 @@ a {{ color:var(--accent-700); }}
 .chip[aria-pressed=true] b {{ color:#0d0d0f; opacity:.7; }}
 .chips__lbl {{ font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--fg-muted); }}
 #count {{ font-size:.8rem; color:var(--fg-muted); margin-left:auto; }}
-.skills {{ display:grid; gap:1rem; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); }}
-.skill {{ background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:1.25rem; }}
-.skill:target {{ outline:2px solid var(--accent); }}
-.skill__head {{ display:flex; gap:.6rem; align-items:baseline; margin-bottom:.5rem; }}
-.skill__name {{ margin:0; font-size:.97rem; font-family:var(--mono); letter-spacing:-.01em; }}
-.skill__name a {{ color:var(--fg); text-decoration:none; }}
-.skill__name a:hover {{ color:var(--accent-700); text-decoration:underline; }}
-.skill__desc {{ margin:0 0 .8rem; font-size:.87rem; color:var(--fg-muted); }}
+/* one row per skill: name, one clamped line, tier. Scannable at 49 items. */
+.skills {{ list-style:none; margin:0; padding:0; border-top:1px solid var(--border); }}
+.skill {{ display:flex; align-items:center; gap:1rem; border-bottom:1px solid var(--border); }}
+.skill:target {{ background:var(--accent-10); }}
+.skill__link {{
+  flex:1; min-width:0; display:flex; align-items:baseline; gap:.9rem;
+  padding:.7rem .3rem; text-decoration:none; color:inherit;
+}}
+.skill__link:hover {{ background:var(--surface-alt); }}
+.skill__link:hover .skill__name {{ color:var(--accent-700); }}
+.skill__name {{ font:.9rem var(--mono); letter-spacing:-.01em; flex:0 0 15.5rem; }}
+.skill__desc {{
+  flex:1; min-width:0; font-size:.85rem; color:var(--fg-muted);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}}
 .tier {{
-  margin-left:auto; font-size:.65rem; text-transform:uppercase; letter-spacing:.07em;
+  flex:0 0 auto; margin-right:.3rem; font-size:.62rem; text-transform:uppercase; letter-spacing:.07em;
   padding:2px 7px; border-radius:3px; white-space:nowrap; border:1px solid var(--border); color:var(--fg-muted);
 }}
 .tier--heavy {{ background:var(--accent); border-color:var(--accent); color:#0d0d0f; }}
 .tier--standard {{ background:var(--accent-10); border-color:transparent; color:var(--accent-700); }}
-.pills {{ display:flex; flex-wrap:wrap; gap:.3rem; }}
-.pills.rels {{ margin-top:.55rem; align-items:center; }}
-.pill {{ font-size:.69rem; padding:2px 7px; border-radius:3px; border:1px solid var(--border); color:var(--fg-muted); }}
-.pill--pack {{ border-color:var(--accent); color:var(--accent-700); }}
-.rels__lbl {{ font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--fg-muted); margin-right:.2rem; }}
-.rel {{ font:.71rem var(--mono); color:var(--accent-700); text-decoration:none; }}
-.rel:hover {{ text-decoration:underline; }}
+@media (max-width:640px) {{
+  .skill__link {{ flex-direction:column; gap:.2rem; }}
+  .skill__name {{ flex:none; }}
+  .skill__desc {{ white-space:normal; }}
+}}
 .empty {{ padding:3rem 0; text-align:center; color:var(--fg-muted); }}
 
 /* closing + footer */
@@ -473,30 +494,29 @@ footer .inner {{ border-top:1px solid var(--w-06); padding-top:1.6rem; display:f
   </div>
 </section>
 
-<section class="section" id="packs">
+<section class="section" id="catalogue">
   <div class="inner">
     <p class="eyebrow">Packs</p>
     <h2>{esc(PITCH['catalogue_h2'])}</h2>
-    <p class="lede">Role-based bundles. A pack is a named list — skills never move out of their flat folders, so a pack install is the same copy as any other.</p>
-    <div class="grid-3">{pack_cards}</div>
-  </div>
-</section>
+    <p class="lede">Start with a role. A pack is a named list — skills never move out of their flat folders, so installing one is the same copy as installing any other.</p>
+    <ul class="grid-3">{pack_cards}</ul>
 
-<section class="section section--alt" id="catalogue">
-  <div class="inner">
-    <p class="eyebrow">All {len(skills)} skills</p>
-    <h2 class="visually-hidden">Catalogue</h2>
-    <div class="controls">
-      <label class="visually-hidden" for="q">Search skills</label>
-      <input id="q" type="search" placeholder="Search by name, description, or tag…" autocomplete="off">
-      <div class="chips"><span class="chips__lbl">pack</span>{pack_chips}</div>
-      <div class="chips"><span class="chips__lbl">tier</span>{tier_chips}
-        <button class="chip" id="clear">clear</button><span id="count"></span></div>
-    </div>
-    <div class="skills" id="grid">
+    <details class="more" id="all">
+      <summary class="more__summary">
+        <span>See all {len(skills)} skills</span><span class="more__arrow">&rarr;</span>
+      </summary>
+      <div class="controls">
+        <label class="visually-hidden" for="q">Search skills</label>
+        <input id="q" type="search" placeholder="Search by name, description, or tag…" autocomplete="off">
+        <div class="chips"><span class="chips__lbl">pack</span>{pack_chips}</div>
+        <div class="chips"><span class="chips__lbl">tier</span>{tier_chips}
+          <button class="chip" id="clear">clear</button><span id="count"></span></div>
+      </div>
+      <ul class="skills" id="grid">
 {cards}
-    </div>
-    <p class="empty" id="empty" hidden>No skill matches those filters.</p>
+      </ul>
+      <p class="empty" id="empty" hidden>No skill matches those filters.</p>
+    </details>
   </div>
 </section>
 
@@ -548,16 +568,33 @@ footer .inner {{ border-top:1px solid var(--w-06); padding-top:1.6rem; display:f
     empty.hidden = shown !== 0;
   }}
 
+  var more = document.getElementById('all');
+
   document.querySelectorAll('[data-filter]').forEach(function (b) {{
     b.addEventListener('click', function () {{
       var kind = b.dataset.filter, val = b.dataset.value;
       active[kind] = active[kind] === val ? null : val;
       sync(); apply();
+      // A pack card is the entry point into the list — opening it is the whole gesture.
       if (b.classList.contains('pack__cta')) {{
-        document.getElementById('catalogue').scrollIntoView({{ behavior: 'smooth' }});
+        more.open = true;
+        more.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
       }}
     }});
   }});
+
+  // A deep link to a single skill has to open the list, or it lands on a closed section.
+  function openForHash() {{
+    var id = location.hash.slice(1);
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (el && (id === 'all' || el.classList.contains('skill'))) {{
+      more.open = true;
+      el.scrollIntoView({{ block: 'center' }});
+    }}
+  }}
+  window.addEventListener('hashchange', openForHash);
+  openForHash();
 
   document.getElementById('clear').addEventListener('click', function () {{
     active = {{ pack: null, tier: null }}; q.value = ''; sync(); apply();
