@@ -1,0 +1,11 @@
+{
+  "name": "agent-threat-model",
+  "version": "0.1.0",
+  "description": "Threat-model an AI agent deployment against the lethal trifecta — private data, untrusted content, and an exfiltration vector — producing a per-capability matrix, a named architectural fix for every unsafe path, and a pre-launch checklist. Use before shipping an agent, when reviewing MCP server or tool permissions, when the user asks about prompt injection or data exfiltration risk, or when deciding whether an agent's capability surface is safe to expose.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": ["agent-budget", "agent-loop-design", "devils-advocate", "llm-eval-harness", "postmortem-generator", "sonar-review", "subagent-design", "threat-model"],
+  "tags": ["security", "prompt-injection", "lethal-trifecta", "agentic", "exfiltration", "tool-permissions"],
+  "model": { "tier": "heavy", "rationale": "Adversarial reasoning over a capability graph — the judgment is which mitigations are architectural versus theatrical, and that call is exactly where a weaker model produces a confident wrong answer. Never downgraded." }
+}

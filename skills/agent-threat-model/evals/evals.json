@@ -1,0 +1,41 @@
+{
+  "skill_name": "agent-threat-model",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review this agent before we launch it. It's a Slack bot that answers questions about our codebase. Tools: read_repo (our private monorepo), search_slack (all public channels), web_fetch, post_message. Anyone in the workspace can @-mention it, and it can also be added to channels with external guests.",
+      "assertions": [
+        "A capability inventory is produced first, with data reach stated transitively (read_repo reaches every secret committed to the monorepo)",
+        "Content sources are classified trusted/untrusted with the writer-authorization test applied — Slack messages and web_fetch results are untrusted, external guests named as writers",
+        "Egress is enumerated beyond web_fetch — post_message rendering and Slack unfurls/images are identified as channels",
+        "A trifecta matrix scores paths (not tools) on all three legs with severity markers, and at least one path is 🟥",
+        "A named architectural fix is given for every 🟥 — splitting the reader from the privileged tools, removing a tool, or allowlisting egress — not a system-prompt instruction",
+        "Any prompt-level mitigation or injection classifier is explicitly rejected as a broken leg (may appear only as defense in depth)",
+        "Each fix carries a verification step a reviewer can run",
+        "All three sweeps produce output: rendered egress, transitive reach, inherited capability",
+        "Residual risks carry a named owner role and a revisit trigger",
+        "A pre-launch checklist and a staleness/revisit trigger close the model"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our agent is safe because the system prompt tells it to ignore any instructions found in documents it reads, and we run every input through a prompt-injection classifier first. It has access to our customer database and can send emails. Confirm we're good to ship.",
+      "assertions": [
+        "The claim is rejected — neither the system-prompt instruction nor the classifier counts as breaking a leg",
+        "The reason given is that the model cannot separate instructions from data, so the prompt is not a trust boundary",
+        "The classifier is credited only as defense in depth / attacker-cost, never as a control",
+        "The path (untrusted documents → customer database → send_email) is scored 🟥",
+        "An architectural fix is proposed — quarantined reader with typed output, scoped credential, or allowlisted recipients",
+        "The response does not soften into 'this is generally fine with some caveats'"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "[Non-interactive run — no user available to answer questions] Threat-model our agent.",
+      "assertions": [
+        "No model is produced — the output is BLOCKED: need the agent's tool/permission inventory",
+        "No capability inventory, matrix, or fixes are fabricated"
+      ]
+    }
+  ]
+}
