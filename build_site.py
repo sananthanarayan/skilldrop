@@ -78,6 +78,14 @@ TOOLS = [
     ("GitHub Copilot", ".github/skills/ — its CLI also reads .claude/skills/ and .agents/skills/", "skilldrop install --dest .github/skills", False),
 ]
 
+NAV = [
+    ("Why skills", "#problem", False),
+    ("What's in one", "#quality", False),
+    ("Portability", "#portability", False),
+    ("Catalogue", "#catalogue", False),
+    ("GitHub", REPO_URL, True),
+]
+
 INSTALL_TABS = [
     ("a role pack", "npx skilldrop-cli install --pack solution-architect", "16 skills a solution architect reaches for, in one command."),
     ("one skill", "npx skilldrop-cli install adr-generator --with-related", "--with-related also pulls the companions it hands off to."),
@@ -217,6 +225,10 @@ def render(skills, packs):
         f'<button class="chip chip--{t}" data-filter="tier" data-value="{t}">{t} <b>{tier_counts[t]}</b></button>'
         for t in tiers)
     cards = "\n".join(card(s) for s in skills)
+    nav_links = "".join(
+        f'<li><a class="nav__link{" nav__link--ext" if ext else ""}" href="{esc(href)}">'
+        f'{esc(label)}{" <span aria-hidden=\"true\">&#8599;</span>" if ext else ""}</a></li>'
+        for label, href, ext in NAV)
 
     return f"""<!doctype html>
 <html lang="en">
@@ -429,16 +441,92 @@ a {{ color:var(--accent-700); }}
 }}
 .empty {{ padding:3rem 0; text-align:center; color:var(--fg-muted); }}
 
+/* nav — sits on the hero background, so it reads as one dark block with it.
+   Not sticky: the catalogue's filter bar owns top:0, and two sticky layers fight. */
+.skip-nav {{
+  position:absolute; left:-9999px; top:0; z-index:20; background:var(--accent);
+  color:#0d0d0f; padding:.6rem 1rem; font-weight:600; border-radius:0 0 var(--r-sm) 0;
+}}
+.skip-nav:focus {{ left:0; }}
+.nav {{ background:var(--dark-950); color:#fff; position:relative; }}
+.nav__inner {{
+  max-width:var(--max); margin-inline:auto; padding:1.05rem var(--pad-x);
+  display:flex; align-items:center; justify-content:space-between; gap:1.5rem;
+}}
+.nav__logo {{
+  font:700 1.06rem var(--mono); letter-spacing:-.02em; color:#fff; text-decoration:none;
+}}
+.nav__logo:hover {{ color:var(--accent-300); }}
+.nav__links {{ display:flex; align-items:center; gap:1.65rem; margin:0; padding:0; list-style:none; }}
+.nav__link {{ font-size:.87rem; font-weight:500; color:var(--w-80); text-decoration:none; }}
+.nav__link:hover {{ color:#fff; }}
+.nav__link--ext {{ color:var(--w-60); }}
+.nav__cta {{
+  display:inline-block; padding:.5rem 1.05rem; border-radius:999px;
+  background:var(--accent); color:#0d0d0f; font-size:.87rem; font-weight:600; text-decoration:none;
+}}
+.nav__cta:hover {{ background:var(--accent-300); }}
+.nav__mobile {{ display:none; }}
+.nav__toggle {{
+  cursor:pointer; list-style:none; width:44px; height:44px;
+  display:inline-flex; align-items:center; justify-content:center;
+}}
+.nav__toggle::-webkit-details-marker {{ display:none; }}
+.nav__burger, .nav__burger::before, .nav__burger::after {{
+  content:""; display:block; width:22px; height:2px; background:#fff; position:relative;
+  transition:transform .18s ease, background-color .18s ease;
+}}
+.nav__burger::before {{ position:absolute; top:-7px; }}
+.nav__burger::after {{ position:absolute; top:7px; }}
+.nav__mobile[open] .nav__burger {{ background:transparent; }}
+.nav__mobile[open] .nav__burger::before {{ transform:translateY(7px) rotate(45deg); }}
+.nav__mobile[open] .nav__burger::after {{ transform:translateY(-7px) rotate(-45deg); }}
+.nav__drawer {{
+  position:absolute; top:100%; left:0; right:0; z-index:10;
+  display:flex; flex-direction:column; gap:1.05rem; margin:0; list-style:none;
+  background:var(--dark-950); border-top:1px solid var(--w-06);
+  padding:1.35rem var(--pad-x) 1.7rem;
+}}
+.nav__drawer .nav__cta {{ display:block; text-align:center; margin-top:.4rem; }}
+@media (max-width:760px) {{
+  .nav__links {{ display:none; }}
+  .nav__mobile {{ display:block; }}
+}}
+
 /* closing + footer */
 .closing {{ background:var(--dark-950); color:#fff; padding-block:clamp(3.5rem,7vw,5.5rem); }}
 .closing h2 {{ color:#fff; }}
 .closing .lede {{ color:var(--w-60); }}
-footer {{ background:var(--dark-950); color:var(--w-60); font-size:.84rem; padding-bottom:3rem; }}
-footer a {{ color:var(--w-80); }}
-footer .inner {{ border-top:1px solid var(--w-06); padding-top:1.6rem; display:flex; flex-wrap:wrap; gap:1rem 1.5rem; }}
+.footer {{ background:var(--dark-950); color:var(--w-60); font-size:.85rem; padding-bottom:3.2rem; }}
+.footer__inner {{
+  max-width:var(--max); margin-inline:auto; padding-inline:var(--pad-x);
+  border-top:1px solid var(--w-06); padding-top:1.8rem;
+  display:flex; flex-wrap:wrap; align-items:center; gap:1rem 1.6rem;
+}}
+.footer__brand {{ margin:0; font:700 .95rem var(--mono); color:#fff; letter-spacing:-.01em; }}
+.footer__links {{ display:flex; flex-wrap:wrap; gap:1.35rem; }}
+.footer__links a {{ color:var(--w-80); text-decoration:none; }}
+.footer__links a:hover {{ color:#fff; text-decoration:underline; }}
+.footer__copy {{ margin:0; flex-basis:100%; color:var(--w-60); font-size:.8rem; }}
 </style>
 </head>
 <body>
+<a class="skip-nav" href="#main">Skip to content</a>
+
+<nav class="nav" id="top" aria-label="Primary">
+  <div class="nav__inner">
+    <a class="nav__logo" href="#top">skilldrop</a>
+    <ul class="nav__links">{nav_links}
+      <li><a class="nav__cta" href="#install">Install <span aria-hidden="true">&rarr;</span></a></li>
+    </ul>
+    <details class="nav__mobile">
+      <summary class="nav__toggle" aria-label="Toggle navigation menu"><span class="nav__burger" aria-hidden="true"></span></summary>
+      <ul class="nav__drawer">{nav_links}
+        <li><a class="nav__cta" href="#install">Install <span aria-hidden="true">&rarr;</span></a></li>
+      </ul>
+    </details>
+  </div>
+</nav>
 
 <header class="hero">
   <div class="inner">
@@ -453,8 +541,8 @@ footer .inner {{ border-top:1px solid var(--w-06); padding-top:1.6rem; display:f
   </div>
 </header>
 
-<main>
-<section class="section">
+<main id="main">
+<section class="section" id="problem">
   <div class="inner"><div class="narrow">
     <p class="eyebrow">The problem</p>
     <h2>{esc(PITCH['tension_h2'])}</h2>
@@ -462,7 +550,7 @@ footer .inner {{ border-top:1px solid var(--w-06); padding-top:1.6rem; display:f
   </div></div>
 </section>
 
-<section class="section section--alt">
+<section class="section section--alt" id="quality">
   <div class="inner">
     <p class="eyebrow">What makes a skill</p>
     <h2>{esc(PITCH['quality_h2'])}</h2>
@@ -471,7 +559,7 @@ footer .inner {{ border-top:1px solid var(--w-06); padding-top:1.6rem; display:f
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="portability">
   <div class="inner">
     <p class="eyebrow">Portability</p>
     <h2>{esc(PITCH['tools_h2'])}</h2>
@@ -483,7 +571,7 @@ footer .inner {{ border-top:1px solid var(--w-06); padding-top:1.6rem; display:f
   </div>
 </section>
 
-<section class="section section--alt">
+<section class="section section--alt" id="install">
   <div class="inner">
     <p class="eyebrow">Install</p>
     <h2>{esc(PITCH['install_h2'])}</h2>
@@ -532,12 +620,18 @@ footer .inner {{ border-top:1px solid var(--w-06); padding-top:1.6rem; display:f
 </section>
 </main>
 
-<footer><div class="inner">
-  <span>Generated from {len(skills)} manifests by <a href="{REPO_URL}/blob/main/build_site.py">build_site.py</a> — never hand-edited.</span>
-  <a href="{REPO_URL}">Repository</a>
-  <a href="{REPO_URL}/tree/main/docs/rfcs">RFCs</a>
-  <a href="catalogue.json">catalogue.json</a>
-  <a href="{REPO_URL}/blob/main/LICENSE">MIT</a>
+<footer class="footer"><div class="footer__inner">
+  <p class="footer__brand">skilldrop</p>
+  <nav class="footer__links" aria-label="Footer">
+    <a href="{REPO_URL}">GitHub</a>
+    <a href="https://www.npmjs.com/package/skilldrop-cli">npm</a>
+    <a href="{REPO_URL}/tree/main/docs/rfcs">RFCs</a>
+    <a href="{REPO_URL}/blob/main/CONTRIBUTING.md">Contributing</a>
+    <a href="catalogue.json">catalogue.json</a>
+    <a href="{REPO_URL}/blob/main/LICENSE">MIT</a>
+  </nav>
+  <p class="footer__copy">&copy; 2026 &middot; {len(skills)} skills generated from their manifests by
+    <a href="{REPO_URL}/blob/main/build_site.py">build_site.py</a> &mdash; never hand-edited.</p>
 </div></footer>
 
 <script>
