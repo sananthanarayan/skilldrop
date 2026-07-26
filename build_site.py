@@ -77,7 +77,12 @@ TOOLS = [
     ("Kiro IDE + CLI", ".kiro/skills/ · ~/.kiro/skills/", "skilldrop install --ide kiro", True),
     ("OpenAI Codex", ".agents/skills/ · ~/.codex/skills/", "skilldrop install --dest .agents/skills", False),
     ("GitHub Copilot", ".github/skills/ — its CLI also reads .claude/skills/ and .agents/skills/", "skilldrop install --dest .github/skills", False),
+    ("Antigravity CLI", ".agents/skills/ · ~/.gemini/antigravity-cli/skills/", "skilldrop install --dest .agents/skills", False),
 ]
+# Gemini CLI is absent on purpose, not by omission: Google retired it for free, AI Pro, Ultra
+# and individual Code Assist users on 2026-06-18, leaving only Standard/Enterprise licences.
+# Antigravity CLI is its successor and is listed above. Listing a tool that no longer serves
+# this audience would be worse than the gap.
 
 NAV = [
     ("Why skills", "#problem", False),
