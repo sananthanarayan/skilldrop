@@ -9,12 +9,18 @@ on:
     branches: [main]
   pull_request:
 
+# Least privilege by default: the lint job needs nothing but a checkout. The publish
+# job re-grants exactly what it needs. Without this the lint job inherits the repo-wide
+# default token scopes, which is more than it should ever hold.
+permissions:
+  contents: read
+
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 20
       - name: Repo consistency lint
@@ -30,8 +36,8 @@ jobs:
       id-token: write # OIDC trusted publishing + --provenance
       contents: write # push the v<version> tag after a successful publish
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 24 # ships an OIDC-capable npm 11.x natively
           registry-url: https://registry.npmjs.org

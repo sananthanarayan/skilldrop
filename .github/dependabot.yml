@@ -1,0 +1,22 @@
+# Actions in this repo are pinned to commit SHAs, which is what makes a repointed tag
+# harmless — and also what makes them go stale silently. This updater is the other half
+# of that trade: it opens a PR when a pinned action has a new release, keeping the
+# comment (# v4.4.0) honest.
+#
+# No npm or pip ecosystem here on purpose: the package has zero dependencies, and the two
+# skill requirements.txt files are installed on users' machines rather than in CI, so a
+# lockfile-less range bump is not something this repo can meaningfully gate.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: "chore"
+    labels:
+      - dependencies
+    groups:
+      actions:
+        patterns:
+          - "*"
