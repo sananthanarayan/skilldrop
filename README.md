@@ -293,13 +293,14 @@ Four targets, each projecting only as much as the tool's format demands:
 | `--ide copilot` | `.github/agents/<name>.agent.md` | a rename |
 | `--ide kiro` | `.kiro/agents/<name>.json` | generated JSON; tool names mapped to Kiro's built-ins |
 | `--ide codex` | `~/.codex/agents/<name>.toml` (`--project` for repo) | generated TOML |
+| `--ide antigravity` | `~/.gemini/config/agents/<name>.md` (`--project` → `.agents/agents/`) | frontmatter rewritten, `subagent: true` added |
 | `--dest <dir>` | `<dir>/<name>.md` | none |
 
 The Kiro emitter maps `Read`/`Grep`/`Glob`/`Bash` to `read`/`grep`/`glob`/`shell` against [Kiro's built-in tool reference](https://kiro.dev/docs/cli/reference/built-in-tools/), and **names any tool it can't map instead of dropping it silently** — a mistranslated permission is worse than a missing one. It omits `allowedTools` so you're prompted per tool call.
 
 Each generated target omits the permission field it cannot map safely rather than guessing one: Kiro's `allowedTools` and Codex's `sandbox_mode` are both left unset, so an agent inherits the session's permissions and is prompted per call. A widened permission nobody asked for is worse than an extra prompt.
 
-Only **Antigravity** still refuses — its subagents exist solely inside a plugin bundle, which is a container rather than a file drop. Design is worked out in [RFC-0013](docs/rfcs/0013-antigravity-plugin-bundle.md), unimplemented pending demand. [`agents/README.md`](agents/README.md) has the manual route.
+**Every surveyed tool now installs.** Only Cursor is absent, because it has no agent file format at all — use a custom mode ([`agents/README.md`](agents/README.md) has the steps).
 
 ### Third-party catalogs — publish your own skills through the same CLI
 

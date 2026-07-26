@@ -54,8 +54,9 @@ Options:
                        --ide kiro     ./.kiro/agents        generated JSON, tools mapped
                        --ide copilot  ./.github/agents      <name>.agent.md
                        --ide codex    ~/.codex/agents       generated TOML (--project for repo)
+                       --ide antigravity  ~/.gemini/config/agents  markdown, subagent: true
                        --dest <dir>   any directory         copied as-is
-                     Antigravity needs a plugin bundle (RFC-0013) — see agents/README.md.
+                     Cursor has no agent format — use a custom mode (agents/README.md).
   --with-related     also install each skill's related companions (one level)
   --with-hooks       also wire any hooks a skill declares (RFC-0006) — git pre-commit
                      reminders and Claude Code session-start context; degrades where the
@@ -202,6 +203,26 @@ function kiroAgentJSON(meta, body) {
   return { json: JSON.stringify(agent, null, 2) + "\n", unmapped: [...new Set(unmapped)] };
 }
 
+/* Antigravity agent markdown (RFC-0013). Only mappings confirmed in Antigravity's own
+   subagents doc are listed. There is no glob-style tool in its file tooling
+   (view_file / list_dir / grep_search / write_to_file), so Glob is dropped and named
+   rather than bent into list_dir — a different operation. */
+const ANTIGRAVITY_TOOLS = { Read: "view_file", Grep: "grep_search", Bash: "run_command" };
+const ANTIGRAVITY_MODELS = new Set(["inherit", "flash", "pro"]);
+
+function antigravityAgentMD(meta, body) {
+  const declared = meta.tools ? meta.tools.split(",").map((s) => s.trim()).filter(Boolean) : [];
+  const tools = [], unmapped = [];
+  for (const d of declared) (ANTIGRAVITY_TOOLS[d] ? tools : unmapped).push(ANTIGRAVITY_TOOLS[d] || d);
+  // YAML double-quoted scalars are a superset of JSON strings, so JSON.stringify is a
+  // correct quoter here — descriptions contain em-dashes and embedded quotes.
+  const lines = [`name: ${JSON.stringify(meta.name)}`, `description: ${JSON.stringify(meta.description)}`];
+  if (tools.length) lines.push(`tools: [${tools.join(", ")}]`);
+  lines.push("subagent: true"); // required, or invoke_subagent cannot reach it
+  if (ANTIGRAVITY_MODELS.has(meta.model)) lines.push(`model: ${meta.model}`);
+  return { md: `---\n${lines.join("\n")}\n---\n\n${body}\n`, unmapped: [...new Set(unmapped)] };
+}
+
 /* Codex agent TOML. Schema confirmed at learn.chatgpt.com/docs/agent-configuration/subagents:
    name, description and developer_instructions are required; unknown fields are rejected.
    sandbox_mode is deliberately NOT emitted — Codex has no `tools` field, permissions come
@@ -219,7 +240,6 @@ function codexAgentTOML(meta, body) {
 /* Only plain-copy targets ship in RFC-0012. Everything else needs a projection the
    install-target model (RFC-0010) has not settled — so say so instead of guessing a path. */
 const AGENT_MANUAL = {
-  antigravity: "an agents/ directory inside a plugin bundle you own — see RFC-0013",
   cursor: "a custom mode — Cursor has no agent file format",
 };
 function agentTarget(flags) {
@@ -236,6 +256,10 @@ function agentTarget(flags) {
     return flags.project
       ? { dest: path.resolve(".codex", "agents"), ide }
       : { dest: path.join(os.homedir(), ".codex", "agents"), ide };
+  if (ide === "antigravity")
+    return flags.project
+      ? { dest: path.resolve(".agents", "agents"), ide }
+      : { dest: path.join(os.homedir(), ".gemini", "config", "agents"), ide };
   const hint = AGENT_MANUAL[ide];
   die(`--agent has no target for '${ide}'${hint ? ` — it needs ${hint}` : ""}.\n` +
       `       Copy it by hand (see agents/README.md), or use --dest <dir>. Tracked in RFC-0012.`);
@@ -252,6 +276,15 @@ function writeAgent(cat, a, dest, ide) {
     fs.writeFileSync(path.join(dest, `${a}.json`), json);
     return { file: `${a}.json`, warn: unmapped.length
       ? `  ${a}: no Kiro equivalent for ${unmapped.join(", ")} — dropped from tools, add by hand if needed`
+      : null };
+  }
+  if (ide === "antigravity") {
+    const raw = fs.readFileSync(src, "utf8");
+    const body = raw.split("---").slice(2).join("---").trim();
+    const { md, unmapped } = antigravityAgentMD(agentMeta(cat, a), body);
+    fs.writeFileSync(path.join(dest, `${a}.md`), md);
+    return { file: `${a}.md`, warn: unmapped.length
+      ? `  ${a}: no Antigravity equivalent for ${unmapped.join(", ")} — dropped from tools, add by hand if needed`
       : null };
   }
   if (ide === "codex") {
@@ -585,6 +618,7 @@ function installAgents(args) {
   if (ide === "kiro") console.log("Kiro grants `tools` but not auto-approval — you are prompted per call by design.");
   if (ide === "copilot") console.log("Invoke with: copilot --agent <name>");
   if (ide === "codex") console.log("sandbox_mode is left unset, so each agent inherits the parent session's permissions.");
+  if (ide === "antigravity") console.log("Emitted with `subagent: true` so invoke_subagent can reach them.");
   if (cat.source !== BUNDLED)
     console.log(`\nWARNING: third-party catalog '${cat.source}'. An agent is a system prompt your tool will adopt — read it before first use. Install copied files only; nothing was executed.`);
 }
