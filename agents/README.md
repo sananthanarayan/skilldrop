@@ -14,7 +14,7 @@ npx skilldrop-cli install --agent devils-advocate              # ~/.claude/agent
 npx skilldrop-cli install --agent devils-advocate --ide kiro   # .kiro/agents/*.json
 ```
 
-Only Antigravity still needs hand-copying, because a plugin bundle is a container rather than a file drop ([RFC-0013](../docs/rfcs/0013-antigravity-plugin-bundle.md)). Each section below gives the command where one exists, and the manual route either way.
+**Five of the five tools with a native format now install by command** — Claude Code, Kiro, Codex, Copilot, and Antigravity. Only Cursor needs hand-work, because it has no agent file format at all. Each section below gives the command where one exists, and the manual route either way.
 
 ## The agents
 
@@ -81,9 +81,13 @@ Copilot reads `.github/agents/<name>.agent.md` (repo) or `~/.copilot/agents/` (p
 
 ### Antigravity CLI (plugin subagents)
 
-**The only target the CLI still refuses.** Antigravity registers subagent templates from an `agents/` directory **inside a plugin bundle** at `~/.gemini/antigravity-cli/plugins/<plugin>/agents/` — a container you register with `agy plugin install`, not a directory the tool watches. Copy the file into a bundle you own.
+```bash
+npx skilldrop-cli install --agent devils-advocate --ide antigravity   # ~/.gemini/config/agents/
+```
 
-Emitting that bundle is designed in [RFC-0013](../docs/rfcs/0013-antigravity-plugin-bundle.md) and deliberately unbuilt pending demand.
+Antigravity discovers subagents at `~/.gemini/config/agents/<name>.md` (global) or `.agents/agents/<name>.md` (workspace, `--project`) — markdown with YAML frontmatter, same shape as these files. A plugin bundle is a *third* option, not a requirement; [RFC-0013](../docs/rfcs/0013-antigravity-plugin-bundle.md) records why an earlier draft wrongly thought it was the only one.
+
+The emitter adds **`subagent: true`** — without it the agent exists but `invoke_subagent` cannot reach it — and maps `Read`/`Grep`/`Bash` to `view_file`/`grep_search`/`run_command`. Antigravity has no glob-style tool, so `Glob` is named and dropped rather than bent into `list_dir`.
 
 ### Continue, Cline, Aider, and other tools
 
