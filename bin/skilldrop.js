@@ -49,9 +49,12 @@ Install/update/uninstall targets (pick one):
                                                 .github/skills (Copilot), Continue / Cline / Aider
 
 Options:
-  --agent            operate on subagents instead of skills. Plain-copy targets only:
-                     Claude Code (~/.claude/agents, --project for repo scope) or --dest.
-                     Copilot/Kiro/Codex need a projection — see agents/README.md.
+  --agent            operate on subagents instead of skills. Targets:
+                       (default)      ~/.claude/agents      Claude Code (--project for repo scope)
+                       --ide kiro     ./.kiro/agents        generated JSON, tools mapped
+                       --ide copilot  ./.github/agents      <name>.agent.md
+                       --dest <dir>   any directory         copied as-is
+                     Codex and Antigravity still refuse with the reason — see agents/README.md.
   --with-related     also install each skill's related companions (one level)
   --with-hooks       also wire any hooks a skill declares (RFC-0006) — git pre-commit
                      reminders and Claude Code session-start context; degrades where the
@@ -175,11 +178,34 @@ function target(flags) {
   die(`unknown --ide '${ide}' (claude | cursor | kiro; use --dest for anything else)`);
 }
 
+/* Claude Code tool name -> Kiro built-in tool name. Confirmed against
+   kiro.dev/docs/cli/reference/built-in-tools/ — not inferred. Agent configs use these
+   simplified names; Kiro's *hook* matchers use internal names (fs_read, execute_bash)
+   instead, and mixing the two silently grants nothing. */
+const KIRO_TOOLS = {
+  Read: "read", Grep: "grep", Glob: "glob", Bash: "shell",
+  Write: "write", Edit: "write", WebSearch: "web_search", WebFetch: "web_fetch",
+};
+
+function kiroAgentJSON(meta, body) {
+  const declared = meta.tools ? meta.tools.split(",").map((s) => s.trim()).filter(Boolean) : [];
+  const tools = [], unmapped = [];
+  for (const d of declared) (KIRO_TOOLS[d] ? tools : unmapped).push(KIRO_TOOLS[d] || d);
+  // The prompt is inlined rather than a file:// reference: the docs' example is
+  // relative, but whether it resolves against the workspace root or the JSON file is
+  // not stated, and a wrong path fails silently. One self-contained file cannot.
+  const agent = { name: meta.name, description: meta.description, prompt: body, tools };
+  // allowedTools is deliberately omitted — it is auto-approval, so leaving it out means
+  // the user is prompted per tool call. Also sidesteps kirodotdev/Kiro#6714, where
+  // allowedTools does not load as configured.
+  return { json: JSON.stringify(agent, null, 2) + "\n", unmapped: [...new Set(unmapped)] };
+}
+
 /* Only plain-copy targets ship in RFC-0012. Everything else needs a projection the
    install-target model (RFC-0010) has not settled — so say so instead of guessing a path. */
 const AGENT_MANUAL = {
-  copilot: ".github/agents/<name>.agent.md (rename needed)",
-  kiro: ".kiro/agents/<name>.json (JSON wrapper around a file:// prompt)",
+  codex: ".codex/*.toml — the schema was never confirmed, so emitting one would be a guess",
+  antigravity: "an agents/ directory inside a plugin bundle you own",
   cursor: "a custom mode — Cursor has no agent file format",
 };
 function agentTarget(flags) {
@@ -189,9 +215,32 @@ function agentTarget(flags) {
     return flags.project
       ? { dest: path.resolve(".claude", "agents"), ide }
       : { dest: path.join(os.homedir(), ".claude", "agents"), ide };
+  if (ide === "kiro")
+    return flags.project === false
+      ? { dest: path.join(os.homedir(), ".kiro", "agents"), ide }
+      : { dest: path.resolve(".kiro", "agents"), ide };
+  if (ide === "copilot") return { dest: path.resolve(".github", "agents"), ide };
   const hint = AGENT_MANUAL[ide];
-  die(`--agent has no plain-copy target for '${ide}'${hint ? ` — it needs ${hint}` : ""}.\n` +
+  die(`--agent has no target for '${ide}'${hint ? ` — it needs ${hint}` : ""}.\n` +
       `       Copy it by hand (see agents/README.md), or use --dest <dir>. Tracked in RFC-0012.`);
+}
+
+/* Write one agent into a target, projecting only where the target's format demands it.
+   Returns the filename written plus any warning worth printing. */
+function writeAgent(cat, a, dest, ide) {
+  const src = agentPath(cat, a);
+  if (ide === "kiro") {
+    const raw = fs.readFileSync(src, "utf8");
+    const body = raw.split("---").slice(2).join("---").trim();
+    const { json, unmapped } = kiroAgentJSON(agentMeta(cat, a), body);
+    fs.writeFileSync(path.join(dest, `${a}.json`), json);
+    return { file: `${a}.json`, warn: unmapped.length
+      ? `  ${a}: no Kiro equivalent for ${unmapped.join(", ")} — dropped from tools, add by hand if needed`
+      : null };
+  }
+  const name = ide === "copilot" ? `${a}.agent.md` : `${a}.md`;
+  fs.copyFileSync(src, path.join(dest, name));
+  return { file: name, warn: null };
 }
 
 function ledger(dest) {
@@ -500,14 +549,19 @@ function installAgents(args) {
   const { dest, ide } = agentTarget(args.flags);
   fs.mkdirSync(dest, { recursive: true });
   const l = ledger(dest);
+  const warns = [];
   for (const a of names) {
-    fs.copyFileSync(agentPath(cat, a), path.join(dest, `${a}.md`));
-    l.data[a] = { version: null, source: cat.source }; // agents carry no version yet (RFC-0012)
-    console.log(`installed ${a} -> ${dest}`);
+    const { file, warn } = writeAgent(cat, a, dest, ide);
+    if (warn) warns.push(warn);
+    l.data[a] = { version: null, source: cat.source, file }; // agents carry no version yet (RFC-0012)
+    console.log(`installed ${a} -> ${path.join(dest, file)}`);
   }
   saveLedger(l);
   console.log(`\n${names.length} agent(s) installed (${ide}).`);
+  if (warns.length) console.log(`\nTool mapping:\n${warns.join("\n")}`);
   if (ide === "claude") console.log("Delegate by name, e.g. \"use the devils-advocate agent on this diff\".");
+  if (ide === "kiro") console.log("Kiro grants `tools` but not auto-approval — you are prompted per call by design.");
+  if (ide === "copilot") console.log("Invoke with: copilot --agent <name>");
   if (cat.source !== BUNDLED)
     console.log(`\nWARNING: third-party catalog '${cat.source}'. An agent is a system prompt your tool will adopt — read it before first use. Install copied files only; nothing was executed.`);
 }
@@ -517,7 +571,9 @@ function uninstallAgents(args) {
   const { dest } = agentTarget(args.flags);
   const l = ledger(dest);
   for (const a of args._) {
-    fs.rmSync(path.join(dest, `${a}.md`), { force: true });
+    const rec = l.data[a];
+    for (const f of new Set([rec && rec.file, `${a}.md`, `${a}.json`, `${a}.agent.md`].filter(Boolean)))
+      fs.rmSync(path.join(dest, f), { force: true });
     delete l.data[a];
     console.log(`removed ${a} from ${dest}`);
   }

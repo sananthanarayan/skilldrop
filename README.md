@@ -285,7 +285,18 @@ npx skilldrop-cli install --agent code-quality --project    # .claude/agents/, s
 
 Then delegate by name: *"use the devils-advocate agent on this diff."*
 
-Only **plain-copy targets** ship today — Claude Code (whose format the file already is) and `--dest <dir>`. Copilot needs a filename change, Kiro a generated JSON wrapper, Codex a schema the survey never confirmed; each of those is a projection waiting on [RFC-0010](docs/rfcs/0010-install-target-table.md), and the CLI says so rather than guessing a path. [`agents/README.md`](agents/README.md) has the manual route for all of them.
+Four targets, each projecting only as much as the tool's format demands:
+
+| Target | Writes | Projection |
+|---|---|---|
+| *(default)* | `~/.claude/agents/<name>.md` | none — the file already is Claude Code's format |
+| `--ide copilot` | `.github/agents/<name>.agent.md` | a rename |
+| `--ide kiro` | `.kiro/agents/<name>.json` | generated JSON; tool names mapped to Kiro's built-ins |
+| `--dest <dir>` | `<dir>/<name>.md` | none |
+
+The Kiro emitter maps `Read`/`Grep`/`Glob`/`Bash` to `read`/`grep`/`glob`/`shell` against [Kiro's built-in tool reference](https://kiro.dev/docs/cli/reference/built-in-tools/), and **names any tool it can't map instead of dropping it silently** — a mistranslated permission is worse than a missing one. It omits `allowedTools` so you're prompted per tool call.
+
+Codex and Antigravity still refuse, printing why: Codex's `.toml` agent schema was never confirmed, and emitting a guess is the one thing worse than not shipping the target. [`agents/README.md`](agents/README.md) has the manual route.
 
 ### Third-party catalogs — publish your own skills through the same CLI
 
