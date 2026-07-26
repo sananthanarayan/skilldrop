@@ -1,1 +1,3 @@
-python-pptx>=0.6.21
+# Pinned, not ranged: an open range lets a future release install itself unreviewed.
+# python-pptx 1.0.2 requires Python >= 3.8.
+python-pptx==1.0.2

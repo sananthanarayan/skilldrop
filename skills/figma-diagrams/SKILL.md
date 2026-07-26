@@ -55,7 +55,8 @@ If `FIGMA_TOKEN` is not set, tell the user how to set it before running the scri
    cd path/to/figma-diagrams && python3 scripts/inspect_file.py <FILE_KEY>
    ```
 
-   Dependencies (just `requests`) are declared in `manifest.json` and `requirements.txt`. Install once with:
+   Dependencies (just `requests`, pinned) are declared in `manifest.json` and `requirements.txt`.
+   **Requires Python 3.10+** — the pinned `requests` drops older interpreters. Install once with:
 
    ```bash
    python3 -m pip install -r requirements.txt
