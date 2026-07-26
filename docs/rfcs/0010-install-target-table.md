@@ -79,6 +79,29 @@ So the RFC commits to a **written manual test matrix** in the implementing PR: e
 - **Auto-detect installed tools and offer targets:** deferred, not rejected — it is already listed as design-only in [`skilldrop-cli-design.md`](../designs/skilldrop-cli-design.md), and it becomes straightforward *once* `TARGETS` exists. Sequencing, not disagreement.
 - **Do nothing:** rejected — three targets are queued behind this, and the first one written the old way sets the pattern for the rest.
 
+## Amendment (2026-07-26): the table is two-dimensional
+
+Written before agents had install targets, this RFC assumed **one entry per tool**. Building [RFC-0012](0012-subagent-installation.md) disproved that. A tool's capability differs *per primitive*, and the directories are unrelated:
+
+| Tool | Skills | Agents |
+|---|---|---|
+| Claude Code | `~/.claude/skills/` · `.claude/skills/` — flag exists | `~/.claude/agents/` — ships |
+| Cursor | `.cursor/skills/` + an `.mdc` pointer — flag exists | none — no agent file format |
+| Kiro | `.kiro/skills/` — flag exists | `.kiro/agents/*.json` — ships, tool names mapped |
+| Codex | `.agents/skills/` — **no flag** | `.codex/agents/*.toml` — ships |
+| GitHub Copilot | `.github/skills/` — **no flag** | `.github/agents/*.agent.md` — ships |
+| Antigravity | `.agents/skills/` — **no flag** | plugin bundle only — see RFC-0013 |
+
+Three consequences for the proposal above:
+
+1. **`TARGETS` is keyed by (tool, primitive), not by tool.** A flat per-tool row cannot express "Copilot: agents yes, skills not yet," which is the live state.
+2. **The asymmetry is already shipping.** `--ide copilot` and `--ide codex` work with `--agent` and are unknown for skills. That is a real inconsistency in the CLI today, created deliberately because RFC-0012's targets were confirmable and skills' were waiting on this RFC.
+3. **Projection is per-cell, not per-tool.** Kiro needs a `.mdc`-style pointer for nothing on the skills side (native discovery) but a generated JSON on the agents side. Codex needs no projection for skills and a TOML for agents. Any model that attaches "does this tool need projection?" to the tool is wrong.
+
+**Nothing here changes the three open decisions** — ledger placement, single-vs-multi-path, and hooks under `--dest` are unaffected. It changes the shape of the table those decisions get implemented into, which is why it is recorded before implementation rather than discovered during it.
+
+The path-set argument also got stronger independently: `.agents/skills/` is now confirmed to reach four tools (Codex, Copilot CLI, Gemini CLI as an alias, Antigravity), which is the strongest evidence yet that a per-vendor flag is the wrong axis for skills.
+
 ## Decision
 
 {Pending — the three decisions above are open. Nothing is implemented; `0687d37` documented the discovery paths as an interim measure.}

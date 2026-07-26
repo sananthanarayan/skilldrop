@@ -40,9 +40,11 @@ Cursor has no subagent file format. Two options:
 
 ### Codex (native subagents)
 
-Codex shipped subagents with GPT-5.5 in April 2026 — `.toml` agent definitions under `.codex/`. That superseded the old advice here, which was to paste the body into a section of `AGENTS.md` because Codex "has no subagent concept."
+```bash
+npx skilldrop-cli install --agent devils-advocate --ide codex   # ~/.codex/agents/<name>.toml
+```
 
-The exact filename and schema were **not confirmed** in the survey, so check Codex's own docs rather than trusting a shape written here. The fallback still works: keep the file at `agents/<name>.md` and open the review turn with "Follow the instructions in `agents/<name>.md` for the diff below."
+Standalone TOML in `~/.codex/agents/` or `.codex/agents/` (`--project`). Codex requires `name`, `description`, and `developer_instructions`, and **rejects unknown fields** — so the emitter writes exactly those three. It leaves `sandbox_mode` unset, which means the agent inherits the parent session's permissions; Codex has no `tools` field, and guessing a sandbox value would either break the agent or silently widen what it can do.
 
 ### Kiro (native custom agents)
 
