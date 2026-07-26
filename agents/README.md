@@ -4,7 +4,17 @@ Portable **reviewer agents** — opinionated personas you delegate code and test
 
 The frontmatter makes the file a drop-in **Claude Code subagent**. The body is plain enough to paste into any other tool's agent / mode / system-prompt slot.
 
-Nothing auto-discovers *this* folder at the repo root, so it is the **canonical source of truth** and the table below says where to copy each file. That framing used to be simpler: as of the [July 2026 survey](../docs/designs/ide-primitive-coverage.md), **five tools have a native subagent format** — Claude Code, Kiro, Codex, Copilot, and Antigravity, which registers subagents from a directory literally named `agents/` inside a plugin bundle. The CLI does not install agents into any of them yet ([RFC-0010](../docs/rfcs/0010-install-target-table.md) has to settle the projection model first), so copying by hand remains the route.
+Nothing auto-discovers *this* folder at the repo root, so it is the **canonical source of truth**. As of the [July 2026 survey](../docs/designs/ide-primitive-coverage.md), **five tools have a native subagent format** — Claude Code, Kiro, Codex, Copilot, and Antigravity, which registers subagents from a directory literally named `agents/` inside a plugin bundle.
+
+**The CLI installs into four of them** ([RFC-0012](../docs/rfcs/0012-subagent-installation.md)):
+
+```bash
+npx skilldrop-cli agents                                       # list
+npx skilldrop-cli install --agent devils-advocate              # ~/.claude/agents/
+npx skilldrop-cli install --agent devils-advocate --ide kiro   # .kiro/agents/*.json
+```
+
+Only Antigravity still needs hand-copying, because a plugin bundle is a container rather than a file drop ([RFC-0013](../docs/rfcs/0013-antigravity-plugin-bundle.md)). Each section below gives the command where one exists, and the manual route either way.
 
 ## The agents
 
@@ -48,28 +58,32 @@ Standalone TOML in `~/.codex/agents/` or `.codex/agents/` (`--project`). Codex r
 
 ### Kiro (native custom agents)
 
-Kiro reads JSON agent definitions from `.kiro/agents/` (local) or `~/.kiro/agents/` (global). The filename minus `.json` becomes the agent's name.
-
-Its `prompt` field accepts a **`file://` URI**, so the definition can point at the markdown instead of duplicating it — the cleanest projection of any tool surveyed:
-
-```json
-{
-  "name": "devils-advocate",
-  "description": "<paste the description from the agent's frontmatter>",
-  "prompt": "file://./agents/devils-advocate.md",
-  "tools": ["read", "grep", "execute"]
-}
+```bash
+npx skilldrop-cli install --agent devils-advocate --ide kiro   # .kiro/agents/<name>.json
 ```
+
+Kiro reads JSON agent definitions from `.kiro/agents/` (local) or `~/.kiro/agents/` (global). The emitter maps Claude Code tool names to [Kiro's built-ins](https://kiro.dev/docs/cli/reference/built-in-tools/) — `Read`/`Grep`/`Glob`/`Bash` → `read`/`grep`/`glob`/`shell` — and **names any tool it cannot map** rather than dropping it silently.
+
+Two choices worth knowing if you hand-write one instead:
+
+- **The prompt is inlined, not a `file://` reference.** Kiro's docs show a relative `file://` path but do not say whether it resolves against the workspace root or the JSON file, and a wrong path fails *silently* — the agent loads with no instructions.
+- **`allowedTools` is omitted**, so you are prompted per tool call. That is the right default for a reviewer, and it avoids [kirodotdev/Kiro#6714](https://github.com/kirodotdev/Kiro/issues/6714), where the field does not load as configured.
 
 **Don't use a steering file for this.** Earlier advice here said to drop the agent at `.kiro/steering/<agent>.md`; a steering file with no inclusion mode is loaded into *every* session, which is a permanent context cost for a persona you want on demand. Same reason the CLI stopped writing steering shims for skills.
 
 ### GitHub Copilot (native custom agents)
 
-Copilot reads `.github/agents/<name>.agent.md` (repo) or `~/.copilot/agents/` (personal). The filename minus `.agent.md` is the invocation name — `copilot --agent devils-advocate`. Copy the file in and rename it; the frontmatter needs `name` and `description`, and takes an optional `tools` list.
+```bash
+npx skilldrop-cli install --agent devils-advocate --ide copilot   # .github/agents/<name>.agent.md
+```
+
+Copilot reads `.github/agents/<name>.agent.md` (repo) or `~/.copilot/agents/` (personal). The filename minus `.agent.md` is the invocation name — `copilot --agent devils-advocate`. The install is a pure rename; nothing in the file changes.
 
 ### Antigravity CLI (plugin subagents)
 
-Antigravity registers subagent templates from an `agents/` directory **inside a plugin bundle** at `~/.gemini/antigravity-cli/plugins/<plugin>/agents/`. There is no project-root `agents/` convention, so this is a copy into a bundle you own, not a drop-in.
+**The only target the CLI still refuses.** Antigravity registers subagent templates from an `agents/` directory **inside a plugin bundle** at `~/.gemini/antigravity-cli/plugins/<plugin>/agents/` — a container you register with `agy plugin install`, not a directory the tool watches. Copy the file into a bundle you own.
+
+Emitting that bundle is designed in [RFC-0013](../docs/rfcs/0013-antigravity-plugin-bundle.md) and deliberately unbuilt pending demand.
 
 ### Continue, Cline, Aider, and other tools
 
