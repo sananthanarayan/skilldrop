@@ -158,3 +158,47 @@ Slash commands are the genuinely **new** primitive. skilldrop ships none; `.gith
 **Sources:** [VS Code Copilot customization overview](https://code.visualstudio.com/docs/copilot/customization/overview) · [Copilot CLI custom agents and skills](https://www.devleader.ca/2026/07/23/github-copilot-cli-custom-agents-and-skills) · [About agent skills — GitHub Docs](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) · [Mastering Copilot customization: instructions, skills, prompt files, agents, hooks](https://anaops.wordpress.com/2026/07/06/mastering-github-copilot-customization-from-copilot-instructions-to-skills-prompt-files-agents-and-hooks/) · [github/awesome-copilot agents docs](https://github.com/github/awesome-copilot/blob/main/docs/README.agents.md) · [Agent skills side-by-side: Claude Code, Copilot, Codex, Cursor](https://blog.ainative.medhavi.dev/p/set-up-agent-skills-in-claude-code-copilot-codex-cursor-a-side-by-side-guide)
 
 **Next iteration:** Gemini CLI — the last unsurveyed tool. After that the survey is complete and the open item is the path-set RFC.
+
+### Iteration 4 — Gemini CLI is retired; Antigravity CLI replaces it (2026-07-26)
+
+**Finding 1 — one of the seven target tools no longer exists for skilldrop's audience.** Google [transitioned Gemini CLI to Antigravity CLI](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/); it stopped serving free, AI Pro, Ultra, and individual Code Assist users on **2026-06-18** — five weeks before this survey. Only Code Assist Standard/Enterprise licences retain access. The successor is Antigravity CLI, a closed-source Go binary (`agy`).
+
+Gemini CLI's paths, confirmed from its own docs before the sunset was discovered, for the record:
+
+| Primitive | Path |
+|---|---|
+| Skills | `~/.gemini/skills/` · `.gemini/skills/`, with `~/.agents/skills/` and `.agents/skills/` as **aliases** |
+
+**It is deliberately not added to the site's portability matrix.** Listing a tool that has been retired for the audience skilldrop serves is worse than the honest gap — the same reasoning that kept it off the matrix while unsurveyed.
+
+**Finding 2 — Antigravity CLI's paths, confirmed from [antigravity.google/docs/cli/plugins](https://antigravity.google/docs/cli/plugins):**
+
+| Primitive | Path |
+|---|---|
+| Skills (project) | **`.agents/skills/`** at project root |
+| Skills (global) | `~/.gemini/antigravity-cli/skills/` |
+| Plugins | `~/.gemini/antigravity-cli/plugins/<name>/` — `plugin.json`, `mcp_config.json`, `hooks.json`, `skills/`, `agents/`, `rules/` |
+| Subagents | `agents/` **inside a plugin bundle** — not a project-root convention |
+| Hooks | a plugin's `hooks.json`, or the primary `settings.json`; workspace overrides global |
+
+**skilldrop already works with Antigravity today** via `--dest .agents/skills`, exactly as it already did with Codex and Copilot CLI. Added to the site matrix on that basis.
+
+**Finding 3 — `.agents/skills/` is now confirmed across four tools**: Codex (project), Copilot CLI, Gemini CLI (alias), Antigravity (project). That is no longer a coincidence between two vendors — it is a de facto interop path, and Gemini CLI's docs call it exactly that: an "interoperable path... compatible across different AI tools."
+
+**This materially strengthens RFC-0010.** The path-set model was argued from a many-to-many relationship between tools and directories. The stronger version: **one path already reaches four tools.** A `--ide <tool>` flag per vendor is the wrong axis when a single `--dest .agents/skills` serves most of the market.
+
+**Finding 4 — relevant to the root `agents/` folder question.** Antigravity registers subagent templates from a directory literally named `agents/`. That does *not* make skilldrop's root `agents/` auto-discoverable — Antigravity's is inside a plugin bundle. But it does mean `plugin.json` + `skills/` + `agents/` + `hooks.json` is a real bundle shape that skilldrop's repo layout is already close to, and `agents/README.md`'s claim that "no tool auto-discovers a folder literally named `agents/`" needs qualifying.
+
+**Sources:** [Google Developers Blog — transitioning Gemini CLI to Antigravity CLI](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/) · [gemini-cli docs/cli/skills.md](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/skills.md) · [Antigravity docs — plugins & skills](https://antigravity.google/docs/cli/plugins) · [Where does Antigravity look for Agent Skills?](https://atamel.dev/posts/2026/07-01_where_agy_agent_skills/)
+
+---
+
+## Survey status: complete
+
+All seven originally-named tools are now covered — six surveyed, one (Gemini CLI) surveyed and then found retired. Kiro IDE and Kiro CLI collapsed into one target; Antigravity CLI joined as Gemini CLI's successor.
+
+Open work, unchanged in priority:
+
+1. **RFC-0010** — the path-set refactor. Now better-evidenced than when written.
+2. **Subagent installation** — five native targets exist (Claude Code, Kiro JSON, Codex TOML, Copilot `.agent.md`, Antigravity plugin `agents/`); the CLI serves none, and `agents/` is not even in the npm `files` list.
+3. **Native hooks** for Copilot (`.github/hooks/*.json`), Kiro (`preToolUse`), Codex (`.codex/hooks.toml`), Antigravity (`hooks.json`).
