@@ -254,6 +254,8 @@ npx skilldrop-cli install --pack dev-team --project     # .claude/skills — als
 npx skilldrop-cli install prfaq --ide cursor            # + writes .cursor/rules/prfaq.mdc
 npx skilldrop-cli install --pack sre-oncall --ide kiro  # .kiro/skills — Kiro IDE + Kiro CLI, discovered natively
 npx skilldrop-cli install adr-generator --dest .agents/skills   # Codex + Copilot CLI (see below)
+npx skilldrop-cli agents                                # the reviewer subagents
+npx skilldrop-cli install --agent devils-advocate       # -> ~/.claude/agents/ (RFC-0012)
 npx skilldrop-cli outdated && npx skilldrop-cli update  # skills improve; cp -R never tells you
 npx skilldrop-cli list | skilldrop info <skill> | skilldrop packs | skilldrop uninstall <skill>
 ```
@@ -270,6 +272,20 @@ npx skilldrop-cli install devils-advocate --with-hooks --project
 ```
 
 The CLI emits per target and **degrades gracefully** — a `pre-commit-review` hook becomes an IDE-agnostic git hook (needs a git repo); a `session-start` hook becomes a Claude Code `settings.json` entry, and is cleanly skipped where the target has no equivalent (Cursor, Kiro, plain `--dest`), printing what it did and where. Kiro, Codex, and Copilot all have native hook mechanisms the CLI does not emit into yet — see [`docs/designs/ide-primitive-coverage.md`](docs/designs/ide-primitive-coverage.md) for the per-tool survey. Hooks are reminders/context, not autonomous execution — skilldrop skills are agent instructions, so the hook prompts *you* to run the review, it doesn't silently run an AI pass. `skilldrop uninstall` removes any hook artifacts it wrote. Vocabulary and the per-target mapping are in the RFC.
+
+### Reviewer subagents
+
+Two personas you delegate review to, rather than invoke as a skill: [`devils-advocate`](agents/devils-advocate.md) ("will this break?") and [`code-quality`](agents/code-quality.md) ("will the next engineer hate this?"). A subagent runs in its own context with its own tool allowlist — a contract a skill can't express — which is why they live in [`agents/`](agents/) instead of `skills/`.
+
+```bash
+npx skilldrop-cli agents                                    # list them
+npx skilldrop-cli install --agent devils-advocate           # ~/.claude/agents/
+npx skilldrop-cli install --agent code-quality --project    # .claude/agents/, shared with the repo
+```
+
+Then delegate by name: *"use the devils-advocate agent on this diff."*
+
+Only **plain-copy targets** ship today — Claude Code (whose format the file already is) and `--dest <dir>`. Copilot needs a filename change, Kiro a generated JSON wrapper, Codex a schema the survey never confirmed; each of those is a projection waiting on [RFC-0010](docs/rfcs/0010-install-target-table.md), and the CLI says so rather than guessing a path. [`agents/README.md`](agents/README.md) has the manual route for all of them.
 
 ### Third-party catalogs — publish your own skills through the same CLI
 

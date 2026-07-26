@@ -24,12 +24,15 @@ Usage:
   skilldrop list [--from <src>]           all skills in a catalog (name, version, tier)
   skilldrop info <skill> [--from <src>]   description, related, packs, deps
   skilldrop packs [--from <src>]          role-based packs
+  skilldrop agents [--from <src>]         reviewer subagents in a catalog
   skilldrop install <skill...>            install skills (default: Claude Code, user scope)
   skilldrop install --pack <name>         install a whole pack
   skilldrop install --all                 install every skill in the catalog
+  skilldrop install --agent <name...>     install reviewer subagents (RFC-0012)
   skilldrop update                        re-copy installed skills whose version changed
   skilldrop outdated                      show installed vs current versions, change nothing
   skilldrop uninstall <skill...>          remove skills (and wiring files this tool wrote)
+  skilldrop uninstall --agent <name...>   remove subagents
   skilldrop validate [--from <src>]       structural check of a catalog (for catalog authors)
 
 Catalogs:
@@ -46,6 +49,9 @@ Install/update/uninstall targets (pick one):
                                                 .github/skills (Copilot), Continue / Cline / Aider
 
 Options:
+  --agent            operate on subagents instead of skills. Plain-copy targets only:
+                     Claude Code (~/.claude/agents, --project for repo scope) or --dest.
+                     Copilot/Kiro/Codex need a projection — see agents/README.md.
   --with-related     also install each skill's related companions (one level)
   --with-hooks       also wire any hooks a skill declares (RFC-0006) — git pre-commit
                      reminders and Claude Code session-start context; degrades where the
@@ -93,6 +99,30 @@ function skillsIn(cat) {
   return fs.readdirSync(cat.skillsDir).filter((d) => fs.statSync(path.join(cat.skillsDir, d)).isDirectory()).sort();
 }
 function manifestOf(cat, s) { return readJSON(path.join(cat.skillsDir, s, "manifest.json")); }
+
+/* Agents (RFC-0012): single markdown files, frontmatter is already Claude Code's format.
+   Optional in a catalog — a third-party catalog with no agents/ is still valid. */
+function agentsIn(cat) {
+  const d = path.join(cat.dir, "agents");
+  if (!fs.existsSync(d)) return [];
+  return fs.readdirSync(d).filter((f) => f.endsWith(".md") && f !== "README.md").map((f) => f.slice(0, -3)).sort();
+}
+function agentPath(cat, a) { return path.join(cat.dir, "agents", `${a}.md`); }
+function agentMeta(cat, a) {
+  const fm = (fs.readFileSync(agentPath(cat, a), "utf8").split("---")[1] || "");
+  const get = (k) => { const m = fm.match(new RegExp("^" + k + ":\\s*(.+)$", "m")); return m ? m[1].trim() : ""; };
+  return { name: get("name"), description: get("description"), tools: get("tools"), model: get("model") };
+}
+
+/* Same gate the skills get, applied to agents before anything is copied. */
+function checkAgent(cat, a) {
+  const problems = [];
+  if (!fs.existsSync(agentPath(cat, a))) return [`agents/${a}.md missing`];
+  const m = agentMeta(cat, a);
+  if (m.name !== a) problems.push(`frontmatter name '${m.name}' != filename '${a}'`);
+  if (!m.description) problems.push("frontmatter missing description");
+  return problems;
+}
 function packsOf(cat) {
   const p = path.join(cat.dir, "packs.json");
   return fs.existsSync(p) ? readJSON(p).packs : null;
@@ -143,6 +173,25 @@ function target(flags) {
   if (ide === "cursor") return { dest: path.resolve(".cursor", "skills"), ide };
   if (ide === "kiro") return { dest: path.resolve(".kiro", "skills"), ide };
   die(`unknown --ide '${ide}' (claude | cursor | kiro; use --dest for anything else)`);
+}
+
+/* Only plain-copy targets ship in RFC-0012. Everything else needs a projection the
+   install-target model (RFC-0010) has not settled — so say so instead of guessing a path. */
+const AGENT_MANUAL = {
+  copilot: ".github/agents/<name>.agent.md (rename needed)",
+  kiro: ".kiro/agents/<name>.json (JSON wrapper around a file:// prompt)",
+  cursor: "a custom mode — Cursor has no agent file format",
+};
+function agentTarget(flags) {
+  if (flags.dest) return { dest: path.resolve(flags.dest), ide: "generic" };
+  const ide = flags.ide || "claude";
+  if (ide === "claude")
+    return flags.project
+      ? { dest: path.resolve(".claude", "agents"), ide }
+      : { dest: path.join(os.homedir(), ".claude", "agents"), ide };
+  const hint = AGENT_MANUAL[ide];
+  die(`--agent has no plain-copy target for '${ide}'${hint ? ` — it needs ${hint}` : ""}.\n` +
+      `       Copy it by hand (see agents/README.md), or use --dest <dir>. Tracked in RFC-0012.`);
 }
 
 function ledger(dest) {
@@ -317,6 +366,7 @@ function copyOne(cat, s, dest, ide, l, notes) {
 }
 
 function install(args) {
+  if (args.flags.agent) return installAgents(args);
   const cat = resolveCatalog(args.flags.from);
   let names = expandNames(args, cat);
   if (args.flags["with-related"]) {
@@ -404,6 +454,7 @@ function outdated(args) {
 }
 
 function uninstall(args) {
+  if (args.flags.agent) return uninstallAgents(args);
   if (!args._.length) die("pass skill names to uninstall");
   const { dest, ide } = target(args.flags);
   const l = ledger(dest);
@@ -414,6 +465,61 @@ function uninstall(args) {
     removeHooksFor(s, dest, ide);
     delete l.data[s];
     console.log(`removed ${s} from ${dest}`);
+  }
+  saveLedger(l);
+}
+
+function listAgents(args) {
+  const cat = resolveCatalog(args.flags.from);
+  const names = agentsIn(cat);
+  if (!names.length) return console.log(`catalog '${cat.source}' ships no agents.`);
+  const w = Math.max(...names.map((n) => n.length));
+  for (const a of names) {
+    const m = agentMeta(cat, a);
+    console.log(`${a.padEnd(w)}  ${m.description}`);
+  }
+  console.log(`\n${names.length} agent(s). Install one: skilldrop install --agent <name>`);
+}
+
+function installAgents(args) {
+  const cat = resolveCatalog(args.flags.from);
+  const available = agentsIn(cat);
+  if (!available.length) die(`catalog '${cat.source}' ships no agents`);
+  const names = args._.length ? args._.slice() : (args.flags.all ? available : []);
+  if (!names.length) die("nothing to install — pass agent names, or --all");
+  for (const a of names) if (!available.includes(a)) die(`unknown agent '${a}' in catalog '${cat.source}'`);
+
+  let bad = 0;
+  for (const a of names) {
+    const problems = checkAgent(cat, a);
+    for (const pr of problems) console.error(`refused ${a}: ${pr}`);
+    if (problems.length) bad++;
+  }
+  if (bad) die(`${bad} agent(s) failed the structural check — nothing was installed`);
+
+  const { dest, ide } = agentTarget(args.flags);
+  fs.mkdirSync(dest, { recursive: true });
+  const l = ledger(dest);
+  for (const a of names) {
+    fs.copyFileSync(agentPath(cat, a), path.join(dest, `${a}.md`));
+    l.data[a] = { version: null, source: cat.source }; // agents carry no version yet (RFC-0012)
+    console.log(`installed ${a} -> ${dest}`);
+  }
+  saveLedger(l);
+  console.log(`\n${names.length} agent(s) installed (${ide}).`);
+  if (ide === "claude") console.log("Delegate by name, e.g. \"use the devils-advocate agent on this diff\".");
+  if (cat.source !== BUNDLED)
+    console.log(`\nWARNING: third-party catalog '${cat.source}'. An agent is a system prompt your tool will adopt — read it before first use. Install copied files only; nothing was executed.`);
+}
+
+function uninstallAgents(args) {
+  if (!args._.length) die("pass agent names to uninstall");
+  const { dest } = agentTarget(args.flags);
+  const l = ledger(dest);
+  for (const a of args._) {
+    fs.rmSync(path.join(dest, `${a}.md`), { force: true });
+    delete l.data[a];
+    console.log(`removed ${a} from ${dest}`);
   }
   saveLedger(l);
 }
@@ -475,7 +581,7 @@ function validateCmd(args) {
 
 const args = parseArgs(process.argv.slice(2));
 const cmd = args._.shift();
-const commands = { list, info, packs: listPacks, install, update, outdated, uninstall, validate: validateCmd };
+const commands = { list, info, packs: listPacks, agents: listAgents, install, update, outdated, uninstall, validate: validateCmd };
 if (!cmd || cmd === "help" || args.flags.help) console.log(HELP);
 else if (commands[cmd]) commands[cmd](args);
 else die(`unknown command '${cmd}' — run: skilldrop help`);

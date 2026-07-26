@@ -32,7 +32,8 @@ cd skills/<skill-name> && python3 -m pip install -r requirements.txt
 python3 validate.py
 
 # CLI (npm package skilldrop-cli; from a clone use node bin/skilldrop.js)
-node bin/skilldrop.js list | info <skill> | packs                # add --from <path|git-url[#ref]> for a third-party catalog
+node bin/skilldrop.js list | info <skill> | packs | agents      # add --from <path|git-url[#ref]> for a third-party catalog
+node bin/skilldrop.js install --agent <name...> [--project | --dest <dir>]   # subagents (RFC-0012); plain-copy targets only
 node bin/skilldrop.js install <skill...> [--pack <name>] [--all] [--with-related] [--from <src>] [--project | --ide cursor|kiro | --dest <dir>]
 node bin/skilldrop.js update | outdated | uninstall <skill...>   # same target flags; update follows each skill's recorded source
 node bin/skilldrop.js validate [--from <src>]                    # structural check of a catalog (catalog authors)
