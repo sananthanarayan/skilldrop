@@ -1,11 +1,14 @@
-# Actions in this repo are pinned to commit SHAs, which is what makes a repointed tag
-# harmless — and also what makes them go stale silently. This updater is the other half
-# of that trade: it opens a PR when a pinned action has a new release, keeping the
-# comment (# v4.4.0) honest.
+# Two ecosystems, one reason: everything here is pinned exactly, and exact pins go stale
+# silently. This is the other half of that trade — a PR when a pin has a newer release.
 #
-# No npm or pip ecosystem here on purpose: the package has zero dependencies, and the two
-# skill requirements.txt files are installed on users' machines rather than in CI, so a
-# lockfile-less range bump is not something this repo can meaningfully gate.
+# github-actions: pinned to commit SHAs, so a repointed tag cannot inject code into the
+# publish job. Dependabot keeps the SHA and its trailing version comment honest.
+#
+# pip: the two skills with scripts pin their deps rather than ranging, so a future release
+# cannot install itself unreviewed onto a user's machine. Note these installs happen on the
+# *user's* machine, not in CI — a merged bump only reaches people who reinstall the skill.
+#
+# No npm ecosystem: the package has zero dependencies.
 version: 2
 updates:
   - package-ecosystem: github-actions
@@ -20,3 +23,23 @@ updates:
       actions:
         patterns:
           - "*"
+
+  - package-ecosystem: pip
+    directory: /skills/deck-builder
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: "chore"
+    labels:
+      - dependencies
+
+  # Watch only. A major bump here can raise the Python floor, which is a breaking change
+  # for anyone on an older interpreter — review the release notes before merging.
+  - package-ecosystem: pip
+    directory: /skills/figma-diagrams
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: "chore"
+    labels:
+      - dependencies

@@ -5,7 +5,7 @@
   "entrypoint": "SKILL.md",
   "deps": {
     "npm": [],
-    "pip": ["python-pptx>=0.6.21"]
+    "pip": ["python-pptx==1.0.2"]
   },
   "env": { "required": [], "optional": [] },
   "related": ["audience-profile", "slide-outliner"],
