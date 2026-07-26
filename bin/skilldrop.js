@@ -53,8 +53,9 @@ Options:
                        (default)      ~/.claude/agents      Claude Code (--project for repo scope)
                        --ide kiro     ./.kiro/agents        generated JSON, tools mapped
                        --ide copilot  ./.github/agents      <name>.agent.md
+                       --ide codex    ~/.codex/agents       generated TOML (--project for repo)
                        --dest <dir>   any directory         copied as-is
-                     Codex and Antigravity still refuse with the reason — see agents/README.md.
+                     Antigravity needs a plugin bundle (RFC-0013) — see agents/README.md.
   --with-related     also install each skill's related companions (one level)
   --with-hooks       also wire any hooks a skill declares (RFC-0006) — git pre-commit
                      reminders and Claude Code session-start context; degrades where the
@@ -201,11 +202,24 @@ function kiroAgentJSON(meta, body) {
   return { json: JSON.stringify(agent, null, 2) + "\n", unmapped: [...new Set(unmapped)] };
 }
 
+/* Codex agent TOML. Schema confirmed at learn.chatgpt.com/docs/agent-configuration/subagents:
+   name, description and developer_instructions are required; unknown fields are rejected.
+   sandbox_mode is deliberately NOT emitted — Codex has no `tools` field, permissions come
+   from sandbox_mode, and its permitted values are unconfirmed. Omitting it inherits the
+   parent session, which is the only behaviour that can neither break the agent nor
+   silently widen what it may do. */
+function codexAgentTOML(meta, body) {
+  const esc = (s) => s.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+  const safe = body.includes('"""') ? body.replace(/"""/g, '\\"\\"\\"') : body;
+  return `name = "${esc(meta.name)}"\n` +
+         `description = "${esc(meta.description)}"\n` +
+         `developer_instructions = """\n${safe}\n"""\n`;
+}
+
 /* Only plain-copy targets ship in RFC-0012. Everything else needs a projection the
    install-target model (RFC-0010) has not settled — so say so instead of guessing a path. */
 const AGENT_MANUAL = {
-  codex: ".codex/*.toml — the schema was never confirmed, so emitting one would be a guess",
-  antigravity: "an agents/ directory inside a plugin bundle you own",
+  antigravity: "an agents/ directory inside a plugin bundle you own — see RFC-0013",
   cursor: "a custom mode — Cursor has no agent file format",
 };
 function agentTarget(flags) {
@@ -215,11 +229,13 @@ function agentTarget(flags) {
     return flags.project
       ? { dest: path.resolve(".claude", "agents"), ide }
       : { dest: path.join(os.homedir(), ".claude", "agents"), ide };
-  if (ide === "kiro")
-    return flags.project === false
-      ? { dest: path.join(os.homedir(), ".kiro", "agents"), ide }
-      : { dest: path.resolve(".kiro", "agents"), ide };
+  // Kiro and Copilot agent dirs are repo-relative by convention, so --project is implied.
+  if (ide === "kiro") return { dest: path.resolve(".kiro", "agents"), ide };
   if (ide === "copilot") return { dest: path.resolve(".github", "agents"), ide };
+  if (ide === "codex")
+    return flags.project
+      ? { dest: path.resolve(".codex", "agents"), ide }
+      : { dest: path.join(os.homedir(), ".codex", "agents"), ide };
   const hint = AGENT_MANUAL[ide];
   die(`--agent has no target for '${ide}'${hint ? ` — it needs ${hint}` : ""}.\n` +
       `       Copy it by hand (see agents/README.md), or use --dest <dir>. Tracked in RFC-0012.`);
@@ -237,6 +253,12 @@ function writeAgent(cat, a, dest, ide) {
     return { file: `${a}.json`, warn: unmapped.length
       ? `  ${a}: no Kiro equivalent for ${unmapped.join(", ")} — dropped from tools, add by hand if needed`
       : null };
+  }
+  if (ide === "codex") {
+    const raw = fs.readFileSync(src, "utf8");
+    const body = raw.split("---").slice(2).join("---").trim();
+    fs.writeFileSync(path.join(dest, `${a}.toml`), codexAgentTOML(agentMeta(cat, a), body));
+    return { file: `${a}.toml`, warn: null };
   }
   const name = ide === "copilot" ? `${a}.agent.md` : `${a}.md`;
   fs.copyFileSync(src, path.join(dest, name));
@@ -562,6 +584,7 @@ function installAgents(args) {
   if (ide === "claude") console.log("Delegate by name, e.g. \"use the devils-advocate agent on this diff\".");
   if (ide === "kiro") console.log("Kiro grants `tools` but not auto-approval — you are prompted per call by design.");
   if (ide === "copilot") console.log("Invoke with: copilot --agent <name>");
+  if (ide === "codex") console.log("sandbox_mode is left unset, so each agent inherits the parent session's permissions.");
   if (cat.source !== BUNDLED)
     console.log(`\nWARNING: third-party catalog '${cat.source}'. An agent is a system prompt your tool will adopt — read it before first use. Install copied files only; nothing was executed.`);
 }
@@ -572,7 +595,7 @@ function uninstallAgents(args) {
   const l = ledger(dest);
   for (const a of args._) {
     const rec = l.data[a];
-    for (const f of new Set([rec && rec.file, `${a}.md`, `${a}.json`, `${a}.agent.md`].filter(Boolean)))
+    for (const f of new Set([rec && rec.file, `${a}.md`, `${a}.json`, `${a}.agent.md`, `${a}.toml`].filter(Boolean)))
       fs.rmSync(path.join(dest, f), { force: true });
     delete l.data[a];
     console.log(`removed ${a} from ${dest}`);
