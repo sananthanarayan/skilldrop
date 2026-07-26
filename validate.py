@@ -19,9 +19,12 @@ Checks (FAIL):
     belongs to at least one pack
   - manifest hooks (optional): each entry's event is in the RFC-0006 vocabulary,
     its action is a real skill folder, and it carries a description
+  - agents/<name>.md: filename == frontmatter `name`, and `description` is present
+  - every `<name>` subagent a SKILL.md delegates to is a real file in agents/
 
 Warnings (non-fatal):
   - SKILL.md over ~500 lines (golden rule 3)
+  - agents/<name>.md missing the recommended `tools` or `model` frontmatter
 """
 import json
 import os
@@ -30,6 +33,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SKILLS = os.path.join(ROOT, "skills")
+AGENTS = os.path.join(ROOT, "agents")
 REQUIRED_FIELDS = ["name", "version", "description", "entrypoint", "deps", "env", "related", "tags", "model"]
 HOOK_EVENTS = {"session-start", "pre-commit-review", "on-demand"}  # RFC-0006; kept in sync with bin/skilldrop.js
 
@@ -42,6 +46,41 @@ def fail(skill, msg):
 
 def warn(skill, msg):
     warnings.append(f"{skill}: {msg}")
+
+
+SUBAGENT_REF = re.compile(r"`([a-z0-9][a-z0-9-]*)`\s+subagent")
+
+
+def check_agents(skill_dirs):
+    """agents/ is the repo's second primitive and had no enforced invariants at all.
+    The link a skill declares to a subagent is real — feature-implement-loop delegates
+    to `devils-advocate` — so a rename that misses one silently breaks the delegation."""
+    if not os.path.isdir(AGENTS):
+        return set()
+    names = set()
+    for f in sorted(os.listdir(AGENTS)):
+        if not f.endswith(".md") or f == "README.md":
+            continue
+        stem = f[:-3]
+        names.add(stem)
+        fm = frontmatter(open(os.path.join(AGENTS, f), encoding="utf-8").read())
+        fields = dict(re.findall(r"^([a-z-]+):\s*(.+?)\s*$", fm, re.M))
+        if fields.get("name") != stem:
+            fail(f"agents/{f}", f"frontmatter name '{fields.get('name')}' != filename '{stem}'")
+        if not fields.get("description"):
+            fail(f"agents/{f}", "missing `description` — it is what routes a delegation here")
+        for k in ("tools", "model"):
+            if k not in fields:
+                warn(f"agents/{f}", f"no `{k}` in frontmatter (recommended)")
+
+    for d in skill_dirs:
+        sp = os.path.join(SKILLS, d, "SKILL.md")
+        if not os.path.exists(sp):
+            continue
+        for ref in set(SUBAGENT_REF.findall(open(sp, encoding="utf-8").read())):
+            if ref not in names:
+                fail(d, f"SKILL.md delegates to the `{ref}` subagent, but agents/{ref}.md does not exist")
+    return names
 
 
 def frontmatter(md_text):
@@ -148,6 +187,8 @@ def main():
     for s in sorted(dir_set - packed):
         fail("packs.json", f"skill '{s}' belongs to no pack — every skill needs an audience")
 
+    agent_names = check_agents(skill_dirs)
+
     quiet = "--quiet" in sys.argv
     if warnings and not quiet:
         print(f"-- {len(warnings)} warning(s) --")
@@ -158,7 +199,8 @@ def main():
         for f in failures:
             print("  FAIL", f)
         sys.exit(1)
-    print(f"OK: {len(skill_dirs)} skills validated" + ("" if quiet else f", {len(warnings)} warning(s)"))
+    print(f"OK: {len(skill_dirs)} skills + {len(agent_names)} agents validated"
+          + ("" if quiet else f", {len(warnings)} warning(s)"))
 
 
 if __name__ == "__main__":

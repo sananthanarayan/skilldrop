@@ -50,7 +50,7 @@ git push origin feat/<short-kebab-name>
 gh pr create --base main --head <handle>:feat/<short-kebab-name>
 ```
 
-There is **no `make` target and no test command**. The automated checks are [`validate.py`](validate.py) — a stdlib-only consistency lint (name triple-match, tier sync with `model-routing.json`, `related`↔SKILL.md reference sync, description sync, pack membership, evals shape) — and the CLI's structural check (`node bin/skilldrop.js validate`); both run locally before every commit and in CI on every push/PR ([`.github/workflows/release.yml`](.github/workflows/release.yml)). Everything beyond that is the manual-test pass documented in **Authoring a new skill** below: install the skill into a clean Claude Code session, run it end-to-end on a realistic input, and verify the output meets the skill's own quality bar.
+There is **no `make` target and no test command**. The automated checks are [`validate.py`](validate.py) — a stdlib-only consistency lint (name triple-match, tier sync with `model-routing.json`, `related`↔SKILL.md reference sync, description sync, pack membership, evals shape, and — for `agents/` — filename↔frontmatter `name` plus every `` `x` subagent `` a SKILL.md delegates to resolving to a real agent file) — and the CLI's structural check (`node bin/skilldrop.js validate`); both run locally before every commit and in CI on every push/PR ([`.github/workflows/release.yml`](.github/workflows/release.yml)). Everything beyond that is the manual-test pass documented in **Authoring a new skill** below: install the skill into a clean Claude Code session, run it end-to-end on a realistic input, and verify the output meets the skill's own quality bar.
 
 ## Releasing
 
