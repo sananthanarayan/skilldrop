@@ -21,6 +21,9 @@ env/
 .env.local
 *.figmatoken
 
+# Generated catalogue site (RFC-0011) — built by CI, never committed
+build/
+
 # Test renders / scratch output
 out/
 renders/
