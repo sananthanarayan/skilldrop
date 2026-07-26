@@ -244,13 +244,14 @@ For non-Claude IDEs, `--dest` drops the folders where your tool expects them; th
 
 ### Quickest: the skilldrop CLI
 
-The repo ships as the npm package **`skilldrop-cli`** (command: `skilldrop`) — a zero-dependency installer that copies skills byte-identical into your tool's location and writes the wiring files Cursor and Kiro need:
+The repo ships as the npm package **`skilldrop-cli`** (command: `skilldrop`) — a zero-dependency installer that copies skills byte-identical into your tool's location, and writes a pointer file only where the tool needs one to find them (Cursor):
 
 ```bash
 npx skilldrop-cli install --pack product-manager        # Claude Code, user scope (~/.claude/skills)
+npx skilldrop-cli install --pack dev-team --project     # .claude/skills — also read by GitHub Copilot CLI
 npx skilldrop-cli install prfaq --ide cursor            # + writes .cursor/rules/prfaq.mdc
-npx skilldrop-cli install --pack sre-oncall --ide kiro  # + writes .kiro/steering/*.md
-npx skilldrop-cli install adr-generator --dest my/skills-dir   # Codex / Continue / Cline / Aider
+npx skilldrop-cli install --pack sre-oncall --ide kiro  # .kiro/skills — Kiro IDE + Kiro CLI, discovered natively
+npx skilldrop-cli install adr-generator --dest .agents/skills   # Codex + Copilot CLI (see below)
 npx skilldrop-cli outdated && npx skilldrop-cli update  # skills improve; cp -R never tells you
 npx skilldrop-cli list | skilldrop info <skill> | skilldrop packs | skilldrop uninstall <skill>
 ```
@@ -266,7 +267,7 @@ npx skilldrop-cli install devils-advocate --with-hooks --project
 # → appends a marker-fenced reminder to .git/hooks/pre-commit: "run /devils-advocate on staged changes"
 ```
 
-The CLI emits per target and **degrades gracefully** — a `pre-commit-review` hook becomes an IDE-agnostic git hook (needs a git repo); a `session-start` hook becomes a Claude Code `settings.json` entry, and is cleanly skipped where the target has no equivalent (Cursor, Kiro, plain `--dest`), printing what it did and where. Hooks are reminders/context, not autonomous execution — skilldrop skills are agent instructions, so the hook prompts *you* to run the review, it doesn't silently run an AI pass. `skilldrop uninstall` removes any hook artifacts it wrote. Vocabulary and the per-target mapping are in the RFC.
+The CLI emits per target and **degrades gracefully** — a `pre-commit-review` hook becomes an IDE-agnostic git hook (needs a git repo); a `session-start` hook becomes a Claude Code `settings.json` entry, and is cleanly skipped where the target has no equivalent (Cursor, Kiro, plain `--dest`), printing what it did and where. Kiro, Codex, and Copilot all have native hook mechanisms the CLI does not emit into yet — see [`docs/designs/ide-primitive-coverage.md`](docs/designs/ide-primitive-coverage.md) for the per-tool survey. Hooks are reminders/context, not autonomous execution — skilldrop skills are agent instructions, so the hook prompts *you* to run the review, it doesn't silently run an AI pass. `skilldrop uninstall` removes any hook artifacts it wrote. Vocabulary and the per-target mapping are in the RFC.
 
 ### Third-party catalogs — publish your own skills through the same CLI
 
@@ -332,19 +333,43 @@ Cursor does not have a native "skills" concept, but you can install a skill as a
 
 3. In chat, attach `SKILL.md` with `@` or simply describe the task — the rule will fire when the description matches.
 
-### Kiro
+### Kiro (IDE and CLI)
 
-Kiro supports agent instructions via **steering files** and **custom agents**:
+Kiro has native **Agent Skills**, and Kiro IDE and Kiro CLI read the same directories. Copy the folder in — that's the whole install:
 
-1. Copy the skill folder to `.kiro/skills/<skill-name>/`:
-   ```bash
-   mkdir -p .kiro/skills
-   cp -R skills/figma-diagrams .kiro/skills/
-   ```
+```bash
+mkdir -p .kiro/skills                  # workspace scope
+cp -R skills/figma-diagrams .kiro/skills/
 
-2. Add a steering file at `.kiro/steering/<skill-name>.md` that tells Kiro to defer to the skill's `SKILL.md` when the matching task is requested.
+mkdir -p ~/.kiro/skills                # global scope, every project
+cp -R skills/figma-diagrams ~/.kiro/skills/
+```
 
-3. Alternatively, paste the contents of `SKILL.md` directly into a custom Kiro agent definition — this is cleaner if you want the skill to be one-click-invocable.
+Kiro matches the skill by its `SKILL.md` frontmatter `name` (which must equal the folder name) and `description` — the same contract every other tool uses.
+
+**No steering file needed.** Earlier versions of the CLI also wrote `.kiro/steering/<skill-name>.md` pointing back at the skill. That predates native Agent Skills, and because a steering file without frontmatter is *always* loaded, it pinned one description per installed skill into every session's context — to point at a folder Kiro already reads. The CLI no longer writes them, and `install`/`uninstall` remove any it wrote before. A steering file it didn't author is left alone, with a note.
+
+### Codex and GitHub Copilot
+
+Both read `SKILL.md` folders, and both deliberately read *other* tools' directories — so a skilldrop install often already works with no extra step:
+
+| Path | Read by |
+|---|---|
+| `.claude/skills/` | Claude Code, **Copilot CLI** |
+| `.agents/skills/` | **Codex** (project), **Copilot CLI** |
+| `.github/skills/` | **Copilot** |
+| `~/.codex/skills/` | Codex (personal) |
+| `~/.copilot/skills/` | Copilot (personal) |
+
+**If you already ran `skilldrop install --project`, Copilot CLI can use every skill you installed** — `.claude/skills/` is one of its discovery paths. Otherwise pick the path your tool reads:
+
+```bash
+npx skilldrop-cli install --pack dev-team --dest .agents/skills    # Codex + Copilot CLI
+npx skilldrop-cli install --pack dev-team --dest .github/skills    # Copilot
+npx skilldrop-cli install --pack dev-team --dest ~/.codex/skills   # Codex, all projects
+```
+
+There is no `--ide codex` or `--ide copilot` flag yet, and `--dest` is not a workaround here — it writes the identical folder the native flags would. Both tools also read a repo-root `AGENTS.md`, which this repo has.
 
 ### Continue, Cline, Aider, and other agents
 

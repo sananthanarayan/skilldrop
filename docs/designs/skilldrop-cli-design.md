@@ -110,11 +110,14 @@ The CLI's main value is translating a single source skill into the right format/
 |---|---|---|
 | Claude Code | `~/.claude/skills/<name>/` or `.claude/skills/<name>/` | Copy folder as-is. SKILL.md is already the native format. |
 | Cursor | `.cursor/rules/<name>.mdc` | Wrap `SKILL.md` content in MDC frontmatter (`description`, `globs`, `alwaysApply`). Bundle supporting files into the rule's referenced paths. |
-| Kiro | Kiro agent definition | Paste `SKILL.md` content into Kiro's agent definition format (TBD — confirm Kiro's file layout) |
+| Kiro | `.kiro/skills/<name>/` or `~/.kiro/skills/<name>/` | Copy folder as-is — Kiro has native Agent Skills (2026-02-05) and discovers this path. **No wiring file**; the steering shim the MVP wrote was removed once native discovery landed. Kiro IDE and Kiro CLI share these paths. |
 | Continue | `~/.continue/rules/` or `config.json` `customCommands` | Translate SKILL.md to a Continue rule. |
 | Cline | Workspace rules or `.clinerules/` | Copy SKILL.md into the rules folder. |
 | Aider | `.aider.conf.yml` `read` list, or `--read <path>` | Copy folder under repo, register in conf. |
-| Codex | Codex equivalent (TBD) | TBD |
+| Codex | `.agents/skills/<name>/` (project) or `~/.codex/skills/<name>/` (personal) | Copy folder as-is — native `SKILL.md` support. No flag yet; reachable today via `--dest`. |
+| GitHub Copilot | `.github/skills/<name>/` or `~/.copilot/skills/<name>/`; Copilot CLI **also reads `.claude/skills/` and `.agents/skills/`** | Copy folder as-is. No flag yet — and `--project` already lands in a path Copilot CLI reads. |
+
+**Update (2026-07):** the Kiro and Codex rows above were `TBD` in the original proposal; both are now confirmed, along with Copilot. See [`ide-primitive-coverage.md`](ide-primitive-coverage.md) for the per-tool survey of all four primitives (skills, subagents, hooks, slash commands). That survey also concludes the `--ide <tool>` shape is wrong to keep extending — the *format* is identical everywhere and only the directory differs, with several tools deliberately reading each other's paths. A path-set model should land before `--ide codex` / `--ide copilot` are written.
 
 **Critical:** the source of truth stays the same — `SKILL.md` + supporting files + `manifest.json`. The CLI does the format adaptation at install time. This is what gives users a single mental model across IDEs.
 

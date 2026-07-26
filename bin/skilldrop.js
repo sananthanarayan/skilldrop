@@ -39,10 +39,11 @@ Catalogs:
 
 Install/update/uninstall targets (pick one):
   (default)          ~/.claude/skills           Claude Code, user scope
-  --project          ./.claude/skills           Claude Code, project scope
+  --project          ./.claude/skills           Claude Code + GitHub Copilot CLI, project scope
   --ide cursor       ./.cursor/skills           + writes .cursor/rules/<skill>.mdc
-  --ide kiro         ./.kiro/skills             + writes .kiro/steering/<skill>.md
-  --dest <dir>       any directory              Codex / Continue / Cline / Aider (wiring tips printed)
+  --ide kiro         ./.kiro/skills             Kiro IDE + Kiro CLI (discovered natively)
+  --dest <dir>       any directory              e.g. .agents/skills (Codex, Copilot CLI),
+                                                .github/skills (Copilot), Continue / Cline / Aider
 
 Options:
   --with-related     also install each skill's related companions (one level)
@@ -153,6 +154,15 @@ function saveLedger(l) { fs.writeFileSync(l.path, JSON.stringify(l.data, null, 2
 function lver(v) { return typeof v === "string" ? v : v.version; }
 function lsrc(v) { return typeof v === "string" ? BUNDLED : v.source || BUNDLED; }
 
+/* Wiring = the pointer file a target needs to *find* a skill.
+   Cursor needs one: .cursor/skills/ is not a discovery path, so the .mdc rule is what
+   makes the skill reachable (and it carries alwaysApply:false, so it stays inert until matched).
+   Kiro no longer does: Kiro discovers .kiro/skills/ natively (Agent Skills, 2026-02-05), and a
+   steering file with no frontmatter is always-included — so the old shim pinned one description
+   per installed skill into every session's context to point at a folder Kiro already reads.
+   wiringPath still resolves the Kiro path so uninstall and install can clean up legacy shims. */
+const KIRO_SHIM_PREFIX = "When the user requests the following, defer to the instructions in .kiro/skills/";
+
 function wiringPath(ide, dest, s) {
   const base = path.dirname(dest); // .cursor/ or .kiro/
   if (ide === "cursor") return path.join(base, "rules", `${s}.mdc`);
@@ -160,13 +170,25 @@ function wiringPath(ide, dest, s) {
   return null;
 }
 function writeWiring(ide, dest, s, desc) {
+  if (ide === "kiro") return clearKiroShim(dest, s);
   const p = wiringPath(ide, dest, s);
-  if (!p) return;
+  if (!p) return null;
   fs.mkdirSync(path.dirname(p), { recursive: true });
-  if (ide === "cursor")
-    fs.writeFileSync(p, `---\ndescription: ${desc.replace(/\n/g, " ")}\nglobs:\nalwaysApply: false\n---\nFollow the instructions in .cursor/skills/${s}/SKILL.md when the user requests this task.\n`);
-  else
-    fs.writeFileSync(p, `When the user requests the following, defer to the instructions in .kiro/skills/${s}/SKILL.md:\n\n${desc}\n`);
+  fs.writeFileSync(p, `---\ndescription: ${desc.replace(/\n/g, " ")}\nglobs:\nalwaysApply: false\n---\nFollow the instructions in .cursor/skills/${s}/SKILL.md when the user requests this task.\n`);
+  return null;
+}
+/* Remove a steering file this CLI wrote in an earlier version, so upgrading drops the context
+   leak. Content-matched on purpose: a hand-written .kiro/steering/<skill>.md is the user's file
+   and is left alone (with a note) rather than deleted. */
+function clearKiroShim(dest, s) {
+  const p = wiringPath("kiro", dest, s);
+  if (!fs.existsSync(p)) return null;
+  let body = "";
+  try { body = fs.readFileSync(p, "utf8"); } catch (e) { return null; }
+  if (!body.startsWith(KIRO_SHIM_PREFIX))
+    return `  kept ${path.relative(process.cwd(), p)} — not written by skilldrop, left for you to review`;
+  fs.rmSync(p, { force: true });
+  return `  removed stale steering shim ${path.relative(process.cwd(), p)} — Kiro discovers .kiro/skills/ natively`;
 }
 
 /* ---------- hooks (RFC-0006: emit per target, degrade where unsupported) ---------- */
@@ -285,10 +307,11 @@ function expandNames(args, cat) {
   return args._.slice();
 }
 
-function copyOne(cat, s, dest, ide, l) {
+function copyOne(cat, s, dest, ide, l, notes) {
   const m = manifestOf(cat, s);
   fs.cpSync(path.join(cat.skillsDir, s), path.join(dest, s), { recursive: true });
-  writeWiring(ide, dest, s, m.description);
+  const note = writeWiring(ide, dest, s, m.description);
+  if (note && notes) notes.push(note);
   l.data[s] = { version: m.version, source: cat.source };
   return m;
 }
@@ -308,15 +331,16 @@ function install(args) {
   const { dest, ide } = target(args.flags);
   fs.mkdirSync(dest, { recursive: true });
   const l = ledger(dest);
-  const pipDeps = [], suggestions = new Set();
+  const pipDeps = [], suggestions = new Set(), notes = [];
   for (const s of names) {
-    const m = copyOne(cat, s, dest, ide, l);
+    const m = copyOne(cat, s, dest, ide, l, notes);
     if (fs.existsSync(path.join(cat.skillsDir, s, "requirements.txt"))) pipDeps.push(s);
     for (const r of m.related || []) if (!names.includes(r) && !l.data[r]) suggestions.add(r);
     console.log(`installed ${s}@${m.version} -> ${dest}`);
   }
   saveLedger(l);
   console.log(`\n${names.length} skill(s) installed (${ide}).`);
+  if (notes.length) console.log(`\nCleanup:\n${notes.join("\n")}`);
 
   const withHooks = names.filter((s) => { try { return (manifestOf(cat, s).hooks || []).length; } catch (e) { return false; } });
   if (withHooks.length && args.flags["with-hooks"]) {
