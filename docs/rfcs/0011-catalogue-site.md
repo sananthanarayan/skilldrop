@@ -1,7 +1,7 @@
 ---
 rfc: 0011
 title: Catalogue site on GitHub Pages
-status: draft
+status: implemented
 date: 2026-07-26
 author: sananthanarayan
 ---
@@ -84,7 +84,20 @@ Their stack as-is. Justified when there is a *marketing* story to tell that a ca
 
 ## Decision
 
-{Pending ratification. Option A is live and has absorbed a full redesign without needing an SSG; B and C remain additive and their triggers are unmet.}
+**Option A ratified and implemented.** Generated static HTML, no static-site generator.
+
+Live at <https://sananthanarayan.github.io/skilldrop/>, built by `build_site.py` (stdlib only, matching `validate.py`'s convention) and deployed by `.github/workflows/pages.yml` on pushes to `main`. `build/` is gitignored; `build/catalogue.json` ships alongside the page and answers the registry-URL question `skilldrop-cli-design.md` had deferred to v2.
+
+The decision held up under load. Between proposal and ratification the site gained a hero-led information architecture, primary nav, a structured footer, a CSS-only mobile menu, progressive disclosure over 50 skills, and a six-tool portability matrix — none of which required an SSG, a package manager, or a lockfile. Option A was chosen on the argument that the build stack should not outgrow the tool it documents; it ended up also being sufficient for everything the site actually needed to do.
+
+**B and C stay open and unbuilt**, with triggers that are further away than when they were written:
+
+- **B (Material for MkDocs for `docs/`)** — trigger: the doc tree outgrowing GitHub's rendering. At 14 RFCs and 4 design docs with working relative links, not met.
+- **C (Astro landing + MkDocs)** — trigger: a marketing story a catalogue cannot tell. The hero-led IA told that story inside the same static file, which retires the argument rather than deferring it.
+
+Both remain purely additive. Nothing in what shipped forecloses either.
+
+**One limitation recorded deliberately:** this artifact has a failure mode `validate.py` cannot see. The `.tension` layout bug — a centred column where left-aligned text belonged — passed every structural check (card counts, escaping, zero external subresources) while being obviously wrong on screen. Generator changes need a rendered look, not just a green lint.
 
 ## What shipped beyond the proposal (2026-07-26)
 
