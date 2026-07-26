@@ -1,4 +1,5 @@
 # Every change requires review from the repo owner.
-# Takes effect once the `main` ruleset enables "Require review from Code Owners"
-# (GitHub → Settings → Rules → Rulesets). Until then it is inert.
+# Active: the `main` ruleset enforces "Changes must be made through a pull request"
+# (GitHub → Settings → Rules → Rulesets). Contributors open a PR; the owner is on the
+# ruleset's bypass list, so direct pushes to main are allowed for that account only.
 * @sananthanarayan
