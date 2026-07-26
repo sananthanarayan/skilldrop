@@ -1,0 +1,11 @@
+{
+  "name": "agents-md-generator",
+  "version": "0.1.0",
+  "description": "Generate or audit a repository's AGENTS.md — the agent-policy file Claude Code, Codex, Cursor, Copilot, Kiro and Antigravity read — with every command traced to real evidence in the repo, generic virtue instructions stripped, and forbidden actions named. Use when a repo has no AGENTS.md, when an existing one is stale or ignored, when onboarding a codebase to agentic coding, or when an agent keeps running commands that don't exist.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": ["doc-critique", "reverse-architecture", "runbook-generator"],
+  "tags": ["agents-md", "agent-policy", "repo-onboarding", "context-engineering", "agentic", "conventions"],
+  "model": { "tier": "standard", "rationale": "Repo inspection plus synthesis against a fixed section order and line budget — the same shape as reverse-architecture. The judgment is the counterfactual test on each convention line, which is bounded; escalate via large-input on monorepos." }
+}
