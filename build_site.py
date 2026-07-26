@@ -55,6 +55,7 @@ PITCH = {
     "install_h2": "Start in one command.",
     "catalogue_h2": "The catalogue.",
     "closing_h2": "Copy a folder. Keep the artifact.",
+    "footer_tagline": "Portable skills for the deliverables knowledge work actually ships.",
     "closing_body": (
         "Nothing here needs an account, a runtime, or a migration. Install one skill, run it once, "
         "and keep it only if the output was worth keeping."
@@ -625,13 +626,8 @@ a {{ color:var(--accent-700); }}
   <nav class="footer__links" aria-label="Footer">
     <a href="{REPO_URL}">GitHub</a>
     <a href="https://www.npmjs.com/package/skilldrop-cli">npm</a>
-    <a href="{REPO_URL}/tree/main/docs/rfcs">RFCs</a>
-    <a href="{REPO_URL}/blob/main/CONTRIBUTING.md">Contributing</a>
-    <a href="catalogue.json">catalogue.json</a>
-    <a href="{REPO_URL}/blob/main/LICENSE">MIT</a>
   </nav>
-  <p class="footer__copy">&copy; 2026 &middot; {len(skills)} skills generated from their manifests by
-    <a href="{REPO_URL}/blob/main/build_site.py">build_site.py</a> &mdash; never hand-edited.</p>
+  <p class="footer__copy">&copy; 2026 &middot; {esc(PITCH['footer_tagline'])}</p>
 </div></footer>
 
 <script>
