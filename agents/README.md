@@ -2,7 +2,9 @@
 
 Portable **reviewer agents** — opinionated personas you delegate code and test review to. Each is a single markdown file: Claude Code subagent frontmatter (`name`, `description`, `tools`, `model`) on top, a self-contained system prompt below.
 
-The frontmatter makes the file a drop-in **Claude Code subagent**. The body is plain enough to paste into any other tool's agent / mode / system-prompt slot. No tool auto-discovers a folder literally named `agents/` — this folder is the **canonical source of truth**, and the table below tells you where to copy each file for your tool.
+The frontmatter makes the file a drop-in **Claude Code subagent**. The body is plain enough to paste into any other tool's agent / mode / system-prompt slot.
+
+Nothing auto-discovers *this* folder at the repo root, so it is the **canonical source of truth** and the table below says where to copy each file. That framing used to be simpler: as of the [July 2026 survey](../docs/designs/ide-primitive-coverage.md), **five tools have a native subagent format** — Claude Code, Kiro, Codex, Copilot, and Antigravity, which registers subagents from a directory literally named `agents/` inside a plugin bundle. The CLI does not install agents into any of them yet ([RFC-0010](../docs/rfcs/0010-install-target-table.md) has to settle the projection model first), so copying by hand remains the route.
 
 ## The agents
 
@@ -36,17 +38,36 @@ Cursor has no subagent file format. Two options:
 - **Custom mode** (cleanest): Settings → Chat → Custom Modes → New. Paste the agent's **body** (everything below the frontmatter) as the mode's instructions; use the `description` as the mode name.
 - **Project rule**: create `.cursor/rules/<agent>.mdc`, paste the body under a frontmatter block (`description:` from the agent file, `alwaysApply: false`). Invoke by attaching it with `@` or describing the review task.
 
-### Codex (`AGENTS.md`)
+### Codex (native subagents)
 
-Codex reads a single `AGENTS.md` instruction file and has no subagent concept. Either:
+Codex shipped subagents with GPT-5.5 in April 2026 — `.toml` agent definitions under `.codex/`. That superseded the old advice here, which was to paste the body into a section of `AGENTS.md` because Codex "has no subagent concept."
 
-- Paste the agent body into a clearly headed section of `AGENTS.md` (e.g. `## Devil's-advocate review`) and trigger it with "run the devil's-advocate review on this diff", or
-- Keep the file at `agents/devils-advocate.md` and start the review turn with "Follow the instructions in `agents/devils-advocate.md` for the diff below."
+The exact filename and schema were **not confirmed** in the survey, so check Codex's own docs rather than trusting a shape written here. The fallback still works: keep the file at `agents/<name>.md` and open the review turn with "Follow the instructions in `agents/<name>.md` for the diff below."
 
-### Kiro (steering files / custom agents)
+### Kiro (native custom agents)
 
-- **Custom agent** (cleanest): paste the agent body into a new Kiro custom-agent definition; use the `description` as its summary.
-- **Steering file**: drop the file at `.kiro/steering/<agent>.md` so Kiro applies it as context, then ask for the review by name.
+Kiro reads JSON agent definitions from `.kiro/agents/` (local) or `~/.kiro/agents/` (global). The filename minus `.json` becomes the agent's name.
+
+Its `prompt` field accepts a **`file://` URI**, so the definition can point at the markdown instead of duplicating it — the cleanest projection of any tool surveyed:
+
+```json
+{
+  "name": "devils-advocate",
+  "description": "<paste the description from the agent's frontmatter>",
+  "prompt": "file://./agents/devils-advocate.md",
+  "tools": ["read", "grep", "execute"]
+}
+```
+
+**Don't use a steering file for this.** Earlier advice here said to drop the agent at `.kiro/steering/<agent>.md`; a steering file with no inclusion mode is loaded into *every* session, which is a permanent context cost for a persona you want on demand. Same reason the CLI stopped writing steering shims for skills.
+
+### GitHub Copilot (native custom agents)
+
+Copilot reads `.github/agents/<name>.agent.md` (repo) or `~/.copilot/agents/` (personal). The filename minus `.agent.md` is the invocation name — `copilot --agent devils-advocate`. Copy the file in and rename it; the frontmatter needs `name` and `description`, and takes an optional `tools` list.
+
+### Antigravity CLI (plugin subagents)
+
+Antigravity registers subagent templates from an `agents/` directory **inside a plugin bundle** at `~/.gemini/antigravity-cli/plugins/<plugin>/agents/`. There is no project-root `agents/` convention, so this is a copy into a bundle you own, not a drop-in.
 
 ### Continue, Cline, Aider, and other tools
 
