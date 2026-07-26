@@ -1,0 +1,43 @@
+# Build the catalogue site on every push/PR; deploy to GitHub Pages on main.
+# Deliberately separate from release.yml so a site change can never touch the npm
+# publish path. Requires a one-time repo setting: Settings -> Pages -> Source:
+# "GitHub Actions". See RFC-0011.
+name: pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate the catalogue
+        run: python3 build_site.py # stdlib only — no setup-python step needed
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./build
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
