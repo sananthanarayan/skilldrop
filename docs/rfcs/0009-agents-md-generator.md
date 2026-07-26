@@ -1,7 +1,7 @@
 ---
 rfc: 0009
 title: AGENTS.md generator
-status: draft
+status: implemented
 date: 2026-07-26
 author: sananthanarayan
 ---
@@ -50,4 +50,12 @@ skilldrop has no skill that produces one. `reverse-architecture` reads a repo bu
 
 ## Decision
 
-{Pending review.}
+Accepted and implemented under `skills/agents-md-generator/`. All three open questions settled:
+
+1. **Audit lives in this skill, not as a `doc-critique` rubric.** The audit's value is verifying commands against the repo, and `doc-critique` takes documents, not repositories. A rubric there could judge prose and would have to take every command on faith — which is the one thing this skill exists not to do.
+
+2. **`AGENTS.md` always; satellites opt-in and delta-only.** A satellite carries *only* what is specific to its tool, plus a pointer to `AGENTS.md` for everything shared — the shape this repo's own `CLAUDE.md` already has. Copying shared content into a satellite is refused outright: an agent-policy file that drifts out of sync with the repo is the invented-command failure wearing a different hat, and four copies of a command list is four chances to be wrong.
+
+   The survey supports the narrow default: Codex and Copilot both read a root `AGENTS.md`, and Copilot also reads root `CLAUDE.md` and `GEMINI.md`. Tools converged on the canonical file, so satellites are a reach fix for specific cases rather than the norm.
+
+3. **The ~150-line cap is hard on generate, a warning on audit.** A generated file has no excuse for bloat. An existing one may be long for good reason — this repo's `AGENTS.md` is well past the cap and is right to be — so audit reports the overage and names the sections it would cut, rather than failing a file whose length was a deliberate choice.

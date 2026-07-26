@@ -14,6 +14,7 @@
         "tech-comparison-matrix",
         "threat-model",
         "agent-threat-model",
+        "agents-md-generator",
         "api-contract-draft",
         "data-contract",
         "db-schema-design",
@@ -41,8 +42,9 @@
       ]
     },
     "dev-team": {
-      "description": "Build-and-ship loop: story implementation with adversarial review, test plans, triage, migrations, release notes, and code-quality gates.",
+      "description": "Build-and-ship loop: story implementation with adversarial review, test plans, triage, migrations, release notes, agent-policy files, and code-quality gates.",
       "skills": [
+        "agents-md-generator",
         "user-story-splitter",
         "feature-implement-loop",
         "devils-advocate",
