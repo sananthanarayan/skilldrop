@@ -84,4 +84,31 @@ Their stack as-is. Justified when there is a *marketing* story to tell that a ca
 
 ## Decision
 
-{Pending review. Option A is recommended; B and C remain additive.}
+{Pending ratification. Option A is live and has absorbed a full redesign without needing an SSG; B and C remain additive and their triggers are unmet.}
+
+## What shipped beyond the proposal (2026-07-26)
+
+The proposal described "one static `index.html` with client-side filtering." What is live is more, and the additions are worth recording because none of them changed the toolchain decision:
+
+- **Hero-led information architecture**, borrowed from agent-ready-repo's site: dark hero → the problem → what makes a skill → portability matrix → install tabs → catalogue → closing CTA. The original page opened on 49 unexplained cards; argument-first was the fix.
+- **Primary nav and a structured footer**, including a CSS-only mobile burger — a `<details>` whose summary rotates into an X. No JavaScript, so the zero-dependency constraint held.
+- **Progressive disclosure.** Pack cards are the catalogue; all 50 skills sit behind a `<details>` as one-line rows. The first version dumped every description at a reader who had not chosen anything yet.
+- **A portability matrix** built from the survey, listing only confirmed install paths — which is why Gemini CLI is absent and Antigravity is present.
+
+Still one static self-contained file, zero external subresources, no absolute paths, no SSG. Option A absorbed all of it without strain, which is itself evidence for the choice.
+
+**A layout bug was found only by looking at the rendered page**: `.tension` set a narrow `max-width` on the same element as `.inner`, whose `margin: 0 auto` then centred the whole block instead of left-aligning the text. Structural checks (card counts, escaping, no external requests) all passed while it was broken. Worth remembering that this artifact has a failure mode `validate.py` cannot see.
+
+## Evidence for the generated-not-handwritten rule
+
+On 2026-07-26 the catalogue gained its 50th skill. Within the hour:
+
+- the **live site** read `50` — it counts the manifests it renders
+- **`README.md`** read `49` in two places — a human had typed it
+
+Exactly the drift the Fit check predicted, on the shortest possible timescale. Fixed, and `validate.py` now fails when a hand-written skill count in `README.md` disagrees with the number of skill folders. The generated page needs no such guard, because it cannot be wrong.
+
+## Triggers for B and C, re-checked
+
+- **B (add MkDocs for docs):** trigger was the doc tree outgrowing GitHub's rendering. It is now 14 RFCs and 4 design docs, all rendering with working relative links. **Not met.**
+- **C (Astro landing + MkDocs):** trigger was a marketing story a catalogue cannot tell. The hero-led IA delivered that story in the same static file, which removes the argument rather than deferring it. **Not met, and further away than when written.**

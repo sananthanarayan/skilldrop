@@ -19,6 +19,8 @@ Checks (FAIL):
     belongs to at least one pack
   - manifest hooks (optional): each entry's event is in the RFC-0006 vocabulary,
     its action is a real skill folder, and it carries a description
+  - README.md skill counts match the number of skills on disk (prose drifts; the
+    generated catalogue site cannot, so only the hand-written numbers need checking)
   - agents/<name>.md: filename == frontmatter `name`, and `description` is present
   - every `<name>` subagent a SKILL.md delegates to is a real file in agents/
 
@@ -188,6 +190,13 @@ def main():
         fail("packs.json", f"skill '{s}' belongs to no pack — every skill needs an audience")
 
     agent_names = check_agents(skill_dirs)
+
+    # The site regenerates its counts from the manifests; README prose does not.
+    # This is the only place a skill count can go stale unnoticed (RFC-0011).
+    readme = open(os.path.join(ROOT, "README.md"), encoding="utf-8").read()
+    for n in set(re.findall(r"\b(\d{2})\s+(?:portable |)(?:AI-agent |)skills\b", readme)):
+        if int(n) != len(skill_dirs):
+            fail("README.md", f"says '{n} skills' but {len(skill_dirs)} are on disk")
 
     quiet = "--quiet" in sys.argv
     if warnings and not quiet:
