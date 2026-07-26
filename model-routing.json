@@ -145,6 +145,7 @@
     "strategy-analysis": { "tier": "heavy", "rationale": "Framework selection plus evidenced multi-factor judgment ending in a ranked, committal verdict. Cheaper models fill cells with generic filler, skip the TOWS crossings, and refuse to take a side. Never downgrade." },
     "agent-loop-design": { "tier": "standard", "rationale": "Design synthesis against a fixed state-machine pattern and exit-criteria catalog. The gate-placement judgment is bounded by the blast-radius rule; escalate via ambiguous-input when the task itself is contested." },
     "subagent-design": { "tier": "standard", "rationale": "Design synthesis against a fixed topology catalog and role-card template. The fan-out-or-refuse judgment is bounded by the three-reasons rule; escalate via ambiguous-input on genuinely novel workflow shapes." },
-    "agent-budget": { "tier": "standard", "rationale": "Quantitative spec synthesis against a fixed tier vocabulary and degradation ladder. Cap-setting judgment is bounded by the 3-5x rule; escalate via ambiguous-input when the workflow itself is undefined." }
+    "agent-budget": { "tier": "standard", "rationale": "Quantitative spec synthesis against a fixed tier vocabulary and degradation ladder. Cap-setting judgment is bounded by the 3-5x rule; escalate via ambiguous-input when the workflow itself is undefined." },
+    "agent-threat-model": { "tier": "heavy", "rationale": "Adversarial reasoning over a capability graph — the judgment is which mitigations are architectural versus theatrical, and that call is exactly where a weaker model produces a confident wrong answer. Never downgraded." }
   }
 }
