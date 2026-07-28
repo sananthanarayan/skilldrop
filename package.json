@@ -2,6 +2,10 @@
   "name": "skilldrop-cli",
   "version": "0.8.1",
   "description": "Portable AI-agent skills for the deliverables knowledge workers ship \u2014 diagrams, ADRs, PRDs, runbooks, decks, reviews \u2014 installable into Claude Code, Cursor, Kiro, and any IDE that takes custom instructions. One command per skill or per role-based pack.",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
   "bin": {
     "skilldrop": "bin/skilldrop.js"
   },
