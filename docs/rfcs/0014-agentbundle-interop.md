@@ -102,8 +102,12 @@ each generated pack — something native adoption can't do without breaking RFC-
    force-pushes an orphan commit rooted at `dist/`, so
    `agentbundle install --pack <p> git+https://github.com/sananthanarayan/skilldrop#agentbundle-catalogue`
    resolves. Separate workflow (never touches the npm publish path), `contents: write` only.
-4. **[TODO] Reverse direction** — teach `skilldrop-cli --from` to also read a `packs/<name>/.apm/skills`
-   catalogue, so skilldrop installs *his* packs. Additive to the npm CLI, no coupling.
+4. **[DONE] Reverse direction** — `skilldrop-cli --from` reads an agentbundle catalogue
+   (`packs/<name>/{pack.toml,.apm/skills/<skill>/SKILL.md,.apm/agents/…}`) via an `apm`-shape
+   reader in `bin/skilldrop.js` that normalizes it onto the native accessors (skill list, virtual
+   packs from each `pack.toml`, synthesized manifests, agents). Verified end-to-end against
+   agent-ready-repo: `skilldrop install --pack contracts --from git+…/agent-ready-repo` installs his
+   `api-contract`/`event-contract`. Additive to the npm CLI, no coupling.
 5. **[TODO — preferred long-term, his side] Ask for an agentbundle *source-adapter*** that reads a
    flat agentskills.io catalogue directly, retiring step 3's generated view. His codebase's job; zero
    ongoing cost to skilldrop. Also ask that he treat `schema = 1` / adapter-contract as stable.

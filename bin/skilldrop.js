@@ -3,8 +3,10 @@
  * or any directory, from the bundled catalog or any third-party catalog
  * (--from <path | git-url[#ref]>). Zero dependencies; copy-only, never executes
  * catalog content at install time.
+ * Reads two catalog shapes: skilldrop (flat skills/) and agentbundle (packs/<p>/.apm/skills).
  * Design: skilldrop-cli-design/skilldrop-cli-design.md
- * Scope:  docs/rfcs/0002-skilldrop-cli.md, docs/rfcs/0003-third-party-catalogs.md
+ * Scope:  docs/rfcs/0002-skilldrop-cli.md, docs/rfcs/0003-third-party-catalogs.md,
+ *         docs/rfcs/0014-agentbundle-interop.md (the agentbundle reader)
  */
 "use strict";
 const fs = require("fs");
@@ -37,8 +39,9 @@ Usage:
 
 Catalogs:
   (default)          the catalog bundled with this package
-  --from <dir>       any local directory shaped like skills/<name>/{SKILL.md,manifest.json}
-  --from <git-url>   any git repo with that shape; append #<branch-or-tag> to pin
+  --from <dir|url>   a skilldrop catalog (skills/<name>/{SKILL.md,manifest.json}) OR an
+                     agentbundle one (packs/<pack>/.apm/skills/<name>/SKILL.md); a git URL
+                     works for either — append #<branch-or-tag> to pin
 
 Install/update/uninstall targets (pick one):
   (default)          ~/.claude/skills           Claude Code, user scope
@@ -78,7 +81,16 @@ function parseArgs(argv) {
   return out;
 }
 
-/* ---------- catalogs ---------- */
+/* ---------- catalogs ----------
+   Two on-disk shapes are read (RFC-0003, RFC-0014):
+     "skilldrop" — flat skills/<name>/{SKILL.md,manifest.json} + optional packs.json
+     "apm"       — agentbundle (agent-ready-repo): packs/<pack>/{pack.toml,
+                   .apm/skills/<name>/SKILL.md, .apm/agents/<name>.md}
+   The apm reader normalizes into the same accessors the native path uses — skills keyed by
+   folder name, a per-skill manifest synthesized from the SKILL.md frontmatter + the pack.toml
+   version, each pack.toml's [pack] table a virtual pack — so `--from git+https://…/agent-ready-repo`
+   installs his packs through this same CLI. Skill accessors: skillsIn / skillDir / skillExists /
+   manifestOf; never touch cat.skillsDir directly (it exists only on the skilldrop shape). */
 
 const catalogCache = {};
 function resolveCatalog(source) {
@@ -96,23 +108,101 @@ function resolveCatalog(source) {
       die(`could not fetch catalog '${source}' — not a local path, and git clone failed`);
     }
   }
-  const skillsDir = path.join(dir, "skills");
-  if (!fs.existsSync(skillsDir)) die(`'${source || dir}' is not a skilldrop catalog — no skills/ directory`);
-  return (catalogCache[key] = { dir, skillsDir, source: source || BUNDLED });
+  const src = source || BUNDLED;
+  if (fs.existsSync(path.join(dir, "skills")))
+    return (catalogCache[key] = { dir, source: src, shape: "skilldrop", skillsDir: path.join(dir, "skills") });
+  if (fs.existsSync(path.join(dir, "packs")))
+    return (catalogCache[key] = readApmCatalog(dir, src));
+  die(`'${src}' is not a catalog — expected a skills/ (skilldrop) or packs/ (agentbundle) directory`);
 }
+
+/* Minimal TOML read — the [pack] table's basic-string scalars (name, version, description).
+   pack.toml is small and regular; a full TOML parser would be dead weight in a zero-dep CLI. */
+function packMeta(tomlText) {
+  const out = {};
+  let inPack = false;
+  for (const raw of tomlText.split(/\r?\n/)) {
+    const t = raw.trim();
+    if (t.startsWith("[")) { inPack = t === "[pack]"; continue; }
+    if (!inPack || !t || t.startsWith("#")) continue;
+    const m = t.match(/^([A-Za-z0-9_.-]+)\s*=\s*"((?:[^"\\]|\\.)*)"/);
+    if (m) out[m[1]] = m[2].replace(/\\"/g, '"').replace(/\\\\/g, "\\");
+  }
+  return out;
+}
+
+/* SKILL.md frontmatter (agentskills.io: name optional, description carries the trigger). */
+function frontmatter(mdPath) {
+  let fm = "";
+  try { fm = fs.readFileSync(mdPath, "utf8").split("---")[1] || ""; } catch (e) { return {}; }
+  const get = (k) => { const m = fm.match(new RegExp("^" + k + ":\\s*(.+)$", "m")); return m ? m[1].trim() : ""; };
+  return { name: get("name"), description: get("description") };
+}
+
+/* Read an agentbundle catalog into the native accessor shape. First-wins on a skill name
+   (skilldrop's own generated catalogue duplicates a multi-pack skill into each pack — the
+   flat skill list dedups, while packsData still lists it under every pack it belongs to). */
+function readApmCatalog(dir, source) {
+  const packsDir = path.join(dir, "packs");
+  const skillIndex = {}, agentIndex = {}, packsData = {};
+  for (const pack of fs.readdirSync(packsDir)) {
+    const pdir = path.join(packsDir, pack);
+    if (!fs.statSync(pdir).isDirectory()) continue;
+    const ptoml = path.join(pdir, "pack.toml");
+    const pm = fs.existsSync(ptoml) ? packMeta(fs.readFileSync(ptoml, "utf8")) : {};
+    const version = pm.version || "0.0.0";
+    const skills = [];
+    const skillsRoot = path.join(pdir, ".apm", "skills");
+    if (fs.existsSync(skillsRoot))
+      for (const s of fs.readdirSync(skillsRoot)) {
+        const sdir = path.join(skillsRoot, s);
+        if (!fs.statSync(sdir).isDirectory()) continue;
+        skills.push(s);
+        if (!skillIndex[s])
+          skillIndex[s] = { dir: sdir, manifest: {
+            name: s, description: frontmatter(path.join(sdir, "SKILL.md")).description || "",
+            version, related: [], tags: [],
+            deps: { pip: [], npm: [] }, env: { required: [], optional: [] },
+          } };
+      }
+    const agentsRoot = path.join(pdir, ".apm", "agents");
+    if (fs.existsSync(agentsRoot))
+      for (const f of fs.readdirSync(agentsRoot))
+        if (f.endsWith(".md") && f !== "README.md") agentIndex[f.slice(0, -3)] = path.join(agentsRoot, f);
+    packsData[pack] = { description: pm.description || "", skills };
+  }
+  return { dir, source, shape: "apm", skillIndex, agentIndex, packsData };
+}
+
 function skillsIn(cat) {
+  if (cat.shape === "apm") return Object.keys(cat.skillIndex).sort();
   return fs.readdirSync(cat.skillsDir).filter((d) => fs.statSync(path.join(cat.skillsDir, d)).isDirectory()).sort();
 }
-function manifestOf(cat, s) { return readJSON(path.join(cat.skillsDir, s, "manifest.json")); }
+function skillDir(cat, s) {
+  if (cat.shape === "apm") return cat.skillIndex[s] && cat.skillIndex[s].dir;
+  return path.join(cat.skillsDir, s);
+}
+function skillExists(cat, s) { const d = skillDir(cat, s); return !!d && fs.existsSync(d); }
+function manifestOf(cat, s) {
+  if (cat.shape === "apm") {
+    if (!cat.skillIndex[s]) throw new Error(`no such skill '${s}'`);
+    return cat.skillIndex[s].manifest;
+  }
+  return readJSON(path.join(cat.skillsDir, s, "manifest.json"));
+}
 
 /* Agents (RFC-0012): single markdown files, frontmatter is already Claude Code's format.
-   Optional in a catalog — a third-party catalog with no agents/ is still valid. */
+   Optional in a catalog — a third-party catalog with no agents is still valid. */
 function agentsIn(cat) {
+  if (cat.shape === "apm") return Object.keys(cat.agentIndex).sort();
   const d = path.join(cat.dir, "agents");
   if (!fs.existsSync(d)) return [];
   return fs.readdirSync(d).filter((f) => f.endsWith(".md") && f !== "README.md").map((f) => f.slice(0, -3)).sort();
 }
-function agentPath(cat, a) { return path.join(cat.dir, "agents", `${a}.md`); }
+function agentPath(cat, a) {
+  if (cat.shape === "apm") return cat.agentIndex[a];
+  return path.join(cat.dir, "agents", `${a}.md`);
+}
 function agentMeta(cat, a) {
   const fm = (fs.readFileSync(agentPath(cat, a), "utf8").split("---")[1] || "");
   const get = (k) => { const m = fm.match(new RegExp("^" + k + ":\\s*(.+)$", "m")); return m ? m[1].trim() : ""; };
@@ -122,13 +212,15 @@ function agentMeta(cat, a) {
 /* Same gate the skills get, applied to agents before anything is copied. */
 function checkAgent(cat, a) {
   const problems = [];
-  if (!fs.existsSync(agentPath(cat, a))) return [`agents/${a}.md missing`];
+  const p = agentPath(cat, a);
+  if (!p || !fs.existsSync(p)) return [`agent '${a}' missing`];
   const m = agentMeta(cat, a);
   if (m.name !== a) problems.push(`frontmatter name '${m.name}' != filename '${a}'`);
   if (!m.description) problems.push("frontmatter missing description");
   return problems;
 }
 function packsOf(cat) {
+  if (cat.shape === "apm") return Object.keys(cat.packsData).length ? cat.packsData : null;
   const p = path.join(cat.dir, "packs.json");
   return fs.existsSync(p) ? readJSON(p).packs : null;
 }
@@ -136,8 +228,14 @@ function packsOf(cat) {
 /* Structural gate (RFC-0003): a skill must pass before it is copied anywhere. */
 function checkSkill(cat, s) {
   const problems = [];
-  const dir = path.join(cat.skillsDir, s);
-  if (!fs.existsSync(path.join(dir, "SKILL.md"))) problems.push("SKILL.md missing");
+  const dir = skillDir(cat, s);
+  if (!dir || !fs.existsSync(path.join(dir, "SKILL.md"))) problems.push("SKILL.md missing");
+  if (cat.shape === "apm") {
+    // agentbundle skills carry name/description in SKILL.md frontmatter (agentskills.io);
+    // version lives in pack.toml and there is no model tier — gate only the portable fields.
+    if (!problems.length && !manifestOf(cat, s).description) problems.push("SKILL.md frontmatter missing description");
+    return problems;
+  }
   let m = null;
   try { m = manifestOf(cat, s); } catch (e) { problems.push("manifest.json missing or invalid JSON"); }
   if (m) {
@@ -456,13 +554,13 @@ function expandNames(args, cat) {
     return p.skills.slice();
   }
   if (!args._.length) die("nothing to install — pass skill names, --pack <name>, or --all");
-  for (const s of args._) if (!fs.existsSync(path.join(cat.skillsDir, s))) die(`unknown skill '${s}' in catalog '${cat.source}'`);
+  for (const s of args._) if (!skillExists(cat, s)) die(`unknown skill '${s}' in catalog '${cat.source}'`);
   return args._.slice();
 }
 
 function copyOne(cat, s, dest, ide, l, notes) {
   const m = manifestOf(cat, s);
-  fs.cpSync(path.join(cat.skillsDir, s), path.join(dest, s), { recursive: true });
+  fs.cpSync(skillDir(cat, s), path.join(dest, s), { recursive: true });
   const note = writeWiring(ide, dest, s, m.description);
   if (note && notes) notes.push(note);
   l.data[s] = { version: m.version, source: cat.source };
@@ -478,7 +576,7 @@ function install(args) {
     for (const s of names.slice()) {
       let related = [];
       try { related = manifestOf(cat, s).related || []; } catch (e) { /* gated below */ }
-      for (const r of related) if (!seen.has(r) && fs.existsSync(path.join(cat.skillsDir, r))) { seen.add(r); names.push(r); }
+      for (const r of related) if (!seen.has(r) && skillExists(cat, r)) { seen.add(r); names.push(r); }
     }
   }
   gate(cat, names);
@@ -488,7 +586,7 @@ function install(args) {
   const pipDeps = [], suggestions = new Set(), notes = [];
   for (const s of names) {
     const m = copyOne(cat, s, dest, ide, l, notes);
-    if (fs.existsSync(path.join(cat.skillsDir, s, "requirements.txt"))) pipDeps.push(s);
+    if (fs.existsSync(path.join(skillDir(cat, s), "requirements.txt"))) pipDeps.push(s);
     for (const r of m.related || []) if (!names.includes(r) && !l.data[r]) suggestions.add(r);
     console.log(`installed ${s}@${m.version} -> ${dest}`);
   }
@@ -525,7 +623,7 @@ function installedRows(flags) {
     let current = null, cat = null;
     try {
       cat = resolveCatalog(src === BUNDLED ? undefined : src);
-      if (fs.existsSync(path.join(cat.skillsDir, s))) current = manifestOf(cat, s).version;
+      if (skillExists(cat, s)) current = manifestOf(cat, s).version;
     } catch (e) { /* unreachable source: current stays null */ }
     return { s, src, cat, installed: lver(l.data[s]), current };
   });
@@ -651,15 +749,15 @@ function list(args) {
 function info(args) {
   const cat = resolveCatalog(args.flags.from);
   const s = args._[0] || die("pass a skill name");
-  if (!fs.existsSync(path.join(cat.skillsDir, s))) die(`unknown skill '${s}' in catalog '${cat.source}'`);
+  if (!skillExists(cat, s)) die(`unknown skill '${s}' in catalog '${cat.source}'`);
   const m = manifestOf(cat, s);
   const ps = packsOf(cat) || {};
   const inPacks = Object.entries(ps).filter(([, p]) => p.skills.includes(s)).map(([n]) => n);
-  console.log(`${m.name}@${m.version}  (tier: ${m.model && m.model.tier})\n\n${m.description}\n`);
+  console.log(`${m.name}@${m.version}  (tier: ${(m.model && m.model.tier) || "n/a"})\n\n${m.description}\n`);
   console.log(`catalog: ${cat.source}`);
   console.log(`packs:   ${inPacks.join(", ") || "-"}`);
   console.log(`related: ${(m.related || []).join(", ") || "-"}`);
-  if (((m.deps || {}).pip || []).length || fs.existsSync(path.join(cat.skillsDir, s, "requirements.txt")))
+  if (((m.deps || {}).pip || []).length || fs.existsSync(path.join(skillDir(cat, s), "requirements.txt")))
     console.log("deps:    python (requirements.txt)");
   if (((m.env || {}).required || []).length) console.log(`env:     ${m.env.required.join(", ")} (required)`);
 }
