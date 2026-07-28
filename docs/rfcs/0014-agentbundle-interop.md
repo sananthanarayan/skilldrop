@@ -74,24 +74,41 @@ Anti-patterns this bans: (1) hand-editing `.claude-plugin/*.json` (drift-guarded
 
 ## Decision
 
-Adopt **Path C now, Path A never, Path B only on a real, sized request.** Path C step 1 is shipped
-in this repo. The remaining recommendation steps, in priority order:
+Adopt **Path C now, Path A never, Path B via a generated view.** The clarified ask is *shared
+schema, bidirectional, no code coupling* — agentbundle can set skilldrop as a catalogue source and
+vice versa. Two findings unblock this:
 
-1. **[DONE] Path C, step 1** — skilldrop's own plugin marketplace + `npx skilldrop-cli` (this RFC).
-2. **[TODO — his side, preferred] Ask for an agentbundle *source-adapter*.** agentbundle's whole
-   design is "one adapter pipeline projects primitives into every layout." The reciprocal is a
-   read-adapter for a skilldrop / agentskills.io-flat catalogue. Both tools already share the
-   agentskills.io `SKILL.md` spec, so this is his codebase's job and costs skilldrop zero ongoing
-   maintenance. Best outcome — pursue this first.
-3. **[TODO — conditional] Path B: generate an agentbundle view.** Only if a real user base needs
-   `agentbundle install` *and* he declines step 2. Blocked on two inputs from him: the published
-   schemas for `.claude-plugin/plugin.json` and the full `marketplace.json` (the public docs
-   reference but don't inline them), and rough agentbundle install numbers to justify the tax. If
-   built: canonical source stays flat; a generator emits `packs/` + `pack.toml` + a
-   `claude-plugins-dist` branch, pinned to a `minimum-agentbundle-version`, shipped as best-effort
-   compatibility, not a support commitment.
-4. **[TODO — optional] Per-pack Claude plugins.** Split the single catalogue plugin into one plugin
-   per `packs.json` bundle via generated plugin directories (shares machinery with step 3).
+- **His `contracts/` are standalone, versioned JSON Schemas** (`pack.schema.json`,
+  `catalogue.schema.json`, `plugin-manifest.schema.json`, `skill.schema.json`, …; `schema = 1`,
+  adapter-contract v0.14). So conformance is pinning a *version*, not tracking his HEAD — the honest
+  form of "no coupling." The skill layer is already identical (both use the agentskills.io `SKILL.md`
+  spec: `name` + `description`). Manifest floors are tiny (`pack.toml` needs `[pack]` name/version/
+  description + `[pack.install] default-scope`; `plugin.json` needs name/version/description).
+- **PyPI is a non-issue.** A catalogue is a *git repo*, read from a `git+https://` URL; agentbundle
+  (the tool) is on PyPI, the catalogue is not. skilldrop-cli stays on npm; nothing publishes to PyPI.
+
+The only real gap is on-disk layout (his physical `packs/<name>/.apm/skills/…` vs skilldrop's flat
+`skills/` with multi-pack membership), which a generator resolves by duplicating a shared skill into
+each generated pack — something native adoption can't do without breaking RFC-0001. Steps, in order:
+
+1. **[DONE] Path C** — skilldrop's own plugin marketplace + `npx skilldrop-cli` (`build_marketplace.py`).
+2. **[DONE] Path B generator** — `build_catalogue.py` renders the his-schema catalogue from flat
+   source into `dist/` (gitignored): `catalogue.toml`, `.claude-plugin/marketplace.json`, and
+   `packs/<pack>/{pack.toml, .claude-plugin/plugin.json, .apm/skills/<skill>/…}`, one plugin per
+   `packs.json` bundle. Contract knobs pinned in-file (`ADAPTER_CONTRACT`, `MIN_AGENTBUNDLE`). `--check`
+   is a stdlib pre-flight on required fields; `agentbundle validate` is authoritative.
+3. **[TODO] Publish `dist/` to the `agentbundle-catalogue` branch in CI** on release, so
+   `agentbundle install --pack <p> git+https://github.com/sananthanarayan/skilldrop#agentbundle-catalogue`
+   resolves. Needs a workflow step (contents:write, which the publish job already holds).
+4. **[TODO] Reverse direction** — teach `skilldrop-cli --from` to also read a `packs/<name>/.apm/skills`
+   catalogue, so skilldrop installs *his* packs. Additive to the npm CLI, no coupling.
+5. **[TODO — preferred long-term, his side] Ask for an agentbundle *source-adapter*** that reads a
+   flat agentskills.io catalogue directly, retiring step 3's generated view. His codebase's job; zero
+   ongoing cost to skilldrop. Also ask that he treat `schema = 1` / adapter-contract as stable.
+6. **[TODO — optional] Validate `dist/` against his `contracts/*.schema.json` in CI** (vendor a copy).
+7. **[TODO — optional] Per-pack agents** — map reviewer subagents into the packs' `.apm/agents/`.
+
+Never Path A (native restructure into physical packs — breaks multi-pack membership + RFC-0001).
 
 Open verification before relying on the plugin path in anger:
 

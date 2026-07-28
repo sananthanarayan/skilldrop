@@ -24,6 +24,10 @@ env/
 # Generated catalogue site (RFC-0011) — built by CI, never committed
 build/
 
+# Generated agentbundle-schema catalogue (RFC-0014) — built by build_catalogue.py,
+# published to the agentbundle-catalogue branch; never committed to main
+dist/
+
 # Test renders / scratch output
 out/
 renders/
