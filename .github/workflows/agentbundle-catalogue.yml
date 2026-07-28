@@ -1,0 +1,49 @@
+# Regenerate the agentbundle-schema catalogue (RFC-0014) and publish it to the
+# `agentbundle-catalogue` branch on every push to main. An agentbundle user then installs
+# with `agentbundle install --pack <p> git+https://github.com/sananthanarayan/skilldrop#agentbundle-catalogue`.
+#
+# Deliberately separate from release.yml (so a catalogue change can never touch the npm
+# publish path) and from pages.yml (so it can't affect the site deploy). The branch is a
+# GENERATED artifact — build_catalogue.py's dist/ output, force-pushed each run (its history
+# is disposable). Nothing here is a merge gate, so it is not in the protect-main required checks.
+name: agentbundle-catalogue
+
+on:
+  push:
+    branches: [main]
+
+# Least privilege: the only elevated scope is the write needed to push the generated branch.
+permissions:
+  contents: write
+
+concurrency:
+  group: agentbundle-catalogue
+  cancel-in-progress: false
+
+jobs:
+  catalogue:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Render + validate the catalogue
+        run: python3 build_catalogue.py --check # writes dist/, asserts every required field
+      - name: Publish dist/ to the agentbundle-catalogue branch
+        env:
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+        run: |
+          set -euo pipefail
+          branch=agentbundle-catalogue
+          # Synthesize an orphan commit whose ROOT is dist/, reusing the checkout's persisted
+          # credentials (no token handling here). A separate index keeps the real one clean, and
+          # -Af force-adds past .gitignore (dist/ is ignored on main). Force-push: the branch is
+          # regenerated, not appended. protect-main targets the default branch only, so this is allowed.
+          export GIT_INDEX_FILE="$RUNNER_TEMP/catalogue-index"
+          rm -f "$GIT_INDEX_FILE"
+          git add -Af -- dist
+          subtree=$(git rev-parse "$(git write-tree):dist")
+          commit=$(git commit-tree "$subtree" -m "catalogue @ ${GITHUB_SHA::7} (generated — do not edit)")
+          git push --force origin "$commit:refs/heads/$branch"
+          echo "published $branch → $commit"

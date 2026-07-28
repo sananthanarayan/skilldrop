@@ -97,9 +97,11 @@ each generated pack — something native adoption can't do without breaking RFC-
    `packs/<pack>/{pack.toml, .claude-plugin/plugin.json, .apm/skills/<skill>/…}`, one plugin per
    `packs.json` bundle. Contract knobs pinned in-file (`ADAPTER_CONTRACT`, `MIN_AGENTBUNDLE`). `--check`
    is a stdlib pre-flight on required fields; `agentbundle validate` is authoritative.
-3. **[TODO] Publish `dist/` to the `agentbundle-catalogue` branch in CI** on release, so
+3. **[DONE] Publish `dist/` to the `agentbundle-catalogue` branch in CI** —
+   `.github/workflows/agentbundle-catalogue.yml` regenerates on every push to main and
+   force-pushes an orphan commit rooted at `dist/`, so
    `agentbundle install --pack <p> git+https://github.com/sananthanarayan/skilldrop#agentbundle-catalogue`
-   resolves. Needs a workflow step (contents:write, which the publish job already holds).
+   resolves. Separate workflow (never touches the npm publish path), `contents: write` only.
 4. **[TODO] Reverse direction** — teach `skilldrop-cli --from` to also read a `packs/<name>/.apm/skills`
    catalogue, so skilldrop installs *his* packs. Additive to the npm CLI, no coupling.
 5. **[TODO — preferred long-term, his side] Ask for an agentbundle *source-adapter*** that reads a
