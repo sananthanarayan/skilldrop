@@ -33,6 +33,8 @@ import os
 import re
 import sys
 
+import build_marketplace  # .claude-plugin/ drift check (RFC-0014)
+
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SKILLS = os.path.join(ROOT, "skills")
 AGENTS = os.path.join(ROOT, "agents")
@@ -188,6 +190,11 @@ def main():
             packed.add(s)
     for s in sorted(dir_set - packed):
         fail("packs.json", f"skill '{s}' belongs to no pack — every skill needs an audience")
+
+    # The Claude Code plugin marketplace (RFC-0014) is generated from package.json;
+    # a committed file drifting from that generator fails here so it can't ship stale.
+    for rel in build_marketplace.stale():
+        fail(".claude-plugin", f"{rel} is stale — run `python3 build_marketplace.py`")
 
     agent_names = check_agents(skill_dirs)
 

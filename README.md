@@ -264,6 +264,17 @@ npx skilldrop-cli list | skilldrop info <skill> | skilldrop packs | skilldrop un
 
 `--with-related` also pulls each skill's companions. From a clone (or before the package is published): `node bin/skilldrop.js <same args>`. Scope and design: [RFC-0002](docs/rfcs/0002-skilldrop-cli.md), full command surface in [`docs/designs/skilldrop-cli-design.md`](docs/designs/skilldrop-cli-design.md).
 
+### Or: the Claude Code plugin marketplace
+
+skilldrop is also a **Claude Code plugin marketplace** — install the whole catalogue as one plugin, no npm step:
+
+```text
+/plugin marketplace add sananthanarayan/skilldrop
+/plugin install skilldrop@skilldrop
+```
+
+Every skill then invokes as `/skilldrop:<name>` (e.g. `/skilldrop:prfaq`), and the reviewer subagents come with it. The marketplace ships the flat `skills/` and `agents/` trees at the repo root unchanged — same copy-install premise, expressed in Claude's own plugin format. `.claude-plugin/{marketplace,plugin}.json` are generated from `package.json` by [`build_marketplace.py`](build_marketplace.py) (`--check` guards drift in CI). Use the CLI above when you want per-pack or per-skill granularity, another IDE, or hooks; use the marketplace when you're in Claude Code and want everything in two lines. Rationale and the deferred per-pack-plugin step: [RFC-0014](docs/rfcs/0014-agentbundle-interop.md).
+
 ### Hooks (opt-in) — wire a skill to an event
 
 Some loop-shaped skills declare **hooks** — event-triggered nudges the CLI wires into your environment when you pass `--with-hooks` ([RFC-0006](docs/rfcs/0006-per-ide-hooks.md)). It's off by default, so a plain install never touches your git repo or editor settings.
