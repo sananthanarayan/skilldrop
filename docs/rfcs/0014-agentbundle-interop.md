@@ -108,13 +108,29 @@ each generated pack — something native adoption can't do without breaking RFC-
    packs from each `pack.toml`, synthesized manifests, agents). Verified end-to-end against
    agent-ready-repo: `skilldrop install --pack contracts --from git+…/agent-ready-repo` installs his
    `api-contract`/`event-contract`. Additive to the npm CLI, no coupling.
-5. **[TODO — preferred long-term, his side] Ask for an agentbundle *source-adapter*** that reads a
-   flat agentskills.io catalogue directly, retiring step 3's generated view. His codebase's job; zero
-   ongoing cost to skilldrop. Also ask that he treat `schema = 1` / adapter-contract as stable.
-6. **[TODO — optional] Validate `dist/` against his `contracts/*.schema.json` in CI** (vendor a copy).
-7. **[TODO — optional] Per-pack agents** — map reviewer subagents into the packs' `.apm/agents/`.
+5. **[DECLINED — his call, 2026-07-29] Flat-catalogue source-adapter / neutral shared spec.**
+   Asked the agent-ready-repo owner to (a) add an agentbundle source-adapter that reads a flat
+   agentskills.io catalogue directly (which would have retired step 3's generated view) and (b)
+   relax the `.apm/` wrapper. He declined both: **`.apm/` is mandatory**, a flat catalogue "does
+   not work for various reasons," and these asks "don't make sense for the ecosystem view." So this
+   is not co-owned bidirectional interop — it is **skilldrop conforming to his ecosystem contract via
+   the generated export**, one-directional, permanent. Consequence: the `agentbundle-catalogue` branch
+   (step 3) is standing, not a temporary bridge. No code impact — our generator already emits `.apm/`,
+   the exact point he requires.
+6. **[BLOCKED — waiting on him] A consolidating contract is forthcoming** that merges the current
+   `contracts/*` schemas. Until it publishes, do NOT harden against today's schemas — it would be
+   throwaway work. When it lands: re-validate `dist/` against it, bump the pinned `ADAPTER_CONTRACT` /
+   `MIN_AGENTBUNDLE` knobs and adjust the generator if the shape moved, and re-test the reverse `apm`
+   reader against any layout change. This gates steps 7–8.
+7. **[DEFERRED — post-contract, optional] Validate `dist/` against his schemas in CI** (vendor a copy).
+8. **[DEFERRED — post-contract, optional] Per-pack agents** — map reviewer subagents into `.apm/agents/`.
 
 Never Path A (native restructure into physical packs — breaks multi-pack membership + RFC-0001).
+
+**Status (2026-07-29): at a stopping point.** Two-way interop works today (generated branch out, `apm`
+reader in). Further investment is on hold pending his consolidating contract. Open question for the
+maintainer: the generated branch is a permanent re-alignment tax whenever his contract shifts — worth
+confirming the agentbundle install base justifies owning it before committing to long-term upkeep.
 
 Open verification before relying on the plugin path in anger:
 
