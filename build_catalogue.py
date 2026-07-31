@@ -88,12 +88,12 @@ def _pack_toml(name, version, description):
 
 
 def _catalogue_toml(pkg, packs):
-    # Full required shape per contracts/catalogue.schema.json (2020-12, additionalProperties:false —
-    # unknown keys are rejected). Root requires schema/catalogue/distribution; [catalogue] requires
-    # name/display-name/description/minimum-agentbundle-version + the paths/build/package sub-tables;
-    # [distribution.agentbundle] requires preferred-adapter + artifactory. The build/package/artifactory
-    # values are inert for us (we don't run agentbundle's own build or its registry) but must be present
-    # and schema-valid. preferred-adapter must name a real adapter → "claude-code".
+    # Full required shape for `agentbundle catalogue verify` (catalogue.schema.json is 2020-12,
+    # additionalProperties:false — unknown keys rejected). The PUBLISHED CLI's schema is authoritative
+    # and stricter than the repo's main branch: it also requires `[catalogue.paths].contracts` and
+    # `[distribution.agentbundle].install-defaults-output`. The build/package/artifactory/paths values
+    # below are inert for us (we don't run agentbundle's own build or registry) but must be present and
+    # schema-valid; preferred-adapter must name a real adapter → "claude-code".
     src = f"git+https://github.com/{REPO_SLUG}@{DIST_BRANCH}"
     include = _toml_arr([f"packs/{n}" for n in packs])
     return (
@@ -110,6 +110,7 @@ def _catalogue_toml(pkg, packs):
         "[catalogue.paths]\n"
         'packs = "packs"\n'
         'profiles = "profiles"\n'
+        'contracts = "contracts"\n'
         'marketplace = ".claude-plugin/marketplace.json"\n'
         'build-output = "dist"\n'
         "\n"
@@ -123,6 +124,7 @@ def _catalogue_toml(pkg, packs):
         f"include = {include}\n"
         "\n"
         "[distribution.agentbundle]\n"
+        'install-defaults-output = "dist/install-defaults.toml"\n'
         'preferred-adapter = "claude-code"\n'
         f"default-source = {_toml_str(src)}\n"
         "\n"
@@ -211,10 +213,10 @@ def check(out):
     cat_txt = open(cat, encoding="utf-8").read() if os.path.exists(cat) else ""
     # Every table/key catalogue.schema.json marks required (agentbundle catalogue verify is authoritative).
     for tok in ("schema = 1", "[catalogue]", "minimum-agentbundle-version",
-                "[catalogue.paths]", "profiles", "build-output",
+                "[catalogue.paths]", "profiles", "contracts", "build-output",
                 "[catalogue.build]", "recipes", "claude-plugin-branch", "marketplace-description",
                 "[catalogue.package]", "include",
-                "[distribution.agentbundle]", "preferred-adapter",
+                "[distribution.agentbundle]", "install-defaults-output", "preferred-adapter",
                 "[distribution.agentbundle.artifactory]", "enabled"):
         if tok not in cat_txt:
             problems.append(f"catalogue.toml missing `{tok}`")
