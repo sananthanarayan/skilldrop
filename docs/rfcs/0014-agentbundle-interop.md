@@ -100,8 +100,9 @@ each generated pack — something native adoption can't do without breaking RFC-
 3. **[DONE] Publish `dist/` to the `agentbundle-catalogue` branch in CI** —
    `.github/workflows/agentbundle-catalogue.yml` regenerates on every push to main and
    force-pushes an orphan commit rooted at `dist/`, so
-   `agentbundle install --pack <p> git+https://github.com/sananthanarayan/skilldrop#agentbundle-catalogue`
-   resolves. Separate workflow (never touches the npm publish path), `contents: write` only.
+   `agentbundle install --pack <p> git+https://github.com/sananthanarayan/skilldrop@agentbundle-catalogue`
+   resolves (agentbundle pins a git ref with `@`, not `#`). Separate workflow (never touches the
+   npm publish path), `contents: write` only.
 4. **[DONE] Reverse direction** — `skilldrop-cli --from` reads an agentbundle catalogue
    (`packs/<name>/{pack.toml,.apm/skills/<skill>/SKILL.md,.apm/agents/…}`) via an `apm`-shape
    reader in `bin/skilldrop.js` that normalizes it onto the native accessors (skill list, virtual
@@ -117,20 +118,39 @@ each generated pack — something native adoption can't do without breaking RFC-
    the generated export**, one-directional, permanent. Consequence: the `agentbundle-catalogue` branch
    (step 3) is standing, not a temporary bridge. No code impact — our generator already emits `.apm/`,
    the exact point he requires.
-6. **[BLOCKED — waiting on him] A consolidating contract is forthcoming** that merges the current
-   `contracts/*` schemas. Until it publishes, do NOT harden against today's schemas — it would be
-   throwaway work. When it lands: re-validate `dist/` against it, bump the pinned `ADAPTER_CONTRACT` /
-   `MIN_AGENTBUNDLE` knobs and adjust the generator if the shape moved, and re-test the reverse `apm`
-   reader against any layout change. This gates steps 7–8.
-7. **[DEFERRED — post-contract, optional] Validate `dist/` against his schemas in CI** (vendor a copy).
-8. **[DEFERRED — post-contract, optional] Per-pack agents** — map reviewer subagents into `.apm/agents/`.
+6. **[DONE — 2026-07-30] The consolidating contract landed (RFC-0076, adapter-contract v0.17) with a
+   real verifier; aligned `catalogue.toml` to it.** agent-ready-repo now ships two schema-backed
+   conformance tools: `agentbundle catalogue verify --root <local-checkout>` (whole catalogue, an 18-step
+   pipeline that builds into a tmpdir and validates each `pack.toml`/generated `plugin.json` against the
+   `contracts/` schemas) and `agentbundle validate <pack-dir>` (one pack). Both validate against the
+   schemas the *installed CLI version* bundles — pin by pinning the `agentbundle` version, not by
+   vendoring. Findings and fixes:
+   - `catalogue.schema.json` is `additionalProperties:false` and requires far more than we emitted:
+     `[catalogue]` needs `paths`+`build`+`package`; `[catalogue.paths]` needs `profiles`+`build-output`;
+     `[catalogue.build]` (`recipes`,`self-host`,`claude-plugin-branch`,`marketplace-description`) and
+     `[catalogue.package].include` and `[distribution.agentbundle.artifactory].enabled` were entirely
+     missing. `build_catalogue.py` now emits the full shape (the build/package/artifactory values are
+     inert for us but must be present + valid; `preferred-adapter` must name a real adapter → `claude-code`).
+   - `pack.toml` (`[pack]` requires only name/version), `plugin.json` (name/version/description, and must
+     match the pack's name/version), and `SKILL.md` frontmatter (name/description only — audited: all 50
+     skills conform to the allow-list) were already valid.
+   - Contract version: `0.14` still conforms (the spec gate refuses only on a *major* mismatch, and both
+     are major-0), but bumped `ADAPTER_CONTRACT` to `0.17` for currency; `MIN_AGENTBUNDLE` stays `0.13.0`
+     (shape-checked only for git sources). The new optional `[[pack.integrations]]` (RFC-0076 D6) is not
+     emitted.
+   - There is **no** `export-contract` / `agentbundle catalogue contracts` command (RFC-0076 D5 not landed),
+     and `verify` has **no git-URL mode** — verification is `--root` against a local checkout of the branch.
+7. **[TODO — optional] Gate CI on `agentbundle catalogue verify`** — needs the Python `agentbundle[lint]`
+   tool in the workflow (not stdlib), so it's a heavier CI addition than the current stdlib `--check`.
+8. **[TODO — optional] Per-pack agents** — map reviewer subagents into the packs' `.apm/agents/`.
 
 Never Path A (native restructure into physical packs — breaks multi-pack membership + RFC-0001).
 
-**Status (2026-07-29): at a stopping point.** Two-way interop works today (generated branch out, `apm`
-reader in). Further investment is on hold pending his consolidating contract. Open question for the
-maintainer: the generated branch is a permanent re-alignment tax whenever his contract shifts — worth
-confirming the agentbundle install base justifies owning it before committing to long-term upkeep.
+**Status (2026-07-30): conformant to the landed contract; awaiting a live `agentbundle catalogue verify`.**
+Two-way interop works (generated branch out, `apm` reader in) and `catalogue.toml` now matches the current
+schema. Not yet run through the real verifier — that needs `pip install agentbundle[lint]` + a local checkout
+(the tool isn't in this repo). Open question for the maintainer: the generated branch is a permanent
+re-alignment tax whenever his contract shifts — worth confirming the agentbundle install base justifies it.
 
 Open verification before relying on the plugin path in anger:
 
