@@ -39,7 +39,11 @@ jobs:
           python3 -m venv "$RUNNER_TEMP/abv"
           "$RUNNER_TEMP/abv/bin/pip" install --quiet --upgrade pip
           "$RUNNER_TEMP/abv/bin/pip" install --quiet 'agentbundle[lint]'
-          "$RUNNER_TEMP/abv/bin/agentbundle" catalogue verify --root dist
+          AB="$RUNNER_TEMP/abv/bin/agentbundle"
+          # install-defaults.toml is a derived artifact agentbundle owns (verify step CAT-V-016
+          # fails if it's stale/absent); generate it into dist/ so the published catalogue is in sync.
+          "$AB" catalogue sync-defaults --root dist --write
+          "$AB" catalogue verify --root dist
       - name: Publish dist/ to the agentbundle-catalogue branch
         env:
           GIT_AUTHOR_NAME: github-actions[bot]
