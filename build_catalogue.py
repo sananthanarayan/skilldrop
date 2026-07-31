@@ -22,8 +22,14 @@ an agentbundle user then installs with:
     agentbundle install --pack solution-architect git+https://github.com/sananthanarayan/skilldrop@agentbundle-catalogue
 
 Nothing here is committed to main (dist/ is gitignored), and skilldrop-cli / npm are
-untouched — this is an export target, not a migration. `agentbundle validate` is the
-authoritative check; --check below is a fast stdlib pre-flight on the required fields.
+untouched — this is an export target, not a migration. `--check` below is a fast stdlib
+pre-flight on the required fields; the AUTHORITATIVE conformance check is agentbundle's own
+verifier, run in CI (agentbundle-catalogue.yml) and locally as:
+
+    python3 build_catalogue.py
+    pip install 'agentbundle[lint]'
+    agentbundle catalogue sync-defaults --root dist --write   # derives dist/install-defaults.toml
+    agentbundle catalogue verify --root dist                  # 18-step pipeline → "catalogue verify: ok"
 """
 import argparse
 import json
@@ -124,7 +130,9 @@ def _catalogue_toml(pkg, packs):
         f"include = {include}\n"
         "\n"
         "[distribution.agentbundle]\n"
-        'install-defaults-output = "dist/install-defaults.toml"\n'
+        # catalogue-root-relative — lands at <root>/install-defaults.toml, written by
+        # `agentbundle catalogue sync-defaults --write` (a derived artifact, not emitted here).
+        'install-defaults-output = "install-defaults.toml"\n'
         'preferred-adapter = "claude-code"\n'
         f"default-source = {_toml_str(src)}\n"
         "\n"
