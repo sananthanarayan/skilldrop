@@ -140,17 +140,25 @@ each generated pack — something native adoption can't do without breaking RFC-
      emitted.
    - There is **no** `export-contract` / `agentbundle catalogue contracts` command (RFC-0076 D5 not landed),
      and `verify` has **no git-URL mode** — verification is `--root` against a local checkout of the branch.
-7. **[TODO — optional] Gate CI on `agentbundle catalogue verify`** — needs the Python `agentbundle[lint]`
-   tool in the workflow (not stdlib), so it's a heavier CI addition than the current stdlib `--check`.
+7. **[DONE — 2026-07-31] CI gates the publish on the real verifier, and it PASSES.**
+   `agentbundle-catalogue.yml` now installs `agentbundle[lint]` in an isolated venv, runs
+   `agentbundle catalogue sync-defaults --root dist --write` then `agentbundle catalogue verify
+   --root dist` before publishing — a non-conformant catalogue is never pushed. Driving the real
+   verifier (agentbundle 0.22.1, spec 0.17) surfaced what the field survey missed: the published
+   schema also requires `[catalogue.paths].contracts` and `[distribution.agentbundle].install-defaults-output`,
+   and step CAT-V-016 requires an in-sync `install-defaults.toml` (a derived artifact `sync-defaults`
+   writes; its output path is catalogue-root-relative). All fixed — `catalogue verify: ok` locally and
+   green in CI; the published branch now carries `install-defaults.toml`. Unpinned agentbundle, so a
+   future contract bump surfaces here as the re-alignment signal.
 8. **[TODO — optional] Per-pack agents** — map reviewer subagents into the packs' `.apm/agents/`.
 
 Never Path A (native restructure into physical packs — breaks multi-pack membership + RFC-0001).
 
-**Status (2026-07-30): conformant to the landed contract; awaiting a live `agentbundle catalogue verify`.**
-Two-way interop works (generated branch out, `apm` reader in) and `catalogue.toml` now matches the current
-schema. Not yet run through the real verifier — that needs `pip install agentbundle[lint]` + a local checkout
-(the tool isn't in this repo). Open question for the maintainer: the generated branch is a permanent
-re-alignment tax whenever his contract shifts — worth confirming the agentbundle install base justifies it.
+**Status (2026-07-31): verified conformant, gated, and published.** Two-way interop works (generated
+branch out via a catalogue that passes `agentbundle catalogue verify` on every push; `apm` reader in for
+installing his packs). Open question for the maintainer: the generated branch is a permanent re-alignment
+tax whenever his contract shifts — the unpinned CI verifier surfaces that early, but worth confirming the
+agentbundle install base justifies owning it.
 
 Open verification before relying on the plugin path in anger:
 
