@@ -27,6 +27,19 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Render + validate the catalogue
         run: python3 build_catalogue.py --check # writes dist/, asserts every required field
+      - name: Verify against the agentbundle contract
+        # The authoritative conformance check (RFC-0014): agentbundle builds dist/ into a tmpdir and
+        # validates every pack.toml / generated plugin.json / catalogue.toml against its bundled
+        # contracts/ schemas. Unpinned on purpose — a failure here means agentbundle shipped a new
+        # contract and build_catalogue.py needs re-aligning (the "re-alignment tax", surfaced early).
+        # Gates the publish: a non-conformant catalogue is never pushed to the branch. Isolated venv
+        # (ubuntu-latest's system Python is externally-managed); [lint] adds PyYAML for the frontmatter step.
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/abv"
+          "$RUNNER_TEMP/abv/bin/pip" install --quiet --upgrade pip
+          "$RUNNER_TEMP/abv/bin/pip" install --quiet 'agentbundle[lint]'
+          "$RUNNER_TEMP/abv/bin/agentbundle" catalogue verify --root dist
       - name: Publish dist/ to the agentbundle-catalogue branch
         env:
           GIT_AUTHOR_NAME: github-actions[bot]

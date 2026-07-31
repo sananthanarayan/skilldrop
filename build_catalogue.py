@@ -174,6 +174,10 @@ def render(out):
     if os.path.exists(out):
         shutil.rmtree(out)
     os.makedirs(os.path.join(out, ".claude-plugin"), exist_ok=True)
+    # catalogue.toml declares paths.profiles; the dir may be empty (verify tolerates it) but is
+    # created so `agentbundle catalogue verify` resolves the path. Empty, so it drops out of the
+    # published git tree — consumers get an absent profiles/, which is also tolerated.
+    os.makedirs(os.path.join(out, "profiles"), exist_ok=True)
 
     for name, pack in packs.items():
         description = pack["description"]
