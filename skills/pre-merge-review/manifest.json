@@ -1,0 +1,11 @@
+{
+  "name": "pre-merge-review",
+  "version": "0.1.0",
+  "description": "Gate an existing change for merge — run one skill that fires the whole production-readiness pass. First a deterministic mechanical gate (lint + typecheck + tests, via a script whose exit code decides), then the three-reviewer panel dispatched in parallel — devils-advocate (correctness), security-reviewer (exploitability), code-quality (craft) — then a single READY / NOT READY verdict. Use before opening a PR or merging, when you want the full review fleet run on a diff you already have. Do NOT use to implement a feature from a spec (that's feature-implement-loop) or to review a document (that's doc-critique).",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": ["feature-implement-loop", "devils-advocate", "council-review", "doc-critique"],
+  "tags": ["dev-workflow", "code-review", "pre-merge", "quality-gate", "subagents", "production-readiness"],
+  "model": { "tier": "standard", "rationale": "Coordination: runs a deterministic gate script, dispatches the (heavy) reviewer subagents, and renders a rule-based go/no-go. The adversarial reasoning is delegated to the panel, so the skill itself is orchestration, not deep judgment." }
+}

@@ -115,6 +115,7 @@
     "sonar-review": { "tier": "standard", "rationale": "Formats Sonar API findings into a report. The hard analysis is Sonar's; this is synthesis. Escalate on very large diffs." },
     "ai-usage-report": { "tier": "standard", "rationale": "Tabulates telemetry into a report. Mostly mechanical, but the 'AI theater' effectiveness call needs judgment." },
     "feature-implement-loop": { "tier": "standard", "rationale": "Code + test generation against acceptance criteria. The adversarial pass delegates to devils-advocate (heavy) where available; the loop itself is generation." },
+    "pre-merge-review": { "tier": "standard", "rationale": "Orchestration: runs a deterministic gate script, dispatches the (heavy) reviewer subagents, and renders a rule-based go/no-go. The adversarial reasoning is delegated to the panel, so the skill itself is coordination." },
     "user-story-splitter": { "tier": "standard", "rationale": "Decomposes an epic into INVEST slices with testable ACs. Structured synthesis; escalation rules cover large or contradictory PRDs." },
     "test-plan-generator": { "tier": "standard", "rationale": "Synthesizes a structured plan from a change description. Risk ranking needs judgment but is bounded; escalate via ambiguous-input on contested or high-stakes releases." },
     "release-notes": { "tier": "standard", "rationale": "Classifies commits and rewrites them for a reader. The audience translation needs judgment; escalate via large-input on very long ranges." },
