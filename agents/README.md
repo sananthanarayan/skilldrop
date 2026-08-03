@@ -22,8 +22,9 @@ npx skilldrop-cli install --agent devils-advocate --ide kiro   # .kiro/agents/*.
 |---|---|---|
 | [`devils-advocate`](devils-advocate.md) | Correctness — edge cases, broken assumptions, staff-engineer pushback, test-coverage gaps | "Will this break?" |
 | [`code-quality`](code-quality.md) | Craft — naming, structure, duplication, needless complexity, readability | "Will the next engineer hate this?" |
+| [`security-reviewer`](security-reviewer.md) | Security — authz, injection, secret exposure, SSRF, unsafe deserialization, weak crypto, risky deps | "What can an attacker do with this?" |
 
-They are deliberately **split, not merged.** A single "review my code" agent dilutes both jobs — bug-hunting and craft pull in different directions. Run them as two passes. `devils-advocate` here is the subagent form of the [`devils-advocate` skill](../skills/devils-advocate/SKILL.md); same persona, packaged for a tool's native agent slot instead of on-demand skill invocation.
+They are deliberately **split, not merged.** A single "review my code" agent dilutes all three — bug-hunting, craft, and exploitability pull in different directions. Run them as separate passes; together they are the reviewer panel [`feature-implement-loop`](../skills/feature-implement-loop/SKILL.md) drives after each generation round. `devils-advocate` here is the subagent form of the [`devils-advocate` skill](../skills/devils-advocate/SKILL.md); same persona, packaged for a tool's native agent slot instead of on-demand skill invocation.
 
 ## Installing an agent into your tool
 
