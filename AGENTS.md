@@ -14,7 +14,7 @@
 4. **Never invent commands, env vars, or file conventions.** Use those documented below. The only automated checks are `python3 validate.py` and `node bin/skilldrop.js validate`, run locally and by CI (`.github/workflows/release.yml`, which also publishes to npm on version bump — see **Releasing**). Don't pretend other test runners or linters exist.
 5. **No secrets, no real customer names, no personal data** in templates, examples, or sample inputs. Placeholder data only.
 6. **Voice is opinionated, not hedged.** Strip "generally", "consider", "you might want to". The `✅` / `❌` markers have semantic meaning — don't use them decoratively, don't add other decorative emoji.
-7. **Every new skill ships with `Quality bar` and `Anti-patterns to avoid` sections.** A skill without them is a description, not a generator. Both are enforced by the **Before you commit** checklist below.
+7. **Every new skill ships with `Quality bar` and `Anti-patterns to avoid` sections.** A skill without them is a description, not a generator. Both are enforced by `validate.py` (RFC-0016).
 
 ## Verified commands (do not invent variants)
 
@@ -51,7 +51,7 @@ git push origin feat/<short-kebab-name>
 gh pr create --base main --head <handle>:feat/<short-kebab-name>
 ```
 
-There is **no `make` target and no test command**. The automated checks are [`validate.py`](validate.py) — a stdlib-only consistency lint (name triple-match, tier sync with `model-routing.json`, `related`↔SKILL.md reference sync, description sync, pack membership, evals shape, and — for `agents/` — filename↔frontmatter `name` plus every `` `x` subagent `` a SKILL.md delegates to resolving to a real agent file) — and the CLI's structural check (`node bin/skilldrop.js validate`); both run locally before every commit and in CI on every push/PR ([`.github/workflows/release.yml`](.github/workflows/release.yml)). Everything beyond that is the manual-test pass documented in **Authoring a new skill** below: install the skill into a clean Claude Code session, run it end-to-end on a realistic input, and verify the output meets the skill's own quality bar.
+There is **no `make` target and no test command**. The automated checks are [`validate.py`](validate.py) — a stdlib-only consistency lint (name triple-match, tier sync with `model-routing.json`, `related`↔SKILL.md reference sync, description sync, pack membership, evals shape, reference + link integrity and orphaned-material (RFC-0015), `Quality bar`/`Anti-patterns` sections + script dual-referencing + a heavy-tier `examples/` oracle (RFC-0016), and — for `agents/` — filename↔frontmatter `name` plus every `` `x` subagent `` a SKILL.md delegates to resolving to a real agent file) — and the CLI's structural check (`node bin/skilldrop.js validate`); both run locally before every commit and in CI on every push/PR ([`.github/workflows/release.yml`](.github/workflows/release.yml)). Everything beyond that is the manual-test pass documented in **Authoring a new skill** below: install the skill into a clean Claude Code session, run it end-to-end on a realistic input, and verify the output meets the skill's own quality bar.
 
 ## Releasing
 
@@ -169,7 +169,7 @@ The folder name is the slug used for `/`-invocation: kebab-case, descriptive, us
 
 `Quality bar` and `Anti-patterns to avoid` are doing real work — they turn a "do this" skill into a "ships-good-output" skill. Don't skip them.
 
-**3. Add supporting files as needed.** `templates/` = paste-able starting points; `reference.md` = long-form material that won't fit in `SKILL.md`; `lenses/<name>.md` = sweep checklists (devils-advocate); `rubrics/<archetype>.md` = per-archetype quality bars (doc-critique); `examples/<name>.md` = input → output for a non-obvious case. Always reference them from `SKILL.md` with a relative link.
+**3. Add supporting files as needed.** `templates/` = paste-able starting points; `reference.md` = long-form material that won't fit in `SKILL.md`; `lenses/<name>.md` = sweep checklists (devils-advocate); `rubrics/<archetype>.md` = per-archetype quality bars (doc-critique); `examples/<name>.md` = input → output for a non-obvious case. Reference **material** files (`reference.md`, `references/`, `lenses/`, `rubrics/`) from `SKILL.md` with a relative link — `validate.py` fails an orphaned one (RFC-0015). `examples/` are studied when present; linking them is encouraged but not required. A **heavy**-tier (adversarial/judgment) skill must ship at least one `examples/` input→output oracle (RFC-0016).
 
 **4. Add `evals/` — the skill's acceptance checks.** Two small JSON files, no runner required (this repo has no CI; they're executed by reading them during the manual test pass):
 
@@ -227,6 +227,8 @@ See `skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 - [ ] **Non-interactive line present** if the skill has a hard-stop condition — a self-contained sentence saying which inputs degrade to `[assumption]` and which emit `BLOCKED: need <X>`.
 - [ ] **Pack membership** — new skill added to at least one pack in `packs.json`.
 - [ ] **`python3 validate.py` passes** with no failures.
+
+Of these, **`validate.py` (+ `node bin/skilldrop.js validate`) mechanically enforces**: the name triple, the ≤500-line warning, `Quality bar` + `Anti-patterns` sections, evals *shape* (when present), model-tier sync, `related` sync, pack membership, reference + link integrity, script dual-referencing, and a heavy-tier `examples/` oracle. The rest — the RFC existing, voice, the manual test pass, no-secrets / no-real-data, description discipline, the non-interactive line, and the README update — are **human judgment**; a green lint does not vouch for them. Keep this split honest: if a rule becomes mechanically checkable, move it into `validate.py` rather than leaving it as a checklist claim.
 
 ## Voice & tone (non-negotiable)
 
@@ -291,7 +293,7 @@ The repo ships a **cost-aware, provider-neutral model-selection layer**: each sk
 - [`MODEL-ROUTING.md`](MODEL-ROUTING.md) — human-readable view + how to point it at a non-Claude tool.
 - [`.claude/agents/model-router.md`](.claude/agents/model-router.md) — the **Claude Code implementation** of the spec (a dispatcher pinned to the lightest model) that runs `route.py`, resolves the active provider's model, and runs a skill on a subagent at that model. Other tools call the same `route.py` or consult the table directly.
 
-Tier rule of thumb: **light** = mechanical mapping/extraction; **standard** = most generation (the default); **heavy** = adversarial reasoning / weighted judgment, never downgraded. Tiers are abstract — **never put a vendor model name in a skill's `model.tier`**; the provider map is the only place concrete models live.
+Tier rule of thumb: **light** = mechanical mapping/extraction; **standard** = most generation (the default); **heavy** = adversarial reasoning / weighted judgment, never downgraded — and ships an `examples/` input→output oracle so the judgment has a behavioral contract, not just a structural one (`validate.py` enforces it, RFC-0016). Tiers are abstract — **never put a vendor model name in a skill's `model.tier`**; the provider map is the only place concrete models live.
 
 When you add or change a skill, set its tier in **both** `model-routing.json` and the skill's `manifest.json` `model` block — they must agree (`light`/`standard`/`heavy`). `python3 validate.py` checks the two against each other.
 
