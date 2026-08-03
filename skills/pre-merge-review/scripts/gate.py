@@ -18,9 +18,13 @@ passed; 1 if any failed; 2 if there was nothing to run. Stdlib only; no network.
 import argparse
 import json
 import os
+import re
+import shlex
 import shutil
 import subprocess
 import sys
+
+HOOK_MARKER = "skilldrop-gate"
 
 
 def detect(root):
@@ -67,15 +71,85 @@ def load_config(path):
     return cmds
 
 
+# --- opt-in harness: a blocking git pre-commit hook (Layer 1) ---------------------------
+# The portable enforcement point — git runs it regardless of which agent/tool wrote the code.
+# Bypassable with `git commit --no-verify`; CI required-checks are the un-bypassable backstop.
+
+def _hooks_dir(root):
+    r = subprocess.run(["git", "rev-parse", "--git-path", "hooks"], cwd=root, capture_output=True, text=True)
+    if r.returncode != 0:
+        raise SystemExit("gate: not a git repository — run --install-hook from inside your repo")
+    hd = r.stdout.strip()
+    return hd if os.path.isabs(hd) else os.path.join(root, hd)
+
+
+def _hook_block(cmd, config):
+    inv = f"python3 {shlex.quote(os.path.abspath(__file__))}"
+    for c in cmd:
+        inv += f" --cmd {shlex.quote(c)}"
+    if config:
+        inv += f" --config {shlex.quote(os.path.abspath(config))}"
+    return (
+        f"# >>> {HOOK_MARKER} >>>  pre-merge-review gate — run `gate.py --uninstall-hook` to remove\n"
+        f"{inv} || {{ echo 'skilldrop-gate: commit blocked (gate RED). Fix it, or override once with "
+        f"--no-verify — CI required-checks still gate the merge.' >&2; exit 1; }}\n"
+        f"# <<< {HOOK_MARKER} <<<\n"
+    )
+
+
+def install_hook(root, cmd, config):
+    hooks = _hooks_dir(root)
+    os.makedirs(hooks, exist_ok=True)
+    path = os.path.join(hooks, "pre-commit")
+    body = open(path, encoding="utf-8").read() if os.path.exists(path) else ""
+    if HOOK_MARKER in body:
+        print(f"gate: hook already installed at {path} — --uninstall-hook then --install-hook to change its commands")
+        return 0
+    if not body.startswith("#!"):
+        body = "#!/bin/sh\n" + body
+    if body and not body.endswith("\n"):
+        body += "\n"
+    body += "\n" + _hook_block(cmd, config)
+    with open(path, "w", encoding="utf-8") as fh:
+        fh.write(body)
+    os.chmod(path, 0o755)
+    print(f"gate: installed a blocking pre-commit hook -> {path}")
+    print("      a RED gate now blocks `git commit` (any tool). Bypass once with --no-verify; "
+          "wire CI required-checks for the un-bypassable backstop.")
+    return 0
+
+
+def uninstall_hook(root):
+    path = os.path.join(_hooks_dir(root), "pre-commit")
+    if not os.path.exists(path):
+        print("gate: no pre-commit hook to remove")
+        return 0
+    body = open(path, encoding="utf-8").read()
+    new = re.sub(rf"\n?# >>> {HOOK_MARKER} >>>.*?# <<< {HOOK_MARKER} <<<\n?", "\n", body, flags=re.S)
+    if new == body:
+        print(f"gate: no {HOOK_MARKER} block in {path} — left untouched")
+        return 0
+    open(path, "w", encoding="utf-8").write(new)
+    print(f"gate: removed the {HOOK_MARKER} block from {path}")
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--cmd", action="append", default=[], help="a verify command (repeatable)")
     ap.add_argument("--config", help='JSON file: {"commands": [...]}')
     ap.add_argument("--root", default=".", help="project root (default: cwd)")
     ap.add_argument("--list", action="store_true", help="print the commands the gate would run, don't run them")
+    ap.add_argument("--install-hook", action="store_true",
+                    help="install a blocking git pre-commit hook that runs this gate (with the given --cmd/--config)")
+    ap.add_argument("--uninstall-hook", action="store_true", help="remove the skilldrop-gate pre-commit hook block")
     args = ap.parse_args()
 
     root = os.path.abspath(args.root)
+    if args.uninstall_hook:
+        return uninstall_hook(root)
+    if args.install_hook:
+        return install_hook(root, args.cmd, args.config)
     cmds = args.cmd or (load_config(args.config) if args.config else detect(root))
     if not cmds:
         print("gate: no verify commands — pass --cmd/--config, or run inside a project the gate can "
