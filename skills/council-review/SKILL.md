@@ -33,7 +33,7 @@ Five **standing seats** — each a distinct mandate with a lane it stays in. Rea
 | ⚖️ **Pragmatist** | Is this the simplest thing that works? Over-engineered? Do we even need it? | [`seats/pragmatist.md`](seats/pragmatist.md) |
 | 👤 **User-Advocate** | Is it correct for the people who use it? Edge cases, errors, contracts, compat? | [`seats/user-advocate.md`](seats/user-advocate.md) |
 
-Plus a **bench** of optional seats (Performance, Cost/FinOps, Data & Migration, Accessibility, Compliance) — seat them only when the change warrants. See [`seats/bench.md`](seats/bench.md).
+Plus a **bench** of optional seats (Performance, Cost/FinOps, Data & Migration, Accessibility, Compliance) — seat them only when the change warrants. See [`seats/bench.md`](seats/bench.md). Chairing and roster-choice guidance that doesn't fit here lives in [`reference.md`](reference.md).
 
 The **Chair** is not a sixth opinion. The Chair facilitates, finds the cruxes, and decides.
 
