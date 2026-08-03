@@ -28,6 +28,10 @@ Checks (FAIL):
     (reference.md, references/, lenses/, rubrics/) is linked from SKILL.md; and
     prose markdown links across skills/agents/docs/root docs don't dangle
     (fenced blocks + {template} lines + placeholder targets are skipped)
+  - (RFC-0016) every SKILL.md has a `## Quality bar` and `## Anti-patterns`
+    section (golden rule 7); a skill with scripts/ cites both the
+    ${CLAUDE_SKILL_DIR}/ and plain scripts/ forms; and a heavy-tier judgment
+    skill ships an examples/ input→output oracle
 
 Warnings (non-fatal):
   - SKILL.md over ~500 lines (golden rule 3)
@@ -222,6 +226,20 @@ def main():
                 rel = os.path.relpath(sup, p)
                 if os.path.basename(sup) not in md and rel not in md:
                     fail(d, f"{rel} exists but SKILL.md never links it (reference it, or remove it)")
+
+        # RFC-0016: golden rule 7 — a skill ships a Quality bar + Anti-patterns section, or it's a
+        # description, not a generator. (AGENTS.md claimed this was enforced; now it actually is.)
+        for heading in ("Quality bar", "Anti-patterns"):
+            if not re.search(rf"^##\s+{heading}", md, re.M):
+                fail(d, f"SKILL.md missing a '## {heading}' section (golden rule 7)")
+        # RFC-0016: a skill with scripts/ must reach them from Claude Code AND other IDEs.
+        if glob.glob(os.path.join(p, "scripts", "*")):
+            if "${CLAUDE_SKILL_DIR}/scripts" not in md or not re.search(r"(?<!DIR\}/)\bscripts/", md):
+                fail(d, "has scripts/ but SKILL.md must cite both ${CLAUDE_SKILL_DIR}/scripts/ and a plain scripts/ path")
+        # RFC-0016: heavy-tier (adversarial/weighted-judgment) skills ship a behavioral oracle —
+        # an examples/ input→output that shows what a passing output looks like.
+        if tier == "heavy" and not glob.glob(os.path.join(p, "examples", "*")):
+            fail(d, "heavy-tier judgment skill needs an examples/ input→output oracle (RFC-0016)")
 
     for r in sorted(set(routing) - dir_set):
         fail("model-routing.json", f"entry '{r}' has no skill folder")
