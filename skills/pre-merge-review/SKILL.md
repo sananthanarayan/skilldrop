@@ -35,7 +35,21 @@ Two gates, and they are different kinds. The mechanical gate is **not a judgment
 
 ## Useful references in this skill
 
-- [`scripts/gate.py`](scripts/gate.py) — the deterministic mechanical gate (`--list` to preview, `--cmd`/`--config` to override detection).
+- [`scripts/gate.py`](scripts/gate.py) — the deterministic mechanical gate (`--list` to preview, `--cmd`/`--config` to override detection, `--install-hook` to enforce it — see below).
+
+## Enforce as a harness (opt-in)
+
+The verdict above is *advisory* — an agent can ignore prose. To make the gate **un-bypassable**, move enforcement into the substrate every tool shares (git and CI), not this skill's text:
+
+- **Layer 1 — local git block (portable across every tool).** Install a blocking pre-commit hook:
+  - Claude Code: `python3 ${CLAUDE_SKILL_DIR}/scripts/gate.py --install-hook --cmd "npm test" --cmd "npm run lint"`
+  - other IDEs: `python3 skills/pre-merge-review/scripts/gate.py --install-hook --cmd "…"`
+
+  Git runs it on every `git commit` no matter which tool (Claude, Cursor, Codex, Aider) drove the change; a RED gate blocks the commit. Bypassable with `git commit --no-verify`, so it stops honest mistakes, not a determined override. `--uninstall-hook` removes it.
+- **Layer 2 — CI required checks (un-bypassable).** Run the same commands as a required status check on the branch; the git host refuses the merge when they're red, outside any local tool — the layer that can't be `--no-verify`'d. Pair Layer 1 (fast local feedback) with Layer 2 (the backstop).
+- **Layer 3 — per-tool native (richer where it exists).** Where a tool can block its own turn, point it at the gate: Claude Code — a `Stop`/`PreToolUse` hook running `gate.py`; Aider — `--auto-test --test-cmd "python3 …/gate.py"`. Cursor and Codex lean on Layers 1–2.
+
+The honest limit: a portable *skill* can't physically block an agent — enforcement lives in git/CI (universal) or per-tool hooks (uneven). Rationale and the distinction from RFC-0006's reminder-only hooks: RFC-0019.
 
 ## Quality bar
 
