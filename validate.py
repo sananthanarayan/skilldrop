@@ -23,11 +23,17 @@ Checks (FAIL):
     generated catalogue site cannot, so only the hand-written numbers need checking)
   - agents/<name>.md: filename == frontmatter `name`, and `description` is present
   - every `<name>` subagent a SKILL.md delegates to is a real file in agents/
+  - (RFC-0015) every in-skill path a SKILL.md names (scripts/, references/,
+    ${CLAUDE_SKILL_DIR}/…) resolves to a real file; long-form material
+    (reference.md, references/, lenses/, rubrics/) is linked from SKILL.md; and
+    prose markdown links across skills/agents/docs/root docs don't dangle
+    (fenced blocks + {template} lines + placeholder targets are skipped)
 
 Warnings (non-fatal):
   - SKILL.md over ~500 lines (golden rule 3)
   - agents/<name>.md missing the recommended `tools` or `model` frontmatter
 """
+import glob
 import json
 import os
 import re
@@ -40,6 +46,25 @@ SKILLS = os.path.join(ROOT, "skills")
 AGENTS = os.path.join(ROOT, "agents")
 REQUIRED_FIELDS = ["name", "version", "description", "entrypoint", "deps", "env", "related", "tags", "model"]
 HOOK_EVENTS = {"session-start", "pre-commit-review", "on-demand"}  # RFC-0006; kept in sync with bin/skilldrop.js
+
+# RFC-0015 — the doc↔reality checks: a SKILL.md's in-repo paths must resolve, its long-form
+# material must be linked, and prose markdown links must not dangle. Fenced code blocks,
+# {placeholder}/… template text, and lines carrying a {…} template token are skipped so the
+# repo's own scaffold examples don't false-fail (the exact false positives a naive scan hits).
+INSKILL_REF = re.compile(r"(?<![\w/])((?:scripts|references|templates|lenses|rubrics|assets|examples)/[\w./-]+)")
+CLAUDE_DIR_REF = re.compile(r"\$\{CLAUDE_SKILL_DIR\}/([\w./-]+)")
+MD_LINK = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
+FENCE = re.compile(r"^```.*?^```", re.M | re.S)
+MATERIAL = ("reference.md", "references/*.md", "lenses/*.md", "rubrics/*.md")  # AGENTS.md: link these from SKILL.md
+LINK_DOCS = ("README.md", "AGENTS.md", "CLAUDE.md", "CONTRIBUTING.md", "SECURITY.md", "MODEL-ROUTING.md")
+
+
+def strip_fences(text):
+    return FENCE.sub("", text)
+
+
+def is_placeholder(target):
+    return "..." in target or any(c in target for c in "{}<>")
 
 failures, warnings = [], []
 
@@ -178,6 +203,26 @@ def main():
         if m_desc and " ".join(m_desc.group(1).split()) != " ".join(manifest.get("description", "").split()):
             fail(d, "manifest description differs from SKILL.md frontmatter description")
 
+        # RFC-0015: every in-skill path a SKILL.md names must resolve (fenced examples skipped),
+        # so a `scripts/`, `references/`, or `${CLAUDE_SKILL_DIR}/` reference can't drift dead.
+        body = strip_fences(md)
+        refs = {(r, r) for r in INSKILL_REF.findall(body)}
+        refs |= {("${CLAUDE_SKILL_DIR}/" + r, r) for r in CLAUDE_DIR_REF.findall(body)}
+        for shown, rel in refs:
+            rel = rel.split("#")[0].rstrip(".,)`")
+            if is_placeholder(rel):
+                continue
+            if not os.path.exists(os.path.join(p, rel)):
+                fail(d, f"SKILL.md references '{shown}' but {rel} does not exist in the skill")
+
+        # RFC-0015: long-form material must be linked from SKILL.md (AGENTS.md golden rule) —
+        # an orphaned reference.md/lens/rubric is invisible to a reader and drifts unnoticed.
+        for g in MATERIAL:
+            for sup in glob.glob(os.path.join(p, g)):
+                rel = os.path.relpath(sup, p)
+                if os.path.basename(sup) not in md and rel not in md:
+                    fail(d, f"{rel} exists but SKILL.md never links it (reference it, or remove it)")
+
     for r in sorted(set(routing) - dir_set):
         fail("model-routing.json", f"entry '{r}' has no skill folder")
 
@@ -204,6 +249,24 @@ def main():
     for n in set(re.findall(r"\b(\d{2})\s+(?:portable |)(?:AI-agent |)skills\b", readme)):
         if int(n) != len(skill_dirs):
             fail("README.md", f"says '{n} skills' but {len(skill_dirs)} are on disk")
+
+    # RFC-0015: prose markdown links across skills, agents, docs, and the root convention files
+    # must resolve — fenced blocks, {template} lines, and placeholder targets are skipped.
+    md_files = set(glob.glob(os.path.join(SKILLS, "**", "*.md"), recursive=True))
+    md_files |= set(glob.glob(os.path.join(AGENTS, "*.md")))
+    md_files |= set(glob.glob(os.path.join(ROOT, "docs", "**", "*.md"), recursive=True))
+    md_files |= {os.path.join(ROOT, f) for f in LINK_DOCS if os.path.exists(os.path.join(ROOT, f))}
+    for mf in sorted(md_files):
+        d0 = os.path.dirname(mf)
+        for line in strip_fences(open(mf, encoding="utf-8").read()).splitlines():
+            if "{" in line or "}" in line:  # a template/placeholder line — not a real link
+                continue
+            for target in MD_LINK.findall(line):
+                if target.startswith(("http", "#", "mailto:", "//")) or is_placeholder(target):
+                    continue
+                t = target.split("#")[0].strip()
+                if t and not os.path.exists(os.path.normpath(os.path.join(d0, t))):
+                    fail("links", f"{os.path.relpath(mf, ROOT)}: dangling link -> {target}")
 
     quiet = "--quiet" in sys.argv
     if warnings and not quiet:
