@@ -47,6 +47,7 @@
         "agents-md-generator",
         "user-story-splitter",
         "feature-implement-loop",
+        "pre-merge-review",
         "devils-advocate",
         "council-review",
         "test-plan-generator",

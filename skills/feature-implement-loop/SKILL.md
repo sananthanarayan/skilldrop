@@ -38,8 +38,9 @@ If acceptance criteria are missing and can't be inferred, ask for them (one ques
    - **Yours in either mode — acceptance-criteria coverage.** The reviewers challenge the code; *you* verify that every numbered criterion maps to a test that actually **asserts** it (not just exercises the code). That mapping is the loop's contract, not a reviewer's job.
    - Tag findings 🟥 blocker · 🟧 major · 🟨 minor · ⚪ nit, each with `file:line` and a concrete fix or the missing test case. **Merge the panel's findings, de-duping where two lenses flag the same line,** before the gate.
 
-5. **Apply the gate.** Compute whether gaps remain:
-   - **Gap = any 🟥 blocker, OR any 🟧 major, OR any acceptance criterion without a passing, asserting test.**
+5. **Apply the gate — mechanical first, then findings.**
+   - **Mechanical (un-bypassable):** *run* the project's verify — the tests you wrote **plus** its lint/typecheck — and honor the exit code. A non-zero result is an automatic gap, not a judgment call; you may not report `VERIFIED` while any command is red. The pass/fail is the command's exit code, not your read of the diff. (This is the deterministic half; the review is the judgment half. For a standalone gate on an existing change, `pre-merge-review` wraps this in a script.)
+   - **Findings gap = any 🟥 blocker, OR any 🟧 major, OR any acceptance criterion without a passing, asserting test.**
    - 🟨 minor / ⚪ nit findings do **not** force another round — list them, don't loop on them.
 
 6. **Loop or stop.**
