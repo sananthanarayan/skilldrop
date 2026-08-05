@@ -20,6 +20,16 @@ const BUNDLED = "bundled";
 // Neutral hook vocabulary (RFC-0006). Kept in sync with validate.py's HOOK_EVENTS.
 const HOOK_EVENTS = ["session-start", "pre-commit-review", "on-demand"];
 
+// Panels (RFC-0020): a named bundle of reviewer subagents + the orchestrator skill that fires
+// them in parallel. `install --panel <name>` installs the whole fleet in one command.
+const PANELS = {
+  review: {
+    agents: ["devils-advocate", "security-reviewer", "code-quality"],
+    skill: "pre-merge-review",
+    blurb: "correctness + security + craft reviewers, fired in parallel by pre-merge-review",
+  },
+};
+
 const HELP = `skilldrop — portable AI-agent skills for Claude Code, Cursor, Kiro, and more
 
 Usage:
@@ -31,6 +41,8 @@ Usage:
   skilldrop install --pack <name>         install a whole pack
   skilldrop install --all                 install every skill in the catalog
   skilldrop install --agent <name...>     install reviewer subagents (RFC-0012)
+  skilldrop install --panel review        install the review panel — the 3 reviewer subagents +
+                                          the pre-merge-review orchestrator that fires them (RFC-0020)
   skilldrop update                        re-copy installed skills whose version changed
   skilldrop outdated                      show installed vs current versions, change nothing
   skilldrop uninstall <skill...>          remove skills (and wiring files this tool wrote)
@@ -74,7 +86,7 @@ function parseArgs(argv) {
   const out = { _: [], flags: {} };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a === "--pack" || a === "--ide" || a === "--dest" || a === "--from") out.flags[a.slice(2)] = argv[++i];
+    if (a === "--pack" || a === "--ide" || a === "--dest" || a === "--from" || a === "--panel") out.flags[a.slice(2)] = argv[++i];
     else if (a.startsWith("--")) out.flags[a.slice(2)] = true;
     else out._.push(a);
   }
@@ -567,7 +579,33 @@ function copyOne(cat, s, dest, ide, l, notes) {
   return m;
 }
 
+/* Install a whole review panel — the reviewer subagents + the orchestrator skill — in one
+   command (RFC-0020). Needs a target with BOTH a subagent and a skill format, so it accepts
+   the default (Claude Code), --project, --ide kiro, or --dest; other IDEs install the halves
+   separately. Delegates to installAgents + install so every existing safety/craft gate applies. */
+function installPanel(args) {
+  const name = args.flags.panel;
+  const p = PANELS[name];
+  if (!p) die(`unknown panel '${name}' — available: ${Object.keys(PANELS).join(", ")}`);
+  const ide = args.flags.ide;
+  if (ide && ide !== "kiro" && !args.flags.dest)
+    die(`--panel installs subagents + the orchestrator skill together, so it needs a target with both formats:\n` +
+        `       (default | --project) Claude Code, --ide kiro, or --dest <dir>.\n` +
+        `       For ${ide}: install the agents (skilldrop install --agent ${p.agents.join(" ")} --ide ${ide}) ` +
+        `and the skill (skilldrop install ${p.skill} --ide ${ide}) separately.`);
+  const flags = Object.assign({}, args.flags);
+  delete flags.panel;
+  console.log(`Installing the '${name}' panel — ${p.agents.length} reviewer subagents + the ${p.skill} orchestrator skill.\n`);
+  installAgents({ _: p.agents.slice(), flags: Object.assign({}, flags, { agent: true }) });
+  console.log("");
+  install({ _: [p.skill], flags });
+  console.log(`\nPanel installed. Fire it with the ${p.skill} skill — e.g. "run a pre-merge review on this change".`);
+  console.log(`It dispatches the three subagents in parallel where your tool has native subagents (Claude Code today;`);
+  console.log(`Codex / Antigravity multi-agent runners), and sweeps the lenses inline otherwise. Per-tool: agents/README.md.`);
+}
+
 function install(args) {
+  if (args.flags.panel) return installPanel(args);
   if (args.flags.agent) return installAgents(args);
   const cat = resolveCatalog(args.flags.from);
   let names = expandNames(args, cat);

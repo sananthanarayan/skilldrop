@@ -26,6 +26,28 @@ npx skilldrop-cli install --agent devils-advocate --ide kiro   # .kiro/agents/*.
 
 They are deliberately **split, not merged.** A single "review my code" agent dilutes all three — bug-hunting, craft, and exploitability pull in different directions. Run them as separate passes; together they are the reviewer panel [`feature-implement-loop`](../skills/feature-implement-loop/SKILL.md) drives after each generation round. `devils-advocate` here is the subagent form of the [`devils-advocate` skill](../skills/devils-advocate/SKILL.md); same persona, packaged for a tool's native agent slot instead of on-demand skill invocation.
 
+## Fire them as a panel
+
+The three reviewers are meant to run **together** on a change. Install the whole fleet in one command:
+
+```bash
+npx skilldrop-cli install --panel review            # 3 subagents + the pre-merge-review orchestrator -> ~/.claude/
+npx skilldrop-cli install --panel review --project  # .claude/ (shared with the repo)
+```
+
+The [`pre-merge-review`](../skills/pre-merge-review/SKILL.md) skill is the **portable orchestrator** — it dispatches the three as **parallel subagents** where the tool has a native subagent runner, and sweeps the lenses inline otherwise. The orchestration lives in the *skill* (portable); the reviewers are *native subagents* (per-tool):
+
+| Tool | How the panel fires in parallel |
+|---|---|
+| **Claude Code** | Native parallel subagents — `pre-merge-review` fires all three at once. `--panel review` installs both halves. |
+| **Kiro** | Native subagents — `--panel review --ide kiro` installs both halves. |
+| **Codex** | Multi-agent runner — install the agents (`--agent … --ide codex`) + the skill; Codex runs the fleet in parallel (confirm the invocation against your Codex version). |
+| **Antigravity** | Lead → specialist delegation — install the agents (`--agent … --ide antigravity`) + the skill; the lead agent delegates to the three, each in its own context. |
+| **Copilot** | Agents install (`--agent … --ide copilot`); the skill drives them — sequentially unless your Copilot build exposes parallel subagents. |
+| **Cursor** | No agent format — `pre-merge-review` sweeps the three lenses inline (no subagents). |
+
+Designing your own fleet? Use [`subagent-design`](../skills/subagent-design/SKILL.md) — the reviewer panel is its "judge panel" topology.
+
 ## Installing an agent into your tool
 
 ### Claude Code (native subagents)
