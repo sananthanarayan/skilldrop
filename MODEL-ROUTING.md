@@ -103,7 +103,7 @@ It prints the declared tier, the final tier, the resolved model for the active (
 
 ```
 decision-log: light → heavy
-  model:     claude-opus-4-8  (provider: claude-code)
+  model:     claude-opus-5  (provider: claude-code)
   signals (net +2):
     +1  explicit-rigor('thorough')
     +1  high-stakes-context('board')
