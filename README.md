@@ -261,6 +261,7 @@ npx skilldrop-cli install --pack sre-oncall --ide kiro  # .kiro/skills — Kiro 
 npx skilldrop-cli install adr-generator --dest .agents/skills   # Codex + Copilot CLI (see below)
 npx skilldrop-cli agents                                # the reviewer subagents
 npx skilldrop-cli install --agent devils-advocate       # -> ~/.claude/agents/ (RFC-0012)
+npx skilldrop-cli install --panel review                # the whole review fleet: 3 subagents + the pre-merge-review orchestrator (RFC-0020)
 npx skilldrop-cli outdated && npx skilldrop-cli update  # skills improve; cp -R never tells you
 npx skilldrop-cli list | skilldrop info <skill> | skilldrop packs | skilldrop uninstall <skill>
 ```
