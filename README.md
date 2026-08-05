@@ -14,6 +14,8 @@ npx skilldrop-cli list                               #     sre-oncall, stakehold
 
 Originally scoped to solution architects, now broadly useful to PMs, founders, consultants, engineering leaders, exec assistants — anyone who turns ideas into stakeholder-ready artifacts.
 
+Every skill is a plain `SKILL.md` folder — the [**Agent Skills open standard**](https://agentskills.io) Anthropic ratified — so the same folder runs unchanged in Claude.ai, Claude Code, the Claude Agent SDK, Cursor, Kiro, Codex, Copilot, Antigravity, and anything else that reads the format. Portable by construction: no runtime, no platform, no lock-in.
+
 **Why skilldrop over heavier agent platforms:** every skill is a plain folder (`SKILL.md` + `manifest.json` + supporting files) and installs by *copy, never transformation* — what runs in your IDE is byte-identical to what's reviewed in this repo. The flat layout doubles as an open catalog contract: [any repo shaped like this one](#third-party-catalogs--publish-your-own-skills-through-the-same-cli) is installable through the same CLI. Skills are *opinionated* — each ships a quality bar, anti-patterns, and acceptance evals, so the output is an artifact, not a vibe.
 
 ## How skilldrop works
