@@ -1,0 +1,17 @@
+{
+  "skill_name": "exec-summary",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Compress this 14-page platform-migration design doc into a one-page summary for our non-technical COO.",
+      "assertions": [
+        "Fits one page and leads with the decision or ask, not background",
+        "Numbers are quantified where available; where they aren't, the summary says 'directional' rather than inventing precision",
+        "A non-engineer meets no unexplained technical term in the first paragraph",
+        "No internal team-speak (OKRs, swimlanes, north-star metric) survives into the summary",
+        "Nothing is asserted that isn't supported by the source document",
+        "The output is prose a reader can scan in ~30 seconds — not slides and not a deck outline"
+      ]
+    }
+  ]
+}

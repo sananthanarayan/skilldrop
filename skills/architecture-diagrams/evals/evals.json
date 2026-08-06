@@ -1,0 +1,16 @@
+{
+  "skill_name": "architecture-diagrams",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Draw the architecture for a checkout service: an API gateway, an orders service, a payments service calling Stripe, and a Postgres primary with a read replica.",
+      "assertions": [
+        "The diagram fits on one screen; beyond roughly 15 nodes it is split into separate Context and Container diagrams rather than crammed",
+        "Arrows show direction of data flow, not undirected connections",
+        "Every arrow crossing a trust boundary is labelled",
+        "The diagram is generated from the written description provided — no components are invented beyond it",
+        "A named format is produced (Mermaid, PlantUML, or C4) and renders as valid syntax"
+      ]
+    }
+  ]
+}
