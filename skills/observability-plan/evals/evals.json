@@ -1,0 +1,16 @@
+{
+  "skill_name": "observability-plan",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Design the observability plan for our checkout service — what should we measure, alert on, and page for?",
+      "assertions": [
+        "SLIs measure user experience as good-over-valid events, not resource utilization",
+        "Latency SLIs are threshold counts at a percentile, never averages",
+        "Every SLO carries an error budget stated in human terms plus a policy for when it is spent",
+        "Pages are symptom-based, actionable, and runbook-linked; anything not actionable is a ticket, not a page",
+        "The plan makes a deliberate metrics-vs-logs-vs-traces choice rather than proposing everything"
+      ]
+    }
+  ]
+}

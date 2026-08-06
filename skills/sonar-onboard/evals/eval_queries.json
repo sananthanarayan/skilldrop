@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Set up Sonar for this repo",
+    "should_trigger": true
+  },
+  {
+    "query": "Scaffold sonar-project.properties and the CI workflow",
+    "should_trigger": true
+  },
+  {
+    "query": "Onboard this project onto SonarCloud with a blocking quality gate",
+    "should_trigger": true
+  },
+  {
+    "query": "We want Sonar checks on every PR — configure it",
+    "should_trigger": true
+  },
+  {
+    "query": "Run the Sonar scan and tell me if the gate passes",
+    "should_trigger": false
+  },
+  {
+    "query": "Adversarially review this diff for edge cases",
+    "should_trigger": false
+  },
+  {
+    "query": "Gate my change with lint, tests, and the reviewer panel",
+    "should_trigger": false
+  },
+  {
+    "query": "Design our SLOs and alerting",
+    "should_trigger": false
+  }
+]

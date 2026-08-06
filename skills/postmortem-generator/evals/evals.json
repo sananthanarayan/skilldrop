@@ -1,0 +1,17 @@
+{
+  "skill_name": "postmortem-generator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write the postmortem from this pager timeline and Slack thread for last Tuesday's checkout outage.",
+      "assertions": [
+        "Impact is quantified — duration, users or requests affected, SLO burn, revenue where known — or explicitly marked [missing]; 'significant impact' is rejected",
+        "No person is named in a causal sentence; roles appear only in response actions",
+        "Detection and mitigation gaps are computed and stated as numbers",
+        "The timeline is in UTC",
+        "Contributing factors are listed rather than a single root cause",
+        "Action items carry owners as roles and are derived from the contributing factors"
+      ]
+    }
+  ]
+}

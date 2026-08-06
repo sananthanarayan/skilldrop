@@ -1,0 +1,17 @@
+{
+  "skill_name": "runbook-generator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write the operational runbook for our new payments service — it deploys via Argo, pages the payments team, and depends on Stripe and Postgres.",
+      "assertions": [
+        "Ownership is expressed as roles and rotations rather than individual names that go stale",
+        "Every alert listed has a corresponding 'what to do when this fires' response — no alert is left without one",
+        "Rollback is one command or at most three steps",
+        "Dependencies are listed with what breaks when each is unavailable",
+        "Escalation names the path and the trigger for escalating, not just a team name",
+        "Facts not supplied (dashboard links, SLO values) are marked missing rather than invented"
+      ]
+    }
+  ]
+}

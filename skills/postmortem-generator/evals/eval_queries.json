@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Write a blameless postmortem for this incident",
+    "should_trigger": true
+  },
+  {
+    "query": "Turn this pager timeline and Slack thread into a postmortem",
+    "should_trigger": true
+  },
+  {
+    "query": "We resolved the outage — document what happened and why",
+    "should_trigger": true
+  },
+  {
+    "query": "Generate the incident review doc with impact and action items",
+    "should_trigger": true
+  },
+  {
+    "query": "We're still in the incident — draft the customer update",
+    "should_trigger": false
+  },
+  {
+    "query": "Extract the decisions and owners from this thread",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the runbook so this is handled better next time",
+    "should_trigger": false
+  },
+  {
+    "query": "Summarize the incident for the executive team",
+    "should_trigger": false
+  }
+]
