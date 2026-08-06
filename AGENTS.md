@@ -57,7 +57,7 @@ There is **no `make` target and no test command**. The automated checks are [`va
 
 The npm package (`skilldrop-cli`) releases automatically: bump `version` in [`package.json`](package.json), merge to `main`, and CI publishes via npm OIDC trusted publishing with provenance, then pushes a `v<version>` tag — version-gated, so a push without a bump publishes nothing (see [RFC-0004](docs/rfcs/0004-release-automation.md)). Bump the version whenever a skill change is worth shipping; users' `skilldrop outdated` only lights up on releases. The manual fallback (`npm publish` with the 2FA browser step) still works from the repo root.
 
-**Bump the patch digit, one step at a time.** `0.4.0` → `0.4.1` → `0.4.2`. Never skip a number, and don't reach for a minor bump because a release *feels* big — new skills, skill edits, pack changes, tier changes, docs, and CLI bug fixes are all patch releases. **Minor** (`0.4.x` → `0.5.0`) is reserved for a change to the CLI's public surface: a new command, a new flag, or a changed default. **Major** waits for `1.0.0` and a deliberate stability commitment.
+**Bump the third digit, one step at a time.** `0.9.0` → `0.9.1` → `0.9.2`. Never skip a number, and don't reach for a bigger bump because a release *feels* big. A **minor** release is a **third-digit** bump (`0.9.1` → `0.9.2`) — new skills, skill edits, pack changes, tier changes, docs, new CLI commands and flags, and bug fixes all ship this way. A **major** release is a **second-digit** bump (`0.9.x` → `0.10.0`) — a deliberate milestone the maintainer calls, not something a single feature triggers. `1.0.0` waits for an explicit stability commitment.
 
 ## File placement
 
@@ -214,7 +214,7 @@ See `skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 - [ ] Folder name = `SKILL.md` `name` = `manifest.json` `name`.
 - [ ] `SKILL.md` is **≤ ~500 lines** — long material moved into siblings.
 - [ ] `Quality bar` and `Anti-patterns to avoid` sections are present.
-- [ ] **`evals/` present** — `evals.json` with ≥1 prompt + assertions, `eval_queries.json` with trigger *and* no-trigger queries.
+- [ ] **`evals/` present** — required for a **new** skill: `evals.json` with ≥1 prompt + assertions, `eval_queries.json` with trigger *and* no-trigger queries. (Catalogue-wide coverage is partial and backfilled by activation-collision cluster, not all at once — a filler eval is worse than none. `validate.py` checks the *shape* when present, never presence.)
 - [ ] At least one **worked example** for new diagram, deck, or review skills.
 - [ ] Description **leads with the use case** and **ends with trigger phrases**.
 - [ ] `README.md` updated — row added to **Skills in this repo**, and to **Installing dependencies** if the skill has runtime deps.

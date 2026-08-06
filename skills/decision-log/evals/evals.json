@@ -1,0 +1,17 @@
+{
+  "skill_name": "decision-log",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Pull the decisions and action items out of this design-review transcript. [transcript: mixed opinions, a couple of agreed decisions, some unowned follow-ups, and relative dates like 'next Friday']",
+      "assertions": [
+        "Opinions are not promoted to decisions — only items the group acknowledged appear as decisions",
+        "Ownership is never invented; items with no named owner are flagged unowned rather than assigned",
+        "The source column quotes the discussion verbatim in a short snippet, not a paraphrase",
+        "Action items are written in active voice",
+        "Relative dates are converted to absolute dates, marked when inferred",
+        "The output is a structured table the user can paste into a doc or tracker"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "query": "Critique this design doc before I share it",
+    "should_trigger": true
+  },
+  {
+    "query": "Review this ADR and tell me where it's weak",
+    "should_trigger": true
+  },
+  {
+    "query": "Is this runbook actually good? Give me a structured critique",
+    "should_trigger": true
+  },
+  {
+    "query": "Score this exec summary against a quality bar",
+    "should_trigger": true
+  },
+  {
+    "query": "Review my document and give me severity-tagged findings with fixes",
+    "should_trigger": true
+  },
+  {
+    "query": "Review this pull request for bugs",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a new ADR for this decision",
+    "should_trigger": false
+  },
+  {
+    "query": "Get five senior personas to deliberate whether we should do this",
+    "should_trigger": false
+  },
+  {
+    "query": "Summarize this document for executives",
+    "should_trigger": false
+  }
+]

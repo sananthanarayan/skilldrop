@@ -1,0 +1,16 @@
+{
+  "skill_name": "brief-intake",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's a messy Slack thread about our caching problem — turn it into a brief I can hand to design-doc.",
+      "assertions": [
+        "Extracted fields marked [explicit] or [implied] carry a short verbatim snippet from the source so nothing is hallucinated",
+        "Relative dates are converted to absolute YYYY-MM-DD, marked implied where computed",
+        "Gaps are named as missing rather than filled in with plausible invention",
+        "The output names the downstream skill the brief is shaped for",
+        "The brief is structured into the fields that downstream skill needs, not a summary"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "query": "Review this code I just wrote before I merge it",
+    "should_trigger": true
+  },
+  {
+    "query": "Anything I might have missed in this implementation?",
+    "should_trigger": true
+  },
+  {
+    "query": "Adversarially review this diff for edge cases and broken assumptions",
+    "should_trigger": true
+  },
+  {
+    "query": "I just finished the feature and the tests pass — is it ready to ship?",
+    "should_trigger": true
+  },
+  {
+    "query": "Find the bugs a staff engineer would push back on in review",
+    "should_trigger": true
+  },
+  {
+    "query": "Critique this design document",
+    "should_trigger": false
+  },
+  {
+    "query": "Convene multiple senior personas to deliberate this architecture decision",
+    "should_trigger": false
+  },
+  {
+    "query": "Implement this ticket from its acceptance criteria",
+    "should_trigger": false
+  },
+  {
+    "query": "Run the full gate and reviewers and tell me if this is safe to merge",
+    "should_trigger": false
+  }
+]

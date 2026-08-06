@@ -1,0 +1,17 @@
+{
+  "skill_name": "doc-critique",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Critique this design doc before I circulate it to the team. [design doc: a TL;DR full of adjectives, an approach section that says 'industry standard', no SLOs, and a one-line rollout plan]",
+      "assertions": [
+        "Every finding quotes the document verbatim rather than paraphrasing it — the quoted snippet is the audit trail",
+        "Findings are local and anchored to a section, not global judgments like 'the tone is off'",
+        "Severity is calibrated — blockers do not outnumber majors",
+        "Fixes are paste-able: when the fix is 'add a section', the critique shows what that section should contain",
+        "The critique reviews whether the doc made its case, and does not re-debate the underlying technical topic",
+        "The document archetype is identified and the critique is run against that archetype's quality bar"
+      ]
+    }
+  ]
+}
