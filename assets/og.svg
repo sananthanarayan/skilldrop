@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="skilldrop — a prompt gets you a draft, a skill gets you a deliverable">
+  <defs>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c5cff" stop-opacity="0.30"/>
+      <stop offset="60%" stop-color="#7c5cff" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#7c5cff" stop-opacity="0"/>
+    </linearGradient>
+    <style>
+      .sans { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+      .mono { font-family: "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="630" fill="#111113"/>
+  <circle cx="1010" cy="120" r="420" fill="url(#glow)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#7c5cff"/>
+
+  <!-- wordmark -->
+  <text class="mono" x="80" y="118" font-size="30" fill="#a48cff" letter-spacing="1">skilldrop</text>
+
+  <!-- headline -->
+  <text class="sans" x="80" y="248" font-size="66" font-weight="700" fill="#ecebe8" letter-spacing="-1.6">A prompt gets you a draft.</text>
+  <text class="sans" x="80" y="330" font-size="66" font-weight="700" fill="#ecebe8" letter-spacing="-1.6">A skill gets you a <tspan fill="#a48cff">deliverable</tspan>.</text>
+
+  <!-- subline -->
+  <text class="sans" x="80" y="404" font-size="27" fill="#9a9a95">Portable skills for the artifacts knowledge work actually ships.</text>
+
+  <!-- stat row -->
+  <text class="mono" x="80" y="486" font-size="26" fill="#ecebe8">51 skills</text>
+  <text class="mono" x="238" y="486" font-size="26" fill="#3a3a3f">/</text>
+  <text class="mono" x="268" y="486" font-size="26" fill="#ecebe8">6 role packs</text>
+  <text class="mono" x="472" y="486" font-size="26" fill="#3a3a3f">/</text>
+  <text class="mono" x="502" y="486" font-size="26" fill="#ecebe8">3 reviewer subagents</text>
+
+  <!-- footer strip -->
+  <rect x="80" y="536" width="1040" height="1" fill="#2a2a2d"/>
+  <text class="mono" x="80" y="580" font-size="23" fill="#9a9a95">npx skilldrop-cli install --pack product-manager</text>
+  <text class="mono" x="1120" y="580" font-size="21" fill="#6a6a66" text-anchor="end">Agent Skills standard</text>
+</svg>
