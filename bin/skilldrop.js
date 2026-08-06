@@ -48,6 +48,9 @@ Usage:
   skilldrop uninstall <skill...>          remove skills (and wiring files this tool wrote)
   skilldrop uninstall --agent <name...>   remove subagents
   skilldrop validate [--from <src>]       structural check of a catalog (for catalog authors)
+  skilldrop scan [<skill...>] [--from <src>]  supply-chain scan — flag network/exec/credential
+                                          patterns in scripts and injection-shaped instructions
+                                          in SKILL.md before you trust a catalog (RFC-0022)
 
 Catalogs:
   (default)          the catalog bundled with this package
@@ -281,6 +284,117 @@ function gate(cat, names) {
     if (problems.length) bad++;
   }
   if (bad) die(`${bad} skill(s) failed the structural check — nothing was installed`);
+}
+
+/* ---------- supply-chain scan (RFC-0022) ----------
+   A skill is instruction prose an agent will obey, and its scripts are code that runs on the
+   user's machine — so installing a third-party catalog is a supply-chain event. Anthropic's own
+   Skills guidance says to audit a skill's files for "unexpected network calls, file access
+   patterns, or operations that don't match the Skill's stated purpose"; this automates that first
+   pass. It is a HEURISTIC that reports — it never blocks and never replaces reading the skill.
+
+   Two rule sets, deliberately different:
+   - SCRIPT_RULES run over executable files (real code): network, exec, credential, obfuscation.
+   - PROSE_RULES run over SKILL.md and only match *instructions to misbehave* — not security
+     vocabulary, so a skill that legitimately discusses injection (threat-model) isn't flagged. */
+
+const SCRIPT_EXT = new Set([".py", ".js", ".mjs", ".cjs", ".sh", ".bash", ".zsh", ".rb", ".pl", ".ps1"]);
+
+const SCRIPT_RULES = [
+  { id: "exec-remote", sev: "🟥", why: "downloads and executes remote content — the classic supply-chain payload",
+    re: /(curl|wget)[^\n|]*\|\s*(sudo\s+)?(ba|z|)sh|eval\s*\(\s*(requests|urllib|fetch)|base64\s+(-d|--decode)[^\n|]*\|\s*(ba|z|)sh/i },
+  { id: "shell-exec", sev: "🟧", why: "executes shell commands",
+    re: /\b(os\.system|subprocess\.(run|call|Popen|check_output)|child_process|execSync|spawnSync|shell_exec|`[^`\n]*\$\()/ },
+  { id: "network", sev: "🟧", why: "makes outbound network calls",
+    re: /\b(requests\.(get|post|put)|urllib\.request|httpx\.|axios\.|node-fetch|\bfetch\s*\(\s*["'`]https?:|curl\s+https?:|wget\s+https?:)/i },
+  { id: "credentials", sev: "🟧", why: "reads credentials or secret material",
+    re: /\b(os\.environ|process\.env)\b[^\n]{0,40}(TOKEN|KEY|SECRET|PASSWORD|CREDENTIAL)|~\/\.(aws|ssh|npmrc|netrc)|\.env\b|id_rsa/i },
+  { id: "broad-fs", sev: "🟨", why: "writes outside the skill's own directory",
+    re: /\b(shutil\.rmtree|rm\s+-rf\s+[~/]|open\s*\(\s*["'`]\/(etc|usr|bin)|fs\.(unlink|rmSync)\s*\([^)]*\.\.\/)/ },
+];
+
+const PROSE_RULES = [
+  { id: "instruction-override", sev: "🟥", why: "tells the agent to ignore its prior instructions",
+    re: /ignore\s+(all\s+)?(previous|prior|earlier|above|preceding)\s+(instructions|prompts|rules)/i },
+  { id: "conceal-from-user", sev: "🟥", why: "tells the agent to hide actions from the user",
+    re: /(do\s*n[o']?t|never|without)\s+(tell|telling|inform|informing|notify|notifying|mention|mentioning)\s+(the\s+)?(user|human)/i },
+  { id: "memory-overwrite", sev: "🟥", why: "instructs the agent to rewrite its own persistent memory/identity",
+    re: /(update|overwrite|append\s+to|modify)\s+your\s+(own\s+)?(SOUL|MEMORY|CLAUDE|AGENTS)\.md/i },
+  { id: "prose-exfil", sev: "🟧", why: "instructs the agent to send data to an external endpoint",
+    re: /\b(POST|send|upload|transmit)\b[^\n.]{0,60}\bto\s+https?:\/\//i },
+];
+
+function walkFiles(dir, out = []) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) walkFiles(p, out);
+    else out.push(p);
+  }
+  return out;
+}
+
+/* Scan one skill. Returns [{sev, id, why, file, line, text}] — worst first. */
+function scanSkill(cat, s) {
+  const dir = skillDir(cat, s);
+  const findings = [];
+  if (!dir || !fs.existsSync(dir)) return findings;
+  for (const file of walkFiles(dir)) {
+    const rel = path.relative(dir, file);
+    const ext = path.extname(file).toLowerCase();
+    const isScript = SCRIPT_EXT.has(ext);
+    const isProse = path.basename(file) === "SKILL.md";
+    if (!isScript && !isProse) continue;
+    let body = "";
+    try { body = fs.readFileSync(file, "utf8"); } catch (e) { continue; }
+    const rules = isScript ? SCRIPT_RULES : PROSE_RULES;
+    body.split(/\r?\n/).forEach((line, i) => {
+      if (line.length > 400) return; // minified/data line — not reviewable prose or code
+      for (const r of rules) {
+        if (r.re.test(line))
+          findings.push({ sev: r.sev, id: r.id, why: r.why, file: rel, line: i + 1, text: line.trim().slice(0, 120) });
+      }
+    });
+  }
+  const order = { "🟥": 0, "🟧": 1, "🟨": 2, "⚪": 3 };
+  return findings.sort((a, b) => order[a.sev] - order[b.sev]);
+}
+
+function printScan(cat, names, { compact = false } = {}) {
+  let total = 0, worst = null;
+  for (const s of names) {
+    const f = scanSkill(cat, s);
+    if (!f.length) continue;
+    total += f.length;
+    if (!worst || f[0].sev === "🟥") worst = worst === "🟥" ? worst : f[0].sev;
+    console.log(`\n${s}`);
+    for (const x of (compact ? f.slice(0, 3) : f))
+      console.log(`  ${x.sev} ${x.id} — ${x.why}\n     ${x.file}:${x.line}  ${x.text}`);
+    if (compact && f.length > 3) console.log(`     … ${f.length - 3} more (skilldrop scan ${s} --from ${cat.source})`);
+  }
+  return { total, worst };
+}
+
+function scan(args) {
+  const cat = resolveCatalog(args.flags.from);
+  const names = args._.length ? args._.slice() : skillsIn(cat);
+  for (const s of names) if (!skillExists(cat, s)) die(`unknown skill '${s}' in catalog '${cat.source}'`);
+
+  if (args.flags.json) {
+    const out = names.map((s) => ({ skill: s, findings: scanSkill(cat, s) })).filter((r) => r.findings.length);
+    return emitJSON({
+      catalog: cat.source, scanned: names.length,
+      flagged: out.length, findingCount: out.reduce((n, r) => n + r.findings.length, 0), skills: out,
+    });
+  }
+  console.log(`Scanning ${names.length} skill(s) in catalog '${cat.source}' for supply-chain patterns…`);
+  const { total } = printScan(cat, names);
+  if (!total) {
+    console.log("\nNo flagged patterns found.");
+  } else {
+    console.log(`\n${total} flagged pattern(s). These are HEURISTICS, not verdicts — a match can be` +
+                ` entirely legitimate (a skill that is *about* security, or a script that genuinely needs the network).`);
+    console.log("Read the cited lines before installing. Nothing here is executed by skilldrop; installs copy files only.");
+  }
 }
 
 /* ---------- install targets & ledger ---------- */
@@ -650,8 +764,15 @@ function install(args) {
     console.log(`\n${withHooks.join(", ")} declare hooks — re-run with --with-hooks to wire them (git pre-commit reminders / session-start context).`);
   }
 
-  if (cat.source !== BUNDLED)
+  if (cat.source !== BUNDLED) {
     console.log(`\nWARNING: third-party catalog '${cat.source}'. Skills are instructions your AI agent will follow — review each installed SKILL.md under ${dest} before first use. Install copied files only; nothing was executed.`);
+    // Supply-chain scan (RFC-0022): surface risky patterns at the moment of trust. Reports only —
+    // the files are already copied, and a match is a prompt to read, not a verdict.
+    const { total } = printScan(cat, names, { compact: true });
+    console.log(total
+      ? `\n${total} pattern(s) worth reading before you trust these skills. Full detail: skilldrop scan --from ${cat.source}`
+      : "\nSupply-chain scan: no flagged patterns.");
+  }
   if (ide === "generic")
     console.log("wiring: attach each skill's SKILL.md to your agent (Continue/Cline: @file, Aider: /add, Codex: reference it from AGENTS.md) — see the repo README's per-IDE steps.");
   for (const s of pipDeps)
@@ -885,7 +1006,7 @@ function validateCmd(args) {
 
 const args = parseArgs(process.argv.slice(2));
 const cmd = args._.shift();
-const commands = { list, info, packs: listPacks, agents: listAgents, install, update, outdated, uninstall, validate: validateCmd };
+const commands = { list, info, packs: listPacks, agents: listAgents, install, update, outdated, uninstall, validate: validateCmd, scan };
 if (!cmd || cmd === "help" || args.flags.help) console.log(HELP);
 else if (commands[cmd]) commands[cmd](args);
 else die(`unknown command '${cmd}' — run: skilldrop help`);

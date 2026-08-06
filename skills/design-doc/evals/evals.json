@@ -1,0 +1,17 @@
+{
+  "skill_name": "design-doc",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Draft a design doc for a notification service that consumes domain events and delivers email and push notifications for about 1M events/day.",
+      "assertions": [
+        "Non-goals are real scope boundaries a reader might otherwise assume are in scope, not throat-clearing",
+        "Each alternative carries a two-sentence what-it-is and why-we-didn't-pick-it",
+        "Every risk has a mitigation, not a bare list of concerns",
+        "Goals are stated with measurable targets rather than adjectives",
+        "The rollout section names stages and what would halt it",
+        "Facts not supplied by the user are marked as open questions rather than invented"
+      ]
+    }
+  ]
+}
