@@ -1,0 +1,16 @@
+{
+  "skill_name": "nfr-spec",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Sweep the non-functional requirements for our new checkout service.",
+      "assertions": [
+        "Every category in the catalog lands in one of three states — a target, not-applicable with a reason, or a tagged default; silence in any category is a failure",
+        "Every target states a percentile, a load condition, and how it will be verified — a latency number with no load condition is rejected",
+        "The availability target matches the honest answer to what an hour of downtime costs, not a marketing instinct",
+        "Privacy and retention are given concrete periods rather than 'per policy'",
+        "The output is a reviewable ledger covering all categories, not a prose paragraph about quality"
+      ]
+    }
+  ]
+}

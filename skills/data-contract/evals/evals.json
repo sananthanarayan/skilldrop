@@ -1,0 +1,16 @@
+{
+  "skill_name": "data-contract",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We publish an `orders_daily` table that three downstream teams consume. Write the data contract.",
+      "assertions": [
+        "Every field carries a meaning plus a unit or allowed-values, not merely a type — the cents-vs-dollars class of bug is designed out",
+        "Every quality SLA states a threshold, a check, and a breach action; 'high quality' is rejected as an SLA",
+        "The evolution policy explicitly names meaning-change-under-a-stable-name as a breaking change",
+        "The contract names the owner and the consumers it is a promise to",
+        "Freshness, completeness, validity, and distribution are each addressed or explicitly marked not-applicable"
+      ]
+    }
+  ]
+}
