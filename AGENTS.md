@@ -171,10 +171,12 @@ The folder name is the slug used for `/`-invocation: kebab-case, descriptive, us
 
 **3. Add supporting files as needed.** `templates/` = paste-able starting points; `reference.md` = long-form material that won't fit in `SKILL.md`; `lenses/<name>.md` = sweep checklists (devils-advocate); `rubrics/<archetype>.md` = per-archetype quality bars (doc-critique); `examples/<name>.md` = input → output for a non-obvious case. Reference **material** files (`reference.md`, `references/`, `lenses/`, `rubrics/`) from `SKILL.md` with a relative link — `validate.py` fails an orphaned one (RFC-0015). `examples/` are studied when present; linking them is encouraged but not required. A **heavy**-tier (adversarial/judgment) skill must ship at least one `examples/` input→output oracle (RFC-0016).
 
-**4. Add `evals/` — the skill's acceptance checks.** Two small JSON files, no runner required (this repo has no CI; they're executed by reading them during the manual test pass):
+**4. Add `evals/` — the skill's acceptance checks.** Two small JSON files, no runner required. CI (`release.yml`) validates their *shape* via `validate.py`; the assertions themselves are executed by reading them during the manual test pass:
 
 - `evals/evals.json` — `{ "skill_name": …, "evals": [ { "id", "prompt", "assertions": [ … ] } ] }`. At least one realistic prompt; assertions are the checkable statements a passing output satisfies (they should restate the skill's own `Quality bar` as verifiable claims about one concrete output).
 - `evals/eval_queries.json` — `[ { "query": …, "should_trigger": true|false } ]`. 4+ phrases that should invoke the skill and 3+ near-misses that should route to a sibling skill instead. The `false` rows are the discipline: they force the `description` to draw a real boundary against sibling skills.
+
+**Backfilling an older skill:** do it **by activation-collision cluster**, never as a coverage sweep. A skill earns evals when its trigger phrases genuinely compete with a sibling's — "help me present this" (`exec-summary` / `slide-outliner` / `deck-builder` / `audience-profile`), "define the contract" (`api-contract-draft` / `data-contract` / `db-schema-design`), "review this" (`devils-advocate` / `doc-critique` / `council-review` / `sonar-review`). Skills whose vocabulary is already distinctive are **deliberately left without evals**; writing `should_trigger: false` rows for a collision that doesn't exist invents a boundary rather than documenting one, and that filler is worse than nothing.
 
 **5. Update the README.** Add a row to the **Skills in this repo** table (under the right category), and to **Installing dependencies** if the skill has runtime deps.
 
