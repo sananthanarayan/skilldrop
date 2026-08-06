@@ -1,0 +1,17 @@
+{
+  "skill_name": "adr-generator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write an ADR: we decided to use Postgres as our primary datastore instead of DynamoDB, because our access patterns are relational and the team already operates Postgres.",
+      "assertions": [
+        "Status is one of Proposed / Accepted / Deprecated / Superseded by ADR-NNNN, defaulting to Proposed unless the user says it was agreed",
+        "Title is a noun phrase naming the decision, not a verb phrase naming the activity",
+        "Consequences include real trade-offs and downsides, not only upsides",
+        "The alternatives considered each carry a why-not, not just a description",
+        "The chosen format is MADR by default; Nygard only when explicitly requested",
+        "No invented context — facts not supplied by the user are marked rather than fabricated"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "query": "Convene the council on this architecture decision",
+    "should_trigger": true
+  },
+  {
+    "query": "I want multiple senior perspectives to deliberate this change",
+    "should_trigger": true
+  },
+  {
+    "query": "Get an architect, security, and SRE view on this before we commit",
+    "should_trigger": true
+  },
+  {
+    "query": "Run a pre-mortem style multi-perspective review of this RFC",
+    "should_trigger": true
+  },
+  {
+    "query": "This is risky and load-bearing — I need more than one reviewer's lens",
+    "should_trigger": true
+  },
+  {
+    "query": "Review this code for edge cases the first pass missed",
+    "should_trigger": false
+  },
+  {
+    "query": "Critique this document against its quality bar",
+    "should_trigger": false
+  },
+  {
+    "query": "Score Postgres vs DynamoDB on weighted criteria",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the ADR recording the decision we already made",
+    "should_trigger": false
+  }
+]
