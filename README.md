@@ -264,6 +264,7 @@ npx skilldrop-cli install --agent devils-advocate       # -> ~/.claude/agents/ (
 npx skilldrop-cli install --panel review                # the whole review fleet: 3 subagents + the pre-merge-review orchestrator (RFC-0020)
 npx skilldrop-cli outdated && npx skilldrop-cli update  # skills improve; cp -R never tells you
 npx skilldrop-cli list | skilldrop info <skill> | skilldrop packs | skilldrop uninstall <skill>
+npx skilldrop-cli list --json                            # machine-readable: list/info/packs/agents/outdated (RFC-0021)
 ```
 
 `--with-related` also pulls each skill's companions. From a clone (or before the package is published): `node bin/skilldrop.js <same args>`. Scope and design: [RFC-0002](docs/rfcs/0002-skilldrop-cli.md), full command surface in [`docs/designs/skilldrop-cli-design.md`](docs/designs/skilldrop-cli-design.md).

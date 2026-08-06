@@ -72,6 +72,8 @@ Options:
                        --ide antigravity  ~/.gemini/config/agents  markdown, subagent: true
                        --dest <dir>   any directory         copied as-is
                      Cursor has no agent format — use a custom mode (agents/README.md).
+  --json             machine-readable output for list | info | packs | agents | outdated —
+                     one JSON object on stdout, nothing else (for agents, scripts, CI)
   --with-related     also install each skill's related companions (one level)
   --with-hooks       also wire any hooks a skill declares (RFC-0006) — git pre-commit
                      reminders and Claude Code session-start context; degrades where the
@@ -81,6 +83,11 @@ Options:
 
 function die(msg) { console.error("error: " + msg); process.exit(1); }
 function readJSON(p) { return JSON.parse(fs.readFileSync(p, "utf8")); }
+
+/* --json (RFC-0021): the read commands emit one machine-readable object on stdout and nothing
+   else, so an agent or script can consume them without scraping aligned columns. Human output is
+   unchanged by default — this is additive. Errors still go to stderr and exit non-zero. */
+function emitJSON(obj) { console.log(JSON.stringify(obj, null, 2)); }
 
 function parseArgs(argv) {
   const out = { _: [], flags: {} };
@@ -687,8 +694,18 @@ function update(args) {
 
 function outdated(args) {
   const { dest, rows } = installedRows(args.flags);
-  if (!rows.length) return console.log(`nothing installed at ${dest}`);
   const stale = rows.filter((r) => r.current && r.current !== r.installed);
+  if (args.flags.json)
+    return emitJSON({
+      dest,
+      count: rows.length,
+      outdatedCount: stale.length,
+      skills: rows.map((r) => ({
+        name: r.s, installed: r.installed, current: r.current,
+        source: r.src, outdated: !!(r.current && r.current !== r.installed),
+      })),
+    });
+  if (!rows.length) return console.log(`nothing installed at ${dest}`);
   for (const r of stale) console.log(`${r.s}: installed ${r.installed}, current ${r.current} (${r.src})`);
   console.log(stale.length ? `\n${stale.length} outdated — run: skilldrop update` : "everything up to date.");
 }
@@ -712,6 +729,15 @@ function uninstall(args) {
 function listAgents(args) {
   const cat = resolveCatalog(args.flags.from);
   const names = agentsIn(cat);
+  if (args.flags.json)
+    return emitJSON({
+      catalog: cat.source,
+      count: names.length,
+      agents: names.map((a) => {
+        const m = agentMeta(cat, a);
+        return { name: a, description: m.description || null, tools: m.tools || null, model: m.model || null };
+      }),
+    });
   if (!names.length) return console.log(`catalog '${cat.source}' ships no agents.`);
   const w = Math.max(...names.map((n) => n.length));
   for (const a of names) {
@@ -779,6 +805,12 @@ function list(args) {
     try { const m = manifestOf(cat, s); return [s, m.version || "?", (m.model && m.model.tier) || "?"]; }
     catch (e) { return [s, "?", "?"]; }
   });
+  if (args.flags.json)
+    return emitJSON({
+      catalog: cat.source,
+      count: rows.length,
+      skills: rows.map(([name, version, tier]) => ({ name, version, tier })),
+    });
   const w = Math.max(...rows.map((r) => r[0].length));
   for (const [s, v, t] of rows) console.log(`${s.padEnd(w)}  ${v}  ${t}`);
   console.log(`\n${rows.length} skills in catalog '${cat.source}'. Details: skilldrop info <skill>`);
@@ -791,6 +823,21 @@ function info(args) {
   const m = manifestOf(cat, s);
   const ps = packsOf(cat) || {};
   const inPacks = Object.entries(ps).filter(([, p]) => p.skills.includes(s)).map(([n]) => n);
+  const needsPip = ((m.deps || {}).pip || []).length > 0 || fs.existsSync(path.join(skillDir(cat, s), "requirements.txt"));
+  if (args.flags.json)
+    return emitJSON({
+      catalog: cat.source,
+      name: m.name,
+      version: m.version || null,
+      description: m.description || null,
+      tier: (m.model && m.model.tier) || null,
+      packs: inPacks,
+      related: m.related || [],
+      tags: m.tags || [],
+      deps: { pip: (m.deps || {}).pip || [], npm: (m.deps || {}).npm || [], requirementsTxt: needsPip },
+      env: { required: (m.env || {}).required || [], optional: (m.env || {}).optional || [] },
+      hooks: m.hooks || [],
+    });
   console.log(`${m.name}@${m.version}  (tier: ${(m.model && m.model.tier) || "n/a"})\n\n${m.description}\n`);
   console.log(`catalog: ${cat.source}`);
   console.log(`packs:   ${inPacks.join(", ") || "-"}`);
@@ -803,6 +850,14 @@ function info(args) {
 function listPacks(args) {
   const cat = resolveCatalog(args.flags.from);
   const ps = packsOf(cat);
+  if (args.flags.json)
+    return emitJSON({
+      catalog: cat.source,
+      count: ps ? Object.keys(ps).length : 0,
+      packs: Object.entries(ps || {}).map(([name, p]) => ({
+        name, description: p.description || null, skills: p.skills || [],
+      })),
+    });
   if (!ps) return console.log(`catalog '${cat.source}' defines no packs.`);
   const w = Math.max(...Object.keys(ps).map((n) => n.length));
   for (const [n, p] of Object.entries(ps))
