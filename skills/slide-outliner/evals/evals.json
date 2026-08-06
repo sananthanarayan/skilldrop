@@ -1,0 +1,16 @@
+{
+  "skill_name": "slide-outliner",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Outline an architecture review deck for our proposed move to event-driven order processing — the audience is staff engineers plus one VP.",
+      "assertions": [
+        "Every slide title asserts a claim rather than labelling a topic ('We can ship this in two quarters', not 'Timeline')",
+        "No single slide mixes high-level overview with deep technical detail — where both are needed it becomes two slides",
+        "Speaker notes carry the narrative while the slide carries the evidence; the script is not dumped onto the slide",
+        "The output is a structured outline the user can paste into their own tool — no .pptx file is produced",
+        "Slide count and depth are matched to the stated audience"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Summarize this design doc for our executives",
+    "should_trigger": true
+  },
+  {
+    "query": "I need a one-page summary of this long proposal for a non-technical stakeholder",
+    "should_trigger": true
+  },
+  {
+    "query": "Give me the 30-second version of this technical document",
+    "should_trigger": true
+  },
+  {
+    "query": "Compress this into something our COO will actually read",
+    "should_trigger": true
+  },
+  {
+    "query": "Build me a PowerPoint of this",
+    "should_trigger": false
+  },
+  {
+    "query": "Outline the slides for this presentation",
+    "should_trigger": false
+  },
+  {
+    "query": "What should I change about how I present to a board audience?",
+    "should_trigger": false
+  },
+  {
+    "query": "Critique this document against its quality bar",
+    "should_trigger": false
+  }
+]

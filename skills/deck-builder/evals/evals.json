@@ -1,0 +1,17 @@
+{
+  "skill_name": "deck-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build a .pptx from this content for an exec audience, using our brand palette (navy/white).",
+      "assertions": [
+        "A real .pptx file is produced, not an outline",
+        "The title slide carries a real title, subtitle, presenter, and date — never left blank",
+        "Section dividers appear sparingly, at most one every 4-5 content slides",
+        "Big-number layouts use only numbers the user supplied; no statistic is invented for emphasis",
+        "Bullet density matches the stated audience rather than a fixed default",
+        "The requested palette is applied rather than the default theme"
+      ]
+    }
+  ]
+}
