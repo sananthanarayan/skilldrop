@@ -1,0 +1,16 @@
+{
+  "skill_name": "test-plan-generator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write the test plan for this release — a new discount-code feature touching checkout, pricing, and the orders API.",
+      "assertions": [
+        "A risk table ranked by likelihood times impact precedes the test cases, and depth of coverage tracks that ranking rather than being uniform",
+        "Every test case states a concrete expected result — a specific status code, error code, or value, not 'an appropriate error is shown'",
+        "Every acceptance criterion appears in a coverage table, with uncovered ACs listed explicitly rather than omitted",
+        "Each test is pushed to the lowest pyramid level that would catch the failure",
+        "Out-of-scope areas are named rather than silently skipped"
+      ]
+    }
+  ]
+}
