@@ -21,10 +21,16 @@ import argparse
 import html
 import json
 import os
+import re
+import shutil
 import sys
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SKILLS = os.path.join(ROOT, "skills")
+ASSETS = os.path.join(ROOT, "assets")
+# Binary assets copied verbatim into the build (og.png is rendered once from assets/og.svg
+# with rsvg-convert and committed, so the build itself stays stdlib-only).
+BINARY_ASSETS = ["og.png"]
 REPO_URL = "https://github.com/sananthanarayan/skilldrop"
 SITE_URL = "https://sananthanarayan.github.io/skilldrop/"
 
@@ -49,11 +55,19 @@ PITCH = {
     ),
     "tools_h2": "One folder. Every major agent.",
     "tools_lede": (
-        "The SKILL.md format is identical across tools; only the directory differs, and several "
-        "tools deliberately read each other's. Paths below are the ones confirmed in the July 2026 survey."
+        "Every skill is a plain SKILL.md folder — the Agent Skills open standard — so the same folder "
+        "runs unchanged across tools; only the directory differs, and several tools deliberately read "
+        "each other's. Paths below are the ones confirmed in the July 2026 survey."
     ),
     "install_h2": "Start in one command.",
     "catalogue_h2": "The catalogue.",
+    "reviewers_h2": "Skills generate. Reviewers push back.",
+    "reviewers_lede": (
+        "Three reviewer subagents ship alongside the skills — each a separate pass, because "
+        "bug-hunting, exploitability and craft pull in different directions and one merged "
+        "reviewer dilutes all three. Install the panel in one command and pre-merge-review "
+        "fires them in parallel wherever your tool has native subagents."
+    ),
     "closing_h2": "Copy a folder. Keep the artifact.",
     "footer_tagline": "Portable skills for the deliverables knowledge work actually ships.",
     "closing_body": (
@@ -89,6 +103,7 @@ NAV = [
     ("What's in one", "#quality", False),
     ("Portability", "#portability", False),
     ("Catalogue", "#catalogue", False),
+    ("Reviewers", "#reviewers", False),
     ("GitHub", REPO_URL, True),
 ]
 
@@ -214,6 +229,15 @@ def render(skills, packs):
         f'<div class="tabs__panel">{terminal([c])}<p class="tabs__note">{esc(n)}</p></div>'
         for _, c, n in INSTALL_TABS)
 
+    agent_cards = "".join(
+        f"""<li class="pack">
+      <div class="pack__head">
+        <h3 class="pack__name">{esc(a['name'])}</h3><span class="pack__n">subagent</span>
+      </div>
+      <p class="pack__desc">{esc(a['description'])}</p>
+      <p class="pack__install"><code>skilldrop install --agent {esc(a['name'])}</code></p>
+    </li>""" for a in agents())
+
     pack_cards = "".join(
         f"""<li class="pack">
       <div class="pack__head">
@@ -243,9 +267,23 @@ def render(skills, packs):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skilldrop — portable skills for agentic IDEs</title>
 <meta name="description" content="{esc(PITCH['hero_lede'])}">
+<link rel="canonical" href="{SITE_URL}">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#111113">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="skilldrop">
 <meta property="og:title" content="skilldrop">
 <meta property="og:description" content="{esc(PITCH['hero_h1'])}">
 <meta property="og:url" content="{SITE_URL}">
+<meta property="og:image" content="{SITE_URL}og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="skilldrop — a prompt gets you a draft, a skill gets you a deliverable">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="skilldrop">
+<meta name="twitter:description" content="{esc(PITCH['hero_h1'])}">
+<meta name="twitter:image" content="{SITE_URL}og.png">
+<script type="application/ld+json">{json.dumps(ld_json(skills), separators=(",", ":"))}</script>
 <style>
 :root {{
   --dark-950:#0d0d0f; --dark-900:#141417; --dark-800:#1d1d21;
@@ -614,6 +652,16 @@ a {{ color:var(--accent-700); }}
   </div>
 </section>
 
+<section class="section section--alt" id="reviewers">
+  <div class="inner">
+    <p class="eyebrow">Reviewers</p>
+    <h2>{esc(PITCH['reviewers_h2'])}</h2>
+    <p class="lede">{esc(PITCH['reviewers_lede'])}</p>
+    <ul class="grid-3">{agent_cards}</ul>
+    <p class="pack__install" style="margin-top:1.5rem"><code>skilldrop install --panel review</code> &mdash; all three, plus the orchestrator that runs them.</p>
+  </div>
+</section>
+
 <section class="closing">
   <div class="inner">
     <h2>{esc(PITCH['closing_h2'])}</h2>
@@ -708,10 +756,56 @@ def payload(skills, packs):
     return {"site": SITE_URL, "repo": REPO_URL, "packs": packs, "skills": skills}
 
 
+def ld_json(skills):
+    """Schema.org SoftwareApplication — lets search engines and AI crawlers read what this is
+    instead of guessing from prose. Counts come from the catalogue, never hand-typed."""
+    return {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "skilldrop",
+        "description": PITCH["hero_lede"],
+        "url": SITE_URL,
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "license": "https://opensource.org/licenses/MIT",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "author": {"@type": "Person", "name": "Sanjay Ananthanarayan"},
+        "codeRepository": REPO_URL,
+        "installUrl": "https://www.npmjs.com/package/skilldrop-cli",
+        "softwareHelp": REPO_URL + "#readme",
+        "keywords": f"agent skills, {len(skills)} skills, Claude Code, Cursor, Codex, Copilot, Kiro, Antigravity",
+    }
+
+
+def agents():
+    """The reviewer subagents (RFC-0012). Read straight from agents/<name>.md frontmatter, so the
+    site can never disagree with the files — same source validate.py checks."""
+    d = os.path.join(ROOT, "agents")
+    if not os.path.isdir(d):
+        return []
+    out = []
+    for f in sorted(os.listdir(d)):
+        if not f.endswith(".md") or f == "README.md":
+            continue
+        head = open(os.path.join(d, f), encoding="utf-8").read().split("---")
+        fm = head[1] if len(head) >= 3 else ""
+        get = lambda k: (re.search(rf"^{k}:\s*(.+)$", fm, re.M) or [None, ""])[1].strip()
+        out.append({"name": f[:-3], "description": get("description"), "tools": get("tools")})
+    return out
+
+
 def outputs(skills, packs):
     return {
         "index.html": render(skills, packs),
         "catalogue.json": json.dumps(payload(skills, packs), indent=2) + "\n",
+        "favicon.svg": open(os.path.join(ASSETS, "favicon.svg"), encoding="utf-8").read(),
+        "robots.txt": f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}sitemap.xml\n",
+        "sitemap.xml": (
+            '<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+            f"  <url><loc>{SITE_URL}</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>\n"
+            "</urlset>\n"
+        ),
     }
 
 
@@ -738,6 +832,11 @@ def main():
             print("build_site.py --check: site is stale —", "; ".join(stale), file=sys.stderr)
             print("  run: python3 build_site.py", file=sys.stderr)
             sys.exit(1)
+        for a in BINARY_ASSETS:
+            src, dst = os.path.join(ASSETS, a), os.path.join(args.out, a)
+            if not os.path.exists(dst) or open(src, "rb").read() != open(dst, "rb").read():
+                print(f"build_site.py --check: {a} missing or stale in {args.out}", file=sys.stderr)
+                sys.exit(1)
         print(f"OK: site is current ({len(skills)} skills).")
         return
 
@@ -746,6 +845,9 @@ def main():
         with open(os.path.join(args.out, name), "w", encoding="utf-8") as f:
             f.write(body)
         print(f"wrote {os.path.relpath(os.path.join(args.out, name), ROOT)}")
+    for a in BINARY_ASSETS:
+        shutil.copyfile(os.path.join(ASSETS, a), os.path.join(args.out, a))
+        print(f"copied {a}")
     print(f"\n{len(skills)} skills rendered. Preview: python3 -m http.server -d {os.path.relpath(args.out, ROOT)}")
 
 

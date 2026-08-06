@@ -36,6 +36,10 @@ renders/
 *.pdf
 !skills/**/examples/**/*.png
 !skills/**/examples/**/*.svg
+# …and the committed site assets. og.png is rendered once from assets/og.svg with
+# rsvg-convert and committed, so build_site.py stays stdlib-only (RFC-0011).
+!assets/*.svg
+!assets/*.png
 
 # Claude local state
 .claude/settings.local.json

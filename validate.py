@@ -263,6 +263,23 @@ def main():
 
     # The site regenerates its counts from the manifests; README prose does not.
     # This is the only place a skill count can go stale unnoticed (RFC-0011).
+    # RFC-0011/site: the OG share image hard-codes its headline counts (it is a rendered raster,
+    # not generated at build time), so it is the one place a stale number can ship unnoticed.
+    og = os.path.join(ROOT, "assets", "og.svg")
+    if os.path.exists(og):
+        og_txt = open(og, encoding="utf-8").read()
+        n_agents = len([f for f in os.listdir(AGENTS) if f.endswith(".md") and f != "README.md"]) \
+            if os.path.isdir(AGENTS) else 0
+        n_packs = len(json.load(open(os.path.join(ROOT, "packs.json")))["packs"])
+        for claim, actual in ((r"(\d+) skills", len(skill_dirs)),
+                              (r"(\d+) role packs", n_packs),
+                              (r"(\d+) reviewer subagents", n_agents)):
+            m = re.search(claim, og_txt)
+            if m and int(m.group(1)) != actual:
+                fail("assets/og.svg", f"says '{m.group(0)}' but {actual} are on disk "
+                                      f"— update the SVG and re-render: rsvg-convert -w 1200 -h 630 "
+                                      f"assets/og.svg -o assets/og.png")
+
     readme = open(os.path.join(ROOT, "README.md"), encoding="utf-8").read()
     for n in set(re.findall(r"\b(\d{2})\s+(?:portable |)(?:AI-agent |)skills\b", readme)):
         if int(n) != len(skill_dirs):

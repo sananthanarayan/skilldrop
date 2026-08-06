@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="skilldrop">
+  <rect width="32" height="32" rx="7" fill="#111113"/>
+  <!-- the drop: a skill landing into your tool -->
+  <path d="M16 6v13" stroke="#a48cff" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M10.5 14.2 16 19.7l5.5-5.5" fill="none" stroke="#a48cff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M8 24.5h16" stroke="#ecebe8" stroke-width="3.2" stroke-linecap="round"/>
+</svg>
