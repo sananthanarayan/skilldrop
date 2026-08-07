@@ -1,0 +1,34 @@
+{
+  "name": "ai-use-case-triage",
+  "version": "0.1.0",
+  "description": "Turn a pile of candidate AI use cases into a ranked portfolio — each scored on value, feasibility, and risk with the weights shown, a recommended first slice that can prove or kill the thesis, and an explicit not-yet list with the condition that would promote each entry. Use when a team has more AI ideas than capacity and needs to choose, or asks \"where should we actually start with AI\". Do NOT use to assess whether the organisation is ready at all (that's ai-readiness-assessment) or to price a single decision (that's business-case).",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "ai-adoption-rollout",
+    "ai-readiness-assessment",
+    "business-case",
+    "llm-eval-harness",
+    "prd-draft",
+    "success-metrics"
+  ],
+  "tags": [
+    "ai-adoption",
+    "prioritization",
+    "use-cases",
+    "portfolio",
+    "value-vs-feasibility",
+    "pilot"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Scores candidates on weighted axes and forces a rejection list. Structured comparison with stated weights; escalate via ambiguous-input when candidates are numerous or the value data is contested."
+  }
+}

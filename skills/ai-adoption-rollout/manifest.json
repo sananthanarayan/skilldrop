@@ -1,0 +1,33 @@
+{
+  "name": "ai-adoption-rollout",
+  "version": "0.1.0",
+  "description": "Plan the human rollout of an AI tool or workflow to an organisation — sized cohorts, enablement per cohort, named champions, a comms plan that states what will not change, and an adoption gate every wave must pass before the next one opens. Use when a tool has been chosen and the question is how it reaches people without stalling or backlash. Do NOT use to phase a technical cutover (that's migration-plan) or to choose which use case to roll out (that's ai-use-case-triage).",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "ai-readiness-assessment",
+    "ai-usage-policy",
+    "ai-usage-report",
+    "ai-use-case-triage",
+    "migration-plan"
+  ],
+  "tags": [
+    "ai-adoption",
+    "rollout",
+    "change-management",
+    "enablement",
+    "cohorts",
+    "comms"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Generates a phased people-rollout with gates and enablement from a stated tool and population. Structured planning against a fixed shape; escalate via ambiguous-input for large or politically contested rollouts."
+  }
+}

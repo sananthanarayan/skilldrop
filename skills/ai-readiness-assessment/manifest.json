@@ -1,0 +1,34 @@
+{
+  "name": "ai-readiness-assessment",
+  "version": "0.1.0",
+  "description": "Score an organisation's or team's readiness to adopt AI tooling across six gating dimensions — data, tooling, skills, governance, process, and culture — with an evidence line per score and the blocking gaps ranked by what stops adoption first. Use when the user asks \"are we ready for AI\", wants an AI maturity or readiness baseline, or needs to know what to fix before rolling tools out. Do NOT use to pick which use cases to build (that's ai-use-case-triage) or to plan the rollout itself (that's ai-adoption-rollout).",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "ai-adoption-rollout",
+    "ai-usage-policy",
+    "ai-usage-report",
+    "ai-use-case-triage",
+    "strategy-analysis",
+    "tech-comparison-matrix"
+  ],
+  "tags": [
+    "ai-adoption",
+    "readiness",
+    "maturity-assessment",
+    "governance",
+    "change-management",
+    "baseline"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Scores six fixed dimensions against a rubric and ranks gaps by blocking order. Bounded structured judgment, not adversarial reasoning; escalate via ambiguous-input when the evidence is thin or contested."
+  }
+}
