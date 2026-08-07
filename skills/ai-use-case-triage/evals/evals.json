@@ -1,0 +1,18 @@
+{
+  "skill_name": "ai-use-case-triage",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our support org has five AI ideas: draft first replies, auto-tag tickets, summarise call recordings, generate KB articles, and predict churn from ticket sentiment. Where do we start?",
+      "assertions": [
+        "Each candidate is restated as a workflow and a person, not a technology",
+        "Every candidate is scored on value, feasibility, and risk with the weights shown and justified",
+        "Every score carries a one-line reason",
+        "The not-yet list is non-empty and each entry names the condition that would promote it",
+        "The recommended first slice names an observable kill condition and a time box",
+        "Feasibility reasoning addresses whether the output can be verified before it matters",
+        "Value figures absent from the input are marked directional rather than invented"
+      ]
+    }
+  ]
+}

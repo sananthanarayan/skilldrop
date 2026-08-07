@@ -1,0 +1,17 @@
+{
+  "skill_name": "ai-readiness-assessment",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're a 200-person fintech. Engineering has Copilot licences that about a third of people use, we have no written AI policy, our docs are spread across Confluence and Notion, and leadership keeps asking when we'll 'be an AI company'. Are we ready?",
+      "assertions": [
+        "All six dimensions (data, tooling, skills, governance, process, culture) are scored 0-4 — none is omitted",
+        "Every score carries a one-line evidence reference drawn from the input, or is marked [insufficient evidence: <what to collect>]",
+        "Gaps are ranked by what blocks adoption first, with the dependency named — not simply sorted by lowest score",
+        "Every gap has a concrete first action and an owner expressed as a role, not a person's name",
+        "The posture sentence takes a position and names the condition that would change it",
+        "No facts are invented beyond what the prompt supplies"
+      ]
+    }
+  ]
+}
