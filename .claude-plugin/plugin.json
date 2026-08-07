@@ -1,6 +1,6 @@
 {
   "name": "skilldrop",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "Portable AI-agent skills for the deliverables knowledge workers ship — diagrams, ADRs, PRDs, runbooks, decks, reviews — installable into Claude Code, Cursor, Kiro, and any IDE that takes custom instructions. One command per skill or per role-based pack.",
   "author": {
     "name": "Sanjay Ananthanarayan",

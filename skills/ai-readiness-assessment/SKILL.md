@@ -54,6 +54,7 @@ Readiness assessments fail in one of two ways: a number with no evidence behind 
 - ❌ Writing the rules for what people may put into a tool — that's [`ai-usage-policy`](../ai-usage-policy/SKILL.md).
 - ❌ A market or competitive question ("should we enter this space?") — that's `strategy-analysis`.
 - ❌ Measuring adoption that has already happened — that's `ai-usage-report`.
+- ❌ **Assessing how far an engineering team's agent practice has actually got** — agents in flight, who writes the code, what still gets reviewed — that's [`agent-adoption-stage`](../agent-adoption-stage/SKILL.md). It's the orthogonal axis: this skill scores whether the *organisation* can adopt at all; that one scores how far the *practice* has got. A team can be governance-ready and stuck at stage 1, or running ten agents with no policy at all — run both when the answers disagree.
 
 ## Anti-patterns to avoid
 

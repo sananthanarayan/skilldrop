@@ -12,6 +12,7 @@
     "optional": []
   },
   "related": [
+    "agent-adoption-stage",
     "ai-adoption-rollout",
     "ai-usage-policy",
     "ai-usage-report",
