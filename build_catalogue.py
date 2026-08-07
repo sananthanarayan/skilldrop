@@ -90,6 +90,12 @@ def _pack_toml(name, version, description):
         "[pack.install]\n"
         'default-scope = "user"\n'
         f"allowed-scopes = {_toml_arr(['user', 'repo'])}\n"
+        "\n"
+        # agentbundle's own build derives each marketplace entry's `source` from this table; without
+        # it the generated marketplace ships sourceless entries and adopters cannot install the pack.
+        "[pack.links]\n"
+        f"repository = {_toml_str('https://github.com/' + REPO_SLUG)}\n"
+        f"homepage = {_toml_str('https://github.com/' + REPO_SLUG + '#readme')}\n"
     )
 
 
@@ -160,11 +166,15 @@ def _marketplace_json(pkg, packs):
     for name, pack in packs.items():
         entries.append({
             "name": name,
+            # contracts/marketplace-entry.schema.json (agentbundle >= 0.29): `source` is closed —
+            # {source: "git-subdir", url: <…\.git>, path: <bare pack name>} plus *either* `ref` or
+            # `sha`. We pin `ref` to the dist branch rather than a sha: the branch commit is created
+            # by the publish step *after* this manifest is generated, so a sha here is unknowable.
             "source": {
-                "source": "github",
-                "repo": REPO_SLUG,
-                "branch": DIST_BRANCH,
-                "directory": f"packs/{name}",
+                "source": "git-subdir",
+                "url": f"https://github.com/{REPO_SLUG}.git",
+                "path": name,
+                "ref": DIST_BRANCH,
             },
             "description": pack["description"],
             "version": pkg["version"],
