@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Reverse-engineer the architecture from this repo",
+    "should_trigger": true
+  },
+  {
+    "query": "Work out our system diagram from the Terraform and k8s manifests",
+    "should_trigger": true
+  },
+  {
+    "query": "What does our actual architecture look like based on the code?",
+    "should_trigger": true
+  },
+  {
+    "query": "Build a diagram from our existing infrastructure-as-code",
+    "should_trigger": true
+  },
+  {
+    "query": "Draw a diagram from this written description of the system",
+    "should_trigger": false
+  },
+  {
+    "query": "Read our Figma file and list the frames",
+    "should_trigger": false
+  },
+  {
+    "query": "Write an ADR for the architecture we chose",
+    "should_trigger": false
+  },
+  {
+    "query": "Review this code for bugs",
+    "should_trigger": false
+  }
+]

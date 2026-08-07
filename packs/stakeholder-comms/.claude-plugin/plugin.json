@@ -1,0 +1,12 @@
+{
+  "name": "stakeholder-comms",
+  "version": "0.9.3",
+  "description": "Non-technical audiences: audience profiling, deck outlines and real .pptx decks, exec summaries, decision logs, and guides.",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://github.com/sananthanarayan/skilldrop",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT"
+}

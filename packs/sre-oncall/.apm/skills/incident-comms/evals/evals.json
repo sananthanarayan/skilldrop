@@ -1,0 +1,16 @@
+{
+  "skill_name": "incident-comms",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're 20 minutes into a live incident — checkout is failing for about 30% of users, cause not yet confirmed. Draft the customer, internal, and exec updates.",
+      "assertions": [
+        "Each message's first sentence is reader-facing impact, not an internal symptom or architecture detail",
+        "Every message names the next-update time, or marks it [set HH:MM] when unknown",
+        "No unconfirmed cause is stated and no commitment is made that might need retracting",
+        "The three audiences (customer status page, internal stakeholders, exec) get genuinely different messages rather than one text reused",
+        "Nothing is asserted beyond what the operator supplied"
+      ]
+    }
+  ]
+}

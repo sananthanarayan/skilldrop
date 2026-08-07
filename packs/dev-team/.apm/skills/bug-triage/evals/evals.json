@@ -1,0 +1,17 @@
+{
+  "skill_name": "bug-triage",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Triage this report: 'checkout is broken on mobile sometimes, a customer complained in Slack this morning'.",
+      "assertions": [
+        "An engineer could start work without contacting the reporter — either the repro steps stand alone, or a no-repro diagnostics list states exactly what to collect",
+        "The title is findable by symptom search, containing the words a future reporter would type",
+        "Repro steps are numbered and start from a clean state",
+        "Expected versus actual behaviour are stated separately",
+        "Every factual claim is tagged [reported], [verified], or [assumption] — nothing is asserted untagged",
+        "Severity is assigned with a stated reason rather than inherited from the reporter's tone"
+      ]
+    }
+  ]
+}
