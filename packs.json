@@ -96,7 +96,8 @@
         "ai-readiness-assessment",
         "ai-use-case-triage",
         "ai-adoption-rollout",
-        "ai-usage-policy"
+        "ai-usage-policy",
+        "agent-adoption-stage"
       ]
     }
   }
