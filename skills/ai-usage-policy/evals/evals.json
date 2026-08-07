@@ -1,0 +1,19 @@
+{
+  "skill_name": "ai-usage-policy",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write an AI acceptable-use policy for our 500-person company. We handle customer support data including names and order history, and people are already pasting things into chatbots.",
+      "assertions": [
+        "Exactly three data tiers are defined, each with concrete examples drawn from the organisation described",
+        "Permitted and prohibited uses are stated as behaviours, not abstractions like 'inappropriate use'",
+        "Every prohibition names a permitted alternative path for the same work",
+        "The human-review matrix is keyed to consequence (customer-facing, financial, production, personnel) rather than to tool or model names",
+        "An approved-tool list is accompanied by an exception route with an approver and a turnaround time",
+        "Every section names an owner role and the document carries a review date",
+        "The disclosure rule states whether and where AI assistance must be declared",
+        "No regulation is asserted beyond what the prompt names; unclear applicability is marked [confirm with counsel]"
+      ]
+    }
+  ]
+}

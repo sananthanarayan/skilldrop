@@ -38,7 +38,8 @@
         "user-story-splitter",
         "success-metrics",
         "exec-summary",
-        "doc-critique"
+        "doc-critique",
+        "ai-use-case-triage"
       ]
     },
     "dev-team": {
@@ -83,7 +84,7 @@
       ]
     },
     "ai-engineering": {
-      "description": "Build and run AI systems: agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, AI-usage reporting, and the data contracts AI pipelines depend on.",
+      "description": "Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, AI-usage reporting, and the data contracts AI pipelines depend on.",
       "skills": [
         "agent-loop-design",
         "subagent-design",
@@ -91,7 +92,11 @@
         "agent-threat-model",
         "llm-eval-harness",
         "ai-usage-report",
-        "data-contract"
+        "data-contract",
+        "ai-readiness-assessment",
+        "ai-use-case-triage",
+        "ai-adoption-rollout",
+        "ai-usage-policy"
       ]
     }
   }
