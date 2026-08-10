@@ -43,3 +43,6 @@ renders/
 
 # Claude local state
 .claude/settings.local.json
+
+# agent tooling scratch (attachments, session state) — never repo content
+.context/
