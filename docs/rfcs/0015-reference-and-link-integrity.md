@@ -1,7 +1,7 @@
 ---
 rfc: 0015
 title: Reference and link integrity checks
-status: accepted   # draft → accepted | rejected → implemented
+status: implemented
 date: 2026-08-03
 author: sananthanarayan
 ---

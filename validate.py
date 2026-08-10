@@ -285,6 +285,20 @@ def main():
         if int(n) != len(skill_dirs):
             fail("README.md", f"says '{n} skills' but {len(skill_dirs)} are on disk")
 
+    # A matching count is not coverage. The count guard can pass while skills, packs or agents
+    # have no documentation at all — it checks the number, not the thing the number describes.
+    for d in sorted(skill_dirs):
+        if f"skills/{d}/SKILL.md" not in readme:
+            fail("README.md", f"no row for skill '{d}' — the catalogue documents what it ships")
+    with open(os.path.join(ROOT, "packs.json"), encoding="utf-8") as fh:
+        pack_names = sorted(json.load(fh)["packs"])
+    for p in pack_names:
+        if f"`{p}`" not in readme:
+            fail("README.md", f"pack '{p}' is in packs.json but not documented in README")
+    for a in sorted(agent_names):
+        if f"agents/{a}.md" not in readme:
+            fail("README.md", f"agent '{a}' ships but is not documented in README")
+
     # RFC-0015: prose markdown links across skills, agents, docs, and the root convention files
     # must resolve — fenced blocks, {template} lines, and placeholder targets are skipped.
     md_files = set(glob.glob(os.path.join(SKILLS, "**", "*.md"), recursive=True))

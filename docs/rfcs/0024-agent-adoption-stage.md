@@ -1,7 +1,7 @@
 ---
 rfc: 0024
 title: agent-adoption-stage — position a team on the agentic-coding ladder
-status: accepted   # draft → accepted | rejected → implemented
+status: implemented
 date: 2026-08-07
 author: sananthanarayan
 ---

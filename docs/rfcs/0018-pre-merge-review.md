@@ -1,7 +1,7 @@
 ---
 rfc: 0018
 title: pre-merge-review — one skill that fires the panel behind a mechanical gate
-status: accepted   # draft → accepted | rejected → implemented
+status: implemented
 date: 2026-08-03
 author: sananthanarayan
 ---
