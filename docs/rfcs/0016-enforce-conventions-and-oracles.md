@@ -1,7 +1,7 @@
 ---
 rfc: 0016
 title: Enforce stated conventions and require heavy-tier oracles
-status: accepted   # draft → accepted | rejected → implemented
+status: implemented
 date: 2026-08-03
 author: sananthanarayan
 ---

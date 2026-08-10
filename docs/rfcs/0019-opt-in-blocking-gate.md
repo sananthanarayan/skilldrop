@@ -1,7 +1,7 @@
 ---
 rfc: 0019
 title: Opt-in blocking gate — a deterministic git-hook harness
-status: accepted   # draft → accepted | rejected → implemented
+status: implemented
 date: 2026-08-03
 author: sananthanarayan
 ---

@@ -1,7 +1,7 @@
 ---
 rfc: 0023
 title: AI adoption skills — readiness, use-case triage, rollout, usage policy
-status: accepted   # draft → accepted | rejected → implemented
+status: implemented
 date: 2026-08-07
 author: sananthanarayan
 ---

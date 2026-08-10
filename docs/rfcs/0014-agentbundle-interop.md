@@ -1,7 +1,7 @@
 ---
 rfc: 0014
 title: Interop with the agentbundle ecosystem
-status: accepted   # draft → accepted | rejected → implemented
+status: implemented
 date: 2026-07-28
 author: sananthanarayan
 ---
