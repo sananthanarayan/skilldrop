@@ -1,7 +1,7 @@
 ---
 rfc: 0021
 title: Machine-readable --json output for the read commands
-status: accepted   # draft → accepted | rejected → implemented
+status: implemented
 date: 2026-08-06
 author: sananthanarayan
 ---

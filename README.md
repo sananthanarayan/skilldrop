@@ -473,6 +473,8 @@ The [`agents/`](agents/) folder ships **portable reviewer personas** — single-
 | [`devils-advocate`](agents/devils-advocate.md) | Correctness — edge cases, broken assumptions, staff-engineer pushback, test gaps | "Will this break?" |
 | [`code-quality`](agents/code-quality.md) | Craft — naming, structure, duplication, complexity, readability | "Will the next engineer hate this?" |
 
+| [`security-reviewer`](agents/security-reviewer.md) | Exploitability — injection, authz gaps, secret handling, unsafe deserialisation | "How would someone abuse this?" |
+
 No tool auto-discovers a folder named `agents/`; it's the canonical source of truth. See [`agents/README.md`](agents/README.md) for where to copy each file in your tool — `.claude/agents/` for Claude Code, a custom mode for Cursor, an `AGENTS.md` section for Codex, a steering file or custom agent for Kiro.
 
 ## Skill Usage

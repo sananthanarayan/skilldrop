@@ -1,7 +1,7 @@
 ---
 rfc: 0022
 title: Supply-chain scan for third-party catalogs
-status: accepted   # draft → accepted | rejected → implemented
+status: implemented
 date: 2026-08-06
 author: sananthanarayan
 ---

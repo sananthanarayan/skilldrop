@@ -1,7 +1,7 @@
 ---
 rfc: 0020
 title: Review panel — one-command install + native parallel orchestration
-status: accepted   # draft → accepted | rejected → implemented
+status: implemented
 date: 2026-08-05
 author: sananthanarayan
 ---

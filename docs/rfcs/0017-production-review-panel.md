@@ -1,7 +1,7 @@
 ---
 rfc: 0017
 title: Production review panel — a security reviewer and a multi-subagent loop
-status: accepted   # draft → accepted | rejected → implemented
+status: implemented
 date: 2026-08-03
 author: sananthanarayan
 ---
