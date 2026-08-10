@@ -1,0 +1,56 @@
+# CodeQL static analysis.
+#
+# The catalogue is mostly markdown, but the parts that aren't are the parts that run on other
+# people's machines: bin/skilldrop.js writes files into a user's home directory, and the Python
+# under skills/*/scripts/ is executed by whoever installs those skills. That is the surface worth
+# scanning — a defect there reaches further than a defect in a SKILL.md ever could.
+#
+# Actions are SHA-pinned, matching the rest of .github/workflows/: a tag like @v4 is mutable and
+# can be repointed at malicious code, which is the exact supply-chain hole the scan-command skill
+# tells users to close.
+name: codeql
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Weekly, so a newly-published CodeQL query finds old code without waiting for a commit.
+    - cron: "27 4 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: codeql-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      security-events: write # required to upload results to the Security tab
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [python, javascript-typescript]
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Initialise CodeQL
+        uses: github/codeql-action/init@18420e3271f74589575af831a523c833acda327f # codeql-bundle-v2.26.2
+        with:
+          languages: ${{ matrix.language }}
+          # security-extended adds lower-severity queries. Worth it here: the volume is small
+          # enough that the extra findings stay reviewable rather than becoming noise to ignore.
+          queries: security-extended
+
+      - name: Analyse
+        uses: github/codeql-action/analyze@18420e3271f74589575af831a523c833acda327f # codeql-bundle-v2.26.2
+        with:
+          category: /language:${{ matrix.language }}
