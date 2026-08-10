@@ -204,6 +204,16 @@ function skillDir(cat, s) {
   if (cat.shape === "apm") return cat.skillIndex[s] && cat.skillIndex[s].dir;
   return path.join(cat.skillsDir, s);
 }
+// Skill names reach RegExp when unwiring hooks. skillExists() proves a directory exists; it
+// does not prove the name is regex-safe, and a third-party catalog (RFC-0003) may name a
+// skill anything a filesystem accepts. Escape before interpolating.
+// Read a file if it is there. Checking existsSync first then reading is a race: the file can
+// vanish in between and the read throws. Handle the absence, do not predict it.
+function readIfPresent(p, absent = "") {
+  try { return fs.readFileSync(p, "utf8"); }
+  catch (e) { if (e.code === "ENOENT") return absent; throw e; }
+}
+function reEscape(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
 function skillExists(cat, s) { const d = skillDir(cat, s); return !!d && fs.existsSync(d); }
 function manifestOf(cat, s) {
   if (cat.shape === "apm") {
@@ -591,7 +601,7 @@ function gitRoot(startDir) {
 function writeGitPreCommitHook(root, skill, hook) {
   const p = path.join(root, ".git", "hooks", "pre-commit");
   const marker = `skilldrop-hook:${skill}:pre-commit-review`;
-  let body = fs.existsSync(p) ? fs.readFileSync(p, "utf8") : "";
+  let body = readIfPresent(p);  // read-and-handle, not check-then-read
   if (!body.startsWith("#!")) body = "#!/bin/sh\n" + body;
   if (body.includes(marker)) return p; // already wired
   const line = `echo "skilldrop: run /${hook.action} on your staged changes before committing — ${hook.description}"`;
@@ -606,8 +616,9 @@ function writeGitPreCommitHook(root, skill, hook) {
 // or null if the file exists but is malformed (we never clobber unparseable JSON).
 function writeClaudeSessionHook(settingsPath, skill, hook) {
   let data = {};
-  if (fs.existsSync(settingsPath)) {
-    try { data = JSON.parse(fs.readFileSync(settingsPath, "utf8")); }
+  const raw = readIfPresent(settingsPath, null);
+  if (raw !== null) {
+    try { data = JSON.parse(raw); }
     catch (e) { return null; }
   }
   data.hooks = data.hooks || {};
@@ -653,18 +664,20 @@ function removeHooksFor(skill, dest, ide) {
   const root = gitRoot(process.cwd());
   if (root) {
     const p = path.join(root, ".git", "hooks", "pre-commit");
-    if (fs.existsSync(p)) {
-      const body = fs.readFileSync(p, "utf8");
-      const re = new RegExp(`\\n?# >>> skilldrop-hook:${skill}:[^\\n]* >>>[\\s\\S]*?# <<< skilldrop-hook:${skill}:[^\\n]* <<<\\n?`, "g");
+    const body = readIfPresent(p, null);
+    if (body !== null) {
+      const q = reEscape(skill);
+      const re = new RegExp(`\\n?# >>> skilldrop-hook:${q}:[^\\n]* >>>[\\s\\S]*?# <<< skilldrop-hook:${q}:[^\\n]* <<<\\n?`, "g");
       const next = body.replace(re, "\n");
       if (next !== body) fs.writeFileSync(p, next);
     }
   }
   if (ide === "claude") {
     const sp = path.join(path.dirname(dest), "settings.json");
-    if (fs.existsSync(sp)) {
+    const raw = readIfPresent(sp, null);
+    if (raw !== null) {
       try {
-        const data = JSON.parse(fs.readFileSync(sp, "utf8"));
+        const data = JSON.parse(raw);
         const arr = data.hooks && data.hooks.SessionStart;
         if (Array.isArray(arr)) {
           const kept = arr.filter((e) => !JSON.stringify(e).includes(`skilldrop-hook:${skill}:`));
