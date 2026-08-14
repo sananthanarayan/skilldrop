@@ -60,3 +60,29 @@ jobs:
             git push origin "v$LOCAL"
             echo "tagged v$LOCAL"
           fi
+
+          # A tag is a pointer; a Release is the page people actually read. Cut one from the
+          # same commit, using its message body as the notes — commit messages here are already
+          # written as changelog entries, so there is nothing to duplicate or let drift.
+          if gh release view "v$LOCAL" >/dev/null 2>&1; then
+            echo "release v$LOCAL already exists — skipping"
+          else
+            {
+              git log -1 --pretty=%b | sed '/^Co-Authored-By:/d' | sed -e :a -e '/^\n*$/{$d;N;ba' -e '}'
+              echo
+              echo "---"
+              echo
+              echo "\`\`\`bash"
+              echo "npx skilldrop-cli@$LOCAL install --pack solution-architect"
+              echo "\`\`\`"
+              echo
+              echo "[skilldrop-cli@$LOCAL on npm](https://www.npmjs.com/package/skilldrop-cli/v/$LOCAL) — published with provenance."
+            } > /tmp/notes.md
+            gh release create "v$LOCAL" \
+              --title "v$LOCAL — $(git log -1 --pretty=%s | sed 's/ (\?[0-9]\+\.[0-9]\+\.[0-9]\+)\?$//')" \
+              --notes-file /tmp/notes.md \
+              --verify-tag
+            echo "released v$LOCAL"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
