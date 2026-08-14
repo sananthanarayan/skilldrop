@@ -1,0 +1,50 @@
+name: SonarQube
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarqube:
+    name: Scan + quality gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Full history is required for accurate blame and new-code-period detection.
+          fetch-depth: 0
+
+      # ─── BUILD + TEST + COVERAGE ───────────────────────────────────────────
+      # Replace this block with the project's actual build/test commands.
+      # The scanner imports the coverage report produced here — if this step
+      # doesn't generate it, Sonar reports 0% coverage on new code.
+      #
+      # Examples:
+      #   JS/TS:    npm ci && npm test -- --coverage
+      #   Java:     mvn -B verify
+      #   Python:   pip install -r requirements.txt && pytest --cov --cov-report=xml
+      #   Go:       go test ./... -coverprofile=coverage.out
+      #
+      - name: Build, test, and produce coverage
+        run: |
+          {{BUILD_TEST_COMMAND}}
+
+      # ─── SCAN ──────────────────────────────────────────────────────────────
+      - name: SonarQube scan
+        uses: sonarsource/sonarqube-scan-action@v3
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      # ─── QUALITY GATE ──────────────────────────────────────────────────────
+      # Fails the job (and therefore the PR check) when the gate fails.
+      # Without this step, scans run but never block merge — defeats the point.
+      - name: Quality gate
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}

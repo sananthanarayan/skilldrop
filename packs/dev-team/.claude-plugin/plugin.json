@@ -1,0 +1,12 @@
+{
+  "name": "dev-team",
+  "version": "0.11.3",
+  "description": "Build-and-ship loop: story implementation with adversarial review, test plans, triage, migrations, release notes, agent-policy files, and code-quality gates.",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://github.com/sananthanarayan/skilldrop",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT"
+}

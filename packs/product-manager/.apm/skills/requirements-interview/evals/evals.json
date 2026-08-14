@@ -1,0 +1,16 @@
+{
+  "skill_name": "requirements-interview",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're scoping a billing-migration feature. Build interview kits for the stakeholders we should talk to.",
+      "assertions": [
+        "Each stakeholder script has at most 7 questions, ranked by how much the answer changes the design",
+        "Every question is annotated with the decision it informs and how the answer moves the design",
+        "No leading questions in discovery position — nothing answerable with a polite yes",
+        "Every script contains a kill-question, and the kit states what a kill-answer would mean",
+        "Stakeholders are chosen and named by role, with a reason each one is on the list"
+      ]
+    }
+  ]
+}

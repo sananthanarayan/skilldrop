@@ -1,0 +1,19 @@
+{
+  "skill_name": "devils-advocate",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's the payment-retry handler I just finished — it retries failed charges up to 3 times with exponential backoff, and the tests pass. Review it before I open the PR.",
+      "assertions": [
+        "Every finding has a reproducible scenario a senior engineer can replay mentally — named input, current behavior, expected behavior",
+        "Every finding cites file:line, not just a section or function name",
+        "Severity is calibrated — blockers do not outnumber majors; inflated findings are demoted",
+        "Findings are grouped by the four lenses (edge cases, assumptions, staff-engineer pushback, test-coverage gaps), skipping lenses that do not apply rather than padding",
+        "Test-coverage gaps name the concrete missing test case, not 'add more tests'",
+        "Assertion theater is called out — tests that execute the code without asserting the behavior",
+        "Output ends with a 'what's solid' section so the author knows what not to touch",
+        "The review scopes to the change under review, never sweeping the whole codebase"
+      ]
+    }
+  ]
+}

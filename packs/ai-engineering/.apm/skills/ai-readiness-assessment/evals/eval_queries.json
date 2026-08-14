@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Are we ready to adopt AI?",
+    "should_trigger": true
+  },
+  {
+    "query": "Assess our AI maturity and tell me what's blocking us",
+    "should_trigger": true
+  },
+  {
+    "query": "Give me an AI readiness baseline for our engineering org",
+    "should_trigger": true
+  },
+  {
+    "query": "What do we need to fix before rolling out AI tools?",
+    "should_trigger": true
+  },
+  {
+    "query": "Which AI use cases should we build first?",
+    "should_trigger": false
+  },
+  {
+    "query": "Plan how we roll this tool out to 200 people",
+    "should_trigger": false
+  },
+  {
+    "query": "Write our AI acceptable-use policy",
+    "should_trigger": false
+  },
+  {
+    "query": "Run a SWOT on our market position",
+    "should_trigger": false
+  }
+]

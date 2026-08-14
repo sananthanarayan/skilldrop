@@ -1,0 +1,11 @@
+[
+  { "query": "How do we know this feature worked? Define the KPIs", "should_trigger": true },
+  { "query": "Set up success criteria and an instrumentation plan before we launch", "should_trigger": true },
+  { "query": "What should we measure to judge the new onboarding flow?", "should_trigger": true },
+  { "query": "Define the success metrics for this PRD's goals", "should_trigger": true },
+
+  { "query": "Cascade company OKRs down to the teams", "should_trigger": false },
+  { "query": "Analyze last month's launch results", "should_trigger": false },
+  { "query": "Design the eval harness for our LLM feature", "should_trigger": false },
+  { "query": "Calculate the sample size for this A/B test", "should_trigger": false }
+]

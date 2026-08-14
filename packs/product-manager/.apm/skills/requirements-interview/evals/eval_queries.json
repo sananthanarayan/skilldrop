@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Build interview questions for our stakeholders on this feature",
+    "should_trigger": true
+  },
+  {
+    "query": "Who should we talk to for this discovery, and what should we ask them?",
+    "should_trigger": true
+  },
+  {
+    "query": "Create a discovery interview kit per stakeholder",
+    "should_trigger": true
+  },
+  {
+    "query": "I need non-leading questions that would actually change the design",
+    "should_trigger": true
+  },
+  {
+    "query": "Draft the PRD for this feature",
+    "should_trigger": false
+  },
+  {
+    "query": "Structure this existing raw input into a brief",
+    "should_trigger": false
+  },
+  {
+    "query": "Map the customer's journey through onboarding",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the design doc for the billing migration",
+    "should_trigger": false
+  }
+]

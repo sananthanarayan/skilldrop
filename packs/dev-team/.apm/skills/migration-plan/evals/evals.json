@@ -1,0 +1,16 @@
+{
+  "skill_name": "migration-plan",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Plan the migration from our single-tenant Postgres schema to a multi-tenant one, with no downtime.",
+      "assertions": [
+        "The plan is phased expand-migrate-contract by default",
+        "Every phase is reversible, or is explicitly named as the point of no return — a reader can answer 'how do we get back from here?' for every phase",
+        "Every gate is observable with a bake time and a threshold, not 'looks good'",
+        "Each phase carries exactly one change, so a failed phase implicates one thing",
+        "Rollback steps are stated per phase rather than as a single end-of-plan afterthought"
+      ]
+    }
+  ]
+}

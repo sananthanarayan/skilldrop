@@ -1,0 +1,15 @@
+[pack]
+name = "dev-team"
+version = "0.11.3"
+description = "Build-and-ship loop: story implementation with adversarial review, test plans, triage, migrations, release notes, agent-policy files, and code-quality gates."
+
+[pack.adapter-contract]
+version = "0.17"
+
+[pack.install]
+default-scope = "user"
+allowed-scopes = ["user", "repo"]
+
+[pack.links]
+repository = "https://github.com/sananthanarayan/skilldrop"
+homepage = "https://github.com/sananthanarayan/skilldrop#readme"

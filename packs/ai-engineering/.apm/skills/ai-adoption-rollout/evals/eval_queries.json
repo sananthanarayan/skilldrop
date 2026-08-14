@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Plan how we roll this AI tool out to the org",
+    "should_trigger": true
+  },
+  {
+    "query": "How do we drive adoption without a backlash?",
+    "should_trigger": true
+  },
+  {
+    "query": "Design the cohorts and enablement for our AI launch",
+    "should_trigger": true
+  },
+  {
+    "query": "Our last AI rollout decayed after launch — plan the retry",
+    "should_trigger": true
+  },
+  {
+    "query": "Plan the phased migration of our database schema",
+    "should_trigger": false
+  },
+  {
+    "query": "Which use case should we roll out first?",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the rules for what people can put into these tools",
+    "should_trigger": false
+  },
+  {
+    "query": "Report on how much AI our team is using",
+    "should_trigger": false
+  }
+]

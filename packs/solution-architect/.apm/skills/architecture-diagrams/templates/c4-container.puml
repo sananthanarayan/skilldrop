@@ -1,0 +1,31 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Container diagram for <System name>
+
+Person(user, "End user", "Description of who this is")
+
+System_Boundary(sys, "<System name>") {
+    Container(web, "Web application", "React, TypeScript", "Customer-facing UI")
+    Container(api, "API", "Node, Express", "REST API, business logic")
+    Container(worker, "Background worker", "Python, Celery", "Async jobs, retries")
+    ContainerDb(db, "Primary DB", "PostgreSQL 16", "Customer + transactional data")
+    ContainerDb(cache, "Cache", "Redis 7", "Session + hot lookups")
+    ContainerQueue(queue, "Job queue", "RabbitMQ", "Async work coordination")
+}
+
+System_Ext(stripe, "Stripe", "Payment provider")
+System_Ext(ses, "AWS SES", "Transactional email")
+
+Rel(user, web, "Uses", "HTTPS")
+Rel(web, api, "Calls", "HTTPS / JSON")
+Rel(api, db, "Reads/writes", "SQL/TCP")
+Rel(api, cache, "Reads/writes", "RESP")
+Rel(api, queue, "Publishes jobs", "AMQP")
+Rel(worker, queue, "Consumes jobs", "AMQP")
+Rel(worker, db, "Reads/writes", "SQL/TCP")
+Rel(api, stripe, "Charges", "HTTPS / JSON")
+Rel(worker, ses, "Sends email", "HTTPS / JSON")
+@enduml

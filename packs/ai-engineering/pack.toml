@@ -1,0 +1,15 @@
+[pack]
+name = "ai-engineering"
+version = "0.11.3"
+description = "Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, AI-usage reporting, and the data contracts AI pipelines depend on."
+
+[pack.adapter-contract]
+version = "0.17"
+
+[pack.install]
+default-scope = "user"
+allowed-scopes = ["user", "repo"]
+
+[pack.links]
+repository = "https://github.com/sananthanarayan/skilldrop"
+homepage = "https://github.com/sananthanarayan/skilldrop#readme"

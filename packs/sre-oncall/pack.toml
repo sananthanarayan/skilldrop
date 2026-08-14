@@ -1,0 +1,15 @@
+[pack]
+name = "sre-oncall"
+version = "0.11.3"
+description = "Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models."
+
+[pack.adapter-contract]
+version = "0.17"
+
+[pack.install]
+default-scope = "user"
+allowed-scopes = ["user", "repo"]
+
+[pack.links]
+repository = "https://github.com/sananthanarayan/skilldrop"
+homepage = "https://github.com/sananthanarayan/skilldrop#readme"

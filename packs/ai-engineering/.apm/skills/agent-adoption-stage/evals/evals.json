@@ -1,0 +1,19 @@
+{
+  "skill_name": "agent-adoption-stage",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We bought Claude Code for our 60 engineers six months ago. Most people use it like autocomplete for one task at a time and still read every diff before merging. Two staff engineers run several sessions at once. Tests are flaky so nobody trusts them. Where are we and what's next?",
+      "assertions": [
+        "Places the team on exactly one stage — no range — citing the observables from the prompt (one agent at a time, every diff read)",
+        "Places on the median engineer and calls out the two power users as an outlier rather than counting them as the stage",
+        "Names the bottleneck as attention/trust rather than review throughput, and connects it to the untrusted test suite",
+        "Prescribes exactly one unlock — a self-verification loop the engineer trusts — not a list of improvements",
+        "Names a guardrail to retire (reading every diff) alongside the one to introduce",
+        "Routes the unlock to a concrete implementation rather than to a product name",
+        "Ends with an observable that would prove the unlock landed and a re-measure date",
+        "Credits the source framework"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "product-manager",
+  "version": "0.11.3",
+  "description": "Direction to requirements: PR/FAQs, strategy frameworks, OKRs, PRDs, journey maps, story splitting, and success measurement.",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://github.com/sananthanarayan/skilldrop",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT"
+}
