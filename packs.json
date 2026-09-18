@@ -1,5 +1,5 @@
 {
-  "$comment": "Virtual skill packs — role-based bundles for one-command install. Packs are METADATA ONLY: skills stay in flat skills/<name> folders (golden rule: skills are discovered by path), a skill may belong to several packs, and every skill must belong to at least one (validate.py enforces both directions). Install a pack with `python3 pack.py <pack> --install`; see README. Rationale: docs/rfcs/0001-skill-packs.md.",
+  "$comment": "Virtual skill packs — role-based bundles for one-command install. Packs are METADATA ONLY: skills stay in flat skills/<name> folders (golden rule: skills are discovered by path), a skill may belong to several packs, and every skill must belong to at least one (validate.py enforces both directions). Install a pack with `python3 pack.py <pack> --install`; see README. Rationale: docs/rfcs/0001-skill-packs.md. `outcomes` (RFC-0026) is the second browse axis: packs say WHO needs a skill, outcomes say WHY someone opens the catalogue. It is the README's nine categories restated as seven outcomes and made machine-readable so the site cannot drift from them. Outcomes are a browse aid only — not an install unit — and validate.py enforces the same two-way check packs get.",
   "version": "0.1.0",
   "packs": {
     "solution-architect": {
@@ -57,7 +57,8 @@
         "release-notes",
         "sonar-onboard",
         "sonar-review",
-        "accessibility-audit"
+        "accessibility-audit",
+        "output-hygiene"
       ]
     },
     "sre-oncall": {
@@ -80,7 +81,8 @@
         "exec-summary",
         "decision-log",
         "guide-builder",
-        "doc-critique"
+        "doc-critique",
+        "output-hygiene"
       ]
     },
     "ai-engineering": {
@@ -98,6 +100,100 @@
         "ai-adoption-rollout",
         "ai-usage-policy",
         "agent-adoption-stage"
+      ]
+    }
+  },
+  "outcomes": {
+    "decide-what-to-build": {
+      "description": "Turn a direction into a committed, measurable plan: press releases, strategy frameworks, OKRs, business cases, requirements, PRDs, and the metrics that will say whether it worked.",
+      "skills": [
+        "prfaq",
+        "strategy-analysis",
+        "okr-cascade",
+        "business-case",
+        "capacity-cost-model",
+        "requirements-interview",
+        "prd-draft",
+        "nfr-spec",
+        "success-metrics",
+        "user-story-splitter",
+        "user-journey-map"
+      ]
+    },
+    "design-the-system": {
+      "description": "Commit the shape before the code: decision records, design docs, diagrams, contracts, schemas, migration and threat models, and the design of any agentic parts.",
+      "skills": [
+        "adr-generator",
+        "design-doc",
+        "architecture-diagrams",
+        "reverse-architecture",
+        "figma-diagrams",
+        "api-contract-draft",
+        "db-schema-design",
+        "data-contract",
+        "tech-comparison-matrix",
+        "threat-model",
+        "agent-threat-model",
+        "migration-plan",
+        "agent-loop-design",
+        "subagent-design",
+        "agent-budget"
+      ]
+    },
+    "build-and-review-software": {
+      "description": "The loop around the code itself: supervised implementation, adversarial review panels, test plans, triage, accessibility and static-analysis passes, and the policy files agents read.",
+      "skills": [
+        "feature-implement-loop",
+        "pre-merge-review",
+        "devils-advocate",
+        "council-review",
+        "accessibility-audit",
+        "sonar-onboard",
+        "sonar-review",
+        "test-plan-generator",
+        "bug-triage",
+        "agents-md-generator",
+        "llm-eval-harness"
+      ]
+    },
+    "run-and-recover-the-service": {
+      "description": "Operate what shipped: runbooks, observability design, release notes, incident communication, and the postmortem that closes the loop.",
+      "skills": [
+        "runbook-generator",
+        "observability-plan",
+        "release-notes",
+        "incident-comms",
+        "postmortem-generator"
+      ]
+    },
+    "explain-it-to-decision-makers": {
+      "description": "Get a non-technical audience to a decision: audience profiling, deck outlines and real decks, exec summaries, decision logs, and how-to guides.",
+      "skills": [
+        "audience-profile",
+        "slide-outliner",
+        "deck-builder",
+        "exec-summary",
+        "decision-log",
+        "guide-builder"
+      ]
+    },
+    "govern-ai-use": {
+      "description": "Adopt AI deliberately and prove what it is doing: readiness assessment, use-case triage, rollout plans, acceptable-use policy, adoption staging, and usage reporting.",
+      "skills": [
+        "ai-readiness-assessment",
+        "ai-use-case-triage",
+        "ai-adoption-rollout",
+        "ai-usage-policy",
+        "agent-adoption-stage",
+        "ai-usage-report"
+      ]
+    },
+    "get-a-draft-ready-to-ship": {
+      "description": "The passes either side of a generator: collect a messy input into a structured brief, critique the argument, and strip the machine artifacts before it leaves the building.",
+      "skills": [
+        "brief-intake",
+        "doc-critique",
+        "output-hygiene"
       ]
     }
   }

@@ -16,6 +16,11 @@ docs/designs/ide-primitive-coverage.md, which is why Gemini CLI is absent.
 
 The page is one self-contained file: CSS and JS inline, no external requests, no absolute
 paths. That is what makes it work unchanged under the /skilldrop/ project-pages base path.
+
+RFC-0026 added three sources, all read the same way — never retyped here: the `outcomes`
+block in packs.json (the second browse axis), CHANGELOG.md (the Recently shipped strip),
+and the version in package.json. The changelog's newest version must match package.json or
+the build refuses, for the same reason collect() refuses a half-row catalogue.
 """
 import argparse
 import html
@@ -32,6 +37,13 @@ ASSETS = os.path.join(ROOT, "assets")
 # with rsvg-convert and committed, so the build itself stays stdlib-only).
 BINARY_ASSETS = ["og.png"]
 REPO_URL = "https://github.com/sananthanarayan/skilldrop"
+NPM_URL = "https://www.npmjs.com/package/skilldrop-cli"
+# How many skill rows render before the "show all" button. Past this the list stops being
+# scannable and starts being a dump; a query, a filter, or a deep link reveals the rest.
+PREVIEW_ROWS = 12
+# How many releases the "Recently shipped" strip carries. Three is enough to show a pulse
+# without turning the landing page into a changelog.
+SHIPPED_ENTRIES = 3
 SITE_URL = "https://sananthanarayan.github.io/skilldrop/"
 
 # --- page copy -------------------------------------------------------------------
@@ -61,6 +73,11 @@ PITCH = {
     ),
     "install_h2": "Start in one command.",
     "catalogue_h2": "The catalogue.",
+    "shipped_h2": "Still moving.",
+    "shipped_lede": (
+        "Every release is a version on npm and a line here. Nothing on this page is a roadmap — "
+        "it is what already shipped, so it can be checked."
+    ),
     "reviewers_h2": "Skills generate. Reviewers push back.",
     "reviewers_lede": (
         "Three reviewer subagents ship alongside the skills — each a separate pass, because "
@@ -104,6 +121,7 @@ NAV = [
     ("Portability", "#portability", False),
     ("Catalogue", "#catalogue", False),
     ("Reviewers", "#reviewers", False),
+    ("Shipped", "#shipped", False),
     ("GitHub", REPO_URL, True),
 ]
 
@@ -165,11 +183,62 @@ def collect():
     pack_meta = [{"name": k, "description": v["description"],
                   "count": len(v["skills"]), "skills": sorted(v["skills"])}
                  for k, v in packs.items()]
-    return skills, pack_meta
+
+    # RFC-0026: outcomes are the second browse axis, read from the same file as packs.
+    # validate.py guarantees every skill appears in one, so a chip can never be a dead end.
+    doc = read_json(os.path.join(ROOT, "packs.json"))
+    outcome_of = {}
+    for oname, o in doc.get("outcomes", {}).items():
+        for sk in o["skills"]:
+            outcome_of.setdefault(sk, []).append(oname)
+    for sk in skills:
+        sk["outcomes"] = outcome_of.get(sk["name"], [])
+    outcome_meta = [{"name": k, "description": v["description"], "count": len(v["skills"])}
+                    for k, v in doc.get("outcomes", {}).items()]
+
+    return skills, pack_meta, outcome_meta
+
+
+RELEASE_RE = re.compile(r"^##\s+(\d+\.\d+\.\d+)\s+[—-]\s+(\d{4}-\d{2}-\d{2})\s*$")
+
+
+def changelog():
+    """CHANGELOG.md -> [{version, date, bullets}], newest first. The newest entry must match
+    package.json, or a release could ship with nothing said about it — the same refuse-to-render
+    discipline collect() applies to a half-row skill."""
+    path = os.path.join(ROOT, "CHANGELOG.md")
+    version = read_json(os.path.join(ROOT, "package.json"))["version"]
+    releases, current = [], None
+    for line in open(path, encoding="utf-8"):
+        m = RELEASE_RE.match(line.rstrip())
+        if m:
+            current = {"version": m.group(1), "date": m.group(2), "bullets": []}
+            releases.append(current)
+        elif current is not None and line.startswith("- "):
+            current["bullets"].append(line[2:].strip())
+
+    if not releases:
+        print("build_site.py: refusing to build — CHANGELOG.md has no `## <version> — <date>` "
+              "entries", file=sys.stderr)
+        sys.exit(1)
+    if releases[0]["version"] != version:
+        print(f"build_site.py: refusing to build — CHANGELOG.md leads with "
+              f"{releases[0]['version']} but package.json says {version}. One of them is wrong.",
+              file=sys.stderr)
+        sys.exit(1)
+    return version, releases[:SHIPPED_ENTRIES]
 
 
 def esc(s):
     return html.escape(str(s), quote=True)
+
+
+def inline_md(s):
+    """Escape first, then re-admit the only two inline marks a changelog bullet uses.
+    Anything richer belongs in CHANGELOG.md, not on the landing page."""
+    out = esc(s)
+    out = re.sub(r"`([^`]+)`", r"<code>\1</code>", out)
+    return re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", out)
 
 
 def card(s):
@@ -179,6 +248,7 @@ def card(s):
     tier = s["tier"]
     return f"""<li class="skill" id="{esc(s['name'])}"
    data-tier="{esc(tier)}" data-packs="{esc(' '.join(s['packs']))}"
+   data-outcomes="{esc(' '.join(s.get('outcomes', [])))}"
    data-text="{esc((s['name'] + ' ' + s['description'] + ' ' + ' '.join(s['tags'])).lower())}">
   <a class="skill__link" href="{REPO_URL}/blob/main/skills/{esc(s['name'])}/SKILL.md"
      title="{esc(s['description'])}">
@@ -199,7 +269,7 @@ def terminal(lines):
 </div><div class="term__body">{body}</div></div>"""
 
 
-def render(skills, packs):
+def render(skills, packs, outcomes, version, releases):
     tiers = ["light", "standard", "heavy"]
     tier_counts = {t: sum(1 for s in skills if s["tier"] == t) for t in tiers}
 
@@ -254,6 +324,16 @@ def render(skills, packs):
     tier_chips = "".join(
         f'<button class="chip chip--{t}" data-filter="tier" data-value="{t}">{t} <b>{tier_counts[t]}</b></button>'
         for t in tiers)
+    outcome_chips = "".join(
+        f'<button class="chip" data-filter="outcome" data-value="{esc(o["name"])}" '
+        f'title="{esc(o["description"])}">{esc(o["name"].replace("-", " "))} <b>{o["count"]}</b></button>'
+        for o in outcomes)
+    shipped_html = "".join(
+        f"""<li class="ship">
+      <p class="ship__head"><a class="ship__v" href="{NPM_URL}/v/{esc(r['version'])}">{esc(r['version'])}</a>
+        <time class="ship__d" datetime="{esc(r['date'])}">{esc(r['date'])}</time></p>
+      <ul class="ship__list">{"".join(f'<li>{inline_md(b)}</li>' for b in r['bullets'])}</ul>
+    </li>""" for r in releases)
     cards = "\n".join(card(s) for s in skills)
     nav_links = "".join(
         f'<li><a class="nav__link{" nav__link--ext" if ext else ""}" href="{esc(href)}">'
@@ -427,17 +507,31 @@ a {{ color:var(--accent-700); }}
 }}
 .pack__cta:hover {{ text-decoration:underline; }}
 
-/* progressive disclosure — the 49-row list stays closed until asked for */
-.more {{ margin-top:2.6rem; border-top:1px solid var(--border); }}
-.more__summary {{
-  cursor:pointer; list-style:none; display:flex; align-items:center; gap:.5rem;
-  padding:1.4rem 0 .2rem; font-weight:600; font-size:1rem; color:var(--accent-700);
+/* The list is open. Rows past PREVIEW_ROWS are folded by JS, never by markup — with
+   scripting off every row renders, because a search box that needs JS must not gate the
+   content behind it (RFC-0026). */
+.more {{ margin-top:2.6rem; border-top:1px solid var(--border); padding-top:1.6rem; }}
+.more__h {{ font-size:1rem; margin:0 0 .2rem; letter-spacing:-.01em; }}
+.more__btn {{
+  display:block; width:100%; margin-top:1.1rem; padding:.85rem 1rem; cursor:pointer;
+  font:600 .88rem/1 inherit; color:var(--accent-700); background:var(--card);
+  border:1px solid var(--border); border-radius:var(--r-sm);
 }}
-.more__summary::-webkit-details-marker {{ display:none; }}
-.more__summary:hover {{ text-decoration:underline; }}
-.more__summary:focus-visible {{ outline:2px solid var(--accent); outline-offset:3px; }}
-.more__arrow {{ transition:transform .18s ease; }}
-.more[open] .more__arrow {{ transform:rotate(90deg); }}
+.more__btn:hover {{ border-color:var(--accent); }}
+.more__btn:focus-visible {{ outline:2px solid var(--accent); outline-offset:2px; }}
+
+/* recently shipped */
+.ships {{ list-style:none; margin:0; padding:0; display:grid; gap:1.1rem;
+  grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); }}
+.ship {{ background:var(--card); border:1px solid var(--border); border-radius:var(--r);
+  padding:1.1rem 1.2rem; }}
+.ship__head {{ display:flex; align-items:baseline; justify-content:space-between; gap:.6rem;
+  margin:0 0 .6rem; }}
+.ship__v {{ font:700 .95rem var(--mono); text-decoration:none; }}
+.ship__v:hover {{ text-decoration:underline; }}
+.ship__d {{ font-size:.75rem; color:var(--fg-muted); }}
+.ship__list {{ margin:0; padding-left:1.05rem; font-size:.88rem; color:var(--fg-muted); }}
+.ship__list li + li {{ margin-top:.35rem; }}
 
 /* catalogue */
 .controls {{ position:sticky; top:0; z-index:5; background:var(--surface);
@@ -549,6 +643,13 @@ a {{ color:var(--accent-700); }}
 }}
 .footer__brand {{ margin:0; font:700 .95rem var(--mono); color:#fff; letter-spacing:-.01em; }}
 .footer__links {{ display:flex; flex-wrap:wrap; gap:1.35rem; }}
+.footer__cols {{ display:grid; gap:1.6rem 2.6rem; flex-basis:100%;
+  grid-template-columns:repeat(auto-fit,minmax(9rem,1fr)); margin-top:.6rem; }}
+.footer__col h3 {{ font-size:.72rem; text-transform:uppercase; letter-spacing:.09em;
+  color:var(--w-60); margin:0 0 .6rem; font-weight:600; }}
+.footer__col ul {{ list-style:none; margin:0; padding:0; display:grid; gap:.42rem; }}
+.footer__col a {{ color:var(--w-80); text-decoration:none; }}
+.footer__col a:hover {{ color:#fff; text-decoration:underline; }}
 .footer__links a {{ color:var(--w-80); text-decoration:none; }}
 .footer__links a:hover {{ color:#fff; text-decoration:underline; }}
 .footer__copy {{ margin:0; flex-basis:100%; color:var(--w-60); font-size:.8rem; }}
@@ -633,13 +734,12 @@ a {{ color:var(--accent-700); }}
     <p class="lede">Start with a role. A pack is a named list — skills never move out of their flat folders, so installing one is the same copy as installing any other.</p>
     <ul class="grid-3">{pack_cards}</ul>
 
-    <details class="more" id="all">
-      <summary class="more__summary">
-        <span>See all {len(skills)} skills</span><span class="more__arrow">&rarr;</span>
-      </summary>
+    <div class="more" id="all">
+      <h3 class="more__h">All {len(skills)} skills</h3>
       <div class="controls">
         <label class="visually-hidden" for="q">Search skills</label>
         <input id="q" type="search" placeholder="Search by name, description, or tag…" autocomplete="off">
+        <div class="chips"><span class="chips__lbl">outcome</span>{outcome_chips}</div>
         <div class="chips"><span class="chips__lbl">pack</span>{pack_chips}</div>
         <div class="chips"><span class="chips__lbl">tier</span>{tier_chips}
           <button class="chip" id="clear">clear</button><span id="count"></span></div>
@@ -648,7 +748,8 @@ a {{ color:var(--accent-700); }}
 {cards}
       </ul>
       <p class="empty" id="empty" hidden>No skill matches those filters.</p>
-    </details>
+      <button class="more__btn" id="showall" hidden></button>
+    </div>
   </div>
 </section>
 
@@ -659,6 +760,16 @@ a {{ color:var(--accent-700); }}
     <p class="lede">{esc(PITCH['reviewers_lede'])}</p>
     <ul class="grid-3">{agent_cards}</ul>
     <p class="pack__install" style="margin-top:1.5rem"><code>skilldrop install --panel review</code> &mdash; all three, plus the orchestrator that runs them.</p>
+  </div>
+</section>
+
+<section class="section" id="shipped">
+  <div class="inner">
+    <p class="eyebrow">Shipped</p>
+    <h2>{esc(PITCH['shipped_h2'])}</h2>
+    <p class="lede">{esc(PITCH['shipped_lede'])}</p>
+    <ul class="ships">{shipped_html}</ul>
+    <p class="tabs__note" style="margin-top:1.4rem"><a href="{REPO_URL}/blob/main/CHANGELOG.md">Full changelog &rarr;</a></p>
   </div>
 </section>
 
@@ -676,42 +787,100 @@ a {{ color:var(--accent-700); }}
 
 <footer class="footer"><div class="footer__inner">
   <p class="footer__brand">skilldrop</p>
-  <nav class="footer__links" aria-label="Footer">
-    <a href="{REPO_URL}">GitHub</a>
-    <a href="https://www.npmjs.com/package/skilldrop-cli">npm</a>
+  <nav class="footer__cols" aria-label="Footer">
+    <div class="footer__col"><h3>Project</h3><ul>
+      <li><a href="{REPO_URL}">GitHub</a></li>
+      <li><a href="{NPM_URL}">npm</a></li>
+      <li><a href="{REPO_URL}/blob/main/LICENSE">MIT licence</a></li>
+    </ul></div>
+    <div class="footer__col"><h3>Docs</h3><ul>
+      <li><a href="{REPO_URL}#readme">README</a></li>
+      <li><a href="{REPO_URL}/blob/main/AGENTS.md">AGENTS.md</a></li>
+      <li><a href="{REPO_URL}/blob/main/MODEL-ROUTING.md">Model routing</a></li>
+      <li><a href="{REPO_URL}/tree/main/docs/rfcs">RFCs</a></li>
+    </ul></div>
+    <div class="footer__col"><h3>Contribute</h3><ul>
+      <li><a href="{REPO_URL}/blob/main/CONTRIBUTING.md">Contributing</a></li>
+      <li><a href="{REPO_URL}/blob/main/SECURITY.md">Security</a></li>
+      <li><a href="{REPO_URL}/issues">Issues</a></li>
+    </ul></div>
+    <div class="footer__col"><h3>Release</h3><ul>
+      <li><a href="{REPO_URL}/blob/main/CHANGELOG.md">Changelog</a></li>
+      <li><a href="{REPO_URL}/releases">Releases</a></li>
+      <li><a href="{NPM_URL}/v/{esc(version)}">v{esc(version)}</a></li>
+    </ul></div>
   </nav>
-  <p class="footer__copy">&copy; 2026 &middot; {esc(PITCH['footer_tagline'])}</p>
+  <p class="footer__copy">&copy; 2026 &middot; {esc(PITCH['footer_tagline'])} &middot; v{esc(version)}</p>
 </div></footer>
 
 <script>
 (function () {{
+  var PREVIEW = {PREVIEW_ROWS};
   var q = document.getElementById('q'), grid = document.getElementById('grid');
   var cards = Array.prototype.slice.call(grid.children);
   var count = document.getElementById('count'), empty = document.getElementById('empty');
-  var active = {{ pack: null, tier: null }};
+  var showall = document.getElementById('showall');
+  var KINDS = ['outcome', 'pack', 'tier'];
+  var active = {{ outcome: null, pack: null, tier: null }};
+  var expanded = false;
 
   function sync() {{
-    ['pack', 'tier'].forEach(function (kind) {{
-      document.querySelectorAll('.chip[data-filter="' + kind + '"]').forEach(function (o) {{
-        o.setAttribute('aria-pressed', String(o.dataset.value === active[kind]));
+    KINDS.forEach(function (kind) {{
+      document.querySelectorAll('[data-filter="' + kind + '"]').forEach(function (o) {{
+        if (o.classList.contains('chip')) {{
+          o.setAttribute('aria-pressed', String(o.dataset.value === active[kind]));
+        }}
       }});
     }});
   }}
 
-  function apply() {{
-    var text = q.value.trim().toLowerCase(), shown = 0;
-    cards.forEach(function (c) {{
-      var ok = (!text || c.dataset.text.indexOf(text) !== -1)
-        && (!active.pack || c.dataset.packs.split(' ').indexOf(active.pack) !== -1)
-        && (!active.tier || c.dataset.tier === active.tier);
-      c.hidden = !ok;
-      if (ok) shown++;
-    }});
-    count.textContent = shown + ' of ' + cards.length;
-    empty.hidden = shown !== 0;
+  // The URL is the filter state. A pack view, a tier view, a search — each is a link
+  // someone can send, which is the whole reason this page does not need sub-pages.
+  function writeURL() {{
+    var p = new URLSearchParams();
+    if (q.value.trim()) p.set('q', q.value.trim());
+    KINDS.forEach(function (k) {{ if (active[k]) p.set(k, active[k]); }});
+    var qs = p.toString();
+    // replaceState throws on a file:// origin in some browsers. A failed URL update must
+    // never take the search box down with it.
+    try {{
+      history.replaceState(null, '', (qs ? '?' + qs : location.pathname) + location.hash);
+    }} catch (e) {{ /* preview-only; the filters still work */ }}
   }}
 
-  var more = document.getElementById('all');
+  function readURL() {{
+    var p = new URLSearchParams(location.search);
+    if (p.get('q')) q.value = p.get('q');
+    KINDS.forEach(function (k) {{ if (p.get(k)) active[k] = p.get(k); }});
+    return !!(p.get('q') || active.outcome || active.pack || active.tier);
+  }}
+
+  function apply() {{
+    var text = q.value.trim().toLowerCase();
+    var narrowed = !!(text || active.outcome || active.pack || active.tier);
+    var matched = [];
+    cards.forEach(function (c) {{
+      var ok = (!text || c.dataset.text.indexOf(text) !== -1)
+        && (!active.outcome || c.dataset.outcomes.split(' ').indexOf(active.outcome) !== -1)
+        && (!active.pack || c.dataset.packs.split(' ').indexOf(active.pack) !== -1)
+        && (!active.tier || c.dataset.tier === active.tier);
+      if (ok) matched.push(c);
+      c.hidden = !ok;
+    }});
+    // Fold the tail only on the untouched default view. The moment someone narrows or
+    // expands, every match is theirs to see.
+    var fold = !narrowed && !expanded && matched.length > PREVIEW;
+    if (fold) {{
+      matched.slice(PREVIEW).forEach(function (c) {{ c.hidden = true; }});
+      showall.hidden = false;
+      showall.textContent = 'Show all ' + matched.length + ' skills \u2192';
+    }} else {{
+      showall.hidden = true;
+    }}
+    count.textContent = (fold ? PREVIEW + ' of ' + matched.length : matched.length + ' of ' + cards.length);
+    empty.hidden = matched.length !== 0;
+    writeURL();
+  }}
 
   document.querySelectorAll('[data-filter]').forEach(function (b) {{
     b.addEventListener('click', function () {{
@@ -720,31 +889,33 @@ a {{ color:var(--accent-700); }}
       sync(); apply();
       // A pack card is the entry point into the list — opening it is the whole gesture.
       if (b.classList.contains('pack__cta')) {{
-        more.open = true;
-        more.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+        document.getElementById('all').scrollIntoView({{ behavior: 'smooth', block: 'start' }});
       }}
     }});
   }});
 
-  // A deep link to a single skill has to open the list, or it lands on a closed section.
+  showall.addEventListener('click', function () {{ expanded = true; apply(); }});
+
+  // A deep link to a single skill must survive the fold, or it lands on a hidden row.
   function openForHash() {{
     var id = location.hash.slice(1);
     if (!id) return;
     var el = document.getElementById(id);
     if (el && (id === 'all' || el.classList.contains('skill'))) {{
-      more.open = true;
+      expanded = true; apply();
       el.scrollIntoView({{ block: 'center' }});
     }}
   }}
   window.addEventListener('hashchange', openForHash);
-  openForHash();
 
   document.getElementById('clear').addEventListener('click', function () {{
-    active = {{ pack: null, tier: null }}; q.value = ''; sync(); apply();
+    active = {{ outcome: null, pack: null, tier: null }}; q.value = ''; expanded = false;
+    sync(); apply();
   }});
 
   q.addEventListener('input', apply);
-  sync(); apply();
+  if (readURL()) expanded = true;
+  sync(); apply(); openForHash();
 }})();
 </script>
 </body>
@@ -752,8 +923,9 @@ a {{ color:var(--accent-700); }}
 """
 
 
-def payload(skills, packs):
-    return {"site": SITE_URL, "repo": REPO_URL, "packs": packs, "skills": skills}
+def payload(skills, packs, outcomes, version, releases):
+    return {"site": SITE_URL, "repo": REPO_URL, "version": version, "releases": releases,
+            "packs": packs, "outcomes": outcomes, "skills": skills}
 
 
 def ld_json(skills):
@@ -794,10 +966,10 @@ def agents():
     return out
 
 
-def outputs(skills, packs):
+def outputs(skills, packs, outcomes, version, releases):
     return {
-        "index.html": render(skills, packs),
-        "catalogue.json": json.dumps(payload(skills, packs), indent=2) + "\n",
+        "index.html": render(skills, packs, outcomes, version, releases),
+        "catalogue.json": json.dumps(payload(skills, packs, outcomes, version, releases), indent=2) + "\n",
         "favicon.svg": open(os.path.join(ASSETS, "favicon.svg"), encoding="utf-8").read(),
         "robots.txt": f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}sitemap.xml\n",
         "sitemap.xml": (
@@ -815,8 +987,9 @@ def main():
     ap.add_argument("--check", action="store_true", help="exit 1 if the output would differ from what is on disk")
     args = ap.parse_args()
 
-    skills, packs = collect()
-    files = outputs(skills, packs)
+    skills, packs, outcomes = collect()
+    version, releases = changelog()
+    files = outputs(skills, packs, outcomes, version, releases)
 
     if args.check:
         stale = []

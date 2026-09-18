@@ -28,6 +28,8 @@ Checks (FAIL):
     (reference.md, references/, lenses/, rubrics/) is linked from SKILL.md; and
     prose markdown links across skills/agents/docs/root docs don't dangle
     (fenced blocks + {template} lines + placeholder targets are skipped)
+  - (RFC-0026) every skill belongs to at least one `outcomes` entry in packs.json,
+    and every outcome entry names a real skill folder
   - (RFC-0016) every SKILL.md has a `## Quality bar` and `## Anti-patterns`
     section (golden rule 7); a skill with scripts/ cites both the
     ${CLAUDE_SKILL_DIR}/ and plain scripts/ forms; and a heavy-tier judgment
@@ -244,7 +246,8 @@ def main():
     for r in sorted(set(routing) - dir_set):
         fail("model-routing.json", f"entry '{r}' has no skill folder")
 
-    packs = json.load(open(os.path.join(ROOT, "packs.json")))["packs"]
+    packs_doc = json.load(open(os.path.join(ROOT, "packs.json")))
+    packs = packs_doc["packs"]
     packed = set()
     for pname, pack in packs.items():
         for s in pack.get("skills", []):
@@ -253,6 +256,22 @@ def main():
             packed.add(s)
     for s in sorted(dir_set - packed):
         fail("packs.json", f"skill '{s}' belongs to no pack — every skill needs an audience")
+
+    # RFC-0026: outcomes are the site's second browse axis. Same two-way check as packs, so a
+    # new skill can't quietly become unreachable from the outcome chips.
+    outcomes = packs_doc.get("outcomes", {})
+    if not outcomes:
+        fail("packs.json", "no `outcomes` block — the site's outcome axis is generated from it (RFC-0026)")
+    outcomed = set()
+    for oname, outcome in outcomes.items():
+        if not outcome.get("description"):
+            fail("packs.json", f"outcome '{oname}' needs a description — it is the chip's tooltip")
+        for s in outcome.get("skills", []):
+            if s not in dir_set:
+                fail("packs.json", f"outcome '{oname}' lists '{s}', which is not a skill folder")
+            outcomed.add(s)
+    for s in sorted(dir_set - outcomed):
+        fail("packs.json", f"skill '{s}' belongs to no outcome — add it to one in packs.json (RFC-0026)")
 
     # The Claude Code plugin marketplace (RFC-0014) is generated from package.json;
     # a committed file drifting from that generator fails here so it can't ship stale.
