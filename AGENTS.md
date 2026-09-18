@@ -51,11 +51,13 @@ git push origin feat/<short-kebab-name>
 gh pr create --base main --head <handle>:feat/<short-kebab-name>
 ```
 
-There is **no `make` target and no test command**. The automated checks are [`validate.py`](validate.py) — a stdlib-only consistency lint (name triple-match, tier sync with `model-routing.json`, `related`↔SKILL.md reference sync, description sync, pack membership, evals shape, reference + link integrity and orphaned-material (RFC-0015), `Quality bar`/`Anti-patterns` sections + script dual-referencing + a heavy-tier `examples/` oracle (RFC-0016), and — for `agents/` — filename↔frontmatter `name` plus every `` `x` subagent `` a SKILL.md delegates to resolving to a real agent file) — and the CLI's structural check (`node bin/skilldrop.js validate`); both run locally before every commit and in CI on every push/PR ([`.github/workflows/release.yml`](.github/workflows/release.yml)). Everything beyond that is the manual-test pass documented in **Authoring a new skill** below: install the skill into a clean Claude Code session, run it end-to-end on a realistic input, and verify the output meets the skill's own quality bar.
+There is **no `make` target and no test command**. The automated checks are [`validate.py`](validate.py) — a stdlib-only consistency lint (name triple-match, tier sync with `model-routing.json`, `related`↔SKILL.md reference sync, description sync, pack membership, outcome membership (RFC-0026), evals shape, reference + link integrity and orphaned-material (RFC-0015), `Quality bar`/`Anti-patterns` sections + script dual-referencing + a heavy-tier `examples/` oracle (RFC-0016), and — for `agents/` — filename↔frontmatter `name` plus every `` `x` subagent `` a SKILL.md delegates to resolving to a real agent file) — and the CLI's structural check (`node bin/skilldrop.js validate`); both run locally before every commit and in CI on every push/PR ([`.github/workflows/release.yml`](.github/workflows/release.yml)). Everything beyond that is the manual-test pass documented in **Authoring a new skill** below: install the skill into a clean Claude Code session, run it end-to-end on a realistic input, and verify the output meets the skill's own quality bar.
 
 ## Releasing
 
 The npm package (`skilldrop-cli`) releases automatically: bump `version` in [`package.json`](package.json), merge to `main`, and CI publishes via npm OIDC trusted publishing with provenance, then pushes a `v<version>` tag — version-gated, so a push without a bump publishes nothing (see [RFC-0004](docs/rfcs/0004-release-automation.md)). Bump the version whenever a skill change is worth shipping; users' `skilldrop outdated` only lights up on releases. The manual fallback (`npm publish` with the 2FA browser step) still works from the repo root.
+
+Every version bump lands with a matching entry at the top of [`CHANGELOG.md`](CHANGELOG.md) — `## <version> — <YYYY-MM-DD>` plus one bullet per user-visible change, saying what a user can now do rather than which files moved. This is mechanically enforced from an unusual direction: `build_site.py` refuses to render the site when the changelog's newest version disagrees with `package.json`, so an undocumented release cannot deploy.
 
 **Bump the third digit, one step at a time.** `0.9.0` → `0.9.1` → `0.9.2`. Never skip a number, and don't reach for a bigger bump because a release *feels* big. A **minor** release is a **third-digit** bump (`0.9.1` → `0.9.2`) — new skills, skill edits, pack changes, tier changes, docs, new CLI commands and flags, and bug fixes all ship this way. A **major** release is a **second-digit** bump (`0.9.x` → `0.10.0`) — a deliberate milestone the maintainer calls, not something a single feature triggers. `1.0.0` waits for an explicit stability commitment.
 
@@ -73,6 +75,8 @@ The npm package (`skilldrop-cli`) releases automatically: bump `version` in [`pa
 | RFC for a new skill or structural change | `docs/rfcs/NNNN-<kebab-slug>.md` — copy [`docs/rfcs/0000-template.md`](docs/rfcs/0000-template.md), next sequential number |
 | Long-form design doc (bigger than an RFC, not a skill) | `docs/designs/<name>.md` — e.g. the CLI command surface, the telemetry collection spec |
 | Pack membership for a skill | `packs.json` — add the skill to at least one pack |
+| Outcome membership for a skill | `packs.json` `outcomes` — add the skill to at least one outcome (RFC-0026); packs say *who*, outcomes say *why* |
+| User-visible change for a release | `CHANGELOG.md` — one bullet under `## <version> — <YYYY-MM-DD>`; the site reads the newest three and `build_site.py` refuses to build if the top version disagrees with `package.json` |
 | Executable helper | `skills/<skill-name>/scripts/<name>.py` (or `.js`, `.sh`) |
 | Python dep manifest for a skill | `skills/<skill-name>/requirements.txt` |
 | Claude Code project settings | `.claude/settings.json` — optional config (hooks, permissions, env). Inert for non-Claude tools. |
@@ -228,6 +232,8 @@ See `skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 - [ ] **`related` synced** — every sibling skill referenced in `SKILL.md` is in the manifest's `related` list.
 - [ ] **Non-interactive line present** if the skill has a hard-stop condition — a self-contained sentence saying which inputs degrade to `[assumption]` and which emit `BLOCKED: need <X>`.
 - [ ] **Pack membership** — new skill added to at least one pack in `packs.json`.
+- [ ] **Outcome membership** — new skill added to at least one entry in `packs.json` `outcomes` (RFC-0026).
+- [ ] **`CHANGELOG.md` entry** if the version was bumped — the site build fails without one.
 - [ ] **GitHub About updated** if the skill/pack/subagent counts changed — `gh repo edit --description "…"`. This is the one surface `validate.py` cannot see (it is stdlib-only and off-repo), so it is the one that goes stale: it sat at `62 skills … 7 packs` for a while after the catalogue was 56 and 6. It is also what shows in search results and on the repo card, so it is the first thing a stranger reads.
 - [ ] **`python3 validate.py` passes** with no failures.
 
@@ -286,6 +292,7 @@ Categories say what a skill *is*; packs say *who needs it*. [`packs.json`](packs
 - **Packs are metadata only.** Skills never move out of flat `skills/<name>` folders (golden rules 1–2); a pack is a named list, nothing more.
 - **Packs may overlap** — `brief-intake` legitimately serves three roles. A skill listed in every pack is a smell (it means the packs aren't choosing).
 - **Every skill belongs to at least one pack.** A skill with no audience shouldn't have passed the RFC. `validate.py` enforces both this and that every pack entry is a real skill folder.
+- **Every skill belongs to at least one outcome.** `packs.json` carries a second block, `outcomes` (RFC-0026) — the README's nine categories restated as seven outcomes and made machine-readable, so the catalogue site can offer a *why am I here* axis beside the *who am I* one. Outcomes are a browse aid, never an install unit; the CLI does not take `--outcome`. `validate.py` applies the same two-way check packs get.
 
 ## Model routing
 
@@ -305,7 +312,8 @@ When you add or change a skill, set its tier in **both** `model-routing.json` an
 - Human-facing contributor entry point (lanes, gates, release): [CONTRIBUTING.md](CONTRIBUTING.md) — a router over this file, which stays the source of truth
 - Repo overview & per-IDE install steps: [README.md](README.md)
 - RFCs (template + decisions): [docs/rfcs/](docs/rfcs/)
-- Skill packs: [packs.json](packs.json) + [pack.py](pack.py)
+- Skill packs and outcomes: [packs.json](packs.json) + [pack.py](pack.py)
+- Release history: [CHANGELOG.md](CHANGELOG.md)
 - CLI (npm `skilldrop-cli`): [bin/skilldrop.js](bin/skilldrop.js) + [package.json](package.json) — copies skills verbatim, never transforms them; the npm `files` list must keep `skills/`, `packs.json`, `model-routing.json`
 - Model routing: [MODEL-ROUTING.md](MODEL-ROUTING.md) + [model-routing.json](model-routing.json)
 - Claude Code project settings: [.claude/settings.json](.claude/settings.json) — currently empty
