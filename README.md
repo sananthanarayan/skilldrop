@@ -297,14 +297,29 @@ npx skilldrop-cli list --json                            # machine-readable: lis
 
 ### Or: the Claude Code plugin marketplace
 
-skilldrop is also a **Claude Code plugin marketplace** — install the whole catalogue as one plugin, no npm step:
+skilldrop is also a **Claude Code plugin marketplace** — one marketplace, seven plugins, no npm step. Add it once:
 
 ```text
 /plugin marketplace add sananthanarayan/skilldrop
-/plugin install skilldrop@skilldrop
 ```
 
-Every skill then invokes as `/skilldrop:<name>` (e.g. `/skilldrop:prfaq`), and the reviewer subagents come with it. The marketplace ships the flat `skills/` and `agents/` trees at the repo root unchanged — same copy-install premise, expressed in Claude's own plugin format. `.claude-plugin/{marketplace,plugin}.json` are generated from `package.json` by [`build_marketplace.py`](build_marketplace.py) (`--check` guards drift in CI). Use the CLI above when you want per-pack or per-skill granularity, another IDE, or hooks; use the marketplace when you're in Claude Code and want everything in two lines. Rationale and the deferred per-pack-plugin step: [RFC-0014](docs/rfcs/0014-agentbundle-interop.md).
+Then take the whole catalogue, or just your role's pack:
+
+```text
+/plugin install skilldrop@skilldrop             # all 57 skills + 3 reviewer subagents
+/plugin install solution-architect@skilldrop    # 17 skills
+/plugin install dev-team@skilldrop              # 14 skills + the 3 reviewer subagents
+/plugin install product-manager@skilldrop       # 13 skills
+/plugin install ai-engineering@skilldrop        # 12 skills
+/plugin install stakeholder-comms@skilldrop     # 9 skills
+/plugin install sre-oncall@skilldrop            # 5 skills
+```
+
+Every skill then invokes as `/<plugin>:<name>` (e.g. `/skilldrop:prfaq`). The whole-catalogue plugin ships the flat `skills/` and `agents/` trees at the repo root unchanged — same copy-install premise, expressed in Claude's own plugin format.
+
+The six **pack plugins** work differently, because a plugin's skills have to sit in a `skills/` folder inside the plugin. Rather than duplicate every skill into six directories on `main` — physical packs, which [RFC-0001](docs/rfcs/0001-skill-packs.md) rejected — the marketplace entries use Claude's `git-subdir` source to point at `packs/<name>/` on a generated [`plugins`](https://github.com/sananthanarayan/skilldrop/tree/plugins) branch, rebuilt by CI on every push to main. Nothing moves in the source tree, and you still only ever type the one `marketplace add`. A pack carries the reviewer subagents its own skills delegate to, so `dev-team` brings the review panel and `sre-oncall` does not.
+
+`.claude-plugin/{marketplace,plugin}.json` are generated from `package.json` + `packs.json` by [`build_marketplace.py`](build_marketplace.py) (`--check` guards drift in CI; `--dist` renders the branch). Use the CLI above when you want per-skill granularity, another IDE, or hooks; use the marketplace when you're in Claude Code. Rationale: [RFC-0027](docs/rfcs/0027-retire-agentbundle-export.md).
 
 ### Hooks (opt-in) — wire a skill to an event
 
@@ -357,7 +372,7 @@ npx skilldrop-cli install --pack starter --from ../local-catalog
 npx skilldrop-cli update      # updates bundled and third-party skills side by side — the ledger remembers each skill's source
 ```
 
-The CLI also reads **agentbundle-shaped catalogs** ([agent-ready-repo](https://github.com/eugenelim/agent-ready-repo)) — `packs/<pack>/.apm/skills/<name>/SKILL.md` with a `pack.toml` per pack — so you can install *its* packs through the same command ([RFC-0014](docs/rfcs/0014-agentbundle-interop.md)). Both shapes share the agentskills.io `SKILL.md`, so the reader just maps his packs onto the accessors above:
+The CLI also reads **agentbundle-shaped catalogs** ([agent-ready-repo](https://github.com/eugenelim/agent-ready-repo)) — `packs/<pack>/.apm/skills/<name>/SKILL.md` with a `pack.toml` per pack — so you can install *its* packs through the same command ([RFC-0014](docs/rfcs/0014-agentbundle-interop.md)). This is one-directional by design: skilldrop reads his shape, and no longer publishes a generated catalogue back into it ([RFC-0027](docs/rfcs/0027-retire-agentbundle-export.md)). Both shapes share the agentskills.io `SKILL.md`, so the reader just maps his packs onto the accessors above:
 
 ```bash
 npx skilldrop-cli packs --from https://github.com/eugenelim/agent-ready-repo
