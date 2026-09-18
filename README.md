@@ -3,9 +3,9 @@
 [![npm](https://img.shields.io/npm/v/skilldrop-cli)](https://www.npmjs.com/package/skilldrop-cli)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-**[Browse the catalogue →](https://sananthanarayan.github.io/skilldrop/)** — all 56 skills, filterable by pack, tag, and model tier.
+**[Browse the catalogue →](https://sananthanarayan.github.io/skilldrop/)** — all 57 skills, filterable by outcome, pack, tag, and model tier.
 
-**56 portable AI-agent skills for the deliverables knowledge workers actually ship** — diagrams, design docs, ADRs, PRDs, runbooks, decks, decision logs, threat models, adversarial reviews — installable into **Claude Code**, **Cursor**, **Kiro**, **Codex**, **GitHub Copilot**, and any AI tool that accepts custom instructions, one skill or one role-based pack at a time:
+**57 portable AI-agent skills for the deliverables knowledge workers actually ship** — diagrams, design docs, ADRs, PRDs, runbooks, decks, decision logs, threat models, adversarial reviews — installable into **Claude Code**, **Cursor**, **Kiro**, **Codex**, **GitHub Copilot**, and any AI tool that accepts custom instructions, one skill or one role-based pack at a time:
 
 ```bash
 npx skilldrop-cli install --pack product-manager     # or: solution-architect, dev-team,
@@ -77,6 +77,7 @@ flowchart LR
 |---|---|
 | [`brief-intake`](skills/brief-intake/SKILL.md) | Upstream collector. Takes raw mess — a Slack thread, meeting transcript, ticket, email chain, paragraph of notes — and emits a structured brief shaped for whichever downstream skill comes next (ADR, design doc, runbook, exec summary, deck, comparison matrix, decision log). Every field is tagged `[explicit] / [implied] / [inferred] / [missing]` with verbatim quotes from the source. |
 | [`doc-critique`](skills/doc-critique/SKILL.md) | Counterpart reviewer. Takes an existing doc (ADR, design doc, runbook, exec summary, comparison matrix, deck, decision log) and produces a structured critique against the same rubrics the generators enforce — verdict + severity-tagged findings (blocker / major / minor / nit) with quoted evidence and concrete fixes, plus a "what's working" section. |
+| [`output-hygiene`](skills/output-hygiene/SKILL.md) | Pre-ship surface pass. Runs a stdlib-only script over agent-written text to find what the machine put there — invisible Unicode, non-breaking spaces, homoglyphs, harness-added provenance trailers, trailing chat closers — reporting each with its codepoint and line, then sweeps the prose for the tells a script cannot see and quotes every one with a rewrite. Separates what is safe to auto-apply from what needs a decision, and holds the provenance class where an academic, employer, or contribution policy requires disclosure. |
 
 ### Planning & delivery
 
@@ -235,12 +236,12 @@ Categories (above) say what a skill *is*; packs say *who needs it*. [`packs.json
 
 | Pack | Skills | For |
 |---|---|---|
-| `solution-architect` | 15 | Design-phase artifacts: diagrams, ADRs, design docs, contracts, schemas, threat models, and the reviews that gate them |
-| `product-manager` | 12 | Direction to requirements: PR/FAQs, strategy frameworks, OKRs, PRDs, journey maps, story splitting, success measurement |
-| `dev-team` | 11 | Build-and-ship loop: implementation with adversarial review, test plans, triage, migrations, release notes, quality gates |
-| `stakeholder-comms` | 8 | Non-technical audiences: audience profiling, deck outlines and real `.pptx` decks, exec summaries, decision logs, guides |
+| `solution-architect` | 17 | Design-phase artifacts: diagrams, ADRs, design docs, contracts, schemas, threat models, and the reviews that gate them |
+| `dev-team` | 14 | Build-and-ship loop: implementation with adversarial review, test plans, triage, migrations, release notes, quality gates, pre-ship hygiene |
+| `product-manager` | 13 | Direction to requirements: PR/FAQs, strategy frameworks, OKRs, PRDs, journey maps, story splitting, success measurement |
+| `ai-engineering` | 12 | Build and run AI systems: agent loop design, subagent orchestration, spend budgets, eval harnesses, usage reporting, data contracts |
+| `stakeholder-comms` | 9 | Non-technical audiences: audience profiling, deck outlines and real `.pptx` decks, exec summaries, decision logs, guides |
 | `sre-oncall` | 5 | Operate the service: runbooks, observability design, incident comms, postmortems, capacity/cost models |
-| `ai-engineering` | 6 | Build and run AI systems: agent loop design, subagent orchestration, spend budgets, eval harnesses, usage reporting, data contracts |
 
 ```bash
 python3 pack.py                                  # list packs
@@ -251,6 +252,26 @@ python3 pack.py product-manager --install --dest .cursor/skills   # any dir, for
 ```
 
 For non-Claude IDEs, `--dest` drops the folders where your tool expects them; the per-IDE wiring steps below still apply. Packs are metadata only — skills stay in flat `skills/<name>` folders, so per-skill `cp -R` installs keep working unchanged ([RFC-0001](docs/rfcs/0001-skill-packs.md) records the design decision).
+
+## Outcomes — browse by why you're here
+
+Packs answer *who am I*. Outcomes answer *why did I open this*. The seven below are the nine
+categories above, restated as the things people actually arrive wanting to do, and they live in
+the `outcomes` block of [`packs.json`](packs.json) so the [catalogue site](https://sananthanarayan.github.io/skilldrop/)
+can filter on them. Every skill belongs to at least one; `validate.py` enforces it.
+
+| Outcome | Skills | What it covers |
+|---|---|---|
+| `design-the-system` | 15 | Decision records, design docs, diagrams, contracts, schemas, migration and threat models, agentic design |
+| `decide-what-to-build` | 11 | Press releases, strategy frameworks, OKRs, business cases, requirements, PRDs, success metrics |
+| `build-and-review-software` | 11 | Supervised implementation, review panels, test plans, triage, accessibility and static-analysis passes |
+| `explain-it-to-decision-makers` | 6 | Audience profiling, deck outlines and real decks, exec summaries, decision logs, guides |
+| `govern-ai-use` | 6 | Readiness, use-case triage, rollout, acceptable-use policy, adoption staging, usage reporting |
+| `run-and-recover-the-service` | 5 | Runbooks, observability design, release notes, incident comms, postmortems |
+| `get-a-draft-ready-to-ship` | 3 | Collect a messy input, critique the argument, strip the machine artifacts |
+
+Outcomes are a browse aid, not an install unit — there is no `--outcome` flag. Install by skill
+or by pack.
 
 ## Installing a skill into your IDE
 
@@ -527,8 +548,9 @@ Full contributor guide — the three lanes, the PR gates, and the release flow �
 4. If your skill needs scripts, drop them in `scripts/` and reference them with a path relative to the skill folder — **avoid hard-coding `${CLAUDE_SKILL_DIR}` only**; show both paths so non–Claude-Code users aren't stuck.
 5. Add an `evals/` folder: `evals.json` (at least one realistic prompt with a list of assertions the output must satisfy) and `eval_queries.json` (phrases that should and should **not** trigger the skill). These double as the checklist for the manual test pass and keep the `description` honest about when the skill fires.
 6. Add an entry to the **Skills in this repo** table above and to the **Installing dependencies** table.
-7. Add the skill to at least one pack in `packs.json`.
-8. Run `python3 validate.py` from the repo root — it checks name consistency, the tier sync with `model-routing.json`, the `related`↔SKILL.md reference sync, description sync, pack membership, and eval file shape.
+7. Add the skill to at least one pack **and** at least one outcome in `packs.json`.
+8. If the change is going out in a release, add a bullet to [`CHANGELOG.md`](CHANGELOG.md) under the new version — the site build fails without one.
+9. Run `python3 validate.py` from the repo root — it checks name consistency, the tier sync with `model-routing.json`, the `related`↔SKILL.md reference sync, description sync, pack and outcome membership, and eval file shape.
 
 ## License
 

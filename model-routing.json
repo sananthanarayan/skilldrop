@@ -142,6 +142,7 @@
     "observability-plan": { "tier": "standard", "rationale": "Methodology synthesis against fixed SRE practices (golden signals, burn-rate alerting, pillar split). SLO calibration needs judgment but is bounded; escalate via ambiguous-input on contested reliability targets." },
     "council-review": { "tier": "heavy", "rationale": "Multi-perspective deliberation + weighted reconciliation across distinct expert seats. Cheaper models collapse the seats into one voice and either manufacture or miss the real cruxes. Never downgrade." },
     "devils-advocate": { "tier": "heavy", "rationale": "Adversarial code review across four lenses. Cheaper models miss edge cases and under-call severity — the whole value is the hard thinking. Never downgrade." },
+    "output-hygiene": { "tier": "standard", "rationale": "The mechanical pass is a deterministic script; the model does bounded rewriting of flagged prose against a fixed tell list, not adversarial review." },
     "doc-critique": { "tier": "heavy", "rationale": "Adversarial doc review against rubrics. Same as devils-advocate: the value is catching what a fast pass misses. Never downgrade." },
     "tech-comparison-matrix": { "tier": "heavy", "rationale": "Weighted multi-criteria judgment with a recommendation. Mis-weighting is the failure mode; heavy is worth it. Never downgrade." },
     "threat-model": { "tier": "heavy", "rationale": "Adversarial reasoning over a design — cheaper models emit checklist residue, miss authz/insider paths, and inflate severity. Never downgrade." },
