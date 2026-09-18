@@ -1,0 +1,76 @@
+# Regenerate the per-pack Claude Code plugins (RFC-0027) and publish them to the `plugins`
+# branch on every push to main. The marketplace that points here lives on main, so a user
+# still only runs `/plugin marketplace add sananthanarayan/skilldrop` — the branch is where
+# the six generated pack directories live, never something anyone types.
+#
+# Deliberately separate from release.yml (so a plugin change can never touch the npm publish
+# path) and from pages.yml (so it can't affect the site deploy). The branch is a GENERATED
+# artifact, force-pushed each run — its history is disposable. Nothing here is a merge gate,
+# so it is not in the protect-main required checks.
+#
+# This replaces agentbundle-catalogue.yml. The contract it renders against is Claude's plugin
+# schema, which skilldrop reads directly; there is no third-party verifier gating the publish
+# and so no re-alignment tax — that asymmetry is the whole point of RFC-0027.
+name: plugins
+
+on:
+  push:
+    branches: [main]
+
+# Least privilege: the only elevated scope is the write needed to push the generated branch.
+permissions:
+  contents: write
+
+concurrency:
+  group: plugins
+  cancel-in-progress: false
+
+jobs:
+  plugins:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Guard the committed marketplace against drift
+        run: python3 build_marketplace.py --check
+      - name: Render the per-pack plugin tree
+        run: python3 build_marketplace.py --dist build-plugins # stdlib only — no setup-python step needed
+      - name: Assert every advertised pack plugin exists in the tree
+        # The marketplace on main advertises one git-subdir path per pack. A path that does not
+        # exist on this branch is a 404 at install time, so it fails here instead.
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, sys
+          mk = json.load(open(".claude-plugin/marketplace.json"))
+          missing = []
+          for p in mk["plugins"]:
+              src = p["source"]
+              if isinstance(src, dict) and src.get("source") == "git-subdir":
+                  d = os.path.join("build-plugins", src["path"])
+                  if not os.path.isfile(os.path.join(d, ".claude-plugin", "plugin.json")):
+                      missing.append(f'{p["name"]} -> {src["path"]}')
+          if missing:
+              print("advertised but not rendered:", *missing, sep="\n  ")
+              sys.exit(1)
+          print(f'OK: all {len(mk["plugins"]) - 1} pack plugins rendered')
+          PY
+      - name: Publish build-plugins/ to the plugins branch
+        env:
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+        run: |
+          set -euo pipefail
+          branch=plugins
+          # Synthesize an orphan commit whose ROOT is build-plugins/, reusing the checkout's
+          # persisted credentials (no token handling here). A separate index keeps the real one
+          # clean, and -Af force-adds past .gitignore. Force-push: the branch is regenerated, not
+          # appended. protect-main targets the default branch only, so this is allowed.
+          export GIT_INDEX_FILE="$RUNNER_TEMP/plugins-index"
+          rm -f "$GIT_INDEX_FILE"
+          git add -Af -- build-plugins
+          subtree=$(git rev-parse "$(git write-tree):build-plugins")
+          commit=$(git commit-tree "$subtree" -m "plugins @ ${GITHUB_SHA::7} (generated — do not edit)")
+          git push --force origin "$commit:refs/heads/$branch"
+          echo "published $branch → $commit"

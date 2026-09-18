@@ -8,6 +8,12 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.11.5 — 2026-09-18
+
+- Role packs are now installable as Claude Code plugins: `/plugin install solution-architect@skilldrop` after the same one-line `marketplace add`. A pack carries the reviewer subagents its own skills delegate to, so `dev-team` brings the review panel and `sre-oncall` does not (RFC-0027).
+- Retired the generated `agentbundle-catalogue` branch and its exporter. It was never documented as an install path, and its publish was gated by a third-party verifier that had moved 24 minor versions since the export was written. Reading agentbundle-shaped catalogues with `skilldrop --from <repo>` is unaffected.
+- The README skill-count guard no longer misfires on per-pack counts inside a code block.
+
 ## 0.11.4 — 2026-09-18
 
 - New skill `output-hygiene`: finds what a machine left in agent-written text — invisible Unicode, non-breaking spaces, homoglyphs, harness-added provenance trailers, trailing chat closers — and separates what is safe to strip from what needs a decision (RFC-0025).

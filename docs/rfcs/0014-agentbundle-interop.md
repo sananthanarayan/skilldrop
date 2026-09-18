@@ -1,12 +1,21 @@
 ---
 rfc: 0014
 title: Interop with the agentbundle ecosystem
-status: implemented
+status: superseded-in-part   # outbound export retired by RFC-0027; inbound reader still live
 date: 2026-07-28
 author: sananthanarayan
 ---
 
 # RFC-0014: Interop with the agentbundle ecosystem
+
+> **Status note (2026-09-18).** The **outbound** half of this RFC — `build_catalogue.py`, the
+> `agentbundle-catalogue.yml` workflow, and the generated `agentbundle-catalogue` branch — was
+> **retired by [RFC-0027](0027-retire-agentbundle-export.md)**. The open question this RFC left
+> ("confirm the agentbundle install base justifies owning the re-alignment tax") was answered no.
+> The **inbound** half — `skilldrop-cli --from <repo>` reading `packs/<p>/.apm/skills` catalogues —
+> is untouched, documented, and still shipping. Everything below is preserved as the record of
+> what was built and why; read RFC-0027 for what replaced it.
+
 
 ## Problem / use case
 

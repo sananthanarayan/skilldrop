@@ -80,6 +80,7 @@ Every version bump lands with a matching entry at the top of [`CHANGELOG.md`](CH
 | Executable helper | `skills/<skill-name>/scripts/<name>.py` (or `.js`, `.sh`) |
 | Python dep manifest for a skill | `skills/<skill-name>/requirements.txt` |
 | Claude Code project settings | `.claude/settings.json` — optional config (hooks, permissions, env). Inert for non-Claude tools. |
+| Per-pack Claude plugin output | Nothing to place by hand — `build_marketplace.py --dist` generates it and CI publishes it to the `plugins` branch. Adding a skill to a pack in `packs.json` is the whole edit (RFC-0027). |
 
 Anything outside `skills/` is repo policy or hygiene. New top-level directories should be proposed in a PR with rationale, not added silently.
 
@@ -315,6 +316,7 @@ When you add or change a skill, set its tier in **both** `model-routing.json` an
 - Skill packs and outcomes: [packs.json](packs.json) + [pack.py](pack.py)
 - Release history: [CHANGELOG.md](CHANGELOG.md)
 - CLI (npm `skilldrop-cli`): [bin/skilldrop.js](bin/skilldrop.js) + [package.json](package.json) — copies skills verbatim, never transforms them; the npm `files` list must keep `skills/`, `packs.json`, `model-routing.json`
+- Claude Code plugins: [build_marketplace.py](build_marketplace.py) — writes the committed `.claude-plugin/` on main, and (`--dist`) the per-pack plugin tree CI force-pushes to the generated `plugins` branch ([RFC-0027](docs/rfcs/0027-retire-agentbundle-export.md))
 - Model routing: [MODEL-ROUTING.md](MODEL-ROUTING.md) + [model-routing.json](model-routing.json)
 - Claude Code project settings: [.claude/settings.json](.claude/settings.json) — currently empty
 - Reference implementations for skill scripts: [`skills/deck-builder/scripts/`](skills/deck-builder/scripts/), [`skills/figma-diagrams/scripts/`](skills/figma-diagrams/scripts/)

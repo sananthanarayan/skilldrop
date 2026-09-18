@@ -300,7 +300,11 @@ def main():
                                       f"assets/og.svg -o assets/og.png")
 
     readme = open(os.path.join(ROOT, "README.md"), encoding="utf-8").read()
-    for n in set(re.findall(r"\b(\d{2})\s+(?:portable |)(?:AI-agent |)skills\b", readme)):
+    # Prose only. The guard is about headline claims ("57 portable AI-agent skills"); a fenced
+    # block legitimately carries per-pack counts ("# 17 skills" beside a pack install command),
+    # and flagging those would force the docs to avoid the plainest way to write them.
+    for n in set(re.findall(r"\b(\d{2})\s+(?:portable |)(?:AI-agent |)skills\b",
+                            strip_fences(readme))):
         if int(n) != len(skill_dirs):
             fail("README.md", f"says '{n} skills' but {len(skill_dirs)} are on disk")
 
