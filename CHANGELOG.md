@@ -8,6 +8,14 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.11.9 — 2026-09-25
+
+- Every primitive now has a **closed, machine-readable contract** in `contracts/` — skills, packs, loops, agents, and guides. `validate.py` checks each instance against its schema, so a typo'd manifest key fails instead of being ignored, and `"tier": "claude-opus-5"` is finally rejected by the lint rather than only by the style guide. Checked by a ~50-line stdlib JSON Schema subset: skilldrop still has zero runtime dependencies.
+- New **`ARCHITECTURE.md`** — the four primitives, why a loop is not just a long skill, why the loops are separated by reversibility, the copy-never-transform install contract and its one exception, and the five invariants worth protecting.
+- The README is 714 → 522 lines. Per-IDE install steps, hooks, catalogue publishing, script-shipping skills, and the authoring paths moved into **`guides/`**, split by Diátaxis kind declared in frontmatter rather than by directory. A guide that is not linked from `guides/README.md` fails the lint, because an unindexed guide is unfindable.
+- New guides for authoring: [Author a new loop](guides/how-to/author-a-loop.md) and [Why loops](guides/explanation/loops.md), which explains why sequencing is its own primitive and why there are four lifecycle loops rather than three.
+- Fixed a blank line that made the reviewer-agents table render as two broken tables on GitHub.
+
 ## 0.11.8 — 2026-09-25
 
 - Loops are installable: `skilldrop install --loop build` puts the loop *and* every stage skill it sequences into your tool in one command. `--no-skills` installs the loop alone — it still runs, because each stage degrades through its declared `fallback`. `--loop --pack sre-oncall` installs every loop a pack declares.
