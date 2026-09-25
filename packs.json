@@ -4,6 +4,7 @@
   "packs": {
     "solution-architect": {
       "description": "Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.",
+      "loops": ["design", "ship-a-draft"],
       "skills": [
         "brief-intake",
         "architecture-diagrams",
@@ -26,6 +27,7 @@
     },
     "product-manager": {
       "description": "Direction to requirements: PR/FAQs, strategy frameworks, OKRs, PRDs, journey maps, story splitting, and success measurement.",
+      "loops": ["discover", "ship-a-draft"],
       "skills": [
         "brief-intake",
         "prfaq",
@@ -44,6 +46,7 @@
     },
     "dev-team": {
       "description": "Build-and-ship loop: story implementation with adversarial review, test plans, triage, migrations, release notes, agent-policy files, and code-quality gates.",
+      "loops": ["build", "ship-a-draft"],
       "skills": [
         "agents-md-generator",
         "user-story-splitter",
@@ -63,6 +66,7 @@
     },
     "sre-oncall": {
       "description": "Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.",
+      "loops": ["operate"],
       "skills": [
         "runbook-generator",
         "observability-plan",
@@ -73,6 +77,7 @@
     },
     "stakeholder-comms": {
       "description": "Non-technical audiences: audience profiling, deck outlines and real .pptx decks, exec summaries, decision logs, and guides.",
+      "loops": ["ship-a-draft"],
       "skills": [
         "brief-intake",
         "audience-profile",
@@ -87,6 +92,7 @@
     },
     "ai-engineering": {
       "description": "Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, AI-usage reporting, and the data contracts AI pipelines depend on.",
+      "loops": ["design", "build"],
       "skills": [
         "agent-loop-design",
         "subagent-design",
