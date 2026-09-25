@@ -6,6 +6,9 @@
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
   "related": ["feature-implement-loop", "postmortem-generator", "user-story-splitter"],
+  "handoff": [
+    { "to": "feature-implement-loop", "when": "the defect is reproduced and scoped", "purpose": "Fix the triaged defect through the same capped loop a story gets.", "fallback": "If feature-implement-loop is absent, fix inline with a regression test that fails before the fix." }
+  ],
   "tags": ["bug-triage", "bug-report", "ticket", "qa", "repro", "severity"],
   "model": { "tier": "standard", "rationale": "Extraction plus judgment calls (severity vs priority, hypothesis ranking) — same shape as brief-intake: above light, below heavy." }
 }
