@@ -47,6 +47,7 @@ import sys
 
 import build_marketplace  # .claude-plugin/ drift check (RFC-0014)
 import build_loops        # docs/loops/*.mmd + README drift check (RFC-0028)
+import build_llms         # llms.txt drift check (RFC-0030)
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SKILLS = os.path.join(ROOT, "skills")
@@ -264,6 +265,35 @@ def check_loops(dir_set):
             fail(where, f"cap must be an int 1..10, got {cap!r}")
         if " ".join(str(spec.get("description", "")).split()) != " ".join(fm.get("description", "").split()):
             fail(where, "loop.json description and LOOP.md frontmatter description differ")
+        # RFC-0030 — loops get the same eval discipline skills have. The shape is checked
+        # here; the assertions are executed by reading them during the manual test pass.
+        ev = os.path.join(p, "evals", "evals.json")
+        if os.path.exists(ev):
+            try:
+                doc = json.load(open(ev))
+            except json.JSONDecodeError as e:
+                fail(where, f"evals/evals.json is not valid JSON: {e}")
+            else:
+                if doc.get("loop_name") != d:
+                    fail(where, f"evals.json loop_name '{doc.get('loop_name')}' != folder '{d}'")
+                cases = doc.get("evals") or []
+                if not cases:
+                    fail(where, "evals.json has no eval cases")
+                for c in cases:
+                    if not c.get("prompt") or not c.get("assertions"):
+                        fail(where, f"eval '{c.get('id', '?')}' needs a prompt and assertions")
+        eq = os.path.join(p, "evals", "eval_queries.json")
+        if os.path.exists(eq):
+            try:
+                rows = json.load(open(eq))
+            except json.JSONDecodeError as e:
+                fail(where, f"evals/eval_queries.json is not valid JSON: {e}")
+            else:
+                trig = {bool(r.get("should_trigger")) for r in rows if isinstance(r, dict)}
+                if trig != {True, False}:
+                    fail(where, "eval_queries.json needs both should_trigger true AND false rows "
+                                "— the false rows are what draw the boundary against a sibling loop")
+
         for section in ("## Quality bar", "## Anti-patterns"):
             if not re.search(rf"^{re.escape(section)}", md, re.M):
                 fail(where, f"LOOP.md has no `{section}` section — a loop without one is a diagram")
@@ -543,6 +573,11 @@ def main():
     if build_loops.stale():
         for rel in build_loops.stale():
             fail("docs/loops", f"{rel} is stale — run `python3 build_loops.py`")
+
+    # RFC-0030: llms.txt indexes the catalogue for a model. A stale index is worse than none,
+    # because a model trusts it — so it is generated and drift-checked like everything else.
+    for rel in build_llms.stale():
+        fail("llms.txt", f"{rel} is stale — run `python3 build_llms.py`")
 
     agent_names = check_agents(skill_dirs)
     check_guides()
