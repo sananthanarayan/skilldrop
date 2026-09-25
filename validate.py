@@ -50,6 +50,7 @@ import build_marketplace  # .claude-plugin/ drift check (RFC-0014)
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SKILLS = os.path.join(ROOT, "skills")
 AGENTS = os.path.join(ROOT, "agents")
+LOOPS = os.path.join(ROOT, "loops")  # RFC-0028 — the third primitive
 REQUIRED_FIELDS = ["name", "version", "description", "entrypoint", "deps", "env", "related", "tags", "model"]
 HOOK_EVENTS = {"session-start", "pre-commit-review", "on-demand"}  # RFC-0006; kept in sync with bin/skilldrop.js
 
@@ -117,6 +118,133 @@ def check_agents(skill_dirs):
                 fail(d, f"SKILL.md delegates to the `{ref}` subagent, but agents/{ref}.md does not exist")
     return names
 
+
+
+LOOP_REQUIRED = ["name", "description", "entrypoint", "kind", "stages"]
+LOOP_OPTIONAL = ["$comment", "version", "cap"]
+STAGE_REQUIRED = ["id", "type", "intent", "skills"]
+STAGE_OPTIONAL = ["gate"]
+GATE_REQUIRED = ["id", "kind", "verdicts"]
+GATE_OPTIONAL = ["script", "revise_to"]
+STAGE_TYPES = {"generate", "verify", "gate"}
+GATE_KINDS = {"mechanical", "review", "human"}
+GATE_ID = re.compile(r"^G[0-9]+(\.[0-9]+)?$")
+
+
+def _closed(where, obj, required, optional):
+    """contracts/*.schema.json are closed schemas. A typo'd key must fail, not be ignored."""
+    for k in required:
+        if k not in obj:
+            fail(where, f"missing required key `{k}`")
+    for k in obj:
+        if k not in required and k not in optional:
+            fail(where, f"unknown key `{k}` — the loop contract is closed (contracts/loop.schema.json)")
+
+
+def check_loops(dir_set):
+    """RFC-0028 — loops/ is the third primitive. A loop sequences skills; it never contains one.
+    These checks exist because a loop that names a renamed skill, or a gate that can only say
+    yes, is worse than no loop at all: it looks like governance and enforces nothing."""
+    if not os.path.isdir(LOOPS):
+        return set()
+    terminals = json.load(open(os.path.join(ROOT, "contracts", "terminals.json")))
+    vclass = {v: m["class"] for v, m in terminals["verdicts"].items()}
+    names, seen_gates = set(), {}
+
+    for d in sorted(x for x in os.listdir(LOOPS) if os.path.isdir(os.path.join(LOOPS, x))):
+        names.add(d)
+        p = os.path.join(LOOPS, d)
+        where = f"loops/{d}"
+        try:
+            spec = json.load(open(os.path.join(p, "loop.json")))
+        except (OSError, json.JSONDecodeError) as e:
+            fail(where, f"loop.json unreadable: {e}")
+            continue
+        md_path = os.path.join(p, "LOOP.md")
+        if not os.path.exists(md_path):
+            fail(where, "no LOOP.md — it is the entrypoint an agent reads")
+            continue
+        md = open(md_path, encoding="utf-8").read()
+        fm = dict(re.findall(r"^(name|description):\s*(.+?)\s*$", frontmatter(md), re.M))
+
+        _closed(where, spec, LOOP_REQUIRED, LOOP_OPTIONAL)
+        # Same name triple-match skills are held to: folder == loop.json == frontmatter.
+        if spec.get("name") != d or fm.get("name") != d:
+            fail(where, f"name triple mismatch: folder '{d}', loop.json '{spec.get('name')}', "
+                        f"LOOP.md '{fm.get('name')}'")
+        if spec.get("entrypoint") != "LOOP.md":
+            fail(where, "entrypoint must be 'LOOP.md'")
+        if spec.get("kind") not in {"loop", "wrapper"}:
+            fail(where, f"kind must be 'loop' or 'wrapper', got {spec.get('kind')!r}")
+        cap = spec.get("cap", 3)
+        if not isinstance(cap, int) or not 1 <= cap <= 10:
+            fail(where, f"cap must be an int 1..10, got {cap!r}")
+        if " ".join(str(spec.get("description", "")).split()) != " ".join(fm.get("description", "").split()):
+            fail(where, "loop.json description and LOOP.md frontmatter description differ")
+        for section in ("## Quality bar", "## Anti-patterns"):
+            if not re.search(rf"^{re.escape(section)}", md, re.M):
+                fail(where, f"LOOP.md has no `{section}` section — a loop without one is a diagram")
+        if len(md.splitlines()) > 500:
+            warn(where, f"LOOP.md is {len(md.splitlines())} lines — spill into reference material")
+
+        stages = spec.get("stages") or []
+        if not stages:
+            fail(where, "no stages — a loop with no stages sequences nothing")
+        stage_ids = []
+        for i, st in enumerate(stages):
+            sw = f"{where} stage[{i}]"
+            _closed(sw, st, STAGE_REQUIRED, STAGE_OPTIONAL)
+            sid = st.get("id")
+            if sid in stage_ids:
+                fail(sw, f"duplicate stage id '{sid}'")
+            stage_ids.append(sid)
+            if st.get("type") not in STAGE_TYPES:
+                fail(sw, f"type must be one of {sorted(STAGE_TYPES)}, got {st.get('type')!r}")
+            for s in st.get("skills", []):
+                if s == "*":
+                    if spec.get("kind") != "wrapper":
+                        fail(sw, "`*` (any generator) is legal only in a wrapper")
+                elif s not in dir_set:
+                    fail(sw, f"names skill '{s}', which is not a skills/ folder")
+            g = st.get("gate")
+            if not g:
+                continue
+            gw = f"{where} gate {g.get('id', '?')}"
+            _closed(gw, g, GATE_REQUIRED, GATE_OPTIONAL)
+            gid = g.get("id", "")
+            if not GATE_ID.match(str(gid)):
+                fail(gw, f"gate id '{gid}' must match G<n>[.<n>] — a gate is a place people point at")
+            elif gid in seen_gates:
+                fail(gw, f"gate id '{gid}' already used by {seen_gates[gid]} — gate ids are repo-unique")
+            else:
+                seen_gates[gid] = where
+            if g.get("kind") not in GATE_KINDS:
+                fail(gw, f"kind must be one of {sorted(GATE_KINDS)}, got {g.get('kind')!r}")
+            if g.get("kind") == "mechanical":
+                sc = g.get("script")
+                if not sc:
+                    fail(gw, "a mechanical gate needs a `script` — otherwise nothing mechanical decides")
+                elif not os.path.exists(os.path.join(ROOT, sc)):
+                    fail(gw, f"script '{sc}' does not exist")
+            elif g.get("script"):
+                fail(gw, f"`script` is only for a mechanical gate, not a {g.get('kind')} one")
+            vs = g.get("verdicts") or []
+            unknown = [v for v in vs if v not in vclass]
+            if unknown:
+                fail(gw, f"verdict(s) {unknown} are not in contracts/terminals.json — "
+                         f"a new gate may not invent a new word for an existing outcome")
+            known = [v for v in vs if v in vclass]
+            if known and not any(vclass[v] == "pass" for v in known):
+                fail(gw, "no pass-class verdict — this gate can never be satisfied")
+            if known and not any(vclass[v] != "pass" for v in known):
+                fail(gw, "only pass-class verdicts — a gate that can only succeed is not a gate")
+            if "BLOCKED" not in vs:
+                fail(gw, "cannot emit BLOCKED — every gate must be able to say its input is missing")
+            rt = g.get("revise_to")
+            if rt is not None and rt not in stage_ids[:-1] + [stage_ids[-1]][:0] + stage_ids[:i]:
+                if rt not in stage_ids[:i]:
+                    fail(gw, f"revise_to '{rt}' is not an earlier stage in this loop")
+    return names
 
 def frontmatter(md_text):
     parts = md_text.split("---")
@@ -243,8 +371,13 @@ def main():
         if tier == "heavy" and not glob.glob(os.path.join(p, "examples", "*")):
             fail(d, "heavy-tier judgment skill needs an examples/ input→output oracle (RFC-0016)")
 
+    loop_dirs = set(os.listdir(LOOPS)) if os.path.isdir(LOOPS) else set()
     for r in sorted(set(routing) - dir_set):
-        fail("model-routing.json", f"entry '{r}' has no skill folder")
+        if r in loop_dirs:
+            fail("model-routing.json", f"'{r}' is a loop, not a skill — loops sequence skills "
+                                       f"and make no model call of their own, so they carry no tier")
+        else:
+            fail("model-routing.json", f"entry '{r}' has no skill folder")
 
     packs_doc = json.load(open(os.path.join(ROOT, "packs.json")))
     packs = packs_doc["packs"]
@@ -279,6 +412,7 @@ def main():
         fail(".claude-plugin", f"{rel} is stale — run `python3 build_marketplace.py`")
 
     agent_names = check_agents(skill_dirs)
+    loop_names = check_loops(dir_set)
 
     # The site regenerates its counts from the manifests; README prose does not.
     # This is the only place a skill count can go stale unnoticed (RFC-0011).
@@ -321,11 +455,15 @@ def main():
     for a in sorted(agent_names):
         if f"agents/{a}.md" not in readme:
             fail("README.md", f"agent '{a}' ships but is not documented in README")
+    for lp in sorted(loop_names):
+        if f"loops/{lp}/LOOP.md" not in readme:
+            fail("README.md", f"loop '{lp}' ships but is not documented in README")
 
     # RFC-0015: prose markdown links across skills, agents, docs, and the root convention files
     # must resolve — fenced blocks, {template} lines, and placeholder targets are skipped.
     md_files = set(glob.glob(os.path.join(SKILLS, "**", "*.md"), recursive=True))
     md_files |= set(glob.glob(os.path.join(AGENTS, "*.md")))
+    md_files |= set(glob.glob(os.path.join(LOOPS, "**", "*.md"), recursive=True))
     md_files |= set(glob.glob(os.path.join(ROOT, "docs", "**", "*.md"), recursive=True))
     md_files |= {os.path.join(ROOT, f) for f in LINK_DOCS if os.path.exists(os.path.join(ROOT, f))}
     for mf in sorted(md_files):
@@ -350,7 +488,7 @@ def main():
         for f in failures:
             print("  FAIL", f)
         sys.exit(1)
-    print(f"OK: {len(skill_dirs)} skills + {len(agent_names)} agents validated"
+    print(f"OK: {len(skill_dirs)} skills + {len(loop_names)} loops + {len(agent_names)} agents validated"
           + ("" if quiet else f", {len(warnings)} warning(s)"))
 
 
