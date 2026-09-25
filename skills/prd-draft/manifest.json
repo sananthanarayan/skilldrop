@@ -6,6 +6,11 @@
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
   "related": ["brief-intake", "bug-triage", "business-case", "design-doc", "nfr-spec", "success-metrics", "user-story-splitter"],
+  "handoff": [
+    { "to": "nfr-spec", "when": "the functional requirements are agreed", "purpose": "Set the quality targets the design will be judged against.", "fallback": "If nfr-spec is absent, state latency, availability and scale targets inline as numbers, not adjectives." },
+    { "to": "user-story-splitter", "when": "the requirements are ready to become units of work", "purpose": "Split into vertically-sliced stories with acceptance criteria.", "fallback": "If user-story-splitter is absent, slice inline and give each story acceptance criteria a test can assert." },
+    { "to": "design-doc", "when": "the what is agreed and the how is open", "purpose": "Design the system that satisfies these requirements.", "fallback": "If design-doc is absent, write the approach, the alternatives, and the trade-offs inline." }
+  ],
   "tags": ["prd", "requirements", "product", "discovery", "moscow", "non-goals"],
   "model": { "tier": "standard", "rationale": "Synthesizes a structured requirements doc from a brief. The solution-language discipline needs care; bounded by the template. Escalate via ambiguous-input on contested scope." }
 }

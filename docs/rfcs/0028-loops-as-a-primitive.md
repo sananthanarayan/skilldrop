@@ -17,8 +17,8 @@ prose nothing enforces:
 
 - [`README.md`](../../README.md) opens with *"skilldrop runs two value streams, and nothing
   comes out of either until it passes a review gate"*, drawn in
-  [`docs/knowledge-work-pipeline.mmd`](../knowledge-work-pipeline.mmd) and
-  [`docs/code-implement-verify.mmd`](../code-implement-verify.mmd).
+  `docs/knowledge-work-pipeline.mmd` and `docs/code-implement-verify.mmd` — both since
+  retired, their content now generated into [`docs/loops/`](../loops/) from `loop.json`.
 - [`agent-loop-design`](../../skills/agent-loop-design/SKILL.md) already specifies the loop
   schema — "every loop has exactly these three state types" (generate / verify / gate), with a
   revision cap defaulting to 3.
