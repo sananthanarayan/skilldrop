@@ -8,6 +8,15 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.11.8 — 2026-09-25
+
+- Loops are installable: `skilldrop install --loop build` puts the loop *and* every stage skill it sequences into your tool in one command. `--no-skills` installs the loop alone — it still runs, because each stage degrades through its declared `fallback`. `--loop --pack sre-oncall` installs every loop a pack declares.
+- `skilldrop loops` lists the five loops with their stages and gates; `--json` emits the whole shape for tooling. `skilldrop uninstall --loop <name>` removes a loop and leaves its stage skills in place.
+- A loop installs as an ordinary invokable skill. `LOOP.md`'s frontmatter is already `SKILL.md`'s shape, so it projects to `<dest>/<name>/SKILL.md` with `loop.json` beside it — no target needs a loop primitive of its own.
+- Role packs now declare their loops, so `dev-team` brings `build`, `sre-oncall` brings `operate`, and `product-manager` brings `discover`. `validate.py` checks both directions, and refuses a loop whose name collides with a skill's.
+- The catalogue site gained a **Loops** section, a loops stat tile, and a `loops` key in `catalogue.json`.
+- Per-pack Claude Code plugins now carry their pack's loops, so `/plugin install sre-oncall@skilldrop` brings the `operate` loop with the runbook and incident skills it sequences.
+
 ## 0.11.7 — 2026-09-25
 
 - Three more loops complete the lifecycle: `discover` (raw signal to a requirement a human ratifies at **G0**), `design` (a requirement to a recorded ADR, gated by `council-review` at **G1**), and `operate` (a shipped service through detection, response and learning at **G3**). With `build` and the `ship-a-draft` wrapper, skilldrop now ships five loops.

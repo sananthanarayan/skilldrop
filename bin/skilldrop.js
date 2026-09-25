@@ -37,16 +37,20 @@ Usage:
   skilldrop info <skill> [--from <src>]   description, related, packs, deps
   skilldrop packs [--from <src>]          role-based packs
   skilldrop agents [--from <src>]         reviewer subagents in a catalog
+  skilldrop loops [--from <src>]          loops — sequenced stages over skills (RFC-0028)
   skilldrop install <skill...>            install skills (default: Claude Code, user scope)
   skilldrop install --pack <name>         install a whole pack
   skilldrop install --all                 install every skill in the catalog
   skilldrop install --agent <name...>     install reviewer subagents (RFC-0012)
+  skilldrop install --loop <name...>      install loops + the stage skills they sequence
+                                          (--no-skills for the loop alone) (RFC-0028)
   skilldrop install --panel review        install the review panel — the 3 reviewer subagents +
                                           the pre-merge-review orchestrator that fires them (RFC-0020)
   skilldrop update                        re-copy installed skills whose version changed
   skilldrop outdated                      show installed vs current versions, change nothing
   skilldrop uninstall <skill...>          remove skills (and wiring files this tool wrote)
   skilldrop uninstall --agent <name...>   remove subagents
+  skilldrop uninstall --loop <name...>    remove loops (stage skills are left in place)
   skilldrop validate [--from <src>]       structural check of a catalog (for catalog authors)
   skilldrop scan [<skill...>] [--from <src>]  supply-chain scan — flag network/exec/credential
                                           patterns in scripts and injection-shaped instructions
@@ -740,6 +744,7 @@ function installPanel(args) {
 
 function install(args) {
   if (args.flags.panel) return installPanel(args);
+  if (args.flags.loop) return installLoops(args);
   if (args.flags.agent) return installAgents(args);
   const cat = resolveCatalog(args.flags.from);
   let names = expandNames(args, cat);
@@ -846,6 +851,7 @@ function outdated(args) {
 
 function uninstall(args) {
   if (args.flags.agent) return uninstallAgents(args);
+  if (args.flags.loop) return uninstallLoops(args);
   if (!args._.length) die("pass skill names to uninstall");
   const { dest, ide } = target(args.flags);
   const l = ledger(dest);
@@ -879,6 +885,136 @@ function listAgents(args) {
     console.log(`${a.padEnd(w)}  ${m.description}`);
   }
   console.log(`\n${names.length} agent(s). Install one: skilldrop install --agent <name>`);
+}
+
+/* Loops (RFC-0028): an ordered sequence of stages over existing skills, with a gate between
+   them. LOOP.md's frontmatter is already SKILL.md's shape (name + description), so a loop
+   projects into the target's skill directory as <name>/SKILL.md and becomes invokable exactly
+   like a skill. loop.json travels beside it so stages, gates and cap stay machine-readable
+   after install. A loop never contains a skill — installing one also installs the skills its
+   stages name, unless --no-skills. Optional in a catalog. */
+function loopsIn(cat) {
+  if (cat.shape === "apm") return [];
+  const d = path.join(cat.dir, "loops");
+  if (!fs.existsSync(d)) return [];
+  return fs.readdirSync(d).filter((x) => fs.existsSync(path.join(d, x, "loop.json"))).sort();
+}
+function loopDir(cat, n) { return path.join(cat.dir, "loops", n); }
+function loopSpec(cat, n) { return readJSON(path.join(loopDir(cat, n), "loop.json")); }
+
+function loopSkills(cat, n) {
+  const seen = [];
+  for (const st of loopSpec(cat, n).stages || [])
+    for (const sk of st.skills || [])
+      if (sk !== "*" && !seen.includes(sk)) seen.push(sk);
+  return seen;
+}
+
+function checkLoop(cat, n) {
+  const problems = [];
+  if (!fs.existsSync(path.join(loopDir(cat, n), "LOOP.md"))) problems.push("no LOOP.md — it is the entrypoint");
+  let spec;
+  try { spec = loopSpec(cat, n); } catch (e) { return problems.concat("loop.json is missing or unparseable"); }
+  if (spec.name !== n) problems.push(`loop.json name '${spec.name}' != folder '${n}'`);
+  if (!Array.isArray(spec.stages) || !spec.stages.length) problems.push("no stages — a loop with none sequences nothing");
+  for (const sk of loopSkills(cat, n))
+    if (!skillExists(cat, sk)) problems.push(`stage names skill '${sk}', which is not in this catalog`);
+  return problems;
+}
+
+function listLoops(args) {
+  const cat = resolveCatalog(args.flags.from);
+  const names = loopsIn(cat);
+  if (args.flags.json)
+    return emitJSON({
+      catalog: cat.source, count: names.length,
+      loops: names.map((n) => {
+        const sp = loopSpec(cat, n);
+        return { name: n, kind: sp.kind, cap: sp.cap ?? 3, description: sp.description,
+                 stages: (sp.stages || []).map((st) => ({ id: st.id, type: st.type, skills: st.skills,
+                   gate: st.gate ? { id: st.gate.id, kind: st.gate.kind } : null })) };
+      }),
+    });
+  if (!names.length) return console.log(`catalog '${cat.source}' ships no loops.`);
+  for (const n of names) {
+    const sp = loopSpec(cat, n);
+    const gates = (sp.stages || []).filter((st) => st.gate).map((st) => `${st.gate.id}:${st.gate.kind}`);
+    console.log(`${n}  [${sp.kind}, cap ${sp.cap ?? 3}]`);
+    console.log(`  ${(sp.stages || []).map((st) => st.id).join(" -> ")}`);
+    console.log(`  gates: ${gates.join(", ") || "none"}`);
+  }
+  console.log(`\n${names.length} loop(s). Install one: skilldrop install --loop <name>`);
+}
+
+function installLoops(args) {
+  const cat = resolveCatalog(args.flags.from);
+  const available = loopsIn(cat);
+  if (!available.length) die(`catalog '${cat.source}' ships no loops`);
+  let names = args._.slice();
+  if (!names.length && args.flags.pack) {
+    const ps = packsOf(cat);
+    if (!ps) die(`catalog '${cat.source}' has no packs.json`);
+    const pk = ps[args.flags.pack];
+    if (!pk) die(`unknown pack '${args.flags.pack}' in catalog '${cat.source}'`);
+    names = (pk.loops || []).slice();
+    if (!names.length) die(`pack '${args.flags.pack}' declares no loops`);
+  }
+  if (!names.length && args.flags.all) names = available.slice();
+  if (!names.length) die("nothing to install — pass loop names, --pack <name>, or --all");
+  for (const n of names) if (!available.includes(n)) die(`unknown loop '${n}' in catalog '${cat.source}'`);
+
+  let bad = 0;
+  for (const n of names) {
+    const problems = checkLoop(cat, n);
+    for (const pr of problems) console.error(`refused ${n}: ${pr}`);
+    if (problems.length) bad++;
+  }
+  if (bad) die(`${bad} loop(s) failed the structural check — nothing was installed`);
+
+  const { dest, ide } = target(args.flags);
+  fs.mkdirSync(dest, { recursive: true });
+  const l = ledger(dest);
+  const notes = [];
+  for (const n of names) {
+    const sp = loopSpec(cat, n);
+    const out = path.join(dest, n);
+    fs.mkdirSync(out, { recursive: true });
+    fs.copyFileSync(path.join(loopDir(cat, n), "LOOP.md"), path.join(out, "SKILL.md"));
+    fs.copyFileSync(path.join(loopDir(cat, n), "loop.json"), path.join(out, "loop.json"));
+    const note = writeWiring(ide, dest, n, sp.description);
+    if (note) notes.push(note);
+    l.data[n] = { version: sp.version || null, source: cat.source, loop: true };
+    console.log(`installed loop ${n} -> ${out}`);
+  }
+  saveLedger(l);
+
+  const wanted = [];
+  for (const n of names) for (const sk of loopSkills(cat, n)) if (!wanted.includes(sk)) wanted.push(sk);
+  if (args.flags["no-skills"]) {
+    console.log(`\n${names.length} loop(s) installed (${ide}). Skipped ${wanted.length} stage skill(s) (--no-skills).`);
+    console.log(`A loop whose stage skills are absent still runs — each stage degrades via its declared fallback.`);
+  } else if (wanted.length) {
+    console.log(`\nInstalling ${wanted.length} stage skill(s) the loop sequences.\n`);
+    const flags = Object.assign({}, args.flags);
+    delete flags.loop; delete flags.pack; delete flags.all;
+    install({ _: wanted, flags });
+  }
+  if (notes.length) console.log(`\n${notes.join("\n")}`);
+  console.log(`\nRun a loop by name — e.g. "run the ${names[0]} loop on this". Its SKILL.md is the script; honour each gate and the cap.`);
+}
+
+function uninstallLoops(args) {
+  if (!args._.length) die("pass loop names to uninstall");
+  const { dest, ide } = target(args.flags);
+  const l = ledger(dest);
+  for (const n of args._) {
+    fs.rmSync(path.join(dest, n), { recursive: true, force: true });
+    const w = wiringPath(ide, dest, n);
+    if (w) fs.rmSync(w, { force: true });
+    delete l.data[n];
+    console.log(`removed loop ${n} from ${dest} (stage skills left in place)`);
+  }
+  saveLedger(l);
 }
 
 function installAgents(args) {
@@ -1019,7 +1155,7 @@ function validateCmd(args) {
 
 const args = parseArgs(process.argv.slice(2));
 const cmd = args._.shift();
-const commands = { list, info, packs: listPacks, agents: listAgents, install, update, outdated, uninstall, validate: validateCmd, scan };
+const commands = { list, info, packs: listPacks, agents: listAgents, loops: listLoops, install, update, outdated, uninstall, validate: validateCmd, scan };
 if (!cmd || cmd === "help" || args.flags.help) console.log(HELP);
 else if (commands[cmd]) commands[cmd](args);
 else die(`unknown command '${cmd}' — run: skilldrop help`);
