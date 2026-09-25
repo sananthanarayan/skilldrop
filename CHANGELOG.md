@@ -8,6 +8,25 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.12.0 — 2026-09-25
+
+The milestone the 0.11.6–0.11.9 releases were building toward.
+
+- **skilldrop is an operating model now, not a catalogue.** Install one command and get a way of working — five loops over 57 skills, six named gates, one verdict vocabulary — instead of 57 things to choose between. A loop *orders* skills and never contains one, so all 57 still install and run alone by folder copy, and the whole thing still has zero runtime dependencies.
+- **Five loops.** `discover` → `design` → `build` → `operate` cover the lifecycle and are separated by **reversibility** — a re-brief, months unwound in code, a revert, live users — which is also what decides whether a script, a review panel, or a person holds the gate. `ship-a-draft` wraps any generator. Install one with its stage skills: `skilldrop install --loop build`.
+- **Gates that can actually refuse.** Six named gates (G0–G4) answering from one shared vocabulary in five classes, so `READY`, `PROCEED` and `SHIP IT` are recognisably the same kind of answer — and `validate.py` rejects a gate that can only succeed, one that cannot say `BLOCKED`, or one that invents a new word for an existing outcome.
+- **Directed hand-offs with a mandatory `fallback`**, which turns "sibling hand-offs are advisory" from prose an agent may ignore into something the linter checks. 22 edges across 15 skills.
+- **A closed contract per primitive** in `contracts/` — skills, packs, loops, agents, guides — checked by a ~50-line stdlib JSON Schema subset. `"tier": "claude-opus-5"` now fails the lint instead of only the style guide.
+- **Docs a stranger can actually use:** `ARCHITECTURE.md`, a Diátaxis `guides/` tree with a full walkthrough tutorial, and a README down from 714 to ~525 lines.
+- **`llms.txt`** so a model reads the handful of pages that matter instead of crawling 400+ files. Generated and drift-checked, because a stale index a model trusts is worse than no index.
+
+New in this release specifically:
+
+- New [`llms.txt`](llms.txt), generated from `packs.json`, the loop contracts, `contracts/` and guide frontmatter. Served from the repo root and the site root.
+- The site leads with the operating model: new hero, **Loops** second in the nav and second on the page, **Outcomes** promoted from filter chips to a section, and a **Docs** section surfacing `ARCHITECTURE.md`, the guides and `llms.txt` — all previously near-invisible to a visitor.
+- New tutorial: [Follow one change through the loops](guides/tutorial/follow-a-change-through-the-loops.md) — one realistic change from a stakeholder complaint to a closed incident, organised around what each gate refuses.
+- All five loops ship acceptance evals — 10 cases, 35 trigger queries, shape enforced. Two encode failure modes a stage table cannot prevent: routing a revise to the wrong stage, and treating `PROCEED WITH CONDITIONS` as `PROCEED`.
+
 ## 0.11.9 — 2026-09-25
 
 - Every primitive now has a **closed, machine-readable contract** in `contracts/` — skills, packs, loops, agents, and guides. `validate.py` checks each instance against its schema, so a typo'd manifest key fails instead of being ignored, and `"tier": "claude-opus-5"` is finally rejected by the lint rather than only by the style guide. Checked by a ~50-line stdlib JSON Schema subset: skilldrop still has zero runtime dependencies.

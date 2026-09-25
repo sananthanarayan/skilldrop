@@ -41,6 +41,10 @@ python3.14 build_site.py --check
 python3 build_loops.py
 python3 build_loops.py --check   # drift check; validate.py runs this for you
 
+# llms.txt — the machine-readable index. Generated; validate.py fails on drift.
+python3 build_llms.py
+python3 build_llms.py --check
+
 # CLI (npm package skilldrop-cli; from a clone use node bin/skilldrop.js)
 node bin/skilldrop.js list | info <skill> | packs | agents | loops      # add --from <path|git-url[#ref]> for a third-party catalog
 node bin/skilldrop.js install --agent <name...> [--project | --dest <dir>]   # subagents (RFC-0012); plain-copy targets only
@@ -94,6 +98,7 @@ Every version bump lands with a matching entry at the top of [`CHANGELOG.md`](CH
 | Executable helper | `skills/<skill-name>/scripts/<name>.py` (or `.js`, `.sh`) |
 | Python dep manifest for a skill | `skills/<skill-name>/requirements.txt` |
 | New loop (a sequence over existing skills) | `loops/<kebab-name>/LOOP.md` + `loops/<kebab-name>/loop.json` — needs an RFC (RFC-0028) |
+| Machine-readable index for models | Nothing to place by hand — `build_llms.py` generates `llms.txt` from the catalogue |
 | Loop diagram | Nothing to place by hand — `build_loops.py` generates `docs/loops/<loop>.mmd` and the README's mermaid blocks from `loop.json`. Edit the contract, not the picture. |
 | Machine-readable schema for a primitive | `contracts/<name>.schema.json` — closed schemas, checked by `validate.py`'s stdlib `check_schema()`. The shared gate verdict vocabulary is `contracts/terminals.json` |
 | Long-form doc that would bloat the README | `guides/<kind>/<slug>.md` — frontmatter `title`/`summary`/`kind` (Diátaxis), and a link from `guides/README.md`. Both enforced (RFC-0029) |
@@ -307,6 +312,7 @@ See `skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 - [ ] **Loop (if any) is complete** — `loop.json` validates against the closed contract, every named skill exists, gate ids are repo-unique, every verdict is in `contracts/terminals.json`, and `LOOP.md` carries `Quality bar` + `Anti-patterns to avoid`.
 - [ ] **No loop in `model-routing.json`** — loops carry no tier.
 - [ ] **`handoff` (if present) is complete** — every entry has `to`/`when`/`purpose`/`fallback`, and every `to` is also in `related`.
+- [ ] **`python3 build_llms.py` run** if skills, loops, packs, contracts or guides changed — `llms.txt` is generated and drift fails the lint.
 - [ ] **`python3 build_loops.py` run** if any `loop.json` changed — `docs/loops/*.mmd` and the README blocks are generated, and `validate.py` fails on drift.
 - [ ] **Contracts satisfied** — the manifest / `loop.json` / agent frontmatter / guide frontmatter validates against its schema in `contracts/`. These are closed: a typo'd key fails.
 - [ ] **New long-form doc is a guide**, not a README section — `guides/<kind>/<slug>.md` with Diátaxis frontmatter and a link from `guides/README.md`.
@@ -393,6 +399,7 @@ When you add or change a skill, set its tier in **both** `model-routing.json` an
 - Claude Code plugins: [build_marketplace.py](build_marketplace.py) — writes the committed `.claude-plugin/` on main, and (`--dist`) the per-pack plugin tree CI force-pushes to the generated `plugins` branch ([RFC-0027](docs/rfcs/0027-retire-agentbundle-export.md))
 - Loops (the sequencing primitive): [loops/](loops/) + [RFC-0028](docs/rfcs/0028-loops-as-a-primitive.md)
 - Loop diagram generator: [build_loops.py](build_loops.py) → [docs/loops/](docs/loops/)
+- Machine-readable index: [build_llms.py](build_llms.py) → [llms.txt](llms.txt) (RFC-0030)
 - System design and the enforcement model: [ARCHITECTURE.md](ARCHITECTURE.md)
 - Long-form docs (Diátaxis): [guides/](guides/) — index at [guides/README.md](guides/README.md)
 - Machine-readable contracts: [contracts/loop.schema.json](contracts/loop.schema.json), [contracts/terminals.json](contracts/terminals.json)

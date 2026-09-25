@@ -1,0 +1,26 @@
+{
+  "loop_name": "design",
+  "evals": [
+    {
+      "id": "constrains-then-attacks-before-ratifying",
+      "prompt": "Run the design loop for per-plan API rate limiting, from this ratified PRD.",
+      "assertions": [
+        "Runs nfr-spec first and expresses targets as numbers, not adjectives",
+        "Produces the design doc and the diagram as one artifact, and checks they agree",
+        "Runs threat-model BEFORE the G1 panel, not after",
+        "Seats council-review at G1 and records dissent plus what would change each seat's mind",
+        "Writes the ADR only after G1 returns, and carries any PROCEED WITH CONDITIONS conditions into it",
+        "Names the rejected options and why each lost"
+      ]
+    },
+    {
+      "id": "conditions-must-reach-the-adr",
+      "prompt": "The design-loop panel returned PROCEED WITH CONDITIONS — the operator seat wants the failure mode documented. Finish the loop.",
+      "assertions": [
+        "Does not treat PROCEED WITH CONDITIONS as PROCEED",
+        "Carries the named condition into the ADR as part of the decision",
+        "Proceeds to `record` rather than looping back to `shape`"
+      ]
+    }
+  ]
+}

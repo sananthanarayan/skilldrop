@@ -1,0 +1,30 @@
+[
+  {
+    "query": "turn these notes into something I can send",
+    "should_trigger": true
+  },
+  {
+    "query": "run ship-a-draft on this transcript",
+    "should_trigger": true
+  },
+  {
+    "query": "take this ticket to a finished document",
+    "should_trigger": true
+  },
+  {
+    "query": "polish this draft and check the argument",
+    "should_trigger": true
+  },
+  {
+    "query": "implement this feature",
+    "should_trigger": false
+  },
+  {
+    "query": "gate my pull request",
+    "should_trigger": false
+  },
+  {
+    "query": "what should our OKRs be?",
+    "should_trigger": false
+  }
+]

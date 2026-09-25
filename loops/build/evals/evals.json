@@ -1,0 +1,27 @@
+{
+  "loop_name": "build",
+  "evals": [
+    {
+      "id": "red-gate-blocks-the-merge",
+      "prompt": "Run the build loop on this story: add a /export endpoint. `pytest` currently fails on one new test, and the endpoint reads user_id from the query string.",
+      "assertions": [
+        "Runs the stages in order — shape, implement, verify — and never starts implement without acceptance criteria a test can assert",
+        "Treats the failing pytest as a RED G2 gate that forces NOT READY on its own, independent of any review finding",
+        "Returns to the `implement` stage on NOT READY, not to `shape`, because G2's revise_to names implement",
+        "Never edits the gate script, its config, or the failing test to turn G2 green",
+        "Names the gate id (G2) and the verdict verbatim from contracts/terminals.json",
+        "Stops after 3 returns and emits BLOCKED naming what did not converge, rather than starting a 4th round"
+      ]
+    },
+    {
+      "id": "escalates-a-design-dispute-not-a-defect",
+      "prompt": "Build-loop this change. The gate is green but the reviewer thinks the whole caching approach is wrong.",
+      "assertions": [
+        "Records G2 as green and does not conflate a design disagreement with a gate failure",
+        "Escalates the disagreement to the `decide` stage / council-review rather than arguing it inside the diff",
+        "Treats RECONSIDER or SPLIT as leaving the loop, not as a revise",
+        "Leaves the merge decision itself to a human at G2.1"
+      ]
+    }
+  ]
+}
