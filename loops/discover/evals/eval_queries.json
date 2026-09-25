@@ -1,0 +1,30 @@
+[
+  {
+    "query": "turn these stakeholder notes into requirements",
+    "should_trigger": true
+  },
+  {
+    "query": "run the discover loop on this complaint",
+    "should_trigger": true
+  },
+  {
+    "query": "what problem are we actually solving here?",
+    "should_trigger": true
+  },
+  {
+    "query": "get this idea to a ratified brief",
+    "should_trigger": true
+  },
+  {
+    "query": "split this epic into stories",
+    "should_trigger": false
+  },
+  {
+    "query": "write the design doc for this",
+    "should_trigger": false
+  },
+  {
+    "query": "review my pull request",
+    "should_trigger": false
+  }
+]

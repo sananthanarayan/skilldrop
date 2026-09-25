@@ -475,6 +475,8 @@ The long-form install material moved to [`guides/`](guides/) so this page stays 
 | Use the two skills that ship scripts | [Skills that ship scripts](guides/reference/skills-with-scripts.md) |
 | Add a skill or a loop to this repo | [Author a skill](guides/how-to/author-a-skill.md) · [Author a loop](guides/how-to/author-a-loop.md) |
 | Understand why it is built this way | [Why loops](guides/explanation/loops.md) · [ARCHITECTURE.md](ARCHITECTURE.md) |
+| See one change go through all four loops | [Follow one change through the loops](guides/tutorial/follow-a-change-through-the-loops.md) |
+| Point a model at this repo | [`llms.txt`](llms.txt) — a generated index so a tool reads the few relevant pages instead of the tree |
 
 ### Reviewer subagents
 

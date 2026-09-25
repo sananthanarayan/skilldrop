@@ -1,0 +1,26 @@
+{
+  "loop_name": "discover",
+  "evals": [
+    {
+      "id": "refuses-to-specify-on-a-thin-brief",
+      "prompt": "Run the discover loop. An account manager says enterprise customers keep hitting our API limits and are complaining.",
+      "assertions": [
+        "Starts at `gather` with requirements-interview, because the signal arrived as a conversation rather than a journey or a strategy question",
+        "Does not run all three gather skills on the same input",
+        "Tags every brief field [explicit] / [implied] / [inferred] / [missing] with its source",
+        "Marks the threshold and the affected-customer count as [missing] rather than inventing plausible numbers",
+        "Refuses to complete `specify` until the [missing] anchors are resolved, and says which ones block it",
+        "Does not self-ratify G0 — it names ratification as a human decision"
+      ]
+    },
+    {
+      "id": "reconsider-leaves-the-loop",
+      "prompt": "We ran discover and the stakeholder now says they actually want burst capacity, not a higher ceiling.",
+      "assertions": [
+        "Classifies this as RECONSIDER, a redirect-class verdict",
+        "States that a redirect leaves the loop rather than revising within it",
+        "Does not route back to `structure` for another brief on the original problem"
+      ]
+    }
+  ]
+}
