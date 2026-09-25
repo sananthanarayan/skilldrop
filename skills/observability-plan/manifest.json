@@ -6,6 +6,10 @@
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
   "related": ["capacity-cost-model", "incident-comms", "nfr-spec", "postmortem-generator", "runbook-generator", "success-metrics"],
+  "handoff": [
+    { "to": "runbook-generator", "when": "the alerts are defined and each needs a procedure", "purpose": "Write the procedure the on-call follows per alert.", "fallback": "If runbook-generator is absent, write one numbered procedure per alert inline." },
+    { "to": "incident-comms", "when": "detection fired and an audience needs telling", "purpose": "Communicate at the stage the incident is actually in.", "fallback": "If incident-comms is absent, state the stage, the impact, and the next update time inline." }
+  ],
   "tags": ["observability", "slo", "sli", "alerting", "monitoring", "sre"],
   "model": { "tier": "standard", "rationale": "Methodology synthesis against fixed SRE practices (golden signals, burn-rate alerting, pillar split). SLO calibration needs judgment but is bounded; escalate via ambiguous-input on contested reliability targets." }
 }

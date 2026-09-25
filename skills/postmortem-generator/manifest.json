@@ -6,6 +6,9 @@
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
   "related": ["runbook-generator"],
+  "handoff": [
+    { "to": "runbook-generator", "when": "the postmortem produced runbook deltas", "purpose": "Apply the deltas as edits to the existing runbook.", "fallback": "If runbook-generator is absent, phrase each delta as a concrete before/after edit so a human can apply it." }
+  ],
   "tags": ["postmortem", "incident", "rca", "sre", "blameless", "outage"],
   "model": { "tier": "standard", "rationale": "Synthesizes a structured doc from incident notes. Contributing-factor chains need judgment but are bounded; escalate via large-input on huge scrollbacks." }
 }
