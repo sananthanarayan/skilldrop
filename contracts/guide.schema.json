@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/sananthanarayan/skilldrop/contracts/guide.schema.json",
+  "title": "skilldrop guide frontmatter",
+  "$comment": "RFC-0029. Diátaxis `kind` is a PAGE CONTRACT, not a directory requirement — the directory is a convenience, the frontmatter is the truth. That keeps the tree shallow while still forcing each page to declare what kind of document it is, which is the discipline Diátaxis actually provides.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title", "summary", "kind"],
+  "properties": {
+    "title": { "type": "string", "description": "Sentence case. Becomes the page's single h1." },
+    "summary": { "type": "string", "description": "One line, shown in the guides index." },
+    "kind": {
+      "enum": ["tutorial", "how-to", "reference", "explanation"],
+      "description": "tutorial = learning by doing. how-to = a task with a goal. reference = look it up. explanation = why it is this way. A page that cannot pick one is doing two jobs and should be split."
+    },
+    "status": { "enum": ["draft", "review", "stable", "deprecated"], "default": "stable" }
+  }
+}

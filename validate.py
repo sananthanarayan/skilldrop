@@ -52,7 +52,6 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 SKILLS = os.path.join(ROOT, "skills")
 AGENTS = os.path.join(ROOT, "agents")
 LOOPS = os.path.join(ROOT, "loops")  # RFC-0028 — the third primitive
-REQUIRED_FIELDS = ["name", "version", "description", "entrypoint", "deps", "env", "related", "tags", "model"]
 HANDOFF_FIELDS = ("to", "when", "purpose", "fallback")  # RFC-0028, closed
 HOOK_EVENTS = {"session-start", "pre-commit-review", "on-demand"}  # RFC-0006; kept in sync with bin/skilldrop.js
 
@@ -65,7 +64,75 @@ CLAUDE_DIR_REF = re.compile(r"\$\{CLAUDE_SKILL_DIR\}/([\w./-]+)")
 MD_LINK = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
 FENCE = re.compile(r"^```.*?^```", re.M | re.S)
 MATERIAL = ("reference.md", "references/*.md", "lenses/*.md", "rubrics/*.md")  # AGENTS.md: link these from SKILL.md
-LINK_DOCS = ("README.md", "AGENTS.md", "CLAUDE.md", "CONTRIBUTING.md", "SECURITY.md", "MODEL-ROUTING.md")
+LINK_DOCS = ("README.md", "AGENTS.md", "CLAUDE.md", "CONTRIBUTING.md", "SECURITY.md",
+             "MODEL-ROUTING.md", "ARCHITECTURE.md")
+
+
+CONTRACTS = os.path.join(ROOT, "contracts")
+_schema_cache = {}
+
+
+def schema(name):
+    if name not in _schema_cache:
+        with open(os.path.join(CONTRACTS, name), encoding="utf-8") as fh:
+            _schema_cache[name] = json.load(fh)
+    return _schema_cache[name]
+
+
+_JSON_TYPES = {"object": dict, "array": list, "string": str, "boolean": bool,
+               "integer": int, "number": (int, float)}
+
+
+def check_schema(obj, sch, path="") -> list:
+    """The subset of JSON Schema the contracts in contracts/ actually use.
+
+    Deliberately not a full implementation and deliberately not `jsonschema`: a zero-runtime-
+    dependency install is skilldrop's most valuable property, and the contracts are small and
+    regular. If a contract ever needs a keyword this does not support, teach this function —
+    do not add a dependency."""
+    errs, at = [], path or "<root>"
+
+    if "type" in sch:
+        want = sch["type"]
+        py = _JSON_TYPES.get(want)
+        # bool is a subclass of int in Python; JSON Schema treats them as distinct.
+        ok = isinstance(obj, py) and not (want in ("integer", "number") and isinstance(obj, bool))
+        if not ok:
+            return [f"{at}: expected {want}, got {type(obj).__name__}"]
+    if "const" in sch and obj != sch["const"]:
+        errs.append(f"{at}: must be {sch['const']!r}, got {obj!r}")
+    if "enum" in sch and obj not in sch["enum"]:
+        errs.append(f"{at}: must be one of {sch['enum']}, got {obj!r}")
+    if isinstance(obj, str) and "pattern" in sch and not re.search(sch["pattern"], obj):
+        errs.append(f"{at}: {obj!r} does not match {sch['pattern']}")
+
+    if isinstance(obj, dict):
+        props = sch.get("properties", {})
+        for k in sch.get("required", []):
+            if k not in obj:
+                errs.append(f"{at}: missing required key `{k}`")
+        addl = sch.get("additionalProperties", True)
+        for k, v in obj.items():
+            if k in props:
+                errs += check_schema(v, props[k], f"{path}.{k}" if path else k)
+            elif addl is False:
+                errs.append(f"{at}: unknown key `{k}` — this contract is closed")
+            elif isinstance(addl, dict):
+                errs += check_schema(v, addl, f"{path}.{k}" if path else k)
+
+    if isinstance(obj, list):
+        if "minItems" in sch and len(obj) < sch["minItems"]:
+            errs.append(f"{at}: needs at least {sch['minItems']} item(s), has {len(obj)}")
+        if "items" in sch:
+            for i, v in enumerate(obj):
+                errs += check_schema(v, sch["items"], f"{path}[{i}]")
+
+    if isinstance(obj, (int, float)) and not isinstance(obj, bool):
+        if "minimum" in sch and obj < sch["minimum"]:
+            errs.append(f"{at}: {obj} is below minimum {sch['minimum']}")
+        if "maximum" in sch and obj > sch["maximum"]:
+            errs.append(f"{at}: {obj} is above maximum {sch['maximum']}")
+    return errs
 
 
 def strip_fences(text):
@@ -89,6 +156,30 @@ def warn(skill, msg):
 SUBAGENT_REF = re.compile(r"`([a-z0-9][a-z0-9-]*)`\s+subagent")
 
 
+def check_guides():
+    """RFC-0029 — guides/ is Diátaxis by frontmatter `kind`, not by directory. The contract is
+    what forces each page to declare which of the four jobs it is doing; a page that cannot
+    pick one is doing two and should be split. Every guide must also be reachable from the
+    index, or it is a file nobody finds."""
+    gdir = os.path.join(ROOT, "guides")
+    if not os.path.isdir(gdir):
+        return
+    index = os.path.join(gdir, "README.md")
+    index_txt = open(index, encoding="utf-8").read() if os.path.exists(index) else ""
+    if not index_txt:
+        fail("guides", "no guides/README.md — the index is how a guide gets found")
+    for g in sorted(glob.glob(os.path.join(gdir, "**", "*.md"), recursive=True)):
+        rel = os.path.relpath(g, ROOT)
+        if os.path.basename(g) == "README.md":
+            continue
+        fm = frontmatter(open(g, encoding="utf-8").read())
+        fields = dict(re.findall(r"^([a-z-]+):\s*(.+?)\s*$", fm, re.M))
+        for e in check_schema(fields, schema("guide.schema.json")):
+            fail(rel, f"frontmatter {e}")
+        if os.path.relpath(g, gdir) not in index_txt:
+            fail(rel, "not linked from guides/README.md — an unindexed guide is unfindable")
+
+
 def check_agents(skill_dirs):
     """agents/ is the repo's second primitive and had no enforced invariants at all.
     The link a skill declares to a subagent is real — feature-implement-loop delegates
@@ -103,6 +194,8 @@ def check_agents(skill_dirs):
         names.add(stem)
         fm = frontmatter(open(os.path.join(AGENTS, f), encoding="utf-8").read())
         fields = dict(re.findall(r"^([a-z-]+):\s*(.+?)\s*$", fm, re.M))
+        for e in check_schema(fields, schema("agent.schema.json")):
+            fail(f"agents/{f}", f"frontmatter {e}")
         if fields.get("name") != stem:
             fail(f"agents/{f}", f"frontmatter name '{fields.get('name')}' != filename '{stem}'")
         if not fields.get("description"):
@@ -122,25 +215,9 @@ def check_agents(skill_dirs):
 
 
 
-LOOP_REQUIRED = ["name", "description", "entrypoint", "kind", "stages"]
-LOOP_OPTIONAL = ["$comment", "version", "cap"]
-STAGE_REQUIRED = ["id", "type", "intent", "skills"]
-STAGE_OPTIONAL = ["gate"]
-GATE_REQUIRED = ["id", "kind", "verdicts"]
-GATE_OPTIONAL = ["script", "revise_to"]
 STAGE_TYPES = {"generate", "verify", "gate"}
 GATE_KINDS = {"mechanical", "review", "human"}
 GATE_ID = re.compile(r"^G[0-9]+(\.[0-9]+)?$")
-
-
-def _closed(where, obj, required, optional):
-    """contracts/*.schema.json are closed schemas. A typo'd key must fail, not be ignored."""
-    for k in required:
-        if k not in obj:
-            fail(where, f"missing required key `{k}`")
-    for k in obj:
-        if k not in required and k not in optional:
-            fail(where, f"unknown key `{k}` — the loop contract is closed (contracts/loop.schema.json)")
 
 
 def check_loops(dir_set):
@@ -172,7 +249,8 @@ def check_loops(dir_set):
         md = open(md_path, encoding="utf-8").read()
         fm = dict(re.findall(r"^(name|description):\s*(.+?)\s*$", frontmatter(md), re.M))
 
-        _closed(where, spec, LOOP_REQUIRED, LOOP_OPTIONAL)
+        for e in check_schema(spec, schema("loop.schema.json")):
+            fail(where, f"loop.json {e}")
         # Same name triple-match skills are held to: folder == loop.json == frontmatter.
         if spec.get("name") != d or fm.get("name") != d:
             fail(where, f"name triple mismatch: folder '{d}', loop.json '{spec.get('name')}', "
@@ -198,7 +276,6 @@ def check_loops(dir_set):
         stage_ids = []
         for i, st in enumerate(stages):
             sw = f"{where} stage[{i}]"
-            _closed(sw, st, STAGE_REQUIRED, STAGE_OPTIONAL)
             sid = st.get("id")
             if sid in stage_ids:
                 fail(sw, f"duplicate stage id '{sid}'")
@@ -215,7 +292,6 @@ def check_loops(dir_set):
             if not g:
                 continue
             gw = f"{where} gate {g.get('id', '?')}"
-            _closed(gw, g, GATE_REQUIRED, GATE_OPTIONAL)
             gid = g.get("id", "")
             if not GATE_ID.match(str(gid)):
                 fail(gw, f"gate id '{gid}' must match G<n>[.<n>] — a gate is a place people point at")
@@ -282,9 +358,8 @@ def main():
             fail(d, f"name triple mismatch: folder={d} manifest={manifest.get('name')} "
                     f"frontmatter={m_name.group(1) if m_name else None}")
 
-        for field in REQUIRED_FIELDS:
-            if field not in manifest:
-                fail(d, f"manifest missing required field '{field}'")
+        for e in check_schema(manifest, schema("skill.schema.json")):
+            fail(d, f"manifest.json {e}")
 
         tier = manifest.get("model", {}).get("tier")
         if d not in routing:
@@ -421,6 +496,8 @@ def main():
             fail("model-routing.json", f"entry '{r}' has no skill folder")
 
     packs_doc = json.load(open(os.path.join(ROOT, "packs.json")))
+    for e in check_schema(packs_doc, schema("pack.schema.json")):
+        fail("packs.json", e)
     packs = packs_doc["packs"]
     packed = set()
     for pname, pack in packs.items():
@@ -468,6 +545,7 @@ def main():
             fail("docs/loops", f"{rel} is stale — run `python3 build_loops.py`")
 
     agent_names = check_agents(skill_dirs)
+    check_guides()
     loop_names = check_loops(dir_set)
 
     # The site regenerates its counts from the manifests; README prose does not.
@@ -520,6 +598,7 @@ def main():
     md_files = set(glob.glob(os.path.join(SKILLS, "**", "*.md"), recursive=True))
     md_files |= set(glob.glob(os.path.join(AGENTS, "*.md")))
     md_files |= set(glob.glob(os.path.join(LOOPS, "**", "*.md"), recursive=True))
+    md_files |= set(glob.glob(os.path.join(ROOT, "guides", "**", "*.md"), recursive=True))
     md_files |= set(glob.glob(os.path.join(ROOT, "docs", "**", "*.md"), recursive=True))
     md_files |= {os.path.join(ROOT, f) for f in LINK_DOCS if os.path.exists(os.path.join(ROOT, f))}
     for mf in sorted(md_files):
