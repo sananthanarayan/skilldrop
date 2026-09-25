@@ -20,9 +20,18 @@ Every skill is a plain `SKILL.md` folder — the [**Agent Skills open standard**
 
 ## How skilldrop works
 
-skilldrop runs two value streams, and **nothing comes out of either until it passes a review gate.** Both diagrams render on GitHub; the Mermaid sources live in [`docs/`](docs/) for easy re-rendering.
+skilldrop ships **loops**, not just parts. A loop is a named sequence of stages over existing skills with a gate between them: [`loops/<name>/LOOP.md`](loops/) is what an agent reads, `loop.json` is the machine-readable contract ([RFC-0028](docs/rfcs/0028-loops-as-a-primitive.md)). **Nothing comes out of a loop until it passes that loop's gate.**
 
-### Knowledge-work pipeline
+A loop *sequences* skills — it never contains one. Every skill stays independently installable and runnable on its own, which is what keeps a single-folder copy working in Cursor, Kiro, or Aider.
+
+| Loop | Takes | Gate | Produces |
+|---|---|---|---|
+| [`build`](loops/build/LOOP.md) | an agreed requirement or triaged defect | **G2** mechanical — `pre-merge-review`'s gate script decides | merged code |
+| [`ship-a-draft`](loops/ship-a-draft/LOOP.md) | raw notes, a transcript, a ticket | **G4** review — `doc-critique`'s verdict | a stakeholder-ready artifact |
+
+Every gate emits a verdict from one shared vocabulary ([`contracts/terminals.json`](contracts/terminals.json)) in five classes — pass, conditional, revise, redirect, blocked — so `READY`, `PROCEED` and `SHIP IT` are recognisably the same kind of answer. Both diagrams render on GitHub; the Mermaid sources live in [`docs/`](docs/) for easy re-rendering.
+
+### `ship-a-draft` — the knowledge-work loop
 
 Raw input becomes a stakeholder-ready artifact — and loops back through review until it's approved.
 
@@ -45,7 +54,7 @@ flowchart LR
     crit == "approved" ==> ART
 ```
 
-### Code: implement and verify
+### `build` — code: implement and verify
 
 A feature spec becomes shippable code through a self-correcting loop — generate, adversarially challenge, close the gaps, re-check — until the review is clean or a 3-round cap is hit. This is the [`feature-implement-loop`](skills/feature-implement-loop/SKILL.md) skill.
 

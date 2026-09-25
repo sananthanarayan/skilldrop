@@ -31,8 +31,33 @@ Always show **both** forms — `${CLAUDE_SKILL_DIR}` for Claude Code, plain rela
 
 ## Project settings
 
-`.claude/settings.json` exists at the repo root and is currently empty (`{}`). It's the canonical place to add Claude-Code-specific configuration scoped to this project — hooks, permissions allowlists, `enabledPlugins`, `extraKnownMarketplaces`, or environment overrides. Add config when you have something concrete to configure; an empty file is honest about the current state.
+`.claude/settings.json` registers this repo as a **local plugin marketplace** so the catalogue can be dogfooded from the working tree without publishing:
 
-## When NOT to use a skill
+```json
+{
+  "enabledPlugins": { "skilldrop@skilldrop-local": true },
+  "extraKnownMarketplaces": {
+    "skilldrop-local": { "source": { "source": "directory", "path": "." } }
+  }
+}
+```
 
-Don't invoke a skilldrop skill from inside another skilldrop skill. Skills are designed to compose at the human's invocation layer (e.g. user runs `brief-intake` then hands the brief to `adr-generator`), not via internal chaining. If two skills genuinely need to call each other, that's a signal to merge them or to extract shared logic into `reference.md`.
+That means `/plugin` in a session opened at the repo root sees the skills, subagents, and loops as they exist on disk right now — edit a `SKILL.md` or a `LOOP.md` and the next invocation reads it, with no copy step. It is also the canonical place for any other Claude-Code-specific project config: hooks, permissions allowlists, or environment overrides.
+
+## Sequencing belongs to a loop, never to a skill
+
+**A skill never invokes another skill.** That rule is what keeps every skill independently
+installable — one folder copied into Cursor or Aider works on its own, because nothing in it
+assumes a sibling is present.
+
+Sequencing lives one level up, in a **loop** (`loops/<name>/LOOP.md`, RFC-0028). A loop names
+an ordered list of stages, the skills each stage runs, and the gate between them. It composes
+skills by *ordering* them, not by having them call each other — so `build` can run
+`feature-implement-loop` then `pre-merge-review` while both remain standalone skills.
+
+- Need step B to follow step A? Add a stage to a loop, or write a new loop.
+- Two skills genuinely need each other's internals? That's a signal to merge them, or to
+  extract the shared logic into `reference.md`.
+- Running a loop in Claude Code: read its `LOOP.md` and invoke each stage's skill yourself,
+  honouring the gate between stages and the loop's `cap`. The loop is the script; you are the
+  runner.

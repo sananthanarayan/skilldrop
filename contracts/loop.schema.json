@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/sananthanarayan/skilldrop/contracts/loop.schema.json",
+  "title": "skilldrop loop",
+  "$comment": "RFC-0028. A loop sequences existing skills; it never contains one. Skills stay in flat skills/<name> folders and stay independently installable — a loop is a named order plus the gates between stages. Enforced by validate.py with hand-rolled stdlib checks: skilldrop ships zero runtime dependencies and this file must not become a reason to add `jsonschema`.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "description", "entrypoint", "kind", "stages"],
+  "properties": {
+    "$comment": { "type": "string" },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Kebab-case. Must equal the folder name and the LOOP.md frontmatter name — the same triple-match skills are held to."
+    },
+    "version": { "type": "string" },
+    "description": {
+      "type": "string",
+      "description": "Use-case-first. First half says what the loop delivers; second half states the trigger phrases an agent matches on."
+    },
+    "entrypoint": { "const": "LOOP.md" },
+    "kind": {
+      "enum": ["loop", "wrapper"],
+      "description": "`loop` advances stage to stage toward a terminal. `wrapper` wraps an arbitrary generator skill chosen at run time — its stages are the passes either side of that generator."
+    },
+    "cap": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10,
+      "default": 3,
+      "description": "Maximum revision rounds before the loop stops looping and emits its conditional or blocked terminal. Default 3, matching agent-loop-design's revision cap."
+    },
+    "stages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "type", "intent", "skills"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+          "type": {
+            "enum": ["generate", "verify", "gate"],
+            "description": "The three state types agent-loop-design mandates: 'Every loop has exactly these three state types.'"
+          },
+          "intent": { "type": "string", "description": "One line: what this stage is for." },
+          "skills": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" },
+            "description": "Skill folder names, in order. Each must be a real skills/<name>. `*` means any generator, and is legal only in a wrapper."
+          },
+          "gate": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "kind", "verdicts"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^G[0-9]+(\\.[0-9]+)?$",
+                "description": "Named gate, unique across the repo. A gate is a place a human or a script can point at."
+              },
+              "kind": {
+                "enum": ["mechanical", "review", "human"],
+                "description": "mechanical = a script's exit code decides. review = a skill or subagent panel decides. human = a person decides and the agent may not proceed without it."
+              },
+              "script": {
+                "type": "string",
+                "description": "Repo-relative path to the deciding script. Required when kind is mechanical, forbidden otherwise."
+              },
+              "verdicts": {
+                "type": "array",
+                "minItems": 2,
+                "items": { "type": "string" },
+                "description": "Every verdict this gate can emit. All must exist in contracts/terminals.json. Must include >=1 pass-class and >=1 non-pass."
+              },
+              "revise_to": {
+                "type": "string",
+                "description": "Stage id a revise-class verdict returns to. Must be an earlier stage in this loop."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

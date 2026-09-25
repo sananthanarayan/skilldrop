@@ -1,0 +1,33 @@
+{
+  "$comment": "RFC-0028 — the shared verdict vocabulary. Before this file, every gating skill invented its own terminal words: feature-implement-loop says VERIFIED, pre-merge-review says READY, council-review says PROCEED, doc-critique says SHIP IT. They mean the same five things. A loop's gate declares which verdicts it can emit, and validate.py checks every one against this file — so a new loop cannot invent a sixth kind of 'yes'.",
+  "version": "1.0.0",
+  "classes": {
+    "pass": "The gate is satisfied. The loop advances to the next stage, or terminates successfully.",
+    "conditional": "The gate is satisfied, but named open items travel forward with the artifact. Advancing is allowed; forgetting the items is not.",
+    "revise": "The gate is not satisfied and the fix is known. Return to the stage named by the loop's revision edge, subject to the cap.",
+    "redirect": "The gate is not satisfied and the work is the wrong shape. Do not revise — re-enter a different stage, a different loop, or a different artifact.",
+    "blocked": "The gate cannot be evaluated. A required input, decision, or permission is missing. Stop and name what is needed."
+  },
+  "verdicts": {
+    "VERIFIED":                 { "class": "pass",        "origin": "feature-implement-loop" },
+    "READY":                    { "class": "pass",        "origin": "pre-merge-review" },
+    "PROCEED":                  { "class": "pass",        "origin": "council-review" },
+    "SHIP IT":                  { "class": "pass",        "origin": "doc-critique" },
+    "VERIFIED WITH OPEN ITEMS": { "class": "conditional", "origin": "feature-implement-loop" },
+    "PROCEED WITH CONDITIONS":  { "class": "conditional", "origin": "council-review" },
+    "SHIP WITH CHANGES":        { "class": "conditional", "origin": "doc-critique" },
+    "NOT READY":                { "class": "revise",      "origin": "pre-merge-review" },
+    "REVISE":                   { "class": "revise",      "origin": "council-review" },
+    "MAJOR REWRITE":            { "class": "revise",      "origin": "doc-critique" },
+    "RECONSIDER":               { "class": "redirect",    "origin": "council-review" },
+    "SPLIT":                    { "class": "redirect",    "origin": "council-review" },
+    "WRONG ARTIFACT":           { "class": "redirect",    "origin": "doc-critique" },
+    "BLOCKED":                  { "class": "blocked",     "origin": "feature-implement-loop" }
+  },
+  "rules": [
+    "Every gate declares at least one `pass` verdict and at least one non-pass verdict. A gate that can only succeed is not a gate.",
+    "Every gate can emit BLOCKED. A missing input is always possible and must never be fabricated past (AGENTS.md, non-interactive invocation).",
+    "A `revise` verdict is subject to the loop's `cap`. On the cap-th revise, the loop emits its conditional or blocked terminal instead of looping again.",
+    "A `redirect` verdict leaves the loop. It names where the work goes instead."
+  ]
+}
