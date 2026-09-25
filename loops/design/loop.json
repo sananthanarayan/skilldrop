@@ -1,0 +1,47 @@
+{
+  "$comment": "RFC-0028. The loop with the worst reversibility profile: a design mistake surfaces months later in code nobody wants to unwind. That is why its gate is a panel, not a script.",
+  "name": "design",
+  "version": "0.1.0",
+  "description": "Take a ratified requirement to a recorded architectural decision — constraints, structure, diagrams, threats, then a panel that must agree before the decision is written down. Use when the user is designing a system, choosing an architecture, or asking how something should be built.",
+  "entrypoint": "LOOP.md",
+  "kind": "loop",
+  "cap": 3,
+  "stages": [
+    {
+      "id": "constrain",
+      "type": "generate",
+      "intent": "Name the quality targets before the structure, so the design is judged against numbers rather than taste.",
+      "skills": ["nfr-spec"]
+    },
+    {
+      "id": "shape",
+      "type": "generate",
+      "intent": "Write the design and render it. The prose and the picture are one artifact and must not disagree.",
+      "skills": ["design-doc", "architecture-diagrams"]
+    },
+    {
+      "id": "threat",
+      "type": "verify",
+      "intent": "Attack the design that now exists, before it is ratified rather than after it is built.",
+      "skills": ["threat-model"]
+    },
+    {
+      "id": "ratify",
+      "type": "gate",
+      "intent": "A standing panel takes independent positions before cross-talk, surfaces the cruxes, and records dissent.",
+      "skills": ["council-review"],
+      "gate": {
+        "id": "G1",
+        "kind": "review",
+        "verdicts": ["PROCEED", "PROCEED WITH CONDITIONS", "REVISE", "RECONSIDER", "SPLIT", "BLOCKED"],
+        "revise_to": "shape"
+      }
+    },
+    {
+      "id": "record",
+      "type": "generate",
+      "intent": "Write the decision down with its rejected alternatives, so the next team inherits the reasoning and not just the outcome.",
+      "skills": ["adr-generator"]
+    }
+  ]
+}
