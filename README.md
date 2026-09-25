@@ -424,6 +424,9 @@ npx skilldrop-cli install --pack dev-team --project     # .claude/skills — als
 npx skilldrop-cli install prfaq --ide cursor            # + writes .cursor/rules/prfaq.mdc
 npx skilldrop-cli install --pack sre-oncall --ide kiro  # .kiro/skills — Kiro IDE + Kiro CLI, discovered natively
 npx skilldrop-cli install adr-generator --dest .agents/skills   # Codex + Copilot CLI (see below)
+npx skilldrop-cli loops                                 # the five loops, their stages and gates
+npx skilldrop-cli install --loop build                  # a loop + every stage skill it sequences (RFC-0028)
+npx skilldrop-cli install --loop --pack sre-oncall      # every loop that pack declares
 npx skilldrop-cli agents                                # the reviewer subagents
 npx skilldrop-cli install --agent devils-advocate       # -> ~/.claude/agents/ (RFC-0012)
 npx skilldrop-cli install --panel review                # the whole review fleet: 3 subagents + the pre-merge-review orchestrator (RFC-0020)
@@ -432,7 +435,7 @@ npx skilldrop-cli list | skilldrop info <skill> | skilldrop packs | skilldrop un
 npx skilldrop-cli list --json                            # machine-readable: list/info/packs/agents/outdated (RFC-0021)
 ```
 
-`--with-related` also pulls each skill's companions. From a clone (or before the package is published): `node bin/skilldrop.js <same args>`. Scope and design: [RFC-0002](docs/rfcs/0002-skilldrop-cli.md), full command surface in [`docs/designs/skilldrop-cli-design.md`](docs/designs/skilldrop-cli-design.md).
+`--loop` installs a loop as an invokable skill (its `LOOP.md` is already `SKILL.md`-shaped) plus the skills its stages name — add `--no-skills` for the loop alone, which still runs because each stage degrades through its declared `fallback`. `--with-related` also pulls each skill's companions. From a clone (or before the package is published): `node bin/skilldrop.js <same args>`. Scope and design: [RFC-0002](docs/rfcs/0002-skilldrop-cli.md), full command surface in [`docs/designs/skilldrop-cli-design.md`](docs/designs/skilldrop-cli-design.md).
 
 ### Or: the Claude Code plugin marketplace
 
