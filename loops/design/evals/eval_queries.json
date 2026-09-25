@@ -1,0 +1,30 @@
+[
+  {
+    "query": "design the system for this requirement",
+    "should_trigger": true
+  },
+  {
+    "query": "run the design loop on this PRD",
+    "should_trigger": true
+  },
+  {
+    "query": "how should we architect this?",
+    "should_trigger": true
+  },
+  {
+    "query": "get this to a recorded architecture decision",
+    "should_trigger": true
+  },
+  {
+    "query": "implement this story",
+    "should_trigger": false
+  },
+  {
+    "query": "write the runbook for this alert",
+    "should_trigger": false
+  },
+  {
+    "query": "summarise this for the board",
+    "should_trigger": false
+  }
+]

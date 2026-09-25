@@ -1,0 +1,30 @@
+[
+  {
+    "query": "take this story to merged code",
+    "should_trigger": true
+  },
+  {
+    "query": "run the build loop on this ticket",
+    "should_trigger": true
+  },
+  {
+    "query": "implement this and gate it before I merge",
+    "should_trigger": true
+  },
+  {
+    "query": "is this branch safe to merge yet?",
+    "should_trigger": true
+  },
+  {
+    "query": "write me an ADR for this decision",
+    "should_trigger": false
+  },
+  {
+    "query": "design the system for this requirement",
+    "should_trigger": false
+  },
+  {
+    "query": "what should we build next quarter?",
+    "should_trigger": false
+  }
+]

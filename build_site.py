@@ -23,6 +23,7 @@ and the version in package.json. The changelog's newest version must match packa
 the build refuses, for the same reason collect() refuses a half-row catalogue.
 """
 import argparse
+import build_llms  # llms.txt is served at the site root too (RFC-0030)
 import html
 import json
 import os
@@ -48,11 +49,12 @@ SITE_URL = "https://sananthanarayan.github.io/skilldrop/"
 
 # --- page copy -------------------------------------------------------------------
 PITCH = {
-    "hero_h1": "A prompt gets you a draft. A skill gets you a deliverable.",
+    "hero_h1": "Your agent can draft anything. It should not get to decide everything.",
     "hero_lede": (
-        "Portable skills for the artifacts knowledge work actually ships — ADRs, design docs, "
-        "PRDs, runbooks, threat models, decks, postmortems. Each one is a plain folder you copy "
-        "into your agent. No runtime, no platform, no transformation on the way in."
+        "skilldrop is five loops over 57 portable skills, and nothing leaves a loop until its gate "
+        "passes — a script, a review panel, or a person, chosen by how expensive the mistake is to "
+        "undo. Every skill is still a plain folder you copy into your agent. No runtime, no platform, "
+        "no transformation on the way in."
     ),
     "tension_h2": "Generic agents are fluent about everything and opinionated about nothing.",
     "tension_body": (
@@ -117,13 +119,32 @@ TOOLS = [
 
 NAV = [
     ("Why skills", "#problem", False),
+    ("Loops", "#loops", False),
+    ("Outcomes", "#outcomes", False),
     ("What's in one", "#quality", False),
     ("Portability", "#portability", False),
     ("Catalogue", "#catalogue", False),
-    ("Loops", "#loops", False),
     ("Reviewers", "#reviewers", False),
+    ("Docs", "#docs", False),
     ("Shipped", "#shipped", False),
     ("GitHub", REPO_URL, True),
+]
+
+# The docs a stranger evaluating the repo needs, in the order they need them. Kept short on
+# purpose — the full index is guides/README.md, and llms.txt is the machine-readable twin.
+DOC_CARDS = [
+    ("Architecture", "explanation",
+     "The four primitives, why a loop is not just a long skill, the copy-never-transform install "
+     "contract, the enforcement table, and the five invariants worth protecting.",
+     "ARCHITECTURE.md"),
+    ("Why loops", "explanation",
+     "Why sequencing is its own primitive instead of skills calling each other, and why four "
+     "lifecycle loops rather than three.",
+     "guides/explanation/loops.md"),
+    ("All the guides", "index",
+     "Install per IDE, author a skill or a loop, wire a hook, publish your own catalogue \u2014 "
+     "split by Di\u00e1taxis kind.",
+     "guides/README.md"),
 ]
 
 INSTALL_TABS = [
@@ -300,6 +321,22 @@ def render(skills, packs, outcomes, version, releases):
     panels = "".join(
         f'<div class="tabs__panel">{terminal([c])}<p class="tabs__note">{esc(n)}</p></div>'
         for _, c, n in INSTALL_TABS)
+
+    outcome_cards = "".join(
+        f"""<li class="pack">
+      <div class="pack__head">
+        <h3 class="pack__name">{esc(o['name'])}</h3><span class="pack__n">{o['count']} skills</span>
+      </div>
+      <p class="pack__desc">{esc(o['description'])}</p>
+      <button class="pack__cta" data-filter="outcome" data-value="{esc(o['name'])}">Filter the catalogue &rarr;</button>
+    </li>""" for o in outcomes)
+
+    doc_cards = "".join(
+        f"""<li class="pack">
+      <div class="pack__head"><h3 class="pack__name">{esc(t)}</h3><span class="pack__n">{esc(k)}</span></div>
+      <p class="pack__desc">{esc(d)}</p>
+      <p class="pack__install"><a href="{REPO_URL}/blob/main/{href}">Read &rarr;</a></p>
+    </li>""" for t, k, d, href in DOC_CARDS)
 
     loop_cards = "".join(
         f"""<li class="pack">
@@ -708,7 +745,26 @@ a {{ color:var(--accent-700); }}
   </div></div>
 </section>
 
-<section class="section section--alt" id="quality">
+<section class="section section--alt" id="loops">
+  <div class="inner">
+    <p class="eyebrow">Loops</p>
+    <h2>A way of operating, not just a bag of parts</h2>
+    <p class="lede">A loop is an ordered sequence of stages over these skills, with a gate between them &mdash; nothing leaves a loop until its gate passes. Four cover the lifecycle and are separated by how expensive the mistake is to unwind; one wraps any generator. A loop sequences skills and never contains one, so every skill still installs and runs on its own.</p>
+    <ul class="grid-3">{loop_cards}</ul>
+    <p class="pack__install" style="margin-top:1.5rem"><code>skilldrop install --loop build</code> &mdash; the loop plus every stage skill it sequences.</p>
+  </div>
+</section>
+
+<section class="section" id="outcomes">
+  <div class="inner">
+    <p class="eyebrow">Outcomes</p>
+    <h2>Seven reasons people open this catalogue</h2>
+    <p class="lede">Packs answer <em>who you are</em>; outcomes answer <em>why you came</em>. Pick the one that matches the job in front of you &mdash; each filters the catalogue below.</p>
+    <ul class="grid-3">{outcome_cards}</ul>
+  </div>
+</section>
+
+<section class="section" id="quality">
   <div class="inner">
     <p class="eyebrow">What makes a skill</p>
     <h2>{esc(PITCH['quality_h2'])}</h2>
@@ -717,7 +773,7 @@ a {{ color:var(--accent-700); }}
   </div>
 </section>
 
-<section class="section" id="portability">
+<section class="section section--alt" id="portability">
   <div class="inner">
     <p class="eyebrow">Portability</p>
     <h2>{esc(PITCH['tools_h2'])}</h2>
@@ -729,7 +785,7 @@ a {{ color:var(--accent-700); }}
   </div>
 </section>
 
-<section class="section section--alt" id="install">
+<section class="section" id="install">
   <div class="inner">
     <p class="eyebrow">Install</p>
     <h2>{esc(PITCH['install_h2'])}</h2>
@@ -740,7 +796,7 @@ a {{ color:var(--accent-700); }}
   </div>
 </section>
 
-<section class="section" id="catalogue">
+<section class="section section--alt" id="catalogue">
   <div class="inner">
     <p class="eyebrow">Packs</p>
     <h2>{esc(PITCH['catalogue_h2'])}</h2>
@@ -766,23 +822,23 @@ a {{ color:var(--accent-700); }}
   </div>
 </section>
 
-<section class="section" id="loops">
-  <div class="inner">
-    <p class="eyebrow">Loops</p>
-    <h2>A way of operating, not just a bag of parts</h2>
-    <p class="lede">A loop is an ordered sequence of stages over these skills, with a gate between them &mdash; nothing leaves a loop until its gate passes. Four cover the lifecycle and are separated by how expensive the mistake is to unwind; one wraps any generator. A loop sequences skills and never contains one, so every skill still installs and runs on its own.</p>
-    <ul class="grid-3">{loop_cards}</ul>
-    <p class="pack__install" style="margin-top:1.5rem"><code>skilldrop install --loop build</code> &mdash; the loop plus every stage skill it sequences.</p>
-  </div>
-</section>
-
-<section class="section section--alt" id="reviewers">
+<section class="section" id="reviewers">
   <div class="inner">
     <p class="eyebrow">Reviewers</p>
     <h2>{esc(PITCH['reviewers_h2'])}</h2>
     <p class="lede">{esc(PITCH['reviewers_lede'])}</p>
     <ul class="grid-3">{agent_cards}</ul>
     <p class="pack__install" style="margin-top:1.5rem"><code>skilldrop install --panel review</code> &mdash; all three, plus the orchestrator that runs them.</p>
+  </div>
+</section>
+
+<section class="section section--alt" id="docs">
+  <div class="inner">
+    <p class="eyebrow">Docs</p>
+    <h2>Read before you adopt it</h2>
+    <p class="lede">Long-form material lives in <code>guides/</code>, split by Di&aacute;taxis kind &mdash; a page declares what job it does in its own frontmatter, and the lint rejects one that is not indexed.</p>
+    <ul class="grid-3">{doc_cards}</ul>
+    <p class="pack__install" style="margin-top:1.5rem"><a href="{REPO_URL}/blob/main/llms.txt"><code>llms.txt</code></a> &mdash; the same index, generated, for a model to read instead of crawling the tree.</p>
   </div>
 </section>
 
@@ -1021,6 +1077,7 @@ def outputs(skills, packs, outcomes, version, releases):
         "index.html": render(skills, packs, outcomes, version, releases),
         "catalogue.json": json.dumps(payload(skills, packs, outcomes, version, releases), indent=2) + "\n",
         "favicon.svg": open(os.path.join(ASSETS, "favicon.svg"), encoding="utf-8").read(),
+        "llms.txt": build_llms.render(),
         "robots.txt": f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}sitemap.xml\n",
         "sitemap.xml": (
             '<?xml version="1.0" encoding="UTF-8"?>\n'

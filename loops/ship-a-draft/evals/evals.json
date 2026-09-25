@@ -1,0 +1,25 @@
+{
+  "loop_name": "ship-a-draft",
+  "evals": [
+    {
+      "id": "picks-the-generator-before-collecting",
+      "prompt": "Run ship-a-draft on this Slack thread — I need something the exec team can read.",
+      "assertions": [
+        "Chooses the target generator (exec-summary) BEFORE running intake, because the brief is shaped for a target",
+        "Runs brief-intake and tags every field explicit / implied / inferred / missing",
+        "Runs doc-critique at G4 against the same rubric the generator was held to",
+        "Runs output-hygiene last, only once the argument is settled",
+        "Reports what output-hygiene did not touch"
+      ]
+    },
+    {
+      "id": "major-rewrite-returns-to-intake",
+      "prompt": "The critique on my draft came back MAJOR REWRITE. Continue the ship-a-draft wrapper.",
+      "assertions": [
+        "Routes back to `intake`, not to `draft`, because G4's revise_to names intake",
+        "Explains that re-drafting from the same incomplete brief reproduces the same gaps",
+        "Does not run output-hygiene on a draft that is about to be rewritten"
+      ]
+    }
+  ]
+}

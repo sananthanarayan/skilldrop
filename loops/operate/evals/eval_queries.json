@@ -1,0 +1,30 @@
+[
+  {
+    "query": "write the postmortem for last night's incident",
+    "should_trigger": true
+  },
+  {
+    "query": "run the operate loop on this service",
+    "should_trigger": true
+  },
+  {
+    "query": "what should we alert on and what's the runbook?",
+    "should_trigger": true
+  },
+  {
+    "query": "we're in an incident — what do I tell customers?",
+    "should_trigger": true
+  },
+  {
+    "query": "implement the fix for this bug",
+    "should_trigger": false
+  },
+  {
+    "query": "design the retry architecture",
+    "should_trigger": false
+  },
+  {
+    "query": "draft the PRD for this feature",
+    "should_trigger": false
+  }
+]
