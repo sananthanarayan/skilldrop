@@ -1,0 +1,21 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    intake["intake<br/><small>brief-intake</small>"]:::gen
+    draft["draft<br/><small>*</small>"]:::gen
+    critique["critique<br/><small>doc-critique</small>"]:::review
+    polish["polish<br/><small>output-hygiene</small>"]:::review
+    G4{"G4 · review"}:::gate
+    DONE(["complete"]):::ship
+
+    intake --> draft
+    draft --> critique
+    critique --> G4
+    G4 == "SHIP IT" ==> polish
+    polish --> DONE
+
+    G4 -- "MAJOR REWRITE (max 3)" --> intake

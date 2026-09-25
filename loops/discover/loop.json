@@ -1,0 +1,41 @@
+{
+  "$comment": "RFC-0028. The first loop of the lifecycle: nothing is designed or built until a human has ratified what problem is being solved. Cheapest loop to redo and the most expensive to skip.",
+  "name": "discover",
+  "version": "0.1.0",
+  "description": "Take raw signal — interviews, journeys, a strategy question — to a requirement a human has ratified, so design starts from an agreed problem rather than an assumed one. Use when the user is deciding what to build, scoping a feature, or turning stakeholder conversations into requirements.",
+  "entrypoint": "LOOP.md",
+  "kind": "loop",
+  "cap": 3,
+  "stages": [
+    {
+      "id": "gather",
+      "type": "generate",
+      "intent": "Collect the raw signal from whichever direction it arrives: a stakeholder conversation, an existing user journey, or a strategic question.",
+      "skills": ["requirements-interview", "user-journey-map", "strategy-analysis"]
+    },
+    {
+      "id": "structure",
+      "type": "generate",
+      "intent": "Turn the mess into one brief with every field tagged explicit / implied / inferred / missing, so downstream can see what was assumed.",
+      "skills": ["brief-intake"]
+    },
+    {
+      "id": "specify",
+      "type": "generate",
+      "intent": "Turn the ratified brief into numbered requirements a design can be held to.",
+      "skills": ["prd-draft"]
+    },
+    {
+      "id": "ratify",
+      "type": "gate",
+      "intent": "A human agrees this is the problem worth solving. The critique informs that decision; it does not make it.",
+      "skills": ["doc-critique"],
+      "gate": {
+        "id": "G0",
+        "kind": "human",
+        "verdicts": ["PROCEED", "PROCEED WITH CONDITIONS", "REVISE", "RECONSIDER", "BLOCKED"],
+        "revise_to": "structure"
+      }
+    }
+  ]
+}

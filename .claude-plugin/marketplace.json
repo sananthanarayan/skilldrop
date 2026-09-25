@@ -9,7 +9,7 @@
       "name": "skilldrop",
       "source": ".",
       "description": "Portable AI-agent skills for the deliverables knowledge workers ship — diagrams, ADRs, PRDs, runbooks, decks, reviews — installable into Claude Code, Cursor, Kiro, and any IDE that takes custom instructions. One command per skill or per role-based pack.",
-      "version": "0.11.6",
+      "version": "0.11.7",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -24,7 +24,7 @@
         "ref": "plugins"
       },
       "description": "Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them. (17 skills)",
-      "version": "0.11.6",
+      "version": "0.11.7",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -39,7 +39,7 @@
         "ref": "plugins"
       },
       "description": "Direction to requirements: PR/FAQs, strategy frameworks, OKRs, PRDs, journey maps, story splitting, and success measurement. (13 skills)",
-      "version": "0.11.6",
+      "version": "0.11.7",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -54,7 +54,7 @@
         "ref": "plugins"
       },
       "description": "Build-and-ship loop: story implementation with adversarial review, test plans, triage, migrations, release notes, agent-policy files, and code-quality gates. (14 skills)",
-      "version": "0.11.6",
+      "version": "0.11.7",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -69,7 +69,7 @@
         "ref": "plugins"
       },
       "description": "Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models. (5 skills)",
-      "version": "0.11.6",
+      "version": "0.11.7",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -84,7 +84,7 @@
         "ref": "plugins"
       },
       "description": "Non-technical audiences: audience profiling, deck outlines and real .pptx decks, exec summaries, decision logs, and guides. (9 skills)",
-      "version": "0.11.6",
+      "version": "0.11.7",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -99,7 +99,7 @@
         "ref": "plugins"
       },
       "description": "Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, AI-usage reporting, and the data contracts AI pipelines depend on. (12 skills)",
-      "version": "0.11.6",
+      "version": "0.11.7",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"

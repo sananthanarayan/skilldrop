@@ -46,12 +46,14 @@ import re
 import sys
 
 import build_marketplace  # .claude-plugin/ drift check (RFC-0014)
+import build_loops        # docs/loops/*.mmd + README drift check (RFC-0028)
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SKILLS = os.path.join(ROOT, "skills")
 AGENTS = os.path.join(ROOT, "agents")
 LOOPS = os.path.join(ROOT, "loops")  # RFC-0028 — the third primitive
 REQUIRED_FIELDS = ["name", "version", "description", "entrypoint", "deps", "env", "related", "tags", "model"]
+HANDOFF_FIELDS = ("to", "when", "purpose", "fallback")  # RFC-0028, closed
 HOOK_EVENTS = {"session-start", "pre-commit-review", "on-demand"}  # RFC-0006; kept in sync with bin/skilldrop.js
 
 # RFC-0015 — the doc↔reality checks: a SKILL.md's in-repo paths must resolve, its long-form
@@ -298,6 +300,41 @@ def main():
         elif related is not None:
             fail(d, "related must be a flat list of skill names")
 
+        # RFC-0028 — `handoff` is the DIRECTED companion to `related` (which is undirected and
+        # not a DAG). `fallback` is the load-bearing field: it makes AGENTS.md's "sibling
+        # hand-offs are advisory" rule machine-readable instead of prose an agent may ignore.
+        handoff = manifest.get("handoff")
+        if handoff is not None:
+            rel_set = set(related) if isinstance(related, list) else set()
+            if not isinstance(handoff, list):
+                fail(d, "handoff must be a list of {to, when, purpose, fallback} objects")
+            else:
+                seen_to = set()
+                for i, h in enumerate(handoff):
+                    hw = f"{d} handoff[{i}]"
+                    if not isinstance(h, dict):
+                        fail(hw, "must be an object")
+                        continue
+                    for k in HANDOFF_FIELDS:
+                        if not str(h.get(k, "")).strip():
+                            fail(hw, f"missing `{k}` — a hand-off without it is untestable "
+                                     f"prose, and `fallback` is what lets a missing target "
+                                     f"degrade instead of dead-ending")
+                    for k in h:
+                        if k not in HANDOFF_FIELDS:
+                            fail(hw, f"unknown key `{k}` — the hand-off contract is closed")
+                    to = h.get("to")
+                    if to == d:
+                        fail(hw, "hands off to itself")
+                    elif to in seen_to:
+                        fail(hw, f"duplicate hand-off to '{to}'")
+                    elif to not in dir_set:
+                        fail(hw, f"hands off to '{to}', which is not a skill folder")
+                    elif to not in rel_set:
+                        fail(hw, f"hands off to '{to}' but `related` omits it — the directed "
+                                 f"edge must not drift from the enforced undirected one")
+                    seen_to.add(to)
+
         for h in manifest.get("hooks", []) or []:
             if not isinstance(h, dict):
                 fail(d, "each hooks entry must be an object with event/action/description")
@@ -410,6 +447,12 @@ def main():
     # a committed file drifting from that generator fails here so it can't ship stale.
     for rel in build_marketplace.stale():
         fail(".claude-plugin", f"{rel} is stale — run `python3 build_marketplace.py`")
+
+    # RFC-0028, one-declared-producer: docs/loops/*.mmd and the README's mermaid blocks are
+    # both generated from loop.json. Hand-editing either is the drift this check exists to stop.
+    if build_loops.stale():
+        for rel in build_loops.stale():
+            fail("docs/loops", f"{rel} is stale — run `python3 build_loops.py`")
 
     agent_names = check_agents(skill_dirs)
     loop_names = check_loops(dir_set)

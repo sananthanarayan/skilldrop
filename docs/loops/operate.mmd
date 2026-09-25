@@ -1,0 +1,21 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    instrument["instrument<br/><small>observability-plan</small>"]:::gen
+    document["document<br/><small>runbook-generator</small>"]:::gen
+    respond["respond<br/><small>incident-comms</small>"]:::gen
+    learn["learn<br/><small>postmortem-generator</small>"]:::review
+    G3{"G3 · human"}:::gate
+    DONE(["complete"]):::ship
+
+    instrument --> document
+    document --> respond
+    respond --> learn
+    learn --> G3
+    G3 == "PROCEED" ==> DONE
+
+    G3 -- "REVISE (max 3)" --> document

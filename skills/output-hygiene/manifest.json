@@ -15,6 +15,9 @@
     "doc-critique",
     "ai-usage-policy"
   ],
+  "handoff": [
+    { "to": "doc-critique", "when": "the surface is clean and the draft is still weak", "purpose": "The fault is the argument, not the residue.", "fallback": "If doc-critique is absent, name the weakest claim and what evidence it needs." }
+  ],
   "tags": [
     "hygiene",
     "cleanup",
