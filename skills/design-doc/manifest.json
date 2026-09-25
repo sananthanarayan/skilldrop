@@ -6,6 +6,9 @@
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
   "related": ["architecture-diagrams"],
+  "handoff": [
+    { "to": "architecture-diagrams", "when": "the design is written and needs rendering", "purpose": "Render the prose as a diagram that must not disagree with it.", "fallback": "If architecture-diagrams is absent, emit Mermaid inline and check every node against a claim in the doc." }
+  ],
   "tags": ["design-doc", "documentation", "engineering", "review"],
   "model": { "tier": "standard", "rationale": "Synthesizes a design doc from a brief. Escalates to opus on big or genuinely contested inputs." }
 }

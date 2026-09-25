@@ -14,6 +14,9 @@
   "related": [
     "figma-diagrams"
   ],
+  "handoff": [
+    { "to": "figma-diagrams", "when": "the diagram needs to live where designers work", "purpose": "Push the rendered diagram into Figma.", "fallback": "If figma-diagrams is absent, leave the Mermaid source and say it needs manual import; never fabricate a Figma URL." }
+  ],
   "tags": [
     "diagrams",
     "mermaid",

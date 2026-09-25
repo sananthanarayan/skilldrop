@@ -36,6 +36,10 @@ python3 validate.py
 # macOS system Python 3.9; CI's runner is new enough, so this is a local-only gap.
 python3 build_site.py --check
 
+# Loop diagrams — regenerate docs/loops/*.mmd and the README mermaid blocks from loop.json
+python3 build_loops.py
+python3 build_loops.py --check   # drift check; validate.py runs this for you
+
 # CLI (npm package skilldrop-cli; from a clone use node bin/skilldrop.js)
 node bin/skilldrop.js list | info <skill> | packs | agents      # add --from <path|git-url[#ref]> for a third-party catalog
 node bin/skilldrop.js install --agent <name...> [--project | --dest <dir>]   # subagents (RFC-0012); plain-copy targets only
@@ -85,6 +89,7 @@ Every version bump lands with a matching entry at the top of [`CHANGELOG.md`](CH
 | Executable helper | `skills/<skill-name>/scripts/<name>.py` (or `.js`, `.sh`) |
 | Python dep manifest for a skill | `skills/<skill-name>/requirements.txt` |
 | New loop (a sequence over existing skills) | `loops/<kebab-name>/LOOP.md` + `loops/<kebab-name>/loop.json` — needs an RFC (RFC-0028) |
+| Loop diagram | Nothing to place by hand — `build_loops.py` generates `docs/loops/<loop>.mmd` and the README's mermaid blocks from `loop.json`. Edit the contract, not the picture. |
 | Machine-readable schema for a primitive | `contracts/<name>.schema.json`; the shared gate verdict vocabulary is `contracts/terminals.json` |
 | Claude Code project settings | `.claude/settings.json` — registers the repo as a local plugin marketplace for dogfooding; also holds hooks/permissions/env. Inert for non-Claude tools. |
 | Per-pack Claude plugin output | Nothing to place by hand — `build_marketplace.py --dist` generates it and CI publishes it to the `plugins` branch. Adding a skill to a pack in `packs.json` is the whole edit (RFC-0027). |
@@ -121,6 +126,25 @@ description: One sentence, use-case-first. First half says *what it does*; secon
 If the skill has no scripts, leave `deps` empty. `env.required` is for vars the skill cannot work without (e.g. `FIGMA_TOKEN` for `figma-diagrams`); `env.optional` is for vars that change behaviour but aren't blockers.
 
 `related` is the flat list of sibling skills this skill's `SKILL.md` references — hand-off targets, upstream feeders, and named alternatives alike (direction lives in the SKILL.md prose, not here). It exists so installers and users can grab a skill's companions in one pass. `validate.py` enforces the sync in both directions: every backticked sibling reference in `SKILL.md` must appear in `related`, and every `related` entry must be a real skill folder that `SKILL.md` actually references.
+
+`handoff` is the **directed** companion to `related`, which is undirected and not a DAG
+(RFC-0028). Each entry is a closed object — `{ to, when, purpose, fallback }`, all four
+required:
+
+```json
+"handoff": [{
+  "to": "nfr-spec",
+  "when": "the functional requirements are agreed",
+  "purpose": "Set the quality targets the design will be judged against.",
+  "fallback": "If nfr-spec is absent, state latency, availability and scale targets inline as numbers, not adjectives."
+}]
+```
+
+`fallback` is the field doing the real work: it makes **Sibling hand-offs are advisory**
+(below) machine-readable rather than prose an agent may ignore, so a hand-off to a skill the
+target environment lacks degrades in a stated way instead of dead-ending. Every `to` must
+also appear in `related`, so the directed edge cannot drift from the enforced undirected one.
+`validate.py` checks all of this, plus no self-hand-off and no duplicate target.
 
 `hooks` is optional and only for loop-shaped skills that benefit from event automation (RFC-0006) — artifact generators carry none. Each entry is `{ event, action, description }`: `event` is one of `session-start`, `pre-commit-review`, `on-demand`; `action` is a real skill folder the hook points at; `description` is a short human line. The CLI wires these only under `--with-hooks`, projecting per install target and degrading where a target has no mechanism. `validate.py` checks the event vocabulary and that `action` resolves to a skill.
 
@@ -272,6 +296,8 @@ See `skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 - [ ] **GitHub About updated** if the skill/pack/subagent counts changed — `gh repo edit --description "…"`. This is the one surface `validate.py` cannot see (it is stdlib-only and off-repo), so it is the one that goes stale: it sat at `62 skills … 7 packs` for a while after the catalogue was 56 and 6. It is also what shows in search results and on the repo card, so it is the first thing a stranger reads.
 - [ ] **Loop (if any) is complete** — `loop.json` validates against the closed contract, every named skill exists, gate ids are repo-unique, every verdict is in `contracts/terminals.json`, and `LOOP.md` carries `Quality bar` + `Anti-patterns to avoid`.
 - [ ] **No loop in `model-routing.json`** — loops carry no tier.
+- [ ] **`handoff` (if present) is complete** — every entry has `to`/`when`/`purpose`/`fallback`, and every `to` is also in `related`.
+- [ ] **`python3 build_loops.py` run** if any `loop.json` changed — `docs/loops/*.mmd` and the README blocks are generated, and `validate.py` fails on drift.
 - [ ] **`python3 validate.py` passes** with no failures.
 
 Of these, **`validate.py` (+ `node bin/skilldrop.js validate`) mechanically enforces**: the name triple (for skills *and* loops), the whole loop contract above, the ≤500-line warning, `Quality bar` + `Anti-patterns` sections, evals *shape* (when present), model-tier sync, `related` sync, pack membership, reference + link integrity, script dual-referencing, and a heavy-tier `examples/` oracle. The rest — the RFC existing, voice, the manual test pass, no-secrets / no-real-data, description discipline, the non-interactive line, the README update, and the GitHub About — are **human judgment**; a green lint does not vouch for them. Keep this split honest: if a rule becomes mechanically checkable, move it into `validate.py` rather than leaving it as a checklist claim.
@@ -354,6 +380,7 @@ When you add or change a skill, set its tier in **both** `model-routing.json` an
 - CLI (npm `skilldrop-cli`): [bin/skilldrop.js](bin/skilldrop.js) + [package.json](package.json) — copies skills verbatim, never transforms them; the npm `files` list must keep `skills/`, `packs.json`, `model-routing.json`
 - Claude Code plugins: [build_marketplace.py](build_marketplace.py) — writes the committed `.claude-plugin/` on main, and (`--dist`) the per-pack plugin tree CI force-pushes to the generated `plugins` branch ([RFC-0027](docs/rfcs/0027-retire-agentbundle-export.md))
 - Loops (the sequencing primitive): [loops/](loops/) + [RFC-0028](docs/rfcs/0028-loops-as-a-primitive.md)
+- Loop diagram generator: [build_loops.py](build_loops.py) → [docs/loops/](docs/loops/)
 - Machine-readable contracts: [contracts/loop.schema.json](contracts/loop.schema.json), [contracts/terminals.json](contracts/terminals.json)
 - Model routing: [MODEL-ROUTING.md](MODEL-ROUTING.md) + [model-routing.json](model-routing.json)
 - Claude Code project settings: [.claude/settings.json](.claude/settings.json) — registers the repo as a local plugin marketplace (`skilldrop@skilldrop-local`) so the catalogue can be dogfooded from the working tree

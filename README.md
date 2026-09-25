@@ -24,59 +24,189 @@ skilldrop ships **loops**, not just parts. A loop is a named sequence of stages 
 
 A loop *sequences* skills — it never contains one. Every skill stays independently installable and runnable on its own, which is what keeps a single-folder copy working in Cursor, Kiro, or Aider.
 
-| Loop | Takes | Gate | Produces |
+Four loops cover the lifecycle, and they are separated by **reversibility** — how expensive the mistake is to unwind — which is why each gets its own gate rather than folding into a neighbour:
+
+| Loop | Takes | Gate | Produces | Mistake costs |
+|---|---|---|---|---|
+| [`discover`](loops/discover/LOOP.md) | interviews, journeys, a strategy question | **G0** human — a person ratifies the brief | a ratified requirement | a re-brief |
+| [`design`](loops/design/LOOP.md) | a ratified requirement | **G1** review — `council-review`'s panel | a recorded decision (ADR) | months, unwound in code |
+| [`build`](loops/build/LOOP.md) | an agreed requirement or triaged defect | **G2** mechanical — `pre-merge-review`'s gate script decides | merged code | a revert |
+| [`operate`](loops/operate/LOOP.md) | a shipped service | **G3** human — the incident is closed | a postmortem and runbook deltas | live users, irreversible |
+
+Plus one **wrapper**, which is not a lifecycle stage but the two passes either side of *any* generator:
+
+| Wrapper | Takes | Gate | Produces |
 |---|---|---|---|
-| [`build`](loops/build/LOOP.md) | an agreed requirement or triaged defect | **G2** mechanical — `pre-merge-review`'s gate script decides | merged code |
 | [`ship-a-draft`](loops/ship-a-draft/LOOP.md) | raw notes, a transcript, a ticket | **G4** review — `doc-critique`'s verdict | a stakeholder-ready artifact |
 
 Every gate emits a verdict from one shared vocabulary ([`contracts/terminals.json`](contracts/terminals.json)) in five classes — pass, conditional, revise, redirect, blocked — so `READY`, `PROCEED` and `SHIP IT` are recognisably the same kind of answer. Both diagrams render on GitHub; the Mermaid sources live in [`docs/`](docs/) for easy re-rendering.
 
-### `ship-a-draft` — the knowledge-work loop
+*Diagrams below are generated from each loop's `loop.json` by [`build_loops.py`](build_loops.py) — edit the contract, not the picture.*
 
-Raw input becomes a stakeholder-ready artifact — and loops back through review until it's approved.
+### `discover` — raw signal to a ratified requirement
 
-```mermaid
-%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
-flowchart LR
-    classDef input  fill:#FFF4E0,stroke:#E8A93B,stroke-width:2px,color:#7A4E00,font-weight:bold;
-    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
-    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
-    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+Interviews, journeys and strategy questions become one tagged brief, then numbered requirements a **human ratifies** before any design starts.
 
-    IN(["Raw input<br/>notes · ticket · transcript"]):::input
-    brief["Structure the brief"]:::gen
-    gens["Draft the artifact"]:::gen
-    crit["Review and refine"]:::review
-    ART(["Stakeholder-ready<br/>artifact"]):::ship
-
-    IN --> brief --> gens --> crit
-    crit -- "revise" --> brief
-    crit == "approved" ==> ART
-```
-
-### `build` — code: implement and verify
-
-A feature spec becomes shippable code through a self-correcting loop — generate, adversarially challenge, close the gaps, re-check — until the review is clean or a 3-round cap is hit. This is the [`feature-implement-loop`](skills/feature-implement-loop/SKILL.md) skill.
+<!-- loop:discover:start -->
 
 ```mermaid
 %%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
 flowchart LR
-    classDef input  fill:#FFF4E0,stroke:#E8A93B,stroke-width:2px,color:#7A4E00,font-weight:bold;
     classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
     classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
     classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
     classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
 
-    IN(["Feature / story<br/>description + acceptance criteria"]):::input
-    gC["Write and update<br/>code and tests"]:::gen
-    revC["Challenge the code"]:::review
-    gate{"Gaps found?"}:::gate
-    SHIP(["Feature ready<br/>to be shipped"]):::ship
+    gather["gather<br/><small>requirements-interview +2</small>"]:::gen
+    structure["structure<br/><small>brief-intake</small>"]:::gen
+    specify["specify<br/><small>prd-draft</small>"]:::gen
+    ratify["ratify<br/><small>doc-critique</small>"]:::gate
+    G0{"G0 · human"}:::gate
+    DONE(["complete"]):::ship
 
-    IN --> gC --> revC --> gate
-    gate -- "yes (up to 3 rounds)" --> gC
-    gate == "no" ==> SHIP
+    gather --> structure
+    structure --> specify
+    specify --> ratify
+    ratify --> G0
+    G0 == "PROCEED" ==> DONE
+
+    G0 -- "REVISE (max 3)" --> structure
 ```
+
+<!-- loop:discover:end -->
+
+### `design` — a requirement to a recorded decision
+
+Constraints first, then structure and diagrams, then an attack, then a panel that must agree — and only then is the decision written down as an ADR.
+
+<!-- loop:design:start -->
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    constrain["constrain<br/><small>nfr-spec</small>"]:::gen
+    shape["shape<br/><small>design-doc·architecture-diagrams</small>"]:::gen
+    threat["threat<br/><small>threat-model</small>"]:::review
+    ratify["ratify<br/><small>council-review</small>"]:::gate
+    record["record<br/><small>adr-generator</small>"]:::gen
+    G1{"G1 · review"}:::gate
+    DONE(["complete"]):::ship
+
+    constrain --> shape
+    shape --> threat
+    threat --> ratify
+    ratify --> G1
+    G1 == "PROCEED" ==> record
+    record --> DONE
+
+    G1 -- "REVISE (max 3)" --> shape
+```
+
+<!-- loop:design:end -->
+
+### `build` — a requirement to merged code
+
+A vertical slice becomes shippable code through a self-correcting loop, gated by a script whose exit code decides. The inner generate-challenge cycle is the [`feature-implement-loop`](skills/feature-implement-loop/SKILL.md) skill.
+
+<!-- loop:build:start -->
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    shape["shape<br/><small>user-story-splitter·bug-triage</small>"]:::gen
+    implement["implement<br/><small>feature-implement-loop</small>"]:::gen
+    verify["verify<br/><small>pre-merge-review</small>"]:::review
+    decide["decide<br/><small>council-review</small>"]:::gate
+    G2{"G2 · mechanical"}:::gate
+    G2_1{"G2.1 · human"}:::gate
+    DONE(["complete"]):::ship
+
+    shape --> implement
+    implement --> verify
+    verify --> G2
+    G2 == "READY" ==> decide
+    decide --> G2_1
+    G2_1 == "PROCEED" ==> DONE
+
+    G2 -- "NOT READY (max 3)" --> implement
+    G2_1 -- "REVISE (max 3)" --> shape
+```
+
+<!-- loop:build:end -->
+
+### `operate` — a shipped service through detection and learning
+
+Instrument, write the runbook, communicate the incident, then feed the postmortem's runbook deltas straight back into the runbook. The one loop whose failures are live.
+
+<!-- loop:operate:start -->
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    instrument["instrument<br/><small>observability-plan</small>"]:::gen
+    document["document<br/><small>runbook-generator</small>"]:::gen
+    respond["respond<br/><small>incident-comms</small>"]:::gen
+    learn["learn<br/><small>postmortem-generator</small>"]:::review
+    G3{"G3 · human"}:::gate
+    DONE(["complete"]):::ship
+
+    instrument --> document
+    document --> respond
+    respond --> learn
+    learn --> G3
+    G3 == "PROCEED" ==> DONE
+
+    G3 -- "REVISE (max 3)" --> document
+```
+
+<!-- loop:operate:end -->
+
+### `ship-a-draft` — raw input to a stakeholder-ready artifact
+
+The wrapper: structured intake before any generator, critique and a machine-residue scrub after. Loops back through intake — not the draft — until it's approved.
+
+<!-- loop:ship-a-draft:start -->
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    intake["intake<br/><small>brief-intake</small>"]:::gen
+    draft["draft<br/><small>*</small>"]:::gen
+    critique["critique<br/><small>doc-critique</small>"]:::review
+    polish["polish<br/><small>output-hygiene</small>"]:::review
+    G4{"G4 · review"}:::gate
+    DONE(["complete"]):::ship
+
+    intake --> draft
+    draft --> critique
+    critique --> G4
+    G4 == "SHIP IT" ==> polish
+    polish --> DONE
+
+    G4 -- "MAJOR REWRITE (max 3)" --> intake
+```
+
+<!-- loop:ship-a-draft:end -->
 
 ## Skills in this repo
 

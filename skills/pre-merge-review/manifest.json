@@ -6,6 +6,9 @@
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
   "related": ["feature-implement-loop", "devils-advocate", "council-review", "doc-critique"],
+  "handoff": [
+    { "to": "council-review", "when": "the blocker is a design disagreement, not a defect", "purpose": "Adjudicate the disagreement outside the diff.", "fallback": "If council-review is absent, state each position and its strongest counter inline, and name the crux the decision turns on." }
+  ],
   "tags": ["dev-workflow", "code-review", "pre-merge", "quality-gate", "subagents", "production-readiness"],
   "model": { "tier": "standard", "rationale": "Coordination: runs a deterministic gate script, dispatches the (heavy) reviewer subagents, and renders a rule-based go/no-go. The adversarial reasoning is delegated to the panel, so the skill itself is orchestration, not deep judgment." }
 }
