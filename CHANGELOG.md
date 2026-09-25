@@ -8,6 +8,13 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.11.6 — 2026-09-25
+
+- skilldrop now ships **loops**, not just parts. A loop is a named sequence of stages over existing skills with a gate between them — `loops/build/` takes an agreed requirement to merged code behind a mechanical gate, and `loops/ship-a-draft/` wraps any generator in structured intake before and critique plus a machine-residue scrub after (RFC-0028).
+- A loop sequences skills but never contains one, so all 57 skills stay independently installable and a single-folder copy still works in Cursor, Kiro, and Aider.
+- Every gate now answers from one shared verdict vocabulary (`contracts/terminals.json`) in five classes — pass, conditional, revise, redirect, blocked — instead of each skill inventing its own word for the same outcome.
+- The two pipeline diagrams that lived only as README prose are now backed by machine-readable `loop.json` contracts that `validate.py` enforces: named skills must exist, gate ids are repo-unique, a mechanical gate's script must be real, and a gate that can only succeed is rejected.
+
 ## 0.11.5 — 2026-09-18
 
 - Role packs are now installable as Claude Code plugins: `/plugin install solution-architect@skilldrop` after the same one-line `marketplace add`. A pack carries the reviewer subagents its own skills delegate to, so `dev-team` brings the review panel and `sre-oncall` does not (RFC-0027).
