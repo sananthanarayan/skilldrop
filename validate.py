@@ -155,6 +155,9 @@ def check_loops(dir_set):
 
     for d in sorted(x for x in os.listdir(LOOPS) if os.path.isdir(os.path.join(LOOPS, x))):
         names.add(d)
+        if d in dir_set:
+            fail(f"loops/{d}", "a skill folder already has this name — a loop installs into the "
+                               "same namespace (LOOP.md projects to SKILL.md), so the two collide")
         p = os.path.join(LOOPS, d)
         where = f"loops/{d}"
         try:
@@ -255,6 +258,8 @@ def frontmatter(md_text):
 
 def main():
     routing = json.load(open(os.path.join(ROOT, "model-routing.json")))["skills"]
+    loop_dirs = {x for x in os.listdir(LOOPS) if os.path.isdir(os.path.join(LOOPS, x))} \
+        if os.path.isdir(LOOPS) else set()
     skill_dirs = sorted(d for d in os.listdir(SKILLS) if os.path.isdir(os.path.join(SKILLS, d)))
     dir_set = set(skill_dirs)
 
@@ -408,7 +413,6 @@ def main():
         if tier == "heavy" and not glob.glob(os.path.join(p, "examples", "*")):
             fail(d, "heavy-tier judgment skill needs an examples/ input→output oracle (RFC-0016)")
 
-    loop_dirs = set(os.listdir(LOOPS)) if os.path.isdir(LOOPS) else set()
     for r in sorted(set(routing) - dir_set):
         if r in loop_dirs:
             fail("model-routing.json", f"'{r}' is a loop, not a skill — loops sequence skills "
@@ -426,6 +430,15 @@ def main():
             packed.add(s)
     for s in sorted(dir_set - packed):
         fail("packs.json", f"skill '{s}' belongs to no pack — every skill needs an audience")
+
+    looped = set()
+    for pname, pack in packs.items():
+        for lp in pack.get("loops", []):
+            if lp not in loop_dirs:
+                fail("packs.json", f"pack '{pname}' lists loop '{lp}', which is not a loops/ folder")
+            looped.add(lp)
+    for lp in sorted(loop_dirs - looped):
+        fail("packs.json", f"loop '{lp}' belongs to no pack — a loop with no audience ships to nobody")
 
     # RFC-0026: outcomes are the site's second browse axis. Same two-way check as packs, so a
     # new skill can't quietly become unreachable from the outcome chips.

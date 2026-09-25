@@ -38,6 +38,12 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT_DIR = os.path.join(ROOT, ".claude-plugin")
 SKILLS = os.path.join(ROOT, "skills")
 AGENTS = os.path.join(ROOT, "agents")
+LOOPS = os.path.join(ROOT, "loops")  # RFC-0028
+
+
+def _n(count, word):
+    """'1 loop', '2 loops' — the description is user-facing copy, not a debug line."""
+    return f"{count} {word}" + ("" if count == 1 else "s")
 
 # The catalogue is exposed as a single plugin at the repo root. Both names are
 # public and kebab-case; the install command is `skilldrop@skilldrop`.
@@ -165,6 +171,7 @@ def render_dist(out):
 
         packs/<pack>/.claude-plugin/plugin.json
         packs/<pack>/skills/<skill>/…      (copied verbatim from skills/<skill>)
+        packs/<pack>/skills/<loop>/SKILL.md (a loop; LOOP.md already has SKILL.md's shape)
         packs/<pack>/agents/<agent>.md     (only those the pack's skills delegate to)
 
     Every file here is derived. The branch is force-pushed, so nothing is ever edited
@@ -184,6 +191,12 @@ def render_dist(out):
         print("build_marketplace.py: refusing to render — packs.json names skills that do "
               "not exist: " + ", ".join(missing), file=sys.stderr)
         sys.exit(1)
+    missing_loops = sorted(lp for p in packs.values() for lp in p.get("loops", [])
+                           if not os.path.isfile(os.path.join(LOOPS, lp, "loop.json")))
+    if missing_loops:
+        print("build_marketplace.py: refusing to render — packs.json names loops that do "
+              "not exist: " + ", ".join(missing_loops), file=sys.stderr)
+        sys.exit(1)
 
     for name, pack in packs.items():
         pdir = os.path.join(out, "packs", name)
@@ -191,7 +204,8 @@ def render_dist(out):
         _write(os.path.join(pdir, ".claude-plugin", "plugin.json"), json.dumps({
             "name": name,
             "version": version,
-            "description": f"{pack['description']} ({len(pack['skills'])} skills)",
+            "description": f"{pack['description']} ({len(pack['skills'])} skills"
+                           + (f", {_n(len(pack.get('loops', [])), 'loop')})" if pack.get("loops") else ")"),
             "author": author,
             "homepage": pkg.get("homepage", repo),
             "repository": repo,
@@ -202,12 +216,22 @@ def render_dist(out):
             shutil.copytree(os.path.join(SKILLS, sk), os.path.join(pdir, "skills", sk),
                             ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
 
+        # RFC-0028: a loop projects into the plugin's skills/ tree, because Claude Code
+        # discovers skills/<name>/SKILL.md and has no loop primitive of its own. LOOP.md's
+        # frontmatter is already SKILL.md's shape, so this is a rename, not a transform.
+        for lp in sorted(pack.get("loops", [])):
+            ldest = os.path.join(pdir, "skills", lp)
+            os.makedirs(ldest, exist_ok=True)
+            shutil.copyfile(os.path.join(LOOPS, lp, "LOOP.md"), os.path.join(ldest, "SKILL.md"))
+            shutil.copyfile(os.path.join(LOOPS, lp, "loop.json"), os.path.join(ldest, "loop.json"))
+
         agents = _pack_agents(pack["skills"])
         for a in agents:
             os.makedirs(os.path.join(pdir, "agents"), exist_ok=True)
             shutil.copyfile(os.path.join(AGENTS, a + ".md"),
                             os.path.join(pdir, "agents", a + ".md"))
         print(f"  packs/{name}: {len(pack['skills'])} skills"
+              + (f", {_n(len(pack.get('loops', [])), 'loop')}" if pack.get("loops") else "")
               + (f", {len(agents)} agents" if agents else ""))
 
     _write(os.path.join(out, "README.md"),
