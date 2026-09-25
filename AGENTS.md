@@ -32,17 +32,21 @@ cd skills/<skill-name> && python3 -m pip install -r requirements.txt
 # Consistency lint — run from the repo root before committing (works on Python 3.9+)
 python3 validate.py
 
-# Site build — NOTE: needs Python 3.12+ (PEP 701 f-strings). Raises SyntaxError on the
-# macOS system Python 3.9; CI's runner is new enough, so this is a local-only gap.
-python3 build_site.py --check
+# Site build — NOTE: needs Python 3.12+ (PEP 701 f-strings). The macOS system python3 is
+# 3.9 and raises a bare SyntaxError; use a Homebrew interpreter explicitly.
+python3.14 build_site.py           # or any 3.12+
+python3.14 build_site.py --check
 
 # Loop diagrams — regenerate docs/loops/*.mmd and the README mermaid blocks from loop.json
 python3 build_loops.py
 python3 build_loops.py --check   # drift check; validate.py runs this for you
 
 # CLI (npm package skilldrop-cli; from a clone use node bin/skilldrop.js)
-node bin/skilldrop.js list | info <skill> | packs | agents      # add --from <path|git-url[#ref]> for a third-party catalog
+node bin/skilldrop.js list | info <skill> | packs | agents | loops      # add --from <path|git-url[#ref]> for a third-party catalog
 node bin/skilldrop.js install --agent <name...> [--project | --dest <dir>]   # subagents (RFC-0012); plain-copy targets only
+node bin/skilldrop.js install --loop <name...> [--no-skills]     # loops + the stage skills they sequence (RFC-0028)
+node bin/skilldrop.js install --loop --pack <name>               # every loop a pack declares
+node bin/skilldrop.js uninstall --loop <name...>                 # removes the loop; stage skills stay
 node bin/skilldrop.js install <skill...> [--pack <name>] [--all] [--with-related] [--from <src>] [--project | --ide cursor|kiro | --dest <dir>]
 node bin/skilldrop.js update | outdated | uninstall <skill...>   # same target flags; update follows each skill's recorded source
 node bin/skilldrop.js validate [--from <src>]                    # structural check of a catalog (catalog authors)
@@ -84,6 +88,7 @@ Every version bump lands with a matching entry at the top of [`CHANGELOG.md`](CH
 | RFC for a new skill or structural change | `docs/rfcs/NNNN-<kebab-slug>.md` — copy [`docs/rfcs/0000-template.md`](docs/rfcs/0000-template.md), next sequential number |
 | Long-form design doc (bigger than an RFC, not a skill) | `docs/designs/<name>.md` — e.g. the CLI command surface, the telemetry collection spec |
 | Pack membership for a skill | `packs.json` — add the skill to at least one pack |
+| Pack membership for a loop | `packs.json` — add the loop to at least one pack's `loops` array; `validate.py` checks both directions |
 | Outcome membership for a skill | `packs.json` `outcomes` — add the skill to at least one outcome (RFC-0026); packs say *who*, outcomes say *why* |
 | User-visible change for a release | `CHANGELOG.md` — one bullet under `## <version> — <YYYY-MM-DD>`; the site reads the newest three and `build_site.py` refuses to build if the top version disagrees with `package.json` |
 | Executable helper | `skills/<skill-name>/scripts/<name>.py` (or `.js`, `.sh`) |
@@ -244,6 +249,10 @@ this section.
    skill ships. Include the degradation line: what to do when a stage's skill isn't installed.
 6. **No model tier.** A loop sequences skills and makes no model call of its own, so it has no
    entry in `model-routing.json`; `validate.py` fails one that does, by name.
+7. **A loop's name may not collide with a skill's.** On install, `LOOP.md` projects to
+   `<dest>/<name>/SKILL.md` — Claude Code and the other targets have no loop primitive, and
+   `LOOP.md`'s frontmatter is already `SKILL.md`'s shape, so the two share one namespace.
+8. **Add it to a pack** (`packs.json` `loops`) and re-run `python3 build_loops.py`.
 
 ## Sibling hand-offs are advisory
 
@@ -290,7 +299,7 @@ See `skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 - [ ] **Model tier set** — new skill has a `model` block in `manifest.json` AND a matching entry in `model-routing.json`. The two agree.
 - [ ] **`related` synced** — every sibling skill referenced in `SKILL.md` is in the manifest's `related` list.
 - [ ] **Non-interactive line present** if the skill has a hard-stop condition — a self-contained sentence saying which inputs degrade to `[assumption]` and which emit `BLOCKED: need <X>`.
-- [ ] **Pack membership** — new skill added to at least one pack in `packs.json`.
+- [ ] **Pack membership** — new skill added to at least one pack in `packs.json`; a new loop added to at least one pack's `loops` array.
 - [ ] **Outcome membership** — new skill added to at least one entry in `packs.json` `outcomes` (RFC-0026).
 - [ ] **`CHANGELOG.md` entry** if the version was bumped — the site build fails without one.
 - [ ] **GitHub About updated** if the skill/pack/subagent counts changed — `gh repo edit --description "…"`. This is the one surface `validate.py` cannot see (it is stdlib-only and off-repo), so it is the one that goes stale: it sat at `62 skills … 7 packs` for a while after the catalogue was 56 and 6. It is also what shows in search results and on the repo card, so it is the first thing a stranger reads.
