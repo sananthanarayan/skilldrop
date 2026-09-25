@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/sananthanarayan/skilldrop/contracts/skill.schema.json",
+  "title": "skilldrop skill manifest",
+  "$comment": "RFC-0029. This shape lived only as prose in AGENTS.md, so the one authoritative statement of what a manifest is was a paragraph a contributor had to read and obey. It is now data. Checked by hand-rolled stdlib code in validate.py — skilldrop ships zero runtime dependencies and this file must not become a reason to add `jsonschema`.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "version", "description", "entrypoint", "deps", "env", "related", "tags", "model"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Kebab-case. Must equal the folder name AND the SKILL.md frontmatter name — the triple-match in golden rule 1."
+    },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "description": {
+      "type": "string",
+      "description": "The most-read string in the skill. Use-case-first: what it does, then the trigger phrases an agent matches on. Must match the SKILL.md frontmatter description."
+    },
+    "entrypoint": { "const": "SKILL.md" },
+    "deps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["npm", "pip"],
+      "properties": {
+        "npm": { "type": "array", "items": { "type": "string" } },
+        "pip": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "env": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "optional"],
+      "properties": {
+        "required": { "type": "array", "items": { "type": "string" },
+                      "description": "Vars the skill cannot work without, e.g. FIGMA_TOKEN." },
+        "optional": { "type": "array", "items": { "type": "string" },
+                      "description": "Vars that change behaviour but do not block." }
+      }
+    },
+    "related": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Undirected: every sibling this SKILL.md references, in either direction. validate.py enforces the sync both ways."
+    },
+    "handoff": {
+      "type": "array",
+      "description": "RFC-0028. The directed companion to `related`. Every `to` must also appear in `related`.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["to", "when", "purpose", "fallback"],
+        "properties": {
+          "to": { "type": "string", "description": "A skill folder name. Never this skill." },
+          "when": { "type": "string", "description": "The condition under which the hand-off fires." },
+          "purpose": { "type": "string", "description": "What the target does with what it receives." },
+          "fallback": { "type": "string", "description": "What to do when the target is not installed. Required — this is what makes an advisory hand-off degrade in a stated way instead of dead-ending." }
+        }
+      }
+    },
+    "tags": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tier", "rationale"],
+      "properties": {
+        "tier": {
+          "enum": ["light", "standard", "heavy"],
+          "description": "Abstract and provider-neutral. Never a vendor model name — the provider map in model-routing.json is the only place concrete models live. Must agree with this skill's entry there."
+        },
+        "rationale": { "type": "string", "description": "One sentence: why this tier fits what the skill does." }
+      }
+    },
+    "install": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Human-readable install lines for a skill with runtime deps.",
+      "properties": { "npm": { "type": "string" }, "pip": { "type": "string" } }
+    },
+    "hooks": {
+      "type": "array",
+      "description": "RFC-0006. Only for loop-shaped skills that benefit from event automation; artifact generators carry none.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["event", "action", "description"],
+        "properties": {
+          "event": { "enum": ["session-start", "pre-commit-review", "on-demand"] },
+          "action": { "type": "string", "description": "A real skill folder this hook points at." },
+          "description": { "type": "string" }
+        }
+      }
+    }
+  }
+}

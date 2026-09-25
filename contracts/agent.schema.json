@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/sananthanarayan/skilldrop/contracts/agent.schema.json",
+  "title": "skilldrop reviewer subagent frontmatter",
+  "$comment": "RFC-0012 / RFC-0029. agents/<name>.md is a single markdown file whose YAML frontmatter is already Claude Code's format; the body is the system prompt. The CLI projects this into each target's own shape (Kiro JSON, Codex TOML, Copilot .agent.md), so these four fields are the portable core.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "description"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Must equal the filename stem. A rename that misses one silently breaks every delegation pointing here."
+    },
+    "description": {
+      "type": "string",
+      "description": "What routes a delegation to this agent. Required — without it the agent is unreachable."
+    },
+    "tools": {
+      "type": "string",
+      "description": "Comma-separated tool names. Recommended; the CLI maps these per target and warns where a tool has no equivalent."
+    },
+    "model": {
+      "type": "string",
+      "description": "Recommended. A hint the target may honour or ignore."
+    }
+  }
+}

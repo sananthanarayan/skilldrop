@@ -463,16 +463,18 @@ The six **pack plugins** work differently, because a plugin's skills have to sit
 
 `.claude-plugin/{marketplace,plugin}.json` are generated from `package.json` + `packs.json` by [`build_marketplace.py`](build_marketplace.py) (`--check` guards drift in CI; `--dist` renders the branch). Use the CLI above when you want per-skill granularity, another IDE, or hooks; use the marketplace when you're in Claude Code. Rationale: [RFC-0027](docs/rfcs/0027-retire-agentbundle-export.md).
 
-### Hooks (opt-in) — wire a skill to an event
+### Everything else about installing
 
-Some loop-shaped skills declare **hooks** — event-triggered nudges the CLI wires into your environment when you pass `--with-hooks` ([RFC-0006](docs/rfcs/0006-per-ide-hooks.md)). It's off by default, so a plain install never touches your git repo or editor settings.
+The long-form install material moved to [`guides/`](guides/) so this page stays scannable:
 
-```bash
-npx skilldrop-cli install devils-advocate --with-hooks --project
-# → appends a marker-fenced reminder to .git/hooks/pre-commit: "run /devils-advocate on staged changes"
-```
-
-The CLI emits per target and **degrades gracefully** — a `pre-commit-review` hook becomes an IDE-agnostic git hook (needs a git repo); a `session-start` hook becomes a Claude Code `settings.json` entry, and is cleanly skipped where the target has no equivalent (Cursor, Kiro, plain `--dest`), printing what it did and where. Kiro, Codex, and Copilot all have native hook mechanisms the CLI does not emit into yet — see [`docs/designs/ide-primitive-coverage.md`](docs/designs/ide-primitive-coverage.md) for the per-tool survey. Hooks are reminders/context, not autonomous execution — skilldrop skills are agent instructions, so the hook prompts *you* to run the review, it doesn't silently run an AI pass. `skilldrop uninstall` removes any hook artifacts it wrote. Vocabulary and the per-target mapping are in the RFC.
+| If you want to | Read |
+|---|---|
+| Install by hand into a specific IDE | [Install a skill into your IDE](guides/how-to/install-per-ide.md) |
+| Wire a skill to an event (opt-in hooks) | [Wire a skill to an event](guides/how-to/wire-a-hook.md) |
+| Publish your own catalogue for `--from` | [Publish your own catalogue](guides/how-to/publish-a-catalogue.md) |
+| Use the two skills that ship scripts | [Skills that ship scripts](guides/reference/skills-with-scripts.md) |
+| Add a skill or a loop to this repo | [Author a skill](guides/how-to/author-a-skill.md) · [Author a loop](guides/how-to/author-a-loop.md) |
+| Understand why it is built this way | [Why loops](guides/explanation/loops.md) · [ARCHITECTURE.md](ARCHITECTURE.md) |
 
 ### Reviewer subagents
 
@@ -503,145 +505,6 @@ Each generated target omits the permission field it cannot map safely rather tha
 
 **Every surveyed tool now installs.** Only Cursor is absent, because it has no agent file format at all — use a custom mode ([`agents/README.md`](agents/README.md) has the steps).
 
-### Third-party catalogs — publish your own skills through the same CLI
-
-Any git repo or directory shaped like this one is a **catalog**: `skills/<name>/` folders each holding `SKILL.md` + `manifest.json`, optionally a root `packs.json`. That's the whole contract ([RFC-0003](docs/rfcs/0003-third-party-catalogs.md)):
-
-```bash
-npx skilldrop-cli list --from https://github.com/you/your-skills
-npx skilldrop-cli install my-skill --from https://github.com/you/your-skills#v1.2   # #ref pins a branch/tag
-npx skilldrop-cli install --pack starter --from ../local-catalog
-npx skilldrop-cli update      # updates bundled and third-party skills side by side — the ledger remembers each skill's source
-```
-
-The CLI also reads **agentbundle-shaped catalogs** ([agent-ready-repo](https://github.com/eugenelim/agent-ready-repo)) — `packs/<pack>/.apm/skills/<name>/SKILL.md` with a `pack.toml` per pack — so you can install *its* packs through the same command ([RFC-0014](docs/rfcs/0014-agentbundle-interop.md)). This is one-directional by design: skilldrop reads his shape, and no longer publishes a generated catalogue back into it ([RFC-0027](docs/rfcs/0027-retire-agentbundle-export.md)). Both shapes share the agentskills.io `SKILL.md`, so the reader just maps his packs onto the accessors above:
-
-```bash
-npx skilldrop-cli packs --from https://github.com/eugenelim/agent-ready-repo
-npx skilldrop-cli install --pack contracts --from https://github.com/eugenelim/agent-ready-repo --dest .agents/skills
-```
-
-Safety model: installs **copy files only — nothing from a catalog is ever executed**; every skill passes a structural check before copying (broken folders are refused with reasons); and third-party installs print a review-before-use warning, because skills are instructions your AI agent will follow — read a stranger's `SKILL.md` before letting your agent obey it.
-
-**Authoring a catalog:** mirror the layout above, then check it with `npx skilldrop-cli validate --from <your-repo-or-path>` before publishing. `related`, `packs.json`, and `requirements.txt` all work in third-party catalogs exactly as they do here.
-
-### Manual install
-
-Each skill is a plain directory. Installation is always the same two steps: (1) copy the skill folder into your IDE's skills/rules location, then (2) install the skill's dependencies (the commands are in `manifest.json` under `deps`, or run the install line from the skill's SKILL.md). Optionally, also copy the companions listed under `related` in the skill's `manifest.json` — skills reference each other, and while a hand-off to an uninstalled sibling degrades gracefully to inline guidance, the pipelines work best complete.
-
-### Claude Code
-
-Claude Code reads skills from two locations:
-
-- **User-scope** (available in every project): `~/.claude/skills/<skill-name>/`
-- **Project-scope** (tracked with the repo): `<project>/.claude/skills/<skill-name>/`
-
-Install a skill by copying its folder — drop the directory directly into the skills location, **not** its parent category folder:
-
-```bash
-# user-scope (recommended for personal use)
-mkdir -p ~/.claude/skills
-cp -R skills/architecture-diagrams ~/.claude/skills/
-cp -R skills/figma-diagrams ~/.claude/skills/
-
-# project-scope (recommended when sharing with a team)
-mkdir -p .claude/skills
-cp -R skills/architecture-diagrams .claude/skills/
-cp -R skills/figma-diagrams .claude/skills/
-```
-
-Claude Code discovers the skill via its `SKILL.md` frontmatter `name` field. Invoke it in chat with `/<skill-name>` or by describing the task — Claude will route to the matching skill automatically.
-
-### Cursor
-
-Cursor does not have a native "skills" concept, but you can install a skill as a **project rule**:
-
-1. Copy the skill folder somewhere in the repo (e.g. `.cursor/skills/<skill-name>/`):
-   ```bash
-   mkdir -p .cursor/skills
-   cp -R skills/architecture-diagrams .cursor/skills/
-   ```
-
-2. Create `.cursor/rules/<skill-name>.mdc` that points Cursor at it:
-   ```markdown
-   ---
-   description: <paste the skill's description from manifest.json>
-   globs:
-   alwaysApply: false
-   ---
-   Follow the instructions in .cursor/skills/<skill-name>/SKILL.md when the user requests this task.
-   ```
-
-3. In chat, attach `SKILL.md` with `@` or simply describe the task — the rule will fire when the description matches.
-
-### Kiro (IDE and CLI)
-
-Kiro has native **Agent Skills**, and Kiro IDE and Kiro CLI read the same directories. Copy the folder in — that's the whole install:
-
-```bash
-mkdir -p .kiro/skills                  # workspace scope
-cp -R skills/figma-diagrams .kiro/skills/
-
-mkdir -p ~/.kiro/skills                # global scope, every project
-cp -R skills/figma-diagrams ~/.kiro/skills/
-```
-
-Kiro matches the skill by its `SKILL.md` frontmatter `name` (which must equal the folder name) and `description` — the same contract every other tool uses.
-
-**No steering file needed.** Earlier versions of the CLI also wrote `.kiro/steering/<skill-name>.md` pointing back at the skill. That predates native Agent Skills, and because a steering file without frontmatter is *always* loaded, it pinned one description per installed skill into every session's context — to point at a folder Kiro already reads. The CLI no longer writes them, and `install`/`uninstall` remove any it wrote before. A steering file it didn't author is left alone, with a note.
-
-### Codex and GitHub Copilot
-
-Both read `SKILL.md` folders, and both deliberately read *other* tools' directories — so a skilldrop install often already works with no extra step:
-
-| Path | Read by |
-|---|---|
-| `.claude/skills/` | Claude Code, **Copilot CLI** |
-| `.agents/skills/` | **Codex** (project), **Copilot CLI** |
-| `.github/skills/` | **Copilot** |
-| `~/.codex/skills/` | Codex (personal) |
-| `~/.copilot/skills/` | Copilot (personal) |
-
-**If you already ran `skilldrop install --project`, Copilot CLI can use every skill you installed** — `.claude/skills/` is one of its discovery paths. Otherwise pick the path your tool reads:
-
-```bash
-npx skilldrop-cli install --pack dev-team --dest .agents/skills    # Codex + Copilot CLI
-npx skilldrop-cli install --pack dev-team --dest .github/skills    # Copilot
-npx skilldrop-cli install --pack dev-team --dest ~/.codex/skills   # Codex, all projects
-```
-
-There is no `--ide codex` or `--ide copilot` flag yet, and `--dest` is not a workaround here — it writes the identical folder the native flags would. Both tools also read a repo-root `AGENTS.md`, which this repo has.
-
-### Continue, Cline, Aider, and other agents
-
-These tools don't have a standard skills directory yet. Two patterns work:
-
-- **Context attachment.** Copy the skill folder anywhere in the repo, then attach `SKILL.md` to your prompt (Continue: `@file`, Cline: `@file`, Aider: `/add <path>`) and tell the agent to follow it.
-- **Custom prompt / agent.** Paste `SKILL.md` into the IDE's custom-agent or system-prompt configuration. The skill's `manifest.json` `description` field is a good seed for the agent's name/summary.
-
-In all cases, the scripts are invoked from the **copied** folder, so keep the directory structure intact — don't flatten `scripts/` or `templates/` out of the skill folder.
-
-### VS Code (Continue / Cline extensions)
-
-These behave like the "Other agents" path above. For Continue, you can also add the skill folder to `.continue/config.json` under `contextProviders` so `SKILL.md` shows up in `@` suggestions.
-
-## Installing dependencies
-
-Each skill declares its deps in `manifest.json`:
-
-- **`deps.npm`** → run `npm install <packages>` before using the skill (or let `SKILL.md` step 1 install them on demand).
-- **`deps.pip`** → run `python3 -m pip install -r <skill>/requirements.txt`.
-
-Per-skill quick reference:
-
-| Skill | Install command (run from inside the copied skill folder) |
-|---|---|
-| `figma-diagrams` | `python3 -m pip install -r requirements.txt` + `export FIGMA_TOKEN=figd_...` |
-| `deck-builder` | `python3 -m pip install -r requirements.txt` (installs `python-pptx`) |
-| _all other skills_ | _no runtime deps — pure markdown skills_ |
-
-For `figma-diagrams`, you also need a [Figma Personal Access Token](https://www.figma.com/developers/api#access-tokens) exported as the `FIGMA_TOKEN` env var.
-
 ## Reviewer agents
 
 The [`agents/`](agents/) folder ships **portable reviewer personas** — single-file agents you delegate code and test review to, packaged in Claude Code subagent format (frontmatter + system prompt) but written so the body pastes into Cursor, Codex, Kiro, Continue, Cline, or Aider just as cleanly.
@@ -650,64 +513,9 @@ The [`agents/`](agents/) folder ships **portable reviewer personas** — single-
 |---|---|---|
 | [`devils-advocate`](agents/devils-advocate.md) | Correctness — edge cases, broken assumptions, staff-engineer pushback, test gaps | "Will this break?" |
 | [`code-quality`](agents/code-quality.md) | Craft — naming, structure, duplication, complexity, readability | "Will the next engineer hate this?" |
-
 | [`security-reviewer`](agents/security-reviewer.md) | Exploitability — injection, authz gaps, secret handling, unsafe deserialisation | "How would someone abuse this?" |
 
 No tool auto-discovers a folder named `agents/`; it's the canonical source of truth. See [`agents/README.md`](agents/README.md) for where to copy each file in your tool — `.claude/agents/` for Claude Code, a custom mode for Cursor, an `AGENTS.md` section for Codex, a steering file or custom agent for Kiro.
-
-## Skill Usage
-
-All skills are invoked in chat. Arguments are passed as plain text after the skill's trigger phrase (or via `$ARGUMENTS` when invoked as a slash command in Claude Code).
-
-### `architecture-diagrams`
-
-Natural-language trigger (works in any IDE that has the skill installed):
-
-> Draw me a Mermaid diagram of a three-tier web app on AWS with an ALB, two ECS services, and an RDS Postgres backend.
-
-Slash-command form (Claude Code):
-
-```
-/architecture-diagrams three-tier web app on AWS with ALB, two ECS services, RDS Postgres
-```
-
-Everything after the slash command becomes `$ARGUMENTS` inside the skill.
-
-### `figma-diagrams`
-
-Natural-language trigger:
-
-> Inspect the structure of this Figma file: https://figma.com/file/abc123/MyArchitecture
-
-Slash-command form (Claude Code):
-
-```
-/figma-diagrams inspect https://figma.com/file/abc123/MyArchitecture
-/figma-diagrams post-comment https://figma.com/file/abc123/MyArchitecture "Looks good — ship it."
-```
-
-The skill parses `$ARGUMENTS` to figure out which Figma URL you mean and which action to take.
-
-## Adding a new skill
-
-Full contributor guide — the three lanes, the PR gates, and the release flow — is in [CONTRIBUTING.md](CONTRIBUTING.md). The short version:
-
-0. Write a one-page RFC first — copy [`docs/rfcs/0000-template.md`](docs/rfcs/0000-template.md) to `docs/rfcs/NNNN-<slug>.md` and record the problem, the fit check, and the alternatives. New skills and structural changes need one; fixes to existing skills don't.
-1. Create `skills/<your-skill>/SKILL.md` with this frontmatter:
-   ```yaml
-   ---
-   name: your-skill
-   description: One sentence, use-case-first. AI agents match this against user prompts to decide when to invoke.
-   ---
-   ```
-2. Add `skills/<your-skill>/manifest.json` with the same `name` + `description` plus declared `deps` and required env vars — this is what makes the skill portable across IDEs.
-3. Keep `SKILL.md` short (under ~500 lines). Move long reference material into sibling files like `reference.md`, `examples.md`, or `templates/`.
-4. If your skill needs scripts, drop them in `scripts/` and reference them with a path relative to the skill folder — **avoid hard-coding `${CLAUDE_SKILL_DIR}` only**; show both paths so non–Claude-Code users aren't stuck.
-5. Add an `evals/` folder: `evals.json` (at least one realistic prompt with a list of assertions the output must satisfy) and `eval_queries.json` (phrases that should and should **not** trigger the skill). These double as the checklist for the manual test pass and keep the `description` honest about when the skill fires.
-6. Add an entry to the **Skills in this repo** table above and to the **Installing dependencies** table.
-7. Add the skill to at least one pack **and** at least one outcome in `packs.json`.
-8. If the change is going out in a release, add a bullet to [`CHANGELOG.md`](CHANGELOG.md) under the new version — the site build fails without one.
-9. Run `python3 validate.py` from the repo root — it checks name consistency, the tier sync with `model-routing.json`, the `related`↔SKILL.md reference sync, description sync, pack and outcome membership, and eval file shape.
 
 ## License
 
