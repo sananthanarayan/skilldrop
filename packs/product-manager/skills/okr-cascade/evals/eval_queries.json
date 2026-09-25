@@ -1,0 +1,12 @@
+[
+  { "query": "Cascade our company OKRs down to team level", "should_trigger": true },
+  { "query": "Help me set quarterly OKRs for the platform team that align to company goals", "should_trigger": true },
+  { "query": "Audit our existing OKRs — which ones are vanity metrics?", "should_trigger": true },
+  { "query": "Leadership set five objectives; which have no team owner?", "should_trigger": true },
+  { "query": "Turn our strategy into Q4 objectives for the org", "should_trigger": true },
+
+  { "query": "How do we know this feature worked? Define its success metrics", "should_trigger": false },
+  { "query": "Prioritize our sprint backlog for next iteration", "should_trigger": false },
+  { "query": "Run a SWOT on our market position", "should_trigger": false },
+  { "query": "Set performance goals for my direct reports", "should_trigger": false }
+]

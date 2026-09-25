@@ -1,0 +1,16 @@
+{
+  "skill_name": "db-schema-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Design the schema for an order-history feature. Queries: fetch one order by id, list a customer's orders newest-first, and report daily totals by region.",
+      "assertions": [
+        "Access patterns are listed before the schema, with frequency and selectivity",
+        "The paradigm choice is justified against those access patterns — relational-by-default needs no defence, every move past it does",
+        "Keys and partitioning are justified by the actual queries; a random UUIDv4 clustered primary key is not used without a stated reason",
+        "Every index maps to a real predicate from the listed queries rather than being speculative",
+        "Denormalization, where proposed, names the read it serves and the write cost it adds"
+      ]
+    }
+  ]
+}

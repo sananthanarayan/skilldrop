@@ -1,0 +1,18 @@
+{
+  "skill_name": "api-contract-draft",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Draft the OpenAPI contract for our orders API — clients need to create an order, fetch one, and list a customer's orders.",
+      "assertions": [
+        "The emitted YAML is parseable OpenAPI 3.1 and every $ref resolves",
+        "Paths are resource-oriented rather than RPC-style verbs in the URL",
+        "Every operation enumerates its 4xx set with stable machine-switchable code values — not a bare '400: Bad Request'",
+        "Errors follow RFC 9457 problem-details shape",
+        "Pagination, idempotency, and versioning are each decided explicitly rather than deferred",
+        "Every operation carries at least one example",
+        "Each decision in the log has a rationale, and any deviation from the skill's conventions is logged rather than made silently"
+      ]
+    }
+  ]
+}

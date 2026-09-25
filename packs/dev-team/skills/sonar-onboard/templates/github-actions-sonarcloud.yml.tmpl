@@ -1,0 +1,53 @@
+name: SonarCloud
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarcloud:
+    name: Scan + quality gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Full history is required for accurate blame and new-code-period detection.
+          fetch-depth: 0
+
+      # ─── BUILD + TEST + COVERAGE ───────────────────────────────────────────
+      # Replace this block with the project's actual build/test commands.
+      # The scanner imports the coverage report produced here — if this step
+      # doesn't generate it, SonarCloud reports 0% coverage on new code.
+      #
+      # Examples:
+      #   JS/TS:    npm ci && npm test -- --coverage
+      #   Java:     mvn -B verify
+      #   Python:   pip install -r requirements.txt && pytest --cov --cov-report=xml
+      #   Go:       go test ./... -coverprofile=coverage.out
+      #
+      - name: Build, test, and produce coverage
+        run: |
+          {{BUILD_TEST_COMMAND}}
+
+      # ─── SCAN ──────────────────────────────────────────────────────────────
+      # The SonarCloud action runs the scanner AND waits for the gate, in one step.
+      # Host URL defaults to https://sonarcloud.io — do not override unless you
+      # know what you're doing.
+      - name: SonarCloud scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          # GITHUB_TOKEN is used to decorate the PR with findings.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # ─── QUALITY GATE ──────────────────────────────────────────────────────
+      # Fails the job (and therefore the PR check) when the gate fails.
+      - name: Quality gate
+        uses: SonarSource/sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io

@@ -1,0 +1,50 @@
+{
+  "skill_name": "agents-md-generator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write an AGENTS.md for this repo. It's a Python service: pyproject.toml declares pytest and ruff in dev dependencies, there's a Makefile with `run` and `migrate` targets, and .github/workflows/ci.yml runs `ruff check .` then `pytest -q`. No test script anywhere else. Migrations are in alembic/versions/.",
+      "assertions": [
+        "Commands are traced to their source — CI for ruff/pytest, Makefile for run/migrate — not inferred from the dependency list",
+        "The test command is `pytest -q` as CI runs it, not a guessed `pytest` or `make test` that does not exist",
+        "No command appears that cannot be traced to pyproject.toml, the Makefile, or the workflow",
+        "Alembic migrations produce a convention or forbidden-action line (append-only / never edit a committed migration)",
+        "A `Do not` section exists with concrete entries, not implied caution",
+        "Output is at or under ~150 lines",
+        "No virtue instructions appear — no 'clean', 'best practice', 'thorough', 'maintainable'",
+        "Conventions included would each change agent behaviour if removed"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Here's our AGENTS.md — audit it. It says: 'Run `npm test` to test. Write clean, maintainable code and follow best practices. Be thorough in reviews.' Our package.json has scripts for build and lint only, no test.",
+      "assertions": [
+        "Audit mode is used — a verdict and diff, not a silent rewrite",
+        "`npm test` is flagged as unverifiable: package.json has no test script",
+        "The three virtue instructions are named for removal, with the reason that they change no behaviour",
+        "What the file is missing is stated — real commands (build, lint), file placement, forbidden actions",
+        "The line-count position is reported rather than the file being failed for length",
+        "A concrete replacement or diff is offered, not just criticism"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Also wire it up for Claude Code and Copilot.",
+      "assertions": [
+        "Satellites are emitted as deltas only — each points at AGENTS.md for shared content",
+        "No satellite repeats the command table, file placement, or conventions",
+        "CLAUDE.md carries only Claude-Code-specific content; .github/copilot-instructions.md only Copilot-specific content",
+        "If there is no genuinely tool-specific content, that is said rather than a file padded to justify itself"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "[Non-interactive run — no repo access] Generate an AGENTS.md for a typical Node microservice.",
+      "assertions": [
+        "No AGENTS.md is produced — the output is BLOCKED: need repo access",
+        "No commands are invented from ecosystem convention",
+        "The reason given is that every command must trace to a file in the tree"
+      ]
+    }
+  ]
+}

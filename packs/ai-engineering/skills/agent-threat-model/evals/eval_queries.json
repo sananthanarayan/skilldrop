@@ -1,0 +1,15 @@
+[
+  { "query": "Can this agent be prompt-injected?", "should_trigger": true },
+  { "query": "Review the MCP servers we're about to grant this agent", "should_trigger": true },
+  { "query": "Is it safe to give our support bot database access and an email tool?", "should_trigger": true },
+  { "query": "Could someone exfiltrate our data through this agent?", "should_trigger": true },
+  { "query": "Security review of our agent's tool permissions before launch", "should_trigger": true },
+  { "query": "We added a web_fetch tool to the agent — does that change our risk?", "should_trigger": true },
+
+  { "query": "Threat-model this API design", "should_trigger": false },
+  { "query": "Review this pull request for security bugs", "should_trigger": false },
+  { "query": "Our agent loops forever — how do I cap it?", "should_trigger": false },
+  { "query": "How much should this workflow be allowed to spend on tokens?", "should_trigger": false },
+  { "query": "Design the eval set for our support classifier", "should_trigger": false },
+  { "query": "Write the postmortem for last week's data leak", "should_trigger": false }
+]

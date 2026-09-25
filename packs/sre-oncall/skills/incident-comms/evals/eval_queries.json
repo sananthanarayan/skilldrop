@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Draft a status page update for this ongoing incident",
+    "should_trigger": true
+  },
+  {
+    "query": "We're live in an incident — I need customer, internal, and exec updates",
+    "should_trigger": true
+  },
+  {
+    "query": "Write the customer-facing comms while we investigate",
+    "should_trigger": true
+  },
+  {
+    "query": "How do I tell stakeholders about this outage right now?",
+    "should_trigger": true
+  },
+  {
+    "query": "Write the blameless postmortem now that it's resolved",
+    "should_trigger": false
+  },
+  {
+    "query": "Generate the runbook for this service",
+    "should_trigger": false
+  },
+  {
+    "query": "Summarize this technical doc for executives",
+    "should_trigger": false
+  },
+  {
+    "query": "Extract decisions and action items from the incident channel",
+    "should_trigger": false
+  }
+]

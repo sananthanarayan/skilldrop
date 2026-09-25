@@ -1,0 +1,16 @@
+{
+  "skill_name": "sonar-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run a Sonar review on my current branch before I open the PR.",
+      "assertions": [
+        "The verdict is taken from the quality gate itself, not from the reviewer's own judgment — PASS is reported as PASS even if other issues are visible",
+        "Findings are scoped to files changed on the branch; pre-existing repo debt is not dumped into the report",
+        "Findings are severity-tagged and each carries file:line, the Sonar rule ID, why it matters, and a concrete fix",
+        "Findings are grouped into the lenses (bugs, vulnerabilities, security hotspots, code smells, coverage/duplication)",
+        "Server vs cloud is auto-detected from sonar-project.properties rather than assumed"
+      ]
+    }
+  ]
+}

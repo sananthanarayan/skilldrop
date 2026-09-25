@@ -1,0 +1,36 @@
+{
+  "skill_name": "strategy-analysis",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run a SWOT on our product: a developer-tools startup with 4,000 paying tenants, strong CI/CD integration data, a small sales team, and a well-funded incumbent (CircleCI) moving into our niche. The decision this feeds: where to focus the next two quarters.",
+      "assertions": [
+        "SWOT is crossed into TOWS quadrants (S×O, S×T, W×O, W×T) — the four raw lists are not the final output",
+        "Every cell is specific (names a competitor, number, or capability), carries an evidence tag ([data]/[reported]/[assumption]), and has a 'so:' implication",
+        "No horoscope cells like 'strong team' or 'growing market' without specifics",
+        "Implications section is ranked (3-5 entries) and each is action-shaped, tied to the two-quarter focus decision",
+        "A verdict paragraph takes a side and names what evidence would change it",
+        "Assumptions appearing in top-ranked implications are flagged as validation targets",
+        "A hand-off to tech-comparison-matrix, business-case, or prfaq is offered where apt"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Give me a SWOT to decide whether we should enter the SMB payroll market in Germany.",
+      "assertions": [
+        "The skill flags that market-entry attractiveness is a Five Forces question and suggests it before or instead of SWOT",
+        "If Five Forces is run, all five forces get a pressure rating with the mechanism (who holds power and why) — no force rated 'N/A'",
+        "The output ends with a committal verdict on entering, not 'it depends'"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "[Non-interactive run — no user available to answer questions] Run a Porter's Five Forces on the European ride-sharing market. This feeds our decision on whether to expand our driver-scheduling SaaS into that segment next year.",
+      "assertions": [
+        "The skill proceeds (the decision IS named in the input) instead of blocking",
+        "Assumptions replacing the capped clarifying questions (e.g. competitive set) are tagged [assumption] and stated at the top",
+        "Market facts drawn from general knowledge are tagged [market: ...], distinguishable from user-supplied facts and assumptions"
+      ]
+    }
+  ]
+}

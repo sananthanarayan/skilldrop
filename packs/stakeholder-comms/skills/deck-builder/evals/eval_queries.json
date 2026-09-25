@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Build me a PowerPoint from this content",
+    "should_trigger": true
+  },
+  {
+    "query": "Generate a .pptx deck for this exec presentation",
+    "should_trigger": true
+  },
+  {
+    "query": "Turn this into actual slides I can present, with our brand colors",
+    "should_trigger": true
+  },
+  {
+    "query": "I need a real deck file, not an outline",
+    "should_trigger": true
+  },
+  {
+    "query": "Just outline the slides — I'll build the deck myself",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a one-page summary for executives",
+    "should_trigger": false
+  },
+  {
+    "query": "Which audience archetype should I target and what are its rules?",
+    "should_trigger": false
+  },
+  {
+    "query": "Critique the deck I already made",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Draft a design doc for this feature",
+    "should_trigger": true
+  },
+  {
+    "query": "Write a Google-style engineering design document from this brief",
+    "should_trigger": true
+  },
+  {
+    "query": "I need a technical design with goals, non-goals, alternatives, and rollout",
+    "should_trigger": true
+  },
+  {
+    "query": "Turn this feature brief into a design doc the team can review",
+    "should_trigger": true
+  },
+  {
+    "query": "Write an ADR recording this one decision",
+    "should_trigger": false
+  },
+  {
+    "query": "Draft the product requirements document for this feature",
+    "should_trigger": false
+  },
+  {
+    "query": "Critique the design doc I already wrote",
+    "should_trigger": false
+  },
+  {
+    "query": "Split this epic into user stories",
+    "should_trigger": false
+  }
+]

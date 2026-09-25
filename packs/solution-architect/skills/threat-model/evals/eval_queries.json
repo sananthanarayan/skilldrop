@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Threat model this design",
+    "should_trigger": true
+  },
+  {
+    "query": "Run STRIDE on this architecture before we build it",
+    "should_trigger": true
+  },
+  {
+    "query": "What could an attacker do to this system as designed?",
+    "should_trigger": true
+  },
+  {
+    "query": "Security review of this design doc, with trust boundaries and attack scenarios",
+    "should_trigger": true
+  },
+  {
+    "query": "Review this diff for exploitable security bugs",
+    "should_trigger": false
+  },
+  {
+    "query": "Threat model my AI agent's tool and data access",
+    "should_trigger": false
+  },
+  {
+    "query": "Audit this UI for accessibility barriers",
+    "should_trigger": false
+  },
+  {
+    "query": "Convene a council to deliberate this architecture",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "name": "solution-architect",
+  "version": "0.12.0",
+  "description": "Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them. (17 skills, 2 loops)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://github.com/sananthanarayan/skilldrop#readme",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT"
+}

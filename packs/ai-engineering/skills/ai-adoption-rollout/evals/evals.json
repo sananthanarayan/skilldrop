@@ -1,0 +1,19 @@
+{
+  "skill_name": "ai-adoption-rollout",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We've picked an AI assistant for our 300-person support org. Plan the rollout.",
+      "assertions": [
+        "Cohorts are sized smallest-first (pilot, early, general) with a stated reason each cohort is next",
+        "A single big-bang wave is explicitly refused",
+        "Every wave has an adoption gate with an observable, a threshold, and a bake time, plus a rollback if the gate fails",
+        "The adoption outcome is stated as a behaviour rather than a usage or licence number",
+        "The comms plan explicitly states what will not change regarding headcount, evaluation, or how work is judged",
+        "Champions are named as roles with protected hours",
+        "Enablement differs per cohort and is hands-on with the participant's own work",
+        "A friction loop names an owner and a cadence"
+      ]
+    }
+  ]
+}

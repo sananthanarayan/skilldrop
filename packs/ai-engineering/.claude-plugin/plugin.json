@@ -1,0 +1,12 @@
+{
+  "name": "ai-engineering",
+  "version": "0.12.0",
+  "description": "Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, AI-usage reporting, and the data contracts AI pipelines depend on. (12 skills, 2 loops)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://github.com/sananthanarayan/skilldrop#readme",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT"
+}

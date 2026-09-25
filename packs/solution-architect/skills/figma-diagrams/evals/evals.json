@@ -1,0 +1,15 @@
+{
+  "skill_name": "figma-diagrams",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "List the pages and frames in this Figma file and post a comment on the checkout frame.",
+      "assertions": [
+        "The token is read from the FIGMA_TOKEN environment variable and never logged or passed on the command line",
+        "Output is filtered to pages, frames, and groups (about three levels) and summarized rather than dumping raw JSON",
+        "Before posting any comment, the exact comment text and target frame are shown for confirmation",
+        "The skill states clearly when FIGMA_TOKEN is missing rather than failing opaquely"
+      ]
+    }
+  ]
+}

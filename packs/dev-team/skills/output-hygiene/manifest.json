@@ -1,0 +1,33 @@
+{
+  "name": "output-hygiene",
+  "version": "0.1.0",
+  "description": "Review agent-written text before it ships and strip the machine artifacts it carries — invisible Unicode, non-breaking spaces, homoglyphs, harness-added provenance trailers, trailing chat closers — then flag the prose tells a script cannot catch, each quoted with a rewrite. Use when the user wants to clean up AI-generated output, asks to remove a Claude watermark, attribution footer, or \"Generated with\" line, wants a draft that does not read as machine-written, or needs a pre-ship hygiene pass on a document, commit message, or pasted chat answer.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "doc-critique",
+    "ai-usage-policy"
+  ],
+  "handoff": [
+    { "to": "doc-critique", "when": "the surface is clean and the draft is still weak", "purpose": "The fault is the argument, not the residue.", "fallback": "If doc-critique is absent, name the weakest claim and what evidence it needs." }
+  ],
+  "tags": [
+    "hygiene",
+    "cleanup",
+    "unicode",
+    "provenance",
+    "ai-detection",
+    "pre-ship"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "The mechanical pass is a deterministic script; the model does bounded rewriting of flagged prose against a fixed tell list, not adversarial review."
+  }
+}

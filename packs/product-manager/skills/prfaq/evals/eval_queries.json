@@ -1,0 +1,13 @@
+[
+  { "query": "Write a PRFAQ for our new product idea", "should_trigger": true },
+  { "query": "I want to write the press release before the product exists", "should_trigger": true },
+  { "query": "Help me do an Amazon-style working-backwards doc for this concept", "should_trigger": true },
+  { "query": "We need to align stakeholders on what this product actually is before engineering starts", "should_trigger": true },
+  { "query": "Write the press release and FAQ for this idea and tell me if it survives its own hard questions", "should_trigger": true },
+
+  { "query": "Draft the product requirements doc for the new feature", "should_trigger": false },
+  { "query": "Write a business case for building vs buying this tool", "should_trigger": false },
+  { "query": "Write the marketing copy for our launch homepage", "should_trigger": false },
+  { "query": "Run a SWOT analysis on our product line", "should_trigger": false },
+  { "query": "Write release notes for what we shipped this sprint", "should_trigger": false }
+]

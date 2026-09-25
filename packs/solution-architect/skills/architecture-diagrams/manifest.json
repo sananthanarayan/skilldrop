@@ -1,0 +1,31 @@
+{
+  "name": "architecture-diagrams",
+  "version": "0.1.0",
+  "description": "Generate architecture diagrams (Mermaid, PlantUML, C4) from a written description of a system. Supports AWS/Azure/GCP cloud topologies, microservice landscapes, sequence flows, container diagrams, and ER models. Use whenever the user asks for an architecture diagram, system sketch, flow diagram, or visualization of a design.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "figma-diagrams"
+  ],
+  "handoff": [
+    { "to": "figma-diagrams", "when": "the diagram needs to live where designers work", "purpose": "Push the rendered diagram into Figma.", "fallback": "If figma-diagrams is absent, leave the Mermaid source and say it needs manual import; never fabricate a Figma URL." }
+  ],
+  "tags": [
+    "diagrams",
+    "mermaid",
+    "plantuml",
+    "c4",
+    "architecture"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Prose to diagram syntax. Correctness matters; reasoning is bounded."
+  }
+}

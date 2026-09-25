@@ -1,0 +1,13 @@
+[
+  { "query": "Run a SWOT analysis on our product", "should_trigger": true },
+  { "query": "Should we enter the SMB payroll market?", "should_trigger": true },
+  { "query": "Do a Porter's Five Forces on the ride-sharing industry", "should_trigger": true },
+  { "query": "What macro trends could threaten our 3-year platform bet?", "should_trigger": true },
+  { "query": "Why are our margins compressing — analyze the competitive pressure", "should_trigger": true },
+  { "query": "I need a PESTLE analysis for the board offsite", "should_trigger": true },
+
+  { "query": "Compare Postgres vs DynamoDB for our new service", "should_trigger": false },
+  { "query": "Write a business case for acquiring this tooling vendor", "should_trigger": false },
+  { "query": "Write a PRFAQ for our new product idea", "should_trigger": false },
+  { "query": "Cascade our company OKRs down to the platform team", "should_trigger": false }
+]

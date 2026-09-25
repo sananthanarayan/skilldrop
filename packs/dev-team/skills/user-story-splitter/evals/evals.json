@@ -1,0 +1,16 @@
+{
+  "skill_name": "user-story-splitter",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Split this epic into shippable stories: 'Customers can save their cart, return later on any device, and check out with a saved payment method.'",
+      "assertions": [
+        "Every story is demoable to a non-engineer — a story whose demo is 'look at this database table' is re-cut as a vertical slice",
+        "Every acceptance criterion is pass/fail without interpretation and written in Gherkin",
+        "Acceptance criteria are concrete enough that a tester who has not seen the epic can verdict them",
+        "Dependencies between stories are stated, and a recommended build order follows from them",
+        "Stories are independently shippable rather than layered horizontally (all backend, then all frontend)"
+      ]
+    }
+  ]
+}

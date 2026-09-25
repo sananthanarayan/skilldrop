@@ -1,0 +1,16 @@
+{
+  "skill_name": "sonar-onboard",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Set this Python repo up for Sonar compliance — we use SonarCloud and run CI on GitHub Actions.",
+      "assertions": [
+        "sonar.projectKey, sonar.sources, sonar.tests and the coverage path reflect what is actually on disk, not generic example values",
+        "The generated CI workflow blocks merge on a quality-gate failure rather than merely running a scan",
+        "SonarCloud vs SonarQube server is chosen explicitly and the generated config matches that choice",
+        "The coverage report path matches the language's real tooling output",
+        "Setup steps that require a token or server-side action are named for the operator rather than silently assumed"
+      ]
+    }
+  ]
+}

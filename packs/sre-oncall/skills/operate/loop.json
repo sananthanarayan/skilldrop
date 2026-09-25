@@ -1,0 +1,41 @@
+{
+  "$comment": "RFC-0028. The only loop whose failures are irreversible and live. Its feedback edge is real and already documented in the repo: postmortem-generator emits runbook deltas phrased as edits for runbook-generator.",
+  "name": "operate",
+  "version": "0.1.0",
+  "description": "Take a shipped service through detection, response, and learning — instrument it, write the runbook, communicate the incident, then feed the postmortem's deltas back into the runbook. Use when the user is preparing to run a service, is in an incident, or is writing a postmortem.",
+  "entrypoint": "LOOP.md",
+  "kind": "loop",
+  "cap": 3,
+  "stages": [
+    {
+      "id": "instrument",
+      "type": "generate",
+      "intent": "Decide what is measured and what pages a human. You cannot respond to what you never detected.",
+      "skills": ["observability-plan"]
+    },
+    {
+      "id": "document",
+      "type": "generate",
+      "intent": "Write the procedure the on-call follows at 3am, per alert the previous stage defined.",
+      "skills": ["runbook-generator"]
+    },
+    {
+      "id": "respond",
+      "type": "generate",
+      "intent": "Communicate during the incident, to the audience that needs it, at the stage the incident is actually in.",
+      "skills": ["incident-comms"]
+    },
+    {
+      "id": "learn",
+      "type": "verify",
+      "intent": "Analyse blamelessly and emit runbook deltas. An incident that changes no procedure has not been learned from.",
+      "skills": ["postmortem-generator"],
+      "gate": {
+        "id": "G3",
+        "kind": "human",
+        "verdicts": ["PROCEED", "PROCEED WITH CONDITIONS", "REVISE", "BLOCKED"],
+        "revise_to": "document"
+      }
+    }
+  ]
+}

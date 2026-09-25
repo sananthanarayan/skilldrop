@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Draft a PRD for this feature",
+    "should_trigger": true
+  },
+  {
+    "query": "Write the product requirements document from this idea",
+    "should_trigger": true
+  },
+  {
+    "query": "I need testable requirements with MoSCoW priorities and non-goals",
+    "should_trigger": true
+  },
+  {
+    "query": "Turn this feature idea into a PRD engineering can build from",
+    "should_trigger": true
+  },
+  {
+    "query": "Write the press release before the product exists",
+    "should_trigger": false
+  },
+  {
+    "query": "Draft the engineering design doc for this",
+    "should_trigger": false
+  },
+  {
+    "query": "Split this epic into INVEST user stories",
+    "should_trigger": false
+  },
+  {
+    "query": "Write interview questions for our stakeholders",
+    "should_trigger": false
+  }
+]

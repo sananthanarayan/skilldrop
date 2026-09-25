@@ -1,0 +1,31 @@
+# SonarQube project configuration.
+# Host URL and auth token are passed via env vars (SONAR_HOST_URL, SONAR_TOKEN),
+# not committed here — keeps the file portable across forks and local runs.
+
+sonar.projectKey={{PROJECT_KEY}}
+sonar.projectName={{PROJECT_NAME}}
+sonar.projectVersion=1.0
+
+# SonarCloud ONLY — required, set to your SonarCloud organization key.
+# Delete this line for self-hosted SonarQube server.
+sonar.organization={{ORG_KEY}}
+
+# Source layout — comma-separate for multi-language repos.
+sonar.sources={{SOURCES}}
+sonar.tests={{TESTS}}
+
+# Encoding (UTF-8 unless the project has a documented exception).
+sonar.sourceEncoding=UTF-8
+
+# Coverage report — paths are relative to the repo root.
+# Each language has its own importer; uncomment the one(s) you generate.
+# {{COVERAGE_PROPERTY}}={{COVERAGE_PATH}}
+# TODO: wire up coverage in your test step, then uncomment the line above.
+
+# Exclusions — keep the gate honest by skipping generated, vendored, and migration code.
+sonar.exclusions=**/node_modules/**,**/dist/**,**/build/**,**/.next/**,**/__pycache__/**,**/*.generated.*,**/vendor/**,**/migrations/**
+sonar.test.exclusions=**/*.test.*,**/*.spec.*,**/test/**,**/tests/**
+sonar.coverage.exclusions=**/*.test.*,**/*.spec.*,**/test/**,**/tests/**,**/*.stories.*,**/index.{js,ts}
+
+# New-code period — issues in code changed since this reference are what the gate enforces.
+# Defaults to "previous_version"; override in the Sonar UI per-project if needed.

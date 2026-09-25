@@ -1,0 +1,48 @@
+{
+  "$comment": "RFC-0028. This loop is docs/code-implement-verify.mmd promoted from a hand-maintained diagram into the machine-readable source that diagram is now generated from.",
+  "name": "build",
+  "version": "0.1.0",
+  "description": "Take an agreed requirement to merged code through a capped generate-verify-gate loop, with a mechanical gate that decides and a human who owns the merge. Use when the user wants to implement a story, fix a triaged bug, or ask whether a change is safe to merge.",
+  "entrypoint": "LOOP.md",
+  "kind": "loop",
+  "cap": 3,
+  "stages": [
+    {
+      "id": "shape",
+      "type": "generate",
+      "intent": "Turn a requirement or defect into one vertically-sliced unit of work with acceptance criteria.",
+      "skills": ["user-story-splitter", "bug-triage"]
+    },
+    {
+      "id": "implement",
+      "type": "generate",
+      "intent": "Write the code and its tests against the acceptance criteria, challenging the result each round.",
+      "skills": ["feature-implement-loop"]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "intent": "Judge the diff that now exists. The script decides; the panel explains.",
+      "skills": ["pre-merge-review"],
+      "gate": {
+        "id": "G2",
+        "kind": "mechanical",
+        "script": "skills/pre-merge-review/scripts/gate.py",
+        "verdicts": ["READY", "NOT READY", "BLOCKED"],
+        "revise_to": "implement"
+      }
+    },
+    {
+      "id": "decide",
+      "type": "gate",
+      "intent": "A human merges. Design disagreements surfaced at G2 are adjudicated here, not argued in the diff.",
+      "skills": ["council-review"],
+      "gate": {
+        "id": "G2.1",
+        "kind": "human",
+        "verdicts": ["PROCEED", "PROCEED WITH CONDITIONS", "REVISE", "RECONSIDER", "SPLIT", "BLOCKED"],
+        "revise_to": "shape"
+      }
+    }
+  ]
+}
