@@ -120,6 +120,7 @@ NAV = [
     ("What's in one", "#quality", False),
     ("Portability", "#portability", False),
     ("Catalogue", "#catalogue", False),
+    ("Loops", "#loops", False),
     ("Reviewers", "#reviewers", False),
     ("Shipped", "#shipped", False),
     ("GitHub", REPO_URL, True),
@@ -273,8 +274,9 @@ def render(skills, packs, outcomes, version, releases):
     tiers = ["light", "standard", "heavy"]
     tier_counts = {t: sum(1 for s in skills if s["tier"] == t) for t in tiers}
 
-    stats = [(str(len(skills)), "skills"), (str(len(packs)), "role packs"),
-             (str(len(TOOLS)), "agent tools"), ("0", "runtime deps")]
+    loop_list = loops()
+    stats = [(str(len(skills)), "skills"), (str(len(loop_list)), "loops"),
+             (str(len(packs)), "role packs"), ("0", "runtime deps")]
     stats_html = "".join(
         f'<div class="stat"><div class="stat__n">{esc(n)}</div><div class="stat__l">{esc(l)}</div></div>'
         for n, l in stats)
@@ -298,6 +300,17 @@ def render(skills, packs, outcomes, version, releases):
     panels = "".join(
         f'<div class="tabs__panel">{terminal([c])}<p class="tabs__note">{esc(n)}</p></div>'
         for _, c, n in INSTALL_TABS)
+
+    loop_cards = "".join(
+        f"""<li class="pack">
+      <div class="pack__head">
+        <h3 class="pack__name">{esc(lp['name'])}</h3><span class="pack__n">{esc(lp['kind'])} &middot; cap {lp['cap']}</span>
+      </div>
+      <p class="pack__desc">{esc(lp['description'])}</p>
+      <p class="pack__desc"><code>{esc(' \u2192 '.join(st['id'] for st in lp['stages']))}</code></p>
+      <p class="pack__desc">Gates: {esc(', '.join(f"{st['gate']['id']} ({st['gate']['kind']})" for st in lp['stages'] if st['gate']) or 'none')}</p>
+      <p class="pack__install"><code>skilldrop install --loop {esc(lp['name'])}</code></p>
+    </li>""" for lp in loop_list)
 
     agent_cards = "".join(
         f"""<li class="pack">
@@ -753,6 +766,16 @@ a {{ color:var(--accent-700); }}
   </div>
 </section>
 
+<section class="section" id="loops">
+  <div class="inner">
+    <p class="eyebrow">Loops</p>
+    <h2>A way of operating, not just a bag of parts</h2>
+    <p class="lede">A loop is an ordered sequence of stages over these skills, with a gate between them &mdash; nothing leaves a loop until its gate passes. Four cover the lifecycle and are separated by how expensive the mistake is to unwind; one wraps any generator. A loop sequences skills and never contains one, so every skill still installs and runs on its own.</p>
+    <ul class="grid-3">{loop_cards}</ul>
+    <p class="pack__install" style="margin-top:1.5rem"><code>skilldrop install --loop build</code> &mdash; the loop plus every stage skill it sequences.</p>
+  </div>
+</section>
+
 <section class="section section--alt" id="reviewers">
   <div class="inner">
     <p class="eyebrow">Reviewers</p>
@@ -925,7 +948,7 @@ a {{ color:var(--accent-700); }}
 
 def payload(skills, packs, outcomes, version, releases):
     return {"site": SITE_URL, "repo": REPO_URL, "version": version, "releases": releases,
-            "packs": packs, "outcomes": outcomes, "skills": skills}
+            "packs": packs, "outcomes": outcomes, "loops": loops(), "skills": skills}
 
 
 def ld_json(skills):
@@ -947,6 +970,33 @@ def ld_json(skills):
         "softwareHelp": REPO_URL + "#readme",
         "keywords": f"agent skills, {len(skills)} skills, Claude Code, Cursor, Codex, Copilot, Kiro, Antigravity",
     }
+
+
+def loops():
+    """The loops (RFC-0028). Read straight from loops/<name>/loop.json, so the site cannot
+    disagree with the contract validate.py enforces. A loop has no tier: it sequences skills
+    and makes no model call of its own."""
+    d = os.path.join(ROOT, "loops")
+    if not os.path.isdir(d):
+        return []
+    out = []
+    for n in sorted(os.listdir(d)):
+        f = os.path.join(d, n, "loop.json")
+        if not os.path.exists(f):
+            continue
+        with open(f, encoding="utf-8") as fh:
+            spec = json.load(fh)
+        stages = spec.get("stages", [])
+        out.append({
+            "name": spec["name"], "kind": spec.get("kind", "loop"), "cap": spec.get("cap", 3),
+            "description": spec.get("description", ""),
+            "stages": [{"id": st["id"], "type": st["type"], "intent": st.get("intent", ""),
+                        "skills": st.get("skills", []),
+                        "gate": ({"id": st["gate"]["id"], "kind": st["gate"]["kind"],
+                                  "verdicts": st["gate"].get("verdicts", [])}
+                                 if st.get("gate") else None)} for st in stages],
+        })
+    return out
 
 
 def agents():
