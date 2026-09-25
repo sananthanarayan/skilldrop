@@ -95,11 +95,12 @@ Every version bump lands with a matching entry at the top of [`CHANGELOG.md`](CH
 | Python dep manifest for a skill | `skills/<skill-name>/requirements.txt` |
 | New loop (a sequence over existing skills) | `loops/<kebab-name>/LOOP.md` + `loops/<kebab-name>/loop.json` — needs an RFC (RFC-0028) |
 | Loop diagram | Nothing to place by hand — `build_loops.py` generates `docs/loops/<loop>.mmd` and the README's mermaid blocks from `loop.json`. Edit the contract, not the picture. |
-| Machine-readable schema for a primitive | `contracts/<name>.schema.json`; the shared gate verdict vocabulary is `contracts/terminals.json` |
+| Machine-readable schema for a primitive | `contracts/<name>.schema.json` — closed schemas, checked by `validate.py`'s stdlib `check_schema()`. The shared gate verdict vocabulary is `contracts/terminals.json` |
+| Long-form doc that would bloat the README | `guides/<kind>/<slug>.md` — frontmatter `title`/`summary`/`kind` (Diátaxis), and a link from `guides/README.md`. Both enforced (RFC-0029) |
 | Claude Code project settings | `.claude/settings.json` — registers the repo as a local plugin marketplace for dogfooding; also holds hooks/permissions/env. Inert for non-Claude tools. |
 | Per-pack Claude plugin output | Nothing to place by hand — `build_marketplace.py --dist` generates it and CI publishes it to the `plugins` branch. Adding a skill to a pack in `packs.json` is the whole edit (RFC-0027). |
 
-Anything outside `skills/`, `loops/`, `agents/`, and `contracts/` is repo policy or hygiene. New top-level directories should be proposed in a PR with rationale, not added silently.
+Anything outside `skills/`, `loops/`, `agents/`, and `contracts/` is repo policy or hygiene. System design lives in [ARCHITECTURE.md](ARCHITECTURE.md); long-form docs live in [guides/](guides/). New top-level directories should be proposed in a PR with rationale, not added silently.
 
 ## SKILL.md frontmatter (required, exactly this shape)
 
@@ -307,9 +308,11 @@ See `skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 - [ ] **No loop in `model-routing.json`** — loops carry no tier.
 - [ ] **`handoff` (if present) is complete** — every entry has `to`/`when`/`purpose`/`fallback`, and every `to` is also in `related`.
 - [ ] **`python3 build_loops.py` run** if any `loop.json` changed — `docs/loops/*.mmd` and the README blocks are generated, and `validate.py` fails on drift.
+- [ ] **Contracts satisfied** — the manifest / `loop.json` / agent frontmatter / guide frontmatter validates against its schema in `contracts/`. These are closed: a typo'd key fails.
+- [ ] **New long-form doc is a guide**, not a README section — `guides/<kind>/<slug>.md` with Diátaxis frontmatter and a link from `guides/README.md`.
 - [ ] **`python3 validate.py` passes** with no failures.
 
-Of these, **`validate.py` (+ `node bin/skilldrop.js validate`) mechanically enforces**: the name triple (for skills *and* loops), the whole loop contract above, the ≤500-line warning, `Quality bar` + `Anti-patterns` sections, evals *shape* (when present), model-tier sync, `related` sync, pack membership, reference + link integrity, script dual-referencing, and a heavy-tier `examples/` oracle. The rest — the RFC existing, voice, the manual test pass, no-secrets / no-real-data, description discipline, the non-interactive line, the README update, and the GitHub About — are **human judgment**; a green lint does not vouch for them. Keep this split honest: if a rule becomes mechanically checkable, move it into `validate.py` rather than leaving it as a checklist claim.
+Of these, **`validate.py` (+ `node bin/skilldrop.js validate`) mechanically enforces**: every `contracts/` schema (manifests, `packs.json`, loops, agent and guide frontmatter — all closed), the name triple (for skills *and* loops), the whole loop contract above, the ≤500-line warning, `Quality bar` + `Anti-patterns` sections, evals *shape* (when present), model-tier sync, `related` sync, pack membership, reference + link integrity, script dual-referencing, and a heavy-tier `examples/` oracle. The rest — the RFC existing, voice, the manual test pass, no-secrets / no-real-data, description discipline, the non-interactive line, the README update, and the GitHub About — are **human judgment**; a green lint does not vouch for them. Keep this split honest: if a rule becomes mechanically checkable, move it into `validate.py` rather than leaving it as a checklist claim.
 
 ## Voice & tone (non-negotiable)
 
@@ -390,6 +393,8 @@ When you add or change a skill, set its tier in **both** `model-routing.json` an
 - Claude Code plugins: [build_marketplace.py](build_marketplace.py) — writes the committed `.claude-plugin/` on main, and (`--dist`) the per-pack plugin tree CI force-pushes to the generated `plugins` branch ([RFC-0027](docs/rfcs/0027-retire-agentbundle-export.md))
 - Loops (the sequencing primitive): [loops/](loops/) + [RFC-0028](docs/rfcs/0028-loops-as-a-primitive.md)
 - Loop diagram generator: [build_loops.py](build_loops.py) → [docs/loops/](docs/loops/)
+- System design and the enforcement model: [ARCHITECTURE.md](ARCHITECTURE.md)
+- Long-form docs (Diátaxis): [guides/](guides/) — index at [guides/README.md](guides/README.md)
 - Machine-readable contracts: [contracts/loop.schema.json](contracts/loop.schema.json), [contracts/terminals.json](contracts/terminals.json)
 - Model routing: [MODEL-ROUTING.md](MODEL-ROUTING.md) + [model-routing.json](model-routing.json)
 - Claude Code project settings: [.claude/settings.json](.claude/settings.json) — registers the repo as a local plugin marketplace (`skilldrop@skilldrop-local`) so the catalogue can be dogfooded from the working tree

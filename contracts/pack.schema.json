@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/sananthanarayan/skilldrop/contracts/pack.schema.json",
+  "title": "skilldrop packs.json",
+  "$comment": "RFC-0001 / RFC-0026 / RFC-0029. Packs and outcomes are METADATA ONLY — skills never move out of flat skills/<name> folders. Packs answer WHO needs a skill; outcomes answer WHY someone opened the catalogue. Both get the same two-way membership check in validate.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "packs", "outcomes"],
+  "properties": {
+    "$comment": { "type": "string" },
+    "version": { "type": "string" },
+    "packs": {
+      "type": "object",
+      "description": "Role-based bundles. Keys are pack names.",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["description", "skills"],
+        "properties": {
+          "description": { "type": "string", "description": "One line — who this pack is for." },
+          "skills": { "type": "array", "items": { "type": "string" }, "minItems": 1,
+                      "description": "Real skill folders. Every skill must appear in at least one pack." },
+          "loops": { "type": "array", "items": { "type": "string" },
+                     "description": "RFC-0028. Real loops/ folders. Every loop must appear in at least one pack." }
+        }
+      }
+    },
+    "outcomes": {
+      "type": "object",
+      "description": "The catalogue's second browse axis. A browse aid only — never an install unit; the CLI takes no --outcome.",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["description", "skills"],
+        "properties": {
+          "description": { "type": "string", "description": "The chip's tooltip on the catalogue site." },
+          "skills": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+        }
+      }
+    }
+  }
+}
