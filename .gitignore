@@ -21,12 +21,14 @@ env/
 .env.local
 *.figmatoken
 
-# Generated catalogue site (RFC-0011) — built by CI, never committed
-build/
+# Generated catalogue site (RFC-0011) — built by CI, never committed.
+# Leading slash is load-bearing: a bare `build/` matches at any depth and silently
+# swallowed loops/build/ (RFC-0028). Anchor generated-output ignores to the root.
+/build/
 
 # Generated per-pack Claude plugins (RFC-0027) — built by build_marketplace.py --dist,
 # published to the plugins branch; never committed to main
-build-plugins/
+/build-plugins/
 
 # Test renders / scratch output
 out/

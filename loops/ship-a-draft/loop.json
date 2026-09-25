@@ -1,0 +1,41 @@
+{
+  "$comment": "RFC-0028. This wrapper is docs/knowledge-work-pipeline.mmd promoted from a hand-maintained diagram into the machine-readable source that diagram is now generated from. It is a wrapper, not a loop: the generator at its centre is chosen at run time from whichever artifact the user actually wants.",
+  "name": "ship-a-draft",
+  "version": "0.1.0",
+  "description": "Take raw mess to a stakeholder-ready artifact by wrapping any skilldrop generator in the two passes either side of it — structured intake before, critique and machine-residue scrub after. Use when the user has notes, a transcript, or a ticket and wants a finished document rather than a first draft.",
+  "entrypoint": "LOOP.md",
+  "kind": "wrapper",
+  "cap": 3,
+  "stages": [
+    {
+      "id": "intake",
+      "type": "generate",
+      "intent": "Collect the raw input once, into the shape the chosen generator expects, tagging every field explicit / implied / inferred / missing.",
+      "skills": ["brief-intake"]
+    },
+    {
+      "id": "draft",
+      "type": "generate",
+      "intent": "Run the generator the brief was shaped for. Any artifact skill is legal here — that choice is the wrapper's whole point.",
+      "skills": ["*"]
+    },
+    {
+      "id": "critique",
+      "type": "verify",
+      "intent": "Review the draft against the same rubric the generator was held to.",
+      "skills": ["doc-critique"],
+      "gate": {
+        "id": "G4",
+        "kind": "review",
+        "verdicts": ["SHIP IT", "SHIP WITH CHANGES", "MAJOR REWRITE", "WRONG ARTIFACT", "BLOCKED"],
+        "revise_to": "intake"
+      }
+    },
+    {
+      "id": "polish",
+      "type": "verify",
+      "intent": "Strip what the machine left behind before the artifact leaves the building. Surface pass only — never a substitute for the critique above.",
+      "skills": ["output-hygiene"]
+    }
+  ]
+}
