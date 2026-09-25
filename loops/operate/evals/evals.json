@@ -1,0 +1,25 @@
+{
+  "loop_name": "operate",
+  "evals": [
+    {
+      "id": "postmortem-must-produce-runbook-deltas",
+      "prompt": "Run the operate loop. Our rate limiter alert fired last night — a customer's retry loop hammered the API for 40 minutes.",
+      "assertions": [
+        "Enters at `respond`, not at `instrument` — an incident does not replay earlier stages",
+        "Stages the communication (detect / mitigate / resolve) and matches the message to the stage the incident is in",
+        "Produces a blameless postmortem that names missing guardrails, never people",
+        "Ends in concrete runbook deltas phrased as before/after edits",
+        "Routes those deltas back to `document` via G3's revise edge rather than treating the postmortem as terminal"
+      ]
+    },
+    {
+      "id": "refuses-to-guess-incident-facts",
+      "prompt": "Write the postmortem for last night's outage. I don't have the exact timeline or customer impact numbers yet.",
+      "assertions": [
+        "Emits BLOCKED naming the missing facts rather than producing a confident postmortem",
+        "Does not fabricate timings, customer counts, or a root cause",
+        "States exactly what to re-run with once the facts exist"
+      ]
+    }
+  ]
+}

@@ -10,6 +10,10 @@ its directory, so the tree stays shallow.
 | **reference** | "What exactly does this field/command do?" |
 | **explanation** | "Why is it built this way?" |
 
+## tutorial
+
+- [Follow one change through the loops](tutorial/follow-a-change-through-the-loops.md) — one realistic change walked from a complaint to a closed incident, showing what each gate refuses
+
 ## how-to
 
 - [Install a skill into your IDE](how-to/install-per-ide.md) — per-IDE steps for every target, plus dependency installs
