@@ -6,6 +6,10 @@
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
   "related": ["architecture-diagrams", "prd-draft", "reverse-architecture", "success-metrics", "user-story-splitter"],
+  "handoff": [
+    { "to": "prd-draft", "when": "a friction point on the journey is worth fixing", "purpose": "Turn the named friction into numbered requirements.", "fallback": "If prd-draft is absent, write the requirements inline as numbered, testable statements and note that prd-draft in skilldrop would structure them." },
+    { "to": "success-metrics", "when": "the fix needs a measure before it is built", "purpose": "Design the measurement for the journey step being changed.", "fallback": "If success-metrics is absent, state one baseline and one target per fixed step inline." }
+  ],
   "tags": ["journey-map", "customer-experience", "ux", "touchpoints", "mermaid", "personas"],
   "model": { "tier": "standard", "rationale": "Structured synthesis into a fixed four-row stage model plus bounded ranking judgment. Escalate via ambiguous-input when the persona or outcome is contested or research inputs conflict." }
 }

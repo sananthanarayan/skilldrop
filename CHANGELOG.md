@@ -8,6 +8,14 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.11.7 — 2026-09-25
+
+- Three more loops complete the lifecycle: `discover` (raw signal to a requirement a human ratifies at **G0**), `design` (a requirement to a recorded ADR, gated by `council-review` at **G1**), and `operate` (a shipped service through detection, response and learning at **G3**). With `build` and the `ship-a-draft` wrapper, skilldrop now ships five loops.
+- The four lifecycle loops are separated by **reversibility** — a discovery mistake costs a re-brief, a design mistake is unwound in code months later, a build mistake is a revert, an operate mistake reaches live users — which is why each owns its own gate instead of folding into a neighbour.
+- `operate` closes a real feedback edge: `postmortem-generator` emits runbook deltas and the loop routes them straight back into `runbook-generator`.
+- Skills can now declare a **directed** hand-off: `handoff: [{ to, when, purpose, fallback }]`. `fallback` is required, which turns "sibling hand-offs are advisory" from prose into something `validate.py` checks — a hand-off to a skill you have not installed now degrades in a stated way instead of dead-ending. 22 edges ship across 15 skills.
+- Loop diagrams are generated from `loop.json` by the new `build_loops.py`, into `docs/loops/*.mmd` and the README's mermaid blocks. `validate.py` fails on drift, so a diagram can no longer disagree with the contract it illustrates. The two hand-maintained `.mmd` files this replaces are retired.
+
 ## 0.11.6 — 2026-09-25
 
 - skilldrop now ships **loops**, not just parts. A loop is a named sequence of stages over existing skills with a gate between them — `loops/build/` takes an agreed requirement to merged code behind a mechanical gate, and `loops/ship-a-draft/` wraps any generator in structured intake before and critique plus a machine-residue scrub after (RFC-0028).

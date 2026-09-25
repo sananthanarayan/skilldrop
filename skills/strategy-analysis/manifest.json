@@ -6,6 +6,10 @@
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
   "related": ["business-case", "okr-cascade", "prfaq", "tech-comparison-matrix"],
+  "handoff": [
+    { "to": "tech-comparison-matrix", "when": "the options are named and need comparing on stated criteria", "purpose": "Score the named options against weighted criteria.", "fallback": "If tech-comparison-matrix is absent, build a plain criteria-by-option table inline and state the weights." },
+    { "to": "business-case", "when": "the direction is chosen and needs costing before approval", "purpose": "Cost the chosen option against a do-nothing baseline.", "fallback": "If business-case is absent, state option 0 and the three cost layers (build, run, opportunity) inline." }
+  ],
   "tags": ["strategy", "swot", "tows", "five-forces", "pestle", "competitive-analysis", "market-analysis"],
   "model": { "tier": "heavy", "rationale": "Framework selection plus evidenced multi-factor judgment ending in a ranked, committal verdict. Cheaper models fill cells with generic filler, skip the TOWS crossings, and refuse to take a side. Never downgrade." }
 }
