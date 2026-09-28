@@ -1,8 +1,26 @@
 {
-  "_comment": "Full deck-spec schema. The build_deck.py script consumes this. Top-level fields: title, audience, palette, slides[].",
+  "_comment": "Full deck-spec schema. The build_deck.py script consumes this. Top-level fields: title, audience, aspect, template, layout_map, palette, slide_numbers, slides[].",
 
   "title": "ProjectX Migration — Board Update",
   "audience": "board",
+
+  "_aspect_comment": "16:9 (default), 4:3, or 16:10. Ignored when `template` is set — the template's own slide size wins.",
+  "aspect": "16:9",
+
+  "_template_comment": "Set `template` to a brand .pptx/.potx and the deck inherits its masters, theme fonts, colors and slide size. Relative paths resolve against this spec file. Discover the layout names with: python3 scripts/build_deck.py --list-layouts brand.potx — then map each logical layout to one. Any logical layout left out of the map falls back to the deck's own built-in design.",
+  "_template": "./brand/acme-master.potx",
+  "_layout_map": {
+    "title": "Title Slide",
+    "section": "Section Header",
+    "content": "Title and Content",
+    "two_column": "Two Content",
+    "big_number": "Title Only",
+    "quote": "Title Only",
+    "image": "Picture with Caption",
+    "table": "Title Only",
+    "chart": "Title Only",
+    "closing": "Closing"
+  },
 
   "palette": {
     "primary": "#1A2A6C",
@@ -11,6 +29,8 @@
     "background": "#FFFFFF",
     "text": "#222222"
   },
+
+  "slide_numbers": true,
 
   "slides": [
     {
@@ -45,6 +65,54 @@
       "number": "$2.4M",
       "caption": "Annualised infra savings from the 8 migrated services",
       "notes": "Pause here. Let the number land. Then say: we expect $5.8M annualised at full completion."
+    },
+
+    {
+      "layout": "chart",
+      "title": "Savings accrue as services cut over",
+      "takeaway": "Every phase has beaten its savings forecast — phase 3 is the same shape of work.",
+      "chart": {
+        "type": "column",
+        "categories": ["Phase 1", "Phase 2", "Phase 3 (fcst)"],
+        "series": [
+          { "name": "Forecast ($M)", "values": [0.6, 1.4, 2.0] },
+          { "name": "Actual ($M)", "values": [0.8, 1.6, null] }
+        ],
+        "legend": true,
+        "number_format": "0.0"
+      },
+      "source": "FinOps monthly report, Aug FY26",
+      "notes": "Only chart numbers that exist in the source. If a forecast is a forecast, label it one."
+    },
+
+    {
+      "layout": "table",
+      "title": "Service cut-over status",
+      "columns": ["Service", "Phase", "Status", "p99 delta"],
+      "rows": [
+        ["checkout-api", "1", "Live", "-31%"],
+        ["billing-core", "1", "Live", "-18%"],
+        ["catalogue", "2", "Live", "-22%"],
+        ["identity", "2", "Live", "-9%"],
+        ["ledger", "3", "Schema rewrite", "—"],
+        ["reporting", "3", "Schema rewrite", "—"]
+      ],
+      "caption": "Full 14-service table in the appendix pack.",
+      "notes": "Don't read the table. Point at the two rows in the last column and move on."
+    },
+
+    {
+      "layout": "image",
+      "title": "Target architecture after phase 3",
+      "image": "./assets/target-architecture.png",
+      "position": "right",
+      "bullets": [
+        "Single control plane per region",
+        "Legacy DB decommissioned at phase 3 close",
+        "Active-active across two regions"
+      ],
+      "caption": "Generated from the C4 model — see the architecture repo for the source.",
+      "notes": "Raster only (PNG/JPG). Export SVG or EMF diagrams to PNG first — python-pptx cannot read them."
     },
 
     {

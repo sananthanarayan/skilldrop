@@ -104,7 +104,7 @@
     "adr-generator": { "tier": "standard", "rationale": "Structures a decision into MADR/Nygard. Some judgment on title/consequences; not adversarial." },
     "architecture-diagrams": { "tier": "standard", "rationale": "Translates prose to diagram syntax. Correctness matters; reasoning is bounded." },
     "brief-intake": { "tier": "standard", "rationale": "Extraction + tagging [explicit]/[implied]/[inferred]. The tagging needs care — above light, below heavy." },
-    "deck-builder": { "tier": "standard", "rationale": "Generates pptx content + runs a script. Content shaping, not hard reasoning." },
+    "deck-builder": { "tier": "standard", "rationale": "Shapes content, maps a brand template's layouts, and runs a script. Judgment, not hard reasoning." },
     "design-doc": { "tier": "standard", "rationale": "Synthesizes a design doc from a brief. Escalate to heavy via large-input or ambiguous-input when alternatives are genuinely contested." },
     "exec-summary": { "tier": "standard", "rationale": "Compression to one page. Needs to keep the right signal; escalate on very long source docs." },
     "figma-diagrams": { "tier": "standard", "rationale": "API calls + spec generation. Bounded transformation." },
