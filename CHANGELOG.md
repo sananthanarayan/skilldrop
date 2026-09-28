@@ -8,6 +8,22 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.12.1 — 2026-09-28
+
+- `deck-builder` builds on your own PowerPoint template: point `template` at a `.potx`/`.pptx`
+  and the deck inherits its masters, theme fonts, colours, logos and slide size. Discover the
+  template's layouts with `build_deck.py --list-layouts brand.potx`, then bind each logical
+  layout to one in `layout_map`. Placeholders are filled without flattening the brand's
+  typography, and unfilled ones are deleted so no "Click to add text" ghosts survive.
+- `deck-builder` gained three evidence layouts — `chart` (column, bar, line, stacked, pie,
+  doughnut, with a required takeaway and source), `table` (styled header, zebra rows,
+  auto-shrinking type), and `image` (aspect-fit, full-bleed or paired with bullets). A missing
+  or non-raster image draws a labelled placeholder and warns instead of failing the build;
+  `--strict` turns that into a hard error for CI.
+- `deck-builder` asks for audience, format, time budget and design in **one** setup block with
+  defaults pre-chosen, instead of asking about the palette alone — and honours `"aspect": "4:3"`
+  for decks that aren't 16:9. Slide numbers appear automatically past 10 slides.
+
 ## 0.12.0 — 2026-09-25
 
 The milestone the 0.11.6–0.11.9 releases were building toward.
