@@ -29,6 +29,8 @@ These are bundled in [`templates/palettes.json`](templates/palettes.json) and se
 | `vibrant` | Internal / sales / pitch decks — energetic |
 | `dark-mode` | Engineering audiences who prefer dark, or for live demos |
 | `editorial` | Long-form / read-ahead decks with lots of text |
+| `forest` | Calm, nature-leaning — sustainability, long-horizon programmes |
+| `sunset` | Warm, narrative-leaning — story-first sales and internal decks |
 
 ## Layout → content matching
 
@@ -40,6 +42,9 @@ The biggest deck-design mistake is "everything is a bulleted content slide". Use
 | A list of 2–6 related points | `content` | `two_column` (over-engineered) |
 | A comparison (us vs. them, before vs. after) | `two_column` | `content` with sub-bullets |
 | A pithy customer / SME quote | `quote` | `content` ("Customer says…") |
+| 3+ comparable figures over time or category | `chart` | `content` with numbers in bullets |
+| Row-and-column data, ≤ 12 rows | `table` | `two_column` faked with aligned bullets |
+| An architecture / flow / screenshot | `image` | describing the diagram in prose |
 | A topic break / new section | `section` | another title slide |
 | First slide | `title` | jumping straight into `content` |
 | Final slide with The Ask | `closing` | `content` titled "Thank you" |
@@ -90,3 +95,86 @@ Speaker notes should be *what's not on the slide*, not a redundant copy.
 - **Don't use both italic and bold** in the same sentence for emphasis.
 - **Don't mix serif and sans-serif** unless you really know what you're doing.
 - **Slide numbers** — include them for decks > 10 slides; omit for short decks.
+
+## Brand templates
+
+A template is inherited, not imitated: `template` points the build at a `.pptx` or `.potx`, and
+the deck is generated on that file's masters, theme fonts, theme colours, logos and slide size.
+Sample slides shipped inside the template are dropped; its layouts are kept.
+
+### The layout map
+
+`layout_map` binds each logical layout to one of the template's layout names (or its index).
+Discover them with `--list-layouts`. Matching is exact name first, then case-insensitive, then
+substring — so `"content": "Title and Content"` and `"content": "title and content"` both hit.
+
+| Logical layout | What to map it to | If unmapped |
+|---|---|---|
+| `title` | The template's title/cover layout | Built-in cover — **loses the brand**, always map it |
+| `section` | Section header / divider | Built-in divider — always map it |
+| `content` | Title and content / title and bullets | Built-in — always map it |
+| `two_column` | Two content / comparison | Built-in two-column; acceptable |
+| `closing` | Closing / thank-you / title-only | Built-in — always map it |
+| `image` | Picture with caption (best), else title-only | Image drawn into the content area |
+| `big_number`, `quote`, `table`, `chart` | Title-only | Drawn into the claimed content area; fine |
+
+Placeholders are filled, not replaced — the run keeps the template's font, so the deck inherits
+the brand's typography instead of Calibri. Placeholders left unfilled are deleted, so no
+"Click to add text" ghosts survive. For `big_number`, `quote`, `table`, `chart` and `image`, the
+largest empty body (or picture) placeholder is claimed for its rectangle and removed, so custom
+content lands where the template intended content to go.
+
+### Template gotchas
+
+- **Slide size comes from the template.** `aspect` is ignored, with a warning. A 4:3 corporate
+  master produces a 4:3 deck — tell the user rather than silently letting it look cramped.
+- **Charts and tables are drawn, not templated.** They take palette colours, not theme colours.
+  Supply brand hexes alongside the template so they match.
+- **Slide numbers:** if the template's master already stamps them, the script does not add its
+  own.
+- **A template that fails to open** is a hard error, never a silent fall-back to the built-in
+  design — a deck that quietly lost its branding is worse than a failed build.
+
+## Charts
+
+`chart` types: `column`, `bar`, `line`, `stacked_column`, `stacked_bar`, `pie`, `doughnut`.
+
+| Question the slide answers | Type |
+|---|---|
+| How does this compare across categories? | `column` (≤ 7 categories) or `bar` (longer labels) |
+| How has this moved over time? | `line` |
+| What is the mix of a whole? | `pie`, and only with ≤ 5 slices |
+| How does the mix change across categories? | `stacked_column` |
+
+### Hard rules
+
+- **Every chart carries a `takeaway`** — the sentence the audience should leave with, above the
+  plot. A chart without one makes the audience do the analysis live.
+- **Every chart carries a `source`.** No source means the number is unverifiable, which on a
+  board deck means it is indefensible.
+- **Never chart invented numbers.** If the user supplied three figures, chart three figures.
+  A forecast is labelled a forecast, in the series name.
+- **`null` is the right value for a gap.** Padding a short series with zeroes draws a cliff that
+  didn't happen.
+- **Pie charts cap at 5 slices.** More than that, use `bar` sorted descending.
+- **One chart per slide.** Two charts is two slides, or a `two_column` with the takeaway split.
+
+## Tables
+
+- **≤ 12 data rows.** Past that it belongs in the appendix or an attached spreadsheet.
+- **≤ 5 columns** at 16:9, ≤ 4 at 4:3. Wider than that and the font drops below readable.
+- **Put the column the audience cares about last or first**, never buried in the middle.
+- **Cells are values, not sentences.** A table cell running to two lines means the content is
+  prose and wants a `content` slide.
+- Font size auto-shrinks past 7 and past 10 rows; header row takes `primary`, body rows zebra
+  against `#F2F4F8`.
+
+## Images
+
+- **Raster only.** `python-pptx` reads PNG/JPG/GIF/BMP/TIFF. SVG, EMF and PDF raise on import —
+  export to PNG at 2× the slide size before building.
+- **Relative paths resolve against the spec file**, not the working directory.
+- `position: "left"` / `"right"` pairs the image with bullets on the other half;
+  `"full"` (default) gives it the whole content area.
+- A missing or unreadable image draws a bordered placeholder box naming the file, and warns.
+  That box is a build artefact, never a deliverable — resolve it before the deck is presented.
