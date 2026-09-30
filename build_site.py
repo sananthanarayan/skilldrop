@@ -142,6 +142,8 @@ GUIDES = {
             ("Follow one change through the loops",
              "guides/tutorial/follow-a-change-through-the-loops.md",
              "One realistic change from complaint to closed incident — every gate shown"),
+            ("From complaint to closed incident", "guides/tutorial/complaint-to-closed-incident.md", "discover → operate: support complaint to root-cause fix and postmortem"),
+            ("From idea to shipped feature",      "guides/tutorial/idea-to-shipped-feature.md",      "All four lifecycle loops: idea → design → build → operate → closed incident"),
             ("Dev-team workflow",             "guides/tutorial/dev-team-workflow.md",             "Story → implementation → review panel → release notes"),
             ("Solution architect workflow",   "guides/tutorial/solution-architect-workflow.md",   "Brief → diagrams → ADRs → design doc → threat model → council gate"),
             ("Product manager workflow",      "guides/tutorial/product-manager-workflow.md",      "Signal → PR/FAQ → OKRs → PRD → metrics → critique gate"),
@@ -781,6 +783,75 @@ a {{ color:var(--accent-700); }}
 .footer__links a {{ color:var(--w-80); text-decoration:none; }}
 .footer__links a:hover {{ color:#fff; text-decoration:underline; }}
 .footer__copy {{ margin:0; flex-basis:100%; color:var(--w-60); font-size:.8rem; }}
+
+/* ── motion ── */
+@keyframes fade-up {{
+  from {{ opacity:0; transform:translateY(22px); }}
+  to   {{ opacity:1; transform:translateY(0); }}
+}}
+.hero .eyebrow {{ animation:fade-up .55s cubic-bezier(.16,1,.3,1) both; }}
+.hero h1       {{ animation:fade-up .65s .08s cubic-bezier(.16,1,.3,1) both; }}
+.hero .lede    {{ animation:fade-up .6s .18s cubic-bezier(.16,1,.3,1) both; }}
+.hero .cta-row {{ animation:fade-up .55s .28s cubic-bezier(.16,1,.3,1) both; }}
+.hero .stats   {{ animation:fade-up .55s .38s cubic-bezier(.16,1,.3,1) both; }}
+
+.hero {{ position:relative; overflow:hidden; }}
+.hero::before {{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse 60% 55% at 65% 40%, rgba(124,92,255,.18) 0%, transparent 70%);
+  animation:orb-drift 12s ease-in-out infinite alternate;
+}}
+@keyframes orb-drift {{
+  from {{ transform:translate(0,0) scale(1); }}
+  to   {{ transform:translate(4%,6%) scale(1.08); }}
+}}
+
+.reveal {{ opacity:0; transform:translateY(18px);
+  transition:opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1); }}
+.reveal.in {{ opacity:1; transform:none; }}
+.reveal-delay-1 {{ transition-delay:.07s; }}
+.reveal-delay-2 {{ transition-delay:.14s; }}
+.reveal-delay-3 {{ transition-delay:.21s; }}
+
+.pack, .ship, .roadmap-item {{
+  transition:transform .2s cubic-bezier(.16,1,.3,1), box-shadow .2s cubic-bezier(.16,1,.3,1);
+}}
+.pack:hover, .ship:hover, .roadmap-item:hover {{
+  transform:translateY(-4px);
+  box-shadow:0 8px 28px rgba(0,0,0,.10);
+}}
+@media (prefers-color-scheme:dark) {{
+  .pack:hover, .ship:hover, .roadmap-item:hover {{
+    box-shadow:0 8px 28px rgba(0,0,0,.35);
+  }}
+}}
+
+.cta--primary {{ transition:transform .15s ease, box-shadow .2s ease; }}
+.cta--primary:hover {{
+  transform:translateY(-2px);
+  box-shadow:0 0 0 3px rgba(124,92,255,.25), 0 6px 20px rgba(124,92,255,.25);
+}}
+
+@keyframes shimmer {{
+  from {{ background-position:200% center; }}
+  to   {{ background-position:-200% center; }}
+}}
+.nav__logo {{
+  background:linear-gradient(90deg, #fff 0%, var(--accent-300) 50%, #fff 100%);
+  background-size:200% auto;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:shimmer 4s linear infinite;
+}}
+
+.nav {{ transition:background .3s, box-shadow .3s; }}
+.nav.scrolled {{
+  background:rgba(13,13,15,.85);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  box-shadow:0 1px 0 rgba(255,255,255,.06);
+}}
 </style>
 </head>
 <body>
