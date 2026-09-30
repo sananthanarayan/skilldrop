@@ -3,13 +3,13 @@
 [![npm](https://img.shields.io/npm/v/skilldrop-cli)](https://www.npmjs.com/package/skilldrop-cli)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-**[Browse the catalogue →](https://sananthanarayan.github.io/skilldrop/)** — all 57 skills, filterable by outcome, pack, tag, and model tier.
+**[Browse the catalogue →](https://sananthanarayan.github.io/skilldrop/)** — all 62 skills, filterable by outcome, pack, tag, and model tier.
 
-**57 portable AI-agent skills for the deliverables knowledge workers actually ship** — diagrams, design docs, ADRs, PRDs, runbooks, decks, decision logs, threat models, adversarial reviews — installable into **Claude Code**, **Cursor**, **Kiro**, **Codex**, **GitHub Copilot**, and any AI tool that accepts custom instructions, one skill or one role-based pack at a time:
+**62 portable AI-agent skills for the deliverables knowledge workers actually ship** — diagrams, design docs, ADRs, PRDs, runbooks, decks, decision logs, threat models, adversarial reviews — installable into **Claude Code**, **Cursor**, **Kiro**, **Codex**, **GitHub Copilot**, and any AI tool that accepts custom instructions, one skill or one role-based pack at a time:
 
 ```bash
 npx skilldrop-cli install --pack product-manager     # or: solution-architect, dev-team,
-npx skilldrop-cli list                               #     sre-oncall, stakeholder-comms, ai-engineering
+npx skilldrop-cli list                               #     sre-oncall, stakeholder-comms, ai-engineering, claude-api
 ```
 
 Originally scoped to solution architects, now broadly useful to PMs, founders, consultants, engineering leaders, exec assistants — anyone who turns ideas into stakeholder-ready artifacts.
@@ -308,6 +308,23 @@ Designing the agentic systems themselves — the loops, orchestrations, and budg
 | [`ai-usage-report`](skills/ai-usage-report/SKILL.md) | Turn a CSV/JSONL of AI usage events (exported from an MCP server or other telemetry source) into a per-user, team-rollup, or effectiveness-focused report. Surfaces volume, breadth, session depth, and — where the data supports it — whether AI outputs were actually consumed in shipped artifacts vs generated and discarded (the "AI theater" question). Refuses to generate an aggregate rollup for teams smaller than 5 to preserve anonymity. |
 | [`llm-eval-harness`](skills/llm-eval-harness/SKILL.md) | Design the **dev-loop quality gate** for an LLM-powered feature (prompt, RAG, agent, classifier) — so prompt and model changes ship on numbers, not vibes. A versioned golden set in three deliberate buckets (representative from real logs, adversarial/edge, and regression cases frozen from every past failure); the **cheapest adequate grading method per case** (programmatic → structured assertions → LLM-as-judge only when quality is genuinely subjective, and then validated against human labels with bias controls); a metric matched to the task with **both gates set before the first run** (no-regression + critical-subset-at-100%); a failure taxonomy that points iteration at the biggest bucket; and cost/latency tracked beside quality. Enforces the held-out split and the no-tuning-on-test rule. Provider-neutral. |
 
+### Claude API
+
+Skills for teams building directly on the Anthropic API — prompt caching strategy, token budgeting, eval generation for skills, and tool-use schema authoring.
+
+| Skill | What it does |
+|---|---|
+| [`prompt-caching-advisor`](skills/prompt-caching-advisor/SKILL.md) | Analyzes a prompt or conversation structure and identifies the highest-value `cache_control` breakpoints — which blocks to cache, where to place the checkpoint, and estimated hit rate. Warns when a cacheable block is below the minimum threshold (~1,024 tokens for Haiku, ~2,048 for Sonnet/Opus). Produces an annotated messages array and a one-paragraph cache strategy summary. |
+| [`token-budget-estimator`](skills/token-budget-estimator/SKILL.md) | Breaks down token usage for an agentic workflow by component — system prompt, injected context, tool definitions, tool results, context accumulation, and output — surfaces the dominant cost driver, and recommends concrete `max_tokens` controls. Covers extended thinking (`budget_tokens`) when relevant. |
+| [`eval-harness-generator`](skills/eval-harness-generator/SKILL.md) | Takes a SKILL.md and generates 8–12 eval cases (happy path, edge, anti-pattern, refusal) ready to drop into `skills/<name>/evals/cases.json`. Each case has a realistic trigger, checkable `expected_shape` criteria, and `must_not_include` guards from the skill's own quality bar. |
+| [`tool-use-schema-writer`](skills/tool-use-schema-writer/SKILL.md) | Converts a function description into a valid Anthropic `tool_use` JSON schema with typed properties, required arrays, and decision-condition descriptions. Validates that required arrays are present and enum values are described. Produces a Python `client.messages.create(tools=[...])` usage snippet. |
+
+### Skill authoring
+
+| Skill | What it does |
+|---|---|
+| [`contribution-wizard`](skills/contribution-wizard/SKILL.md) | Guides an author through creating a new skilldrop skill from scratch — single-block intake, then one response generating the manifest, SKILL.md, 8 eval cases, README row, and packs.json addition. Enforces schema compliance and names the `python3 validate.py` check as the gate before opening a PR. |
+
 ### Stakeholder communication
 
 | Skill | What it does |
@@ -381,6 +398,7 @@ Categories (above) say what a skill *is*; packs say *who needs it*. [`packs.json
 | `ai-engineering` | 12 | Build and run AI systems: agent loop design, subagent orchestration, spend budgets, eval harnesses, usage reporting, data contracts |
 | `stakeholder-comms` | 9 | Non-technical audiences: audience profiling, deck outlines and real `.pptx` decks, exec summaries, decision logs, guides |
 | `sre-oncall` | 5 | Operate the service: runbooks, observability design, incident comms, postmortems, capacity/cost models |
+| `claude-api` | 4 | Build on the Anthropic API: prompt caching strategy, token budgeting, eval generation for skills, tool-use schema writing |
 
 ```bash
 python3 pack.py                                  # list packs
@@ -448,7 +466,7 @@ skilldrop is also a **Claude Code plugin marketplace** — one marketplace, seve
 Then take the whole catalogue, or just your role's pack:
 
 ```text
-/plugin install skilldrop@skilldrop             # all 57 skills + 3 reviewer subagents
+/plugin install skilldrop@skilldrop             # all 62 skills + 3 reviewer subagents
 /plugin install solution-architect@skilldrop    # 17 skills
 /plugin install dev-team@skilldrop              # 14 skills + the 3 reviewer subagents
 /plugin install product-manager@skilldrop       # 13 skills
