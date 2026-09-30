@@ -50,7 +50,7 @@ SITE_URL = "https://sananthanarayan.github.io/skilldrop/"
 
 # --- page copy -------------------------------------------------------------------
 PITCH = {
-    "hero_h1": "Your agent can draft anything. It should not get to decide everything.",
+    "hero_h1": "Your agent can draft anything. What ships is still your call.",
     "hero_lede": (
         "skilldrop is five loops over 57 portable skills, and nothing leaves a loop until its gate "
         "passes — a script, a review panel, or a person, chosen by how expensive the mistake is to "
@@ -63,10 +63,11 @@ PITCH = {
         "decision. The gap is not model capability — it is that nothing told it what a good ADR "
         "refuses to do. Every skilldrop skill carries that judgment with it."
     ),
-    "quality_h2": "Every skill ships its own quality bar.",
+    "quality_h2": "The output is a file. You own it.",
     "quality_lede": (
-        "Four things are mandatory before a skill lands, enforced by validate.py in CI — not "
-        "conventions someone might have followed."
+        "Every skill targets a specific deliverable — an ADR, a PRD, a runbook, a deck — not a "
+        "conversation. The file is yours to version, review, and ship. Four things are enforced "
+        "before a skill lands, by validate.py in CI:"
     ),
     "tools_h2": "One folder. Every major agent.",
     "tools_lede": (
