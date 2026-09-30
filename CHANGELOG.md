@@ -8,6 +8,17 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.12.2 — 2026-09-30
+
+- `skilldrop bootstrap` writes the skilldrop marketplace into `~/.claude/settings.json` so
+  every Claude Code session on the machine discovers the catalogue without any per-session
+  `/plugin` command — one command for onboarding scripts or provisioning runbooks.
+- The catalogue site now serves `marketplace.json` at a stable URL
+  (`sananthanarayan.github.io/skilldrop/marketplace.json`) so org admins can point internal
+  tooling at it directly.
+- `pages` CI now guards `marketplace.json` against drift before deploying the site, so a
+  stale marketplace is caught on PRs rather than after the merge.
+
 ## 0.12.1 — 2026-09-28
 
 - `deck-builder` builds on your own PowerPoint template: point `template` at a `.potx`/`.pptx`
