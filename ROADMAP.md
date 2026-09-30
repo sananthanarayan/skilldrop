@@ -4,4 +4,4 @@ What is being worked on next. Not a commitment — a direction. Shipped work mov
 
 ## Upcoming
 
-- **Full docs portal** — per-guide navigable pages with sidebar and deep links; currently all guides are GitHub markdown files without a searchable index
+Nothing scheduled right now. Check [CHANGELOG.md](CHANGELOG.md) for what shipped.

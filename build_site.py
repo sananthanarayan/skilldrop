@@ -127,7 +127,7 @@ NAV = [
     ("Catalogue", "#catalogue", False),
     ("Reviewers", "#reviewers", False),
     ("Now", "#now", False),
-    ("Docs", "#docs", False),
+    ("Docs", "docs/", False),
     ("Shipped", "#shipped", False),
     ("Contributing", f"{REPO_URL}/blob/main/CONTRIBUTING.md", True),
     ("GitHub", REPO_URL, True),
@@ -923,7 +923,7 @@ a {{ color:var(--accent-700); }}
   <div class="inner">
     <p class="eyebrow">Docs</p>
     <h2>Everything you need</h2>
-    <p class="lede">Long-form material split by Di&aacute;taxis kind &mdash; tutorial, how-to, reference, explanation. A page declares what job it does in its own frontmatter, and the lint rejects one that is not indexed.</p>
+    <p class="lede">Long-form material split by Di&aacute;taxis kind &mdash; tutorial, how-to, reference, explanation. A page declares what job it does in its own frontmatter, and the lint rejects one that is not indexed. <a href="docs/">Open the full docs portal &rarr;</a></p>
     <div class="guides-grid">{guides_html}</div>
     <p class="pack__install" style="margin-top:.5rem"><a href="{REPO_URL}/blob/main/llms.txt"><code>llms.txt</code></a> &mdash; the same index, generated, for a model to read instead of crawling the tree.</p>
   </div>
