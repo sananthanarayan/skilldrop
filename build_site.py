@@ -127,25 +127,48 @@ NAV = [
     ("Reviewers", "#reviewers", False),
     ("Docs", "#docs", False),
     ("Shipped", "#shipped", False),
+    ("Contributing", f"{REPO_URL}/blob/main/CONTRIBUTING.md", True),
     ("GitHub", REPO_URL, True),
 ]
 
-# The docs a stranger evaluating the repo needs, in the order they need them. Kept short on
-# purpose — the full index is guides/README.md, and llms.txt is the machine-readable twin.
-DOC_CARDS = [
-    ("Architecture", "explanation",
-     "The four primitives, why a loop is not just a long skill, the copy-never-transform install "
-     "contract, the enforcement table, and the five invariants worth protecting.",
-     "ARCHITECTURE.md"),
-    ("Why loops", "explanation",
-     "Why sequencing is its own primitive instead of skills calling each other, and why four "
-     "lifecycle loops rather than three.",
-     "guides/explanation/loops.md"),
-    ("All the guides", "index",
-     "Install per IDE, author a skill or a loop, wire a hook, publish your own catalogue \u2014 "
-     "split by Di\u00e1taxis kind.",
-     "guides/README.md"),
-]
+# Guides by Diátaxis kind. Each tuple: (title, path-from-repo-root, one-line description).
+# Path is used to build the GitHub blob URL; keep it relative to repo root.
+GUIDES = {
+    "Tutorial": {
+        "tagline": "Learn by doing something real.",
+        "items": [
+            ("Follow one change through the loops",
+             "guides/tutorial/follow-a-change-through-the-loops.md",
+             "One realistic change from complaint to closed incident — every gate shown"),
+        ],
+    },
+    "How-to": {
+        "tagline": "I have a goal — what are the steps?",
+        "items": [
+            ("Install into your IDE",           "guides/how-to/install-per-ide.md",            "Per-IDE steps for every target, plus dependency installs"),
+            ("Author a new skill",              "guides/how-to/author-a-skill.md",             "What a skill must contain and what gates it"),
+            ("Author a new loop",               "guides/how-to/author-a-loop.md",              "The closed loop.json contract and the gate rules"),
+            ("Wire a skill to an event",        "guides/how-to/wire-a-hook.md",                "Opt-in hooks, projected per target"),
+            ("Publish your own catalogue",      "guides/how-to/publish-a-catalogue.md",        "Make skilldrop --from <you> work"),
+            ("Upgrade installed skills",        "guides/how-to/upgrade-skills.md",             "Keep installed skills current without clobbering your settings"),
+            ("Roll out across your org",        "guides/how-to/enterprise-distribution.md",    "Bootstrap the hosted marketplace for every machine in one command"),
+        ],
+    },
+    "Reference": {
+        "tagline": "What exactly does this field or command do?",
+        "items": [
+            ("Skills that ship scripts", "guides/reference/skills-with-scripts.md", "The two skills with executable helpers and what they do"),
+            ("Model routing",            "MODEL-ROUTING.md",                         "Abstract tiers, the provider map, and how to override"),
+        ],
+    },
+    "Explanation": {
+        "tagline": "Why is it built this way?",
+        "items": [
+            ("Architecture",  "ARCHITECTURE.md",              "Four primitives, the install contract, the enforcement table, five invariants"),
+            ("Why loops",     "guides/explanation/loops.md",  "Why sequencing is its own primitive and why four lifecycle loops"),
+        ],
+    },
+}
 
 INSTALL_TABS = [
     ("a role pack", "npx skilldrop-cli install --pack solution-architect", "16 skills a solution architect reaches for, in one command."),
@@ -331,12 +354,17 @@ def render(skills, packs, outcomes, version, releases):
       <button class="pack__cta" data-filter="outcome" data-value="{esc(o['name'])}">Filter the catalogue &rarr;</button>
     </li>""" for o in outcomes)
 
-    doc_cards = "".join(
-        f"""<li class="pack">
-      <div class="pack__head"><h3 class="pack__name">{esc(t)}</h3><span class="pack__n">{esc(k)}</span></div>
-      <p class="pack__desc">{esc(d)}</p>
-      <p class="pack__install"><a href="{REPO_URL}/blob/main/{href}">Read &rarr;</a></p>
-    </li>""" for t, k, d, href in DOC_CARDS)
+    guides_html = "".join(
+        f"""<div class="guides-group">
+      <h3>{esc(kind)}</h3>
+      <p class="guides-tagline">{esc(meta['tagline'])}</p>
+      <ul>{"".join(
+        f'<li><a href="{REPO_URL}/blob/main/{esc(path_)}">{esc(title)}</a>'
+        f'<span class="guides-desc">{esc(desc)}</span></li>'
+        for title, path_, desc in meta['items']
+      )}</ul>
+    </div>"""
+        for kind, meta in GUIDES.items())
 
     loop_cards = "".join(
         f"""<li class="pack">
@@ -545,6 +573,13 @@ a {{ color:var(--accent-700); }}
   color:var(--accent-700); background:var(--accent-10); border-radius:999px; padding:2px 9px; white-space:nowrap;
 }}
 .pack__desc {{ margin:0 0 1rem; font-size:.88rem; color:var(--fg-muted); flex:1; }}
+.guides-grid {{ display:grid; gap:2rem; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin-bottom:1.5rem; }}
+.guides-group h3 {{ font-size:.75rem; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--accent-700); margin:0 0 .2rem; }}
+.guides-group .guides-tagline {{ font-size:.81rem; color:var(--fg-muted); margin:0 0 .8rem; font-style:italic; }}
+.guides-group ul {{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:.55rem; }}
+.guides-group li a {{ font-weight:500; text-decoration:none; color:var(--fg); font-size:.91rem; }}
+.guides-group li a:hover {{ color:var(--accent-700); text-decoration:underline; }}
+.guides-group li .guides-desc {{ font-size:.79rem; color:var(--fg-muted); display:block; margin-top:.1rem; }}
 .pack__install {{ margin:0 0 1rem; }}
 .pack__install code {{
   display:block; font:.76rem/1.5 var(--mono); color:var(--fg-muted);
@@ -835,10 +870,10 @@ a {{ color:var(--accent-700); }}
 <section class="section section--alt" id="docs">
   <div class="inner">
     <p class="eyebrow">Docs</p>
-    <h2>Read before you adopt it</h2>
-    <p class="lede">Long-form material lives in <code>guides/</code>, split by Di&aacute;taxis kind &mdash; a page declares what job it does in its own frontmatter, and the lint rejects one that is not indexed.</p>
-    <ul class="grid-3">{doc_cards}</ul>
-    <p class="pack__install" style="margin-top:1.5rem"><a href="{REPO_URL}/blob/main/llms.txt"><code>llms.txt</code></a> &mdash; the same index, generated, for a model to read instead of crawling the tree.</p>
+    <h2>Everything you need</h2>
+    <p class="lede">Long-form material split by Di&aacute;taxis kind &mdash; tutorial, how-to, reference, explanation. A page declares what job it does in its own frontmatter, and the lint rejects one that is not indexed.</p>
+    <div class="guides-grid">{guides_html}</div>
+    <p class="pack__install" style="margin-top:.5rem"><a href="{REPO_URL}/blob/main/llms.txt"><code>llms.txt</code></a> &mdash; the same index, generated, for a model to read instead of crawling the tree.</p>
   </div>
 </section>
 
