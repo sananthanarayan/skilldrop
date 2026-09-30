@@ -124,7 +124,7 @@ NAV = [
     ("Outcomes", "#outcomes", False),
     ("What's in one", "#quality", False),
     ("Portability", "#portability", False),
-    ("Catalogue", "#catalogue", False),
+    ("Catalogue", "catalogue/", False),
     ("Reviewers", "#reviewers", False),
     ("Now", "#now", False),
     ("Docs", "docs/", False),
@@ -462,6 +462,7 @@ def render(skills, packs, outcomes, version, releases):
       <ul class="ship__list">{"".join(f'<li>{inline_md(b)}</li>' for b in r['bullets'])}</ul>
     </li>""" for r in releases)
     cards = "\n".join(card(s) for s in skills)
+    preview_cards = "\n".join(card(s) for s in skills[:PREVIEW_ROWS])
     nav_links = "".join(
         f'<li><a class="nav__link{" nav__link--ext" if ext else ""}" href="{esc(href)}">'
         f'{esc(label)}{" <span aria-hidden=\"true\">&#8599;</span>" if ext else ""}</a></li>'
@@ -651,6 +652,12 @@ a {{ color:var(--accent-700); }}
   font:600 .88rem/1 inherit; color:var(--accent-700); background:var(--card);
   border:1px solid var(--border); border-radius:var(--r-sm);
 }}
+.catalogue-cta-row {{ margin-top:1.4rem; }}
+.catalogue-cta {{
+  display:inline-block; border-color:var(--border); color:var(--accent-700);
+  background:var(--card);
+}}
+.catalogue-cta:hover {{ border-color:var(--accent); background:var(--accent-10); }}
 .more__btn:hover {{ border-color:var(--accent); }}
 .more__btn:focus-visible {{ outline:2px solid var(--accent); outline-offset:2px; }}
 
@@ -1009,21 +1016,14 @@ a {{ color:var(--accent-700); }}
     <p class="lede">Start with a role. A pack is a named list — skills never move out of their flat folders, so installing one is the same copy as installing any other.</p>
     <ul class="grid-3">{pack_cards}</ul>
 
-    <div class="more" id="all">
-      <h3 class="more__h">All {len(skills)} skills</h3>
-      <div class="controls">
-        <label class="visually-hidden" for="q">Search skills</label>
-        <input id="q" type="search" placeholder="Search by name, description, or tag…" autocomplete="off">
-        <div class="chips"><span class="chips__lbl">outcome</span>{outcome_chips}</div>
-        <div class="chips"><span class="chips__lbl">pack</span>{pack_chips}</div>
-        <div class="chips"><span class="chips__lbl">tier</span>{tier_chips}
-          <button class="chip" id="clear">clear</button><span id="count"></span></div>
-      </div>
-      <ul class="skills" id="grid">
-{cards}
+    <div class="more">
+      <h3 class="more__h">A sample</h3>
+      <ul class="skills">
+{preview_cards}
       </ul>
-      <p class="empty" id="empty" hidden>No skill matches those filters.</p>
-      <button class="more__btn" id="showall" hidden></button>
+      <p class="catalogue-cta-row">
+        <a class="cta cta--ghost catalogue-cta" href="catalogue/">Browse all {len(skills)} skills &rarr;</a>
+      </p>
     </div>
   </div>
 </section>
@@ -1108,109 +1108,12 @@ a {{ color:var(--accent-700); }}
 </div></footer>
 
 <script>
-(function () {{
-  var PREVIEW = {PREVIEW_ROWS};
-  var q = document.getElementById('q'), grid = document.getElementById('grid');
-  var cards = Array.prototype.slice.call(grid.children);
-  var count = document.getElementById('count'), empty = document.getElementById('empty');
-  var showall = document.getElementById('showall');
-  var KINDS = ['outcome', 'pack', 'tier'];
-  var active = {{ outcome: null, pack: null, tier: null }};
-  var expanded = false;
-
-  function sync() {{
-    KINDS.forEach(function (kind) {{
-      document.querySelectorAll('[data-filter="' + kind + '"]').forEach(function (o) {{
-        if (o.classList.contains('chip')) {{
-          o.setAttribute('aria-pressed', String(o.dataset.value === active[kind]));
-        }}
-      }});
-    }});
-  }}
-
-  // The URL is the filter state. A pack view, a tier view, a search — each is a link
-  // someone can send, which is the whole reason this page does not need sub-pages.
-  function writeURL() {{
-    var p = new URLSearchParams();
-    if (q.value.trim()) p.set('q', q.value.trim());
-    KINDS.forEach(function (k) {{ if (active[k]) p.set(k, active[k]); }});
-    var qs = p.toString();
-    // replaceState throws on a file:// origin in some browsers. A failed URL update must
-    // never take the search box down with it.
-    try {{
-      history.replaceState(null, '', (qs ? '?' + qs : location.pathname) + location.hash);
-    }} catch (e) {{ /* preview-only; the filters still work */ }}
-  }}
-
-  function readURL() {{
-    var p = new URLSearchParams(location.search);
-    if (p.get('q')) q.value = p.get('q');
-    KINDS.forEach(function (k) {{ if (p.get(k)) active[k] = p.get(k); }});
-    return !!(p.get('q') || active.outcome || active.pack || active.tier);
-  }}
-
-  function apply() {{
-    var text = q.value.trim().toLowerCase();
-    var narrowed = !!(text || active.outcome || active.pack || active.tier);
-    var matched = [];
-    cards.forEach(function (c) {{
-      var ok = (!text || c.dataset.text.indexOf(text) !== -1)
-        && (!active.outcome || c.dataset.outcomes.split(' ').indexOf(active.outcome) !== -1)
-        && (!active.pack || c.dataset.packs.split(' ').indexOf(active.pack) !== -1)
-        && (!active.tier || c.dataset.tier === active.tier);
-      if (ok) matched.push(c);
-      c.hidden = !ok;
-    }});
-    // Fold the tail only on the untouched default view. The moment someone narrows or
-    // expands, every match is theirs to see.
-    var fold = !narrowed && !expanded && matched.length > PREVIEW;
-    if (fold) {{
-      matched.slice(PREVIEW).forEach(function (c) {{ c.hidden = true; }});
-      showall.hidden = false;
-      showall.textContent = 'Show all ' + matched.length + ' skills \u2192';
-    }} else {{
-      showall.hidden = true;
-    }}
-    count.textContent = (fold ? PREVIEW + ' of ' + matched.length : matched.length + ' of ' + cards.length);
-    empty.hidden = matched.length !== 0;
-    writeURL();
-  }}
-
-  document.querySelectorAll('[data-filter]').forEach(function (b) {{
-    b.addEventListener('click', function () {{
-      var kind = b.dataset.filter, val = b.dataset.value;
-      active[kind] = active[kind] === val ? null : val;
-      sync(); apply();
-      // A pack card is the entry point into the list — opening it is the whole gesture.
-      if (b.classList.contains('pack__cta')) {{
-        document.getElementById('all').scrollIntoView({{ behavior: 'smooth', block: 'start' }});
-      }}
-    }});
+/* pack CTA -> catalogue page pre-filtered by pack */
+document.querySelectorAll(".pack__cta[data-filter='pack']").forEach(function(b) {{
+  b.addEventListener('click', function() {{
+    window.location.href = 'catalogue/?pack=' + encodeURIComponent(b.dataset.value);
   }});
-
-  showall.addEventListener('click', function () {{ expanded = true; apply(); }});
-
-  // A deep link to a single skill must survive the fold, or it lands on a hidden row.
-  function openForHash() {{
-    var id = location.hash.slice(1);
-    if (!id) return;
-    var el = document.getElementById(id);
-    if (el && (id === 'all' || el.classList.contains('skill'))) {{
-      expanded = true; apply();
-      el.scrollIntoView({{ block: 'center' }});
-    }}
-  }}
-  window.addEventListener('hashchange', openForHash);
-
-  document.getElementById('clear').addEventListener('click', function () {{
-    active = {{ outcome: null, pack: null, tier: null }}; q.value = ''; expanded = false;
-    sync(); apply();
-  }});
-
-  q.addEventListener('input', apply);
-  if (readURL()) expanded = true;
-  sync(); apply(); openForHash();
-}})();
+}});
 
 /* scroll reveal */
 (function() {{
@@ -1346,6 +1249,8 @@ def outputs(skills, packs, outcomes, version, releases):
             '<?xml version="1.0" encoding="UTF-8"?>\n'
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
             f"  <url><loc>{SITE_URL}</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>\n"
+            f"  <url><loc>{SITE_URL}catalogue/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>\n"
+            f"  <url><loc>{SITE_URL}docs/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>\n"
             "</urlset>\n"
         ),
     }
