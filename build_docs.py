@@ -11,6 +11,7 @@ Stdlib only — no setup-python step needed in CI.
 """
 import argparse
 import html
+import json
 import os
 import re
 import sys
@@ -115,6 +116,12 @@ a{color:var(--accent-700);}
 .doc-card p{margin:0 0 .8rem;font-size:.85rem;color:var(--fg-muted);line-height:1.5;}
 .doc-card a.read{font-size:.85rem;font-weight:600;color:var(--accent-700);text-decoration:none;}
 .doc-card a.read:hover{text-decoration:underline;}
+/* search */
+.search-wrap{margin:1.5rem 0;}
+#docs-search{width:100%;max-width:520px;padding:.7rem 1rem;font-size:1rem;
+  color:var(--fg);background:var(--card);border:1px solid var(--border);
+  border-radius:6px;outline:none;}
+#docs-search:focus{border-color:var(--accent-700);box-shadow:0 0 0 3px var(--accent-10);}
 """.strip()
 
 # ── Frontmatter parser ────────────────────────────────────────────────────────
@@ -307,6 +314,15 @@ def _sidebar_html(by_kind, current_kind, current_slug, depth):
     """depth=1 for docs/index.html, depth=2 for docs/kind/slug.html"""
     prefix = "../" * (depth - 1)
     parts = ['<nav class="sidebar" aria-label="Guides">']
+    if depth == 2:
+        parts.append(
+            '<form action="../index.html" method="get" style="margin-bottom:1rem;">'
+            '<input name="q" type="search" placeholder="Search docs…"'
+            ' style="width:100%;padding:.4rem .6rem;font-size:.8rem;'
+            'border:1px solid var(--border);border-radius:4px;'
+            'background:var(--card);color:var(--fg);">'
+            '</form>'
+        )
     for kind in KINDS:
         guides = by_kind.get(kind, [])
         if not guides:
@@ -363,7 +379,7 @@ def build_portal_index(by_kind, out_dir):
         label = KIND_LABELS[kind]
         tagline = KIND_TAGLINES[kind]
         cards = "".join(
-            f'<div class="doc-card">'
+            f'<div class="doc-card" data-slug="{_esc(g["slug"])}" data-kind="{_esc(g["kind"])}">'
             f'<h3>{_esc(g["title"])}</h3>'
             f'<p>{_esc(g["summary"])}</p>'
             f'<a class="read" href="{g["kind"]}/{g["slug"]}.html">Read &rarr;</a>'
@@ -377,6 +393,35 @@ def build_portal_index(by_kind, out_dir):
             f'<div class="doc-cards">{cards}</div>'
             f'</section>'
         )
+    search_js = (
+        "<script>(function(){"
+        "var input=document.getElementById('docs-search');"
+        "if(!input)return;"
+        "var index=[];"
+        "fetch('search-index.json').then(function(r){return r.json();})"
+        ".then(function(data){index=data;"
+        "var params=new URLSearchParams(location.search);"
+        "var q=params.get('q');"
+        "if(q){input.value=q;input.dispatchEvent(new Event('input'));}"
+        "});"
+        "input.addEventListener('input',function(){"
+        "var q=this.value.trim().toLowerCase();"
+        "var cards=document.querySelectorAll('.doc-card[data-slug]');"
+        "var visible=0;"
+        "cards.forEach(function(card){"
+        "var slug=card.dataset.slug,kind=card.dataset.kind;"
+        "if(!q){card.style.display='';visible++;return;}"
+        "var entry=index.find(function(e){return e.slug===slug&&e.kind===kind;});"
+        "var text=entry?(entry.title+' '+entry.summary+' '+entry.body).toLowerCase():'';"
+        "var show=text.indexOf(q)!==-1;"
+        "card.style.display=show?'':'none';"
+        "if(show)visible++;"
+        "});"
+        "var msg=document.getElementById('search-empty');"
+        "if(msg)msg.style.display=(visible===0&&q)?'':'none';"
+        "});"
+        "})();</script>"
+    )
     body = (
         '<div class="portal-inner">'
         '<div class="portal-hero">'
@@ -384,11 +429,16 @@ def build_portal_index(by_kind, out_dir):
         '<p>Long-form guides split by Diátaxis kind. '
         'Start with a tutorial to learn by doing, or jump straight to a how-to for a specific goal.</p>'
         '</div>'
+        '<div class="search-wrap">'
+        '<input id="docs-search" type="search" placeholder="Search guides…" autocomplete="off" aria-label="Search guides">'
+        '</div>'
+        '<p id="search-empty" style="display:none;color:var(--fg-muted);font-size:.9rem;">No guides match your search.</p>'
         + "".join(cards_html) +
         f'<p style="margin-top:2rem;font-size:.85rem;color:var(--fg-muted)">'
         f'<a href="{REPO_URL}/blob/main/llms.txt"><code>llms.txt</code></a> '
         f'&mdash; the same index in plain text, for agents to read instead of crawling the tree.</p>'
         '</div>'
+        + search_js
     )
     page_html = _page("Documentation — skilldrop", header, body)
     out_path = os.path.join(out_dir, "index.html")
@@ -396,20 +446,37 @@ def build_portal_index(by_kind, out_dir):
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
+def _plain_text(html_str):
+    """Strip HTML tags and collapse whitespace for search indexing."""
+    text = re.sub(r'<[^>]+>', ' ', html_str)
+    return re.sub(r'\s+', ' ', text).strip()[:400]
+
 def render_all(out_dir):
-    """Return {relative_path: html_string} for every docs page."""
+    """Return ({relative_path: html_string}, [search_index_entries])."""
     by_kind = collect_guides()
     pages = {}
+    search_index = []
     # Guide pages
     for kind in KINDS:
         for guide in by_kind.get(kind, []):
             path, html_text = build_guide_page(guide, by_kind, out_dir)
             rel = os.path.relpath(path, out_dir)
             pages[rel] = html_text
+            raw = open(guide["abs_path"], encoding="utf-8").read()
+            _, body_md = parse_frontmatter(raw)
+            body_plain = _plain_text(render_md(body_md))
+            search_index.append({
+                "title":   guide["title"],
+                "kind":    guide["kind"],
+                "slug":    guide["slug"],
+                "summary": guide["summary"],
+                "url":     f"{guide['kind']}/{guide['slug']}.html",
+                "body":    body_plain,
+            })
     # Portal index
     idx_path, idx_html = build_portal_index(by_kind, out_dir)
     pages["index.html"] = idx_html
-    return pages
+    return pages, search_index
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
@@ -419,7 +486,10 @@ def main():
                     help="exit 1 if any output file is missing or stale")
     args = ap.parse_args()
 
-    pages = render_all(args.out)
+    pages, search_index = render_all(args.out)
+    index_json = json.dumps(search_index, ensure_ascii=False, indent=2)
+    index_rel = "search-index.json"
+    index_path = os.path.join(args.out, index_rel)
 
     if args.check:
         stale = []
@@ -429,13 +499,17 @@ def main():
                 stale.append(f"{rel}: missing")
             elif open(p, encoding="utf-8").read() != text:
                 stale.append(f"{rel}: stale")
+        if not os.path.exists(index_path):
+            stale.append(f"{index_rel}: missing")
+        elif open(index_path, encoding="utf-8").read() != index_json:
+            stale.append(f"{index_rel}: stale")
         if stale:
             print("build_docs.py --check: docs portal is stale:", file=sys.stderr)
             for s in stale:
                 print(f"  {s}", file=sys.stderr)
             print("  run: python3 build_docs.py", file=sys.stderr)
             sys.exit(1)
-        print(f"OK: docs portal is current ({len(pages)} pages).")
+        print(f"OK: docs portal is current ({len(pages)} pages + search index).")
         return
 
     os.makedirs(args.out, exist_ok=True)
@@ -445,6 +519,9 @@ def main():
         with open(p, "w", encoding="utf-8") as f:
             f.write(text)
         print(f"wrote docs/{rel}")
+    with open(index_path, "w", encoding="utf-8") as f:
+        f.write(index_json)
+    print(f"wrote docs/{index_rel}  ({len(search_index)} entries)")
     total_guides = sum(len(v) for v in collect_guides().values())
     print(f"\n{total_guides} guides rendered into {os.path.relpath(args.out, ROOT)}/")
     print(f"Preview: python3 -m http.server -d {os.path.relpath(os.path.dirname(args.out), ROOT)}")
