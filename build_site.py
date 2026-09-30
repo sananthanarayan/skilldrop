@@ -382,6 +382,12 @@ def render(skills, packs, outcomes, version, releases):
         for _, c, n in INSTALL_TABS)
 
     def humanize_slug(slug):
+        _overrides = {
+            "build-on-the-claude-api": "Build on the Claude API",
+            "govern-ai-use": "Govern AI use",
+        }
+        if slug in _overrides:
+            return _overrides[slug]
         return slug.replace("-", " ").capitalize()
 
     outcome_cards = "".join(
