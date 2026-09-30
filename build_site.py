@@ -1117,6 +1117,11 @@ def main():
             if not os.path.exists(dst) or open(src, "rb").read() != open(dst, "rb").read():
                 print(f"build_site.py --check: {a} missing or stale in {args.out}", file=sys.stderr)
                 sys.exit(1)
+        marketplace_src = os.path.join(ROOT, ".claude-plugin", "marketplace.json")
+        marketplace_dst = os.path.join(args.out, "marketplace.json")
+        if not os.path.exists(marketplace_dst) or open(marketplace_src, "rb").read() != open(marketplace_dst, "rb").read():
+            print(f"build_site.py --check: marketplace.json missing or stale in {args.out}", file=sys.stderr)
+            sys.exit(1)
         print(f"OK: site is current ({len(skills)} skills).")
         return
 
@@ -1128,6 +1133,9 @@ def main():
     for a in BINARY_ASSETS:
         shutil.copyfile(os.path.join(ASSETS, a), os.path.join(args.out, a))
         print(f"copied {a}")
+    marketplace_src = os.path.join(ROOT, ".claude-plugin", "marketplace.json")
+    shutil.copyfile(marketplace_src, os.path.join(args.out, "marketplace.json"))
+    print("copied marketplace.json")
     print(f"\n{len(skills)} skills rendered. Preview: python3 -m http.server -d {os.path.relpath(args.out, ROOT)}")
 
 
