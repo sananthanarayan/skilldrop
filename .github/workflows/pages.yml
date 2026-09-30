@@ -21,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Guard marketplace against drift
+        run: python3 build_marketplace.py --check
       - name: Generate the catalogue
         run: python3 build_site.py # stdlib only — no setup-python step needed
       - name: Upload Pages artifact
