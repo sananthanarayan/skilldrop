@@ -8,6 +8,15 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.13.0 — 2026-09-30
+
+- Browse every guide in a full docs portal at `sananthanarayan.github.io/skilldrop/docs/` — each of the 22 guides renders as a standalone HTML page with a persistent sidebar grouped by Diátaxis kind (tutorial, how-to, reference, explanation) and a live client-side search box that filters by title, summary, and body text.
+- Install `skilldrop install --pack claude-api` to get four new skills for teams building on the Anthropic API: `prompt-caching-advisor` identifies where to insert `cache_control` checkpoints and estimates the cache hit rate; `token-budget-estimator` breaks down input/output token usage by workflow component and names the dominant cost driver; `eval-harness-generator` reads a SKILL.md and produces 8–12 eval cases covering happy path and edge cases; `tool-use-schema-writer` converts a plain-language function description into a valid Anthropic tool definition with a Python usage snippet.
+- `contribution-wizard` guides an author through creating a new skill from scratch — one intake block generates the manifest, SKILL.md, eval cases, and README entry.
+- Five new how-to guides cover integrating skilldrop with Jira, GitHub Projects, Figma, and Linear (which skills to use, what to paste, what to expect back), plus a credential brokering guide for skills that declare `env.required` — local shell, GitHub Actions secrets, and enterprise vault patterns.
+- Two end-to-end scenario walkthroughs show the loops in action: "From complaint to closed incident" traces a Monday-morning support spike through the discover and operate loops with gate verdicts at each stage; "From idea to shipped feature" moves a product idea through all four lifecycle loops with a real refusal at every gate (G0 REVISE, G1 PROCEED WITH CONDITIONS, G2 BLOCKED, G3 postmortem delta).
+- The catalogue site now has hero entrance animations, scroll-triggered reveals, animated stat counters that count up from zero on scroll, card hover lift, CTA glow, a nav logo shimmer, and a scroll-activated backdrop blur — all CSS and vanilla JS with no new dependencies.
+
 ## 0.12.2 — 2026-09-30
 
 - `skilldrop bootstrap` writes the skilldrop marketplace into `~/.claude/settings.json` so
