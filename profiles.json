@@ -1,0 +1,24 @@
+{
+  "$comment": "Named install presets — one command installs a bundle of packs, agents, and loops. A profile is an install recipe, not a skill: nothing moves into profiles/, and a skill can belong to any number of profiles. validate.py enforces that every pack, agent, and loop named here exists. Rationale: docs/rfcs/ (RFC to be written).",
+  "version": "0.1.0",
+  "profiles": {
+    "starter": {
+      "description": "Everything a new team member needs on day one: the dev-team pack plus the review panel that gates it.",
+      "packs": ["dev-team"],
+      "agents": ["devils-advocate", "security-reviewer", "code-quality"],
+      "loops": ["build"]
+    },
+    "architect": {
+      "description": "Design-phase setup: the solution-architect pack and the loops that run it end to end.",
+      "packs": ["solution-architect"],
+      "agents": [],
+      "loops": ["design", "ship-a-draft"]
+    },
+    "full": {
+      "description": "The complete catalogue: every pack, every reviewer agent, every loop.",
+      "packs": ["solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "ai-engineering"],
+      "agents": ["devils-advocate", "security-reviewer", "code-quality"],
+      "loops": ["build", "design", "discover", "operate", "ship-a-draft"]
+    }
+  }
+}
