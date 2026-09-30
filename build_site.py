@@ -159,6 +159,11 @@ GUIDES = {
             ("Publish your own catalogue",      "guides/how-to/publish-a-catalogue.md",        "Make skilldrop --from <you> work"),
             ("Upgrade installed skills",        "guides/how-to/upgrade-skills.md",             "Keep installed skills current without clobbering your settings"),
             ("Roll out across your org",        "guides/how-to/enterprise-distribution.md",    "Bootstrap the hosted marketplace for every machine in one command"),
+            ("Use with Jira",                   "guides/how-to/integrate-with-jira.md",        "Bug triage, story splitting, implementation loops, and release notes from Jira tickets"),
+            ("Use with GitHub Projects",        "guides/how-to/integrate-with-github-projects.md", "Implementation loops, review gates, and release notes linked to GitHub issues"),
+            ("Use with Figma",                  "guides/how-to/integrate-with-figma.md",       "Generate diagrams for FigJam, reverse-engineer decisions from mockups"),
+            ("Use with Linear",                 "guides/how-to/integrate-with-linear.md",      "Triage, story splitting, implementation tracking, and release notes from Linear issues"),
+            ("Supply credentials to skills",    "guides/how-to/supply-credentials.md",         "How to set FIGMA_TOKEN, SONAR_TOKEN, and other env vars locally, in CI, and via secret managers"),
         ],
     },
     "Reference": {
