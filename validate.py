@@ -563,6 +563,27 @@ def main():
     for s in sorted(dir_set - outcomed):
         fail("packs.json", f"skill '{s}' belongs to no outcome — add it to one in packs.json (RFC-0026)")
 
+    # profiles.json: each named profile is an install recipe. Validate that every pack,
+    # agent, and loop it names actually exists — a profile referencing a deleted pack is
+    # worse than no profile because it silently installs less than it claims.
+    profiles_path = os.path.join(ROOT, "profiles.json")
+    if os.path.exists(profiles_path):
+        try:
+            profiles_doc = json.load(open(profiles_path, encoding="utf-8"))
+        except json.JSONDecodeError as e:
+            fail("profiles.json", f"not valid JSON: {e}")
+        else:
+            for pname, profile in profiles_doc.get("profiles", {}).items():
+                for pk in profile.get("packs", []):
+                    if pk not in packs:
+                        fail("profiles.json", f"profile '{pname}' lists pack '{pk}', which is not in packs.json")
+                for ag in profile.get("agents", []):
+                    if not os.path.exists(os.path.join(AGENTS, ag + ".md")):
+                        fail("profiles.json", f"profile '{pname}' lists agent '{ag}', which is not in agents/")
+                for lp in profile.get("loops", []):
+                    if lp not in loop_dirs:
+                        fail("profiles.json", f"profile '{pname}' lists loop '{lp}', which is not in loops/")
+
     # The Claude Code plugin marketplace (RFC-0014) is generated from package.json;
     # a committed file drifting from that generator fails here so it can't ship stale.
     for rel in build_marketplace.stale():
