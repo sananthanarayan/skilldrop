@@ -45,6 +45,7 @@ PREVIEW_ROWS = 12
 # How many releases the "Recently shipped" strip carries. Three is enough to show a pulse
 # without turning the landing page into a changelog.
 SHIPPED_ENTRIES = 3
+ROADMAP_ENTRIES = 4  # how many upcoming items the "Now" strip shows
 SITE_URL = "https://sananthanarayan.github.io/skilldrop/"
 
 # --- page copy -------------------------------------------------------------------
@@ -125,6 +126,7 @@ NAV = [
     ("Portability", "#portability", False),
     ("Catalogue", "#catalogue", False),
     ("Reviewers", "#reviewers", False),
+    ("Now", "#now", False),
     ("Docs", "#docs", False),
     ("Shipped", "#shipped", False),
     ("Contributing", f"{REPO_URL}/blob/main/CONTRIBUTING.md", True),
@@ -140,6 +142,10 @@ GUIDES = {
             ("Follow one change through the loops",
              "guides/tutorial/follow-a-change-through-the-loops.md",
              "One realistic change from complaint to closed incident — every gate shown"),
+            ("Dev-team workflow",             "guides/tutorial/dev-team-workflow.md",             "Story → implementation → review panel → release notes"),
+            ("Solution architect workflow",   "guides/tutorial/solution-architect-workflow.md",   "Brief → diagrams → ADRs → design doc → threat model → council gate"),
+            ("Product manager workflow",      "guides/tutorial/product-manager-workflow.md",      "Signal → PR/FAQ → OKRs → PRD → metrics → critique gate"),
+            ("AI engineering workflow",       "guides/tutorial/ai-engineering-workflow.md",       "Use-case triage → readiness → loop design → threat model → evals → usage report"),
         ],
     },
     "How-to": {
@@ -274,6 +280,28 @@ def changelog():
     return version, releases[:SHIPPED_ENTRIES]
 
 
+def roadmap():
+    """ROADMAP.md -> list of bullet strings under ## Upcoming, up to ROADMAP_ENTRIES items."""
+    path = os.path.join(ROOT, "ROADMAP.md")
+    if not os.path.exists(path):
+        print("build_site.py: refusing to build — ROADMAP.md is missing", file=sys.stderr)
+        sys.exit(1)
+    items, in_upcoming = [], False
+    for line in open(path, encoding="utf-8"):
+        if line.strip() == "## Upcoming":
+            in_upcoming = True
+            continue
+        if in_upcoming and line.startswith("## "):
+            break
+        if in_upcoming and line.startswith("- "):
+            items.append(line[2:].strip())
+    if not items:
+        print("build_site.py: refusing to build — ROADMAP.md has no bullets under ## Upcoming",
+              file=sys.stderr)
+        sys.exit(1)
+    return items[:ROADMAP_ENTRIES]
+
+
 def esc(s):
     return html.escape(str(s), quote=True)
 
@@ -406,6 +434,10 @@ def render(skills, packs, outcomes, version, releases):
         f'<button class="chip" data-filter="outcome" data-value="{esc(o["name"])}" '
         f'title="{esc(o["description"])}">{esc(o["name"].replace("-", " "))} <b>{o["count"]}</b></button>'
         for o in outcomes)
+    roadmap_items = roadmap()
+    roadmap_html = "".join(
+        f'<li class="roadmap-item">{inline_md(item)}</li>'
+        for item in roadmap_items)
     shipped_html = "".join(
         f"""<li class="ship">
       <p class="ship__head"><a class="ship__v" href="{NPM_URL}/v/{esc(r['version'])}">{esc(r['version'])}</a>
@@ -604,6 +636,11 @@ a {{ color:var(--accent-700); }}
 }}
 .more__btn:hover {{ border-color:var(--accent); }}
 .more__btn:focus-visible {{ outline:2px solid var(--accent); outline-offset:2px; }}
+
+/* now / roadmap */
+.roadmap-list {{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.75rem; max-width:72ch; }}
+.roadmap-item {{ padding:.75rem 1rem; background:var(--card); border:1px solid var(--border); border-radius:var(--r-sm); font-size:.93rem; line-height:1.5; }}
+.roadmap-item strong {{ color:var(--fg); }}
 
 /* recently shipped */
 .ships {{ list-style:none; margin:0; padding:0; display:grid; gap:1.1rem;
@@ -864,6 +901,15 @@ a {{ color:var(--accent-700); }}
     <p class="lede">{esc(PITCH['reviewers_lede'])}</p>
     <ul class="grid-3">{agent_cards}</ul>
     <p class="pack__install" style="margin-top:1.5rem"><code>skilldrop install --panel review</code> &mdash; all three, plus the orchestrator that runs them.</p>
+  </div>
+</section>
+
+<section class="section" id="now">
+  <div class="inner">
+    <p class="eyebrow">Now</p>
+    <h2>What&rsquo;s being worked on</h2>
+    <p class="lede">Not a promise &mdash; a direction. Shipped work moves to the <a href="{REPO_URL}/blob/main/CHANGELOG.md">changelog</a>.</p>
+    <ul class="roadmap-list">{roadmap_html}</ul>
   </div>
 </section>
 
