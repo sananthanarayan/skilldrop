@@ -1154,6 +1154,54 @@ a {{ color:var(--accent-700); }}
   if (readURL()) expanded = true;
   sync(); apply(); openForHash();
 }})();
+
+/* scroll reveal */
+(function() {{
+  var io = new IntersectionObserver(function(entries) {{
+    entries.forEach(function(e) {{
+      if (e.isIntersecting) {{ e.target.classList.add('in'); io.unobserve(e.target); }}
+    }});
+  }}, {{ threshold: 0.12 }});
+  document.querySelectorAll('.section h2, .section .lede, .section .eyebrow, .pack, .ship, .roadmap-item, .guides-group, .stat').forEach(function(el) {{
+    el.classList.add('reveal');
+    io.observe(el);
+  }});
+}})();
+
+/* animated stat counters */
+(function() {{
+  function animateCount(el) {{
+    var raw = el.querySelector('.stat__n');
+    if (!raw) return;
+    var target = parseInt(raw.textContent.replace(/[^0-9]/g,''), 10);
+    var suffix = raw.textContent.replace(/[0-9]/g,'').trim();
+    if (isNaN(target) || target === 0) return;
+    var start = performance.now();
+    var dur = 800;
+    function tick(now) {{
+      var p = Math.min((now - start) / dur, 1);
+      var ease = 1 - Math.pow(1 - p, 3);
+      raw.textContent = Math.round(ease * target) + (suffix ? ' ' + suffix : '');
+      if (p < 1) requestAnimationFrame(tick);
+    }}
+    requestAnimationFrame(tick);
+  }}
+  var so = new IntersectionObserver(function(entries) {{
+    entries.forEach(function(e) {{
+      if (e.isIntersecting) {{ animateCount(e.target); so.unobserve(e.target); }}
+    }});
+  }}, {{ threshold: 0.5 }});
+  document.querySelectorAll('.stat').forEach(function(el) {{ so.observe(el); }});
+}})();
+
+/* scroll-activated nav backdrop */
+(function() {{
+  var nav = document.querySelector('.nav');
+  if (!nav) return;
+  window.addEventListener('scroll', function() {{
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }}, {{ passive:true }});
+}})();
 </script>
 </body>
 </html>
