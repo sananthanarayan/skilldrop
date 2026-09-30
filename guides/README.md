@@ -29,6 +29,11 @@ its directory, so the tree stays shallow.
 - [Publish your own catalogue](how-to/publish-a-catalogue.md) — make `skilldrop --from <you>` work
 - [Upgrade installed skills](how-to/upgrade-skills.md) — keep what you have installed current without clobbering your settings
 - [Roll out across your org](how-to/enterprise-distribution.md) — bootstrap the hosted marketplace for every machine in one command
+- [Use with Jira](how-to/integrate-with-jira.md) — bug triage, story splitting, implementation loops, and release notes from Jira tickets
+- [Use with GitHub Projects](how-to/integrate-with-github-projects.md) — implementation loops, review gates, and release notes linked to GitHub issues
+- [Use with Figma](how-to/integrate-with-figma.md) — generate diagrams for FigJam, reverse-engineer decisions from mockups
+- [Use with Linear](how-to/integrate-with-linear.md) — triage, story splitting, implementation tracking, and release notes from Linear issues
+- [Supply credentials to skills](how-to/supply-credentials.md) — how to set FIGMA_TOKEN, SONAR_TOKEN, and other env vars locally, in CI, and via secret managers
 
 ## reference
 
