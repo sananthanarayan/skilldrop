@@ -303,10 +303,17 @@ def _page(title, header_html, body_html):
 <style>
 {SHARED_CSS}
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-tomorrow.min.css">
+<style>
+.content pre[class*="language-"]{{background:var(--surface-alt);border:1px solid var(--border);border-radius:6px;}}
+.content pre[class*="language-"] code{{background:none;}}
+</style>
 </head>
 <body>
 {header_html}
 {body_html}
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
 </body>
 </html>"""
 
