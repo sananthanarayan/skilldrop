@@ -6,6 +6,7 @@ its directory, so the tree stays shallow.
 
 | Kind | Answers |
 |---|---|
+| **tutorial** | "Let me learn by doing something real." |
 | **how-to** | "I have a goal — what are the steps?" |
 | **reference** | "What exactly does this field/command do?" |
 | **explanation** | "Why is it built this way?" |
@@ -21,6 +22,8 @@ its directory, so the tree stays shallow.
 - [Author a new loop](how-to/author-a-loop.md) — the closed `loop.json` contract and the gate rules
 - [Wire a skill to an event](how-to/wire-a-hook.md) — opt-in hooks, projected per target
 - [Publish your own catalogue](how-to/publish-a-catalogue.md) — make `skilldrop --from <you>` work
+- [Upgrade installed skills](how-to/upgrade-skills.md) — keep what you have installed current without clobbering your settings
+- [Roll out across your org](how-to/enterprise-distribution.md) — bootstrap the hosted marketplace for every machine in one command
 
 ## reference
 
