@@ -14,6 +14,10 @@ its directory, so the tree stays shallow.
 ## tutorial
 
 - [Follow one change through the loops](tutorial/follow-a-change-through-the-loops.md) — one realistic change walked from a complaint to a closed incident, showing what each gate refuses
+- [Dev-team workflow](tutorial/dev-team-workflow.md) — story → implementation → review panel → release notes
+- [Solution architect workflow](tutorial/solution-architect-workflow.md) — brief → diagrams → ADRs → design doc → threat model → council gate
+- [Product manager workflow](tutorial/product-manager-workflow.md) — signal → PR/FAQ → OKRs → PRD → metrics → critique gate
+- [AI engineering workflow](tutorial/ai-engineering-workflow.md) — use-case triage → readiness → loop design → threat model → evals → usage report
 
 ## how-to
 
