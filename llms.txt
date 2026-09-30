@@ -1,9 +1,9 @@
 # skilldrop
 
-> 57 portable skills for the artifacts knowledge work ships (ADRs, design docs,
+> 62 portable skills for the artifacts knowledge work ships (ADRs, design docs,
 > PRDs, runbooks, threat models, decks, postmortems), plus 5 loops that sequence them
 > behind gates. A loop orders skills; a skill never calls a skill, so every one of the
-> 57 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
+> 62 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
 > Version 0.12.2.
@@ -66,16 +66,18 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 
 - **solution-architect** (17 skills, loops: design, ship-a-draft): Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.
 - **product-manager** (13 skills, loops: discover, ship-a-draft): Direction to requirements: PR/FAQs, strategy frameworks, OKRs, PRDs, journey maps, story splitting, and success measurement.
-- **dev-team** (14 skills, loops: build, ship-a-draft): Build-and-ship loop: story implementation with adversarial review, test plans, triage, migrations, release notes, agent-policy files, and code-quality gates.
+- **dev-team** (15 skills, loops: build, ship-a-draft): Build-and-ship loop: story implementation with adversarial review, test plans, triage, migrations, release notes, agent-policy files, and code-quality gates.
 - **sre-oncall** (5 skills, loops: operate): Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.
 - **stakeholder-comms** (9 skills, loops: ship-a-draft): Non-technical audiences: audience profiling, deck outlines and real .pptx decks, exec summaries, decision logs, and guides.
 - **ai-engineering** (12 skills, loops: design, build): Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, AI-usage reporting, and the data contracts AI pipelines depend on.
+- **claude-api** (4 skills): Skills for teams building on the Anthropic API — prompt caching, token budgeting, eval generation for skills, and tool-use schema writing.
 
 ## Outcomes — browse by why you are here
 
 - **decide-what-to-build** (11 skills): Turn a direction into a committed, measurable plan: press releases, strategy frameworks, OKRs, business cases, requirements, PRDs, and the metrics that will say whether it worked.
 - **design-the-system** (15 skills): Commit the shape before the code: decision records, design docs, diagrams, contracts, schemas, migration and threat models, and the design of any agentic parts.
-- **build-and-review-software** (11 skills): The loop around the code itself: supervised implementation, adversarial review panels, test plans, triage, accessibility and static-analysis passes, and the policy files agents read.
+- **build-and-review-software** (13 skills): The loop around the code itself: supervised implementation, adversarial review panels, test plans, triage, accessibility and static-analysis passes, and the policy files agents read.
+- **build-on-the-claude-api** (4 skills): Skills for teams building directly on the Anthropic API — prompt caching strategy, token budgeting, eval generation, and tool-use schema writing.
 - **run-and-recover-the-service** (5 skills): Operate what shipped: runbooks, observability design, release notes, incident communication, and the postmortem that closes the loop.
 - **explain-it-to-decision-makers** (6 skills): Get a non-technical audience to a decision: audience profiling, deck outlines and real decks, exec summaries, decision logs, and how-to guides.
 - **govern-ai-use** (6 skills): Adopt AI deliberately and prove what it is doing: readiness assessment, use-case triage, rollout plans, acceptable-use policy, adoption staging, and usage reporting.
@@ -92,7 +94,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [catalogue.json](https://sananthanarayan.github.io/skilldrop/catalogue.json): every skill, loop, pack and outcome as machine-readable JSON — name, description, tier, tags, related. Prefer this over scraping the site.
 - [model-routing.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/model-routing.json): the abstract tier per skill (light/standard/heavy) and the provider map that resolves a tier to a concrete model.
 - [packs.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs.json): pack and outcome membership.
-- All 57 skills live at `skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/skills/<name>/SKILL.md`.
+- All 62 skills live at `skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/skills/<name>/SKILL.md`.
 
 ## Optional
 
