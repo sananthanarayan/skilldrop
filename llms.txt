@@ -6,7 +6,7 @@
 > 62 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.12.2.
+> Version 0.13.0.
 
 ## Start here
 
