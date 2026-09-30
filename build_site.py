@@ -146,6 +146,7 @@ GUIDES = {
         "tagline": "I have a goal — what are the steps?",
         "items": [
             ("Install into your IDE",           "guides/how-to/install-per-ide.md",            "Per-IDE steps for every target, plus dependency installs"),
+            ("Install a profile",               "guides/how-to/profiles.md",                   "Named bundles of packs, agents, and loops — one command for a complete setup"),
             ("Author a new skill",              "guides/how-to/author-a-skill.md",             "What a skill must contain and what gates it"),
             ("Author a new loop",               "guides/how-to/author-a-loop.md",              "The closed loop.json contract and the gate rules"),
             ("Wire a skill to an event",        "guides/how-to/wire-a-hook.md",                "Opt-in hooks, projected per target"),
