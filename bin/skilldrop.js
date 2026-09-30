@@ -55,6 +55,8 @@ Usage:
   skilldrop scan [<skill...>] [--from <src>]  supply-chain scan — flag network/exec/credential
                                           patterns in scripts and injection-shaped instructions
                                           in SKILL.md before you trust a catalog (RFC-0022)
+  skilldrop bootstrap                     add the skilldrop marketplace to ~/.claude/settings.json
+                                          (idempotent — safe to run in onboarding scripts)
 
 Catalogs:
   (default)          the catalog bundled with this package
@@ -1153,9 +1155,44 @@ function validateCmd(args) {
   console.log(`OK: ${names.length} skills in catalog '${cat.source}' pass the structural check.`);
 }
 
+/* ---------- bootstrap (enterprise distribution) ----------
+   Writes the skilldrop marketplace into ~/.claude/settings.json so every Claude Code
+   session on this machine discovers the catalogue without any per-session /plugin command.
+   Idempotent: safe to run in a provisioning script or onboarding runbook. */
+const BOOTSTRAP_MARKETPLACE_KEY = "skilldrop";
+const BOOTSTRAP_GITHUB_OWNER = "sananthanarayan";
+const BOOTSTRAP_GITHUB_REPO = "skilldrop";
+
+function bootstrap() {
+  const settingsPath = path.join(os.homedir(), ".claude", "settings.json");
+  let data = {};
+  const raw = readIfPresent(settingsPath, null);
+  if (raw !== null) {
+    try { data = JSON.parse(raw); }
+    catch (e) { die(`${settingsPath} is not valid JSON — fix it first, then re-run bootstrap`); }
+  }
+  data.extraKnownMarketplaces = data.extraKnownMarketplaces || {};
+  const entry = { source: { source: "github", owner: BOOTSTRAP_GITHUB_OWNER, repo: BOOTSTRAP_GITHUB_REPO } };
+  const existing = data.extraKnownMarketplaces[BOOTSTRAP_MARKETPLACE_KEY];
+  if (existing && JSON.stringify(existing) === JSON.stringify(entry)) {
+    console.log(`already configured: ${BOOTSTRAP_MARKETPLACE_KEY} -> github:${BOOTSTRAP_GITHUB_OWNER}/${BOOTSTRAP_GITHUB_REPO}`);
+    console.log(`\nIn any Claude Code session:\n  /plugin install <pack>@${BOOTSTRAP_MARKETPLACE_KEY}`);
+    return;
+  }
+  data.extraKnownMarketplaces[BOOTSTRAP_MARKETPLACE_KEY] = entry;
+  fs.mkdirSync(path.dirname(settingsPath), { recursive: true });
+  fs.writeFileSync(settingsPath, JSON.stringify(data, null, 2) + "\n");
+  console.log(`configured ${settingsPath}:`);
+  console.log(`  extraKnownMarketplaces.${BOOTSTRAP_MARKETPLACE_KEY} -> github:${BOOTSTRAP_GITHUB_OWNER}/${BOOTSTRAP_GITHUB_REPO}`);
+  console.log(`\nIn any Claude Code session, install a role pack:\n  /plugin install solution-architect@${BOOTSTRAP_MARKETPLACE_KEY}`);
+  console.log(`  /plugin install dev-team@${BOOTSTRAP_MARKETPLACE_KEY}`);
+  console.log(`  /plugin install ai-engineering@${BOOTSTRAP_MARKETPLACE_KEY}`);
+  console.log(`\nOr install the full catalogue:\n  /plugin install ${BOOTSTRAP_MARKETPLACE_KEY}@${BOOTSTRAP_MARKETPLACE_KEY}`);
+}
+
 const args = parseArgs(process.argv.slice(2));
 const cmd = args._.shift();
-const commands = { list, info, packs: listPacks, agents: listAgents, loops: listLoops, install, update, outdated, uninstall, validate: validateCmd, scan };
+const commands = { list, info, packs: listPacks, agents: listAgents, loops: listLoops, install, update, outdated, uninstall, validate: validateCmd, scan, bootstrap };
 if (!cmd || cmd === "help" || args.flags.help) console.log(HELP);
 else if (commands[cmd]) commands[cmd](args);
 else die(`unknown command '${cmd}' — run: skilldrop help`);
