@@ -22,6 +22,7 @@ its directory, so the tree stays shallow.
 ## how-to
 
 - [Install a skill into your IDE](how-to/install-per-ide.md) — per-IDE steps for every target, plus dependency installs
+- [Install a profile](how-to/profiles.md) — named bundles of packs, agents, and loops in one command
 - [Author a new skill](how-to/author-a-skill.md) — what a skill must contain and what gates it
 - [Author a new loop](how-to/author-a-loop.md) — the closed `loop.json` contract and the gate rules
 - [Wire a skill to an event](how-to/wire-a-hook.md) — opt-in hooks, projected per target

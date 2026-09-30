@@ -40,6 +40,8 @@ Usage:
   skilldrop loops [--from <src>]          loops — sequenced stages over skills (RFC-0028)
   skilldrop install <skill...>            install skills (default: Claude Code, user scope)
   skilldrop install --pack <name>         install a whole pack
+  skilldrop install --profile <name>      install a named bundle of packs, agents, and loops
+  skilldrop profiles [--from <src>]       list available profiles
   skilldrop install --all                 install every skill in the catalog
   skilldrop install --agent <name...>     install reviewer subagents (RFC-0012)
   skilldrop install --loop <name...>      install loops + the stage skills they sequence
@@ -261,6 +263,10 @@ function packsOf(cat) {
   if (cat.shape === "apm") return Object.keys(cat.packsData).length ? cat.packsData : null;
   const p = path.join(cat.dir, "packs.json");
   return fs.existsSync(p) ? readJSON(p).packs : null;
+}
+function profilesOf(cat) {
+  const p = path.join(cat.dir, "profiles.json");
+  return fs.existsSync(p) ? readJSON(p).profiles : null;
 }
 
 /* Structural gate (RFC-0003): a skill must pass before it is copied anywhere. */
@@ -744,8 +750,57 @@ function installPanel(args) {
   console.log(`Codex / Antigravity multi-agent runners), and sweeps the lenses inline otherwise. Per-tool: agents/README.md.`);
 }
 
+function listProfiles(args) {
+  const cat = resolveCatalog(args.flags.from);
+  const ps = profilesOf(cat);
+  if (args.flags.json)
+    return emitJSON({
+      catalog: cat.source,
+      count: ps ? Object.keys(ps).length : 0,
+      profiles: Object.entries(ps || {}).map(([name, p]) => ({
+        name, description: p.description || null,
+        packs: p.packs || [], agents: p.agents || [], loops: p.loops || [],
+      })),
+    });
+  if (!ps) return console.log(`catalog '${cat.source}' defines no profiles.`);
+  const w = Math.max(...Object.keys(ps).map((n) => n.length));
+  for (const [n, p] of Object.entries(ps))
+    console.log(`${n.padEnd(w)}  ${p.description}`);
+  console.log("\nInstall one: skilldrop install --profile <name>");
+}
+
+function installProfile(args) {
+  const name = args.flags.profile;
+  const cat = resolveCatalog(args.flags.from);
+  const profiles = profilesOf(cat);
+  if (!profiles) die(`catalog '${cat.source}' has no profiles.json`);
+  const p = profiles[name];
+  if (!p) die(`unknown profile '${name}' — available: ${Object.keys(profiles).join(", ")}`);
+
+  console.log(`Installing profile '${name}': ${p.description}\n`);
+  const flags = Object.assign({}, args.flags);
+  delete flags.profile;
+
+  for (const pack of (p.packs || [])) {
+    console.log(`\n── pack: ${pack} ──`);
+    install({ _: [], flags: Object.assign({}, flags, { pack }) });
+  }
+  for (const loop of (p.loops || [])) {
+    if (loopsIn(cat).includes(loop)) {
+      console.log(`\n── loop: ${loop} ──`);
+      installLoops({ _: [loop], flags: Object.assign({}, flags, { loop: true }) });
+    }
+  }
+  if ((p.agents || []).length) {
+    console.log(`\n── agents: ${p.agents.join(", ")} ──`);
+    installAgents({ _: p.agents.slice(), flags: Object.assign({}, flags, { agent: true }) });
+  }
+  console.log(`\nProfile '${name}' installed.`);
+}
+
 function install(args) {
   if (args.flags.panel) return installPanel(args);
+  if (args.flags.profile) return installProfile(args);
   if (args.flags.loop) return installLoops(args);
   if (args.flags.agent) return installAgents(args);
   const cat = resolveCatalog(args.flags.from);
@@ -1192,7 +1247,7 @@ function bootstrap() {
 
 const args = parseArgs(process.argv.slice(2));
 const cmd = args._.shift();
-const commands = { list, info, packs: listPacks, agents: listAgents, loops: listLoops, install, update, outdated, uninstall, validate: validateCmd, scan, bootstrap };
+const commands = { list, info, packs: listPacks, profiles: listProfiles, agents: listAgents, loops: listLoops, install, update, outdated, uninstall, validate: validateCmd, scan, bootstrap };
 if (!cmd || cmd === "help" || args.flags.help) console.log(HELP);
 else if (commands[cmd]) commands[cmd](args);
 else die(`unknown command '${cmd}' — run: skilldrop help`);
