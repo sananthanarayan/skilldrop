@@ -1,5 +1,5 @@
 {
-  "$comment": "Provider-neutral, cost-aware model routing for skilldrop skills. Skills declare an ABSTRACT tier (light/standard/heavy) describing how much reasoning the task needs. The `providers` map resolves that tier to a concrete model for whatever tool you use (Claude Code, Cursor, Codex, Kiro, ...). Set `active_provider` to your tool. Tier is decided ONCE per skill (the decision is stable), not re-derived per call — that keeps routing free. Runtime heuristics in `escalation_rules` handle the cases that actually vary.",
+  "$comment": "Provider-neutral, cost-aware model routing for skilldrop skills. Skills declare an ABSTRACT tier (light/standard/heavy) describing how much reasoning the task needs. The `providers` map resolves that tier to a concrete model for whatever tool you use (Claude Code, Cursor, Codex, Kiro, ...). Set `active_provider` to your tool. Tier is decided ONCE per skill (the decision is stable), not re-derived per call \u2014 that keeps routing free. Runtime heuristics in `escalation_rules` handle the cases that actually vary.",
   "version": "0.2.0",
   "active_provider": "claude-code",
   "tiers": {
@@ -34,7 +34,7 @@
         "standard": "<your default model>",
         "heavy": "<your most capable model>"
       },
-      "select_via": "Pick the model in the chat/composer model dropdown before invoking the skill. Cursor rules cannot switch models programmatically — this is a manual lookup.",
+      "select_via": "Pick the model in the chat/composer model dropdown before invoking the skill. Cursor rules cannot switch models programmatically \u2014 this is a manual lookup.",
       "automation": null,
       "note": "Cursor exposes whatever models your plan enables (Claude, GPT, Gemini). Fill in the three you actually use."
     },
@@ -47,7 +47,7 @@
       },
       "select_via": "Set the model via the Codex `--model` flag or its config before running the skill.",
       "automation": null,
-      "note": "Fill in with the model identifiers your Codex install accepts. Model names change — verify against `codex --help` / your config."
+      "note": "Fill in with the model identifiers your Codex install accepts. Model names change \u2014 verify against `codex --help` / your config."
     },
     "kiro": {
       "label": "Kiro",
@@ -73,7 +73,7 @@
   "escalation_rules": [
     {
       "id": "large-input",
-      "rule": "Escalate one tier (light→standard, standard→heavy) when the input the skill must reason over exceeds ~30 pages / ~20k words / ~15 source files. Large context degrades small models faster than large ones.",
+      "rule": "Escalate one tier (light\u2192standard, standard\u2192heavy) when the input the skill must reason over exceeds ~30 pages / ~20k words / ~15 source files. Large context degrades small models faster than large ones.",
       "type": "heuristic_no_llm"
     },
     {
@@ -88,7 +88,7 @@
     },
     {
       "id": "downgrade-trivial",
-      "rule": "Downgrade one tier (never below 'light', never below the skill's declared floor) when the input is tiny and templated — e.g. a one-paragraph brief into adr-generator, a 3-line note into decision-log.",
+      "rule": "Downgrade one tier (never below 'light', never below the skill's declared floor) when the input is tiny and templated \u2014 e.g. a one-paragraph brief into adr-generator, a 3-line note into decision-log.",
       "type": "heuristic_no_llm"
     },
     {
@@ -98,62 +98,253 @@
     }
   ],
   "skills": {
-    "audience-profile": { "tier": "light", "rationale": "Maps a fixed set of audience archetypes to structural rules. Lookup against a rubric, not synthesis." },
-    "decision-log": { "tier": "light", "rationale": "Extracts decisions/owners/dates from notes. Pattern extraction; escalate on long transcripts via large-input rule." },
-    "sonar-onboard": { "tier": "light", "rationale": "Scaffolds config from detected language + a template. Deterministic fill-in; little judgment." },
-    "adr-generator": { "tier": "standard", "rationale": "Structures a decision into MADR/Nygard. Some judgment on title/consequences; not adversarial." },
-    "architecture-diagrams": { "tier": "standard", "rationale": "Translates prose to diagram syntax. Correctness matters; reasoning is bounded." },
-    "brief-intake": { "tier": "standard", "rationale": "Extraction + tagging [explicit]/[implied]/[inferred]. The tagging needs care — above light, below heavy." },
-    "deck-builder": { "tier": "standard", "rationale": "Shapes content, maps a brand template's layouts, and runs a script. Judgment, not hard reasoning." },
-    "design-doc": { "tier": "standard", "rationale": "Synthesizes a design doc from a brief. Escalate to heavy via large-input or ambiguous-input when alternatives are genuinely contested." },
-    "exec-summary": { "tier": "standard", "rationale": "Compression to one page. Needs to keep the right signal; escalate on very long source docs." },
-    "figma-diagrams": { "tier": "standard", "rationale": "API calls + spec generation. Bounded transformation." },
-    "guide-builder": { "tier": "standard", "rationale": "Shapes notes into a styled guide. Generation, not adversarial review." },
-    "reverse-architecture": { "tier": "standard", "rationale": "Extracts architecture from code/IaC. Escalate to heavy on large codebases where cross-file inference is heavy." },
-    "runbook-generator": { "tier": "standard", "rationale": "Operational doc from service facts. Bounded synthesis." },
-    "slide-outliner": { "tier": "standard", "rationale": "Outlines a deck to a time budget. Structuring, not deep reasoning." },
-    "sonar-review": { "tier": "standard", "rationale": "Formats Sonar API findings into a report. The hard analysis is Sonar's; this is synthesis. Escalate on very large diffs." },
-    "ai-usage-report": { "tier": "standard", "rationale": "Tabulates telemetry into a report. Mostly mechanical, but the 'AI theater' effectiveness call needs judgment." },
-    "ai-readiness-assessment": { "tier": "standard", "rationale": "Scores six fixed dimensions against a rubric and ranks gaps by blocking order. Bounded structured judgment, not adversarial reasoning; escalate via ambiguous-input when the evidence is thin or contested." },
-    "agent-adoption-stage": { "tier": "standard", "rationale": "Places a team on a fixed 5-stage ladder from observables and routes one unlock. Bounded diagnosis against a rubric; escalate via ambiguous-input when the observables are contradictory or the distribution is heavily skewed." },
-    "ai-use-case-triage": { "tier": "standard", "rationale": "Scores candidates on weighted axes and forces a rejection list. Structured comparison with stated weights; escalate via ambiguous-input when candidates are numerous or the value data is contested." },
-    "ai-adoption-rollout": { "tier": "standard", "rationale": "Generates a phased people-rollout with gates and enablement from a stated tool and population. Structured planning against a fixed shape; escalate via ambiguous-input for large or politically contested rollouts." },
-    "ai-usage-policy": { "tier": "standard", "rationale": "Drafts a policy document against a fixed structure (tiers, behaviours, review matrix, exception route). Bounded generation; escalate via ambiguous-input where a regulatory regime is named or contested." },
-    "feature-implement-loop": { "tier": "standard", "rationale": "Code + test generation against acceptance criteria. The adversarial pass delegates to devils-advocate (heavy) where available; the loop itself is generation." },
-    "pre-merge-review": { "tier": "standard", "rationale": "Orchestration: runs a deterministic gate script, dispatches the (heavy) reviewer subagents, and renders a rule-based go/no-go. The adversarial reasoning is delegated to the panel, so the skill itself is coordination." },
-    "user-story-splitter": { "tier": "standard", "rationale": "Decomposes an epic into INVEST slices with testable ACs. Structured synthesis; escalation rules cover large or contradictory PRDs." },
-    "test-plan-generator": { "tier": "standard", "rationale": "Synthesizes a structured plan from a change description. Risk ranking needs judgment but is bounded; escalate via ambiguous-input on contested or high-stakes releases." },
-    "release-notes": { "tier": "standard", "rationale": "Classifies commits and rewrites them for a reader. The audience translation needs judgment; escalate via large-input on very long ranges." },
-    "postmortem-generator": { "tier": "standard", "rationale": "Synthesizes a structured doc from incident notes. Contributing-factor chains need judgment but are bounded; escalate via large-input on huge scrollbacks." },
-    "migration-plan": { "tier": "standard", "rationale": "Phased plan synthesis with a strong template. Ordering judgment is bounded by the expand/migrate/contract pattern; escalate via ambiguous-input on contested, high-stakes cutovers." },
-    "api-contract-draft": { "tier": "standard", "rationale": "Schema synthesis against fixed conventions. The resource modeling needs judgment; the conventions bound it. Escalate via ambiguous-input on contested multi-team contracts." },
-    "bug-triage": { "tier": "standard", "rationale": "Extraction plus judgment calls (severity vs priority, hypothesis ranking) — same shape as brief-intake: above light, below heavy." },
-    "prd-draft": { "tier": "standard", "rationale": "Synthesizes a structured requirements doc from a brief. The solution-language discipline needs care; bounded by the template. Escalate via ambiguous-input on contested scope." },
-    "nfr-spec": { "tier": "standard", "rationale": "Rubric-driven sweep with archetype defaults; the judgment is calibrating targets to business reality. Bounded by the catalog; escalate via ambiguous-input on contested SLOs." },
-    "success-metrics": { "tier": "standard", "rationale": "Structured measurement design; the primary-metric and counter-metric choices need judgment but the template bounds it. Escalate via ambiguous-input when the goal itself is contested." },
-    "requirements-interview": { "tier": "standard", "rationale": "Question banks are rubric-shaped, but ranking by design impact and deriving falsification conditions for the specific feature is synthesis — above light." },
-    "business-case": { "tier": "heavy", "rationale": "Weighted multi-option judgment with a committal recommendation — same failure mode as tech-comparison-matrix: cheaper models mis-weight costs, inflate benefits, and miss the flip-assumption. Never downgrade." },
-    "incident-comms": { "tier": "standard", "rationale": "Audience-segmented message generation under a strict don't-retract discipline. Same shape as exec-summary/audience-profile — translation and altitude, not adversarial reasoning." },
-    "data-contract": { "tier": "standard", "rationale": "Schema + SLA synthesis against fixed quality dimensions and an evolution matrix. Semantics capture needs care; bounded by the catalog. Escalate via large-input on wide schemas." },
-    "llm-eval-harness": { "tier": "standard", "rationale": "Methodology synthesis against a fixed decision tree and pitfall catalog. Grading-method and metric choices need judgment but are bounded; escalate via ambiguous-input on novel task types." },
-    "capacity-cost-model": { "tier": "standard", "rationale": "Quantitative projection from a demand model against a fixed cost catalog. Headroom and scaling-cliff judgment is bounded by the reference; escalate via ambiguous-input on novel architectures." },
-    "accessibility-audit": { "tier": "heavy", "rationale": "Adversarial review against WCAG success criteria — cheaper models fault alt-text presence over quality, under-call severity, miss focus-order/name-role-value issues, and claim AT passes from screenshots. Never downgrade." },
-    "db-schema-design": { "tier": "standard", "rationale": "Design synthesis from access patterns against a fixed paradigm/indexing/anti-pattern reference. Paradigm and denormalization judgment is bounded; escalate via ambiguous-input on contested scale/consistency tradeoffs." },
-    "observability-plan": { "tier": "standard", "rationale": "Methodology synthesis against fixed SRE practices (golden signals, burn-rate alerting, pillar split). SLO calibration needs judgment but is bounded; escalate via ambiguous-input on contested reliability targets." },
-    "council-review": { "tier": "heavy", "rationale": "Multi-perspective deliberation + weighted reconciliation across distinct expert seats. Cheaper models collapse the seats into one voice and either manufacture or miss the real cruxes. Never downgrade." },
-    "devils-advocate": { "tier": "heavy", "rationale": "Adversarial code review across four lenses. Cheaper models miss edge cases and under-call severity — the whole value is the hard thinking. Never downgrade." },
-    "output-hygiene": { "tier": "standard", "rationale": "The mechanical pass is a deterministic script; the model does bounded rewriting of flagged prose against a fixed tell list, not adversarial review." },
-    "doc-critique": { "tier": "heavy", "rationale": "Adversarial doc review against rubrics. Same as devils-advocate: the value is catching what a fast pass misses. Never downgrade." },
-    "tech-comparison-matrix": { "tier": "heavy", "rationale": "Weighted multi-criteria judgment with a recommendation. Mis-weighting is the failure mode; heavy is worth it. Never downgrade." },
-    "threat-model": { "tier": "heavy", "rationale": "Adversarial reasoning over a design — cheaper models emit checklist residue, miss authz/insider paths, and inflate severity. Never downgrade." },
-    "prfaq": { "tier": "standard", "rationale": "Synthesizes a press release and FAQs from a product concept against a fixed format. The specificity discipline needs care but the template bounds it; escalate via ambiguous-input when the concept itself is contested." },
-    "okr-cascade": { "tier": "standard", "rationale": "Structured derivation against a fixed roll-up discipline; the causal-sentence and gap judgments need care but the template bounds them. Escalate via ambiguous-input when the company objectives themselves are contested." },
-    "user-journey-map": { "tier": "standard", "rationale": "Structured synthesis into a fixed four-row stage model plus bounded ranking judgment. Escalate via ambiguous-input when the persona or outcome is contested or research inputs conflict." },
-    "strategy-analysis": { "tier": "heavy", "rationale": "Framework selection plus evidenced multi-factor judgment ending in a ranked, committal verdict. Cheaper models fill cells with generic filler, skip the TOWS crossings, and refuse to take a side. Never downgrade." },
-    "agent-loop-design": { "tier": "standard", "rationale": "Design synthesis against a fixed state-machine pattern and exit-criteria catalog. The gate-placement judgment is bounded by the blast-radius rule; escalate via ambiguous-input when the task itself is contested." },
-    "subagent-design": { "tier": "standard", "rationale": "Design synthesis against a fixed topology catalog and role-card template. The fan-out-or-refuse judgment is bounded by the three-reasons rule; escalate via ambiguous-input on genuinely novel workflow shapes." },
-    "agent-budget": { "tier": "standard", "rationale": "Quantitative spec synthesis against a fixed tier vocabulary and degradation ladder. Cap-setting judgment is bounded by the 3-5x rule; escalate via ambiguous-input when the workflow itself is undefined." },
-    "agents-md-generator": { "tier": "standard", "rationale": "Repo inspection plus synthesis against a fixed section order and line budget — the same shape as reverse-architecture. The judgment is the counterfactual test on each convention line, which is bounded; escalate via large-input on monorepos." },
-    "agent-threat-model": { "tier": "heavy", "rationale": "Adversarial reasoning over a capability graph — the judgment is which mitigations are architectural versus theatrical, and that call is exactly where a weaker model produces a confident wrong answer. Never downgraded." }
+    "audience-profile": {
+      "tier": "light",
+      "rationale": "Maps a fixed set of audience archetypes to structural rules. Lookup against a rubric, not synthesis."
+    },
+    "decision-log": {
+      "tier": "light",
+      "rationale": "Extracts decisions/owners/dates from notes. Pattern extraction; escalate on long transcripts via large-input rule."
+    },
+    "sonar-onboard": {
+      "tier": "light",
+      "rationale": "Scaffolds config from detected language + a template. Deterministic fill-in; little judgment."
+    },
+    "adr-generator": {
+      "tier": "standard",
+      "rationale": "Structures a decision into MADR/Nygard. Some judgment on title/consequences; not adversarial."
+    },
+    "architecture-diagrams": {
+      "tier": "standard",
+      "rationale": "Translates prose to diagram syntax. Correctness matters; reasoning is bounded."
+    },
+    "brief-intake": {
+      "tier": "standard",
+      "rationale": "Extraction + tagging [explicit]/[implied]/[inferred]. The tagging needs care \u2014 above light, below heavy."
+    },
+    "deck-builder": {
+      "tier": "standard",
+      "rationale": "Shapes content, maps a brand template's layouts, and runs a script. Judgment, not hard reasoning."
+    },
+    "design-doc": {
+      "tier": "standard",
+      "rationale": "Synthesizes a design doc from a brief. Escalate to heavy via large-input or ambiguous-input when alternatives are genuinely contested."
+    },
+    "exec-summary": {
+      "tier": "standard",
+      "rationale": "Compression to one page. Needs to keep the right signal; escalate on very long source docs."
+    },
+    "figma-diagrams": {
+      "tier": "standard",
+      "rationale": "API calls + spec generation. Bounded transformation."
+    },
+    "guide-builder": {
+      "tier": "standard",
+      "rationale": "Shapes notes into a styled guide. Generation, not adversarial review."
+    },
+    "reverse-architecture": {
+      "tier": "standard",
+      "rationale": "Extracts architecture from code/IaC. Escalate to heavy on large codebases where cross-file inference is heavy."
+    },
+    "runbook-generator": {
+      "tier": "standard",
+      "rationale": "Operational doc from service facts. Bounded synthesis."
+    },
+    "slide-outliner": {
+      "tier": "standard",
+      "rationale": "Outlines a deck to a time budget. Structuring, not deep reasoning."
+    },
+    "sonar-review": {
+      "tier": "standard",
+      "rationale": "Formats Sonar API findings into a report. The hard analysis is Sonar's; this is synthesis. Escalate on very large diffs."
+    },
+    "ai-usage-report": {
+      "tier": "standard",
+      "rationale": "Tabulates telemetry into a report. Mostly mechanical, but the 'AI theater' effectiveness call needs judgment."
+    },
+    "ai-readiness-assessment": {
+      "tier": "standard",
+      "rationale": "Scores six fixed dimensions against a rubric and ranks gaps by blocking order. Bounded structured judgment, not adversarial reasoning; escalate via ambiguous-input when the evidence is thin or contested."
+    },
+    "agent-adoption-stage": {
+      "tier": "standard",
+      "rationale": "Places a team on a fixed 5-stage ladder from observables and routes one unlock. Bounded diagnosis against a rubric; escalate via ambiguous-input when the observables are contradictory or the distribution is heavily skewed."
+    },
+    "ai-use-case-triage": {
+      "tier": "standard",
+      "rationale": "Scores candidates on weighted axes and forces a rejection list. Structured comparison with stated weights; escalate via ambiguous-input when candidates are numerous or the value data is contested."
+    },
+    "ai-adoption-rollout": {
+      "tier": "standard",
+      "rationale": "Generates a phased people-rollout with gates and enablement from a stated tool and population. Structured planning against a fixed shape; escalate via ambiguous-input for large or politically contested rollouts."
+    },
+    "ai-usage-policy": {
+      "tier": "standard",
+      "rationale": "Drafts a policy document against a fixed structure (tiers, behaviours, review matrix, exception route). Bounded generation; escalate via ambiguous-input where a regulatory regime is named or contested."
+    },
+    "feature-implement-loop": {
+      "tier": "standard",
+      "rationale": "Code + test generation against acceptance criteria. The adversarial pass delegates to devils-advocate (heavy) where available; the loop itself is generation."
+    },
+    "pre-merge-review": {
+      "tier": "standard",
+      "rationale": "Orchestration: runs a deterministic gate script, dispatches the (heavy) reviewer subagents, and renders a rule-based go/no-go. The adversarial reasoning is delegated to the panel, so the skill itself is coordination."
+    },
+    "user-story-splitter": {
+      "tier": "standard",
+      "rationale": "Decomposes an epic into INVEST slices with testable ACs. Structured synthesis; escalation rules cover large or contradictory PRDs."
+    },
+    "test-plan-generator": {
+      "tier": "standard",
+      "rationale": "Synthesizes a structured plan from a change description. Risk ranking needs judgment but is bounded; escalate via ambiguous-input on contested or high-stakes releases."
+    },
+    "release-notes": {
+      "tier": "standard",
+      "rationale": "Classifies commits and rewrites them for a reader. The audience translation needs judgment; escalate via large-input on very long ranges."
+    },
+    "postmortem-generator": {
+      "tier": "standard",
+      "rationale": "Synthesizes a structured doc from incident notes. Contributing-factor chains need judgment but are bounded; escalate via large-input on huge scrollbacks."
+    },
+    "migration-plan": {
+      "tier": "standard",
+      "rationale": "Phased plan synthesis with a strong template. Ordering judgment is bounded by the expand/migrate/contract pattern; escalate via ambiguous-input on contested, high-stakes cutovers."
+    },
+    "api-contract-draft": {
+      "tier": "standard",
+      "rationale": "Schema synthesis against fixed conventions. The resource modeling needs judgment; the conventions bound it. Escalate via ambiguous-input on contested multi-team contracts."
+    },
+    "bug-triage": {
+      "tier": "standard",
+      "rationale": "Extraction plus judgment calls (severity vs priority, hypothesis ranking) \u2014 same shape as brief-intake: above light, below heavy."
+    },
+    "prd-draft": {
+      "tier": "standard",
+      "rationale": "Synthesizes a structured requirements doc from a brief. The solution-language discipline needs care; bounded by the template. Escalate via ambiguous-input on contested scope."
+    },
+    "nfr-spec": {
+      "tier": "standard",
+      "rationale": "Rubric-driven sweep with archetype defaults; the judgment is calibrating targets to business reality. Bounded by the catalog; escalate via ambiguous-input on contested SLOs."
+    },
+    "success-metrics": {
+      "tier": "standard",
+      "rationale": "Structured measurement design; the primary-metric and counter-metric choices need judgment but the template bounds it. Escalate via ambiguous-input when the goal itself is contested."
+    },
+    "requirements-interview": {
+      "tier": "standard",
+      "rationale": "Question banks are rubric-shaped, but ranking by design impact and deriving falsification conditions for the specific feature is synthesis \u2014 above light."
+    },
+    "business-case": {
+      "tier": "heavy",
+      "rationale": "Weighted multi-option judgment with a committal recommendation \u2014 same failure mode as tech-comparison-matrix: cheaper models mis-weight costs, inflate benefits, and miss the flip-assumption. Never downgrade."
+    },
+    "incident-comms": {
+      "tier": "standard",
+      "rationale": "Audience-segmented message generation under a strict don't-retract discipline. Same shape as exec-summary/audience-profile \u2014 translation and altitude, not adversarial reasoning."
+    },
+    "data-contract": {
+      "tier": "standard",
+      "rationale": "Schema + SLA synthesis against fixed quality dimensions and an evolution matrix. Semantics capture needs care; bounded by the catalog. Escalate via large-input on wide schemas."
+    },
+    "llm-eval-harness": {
+      "tier": "standard",
+      "rationale": "Methodology synthesis against a fixed decision tree and pitfall catalog. Grading-method and metric choices need judgment but are bounded; escalate via ambiguous-input on novel task types."
+    },
+    "capacity-cost-model": {
+      "tier": "standard",
+      "rationale": "Quantitative projection from a demand model against a fixed cost catalog. Headroom and scaling-cliff judgment is bounded by the reference; escalate via ambiguous-input on novel architectures."
+    },
+    "accessibility-audit": {
+      "tier": "heavy",
+      "rationale": "Adversarial review against WCAG success criteria \u2014 cheaper models fault alt-text presence over quality, under-call severity, miss focus-order/name-role-value issues, and claim AT passes from screenshots. Never downgrade."
+    },
+    "db-schema-design": {
+      "tier": "standard",
+      "rationale": "Design synthesis from access patterns against a fixed paradigm/indexing/anti-pattern reference. Paradigm and denormalization judgment is bounded; escalate via ambiguous-input on contested scale/consistency tradeoffs."
+    },
+    "observability-plan": {
+      "tier": "standard",
+      "rationale": "Methodology synthesis against fixed SRE practices (golden signals, burn-rate alerting, pillar split). SLO calibration needs judgment but is bounded; escalate via ambiguous-input on contested reliability targets."
+    },
+    "council-review": {
+      "tier": "heavy",
+      "rationale": "Multi-perspective deliberation + weighted reconciliation across distinct expert seats. Cheaper models collapse the seats into one voice and either manufacture or miss the real cruxes. Never downgrade."
+    },
+    "devils-advocate": {
+      "tier": "heavy",
+      "rationale": "Adversarial code review across four lenses. Cheaper models miss edge cases and under-call severity \u2014 the whole value is the hard thinking. Never downgrade."
+    },
+    "output-hygiene": {
+      "tier": "standard",
+      "rationale": "The mechanical pass is a deterministic script; the model does bounded rewriting of flagged prose against a fixed tell list, not adversarial review."
+    },
+    "doc-critique": {
+      "tier": "heavy",
+      "rationale": "Adversarial doc review against rubrics. Same as devils-advocate: the value is catching what a fast pass misses. Never downgrade."
+    },
+    "tech-comparison-matrix": {
+      "tier": "heavy",
+      "rationale": "Weighted multi-criteria judgment with a recommendation. Mis-weighting is the failure mode; heavy is worth it. Never downgrade."
+    },
+    "threat-model": {
+      "tier": "heavy",
+      "rationale": "Adversarial reasoning over a design \u2014 cheaper models emit checklist residue, miss authz/insider paths, and inflate severity. Never downgrade."
+    },
+    "prfaq": {
+      "tier": "standard",
+      "rationale": "Synthesizes a press release and FAQs from a product concept against a fixed format. The specificity discipline needs care but the template bounds it; escalate via ambiguous-input when the concept itself is contested."
+    },
+    "okr-cascade": {
+      "tier": "standard",
+      "rationale": "Structured derivation against a fixed roll-up discipline; the causal-sentence and gap judgments need care but the template bounds them. Escalate via ambiguous-input when the company objectives themselves are contested."
+    },
+    "user-journey-map": {
+      "tier": "standard",
+      "rationale": "Structured synthesis into a fixed four-row stage model plus bounded ranking judgment. Escalate via ambiguous-input when the persona or outcome is contested or research inputs conflict."
+    },
+    "strategy-analysis": {
+      "tier": "heavy",
+      "rationale": "Framework selection plus evidenced multi-factor judgment ending in a ranked, committal verdict. Cheaper models fill cells with generic filler, skip the TOWS crossings, and refuse to take a side. Never downgrade."
+    },
+    "agent-loop-design": {
+      "tier": "standard",
+      "rationale": "Design synthesis against a fixed state-machine pattern and exit-criteria catalog. The gate-placement judgment is bounded by the blast-radius rule; escalate via ambiguous-input when the task itself is contested."
+    },
+    "subagent-design": {
+      "tier": "standard",
+      "rationale": "Design synthesis against a fixed topology catalog and role-card template. The fan-out-or-refuse judgment is bounded by the three-reasons rule; escalate via ambiguous-input on genuinely novel workflow shapes."
+    },
+    "agent-budget": {
+      "tier": "standard",
+      "rationale": "Quantitative spec synthesis against a fixed tier vocabulary and degradation ladder. Cap-setting judgment is bounded by the 3-5x rule; escalate via ambiguous-input when the workflow itself is undefined."
+    },
+    "agents-md-generator": {
+      "tier": "standard",
+      "rationale": "Repo inspection plus synthesis against a fixed section order and line budget \u2014 the same shape as reverse-architecture. The judgment is the counterfactual test on each convention line, which is bounded; escalate via large-input on monorepos."
+    },
+    "agent-threat-model": {
+      "tier": "heavy",
+      "rationale": "Adversarial reasoning over a capability graph \u2014 the judgment is which mitigations are architectural versus theatrical, and that call is exactly where a weaker model produces a confident wrong answer. Never downgraded."
+    },
+    "prompt-caching-advisor": {
+      "tier": "standard",
+      "rationale": "Structural analysis of prompt with threshold arithmetic and pattern matching \u2014 above light, no need for heavy."
+    },
+    "token-budget-estimator": {
+      "tier": "standard",
+      "rationale": "Arithmetic breakdown plus heuristic judgment on dominant cost drivers \u2014 standard fits."
+    },
+    "eval-harness-generator": {
+      "tier": "standard",
+      "rationale": "Reads a SKILL.md and synthesizes eval cases \u2014 requires understanding of skill intent but not heavy reasoning."
+    },
+    "tool-use-schema-writer": {
+      "tier": "standard",
+      "rationale": "Schema generation from natural-language description \u2014 structured output task that fits standard tier."
+    },
+    "contribution-wizard": {
+      "tier": "standard",
+      "rationale": "Intake plus structured generation \u2014 standard tier covers template-filling and schema-adherence judgment."
+    }
   }
 }

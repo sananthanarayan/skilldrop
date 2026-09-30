@@ -61,7 +61,8 @@
         "sonar-onboard",
         "sonar-review",
         "accessibility-audit",
-        "output-hygiene"
+        "output-hygiene",
+        "contribution-wizard"
       ]
     },
     "sre-oncall": {
@@ -106,6 +107,16 @@
         "ai-adoption-rollout",
         "ai-usage-policy",
         "agent-adoption-stage"
+      ]
+    },
+    "claude-api": {
+      "description": "Skills for teams building on the Anthropic API — prompt caching, token budgeting, eval generation for skills, and tool-use schema writing.",
+      "loops": [],
+      "skills": [
+        "prompt-caching-advisor",
+        "token-budget-estimator",
+        "eval-harness-generator",
+        "tool-use-schema-writer"
       ]
     }
   },
@@ -159,7 +170,18 @@
         "test-plan-generator",
         "bug-triage",
         "agents-md-generator",
-        "llm-eval-harness"
+        "llm-eval-harness",
+        "eval-harness-generator",
+        "contribution-wizard"
+      ]
+    },
+    "build-on-the-claude-api": {
+      "description": "Skills for teams building directly on the Anthropic API — prompt caching strategy, token budgeting, eval generation, and tool-use schema writing.",
+      "skills": [
+        "prompt-caching-advisor",
+        "token-budget-estimator",
+        "eval-harness-generator",
+        "tool-use-schema-writer"
       ]
     },
     "run-and-recover-the-service": {
