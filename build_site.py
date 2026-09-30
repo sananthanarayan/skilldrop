@@ -41,7 +41,7 @@ REPO_URL = "https://github.com/sananthanarayan/skilldrop"
 NPM_URL = "https://www.npmjs.com/package/skilldrop-cli"
 # How many skill rows render before the "show all" button. Past this the list stops being
 # scannable and starts being a dump; a query, a filter, or a deep link reveals the rest.
-PREVIEW_ROWS = 12
+PREVIEW_ROWS = 8
 # How many releases the "Recently shipped" strip carries. Three is enough to show a pulse
 # without turning the landing page into a changelog.
 SHIPPED_ENTRIES = 3
@@ -381,10 +381,13 @@ def render(skills, packs, outcomes, version, releases):
         f'<div class="tabs__panel">{terminal([c])}<p class="tabs__note">{esc(n)}</p></div>'
         for _, c, n in INSTALL_TABS)
 
+    def humanize_slug(slug):
+        return slug.replace("-", " ").capitalize()
+
     outcome_cards = "".join(
         f"""<li class="pack">
       <div class="pack__head">
-        <h3 class="pack__name">{esc(o['name'])}</h3><span class="pack__n">{o['count']} skills</span>
+        <h3 class="pack__name">{esc(humanize_slug(o['name']))}</h3><span class="pack__n">{o['count']} skills</span>
       </div>
       <p class="pack__desc">{esc(o['description'])}</p>
       <button class="pack__cta" data-filter="outcome" data-value="{esc(o['name'])}">Filter the catalogue &rarr;</button>
@@ -852,6 +855,27 @@ a {{ color:var(--accent-700); }}
   -webkit-backdrop-filter:blur(14px);
   box-shadow:0 1px 0 rgba(255,255,255,.06);
 }}
+
+/* four-step strip */
+.steps-strip {{ background:var(--dark-900); border-bottom:1px solid rgba(255,255,255,.08); }}
+.steps {{ display:grid; grid-template-columns:repeat(4,1fr); }}
+@media (max-width:700px) {{ .steps {{ grid-template-columns:1fr 1fr; }} }}
+@media (max-width:400px) {{ .steps {{ grid-template-columns:1fr; }} }}
+.step {{
+  padding:1.4rem 1.6rem; border-right:1px solid rgba(255,255,255,.08);
+  display:flex; flex-direction:column; gap:.35rem;
+}}
+.step:last-child {{ border-right:none; }}
+@media (max-width:700px) {{
+  .step:nth-child(2) {{ border-right:none; }}
+  .step:nth-child(1), .step:nth-child(2) {{ border-bottom:1px solid rgba(255,255,255,.08); }}
+}}
+.step__n {{
+  font:.7rem/1 var(--mono); color:var(--accent-300); letter-spacing:.12em;
+  text-transform:uppercase; margin:0;
+}}
+.step__name {{ font:700 1rem/1.2 inherit; color:#fff; margin:0; }}
+.step__desc {{ font:.83rem/1.5 inherit; color:rgba(255,255,255,.55); margin:0; }}
 </style>
 </head>
 <body>
@@ -885,6 +909,33 @@ a {{ color:var(--accent-700); }}
   </div>
 </header>
 
+<div class="steps-strip">
+  <div class="inner">
+    <div class="steps">
+      <div class="step">
+        <p class="step__n">Step 01</p>
+        <p class="step__name">Discover</p>
+        <p class="step__desc">Turn raw signal into a ratified requirement. Gate: you decide.</p>
+      </div>
+      <div class="step">
+        <p class="step__n">Step 02</p>
+        <p class="step__name">Design</p>
+        <p class="step__desc">Commit the shape before code is written. Gate: council review.</p>
+      </div>
+      <div class="step">
+        <p class="step__n">Step 03</p>
+        <p class="step__name">Build</p>
+        <p class="step__desc">Implement and gate the change. Gate: review panel.</p>
+      </div>
+      <div class="step">
+        <p class="step__n">Step 04</p>
+        <p class="step__name">Operate</p>
+        <p class="step__desc">Detect, respond, and close the loop. Gate: postmortem.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <main id="main">
 <section class="section" id="problem">
   <div class="inner"><div class="narrow">
@@ -907,8 +958,8 @@ a {{ color:var(--accent-700); }}
 <section class="section" id="outcomes">
   <div class="inner">
     <p class="eyebrow">Outcomes</p>
-    <h2>Seven reasons people open this catalogue</h2>
-    <p class="lede">Packs answer <em>who you are</em>; outcomes answer <em>why you came</em>. Pick the one that matches the job in front of you &mdash; each filters the catalogue below.</p>
+    <h2>Pick the job in front of you.</h2>
+    <p class="lede">Each outcome filters the catalogue to the skills that do that job. Pick the one that matches what you need today.</p>
     <ul class="grid-3">{outcome_cards}</ul>
   </div>
 </section>
