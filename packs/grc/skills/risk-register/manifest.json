@@ -1,0 +1,42 @@
+{
+  "name": "risk-register",
+  "version": "0.1.0",
+  "description": "Build or update an enterprise or project risk register — each risk written as cause, event and consequence, scored for likelihood and impact on a defined scale, inherent and residual ratings, a named owner, a treatment (avoid, reduce, transfer, accept), controls, a due date and a review trigger — with a heat map, the top risks that need a decision, and a stdlib script that validates the register CSV and flags overdue reviews. Use when the user wants a risk register, a risk log, a RAID log's risk section, a heat map, or says \"what are our top risks\", \"update the risk register\", \"score these risks\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "agent-threat-model",
+    "decision-log",
+    "dpia",
+    "nfr-spec",
+    "soc2-evidence-map",
+    "threat-model"
+  ],
+  "handoff": [
+    {
+      "to": "decision-log",
+      "when": "the committee has decided on the top risks",
+      "purpose": "Record each accept, fund or avoid decision with who made it and why.",
+      "fallback": "If decision-log is absent, add the decision, the decider and the date to the risk's controls cell and the summary."
+    }
+  ],
+  "tags": [
+    "risk",
+    "risk-register",
+    "grc",
+    "heat-map",
+    "governance",
+    "compliance"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Structured writing against a fixed format and scale, with a script doing the checks and counts. Scoring needs some judgment but is bounded by the written scale."
+  }
+}

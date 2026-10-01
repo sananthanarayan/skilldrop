@@ -35,6 +35,10 @@ Skills for the SDLC steps around the code itself — turning raw requirements in
 | [`bug-triage`](../../packs/dev-team/skills/bug-triage/SKILL.md) | Turn a vague bug report ("it's broken on mobile sometimes") into a ticket an engineer can start without contacting the reporter: searchable symptom-plus-condition title, numbered repro steps from a clean state (or an explicit "no repro yet" with the exact diagnostics to collect), expected-vs-actual with the verbatim error string, every claim tagged `[reported]` / `[verified]` / `[assumption]`, severity and priority judged independently (S4/P1 is a legitimate combination), ≤3 hypotheses each with a 5-minute check, and duplicate-search hints. One bug per ticket — multi-symptom reports get split. |
 | [`migration-plan`](../../packs/dev-team/skills/migration-plan/SKILL.md) | Phased migration/rollout plan (schema change with live backfill, API version, datastore/auth/platform swap) built on the parallel-change pattern: expand → migrate → contract. One change per phase (a failed phase implicates exactly one thing); every phase carries an observable gate with bake time, a tested rollback with an explicit data story, and a blast radius; at most one **named point of no return**; backfill specified idempotent + resumable + rate-limited with 3-depth parity checks; dual-write requires a named reconciler; the contract phase gets a date and an owner so "we'll remove the old path later" actually happens. |
 | [`launch-readiness`](../../packs/dev-team/skills/launch-readiness/SKILL.md) | Go/no-go readiness report for a merged change before it reaches users. It lists the change's own failure modes first, then judges seven checks in order: rollback, detection, response, measured NFR targets, data & privacy, comms, staged exposure. Each row is met / not met / n/a-with-reason, with an evidence link and an owner role, and a row with no evidence is `not met`. The verdict (PROCEED / PROCEED WITH CONDITIONS / REVISE / BLOCKED) follows mechanically from the rows, and a missing rollback blocks on its own. Gaps go to `migration-plan`, `observability-plan` or `runbook-generator` instead of being drafted inline. The `ready` stage of the `release` loop. |
+| [`backlog-triage`](../../packs/trackers/skills/backlog-triage/SKILL.md) | Triage of a whole Jira, Linear or GitHub backlog export: confirmed duplicate pairs, missing owners and acceptance criteria, stale and oversized items, priority conflicts, a reasoned ordering and an applicable change list. |
+| [`cloud-cost-review`](../../packs/sre-oncall/skills/cloud-cost-review/SKILL.md) | Ranked savings review of an actual AWS/GCP/Azure cost export: month-over-month movers, idle and unattached resources, evidence-gated rightsizing, storage tiering, data transfer hot spots, commitment coverage and untagged share, each with a bill-derived monthly saving, confidence and ease. |
+| [`delivery-metrics-report`](../../packs/sre-oncall/skills/delivery-metrics-report/SKILL.md) | DORA metrics (deployment frequency, change lead time, change fail rate, failed deployment recovery time) plus WIP, cycle-time p50/p85 and throughput for one service, computed by a stdlib script from deploy/incident/PR CSVs, with weekly trends, named data gaps and a refusal to rank teams. |
+| [`tracker-brief-sync`](../../packs/trackers/skills/tracker-brief-sync/SKILL.md) | PRD or brief to tracker-ready epics and stories (Jira CSV, mapped CSV or gh commands) linked back to doc sections, plus a drift report between doc and tracker. |
 
 ## Product strategy
 
@@ -123,6 +127,8 @@ Skills for teams building directly on the Anthropic API — prompt caching strat
 | Skill | What it does |
 |---|---|
 | [`contribution-wizard`](../../packs/dev-team/skills/contribution-wizard/SKILL.md) | Guides an author through creating a new skilldrop skill from scratch — single-block intake, then one response generating the manifest, SKILL.md, 8 eval cases, skill-catalogue row, and pack and outcome placement. Enforces schema compliance and names the `python3 validate.py` check as the gate before opening a PR. |
+| [`skill-author`](../../packs/skill-engineering/skills/skill-author/SKILL.md) | Writes a portable Agent Skill folder from a described task: routable description, decisive steps, quality bar, boundaries naming siblings, evals, and per-tool install paths. |
+| [`skill-review`](../../packs/skill-engineering/skills/skill-review/SKILL.md) | Audits a skill folder for routing, sibling collisions, portability, safety (OWASP AST IDs), structure and evals, with a stdlib lint script and a READY / FIX FIRST / REWRITE verdict. |
 
 ## Stakeholder communication
 
@@ -132,6 +138,7 @@ Skills for teams building directly on the Anthropic API — prompt caching strat
 | [`exec-summary`](../../packs/stakeholder-comms/skills/exec-summary/SKILL.md) | Compress a long technical document into a one-page executive summary structured around an Ask, business impact, cost/timeline, risks, and what you need from the audience. |
 | [`decision-log`](../../packs/stakeholder-comms/skills/decision-log/SKILL.md) | Extract decisions, action items, owners, and due dates from meeting notes, Slack threads, or transcripts into a structured log with source attribution. |
 | [`incident-comms`](../../packs/sre-oncall/skills/incident-comms/SKILL.md) | Draft the messages you send *while an incident is still burning* — audience-segmented into customer status-page posts, internal stakeholder updates that arm the relayer, and three-sentence exec briefs (business impact + the ask). Every message leads with reader-facing impact (not internal symptom), uses the precise status vocabulary (investigating / identified / monitoring / resolved), commits only to the **next-update time** (never a fix ETA or speculative cause you'd have to retract), and stays blameless and screenshot-safe. Acknowledge → update-on-committed-cadence → verified resolve. Completes the operate triad with `runbook-generator` (how to fix) and `postmortem-generator` (what to say after). |
+| [`team-status-report`](../../packs/trackers/skills/team-status-report/SKILL.md) | Weekly status report from tracker data: shipped, in progress, blocked with blocker and owner, slipped against plan, risks and asks, with script-computed numbers and a RAG status stating its rule. |
 
 ## Design and brand
 
@@ -143,6 +150,57 @@ Capture a brand once, then build decks and flyers that use it. `brand-kit` write
 | [`marketing-flyer`](../../packs/design/skills/marketing-flyer/SKILL.md) | A print-ready flyer in the user's brand — event, launch, offer, hiring — as one self-contained HTML file (Letter, A4, A5, or square and story sizes for social) that saves to PDF, or exports through headless Chrome with `--pdf` / `--png`. Four layouts (hero, split, event, minimal); one call to action; a headline of ten words or fewer; at most four points; contrast checked, with band text flipped to whichever colour reads; no invented dates, prices or contact details. Stdlib only. |
 | [`slide-outliner`](../../packs/design/skills/slide-outliner/SKILL.md) | Outline an architecture-review or pitch deck — slide titles, key points, and speaker notes — sized to a target time budget. Doesn't generate PPTX. |
 | [`deck-builder`](../../packs/design/skills/deck-builder/SKILL.md) | Generate a real PowerPoint (`.pptx`) file from content + audience + a brand `.potx`/`.pptx` template or colour palette. Uses `python-pptx`; 10 layouts including charts, tables and images, audience-tuned density. Pairs naturally with `audience-profile` + `slide-outliner`. |
+
+## Converters
+
+| Skill | What it does |
+|---|---|
+| [`file-to-markdown`](../../packs/converters/skills/file-to-markdown/SKILL.md) | Clean Markdown from .docx, .pptx, .xlsx, .html, .csv, .json or PDF, keeping headings, lists, tables, links and speaker notes, with a report of everything dropped. |
+| [`md-to-docx`](../../packs/converters/skills/md-to-docx/SKILL.md) | Markdown to a Word .docx with real Heading styles (navigation pane, TOC), live links, lists, tables, code, embedded images, optional brand fonts, and a warning per dropped construct. |
+| [`md-to-html`](../../packs/converters/skills/md-to-html/SKILL.md) | One self-contained, print-friendly HTML file from Markdown: anchored headings, optional TOC, embedded images, brand colours, Mermaid as text or pinned CDN, raw HTML escaped. |
+| [`md-to-xlsx`](../../packs/converters/skills/md-to-xlsx/SKILL.md) | Markdown tables, CSV or JSON to an Excel .xlsx: one sheet per table named from its heading, typed numbers, currency, percentages and dates, frozen filtered header, formulas inert by default. |
+| [`mermaid-render`](../../packs/converters/skills/mermaid-render/SKILL.md) | Mermaid lint with line numbers and fixes for the errors that stop rendering, then SVG/PNG/PDF via mermaid-cli or a standalone HTML page without it. |
+
+## Data & analytics
+
+| Skill | What it does |
+|---|---|
+| [`dashboard-spec`](../../packs/data-analytics/skills/dashboard-spec/SKILL.md) | A dashboard brief built from a decision: prioritised questions, one chart per question with its type and defined metric, filters, freshness SLA, layout and a cut list. |
+| [`metric-definition`](../../packs/data-analytics/skills/metric-definition/SKILL.md) | A metric spec two analysts compute identically: formula, grain, window and timezone, exclusions with predicates, dimensions, edge cases, owner, reference SQL and sanity checks. |
+| [`sql-review`](../../packs/data-analytics/skills/sql-review/SKILL.md) | A correctness-first SQL review: join fan-out, NULL traps, timezone and date boundaries, integer division, window frames, then performance, each finding with the wrong result and corrected SQL. |
+
+## Experience design
+
+| Skill | What it does |
+|---|---|
+| [`content-design`](../../packs/experience-design/skills/content-design/SKILL.md) | Content spec for a page from user needs: need statements, prioritised questions, structure, plain-language draft with a stdlib before/after readability check, and a cut list. |
+| [`design-system-spec`](../../packs/experience-design/skills/design-system-spec/SKILL.md) | Component spec: purpose and boundary, numbered anatomy, variant axes, every state by token name, behaviour, content rules, keyboard/ARIA/contrast cited to checked WCAG 2.2 criteria, and engineering questions. |
+| [`information-architecture`](../../packs/experience-design/skills/information-architecture/SKILL.md) | Sitemap and navigation model from a content inventory: task-based groups, user-word labels with a rationale table, global/local/utility nav, Mermaid diagram, findability risks, and a tree-test or card-sort plan. |
+| [`service-blueprint`](../../packs/experience-design/skills/service-blueprint/SKILL.md) | Service blueprint for one scenario: evidence, customer, frontstage, backstage and support lanes with the three lines, owners, fail points and waits, pains traced to causes, Mermaid, ranked fixes. |
+| [`ux-writing`](../../packs/experience-design/skills/ux-writing/SKILL.md) | Interface string table for a flow: every button, label, error, empty, loading and success string with context, character budget, a variant, and a terminology list. |
+
+## Governance, risk & compliance
+
+| Skill | What it does |
+|---|---|
+| [`dpia`](../../packs/grc/skills/dpia/SKILL.md) | A GDPR DPIA draft for one processing activity in Article 35(7) order: data inventory, lawful basis per purpose, risks to individuals, measures, residual risk, prior-consultation view, DPO questions. |
+| [`risk-register`](../../packs/grc/skills/risk-register/SKILL.md) | A risk register CSV with cause-event-consequence risks, inherent and residual scores on a defined scale, owners, treatments and review triggers, plus a script-checked heat map and top decisions. |
+| [`soc2-evidence-map`](../../packs/grc/skills/soc2-evidence-map/SKILL.md) | Controls mapped to the SOC 2 criteria in scope, with the Type I or Type II evidence, source system, owner, frequency and gaps per control, as a table and CSV. |
+
+## Infrastructure as code
+
+| Skill | What it does |
+|---|---|
+| [`terraform-module`](../../packs/infra-as-code/skills/terraform-module/SKILL.md) | A reusable Terraform module: versions.tf, typed and validated variables, secure defaults, a merged tags variable, a basic usage example, and a README with inputs and outputs tables. |
+| [`terraform-plan-review`](../../packs/infra-as-code/skills/terraform-plan-review/SKILL.md) | A pre-apply review of a terraform plan: every destroy and replace with its cause, stateful and access changes, drift, out-of-scope changes, and a SAFE / CARE / DO NOT APPLY verdict. |
+
+## Research
+
+| Skill | What it does |
+|---|---|
+| [`hypothesis-comparison`](../../packs/research/skills/hypothesis-comparison/SKILL.md) | Analysis of competing hypotheses: consistency matrix, hypotheses ranked by evidence against them, diagnostic evidence and linchpins, and the next observation that discriminates. |
+| [`research-plan`](../../packs/research/skills/research-plan/SKILL.md) | A decision-led research plan: precise question, sub-questions with the finding that would change the decision, method per sub-question, inclusion criteria, search strings, stopping rule. |
+| [`source-synthesis`](../../packs/research/skills/source-synthesis/SKILL.md) | Cited findings from supplied sources: every claim to source and location, agreement and disagreement explicit, evidence strength per finding, gaps; ships a citation checker. |
 
 ## What's in a skill
 

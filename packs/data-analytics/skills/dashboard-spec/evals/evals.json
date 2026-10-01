@@ -1,0 +1,19 @@
+{
+  "skill_name": "dashboard-spec",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Acme's VP of sales wants an exec dashboard for the Tuesday pipeline review, where she decides which deals need executive help and whether the quarter's forecast needs changing. Requested: total revenue all-time, pipeline by stage, win rate, average deal size, deals by rep, a leaderboard of calls made, website visitors, forecast vs quota, deals slipping past close date, and a map of customers. Defined metrics: `pipeline_value_usd` and `quarter_forecast_usd` (quota is $12M for the quarter). Data is in Salesforce, synced to BigQuery every 6 hours.",
+      "assertions": [
+        "Opens with a one-sentence decision statement naming the VP of sales, the Tuesday cadence, and both decisions (exec help on deals, forecast change)",
+        "Lists at most seven questions in priority order, each with the action a bad answer triggers",
+        "Gives each question one chart with a chart type and a one-line reason, and no chart without a question",
+        "References pipeline_value_usd and quarter_forecast_usd by name and flags win rate, deal size and slipping deals as undefined build blockers rather than inventing definitions",
+        "Shows forecast against the $12M quota as a comparison, not a bare number",
+        "Cuts total revenue all-time, the calls leaderboard, website visitors and the map, each with a reason",
+        "Sets a refresh and freshness SLA consistent with a weekly decision and the 6-hour sync, with stale-data behaviour",
+        "Does not invent targets, owners or metrics not given in the prompt; assumptions are tagged"
+      ]
+    }
+  ]
+}

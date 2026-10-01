@@ -1,0 +1,30 @@
+{
+  "skill_name": "terraform-plan-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's the plan for Acme's billing stack. The change is only supposed to add a tag to the API load balancer. Is it safe to apply?\n\nTerraform will perform the following actions:\n\n  # aws_lb.api will be updated in-place\n  ~ resource \"aws_lb\" \"api\" {\n        id   = \"arn:aws:elasticloadbalancing:eu-west-1:111111111111:loadbalancer/app/acme-billing-api/0123456789abcdef\"\n      ~ tags = {\n          + \"cost-centre\" = \"billing\"\n        }\n    }\n\n  # aws_db_instance.billing must be replaced\n-/+ resource \"aws_db_instance\" \"billing\" {\n      ~ id                  = \"db-EXAMPLE1234567890\" -> (known after apply)\n      ~ identifier          = \"acme-billing\" -> \"acme-billing-v2\" # forces replacement\n        skip_final_snapshot = true\n        deletion_protection = false\n    }\n\n  # aws_security_group_rule.api_https will be created\n  + resource \"aws_security_group_rule\" \"api_https\" {\n      + type        = \"ingress\"\n      + from_port   = 443\n      + to_port     = 443\n      + cidr_blocks = [\"0.0.0.0/0\"]\n    }\n\nPlan: 2 to add, 1 to change, 1 to destroy.",
+      "assertions": [
+        "Gives exactly one verdict, and it is DO NOT APPLY",
+        "Names aws_db_instance.billing as a replacement and identifies identifier as the attribute forcing replacement",
+        "States that skip_final_snapshot = true and deletion_protection = false mean the database data is lost on apply",
+        "Flags the new 0.0.0.0/0 ingress rule on 443 and asks whether the load balancer is meant to be public, rather than silently accepting or rejecting it",
+        "Lists the database replacement and the security group rule as outside the stated scope of adding a tag",
+        "Ends with a numbered list of concrete actions to take before applying",
+        "Does not invent resources, attributes or values that are not in the plan"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "CI gate for Northwind's network repo: review this terraform show -json output before apply. Intent: add one private subnet in module.vpc. File: plan.json (resource_changes includes module.vpc.aws_subnet.private[\"c\"] create, aws_iam_role_policy.ci update where the policy goes from ec2:Describe* on * to * on *, and resource_drift shows aws_route_table.private changed outside Terraform).",
+      "assertions": [
+        "Runs or describes running scripts/plan_summary.py with --scope module.vpc",
+        "Flags aws_iam_role_policy.ci as access widening and quotes the before and after actions",
+        "Reports the aws_route_table.private drift separately from the intended change",
+        "Lists the IAM change as outside the stated scope",
+        "Gives a DO NOT APPLY verdict because of the wildcard action on all resources",
+        "Does not echo any secret or sensitive value from the plan"
+      ]
+    }
+  ]
+}

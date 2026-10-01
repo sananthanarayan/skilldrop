@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Review this terraform plan before I apply it",
+    "should_trigger": true
+  },
+  {
+    "query": "Why does terraform want to replace my RDS instance? Plan output attached",
+    "should_trigger": true
+  },
+  {
+    "query": "Here's terraform show -json for tomorrow's change, is it safe to apply?",
+    "should_trigger": true
+  },
+  {
+    "query": "Check this plan for destroys, IAM widening and drift before we run apply in prod",
+    "should_trigger": true
+  },
+  {
+    "query": "Review the Terraform changes in this pull request diff before I merge",
+    "should_trigger": false
+  },
+  {
+    "query": "Plan the migration of our Postgres database to an encrypted instance with cutover and rollback",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the on-call runbook for applying infrastructure changes and rolling them back",
+    "should_trigger": false
+  },
+  {
+    "query": "Estimate the monthly cost of moving the app tier to m6i.xlarge",
+    "should_trigger": false
+  }
+]

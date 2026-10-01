@@ -1,0 +1,16 @@
+{
+  "skill_name": "{skill-name}",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "{A realistic request with concrete details and placeholder names (Acme, Northwind): the input pasted or described, the output wanted.}",
+      "assertions": [
+        "{Quality bar rule 1, as a claim about this one output that a reader can mark pass or fail}",
+        "{Quality bar rule 2}",
+        "{Quality bar rule 3}",
+        "{Quality bar rule 4}",
+        "The output does not invent {facts, names, dates, numbers} that are not in the prompt"
+      ]
+    }
+  ]
+}

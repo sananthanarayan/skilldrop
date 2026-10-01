@@ -1,0 +1,45 @@
+{
+  "name": "service-blueprint",
+  "version": "0.1.0",
+  "description": "Build a service blueprint — per step, the evidence the customer sees, the customer's actions, frontstage staff and system actions, backstage actions, and support processes, separated by the lines of interaction, visibility and internal interaction, with fail points, wait times and owners marked — as a table plus a Mermaid diagram and the ranked fixes. Use when the user wants a service blueprint, \"what happens behind the scenes when a customer does X\", to find where a service breaks or stalls, or to take a journey map down to the people, systems and handoffs that deliver it.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "architecture-diagrams",
+    "prd-draft",
+    "user-journey-map"
+  ],
+  "handoff": [
+    {
+      "to": "user-journey-map",
+      "when": "there is no journey map and the customer's stages and emotions aren't known",
+      "purpose": "Establish the frontstage experience the blueprint hangs off.",
+      "fallback": "If user-journey-map is absent, list the customer steps and the two worst moments inline, tagged [assumption], before filling the lanes."
+    },
+    {
+      "to": "prd-draft",
+      "when": "a ranked fix is accepted as committed work",
+      "purpose": "Turn the fix into requirements with goals and non-goals.",
+      "fallback": "If prd-draft is absent, write the fix as a problem statement, the owner, and one measurable 'we'll know it worked when' line."
+    }
+  ],
+  "tags": [
+    "service-design",
+    "service-blueprint",
+    "cx",
+    "operations",
+    "ux",
+    "mermaid"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Structured mapping of a described service into fixed lanes, with fail points, waits and a ranking. Tracing causes needs judgment, but the lane structure and the input bound it."
+  }
+}

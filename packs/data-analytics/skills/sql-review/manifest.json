@@ -1,0 +1,41 @@
+{
+  "name": "sql-review",
+  "version": "0.1.0",
+  "description": "Review a SQL query for correctness first and performance second — join fan-out inflating sums, NULL traps in filters and NOT IN, timezone and date-boundary errors, integer division, DISTINCT hiding a bad join, window-frame defaults, implicit casts, non-sargable predicates and missing partition filters — with each finding tied to a line, the wrong number it produces, and corrected SQL for the named dialect. Use when the user pastes a query and asks \"is this right\", \"review my SQL\", \"why is this number too high\", \"check this before it goes in the dashboard\", or \"make this query faster\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "data-contract",
+    "db-schema-design",
+    "metric-definition",
+    "pre-merge-review"
+  ],
+  "handoff": [
+    {
+      "to": "metric-definition",
+      "when": "the review finds the query's filters or formula disagree with what the business means, and no written definition exists",
+      "purpose": "Agree the metric's formula, grain, window and exclusions before fixing the SQL to match.",
+      "fallback": "If metric-definition is absent, list the definitional questions (numerator, denominator, timezone, exclusions) in the review's assumptions and mark the affected findings as pending a decision."
+    }
+  ],
+  "tags": [
+    "sql",
+    "analytics",
+    "data-quality",
+    "code-review",
+    "postgres",
+    "bigquery",
+    "snowflake"
+  ],
+  "model": {
+    "tier": "heavy",
+    "rationale": "Adversarial correctness review: finding join fan-out, NULL and timezone bugs means reasoning about data the query never shows, and a missed finding ships a wrong number. Never downgrade."
+  }
+}

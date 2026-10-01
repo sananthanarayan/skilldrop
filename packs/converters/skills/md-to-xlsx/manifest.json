@@ -1,0 +1,32 @@
+{
+  "name": "md-to-xlsx",
+  "version": "0.1.0",
+  "description": "Turn the tables in a Markdown file, a CSV or a JSON array into an Excel workbook (.xlsx) that finance, ops or a client can sort, filter and sum, with one sheet per table named from its heading, real numbers, percentages, currency and dates instead of text, a bold frozen header row with filters, sensible column widths, and formulas left inert unless asked for. Use when the user wants a spreadsheet from Markdown tables or data, says \"put this in Excel\", \"convert the CSV to xlsx\", \"give finance a spreadsheet\", or \"turn this JSON into a sheet\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "deck-builder",
+    "file-to-markdown",
+    "md-to-docx"
+  ],
+  "tags": [
+    "excel",
+    "xlsx",
+    "spreadsheet",
+    "csv",
+    "json",
+    "markdown",
+    "convert"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "A stdlib script types and writes the cells; the model shapes tables from the source (headings, units, one header row), decides whether formulas are safe to enable, and checks the per-sheet type counts against the data. Bounded, mostly mechanical judgment."
+  }
+}

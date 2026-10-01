@@ -1,0 +1,42 @@
+{
+  "name": "hypothesis-comparison",
+  "version": "0.1.0",
+  "description": "Compare rival explanations for an observation with analysis of competing hypotheses (ACH) — list the hypotheses and the evidence, build a consistency matrix (consistent / inconsistent / neutral), rank hypotheses by how little evidence contradicts them rather than how much supports them, name the diagnostic evidence and the linchpins, and say which next observation would tell the leaders apart. Use when the user asks \"why did X happen\", \"which explanation fits the evidence\", \"what's really causing this\", wants to stop arguing over a favourite theory, or says \"compare these hypotheses\", \"competing explanations\", \"ACH\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "doc-critique",
+    "postmortem-generator",
+    "research-plan",
+    "source-synthesis",
+    "strategy-analysis",
+    "tech-comparison-matrix"
+  ],
+  "handoff": [
+    {
+      "to": "research-plan",
+      "when": "the matrix has too little diagnostic evidence to separate the leading hypotheses",
+      "purpose": "Plan how to collect the observation that discriminates between them.",
+      "fallback": "If research-plan is absent, write the next observation as a test inline: what to check, what each hypothesis predicts, who gets it and how long it takes."
+    }
+  ],
+  "tags": [
+    "research",
+    "hypotheses",
+    "ach",
+    "root-cause",
+    "analysis",
+    "evidence"
+  ],
+  "model": {
+    "tier": "heavy",
+    "rationale": "Judgment-heavy: generating real rivals, rating every evidence-hypothesis cell honestly and resisting the favourite theory is where a fast pass fails; the script only does the arithmetic."
+  }
+}

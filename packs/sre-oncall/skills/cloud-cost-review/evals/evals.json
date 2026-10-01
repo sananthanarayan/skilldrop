@@ -1,0 +1,29 @@
+{
+  "skill_name": "cloud-cost-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Attached is Northwind's AWS Cost and Usage Report for August and September 2026 (daily, legacy CUR columns, tags resourceTags/user:team and resourceTags/user:env). The September bill went up about 20%. Where are we wasting money, and should we buy more savings plans? We have no CloudWatch or Compute Optimizer data handy.",
+      "assertions": [
+        "Runs scripts/cost_summary.py on the export and bases every amount on its output or on arithmetic shown in the finding",
+        "Explains the month-over-month change by naming the top movers with amounts, not just the total",
+        "Does not recommend downsizing any specific instance with a saving figure, because no utilisation data was provided; instance sizing goes under Evidence needed",
+        "Each ranked finding has a monthly saving, a confidence level and an ease rating, and the table is ordered by saving \u00d7 ease",
+        "Sizes any savings plan recommendation on the daily on-demand floor after waste removal, using a discount rate from the bill or a provider recommendation, not a remembered list price or a brochure range",
+        "Reports untagged share for team (and env), separating spend with no resource id",
+        "Lists tax, credits and commitment fees separately rather than netting them into usage",
+        "Does not invent resources, prices or utilisation figures not present in the export or the prompt"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Here's Acme's GCP billing export flattened to CSV (usage_start_time, project_id, service_description, sku_description, cost, credits_total, labels) for September only. Find savings.",
+      "assertions": [
+        "States that with one month there is no month-over-month change or movers list",
+        "States that committed use discount coverage can't be computed from the GCP export and points to the console's CUD analysis",
+        "Treats credits as netted into cost and says so",
+        "Does not invent a prior month or savings percentages"
+      ]
+    }
+  ]
+}

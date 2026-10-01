@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Compute our four DORA metrics from this deployments CSV and incident export",
+    "should_trigger": true
+  },
+  {
+    "query": "What's our change failure rate and lead time for changes for checkout-api over the last quarter?",
+    "should_trigger": true
+  },
+  {
+    "query": "Build a delivery metrics report with deploy frequency, cycle time p85, WIP and throughput from our PR data",
+    "should_trigger": true
+  },
+  {
+    "query": "How are we doing on the four keys? Here's the export from Argo CD and PagerDuty",
+    "should_trigger": true
+  },
+  {
+    "query": "Write the postmortem for Tuesday's checkout outage from this incident timeline",
+    "should_trigger": false
+  },
+  {
+    "query": "Define SLOs and burn-rate alerts for the payments service",
+    "should_trigger": false
+  },
+  {
+    "query": "What product metrics should we track to know if the new onboarding flow worked?",
+    "should_trigger": false
+  },
+  {
+    "query": "Report how our engineers are using Claude Code and Cursor this month from the telemetry log",
+    "should_trigger": false
+  }
+]

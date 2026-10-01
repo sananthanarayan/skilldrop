@@ -23,11 +23,11 @@
 
 ```mermaid
 flowchart LR
-    O[orchestrator] --> A[{agent}]
-    O --> B[{agent}]
+    O[orchestrator] --> A["{agent}"]
+    O --> B["{agent}"]
     A --> V{verify}
     B --> V
-    V -->|pass| OUT[{artifact}]
+    V -->|pass| OUT["{artifact}"]
     V -->|refuted| F[failure route]
 ```
 

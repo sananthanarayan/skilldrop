@@ -36,8 +36,10 @@ renders/
 *.png
 *.svg
 *.pdf
-!skills/**/examples/**/*.png
-!skills/**/examples/**/*.svg
+# Images a skill's worked example uses. (Skills moved under packs/ in RFC-0034; the old
+# skills/** exception silently stopped matching.)
+!packs/*/skills/*/examples/**/*.png
+!packs/*/skills/*/examples/**/*.svg
 # …and the committed site assets. og.png is rendered once from assets/og.svg with
 # rsvg-convert and committed, so build_site.py stays stdlib-only (RFC-0011).
 !assets/*.svg
