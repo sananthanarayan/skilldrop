@@ -112,7 +112,10 @@ def install_hook(root, cmd, config):
     body += "\n" + _hook_block(cmd, config)
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(body)
-    os.chmod(path, 0o755)
+    # chmod +x, not a fixed 0o755: add execute only where the umask already granted read, so a
+    # restrictive umask (077) keeps the hook private instead of being widened to world-readable.
+    mode = os.stat(path).st_mode
+    os.chmod(path, mode | ((mode & 0o444) >> 2))
     print(f"gate: installed a blocking pre-commit hook -> {path}")
     print("      a RED gate now blocks `git commit` (any tool). Bypass once with --no-verify; "
           "wire CI required-checks for the un-bypassable backstop.")

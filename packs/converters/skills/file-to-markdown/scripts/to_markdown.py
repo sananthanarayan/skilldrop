@@ -56,6 +56,7 @@ class Report:
 def md_escape(text):
     text = text.replace("\\", "\\\\")
     text = re.sub(r"([*_`\[\]])", r"\\\1", text)
+    text = re.sub(r"<(?=[A-Za-z/!])", r"\\<", text)  # literal <tag> text must not read as raw HTML
     return text
 
 
@@ -330,7 +331,7 @@ def docx_to_md(path, rep):
                 if tcpr is not None and tcpr.find(W + "gridSpan") is not None:
                     row.extend([""] * (int(tcpr.find(W + "gridSpan").get(W + "val", "1")) - 1))
             rows.append(row)
-        if any(tbl.iter(W + "tbl")) and len(list(tbl.iter(W + "tbl"))) > 1:
+        if len(list(tbl.iter(W + "tbl"))) > 1:
             rep.notes.append("a nested table was flattened into its parent cell")
         rep.keep("tables")
         return md_table(rows)
@@ -338,6 +339,19 @@ def docx_to_md(path, rep):
     def raw_text(p):
         return "".join((n.text or "") if n.tag == W + "t" else "\t" for n in p.iter()
                        if n.tag in (W + "t", W + "tab"))
+
+    def style_name(p):
+        ppr = p.find(W + "pPr")
+        ps = ppr.find(W + "pStyle") if ppr is not None else None
+        if ps is None:
+            return ""
+        sid = ps.get(W + "val", "")
+        return styles.get(sid, (sid.lower(), None))[0]
+
+    def code_text(p):
+        """Text of a code paragraph: line breaks and tabs kept, no inline formatting or escaping."""
+        return "".join((n.text or "") if n.tag == W + "t" else "\t" if n.tag == W + "tab" else "\n"
+                       for n in p.iter() if n.tag in (W + "t", W + "tab", W + "br", W + "cr"))
 
     def run_size(p):
         """(largest font size in half-points, every text run bold?) for unstyled documents."""
@@ -402,7 +416,19 @@ def docx_to_md(path, rep):
             if not text:
                 prev_list = False if not li else prev_list
                 continue
-            if lvl:
+            sname = "" if lvl or li else style_name(el)
+            if re.match(r"(source ?code|code|html preformatted|preformatted text|macro text)$", sname):
+                # one code block may be one paragraph with line breaks or a run of one-line paragraphs
+                if blocks and blocks[-1][0] == "code":
+                    blocks[-1] = ("code", blocks[-1][1] + "\n" + code_text(el))
+                else:
+                    blocks.append(("code", code_text(el)))
+                    rep.keep("code blocks")
+                prev_list = False
+            elif "quote" in sname or sname == "block text":
+                blocks.append(("block", "> " + text.replace("\n", "\n> ")))
+                prev_list = False
+            elif lvl:
                 rep.keep("headings")
                 blocks.append(("block", "#" * lvl + " " + text.replace("  \n", " ")))
                 prev_list = False
@@ -439,6 +465,11 @@ def docx_to_md(path, rep):
     for k, (kind, text) in enumerate(blocks):
         if k and not (kind == "list" and blocks[k - 1][0] == "list"):
             out.append("")
+        if kind == "code":
+            fence = "```"
+            while fence in text:
+                fence += "`"
+            text = fence + "\n" + text + "\n" + fence
         out.append(text)
     return "\n".join(out) + "\n"
 

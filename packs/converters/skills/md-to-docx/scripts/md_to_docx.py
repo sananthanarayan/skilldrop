@@ -34,6 +34,8 @@ WARNINGS = []
 
 def warn(line, msg):
     where = "line %d: " % line if line else ""
+    if where + msg in WARNINGS:  # a big table repeats one warning per cell; say it once
+        return
     WARNINGS.append(where + msg)
     print("WARN %s%s" % (where, msg), file=sys.stderr)
 
@@ -942,7 +944,7 @@ class Doc(object):
 
 
 def static_parts(title):
-    now = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     ct = ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
           '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
           '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
