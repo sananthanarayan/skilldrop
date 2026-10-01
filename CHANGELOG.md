@@ -8,6 +8,13 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.13.6 — 2026-10-01
+
+- New **design** pack: `npx skilldrop-cli install --pack design` gets on-brand decks and flyers, with `core`.
+- `brand-kit` captures your brand once as a `brand.json`: logo files (and an on-dark version), colours as hex codes, heading and body fonts, voice, imagery, your PowerPoint template, contact details and footer. Every value says where it came from, and a checker tests text contrast and catches missing or SVG-only logos.
+- `marketing-flyer` makes a print-ready flyer in your brand, for an event, launch, offer or hiring drive. It's one HTML file that saves to PDF (or exports with `--pdf`, and `--png` for square and story social sizes), in four layouts, with one call to action and only the facts you gave it.
+- `deck-builder` asks for your branding before it builds, and takes `--brand brand.json`. Without a template, it now puts your logo on every slide (the white version on dark slides) and uses your heading and body fonts. It and `slide-outliner` moved to the design pack; install them by name or with `--pack design`.
+
 ## 0.13.5 — 2026-10-01
 
 - Every skill has its own page on the site, at `skills/<name>/`. Each page has one install command, a realistic prompt to try, what a good result looks like, what it hands off to, and its source. Catalogue rows link to it.

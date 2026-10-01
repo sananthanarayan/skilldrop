@@ -16,7 +16,7 @@
     },
     "full": {
       "description": "The complete catalogue: every pack, every reviewer agent, every loop.",
-      "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "ai-engineering", "claude-api"],
+      "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "claude-api"],
       "agents": ["devils-advocate", "security-reviewer", "code-quality"],
       "loops": ["discover", "design", "build", "release", "operate", "ship-a-draft"]
     }
