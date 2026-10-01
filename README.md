@@ -1,7 +1,7 @@
 # skilldrop
 
 [![npm](https://img.shields.io/npm/v/skilldrop-cli)](https://www.npmjs.com/package/skilldrop-cli)
-[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![license](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](LICENSE)
 
 **Portable AI-agent skills for the deliverables knowledge workers actually ship:** ADRs, design docs, PRDs, runbooks, threat models, decks, postmortems and adversarial reviews. Each one is a folder you copy into Claude Code, Cursor, Kiro, Codex or Copilot.
 
@@ -66,4 +66,4 @@ In Claude Code you can use the plugin marketplace instead: run `/plugin marketpl
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT or Apache-2.0, at your option. See [LICENSE](LICENSE).

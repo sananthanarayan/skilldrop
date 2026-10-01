@@ -161,7 +161,7 @@ def _render():
         "author": author,
         "homepage": pkg.get("homepage", repo),
         "repository": repo,
-        "license": pkg.get("license", "MIT"),
+        "license": pkg.get("license", "MIT OR Apache-2.0").strip("()"),
         # RFC-0034: skills live in their pack's folder, not a root skills/, so the
         # whole-catalogue plugin names each pack's skills directory explicitly.
         "skills": [f"./packs/{n}/skills/" for n in catalog.pack_names() if catalog.pack_skills(n)],
@@ -257,7 +257,7 @@ def render_dist(out):
             "author": author,
             "homepage": pkg.get("homepage", repo),
             "repository": repo,
-            "license": pkg.get("license", "MIT"),
+            "license": pkg.get("license", "MIT OR Apache-2.0").strip("()"),
             **_pack_extras(pack),
         }, indent=2, ensure_ascii=False) + "\n")
         _write(os.path.join(pdir, "README.md"), _pack_readme(name, pack, repo))

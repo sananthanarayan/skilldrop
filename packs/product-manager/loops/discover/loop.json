@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0028. The first loop of the lifecycle: nothing is designed or built until a human has ratified what problem is being solved. Cheapest loop to redo and the most expensive to skip.",
   "name": "discover",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Take raw signal — interviews, journeys, a strategy question — to a requirement a human has ratified, so design starts from an agreed problem rather than an assumed one. Use when the user is deciding what to build, scoping a feature, or turning stakeholder conversations into requirements.",
   "entrypoint": "LOOP.md",
   "kind": "loop",

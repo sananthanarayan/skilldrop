@@ -51,6 +51,7 @@ import catalog           # where skills, loops and packs live (RFC-0034)
 import build_marketplace  # .claude-plugin/ drift check (RFC-0014)
 import build_loops        # docs/loops/*.mmd + README drift check (RFC-0028)
 import build_llms         # llms.txt drift check (RFC-0030)
+import build_pack_guides  # guides/{how-to,reference}/packs/ drift check
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 AGENTS = os.path.join(ROOT, "agents")
@@ -301,6 +302,8 @@ def check_loops(dir_set):
         for section in ("## Quality bar", "## Anti-patterns"):
             if not re.search(rf"^{re.escape(section)}", md, re.M):
                 fail(where, f"LOOP.md has no `{section}` section — a loop without one is a diagram")
+        if not re.search(r"^## Run log \(opt-in\)", md, re.M) or "SKILLDROP_LOOP_LOG" not in md:
+            fail(where, "LOOP.md has no `## Run log (opt-in)` section — every loop logs its gate verdicts the same way, so `skilldrop loop-stats` can read them")
         if len(md.splitlines()) > 500:
             warn(where, f"LOOP.md is {len(md.splitlines())} lines — spill into reference material")
 
@@ -660,6 +663,8 @@ def main():
     # because a model trusts it — so it is generated and drift-checked like everything else.
     for rel in build_llms.stale():
         fail("llms.txt", f"{rel} is stale — run `python3 build_llms.py`")
+    for rel in build_pack_guides.stale():
+        fail("guides/packs", f"{rel} is stale — run `python3 build_pack_guides.py`")
 
     agent_names = check_agents(skill_dirs)
     check_guides()

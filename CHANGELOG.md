@@ -8,6 +8,13 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.15.0 — 2026-10-01
+
+- Every pack has a how-to and a reference page in the docs: install it, run its first task, follow a typical session and its loops; then every skill's output, needs, quality bar, hand-offs and what it isn't for. They're generated from the skills' own files, so they stay current. Find them under *Per pack* in the docs.
+- `skilldrop package <dir> --pack dev-team,design` copies a vetted subset of the catalogue into a standalone one you can host on an internal git server. `MIRROR.json` records where every file came from and its SHA-256.
+- `skilldrop init-catalogue <dir>` starts a private catalogue for your team's own skills, with an example skill and a workflow that validates and scans every pull request.
+- Loops can keep a local log of their gate verdicts. Set `SKILLDROP_LOOP_LOG` to a file path, and `skilldrop loop-stats` shows which gates pass first time, which loop back, and which block. Nothing is sent anywhere. See [Measure your loops](guides/how-to/measure-your-loops.md).
+- skilldrop is now dual-licensed: MIT or Apache-2.0, at your option.
 ## 0.14.0 — 2026-10-01
 
 Eight new packs and 28 new skills (93 in all, across 17 packs). Install any pack with `npx skilldrop-cli install --pack <name>`; each brings `core`.

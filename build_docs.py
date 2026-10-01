@@ -124,6 +124,9 @@ a{color:var(--accent-700);}
   border-radius:var(--r);padding:1.2rem;}
 .doc-card h3{margin:0 0 .4rem;font-size:1rem;letter-spacing:-.01em;}
 .doc-card p{margin:0 0 .8rem;font-size:.85rem;color:var(--fg-muted);line-height:1.5;}
+.doc-card--packs{grid-column:1/-1;}
+.doc-card--packs p{font-size:.9rem;line-height:1.9;}
+.doc-card--packs a{color:var(--accent-700);white-space:nowrap;}
 .doc-card a.read{font-size:.85rem;font-weight:600;color:var(--accent-700);text-decoration:none;}
 .doc-card a.read:hover{text-decoration:underline;}
 .sidebar-search{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;
@@ -192,15 +195,17 @@ def _href(target, src, docs_base=None):
     if repo_path.startswith(".."):
         return target
     frag = f"#{anchor}" if anchor else ""
-    m = re.match(r"^guides/([^/]+)/([^/]+)\.md$", repo_path)
+    # Guides publish flat, as docs/<kind>/<slug>.html, even from a subfolder such as
+    # guides/how-to/packs/ (the generated pack guides), so match on kind + file name only.
+    m = re.match(r"^guides/([^/]+)/(?:[^/]+/)*([^/]+)\.md$", repo_path)
     if m and not src.startswith("guides/"):
         # A page outside the docs portal (the changelog) links into it through docs_base.
         return f"{docs_base or ''}{m.group(1)}/{m.group(2)}.html" + frag
+    here = src[len("guides/"):].split("/")[0] if src.count("/") > 1 else "."
     if m:
-        here = os.path.dirname(src)[len("guides/"):] or "."
         return os.path.relpath(f"{m.group(1)}/{m.group(2)}.html", here).replace(os.sep, "/") + frag
     if repo_path == "guides/README.md":
-        return os.path.relpath("index.html", os.path.dirname(src)[len("guides/"):] or ".").replace(os.sep, "/") + frag
+        return os.path.relpath("index.html", here).replace(os.sep, "/") + frag
     full = os.path.join(ROOT, repo_path)
     if os.path.exists(full):
         kind = "tree" if os.path.isdir(full) else "blob"
@@ -372,6 +377,9 @@ def collect_guides():
                 "slug":     slug,
                 "rel_path": rel_path,
                 "abs_path": abs_path,
+                # Generated per-pack guides (build_pack_guides.py) live in a packs/ subfolder and
+                # are grouped, so 2 × N pack pages don't bury the hand-written guides.
+                "group":    "packs" if os.path.basename(dirpath) == "packs" else "",
             })
     return by_kind
 
@@ -435,11 +443,20 @@ def _sidebar_html(by_kind, current_kind, current_slug, depth):
             continue
         label = KIND_LABELS[kind]
         parts.append(f'<details open><summary>{label}</summary><ul>')
-        for g in guides:
+        grouped = [g for g in guides if g.get("group")]
+        for g in [g for g in guides if not g.get("group")]:
             href = f"{prefix}{g['kind']}/{g['slug']}.html"
             current = g["kind"] == current_kind and g["slug"] == current_slug
             aria = ' aria-current="page"' if current else ""
             parts.append(f'<li><a href="{href}"{aria}>{_esc(g["title"])}</a></li>')
+        if grouped:
+            inside = any(g["kind"] == current_kind and g["slug"] == current_slug for g in grouped)
+            parts.append(f'<li><details{" open" if inside else ""}><summary>Per pack ({len(grouped)})</summary><ul>')
+            for g in grouped:
+                href = f"{prefix}{g['kind']}/{g['slug']}.html"
+                aria = ' aria-current="page"' if g["kind"] == current_kind and g["slug"] == current_slug else ""
+                parts.append(f'<li><a href="{href}"{aria}>{_esc(g["title"])}</a></li>')
+            parts.append("</ul></details></li>")
         parts.append("</ul></details>")
     parts.append("</nav>")
     return "\n".join(parts)
@@ -520,8 +537,13 @@ def build_portal_index(by_kind, out_dir):
             f'<p>{_esc(g["summary"])}</p>'
             f'<a class="read" href="{g["kind"]}/{g["slug"]}.html">Read &rarr;</a>'
             f'</div>'
-            for g in guides
+            for g in guides if not g.get("group")
         )
+        grouped = [g for g in guides if g.get("group")]
+        if grouped:
+            cards += (f'<div class="doc-card doc-card--packs" data-kind="{_esc(kind)}"><h3>Per pack</h3>'
+                      f'<p>' + " · ".join(f'<a href="{g["kind"]}/{g["slug"]}.html">{_esc(g["title"].replace("Use the ", "").replace(" pack reference", "").replace(" pack", ""))}</a>'
+                                          for g in grouped) + '</p></div>')
         cards_html.append(
             f'<section class="kind-section">'
             f'<h2>{_esc(label)}</h2>'

@@ -47,6 +47,21 @@ Name the missing skill and skilldrop as its source, do the minimal inline versio
 stage, and say the stage ran degraded. Do not skip G4 — an unreviewed artifact is the failure
 mode this wrapper exists to prevent.
 
+## Run log (opt-in)
+
+Only when the environment variable `SKILLDROP_LOOP_LOG` is set to a file path: after each
+gate's verdict, append one JSON line to that file. Nothing else is recorded, and nothing is
+sent anywhere. When the variable isn't set, or you can't read it, skip this section.
+
+```bash
+printf '%s\n' '{"ts":"2026-10-01T14:03:00Z","loop":"ship-a-draft","stage":"critique","gate":"G4","verdict":"SHIP IT","round":1}' >> "$SKILLDROP_LOOP_LOG"
+```
+
+Fields: `ts` (UTC), `loop`, `stage`, `gate` (`null` for a stage without one), `verdict` (the
+gate's exact word), and `round` (1 for the first attempt, counting returns under the cap).
+`skilldrop loop-stats` summarises the file: which gates pass first time, which loop back, and
+which end in `BLOCKED`.
+
 ## Quality bar
 
 - **The generator is chosen before intake runs.** A brief collected for no particular target is a summary, and downstream will reject it for missing fields.
