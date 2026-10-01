@@ -6,11 +6,13 @@
 > 63 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.13.4.
+> Version 0.13.5.
 
 ## Start here
 
-- [README.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/README.md): what the project is, the loops, the install quickstart, and the full skill table.
+- [README.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/README.md): what the project is, the role packs, and the one-command quick start.
+- [guides/reference/skill-catalogue.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/skill-catalogue.md): every skill, one line each, grouped by category.
+- [guides/reference/loops.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/loops.md): every loop's stages and gates.
 - [ARCHITECTURE.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/ARCHITECTURE.md): the four primitives, the install contract, the enforcement model, the invariants. Read before proposing a structural change.
 - [AGENTS.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/AGENTS.md): the canonical agent-context file — conventions, file placement, voice, and the pre-commit checklist.
 - [guides/README.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/README.md): index of the long-form guides, split by Diátaxis kind.
@@ -43,11 +45,12 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 
 ## Guides
 
-- [Why loops](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/loops.md) *(explanation)*: Why skilldrop sequences skills in a separate primitive instead of letting skills call each other, and why there are four lifecycle loops rather than three.
+- [Why loops](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/loops.md) *(explanation)*: Why skilldrop sequences skills in a separate primitive instead of letting skills call each other, and why there are five lifecycle loops rather than three.
 - [Author a new loop](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/author-a-loop.md) *(how-to)*: How to add a loop — the closed loop.json contract, the three stage types, gate rules, and the checks that will reject a loop that only looks like governance.
 - [Author a new skill](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/author-a-skill.md) *(how-to)*: The short version of the authoring path — what a skill must contain, what gates it, and where the full contributor rules live.
 - [Roll out skilldrop across your org](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/enterprise-distribution.md) *(how-to)*: Bootstrap the hosted marketplace for every machine in one command — covers the public catalogue and private-fork setups for enterprise orgs.
 - [Install a skill into your IDE](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/install-per-ide.md) *(how-to)*: Per-IDE install steps for every target skilldrop supports, plus the dependency install for the two skills that have Python deps.
+- [Install skills, packs and loops](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/install.md) *(how-to)*: Every install route — the skilldrop CLI (any IDE), the Claude Code plugin marketplace, and by hand — with the flags each one takes.
 - [Use skilldrop with Figma](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/integrate-with-figma.md) *(how-to)*: Connect Figma files to the architecture and diagram skills — generate diagrams for FigJam, produce Figma-ready specs from a design session, or reverse-engineer decisions from a mockup.
 - [Use skilldrop with GitHub Projects](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/integrate-with-github-projects.md) *(how-to)*: Pipe GitHub issues and project boards into skilldrop skills — implementation loops, review gates, and release notes that trace back to issues.
 - [Use skilldrop with Jira](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/integrate-with-jira.md) *(how-to)*: Feed Jira tickets and epics into skilldrop skills — bug triage, story splitting, implementation loops, and release notes.
@@ -57,6 +60,8 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Supply credentials to skills](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/supply-credentials.md) *(how-to)*: How to provide API keys and tokens to skills that declare env.required — covers local shells, CI environments, and enterprise secret managers.
 - [Upgrade installed skills](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/upgrade-skills.md) *(how-to)*: Check which installed skills are stale and bring them current, keeping any files you edited and your hook wiring.
 - [Wire a skill to an event](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/wire-a-hook.md) *(how-to)*: Opt-in hooks: how a loop-shaped skill binds to session-start or pre-commit-review, and how the CLI projects that onto each target.
+- [The loops, stage by stage](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/loops.md) *(reference)*: Every loop's stages, skills and gates, with a generated diagram per loop — what each takes, what it produces, and what a mistake costs.
+- [Every skill, by category](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/skill-catalogue.md) *(reference)*: All the skills grouped by what they produce, one line each, plus the anatomy every skill folder shares.
 - [Skills that ship scripts](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/skills-with-scripts.md) *(reference)*: The two skills with executable helpers — what they need on PATH, what environment variables they read, and how to invoke them from Claude Code or any other IDE.
 - [From use-case to deployed agent — the AI engineering workflow](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/ai-engineering-workflow.md) *(tutorial)*: End-to-end AI adoption: triage the use case, assess org readiness, design the loop and agents, threat-model the system, build the evals, measure what shipped.
 - [From complaint to closed incident](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/complaint-to-closed-incident.md) *(tutorial)*: A user complaint triggers a full response cycle — discover what's broken, operate to fix it, and close the loop with a postmortem and runbook update. Uses the discover and operate loops.
@@ -107,5 +112,5 @@ except `claude-api` requires `core`, which installs with it.
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 34 accepted RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 35 accepted RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.

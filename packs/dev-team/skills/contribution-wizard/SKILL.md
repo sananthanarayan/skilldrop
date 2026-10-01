@@ -1,11 +1,11 @@
 ---
 name: contribution-wizard
-description: Guides an author through creating a new skilldrop skill from scratch — generates the manifest, SKILL.md, eval cases, and README entry from a plain-language description of the skill's purpose. Use when authoring a new skill for this repo or a private fork, ensuring a new skill meets the schema and validation requirements before submission.
+description: Guides an author through creating a new skilldrop skill from scratch — generates the manifest, SKILL.md, eval cases, and skill-catalogue entry from a plain-language description of the skill's purpose. Use when authoring a new skill for this repo or a private fork, ensuring a new skill meets the schema and validation requirements before submission.
 ---
 
 # contribution-wizard
 
-Walks an author through the full arc of creating a new skilldrop skill: intake → manifest + SKILL.md + evals + README entry. The output is copy-paste-ready — the author drops the files into `skills/<name>/` and runs `python3 validate.py` to confirm before opening a PR.
+Walks an author through the full arc of creating a new skilldrop skill: intake → manifest + SKILL.md + evals + skill-catalogue entry. The output is copy-paste-ready — the author drops the files into `packs/<pack>/skills/<name>/` and runs `python3 validate.py` to confirm before opening a PR.
 
 ## How to respond
 
@@ -89,12 +89,12 @@ Eight eval cases covering: 2 happy-path, 2 minimal/edge input, 2 anti-pattern (t
 ]
 ```
 
-#### `README.md` entry
+#### Skill catalogue entry
 
-One row for the skill table, matching the format of existing rows:
+One row for `guides/reference/skill-catalogue.md`, under the right category, matching the format of existing rows:
 
 ```
-| [`<skill-name>`](packs/<pack>/skills/<skill-name>/SKILL.md) | <One sentence describing what the skill does and the output it produces.> |
+| [`<skill-name>`](../../packs/<pack>/skills/<skill-name>/SKILL.md) | <One sentence describing what the skill does and the output it produces.> |
 ```
 
 #### Pack and outcome
@@ -110,7 +110,7 @@ Next steps:
 1. mkdir -p packs/<pack>/skills/<skill-name> && cd packs/<pack>/skills/<skill-name>
 2. Drop in manifest.json, SKILL.md, and evals/cases.json
 3. python3 validate.py    # must pass before opening a PR
-4. Add the README row to the correct section
+4. Add the row to guides/reference/skill-catalogue.md under the correct category
 5. Add the skill to an outcome in catalogue.json
 6. If the skill has a how-to guide, add it to guides/how-to/ and guides/README.md
 ```

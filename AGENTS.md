@@ -226,7 +226,7 @@ The folder name is the slug used for `/`-invocation: kebab-case, descriptive, us
 
 **Backfilling an older skill:** do it **by activation-collision cluster**, never as a coverage sweep. A skill earns evals when its trigger phrases genuinely compete with a sibling's — "help me present this" (`exec-summary` / `slide-outliner` / `deck-builder` / `audience-profile`), "define the contract" (`api-contract-draft` / `data-contract` / `db-schema-design`), "review this" (`devils-advocate` / `doc-critique` / `council-review` / `sonar-review`). Skills whose vocabulary is already distinctive are **deliberately left without evals**; writing `should_trigger: false` rows for a collision that doesn't exist invents a boundary rather than documenting one, and that filler is worse than nothing.
 
-**5. Update the README.** Add a row to the **Skills in this repo** table (under the right category), and to **Installing dependencies** if the skill has runtime deps.
+**5. Update the skill catalogue.** Add a row to [`guides/reference/skill-catalogue.md`](guides/reference/skill-catalogue.md) (under the right category), and to **Installing dependencies** in [`guides/how-to/install-per-ide.md`](guides/how-to/install-per-ide.md) if the skill has runtime deps.
 
 **6. Test it manually.** Install into a clean Claude Code session (`cp -R packs/<pack>/skills/<name> ~/.claude/skills/`), then run the `evals/evals.json` prompt and check each assertion against the output; spot-check a `should_trigger: false` query routes elsewhere. Also verify: the agent finds `SKILL.md` without confusion; templates/lenses/rubrics are read at the right moment; scripts work from both `${CLAUDE_SKILL_DIR}/scripts/…` *and* a plain relative path. If you can, run it in a second IDE to catch portability issues.
 
@@ -298,7 +298,7 @@ See `packs/stakeholder-comms/skills/deck-builder/scripts/build_deck.py` for the 
 - [ ] **`evals/` present** — required for a **new** skill: `evals.json` with ≥1 prompt + assertions, `eval_queries.json` with trigger *and* no-trigger queries. (Catalogue-wide coverage is partial and backfilled by activation-collision cluster, not all at once — a filler eval is worse than none. `validate.py` checks the *shape* when present, never presence.)
 - [ ] At least one **worked example** for new diagram, deck, or review skills.
 - [ ] Description **leads with the use case** and **ends with trigger phrases**.
-- [ ] `README.md` updated — row added to **Skills in this repo**, and to **Installing dependencies** if the skill has runtime deps.
+- [ ] Skill catalogue updated — a row in `guides/reference/skill-catalogue.md`, and in **Installing dependencies** (`guides/how-to/install-per-ide.md`) if the skill has runtime deps. The README is a short router (RFC-0035); only a new *pack* needs a README line.
 - [ ] **Manual test pass** — installed the skill into a clean Claude Code session and ran it on a realistic input. Output meets the skill's own quality bar.
 - [ ] Scripts (if any) reference both `${CLAUDE_SKILL_DIR}/scripts/…` **and** a plain relative `scripts/…` so non-Claude IDEs can find them.
 - [ ] No secrets, no real customer data — placeholder values only.

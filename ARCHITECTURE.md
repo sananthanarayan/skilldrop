@@ -114,7 +114,7 @@ agents/       3 reviewer subagents contracts/    machine-readable schemas
 catalog.py    the one loader       model-routing.json  tier per skill + provider map
 bin/          the CLI              guides/       Diátaxis how-to / reference / explanation
 docs/rfcs/    decisions            docs/loops/   generated diagrams
-build_site.py build_packs.py build_marketplace.py build_loops.py  validate.py  route.py  pack.py
+build_site.py build_pages.py build_marketplace.py build_loops.py  validate.py  route.py  pack.py
 ```
 
 Anything outside `packs/`, `agents/`, and `contracts/` is repo policy or hygiene.

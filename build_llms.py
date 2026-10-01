@@ -52,7 +52,9 @@ def render():
 
     L.append("## Start here\n")
     for path, note in [
-        ("README.md", "what the project is, the loops, the install quickstart, and the full skill table."),
+        ("README.md", "what the project is, the role packs, and the one-command quick start."),
+        ("guides/reference/skill-catalogue.md", "every skill, one line each, grouped by category."),
+        ("guides/reference/loops.md", "every loop's stages and gates."),
         ("ARCHITECTURE.md", "the four primitives, the install contract, the enforcement model, the invariants. Read before proposing a structural change."),
         ("AGENTS.md", "the canonical agent-context file — conventions, file placement, voice, and the pre-commit checklist."),
         ("guides/README.md", "index of the long-form guides, split by Diátaxis kind."),
