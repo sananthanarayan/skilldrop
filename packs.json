@@ -4,6 +4,24 @@
   "packs": {
     "core": {
       "description": "The cross-role toolkit every pack builds on: structured intake, document critique, the review council, and output hygiene, plus the ship-a-draft wrapper. Installed automatically with every role pack.",
+      "display_name": "Core",
+      "keywords": ["intake", "critique", "review", "hygiene"],
+      "links": {
+        "documentation": "https://sananthanarayan.github.io/skilldrop/packs/core/"
+      },
+      "maintainers": [
+        {
+          "name": "sananthanarayan"
+        }
+      ],
+      "first-value": {
+        "audience-posture": "non-technical",
+        "prerequisites": [],
+        "starter-task": "Turn rough notes into a structured brief, then get a verdict on the draft",
+        "starter-prompt": "Here are my notes from today's planning call: <paste them>. Turn them into a brief, then critique the draft you write from it.",
+        "verification": "brief-intake returns a structured brief with gaps tagged, and doc-critique ends with a verdict: SHIP IT, SHIP WITH CHANGES, MAJOR REWRITE or WRONG ARTIFACT.",
+        "recovery": "If neither skill activates, check that `brief-intake/SKILL.md` and `doc-critique/SKILL.md` exist in your skills folder (`~/.claude/skills/` by default). In Claude Code, start a new session after installing."
+      },
       "loops": ["ship-a-draft"],
       "skills": [
         "brief-intake",
@@ -14,6 +32,24 @@
     },
     "solution-architect": {
       "description": "Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.",
+      "display_name": "Solution architect",
+      "keywords": ["architecture", "adr", "design-doc", "threat-model", "diagrams"],
+      "links": {
+        "documentation": "https://sananthanarayan.github.io/skilldrop/packs/solution-architect/"
+      },
+      "maintainers": [
+        {
+          "name": "sananthanarayan"
+        }
+      ],
+      "first-value": {
+        "audience-posture": "technical",
+        "prerequisites": [],
+        "starter-task": "Record an architecture decision your team already made",
+        "starter-prompt": "Write an ADR: we're moving our session store from Redis to DynamoDB. We considered staying on Redis, DynamoDB, and Postgres; we chose DynamoDB for managed scaling and lower ops load.",
+        "verification": "adr-generator returns an ADR with context, the options considered with their trade-offs, the decision, and its consequences.",
+        "recovery": "If adr-generator does not activate, ask for it by name (\"use adr-generator\") and check that its folder exists in your skills folder (`~/.claude/skills/` by default)."
+      },
       "requires": ["core"],
       "loops": ["design"],
       "skills": [
@@ -32,6 +68,24 @@
     },
     "product-manager": {
       "description": "Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, and success measurement.",
+      "display_name": "Product manager",
+      "keywords": ["prfaq", "prd", "strategy", "okr", "discovery"],
+      "links": {
+        "documentation": "https://sananthanarayan.github.io/skilldrop/packs/product-manager/"
+      },
+      "maintainers": [
+        {
+          "name": "sananthanarayan"
+        }
+      ],
+      "first-value": {
+        "audience-posture": "non-technical",
+        "prerequisites": [],
+        "starter-task": "Pressure-test a product idea before anyone builds it",
+        "starter-prompt": "Write a PR/FAQ for a feature that lets customers pause their subscription for up to three months instead of cancelling.",
+        "verification": "prfaq returns a launch press release, a customer FAQ and an internal FAQ that names the hard questions.",
+        "recovery": "If prfaq does not activate, ask for it by name (\"use prfaq\") and check that its folder exists in your skills folder (`~/.claude/skills/` by default)."
+      },
       "requires": ["core"],
       "loops": ["discover"],
       "skills": [
@@ -47,6 +101,27 @@
     },
     "dev-team": {
       "description": "Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, migrations, launch readiness, release notes, agent-policy files, and code-quality gates.",
+      "display_name": "Dev team",
+      "keywords": ["review", "merge", "testing", "release", "code-quality"],
+      "links": {
+        "documentation": "https://sananthanarayan.github.io/skilldrop/packs/dev-team/"
+      },
+      "maintainers": [
+        {
+          "name": "sananthanarayan"
+        }
+      ],
+      "first-value": {
+        "audience-posture": "technical",
+        "prerequisites": [
+          "A git repository with changes on a branch",
+          "The reviewer subagents, for the full panel: `skilldrop install --panel review` (the Claude plugin includes them)"
+        ],
+        "starter-task": "Find out whether your current branch is safe to merge",
+        "starter-prompt": "Is this branch safe to merge? Run a pre-merge review on the current diff.",
+        "verification": "pre-merge-review runs the project's lint, typecheck and tests through its gate script, then the reviewer panel, and ends with READY or NOT READY.",
+        "recovery": "If the gate script cannot find your lint or test commands, tell it what they are. If the panel is skipped, install the reviewer subagents with `skilldrop install --panel review`."
+      },
       "requires": ["core"],
       "loops": ["build", "release"],
       "skills": [
@@ -68,6 +143,24 @@
     },
     "sre-oncall": {
       "description": "Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.",
+      "display_name": "SRE / on-call",
+      "keywords": ["runbook", "incident", "postmortem", "observability", "slo"],
+      "links": {
+        "documentation": "https://sananthanarayan.github.io/skilldrop/packs/sre-oncall/"
+      },
+      "maintainers": [
+        {
+          "name": "sananthanarayan"
+        }
+      ],
+      "first-value": {
+        "audience-posture": "technical",
+        "prerequisites": [],
+        "starter-task": "Write the runbook an on-call engineer can follow at 3am",
+        "starter-prompt": "Write a runbook for our payments-api service: it runs in the Kubernetes namespace payments, depends on Postgres and Stripe, and pages the payments on-call rotation.",
+        "verification": "runbook-generator returns a runbook with rollback commands, the common incidents and what to do for each, and an escalation path. Facts you did not give it are marked missing, not invented.",
+        "recovery": "If runbook-generator does not activate, ask for it by name (\"use runbook-generator\") and check that its folder exists in your skills folder (`~/.claude/skills/` by default)."
+      },
       "requires": ["core"],
       "loops": ["operate"],
       "skills": [
@@ -80,6 +173,24 @@
     },
     "stakeholder-comms": {
       "description": "Non-technical audiences: audience profiling, deck outlines and real .pptx decks, exec summaries, decision logs, and guides.",
+      "display_name": "Stakeholder comms",
+      "keywords": ["exec-summary", "deck", "audience", "decision-log"],
+      "links": {
+        "documentation": "https://sananthanarayan.github.io/skilldrop/packs/stakeholder-comms/"
+      },
+      "maintainers": [
+        {
+          "name": "sananthanarayan"
+        }
+      ],
+      "first-value": {
+        "audience-posture": "non-technical",
+        "prerequisites": [],
+        "starter-task": "Turn a long document into a one-page summary for leadership",
+        "starter-prompt": "Turn this design doc into a one-page executive summary for our steering committee: <paste the doc>.",
+        "verification": "exec-summary returns a one-page summary that a time-poor reader can act on in 30 seconds, written without jargon.",
+        "recovery": "If exec-summary does not activate, ask for it by name (\"use exec-summary\") and check that its folder exists in your skills folder (`~/.claude/skills/` by default)."
+      },
       "requires": ["core"],
       "loops": [],
       "skills": [
@@ -93,6 +204,24 @@
     },
     "ai-engineering": {
       "description": "Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, and AI-usage reporting.",
+      "display_name": "AI engineering",
+      "keywords": ["ai-adoption", "agents", "evals", "governance", "budgets"],
+      "links": {
+        "documentation": "https://sananthanarayan.github.io/skilldrop/packs/ai-engineering/"
+      },
+      "maintainers": [
+        {
+          "name": "sananthanarayan"
+        }
+      ],
+      "first-value": {
+        "audience-posture": "non-technical",
+        "prerequisites": [],
+        "starter-task": "Find out whether a team is ready to adopt AI tools, and what blocks it first",
+        "starter-prompt": "Are we ready for AI? Our support team has 12 people on Zendesk, no AI tools today, and a legal team worried about customer data.",
+        "verification": "ai-readiness-assessment scores six dimensions (data, tooling, skills, governance, process, culture) with evidence for each, and ranks the gaps that block adoption first.",
+        "recovery": "If ai-readiness-assessment does not activate, ask for it by name and check that its folder exists in your skills folder (`~/.claude/skills/` by default)."
+      },
       "requires": ["core"],
       "loops": [],
       "skills": [
@@ -111,6 +240,26 @@
     },
     "claude-api": {
       "description": "Skills for teams building on the Anthropic API — prompt caching, token budgeting, eval generation for skills, and tool-use schema writing.",
+      "display_name": "Claude API",
+      "keywords": ["anthropic", "prompt-caching", "tokens", "tool-use", "evals"],
+      "links": {
+        "documentation": "https://sananthanarayan.github.io/skilldrop/packs/claude-api/"
+      },
+      "maintainers": [
+        {
+          "name": "sananthanarayan"
+        }
+      ],
+      "first-value": {
+        "audience-posture": "technical",
+        "prerequisites": [
+          "A system prompt and a typical request from your Claude API integration"
+        ],
+        "starter-task": "Find where prompt caching will cut your input costs",
+        "starter-prompt": "Here is our system prompt and a typical request: <paste them>. Where should the cache_control breakpoints go, and what hit rate should we expect?",
+        "verification": "prompt-caching-advisor marks where each cache_control checkpoint goes and estimates the cache hit rate.",
+        "recovery": "If prompt-caching-advisor does not activate, ask for it by name and check that its folder exists in your skills folder (`~/.claude/skills/` by default)."
+      },
       "loops": [],
       "skills": [
         "prompt-caching-advisor",

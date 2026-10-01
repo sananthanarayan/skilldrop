@@ -28,7 +28,14 @@
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
-      }
+      },
+      "keywords": [
+        "intake",
+        "critique",
+        "review",
+        "hygiene"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/core/"
     },
     {
       "name": "solution-architect",
@@ -43,7 +50,15 @@
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
-      }
+      },
+      "keywords": [
+        "architecture",
+        "adr",
+        "design-doc",
+        "threat-model",
+        "diagrams"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/solution-architect/"
     },
     {
       "name": "product-manager",
@@ -58,7 +73,15 @@
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
-      }
+      },
+      "keywords": [
+        "prfaq",
+        "prd",
+        "strategy",
+        "okr",
+        "discovery"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/product-manager/"
     },
     {
       "name": "dev-team",
@@ -73,7 +96,15 @@
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
-      }
+      },
+      "keywords": [
+        "review",
+        "merge",
+        "testing",
+        "release",
+        "code-quality"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/dev-team/"
     },
     {
       "name": "sre-oncall",
@@ -88,7 +119,15 @@
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
-      }
+      },
+      "keywords": [
+        "runbook",
+        "incident",
+        "postmortem",
+        "observability",
+        "slo"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/sre-oncall/"
     },
     {
       "name": "stakeholder-comms",
@@ -103,7 +142,14 @@
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
-      }
+      },
+      "keywords": [
+        "exec-summary",
+        "deck",
+        "audience",
+        "decision-log"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/stakeholder-comms/"
     },
     {
       "name": "ai-engineering",
@@ -118,7 +164,15 @@
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
-      }
+      },
+      "keywords": [
+        "ai-adoption",
+        "agents",
+        "evals",
+        "governance",
+        "budgets"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/ai-engineering/"
     },
     {
       "name": "claude-api",
@@ -133,7 +187,15 @@
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
-      }
+      },
+      "keywords": [
+        "anthropic",
+        "prompt-caching",
+        "tokens",
+        "tool-use",
+        "evals"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/claude-api/"
     }
   ]
 }

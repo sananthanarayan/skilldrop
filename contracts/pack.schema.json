@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/sananthanarayan/skilldrop/contracts/pack.schema.json",
   "title": "skilldrop packs.json",
-  "$comment": "RFC-0001 / RFC-0026 / RFC-0029 / RFC-0033. Packs and outcomes are METADATA ONLY — skills never move out of flat skills/<name> folders. RFC-0033: each skill and loop sits in exactly one pack; shared skills live in `core`, which other packs pull in via `requires`. Packs answer WHO needs a skill; outcomes answer WHY someone opened the catalogue. Both get the same two-way membership check in validate.py.",
+  "$comment": "RFC-0001 / RFC-0026 / RFC-0029 / RFC-0032 / RFC-0033. Packs and outcomes are METADATA ONLY — skills never move out of flat skills/<name> folders. RFC-0033: each skill and loop sits in exactly one pack; shared skills live in `core`, which other packs pull in via `requires`. Packs answer WHO needs a skill; outcomes answer WHY someone opened the catalogue. Both get the same two-way membership check in validate.py.",
   "type": "object",
   "additionalProperties": false,
   "required": ["version", "packs", "outcomes"],
@@ -18,6 +18,37 @@
         "required": ["description", "skills"],
         "properties": {
           "description": { "type": "string", "description": "One line — who this pack is for." },
+          "display_name": { "type": "string", "description": "RFC-0032. Human title for the pack's page and plugin entry. Same key as agent-ready-repo's pack.toml." },
+          "keywords": { "type": "array", "items": { "type": "string" }, "description": "RFC-0032. Search terms, copied into the plugin entry." },
+          "links": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "RFC-0032. Catalogue-facing links; `documentation` is the pack's page.",
+            "properties": {
+              "homepage": { "type": "string" },
+              "repository": { "type": "string" },
+              "documentation": { "type": "string" }
+            }
+          },
+          "maintainers": {
+            "type": "array",
+            "description": "RFC-0032.",
+            "items": { "type": "object", "additionalProperties": false, "required": ["name"], "properties": { "name": { "type": "string" } } }
+          },
+          "first-value": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "RFC-0032. What to try first after installing, how to tell it worked, and what to do if it didn't. Key names match agent-ready-repo's [pack.first-value].",
+            "required": ["audience-posture", "prerequisites", "starter-task", "starter-prompt", "verification", "recovery"],
+            "properties": {
+              "audience-posture": { "type": "string", "enum": ["technical", "non-technical"] },
+              "prerequisites": { "type": "array", "items": { "type": "string" } },
+              "starter-task": { "type": "string" },
+              "starter-prompt": { "type": "string" },
+              "verification": { "type": "string" },
+              "recovery": { "type": "string" }
+            }
+          },
           "skills": { "type": "array", "items": { "type": "string" }, "minItems": 1,
                       "description": "Real skill folders. Every skill must appear in at least one pack." },
           "requires": {

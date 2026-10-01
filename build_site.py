@@ -436,7 +436,7 @@ def render(skills, packs, outcomes, version, releases):
     pack_cards = "".join(
         f"""<li class="pack">
       <div class="pack__head">
-        <h3 class="pack__name">{esc(p['name'])}</h3><span class="pack__n">{p['count']} skills{''.join(' + ' + esc(r) for r in p['requires'])}</span>
+        <h3 class="pack__name"><a href="packs/{esc(p['name'])}/">{esc(p['name'])}</a></h3><span class="pack__n">{p['count']} skills{''.join(' + ' + esc(r) for r in p['requires'])}</span>
       </div>
       <p class="pack__desc">{esc(p['description'])}</p>
       <p class="pack__install"><code>skilldrop install --pack {esc(p['name'])}</code></p>
@@ -620,6 +620,8 @@ a {{ color:var(--accent-700); }}
 }}
 .pack__head {{ display:flex; align-items:baseline; gap:.6rem; margin-bottom:.55rem; }}
 .pack__name {{ margin:0; font-size:1rem; font-family:var(--mono); letter-spacing:-.01em; }}
+.pack__name a {{ color:inherit; text-decoration:none; }}
+.pack__name a:hover {{ color:var(--accent-700); text-decoration:underline; }}
 .pack__n {{
   margin-left:auto; font-size:.68rem; text-transform:uppercase; letter-spacing:.07em;
   color:var(--accent-700); background:var(--accent-10); border-radius:999px; padding:2px 9px; white-space:nowrap;
@@ -1253,7 +1255,9 @@ def outputs(skills, packs, outcomes, version, releases):
             f"  <url><loc>{SITE_URL}</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>\n"
             f"  <url><loc>{SITE_URL}catalogue/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>\n"
             f"  <url><loc>{SITE_URL}docs/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>\n"
-            "</urlset>\n"
+            f"  <url><loc>{SITE_URL}packs/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>\n"
+            + "".join(f"  <url><loc>{SITE_URL}packs/{p['name']}/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>\n" for p in packs)
+            + "</urlset>\n"
         ),
     }
 

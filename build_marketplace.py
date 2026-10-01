@@ -112,7 +112,38 @@ def _pack_plugin_entry(name, pack, version, author, repo):
         "description": f"{pack['description']} ({len(pack['skills'])} skills)",
         "version": version,
         "author": author,
+        **_pack_extras(pack),
     }
+
+
+def _pack_extras(pack):
+    """RFC-0032: catalogue-facing pack metadata, carried into the plugin entry and plugin.json."""
+    out = {}
+    if pack.get("keywords"):
+        out["keywords"] = pack["keywords"]
+    if (pack.get("links") or {}).get("documentation"):
+        out["homepage"] = pack["links"]["documentation"]
+    return out
+
+
+def _pack_readme(name, pack, repo):
+    """README.md for one pack plugin on the generated branch (RFC-0032): what it holds and
+    what to try first, so a plugin browsed on GitHub is as legible as its site page."""
+    lines = [f"# {pack.get('display_name', name)}", "", pack["description"], "",
+             f"`/plugin install {name}@skilldrop` · generated from [`main`]({repo}) — do not edit.", ""]
+    fv = pack.get("first-value")
+    if fv:
+        lines += [f"## Start here: {fv['starter-task']}", "", "Paste this into Claude Code:", "",
+                  "```text", fv["starter-prompt"], "```", ""]
+        lines += [f"- **Before you start:** {p}" for p in fv.get("prerequisites", [])]
+        lines += [f"- **How to tell it worked:** {fv['verification']}",
+                  f"- **If nothing happens:** {fv['recovery']}", ""]
+    if pack.get("loops"):
+        lines += ["## Loops", ""] + [f"- `{l}`" for l in pack["loops"]] + [""]
+    lines += ["## Skills", ""] + [f"- `{s}`" for s in sorted(pack["skills"])] + [""]
+    if (pack.get("links") or {}).get("documentation"):
+        lines += [f"More: {pack['links']['documentation']}", ""]
+    return "\n".join(lines)
 
 
 def _render():
@@ -224,7 +255,9 @@ def render_dist(out):
             "homepage": pkg.get("homepage", repo),
             "repository": repo,
             "license": pkg.get("license", "MIT"),
+            **_pack_extras(pack),
         }, indent=2, ensure_ascii=False) + "\n")
+        _write(os.path.join(pdir, "README.md"), _pack_readme(name, pack, repo))
 
         for sk in sorted(pack["skills"]):
             shutil.copytree(os.path.join(SKILLS, sk), os.path.join(pdir, "skills", sk),

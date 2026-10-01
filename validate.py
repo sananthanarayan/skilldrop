@@ -566,6 +566,15 @@ def main():
                 fail("packs.json", f"pack '{pname}' requires '{r}', which is not a pack")
             elif packs[r].get("requires"):
                 fail("packs.json", f"pack '{pname}' requires '{r}', which itself requires — keep requires one level deep (RFC-0033)")
+        # RFC-0032: the first-value check must name something this pack actually installs,
+        # or the "how to tell it worked" line points the reader at a skill they don't have.
+        fv = pack.get("first-value")
+        if fv:
+            reach_names = set(pack.get("skills", [])) | set(pack.get("loops", []))
+            for r in pack.get("requires", []):
+                reach_names |= set(packs.get(r, {}).get("skills", [])) | set(packs.get(r, {}).get("loops", []))
+            if not any(re.search(rf"(?<![\w-]){re.escape(n)}(?![\w-])", fv.get("verification", "")) for n in reach_names):
+                fail("packs.json", f"pack '{pname}' first-value verification names none of its skills or loops — say which one produces the result (RFC-0032)")
         # A pack ships every skill its loops run, so a pack install never hands over a loop
         # whose stages degrade for lack of a skill the same command could have installed.
         reach = set(pack.get("skills", []))

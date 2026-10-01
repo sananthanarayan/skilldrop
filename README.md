@@ -438,6 +438,8 @@ Categories (above) say what a skill *is*; packs say *who needs it*. [`packs.json
 | `sre-oncall` | 5 + core | `operate` | Operate the service: runbooks, observability design, incident comms, postmortems, capacity/cost models |
 | `claude-api` | 4 | — | Build on the Anthropic API: prompt caching strategy, token budgeting, eval generation for skills, tool-use schema writing. A specialist add-on; it does not bring core |
 
+Every pack has a page with **what to try first**, how to tell it worked, and what to do if nothing happens: [sananthanarayan.github.io/skilldrop/packs/](https://sananthanarayan.github.io/skilldrop/packs/). The CLI prints the same thing after a pack install, or any time with `npx skilldrop-cli info --pack <name>` ([RFC-0032](docs/rfcs/0032-pack-landing-pages-and-safe-updates.md)).
+
 ```bash
 python3 pack.py                                  # list packs
 python3 pack.py product-manager                  # list a pack's skills
@@ -487,7 +489,7 @@ npx skilldrop-cli agents                                # the reviewer subagents
 npx skilldrop-cli install --agent devils-advocate       # -> ~/.claude/agents/ (RFC-0012)
 npx skilldrop-cli install --panel review                # the whole review fleet: 3 subagents + the pre-merge-review orchestrator (RFC-0020)
 npx skilldrop-cli outdated && npx skilldrop-cli update  # skills improve; files you edited are kept, new copy as <file>.upstream
-npx skilldrop-cli list | skilldrop info <skill> | skilldrop packs | skilldrop uninstall <skill>
+npx skilldrop-cli list | skilldrop info <skill> | skilldrop info --pack <name> | skilldrop packs | skilldrop uninstall <skill>
 npx skilldrop-cli list --json                            # machine-readable: list/info/packs/agents/outdated (RFC-0021)
 ```
 

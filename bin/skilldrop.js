@@ -36,6 +36,7 @@ const HELP = `skilldrop — portable AI-agent skills for Claude Code, Cursor, Ki
 Usage:
   skilldrop list [--from <src>]           all skills in a catalog (name, version, tier)
   skilldrop info <skill> [--from <src>]   description, related, packs, deps
+  skilldrop info --pack <name>            a pack's skills, loops, and what to try first (RFC-0032)
   skilldrop packs [--from <src>]          role-based packs
   skilldrop agents [--from <src>]         reviewer subagents in a catalog
   skilldrop loops [--from <src>]          loops — sequenced stages over skills (RFC-0028)
@@ -920,6 +921,8 @@ function install(args) {
     console.log(`deps: ${s} needs Python packages — run: cd ${path.join(dest, s)} && python3 -m pip install -r requirements.txt`);
   if (suggestions.size)
     console.log(`related (not installed): ${[...suggestions].sort().join(", ")} — add --with-related or install by name.`);
+  const pk = args.flags.pack && (packsOf(cat) || {})[args.flags.pack];
+  if (pk && pk["first-value"]) console.log("\n" + firstValueLines(pk).join("\n"));
 }
 
 function installedRows(flags) {
@@ -1221,9 +1224,37 @@ function list(args) {
   console.log(`\n${rows.length} skills in catalog '${cat.source}'. Details: skilldrop info <skill>`);
 }
 
-function info(args) {
+/* RFC-0032: what to try first after installing a pack, how to tell it worked, what to do
+   if it didn't — the same first-value block the pack's site page renders. */
+function firstValueLines(p) {
+  const fv = p["first-value"];
+  if (!fv) return [];
+  const out = [`Start here: ${fv["starter-task"]}`, "", `  ${fv["starter-prompt"]}`, ""];
+  for (const pre of fv.prerequisites || []) out.push(`  before you start: ${pre}`);
+  out.push(`  worked if: ${fv.verification}`, `  if nothing happens: ${fv.recovery}`);
+  return out;
+}
+
+function infoPack(args) {
   const cat = resolveCatalog(args.flags.from);
-  const s = args._[0] || die("pass a skill name");
+  const ps = packsOf(cat) || die(`catalog '${cat.source}' has no packs`);
+  const name = args.flags.pack;
+  const p = ps[name] || die(`unknown pack '${name}' — available: ${Object.keys(ps).join(", ")}`);
+  if (args.flags.json)
+    return emitJSON({ catalog: cat.source, name, ...p });
+  console.log(`${p.display_name || name}  (${name})\n\n${p.description}\n`);
+  console.log(`skills:   ${p.skills.join(", ")}`);
+  if ((p.requires || []).length) console.log(`requires: ${p.requires.join(", ")} (installed with it)`);
+  if ((p.loops || []).length) console.log(`loops:    ${p.loops.join(", ")}`);
+  if (p.links && p.links.documentation) console.log(`page:     ${p.links.documentation}`);
+  const fv = firstValueLines(p);
+  if (fv.length) console.log("\n" + fv.join("\n"));
+}
+
+function info(args) {
+  if (args.flags.pack) return infoPack(args);
+  const cat = resolveCatalog(args.flags.from);
+  const s = args._[0] || die("pass a skill name, or --pack <name>");
   if (!skillExists(cat, s)) die(`unknown skill '${s}' in catalog '${cat.source}'`);
   const m = manifestOf(cat, s);
   const ps = packsOf(cat) || {};
