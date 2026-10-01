@@ -57,6 +57,8 @@ def _pack_total(name):
 # --- page copy -------------------------------------------------------------------
 PITCH = {
     "hero_h1": "Your agent can draft anything. What ships is still your call.",
+    # Search results cut a description off around 160 characters; the hero lede runs twice that.
+    "meta_description": "Portable AI-agent skills for ADRs, PRDs, runbooks, decks and reviews. Copy one folder into Claude Code, Cursor, Kiro or Codex, or install a whole role pack.",
     "hero_lede": (
         "skilldrop is six loops over 63 portable skills, and nothing leaves a loop until its gate "
         "passes — a script, a review panel, or a person, chosen by how expensive the mistake is to "
@@ -493,7 +495,7 @@ def render(skills, packs, outcomes, version, releases):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>skilldrop — portable skills for agentic IDEs</title>
-<meta name="description" content="{esc(PITCH['hero_lede'])}">
+<meta name="description" content="{esc(PITCH['meta_description'])}">
 <link rel="canonical" href="{SITE_URL}">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#111113">

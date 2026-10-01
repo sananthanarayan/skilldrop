@@ -16,7 +16,7 @@ Originally scoped to solution architects, now broadly useful to PMs, founders, c
 
 Every skill is a plain `SKILL.md` folder — the [**Agent Skills open standard**](https://agentskills.io) Anthropic ratified — so the same folder runs unchanged in Claude.ai, Claude Code, the Claude Agent SDK, Cursor, Kiro, Codex, Copilot, Antigravity, and anything else that reads the format. Portable by construction: no runtime, no platform, no lock-in.
 
-**Why skilldrop over heavier agent platforms:** every skill is a plain folder (`SKILL.md` + `manifest.json` + supporting files) and installs by *copy, never transformation* — what runs in your IDE is byte-identical to what's reviewed in this repo. The flat layout doubles as an open catalog contract: [any repo shaped like this one](#third-party-catalogs--publish-your-own-skills-through-the-same-cli) is installable through the same CLI. Skills are *opinionated* — each ships a quality bar, anti-patterns, and acceptance evals, so the output is an artifact, not a vibe.
+**Why skilldrop over heavier agent platforms:** every skill is a plain folder (`SKILL.md` + `manifest.json` + supporting files) and installs by *copy, never transformation* — what runs in your IDE is byte-identical to what's reviewed in this repo. The layout doubles as an open catalog contract: [any repo shaped like this one](guides/how-to/publish-a-catalogue.md), or with a plain flat `skills/` folder, is installable through the same CLI. Skills are *opinionated* — each ships a quality bar, anti-patterns, and acceptance evals, so the output is an artifact, not a vibe.
 
 ## How skilldrop works
 
@@ -40,7 +40,7 @@ Plus one **wrapper**, which is not a lifecycle stage but the two passes either s
 |---|---|---|---|
 | [`ship-a-draft`](packs/core/loops/ship-a-draft/LOOP.md) | raw notes, a transcript, a ticket | **G4** review — `doc-critique`'s verdict | a stakeholder-ready artifact |
 
-Every gate emits a verdict from one shared vocabulary ([`contracts/terminals.json`](contracts/terminals.json)) in five classes — pass, conditional, revise, redirect, blocked — so `READY`, `PROCEED` and `SHIP IT` are recognisably the same kind of answer. Both diagrams render on GitHub; the Mermaid sources live in [`docs/`](docs/) for easy re-rendering.
+Every gate emits a verdict from one shared vocabulary ([`contracts/terminals.json`](contracts/terminals.json)) in five classes — pass, conditional, revise, redirect, blocked — so `READY`, `PROCEED` and `SHIP IT` are recognisably the same kind of answer. The diagrams below render on GitHub; their Mermaid sources live in [`docs/loops/`](docs/loops/) for re-rendering.
 
 *Diagrams below are generated from each loop's `loop.json` by [`build_loops.py`](build_loops.py) — edit the contract, not the picture.*
 
@@ -497,7 +497,7 @@ npx skilldrop-cli list --json                            # machine-readable: lis
 
 ### Or: the Claude Code plugin marketplace
 
-skilldrop is also a **Claude Code plugin marketplace** — one marketplace, seven plugins, no npm step. Add it once:
+skilldrop is also a **Claude Code plugin marketplace** — one marketplace, nine plugins (the whole catalogue, plus one per pack), no npm step. Add it once:
 
 ```text
 /plugin marketplace add sananthanarayan/skilldrop
@@ -535,12 +535,12 @@ The long-form install material moved to [`guides/`](guides/) so this page stays 
 | Use the two skills that ship scripts | [Skills that ship scripts](guides/reference/skills-with-scripts.md) |
 | Add a skill or a loop to this repo | [Author a skill](guides/how-to/author-a-skill.md) · [Author a loop](guides/how-to/author-a-loop.md) |
 | Understand why it is built this way | [Why loops](guides/explanation/loops.md) · [ARCHITECTURE.md](ARCHITECTURE.md) |
-| See one change go through all four loops | [Follow one change through the loops](guides/tutorial/follow-a-change-through-the-loops.md) |
+| See one change go through the loops | [Follow one change through the loops](guides/tutorial/follow-a-change-through-the-loops.md) |
 | Point a model at this repo | [`llms.txt`](llms.txt) — a generated index so a tool reads the few relevant pages instead of the tree |
 
 ### Reviewer subagents
 
-Two personas you delegate review to, rather than invoke as a skill: [`devils-advocate`](agents/devils-advocate.md) ("will this break?") and [`code-quality`](agents/code-quality.md) ("will the next engineer hate this?"). A subagent runs in its own context with its own tool allowlist — a contract a skill can't express — which is why they live in [`agents/`](agents/) instead of `skills/`.
+Three personas you delegate review to, rather than invoke as a skill: [`devils-advocate`](agents/devils-advocate.md) ("will this break?"), [`code-quality`](agents/code-quality.md) ("will the next engineer hate this?") and [`security-reviewer`](agents/security-reviewer.md) ("how would someone abuse this?"). A subagent runs in its own context with its own tool allowlist — a contract a skill can't express — which is why they live in [`agents/`](agents/) instead of a pack's `skills/`.
 
 ```bash
 npx skilldrop-cli agents                                    # list them
@@ -550,7 +550,7 @@ npx skilldrop-cli install --agent code-quality --project    # .claude/agents/, s
 
 Then delegate by name: *"use the devils-advocate agent on this diff."*
 
-Four targets, each projecting only as much as the tool's format demands:
+Six targets, each projecting only as much as the tool's format demands:
 
 | Target | Writes | Projection |
 |---|---|---|

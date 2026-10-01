@@ -8,6 +8,10 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.13.4 — 2026-10-01
+
+- `npx skilldrop-cli install --profile <name>` works. The npm package was missing `profiles.json`, so profiles only worked from a clone of the repo.
+
 ## 0.13.3 — 2026-10-01
 
 - Every pack now has a page with what to try first: a starter prompt to paste, how to tell it worked, and what to do if nothing happens. Browse them at `sananthanarayan.github.io/skilldrop/packs/`. The CLI prints the same starter after `install --pack`, or any time with `skilldrop info --pack <name>`, and each Claude pack plugin carries it in a README.
