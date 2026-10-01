@@ -83,4 +83,4 @@ and the per-pack plugins on the `plugins` branch all include `requires`. The CLI
 ## Decision
 
 Accepted 2026-10-01 together with RFC-0032's revised delivery order. It supersedes RFC-0001's
-"a skill may belong to several packs".
+"a skill may belong to several packs". Implemented in [#27](https://github.com/sananthanarayan/skilldrop/pull/27).
