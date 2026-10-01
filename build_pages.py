@@ -6,6 +6,8 @@
   build/skills/<skill>/index.html one skill: what it makes, a prompt to try, its quality bar
   build/skills/index.html         redirect to the searchable catalogue
   build/changelog/index.html      every release, rendered from CHANGELOG.md
+  build/loops/index.html          every loop, and who decides at each gate
+  build/loops/<loop>/index.html   one loop: diagram, stages, gates, install, how to run it
   build/search.json               the site search index the shared nav's search dialog reads
   build/404.html                  the page GitHub Pages serves for a missing URL, with the shared nav
 
@@ -98,6 +100,17 @@ PAGE_CSS = """
 .pk__exbody blockquote { margin:.6rem 0; padding:.1rem .9rem; border-left:3px solid var(--accent-700); color:var(--fg-muted); }
 .pk__exnote { font-size:.9rem; color:var(--fg-muted); }
 .cl h2 { margin:2.2rem 0 .4rem; }
+.pk__muted { color:var(--fg-muted); font-size:.85em; }
+.pk__badge { font:600 .62rem var(--mono); text-transform:uppercase; letter-spacing:.06em; color:var(--accent-700); background:var(--accent-10); border-radius:999px; padding:2px 8px; vertical-align:middle; }
+.pk__diagram { background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:1rem; overflow-x:auto; white-space:pre; }
+.pk__tablewrap { overflow-x:auto; }
+.pk__table { border-collapse:collapse; width:100%; font-size:.88rem; }
+.pk__table th, .pk__table td { border-bottom:1px solid var(--border); padding:.55rem .6rem; text-align:left; vertical-align:top; }
+.pk__table td:nth-child(4) { white-space:nowrap; }
+.pk__table th { font-size:.7rem; text-transform:uppercase; letter-spacing:.06em; color:var(--fg-muted); }
+.pk__doc h2 { font-size:1.15rem; margin:2.4rem 0 .7rem; }
+.pk__doc table { border-collapse:collapse; width:100%; font-size:.88rem; }
+.pk__doc th, .pk__doc td { border-bottom:1px solid var(--border); padding:.45rem .55rem; text-align:left; vertical-align:top; }
 .cl li { margin:.45rem 0; }
 """
 
@@ -236,7 +249,7 @@ def pack_page(name, pack, packs, by_name, loop_by_name, outcome_of):
 
     if own_loops:
         items = "".join(
-            f"""<li><a href="{REPO_URL}/blob/main/{esc(l['path'])}/LOOP.md"><b>{esc(l['name'])}</b></a> — {esc(l['description'].split(' Use when')[0])}
+            f"""<li><a href="../../loops/{esc(l['name'])}/"><b>{esc(l['name'])}</b></a> — {esc(l['description'].split(' Use when')[0])}
 <div class="pk__stages">{' → '.join(esc(st['id']) + (f" [{esc(st['gate']['id'])}]" if st['gate'] else '') for st in l['stages'])}</div></li>"""
             for l in own_loops)
         parts.append(f'<h2>Loops</h2><ul class="pk__loops">{items}</ul>')
@@ -417,7 +430,7 @@ def search_index(skills, packs, loop_list):
                for m in re.finditer(r"^## `([a-z0-9-]+)`.*$", ref, re.M)}
     for l in loop_list:
         out.append({"type": "loop", "title": l["name"], "summary": l["description"],
-                    "url": "docs/reference/loops.html" + (f"#{anchors[l['name']]}" if l["name"] in anchors else ""),
+                    "url": f"loops/{l['name']}/",
                     "text": " ".join(st["id"] + " " + " ".join(st["skills"]) + " " + st.get("intent", "") for st in l["stages"])})
     for kind, guides in collect_guides().items():
         for g in guides:
@@ -426,6 +439,88 @@ def search_index(skills, packs, loop_list):
                         "url": f"docs/{kind}/{g['slug']}.html",
                         "text": plain(render_md(body), 3000)})
     return out
+
+
+WHO = {"mechanical": "a script decides", "review": "a review panel decides", "human": "you decide"}
+MERMAID = ('<script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";'
+           'mermaid.initialize({ startOnLoad: true, securityLevel: "strict" });</script>')
+
+
+def loop_summary(lp):
+    return lp["description"].split(" Use when")[0].rstrip(".") + "."
+
+
+def loop_page(lp, by_name):
+    """One loop: what it is for, who decides where, one install command, the generated diagram,
+    the stage table, then the loop's own run instructions and quality bar from its LOOP.md."""
+    name = lp["name"]
+    home = catalog.loop_homes()[name][0]
+    spec = json.load(open(os.path.join(catalog.loop_dir(name), "loop.json"), encoding="utf-8"))
+    use = lp["description"].split(" Use when", 1)
+    gates_ = [(st, st["gate"]) for st in spec["stages"] if st.get("gate")]
+    decide = "<ul>" + "".join(f"<li><b>{esc(st['id'].capitalize())}</b> ({esc(g['id'])}): {WHO.get(g['kind'], g['kind'])}</li>"
+                              for st, g in gates_) + "</ul>"
+    glance = f"""<dl class="pk__glance">
+<div><dt>Use it when</dt><dd>{esc(('Use when' + use[1]) if len(use) > 1 else loop_summary(lp))}</dd></div>
+<div><dt>Comes with</dt><dd>The <a href="../../packs/{esc(home)}/">{esc(home)}</a> pack</dd></div>
+<div><dt>Where you decide</dt><dd>{decide}</dd></div>
+<div><dt>Size</dt><dd>{len(spec['stages'])} stages · {len(gates_)} gate{'s' if len(gates_) != 1 else ''} · up to {spec.get('cap', 3)} revision rounds</dd></div>
+</dl>"""
+    others = [("Every loop in its pack, with their skills:", f"npx skilldrop-cli install --loop --pack {home}"),
+              ("The loop alone, without its stage skills (each stage falls back to an inline version):", f"npx skilldrop-cli install --loop {name} --no-skills"),
+              (f"In Claude Code, the {home} plugin includes it:", f"/plugin install {home}@skilldrop")]
+    mmd_path = os.path.join(ROOT, "docs", "loops", f"{name}.mmd")
+    diagram = (f'<pre class="mermaid pk__diagram">{esc(open(mmd_path, encoding="utf-8").read())}</pre>'
+               if os.path.exists(mmd_path) else "")
+    skill = lambda s: f'<a href="../../skills/{esc(s)}/"><code>{esc(s)}</code></a>' if s in by_name else (
+        "any generator" if s == "*" else f"<code>{esc(s)}</code>")
+    rows = "".join(
+        f"<tr><td>{n + 1}</td><td><b>{esc(st['id'])}</b><br><span class=\"pk__muted\">{esc(st['type'])}</span></td>"
+        f"<td>{esc(st.get('intent', ''))}</td><td>{', '.join(skill(x) for x in st['skills'])}</td>"
+        f"<td>{(esc(st['gate']['id']) + ' — ' + WHO.get(st['gate']['kind'], st['gate']['kind']) + '<br><span class=\"pk__muted\">' + esc(' · '.join(st['gate'].get('verdicts', []))) + '</span>') if st.get('gate') else '—'}</td></tr>"
+        for n, st in enumerate(spec["stages"]))
+    table = (f'<div class="pk__tablewrap"><table class="pk__table"><thead><tr><th>#</th><th>Stage</th><th>What it does</th>'
+             f'<th>Skills</th><th>Gate</th></tr></thead><tbody>{rows}</tbody></table></div>')
+    rel = catalog.rel(os.path.join(catalog.loop_dir(name), "LOOP.md"))
+    _, body = parse_frontmatter(open(os.path.join(ROOT, rel), encoding="utf-8").read())
+    body = re.sub(r"\A\s*# [^\n]*\n", "", body)                       # the page shows the title
+    body = re.sub(r"^## Stages\s*$.*?(?=^## )", "", body, flags=re.M | re.S)  # the table above replaces it
+    parts = ['<main class="inner pk" id="main">',
+             f'<p class="pk__crumb"><a href="../">Loops</a> · <a href="../../packs/{esc(home)}/">{esc(home)}</a></p>',
+             f'<h1 class="pk__title"><code>{esc(name)}</code>{" <span class=\"pk__badge\">wrapper</span>" if lp["kind"] == "wrapper" else ""}</h1>',
+             f'<p class="pk__lede">{esc(loop_summary(lp))}</p>',
+             glance,
+             install_block(f"npx skilldrop-cli install --loop {name}", others,
+                           "Installs the loop as an invokable skill, plus every skill its stages run."),
+             f"<h2>The loop</h2>{diagram}",
+             f"<h2>Stages</h2>{table}",
+             f'<div class="pk__doc">{render_md(body, src=rel, docs_base="../../docs/")}</div>',
+             f'<h2>Source</h2><p><a href="{REPO_URL}/blob/main/{esc(rel)}">LOOP.md</a> · '
+             f'<a href="{REPO_URL}/blob/main/{esc(catalog.rel(os.path.join(catalog.loop_dir(name), "loop.json")))}">loop.json</a> on GitHub · '
+             f'<a href="../../docs/explanation/loops.html">Why loops</a></p>',
+             MERMAID, "</main>"]
+    url = f"{SITE_URL}loops/{name}/"
+    crumbs = breadcrumbs_ld([("skilldrop", SITE_URL), ("Loops", f"{SITE_URL}loops/"), (name, url)])
+    return shell(name, loop_summary(lp), url, 2, "\n".join(parts), current="loops/", extra_head=crumbs)
+
+
+LIFECYCLE = ["discover", "design", "build", "release", "operate", "ship-a-draft"]
+
+
+def loops_index(loop_list):
+    loop_list = sorted(loop_list, key=lambda lp: (LIFECYCLE.index(lp["name"]) if lp["name"] in LIFECYCLE else 99, lp["name"]))
+    cards = "".join(
+        f"""<li><a href="{esc(lp['name'])}/">{esc(lp['name'])}</a>{' <span class="pk__badge">wrapper</span>' if lp['kind'] == 'wrapper' else ''}
+<p>{esc(loop_summary(lp))}</p>
+<p class="pk__muted">{' · '.join(f"{esc(st['id'].capitalize())}: {WHO.get(st['gate']['kind'], st['gate']['kind'])}" for st in lp['stages'] if st['gate'])}</p></li>"""
+        for lp in loop_list)
+    body = f"""<main class="inner pk" id="main">
+<h1 class="pk__title">Loops</h1>
+<p class="pk__lede">A loop runs skills in order and stops at a gate before anything moves on. The cheaper the mistake, the more a script decides; the harder it is to undo, the more it waits for you. Five cover the lifecycle; <code>ship-a-draft</code> wraps any generator. <a href="../docs/explanation/loops.html">Why loops</a>.</p>
+<ul class="pk__list">{cards}</ul>
+</main>"""
+    return shell("Loops", "Every skilldrop loop: its stages, and who decides at each gate.", f"{SITE_URL}loops/", 1, body,
+                 current="loops/", extra_head=breadcrumbs_ld([("skilldrop", SITE_URL), ("Loops", f"{SITE_URL}loops/")]))
 
 
 def not_found_page():
@@ -438,6 +533,7 @@ def not_found_page():
 <ul class="pk__list">
 <li><a href="{root}packs/">Packs</a><p>Every pack, grouped by the job it does, with what to try first.</p></li>
 <li><a href="{root}catalogue/">All skills</a><p>Search and filter every skill by job, pack or tier.</p></li>
+<li><a href="{root}loops/">Loops</a><p>The sequences that run skills in order, and who decides at each gate.</p></li>
 <li><a href="{root}docs/">Docs</a><p>Install guides, tutorials, the loop reference and the skill catalogue.</p></li>
 <li><a href="{root}changelog/">What's new</a><p>Every release and what it lets you do.</p></li>
 </ul>
@@ -461,6 +557,7 @@ def render():
     home_of = {s["name"]: s["packs"][0] for s in skills if s["packs"]}
     loop_by_name = {l["name"]: l for l in loops()}
     out = {"packs/index.html": index_page(packs, outcomes, home_of),
+           "loops/index.html": loops_index(list(loop_by_name.values())),
            "404.html": not_found_page(),
            "changelog/index.html": changelog_page(),
            "skills/index.html": '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=../catalogue/">'
@@ -469,6 +566,8 @@ def render():
         out[f"packs/{name}/index.html"] = pack_page(name, pack, packs, by_name, loop_by_name, outcome_of)
     for s in skills:
         out[f"skills/{s['name']}/index.html"] = skill_page(s, by_name, packs, outcome_of)
+    for lp in loop_by_name.values():
+        out[f"loops/{lp['name']}/index.html"] = loop_page(lp, by_name)
     out["search.json"] = json.dumps(search_index(skills, packs, list(loop_by_name.values())),
                                     ensure_ascii=False, separators=(",", ":")) + "\n"
     return out
