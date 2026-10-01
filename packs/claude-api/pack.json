@@ -1,0 +1,21 @@
+{
+  "description": "Skills for teams building on the Anthropic API — prompt caching, token budgeting, eval generation for skills, and tool-use schema writing.",
+  "display_name": "Claude API",
+  "keywords": ["anthropic", "prompt-caching", "tokens", "tool-use", "evals"],
+  "links": {
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/claude-api/"
+  },
+  "maintainers": [
+    {
+      "name": "sananthanarayan"
+    }
+  ],
+  "first-value": {
+    "audience-posture": "technical",
+    "prerequisites": ["A system prompt and a typical request from your Claude API integration"],
+    "starter-task": "Find where prompt caching will cut your input costs",
+    "starter-prompt": "Here is our system prompt and a typical request: <paste them>. Where should the cache_control breakpoints go, and what hit rate should we expect?",
+    "verification": "prompt-caching-advisor marks where each cache_control checkpoint goes and estimates the cache hit rate.",
+    "recovery": "If prompt-caching-advisor does not activate, ask for it by name and check that its folder exists in your skills folder (`~/.claude/skills/` by default)."
+  }
+}

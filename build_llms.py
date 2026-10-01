@@ -4,7 +4,8 @@
 llms.txt is the index a model reads instead of crawling 400+ files. It is generated,
 not hand-written, for the same reason the loop diagrams are: a hand-maintained index of a
 moving catalogue goes stale silently, and a stale index is worse than none because a model
-trusts it. Sources: packs.json, loops/*/loop.json, guides/ frontmatter, contracts/, docs/rfcs/.
+trusts it. Sources: catalogue.json, packs/*/pack.json, packs/*/loops/*/loop.json, guides/
+frontmatter, contracts/, docs/rfcs/.
 
 Usage:
   python3 build_llms.py            # write llms.txt
@@ -15,6 +16,8 @@ import json
 import os
 import re
 import sys
+
+import catalog  # where skills, loops and packs live (RFC-0034)
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 RAW = "https://raw.githubusercontent.com/sananthanarayan/skilldrop/main"
@@ -30,12 +33,10 @@ def _fm(path, key):
 
 def render():
     pkg = json.load(open(os.path.join(ROOT, "package.json")))
-    packs_doc = json.load(open(os.path.join(ROOT, "packs.json")))
-    packs, outcomes = packs_doc["packs"], packs_doc["outcomes"]
-    skills = sorted(d for d in os.listdir(os.path.join(ROOT, "skills"))
-                    if os.path.isdir(os.path.join(ROOT, "skills", d)))
-    loops = sorted(d for d in os.listdir(os.path.join(ROOT, "loops"))
-                   if os.path.exists(os.path.join(ROOT, "loops", d, "loop.json")))
+    packs, outcomes = catalog.packs(), catalog.outcomes()
+    skills = sorted(catalog.skills())
+    loop_dirs = catalog.loops()
+    loops = sorted(loop_dirs)
     agents = sorted(f[:-3] for f in os.listdir(os.path.join(ROOT, "agents"))
                     if f.endswith(".md") and f != "README.md")
 
@@ -60,15 +61,15 @@ def render():
     L.append("")
 
     L.append("## Loops — the operating model\n")
-    L.append("Four loops cover the lifecycle and are separated by reversibility (how expensive the\n"
+    L.append("Five loops cover the lifecycle and are separated by reversibility (how expensive the\n"
              "mistake is to unwind), which is also what decides who may sign off. One wrapper applies\n"
              "to any generator.\n")
     for n in loops:
-        spec = json.load(open(os.path.join(ROOT, "loops", n, "loop.json")))
+        spec = json.load(open(os.path.join(loop_dirs[n], "loop.json")))
         stages = " -> ".join(st["id"] for st in spec["stages"])
         gates = ", ".join(f"{st['gate']['id']} ({st['gate']['kind']})"
                           for st in spec["stages"] if st.get("gate")) or "none"
-        L.append(f"- [{n}]({RAW}/loops/{n}/LOOP.md) — *{spec['kind']}*, cap {spec.get('cap', 3)}. "
+        L.append(f"- [{n}]({RAW}/{catalog.rel(loop_dirs[n])}/LOOP.md) — *{spec['kind']}*, cap {spec.get('cap', 3)}. "
                  f"Stages: {stages}. Gates: {gates}.")
     L.append("")
 
@@ -92,10 +93,13 @@ def render():
         L.append(f"- [{_fm(g, 'title')}]({RAW}/{rel}) *({_fm(g, 'kind')})*: {_fm(g, 'summary')}")
     L.append("")
 
-    L.append("## Role packs\n")
+    L.append("## Packs\n")
+    L.append("Each skill and loop sits in exactly one pack folder, `packs/<pack>/`. Every role pack\n"
+             "except `claude-api` requires `core`, which installs with it.\n")
     for name, p in packs.items():
         lp = f", loops: {', '.join(p.get('loops', []))}" if p.get("loops") else ""
-        L.append(f"- **{name}** ({len(p['skills'])} skills{lp}): {p['description']}")
+        req = f", requires {', '.join(p['requires'])}" if p.get("requires") else ""
+        L.append(f"- **{name}** ({len(p['skills'])} skills{lp}{req}): {p['description']}")
     L.append("")
 
     L.append("## Outcomes — browse by why you are here\n")
@@ -114,9 +118,10 @@ def render():
              f"Prefer this over scraping the site.")
     L.append(f"- [model-routing.json]({RAW}/model-routing.json): the abstract tier per skill "
              f"(light/standard/heavy) and the provider map that resolves a tier to a concrete model.")
-    L.append(f"- [packs.json]({RAW}/packs.json): pack and outcome membership.")
-    L.append(f"- All {len(skills)} skills live at `skills/<name>/SKILL.md`; each has a `manifest.json` "
-             f"beside it. Fetch one directly: `{RAW}/skills/<name>/SKILL.md`.")
+    L.append(f"- [catalogue.json]({RAW}/catalogue.json): pack display order and outcome membership; "
+             f"each pack's metadata is in `packs/<pack>/pack.json`.")
+    L.append(f"- All {len(skills)} skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a "
+             f"`manifest.json` beside it. Fetch one directly: `{RAW}/packs/<pack>/skills/<name>/SKILL.md`.")
     L.append("")
 
     L.append("## Optional\n")

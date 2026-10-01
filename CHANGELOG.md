@@ -8,6 +8,12 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.13.3 — 2026-10-01
+
+- Every pack now has a page with what to try first: a starter prompt to paste, how to tell it worked, and what to do if nothing happens. Browse them at `sananthanarayan.github.io/skilldrop/packs/`. The CLI prints the same starter after `install --pack`, or any time with `skilldrop info --pack <name>`, and each Claude pack plugin carries it in a README.
+- Skills now live in their pack's folder: `packs/<pack>/skills/<name>/`, with loops at `packs/<pack>/loops/<name>/` and each pack's metadata in `packs/<pack>/pack.json`. To copy a skill by hand, use `cp -R packs/<pack>/skills/<name> ~/.claude/skills/`. Installs through the CLI, `pack.py` or the Claude plugins work as before, and `outdated` and `update` carry on across the move. An older CLI pointed at this repo with `--from` needs upgrading; flat `skills/` catalogs from other people keep working.
+- `skilldrop install --profile <name>` works. It had been reading the profile name as missing.
+
 ## 0.13.2 — 2026-10-01
 
 - `skilldrop update` no longer erases your edits to an installed skill. A file you changed is kept, and the new version is written next to it as `<file>.upstream` for you to merge. Files you didn't touch update as before, and `--force` still overwrites everything. Skills installed with an earlier version overwrite once on their next update, then keep edits from then on.

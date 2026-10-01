@@ -1,49 +1,49 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/sananthanarayan/skilldrop/contracts/pack.schema.json",
-  "title": "skilldrop packs.json",
-  "$comment": "RFC-0001 / RFC-0026 / RFC-0029 / RFC-0033. Packs and outcomes are METADATA ONLY — skills never move out of flat skills/<name> folders. RFC-0033: each skill and loop sits in exactly one pack; shared skills live in `core`, which other packs pull in via `requires`. Packs answer WHO needs a skill; outcomes answer WHY someone opened the catalogue. Both get the same two-way membership check in validate.py.",
+  "title": "skilldrop packs/<pack>/pack.json",
+  "$comment": "RFC-0001 / RFC-0032 / RFC-0033 / RFC-0034. One pack's metadata. Membership is not listed here: a skill is in this pack because it sits at packs/<pack>/skills/<name>/, and a loop because it sits at packs/<pack>/loops/<name>/. Key names follow agent-ready-repo's pack.toml so the two stay mechanically convertible.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["version", "packs", "outcomes"],
+  "required": ["description"],
   "properties": {
     "$comment": { "type": "string" },
-    "version": { "type": "string" },
-    "packs": {
+    "description": { "type": "string", "description": "One line — who this pack is for." },
+    "display_name": { "type": "string", "description": "RFC-0032. Human title for the pack's page and plugin entry." },
+    "keywords": { "type": "array", "items": { "type": "string" }, "description": "RFC-0032. Search terms, copied into the plugin entry." },
+    "links": {
       "type": "object",
-      "description": "Role-based bundles. Keys are pack names.",
-      "additionalProperties": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["description", "skills"],
-        "properties": {
-          "description": { "type": "string", "description": "One line — who this pack is for." },
-          "skills": { "type": "array", "items": { "type": "string" }, "minItems": 1,
-                      "description": "Real skill folders. Every skill must appear in at least one pack." },
-          "requires": {
-      "type": "array",
-      "items": {
-       "type": "string"
-      },
-      "description": "RFC-0033. Packs installed together with this one (in practice, `core`). One level only: a required pack may not itself require."
-     },
-     "loops": { "type": "array", "items": { "type": "string" },
-                     "description": "RFC-0028. Real loops/ folders. Every loop must appear in at least one pack." }
-        }
+      "additionalProperties": false,
+      "description": "RFC-0032. Catalogue-facing links; `documentation` is the pack's page.",
+      "properties": {
+        "homepage": { "type": "string" },
+        "repository": { "type": "string" },
+        "documentation": { "type": "string" }
       }
     },
-    "outcomes": {
+    "maintainers": {
+      "type": "array",
+      "description": "RFC-0032.",
+      "items": { "type": "object", "additionalProperties": false, "required": ["name"], "properties": { "name": { "type": "string" } } }
+    },
+    "first-value": {
       "type": "object",
-      "description": "The catalogue's second browse axis. A browse aid only — never an install unit; the CLI takes no --outcome.",
-      "additionalProperties": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["description", "skills"],
-        "properties": {
-          "description": { "type": "string", "description": "The chip's tooltip on the catalogue site." },
-          "skills": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
-        }
+      "additionalProperties": false,
+      "description": "RFC-0032. What to try first after installing, how to tell it worked, and what to do if it didn't. Key names match agent-ready-repo's [pack.first-value].",
+      "required": ["audience-posture", "prerequisites", "starter-task", "starter-prompt", "verification", "recovery"],
+      "properties": {
+        "audience-posture": { "type": "string", "enum": ["technical", "non-technical"] },
+        "prerequisites": { "type": "array", "items": { "type": "string" } },
+        "starter-task": { "type": "string" },
+        "starter-prompt": { "type": "string" },
+        "verification": { "type": "string" },
+        "recovery": { "type": "string" }
       }
+    },
+    "requires": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "RFC-0033. Packs installed together with this one (in practice, `core`). One level only: a required pack may not itself require."
     }
   }
 }

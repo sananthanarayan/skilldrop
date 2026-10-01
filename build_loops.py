@@ -19,8 +19,9 @@ import os
 import re
 import sys
 
+import catalog  # where loops live (RFC-0034)
+
 ROOT = os.path.dirname(os.path.abspath(__file__))
-LOOPS = os.path.join(ROOT, "loops")
 OUTDIR = os.path.join(ROOT, "docs", "loops")
 
 HEADER = ("%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial',"
@@ -82,10 +83,8 @@ def render(spec, terminals):
 def build():
     terminals = json.load(open(os.path.join(ROOT, "contracts", "terminals.json")))
     specs = {}
-    for d in sorted(os.listdir(LOOPS)):
-        p = os.path.join(LOOPS, d, "loop.json")
-        if os.path.exists(p):
-            specs[d] = json.load(open(p))
+    for d, ldir in catalog.loops().items():
+        specs[d] = json.load(open(os.path.join(ldir, "loop.json")))
     return {name: render(spec, terminals) for name, spec in specs.items()}
 
 

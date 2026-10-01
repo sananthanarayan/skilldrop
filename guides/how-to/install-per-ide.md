@@ -22,13 +22,13 @@ Install a skill by copying its folder — drop the directory directly into the s
 ```bash
 # user-scope (recommended for personal use)
 mkdir -p ~/.claude/skills
-cp -R skills/architecture-diagrams ~/.claude/skills/
-cp -R skills/figma-diagrams ~/.claude/skills/
+cp -R packs/solution-architect/skills/architecture-diagrams ~/.claude/skills/
+cp -R packs/solution-architect/skills/figma-diagrams ~/.claude/skills/
 
 # project-scope (recommended when sharing with a team)
 mkdir -p .claude/skills
-cp -R skills/architecture-diagrams .claude/skills/
-cp -R skills/figma-diagrams .claude/skills/
+cp -R packs/solution-architect/skills/architecture-diagrams .claude/skills/
+cp -R packs/solution-architect/skills/figma-diagrams .claude/skills/
 ```
 
 Claude Code discovers the skill via its `SKILL.md` frontmatter `name` field. Invoke it in chat with `/<skill-name>` or by describing the task — Claude will route to the matching skill automatically.
@@ -40,7 +40,7 @@ Cursor does not have a native "skills" concept, but you can install a skill as a
 1. Copy the skill folder somewhere in the repo (e.g. `.cursor/skills/<skill-name>/`):
    ```bash
    mkdir -p .cursor/skills
-   cp -R skills/architecture-diagrams .cursor/skills/
+   cp -R packs/solution-architect/skills/architecture-diagrams .cursor/skills/
    ```
 
 2. Create `.cursor/rules/<skill-name>.mdc` that points Cursor at it:
@@ -61,10 +61,10 @@ Kiro has native **Agent Skills**, and Kiro IDE and Kiro CLI read the same direct
 
 ```bash
 mkdir -p .kiro/skills                  # workspace scope
-cp -R skills/figma-diagrams .kiro/skills/
+cp -R packs/solution-architect/skills/figma-diagrams .kiro/skills/
 
 mkdir -p ~/.kiro/skills                # global scope, every project
-cp -R skills/figma-diagrams ~/.kiro/skills/
+cp -R packs/solution-architect/skills/figma-diagrams ~/.kiro/skills/
 ```
 
 Kiro matches the skill by its `SKILL.md` frontmatter `name` (which must equal the folder name) and `description` — the same contract every other tool uses.

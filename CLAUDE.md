@@ -10,7 +10,7 @@ The fastest feedback loop for new or edited skills:
 
 ```bash
 # user-scope: skill is available in every Claude Code session, no project pollution
-mkdir -p ~/.claude/skills && cp -R skills/<skill-name> ~/.claude/skills/
+mkdir -p ~/.claude/skills && cp -R packs/<pack>/skills/<skill-name> ~/.claude/skills/
 
 # then in a new Claude Code session in any repo:
 /<skill-name> <args>
@@ -50,7 +50,7 @@ That means `/plugin` in a session opened at the repo root sees the skills, subag
 installable — one folder copied into Cursor or Aider works on its own, because nothing in it
 assumes a sibling is present.
 
-Sequencing lives one level up, in a **loop** (`loops/<name>/LOOP.md`, RFC-0028). A loop names
+Sequencing lives one level up, in a **loop** (`packs/<pack>/loops/<name>/LOOP.md`, RFC-0028). A loop names
 an ordered list of stages, the skills each stage runs, and the gate between them. It composes
 skills by *ordering* them, not by having them call each other — so `build` can run
 `feature-implement-loop` then `pre-merge-review` while both remain standalone skills.

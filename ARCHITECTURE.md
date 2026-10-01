@@ -16,9 +16,9 @@ Python, [`bin/skilldrop.js`](bin/skilldrop.js) is stdlib-only Node, and `package
 
 | Primitive | Lives in | Is | Installed as |
 |---|---|---|---|
-| **Skill** | `skills/<name>/SKILL.md` + `manifest.json` | One artifact generator or reviewer. Self-contained. | folder copy, verbatim |
-| **Loop** | `loops/<name>/LOOP.md` + `loop.json` | An ordered sequence of stages over skills, with a gate between them | `<dest>/<name>/SKILL.md` + `loop.json` |
-| **Pack / outcome** | `packs.json` | Metadata only. Packs say *who* needs a skill; outcomes say *why*. | not installed — expands to a skill list |
+| **Skill** | `packs/<pack>/skills/<name>/SKILL.md` + `manifest.json` | One artifact generator or reviewer. Self-contained. | folder copy, verbatim |
+| **Loop** | `packs/<pack>/loops/<name>/LOOP.md` + `loop.json` | An ordered sequence of stages over skills, with a gate between them | `<dest>/<name>/SKILL.md` + `loop.json` |
+| **Pack / outcome** | `packs/<pack>/` + `pack.json`; outcomes in `catalogue.json` | A pack is the folder its skills and loops sit in (RFC-0034); `pack.json` adds metadata and `requires`. Packs say *who* needs a skill; outcomes say *why*. | not installed itself — expands to its skills plus what it `requires` |
 | **Agent** | `agents/<name>.md` | A reviewer subagent: frontmatter + a system prompt | projected per target |
 
 Contracts for all four are machine-readable in [`contracts/`](contracts/), and
@@ -87,7 +87,7 @@ AGENTS.md: what is mechanical, and what is human judgment.
 | `build_site.py --check` | `pages.yml` | the rendered catalogue matches the manifests |
 
 **One declared producer per generated path.** `docs/loops/*.mmd` and the README's Mermaid
-blocks both come from `loop.json`; `.claude-plugin/` comes from `package.json` + `packs.json`.
+blocks both come from `loop.json`; `.claude-plugin/` comes from `package.json` + the `packs/` folders.
 Hand-editing any of them fails a check. This rule exists because the repo previously carried
 two `.mmd` files that duplicated two README blocks with no producer relationship — editing
 one silently left the other stale.
@@ -109,13 +109,13 @@ one silently left the other stale.
 ## Repository map
 
 ```
-skills/       57 skills            loops/        5 loops
+packs/<pack>/ 8 packs: skills/, loops/, pack.json   catalogue.json  pack order + outcomes
 agents/       3 reviewer subagents contracts/    machine-readable schemas
-packs.json    packs + outcomes     model-routing.json  tier per skill + provider map
+catalog.py    the one loader       model-routing.json  tier per skill + provider map
 bin/          the CLI              guides/       Diátaxis how-to / reference / explanation
 docs/rfcs/    decisions            docs/loops/   generated diagrams
-build_site.py build_marketplace.py build_loops.py  validate.py  route.py  pack.py
+build_site.py build_packs.py build_marketplace.py build_loops.py  validate.py  route.py  pack.py
 ```
 
-Anything outside `skills/`, `loops/`, `agents/`, and `contracts/` is repo policy or hygiene.
+Anything outside `packs/`, `agents/`, and `contracts/` is repo policy or hygiene.
 A new top-level directory needs an RFC.

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/sananthanarayan/skilldrop/contracts/catalogue.schema.json",
+  "title": "skilldrop catalogue.json",
+  "$comment": "RFC-0026 / RFC-0034. The catalogue index: pack display order, and the outcome axis. Packs answer WHO needs a skill (the folder it sits in); outcomes answer WHY someone opened the catalogue.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "packs", "outcomes"],
+  "properties": {
+    "$comment": { "type": "string" },
+    "version": { "type": "string" },
+    "packs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Every pack folder under packs/, in display order. validate.py checks both directions."
+    },
+    "outcomes": {
+      "type": "object",
+      "description": "The catalogue's second browse axis. A browse aid only — never an install unit; the CLI takes no --outcome.",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["description", "skills"],
+        "properties": {
+          "description": { "type": "string", "description": "The chip's tooltip on the catalogue site." },
+          "skills": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+        }
+      }
+    }
+  }
+}

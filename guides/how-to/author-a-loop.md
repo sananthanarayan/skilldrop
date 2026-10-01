@@ -15,7 +15,7 @@ rationale is [RFC-0028](../../docs/rfcs/0028-loops-as-a-primitive.md).
 
 ## 1. Write the RFC
 
-`loops/` is a primitive, so adding to it is a structural decision. Copy
+Loops are a primitive, so adding one is a structural decision. Copy
 [`docs/rfcs/0000-template.md`](../../docs/rfcs/0000-template.md) to the next number and mark
 it `accepted` before building.
 
@@ -35,7 +35,7 @@ The contract is [`contracts/loop.schema.json`](../../contracts/loop.schema.json)
     { "id": "implement", "type": "generate", "intent": "One line.", "skills": ["feature-implement-loop"] },
     { "id": "verify", "type": "verify", "intent": "One line.", "skills": ["pre-merge-review"],
       "gate": { "id": "G2", "kind": "mechanical",
-                "script": "skills/pre-merge-review/scripts/gate.py",
+                "script": "packs/dev-team/skills/pre-merge-review/scripts/gate.py",
                 "verdicts": ["READY", "NOT READY", "BLOCKED"],
                 "revise_to": "implement" } }
   ]
@@ -45,7 +45,7 @@ The contract is [`contracts/loop.schema.json`](../../contracts/loop.schema.json)
 - `kind` is `loop` (advances toward a terminal) or `wrapper` (its middle stage is any
   generator, chosen at run time — only a wrapper may use `"*"` in `skills`).
 - `type` is `generate` / `verify` / `gate` — the three states
-  [`agent-loop-design`](../../skills/agent-loop-design/SKILL.md) mandates.
+  [`agent-loop-design`](../../packs/ai-engineering/skills/agent-loop-design/SKILL.md) mandates.
 - `cap` bounds revision rounds. Default 3.
 
 ## 3. Get the gates right
@@ -71,7 +71,7 @@ is a diagram.
 
 ## 5. Register and generate
 
-- Add the loop to exactly one pack's `loops` array in [`packs.json`](../../packs.json). That pack, together with `core`, must hold every skill the loop's stages run.
+- Put the loop in exactly one pack: `packs/<pack>/loops/<name>/`. That pack, together with `core`, must hold every skill the loop's stages run.
 - **Do not** add it to `model-routing.json` — a loop sequences skills and makes no model call
   of its own, so it carries no tier.
 - Run `python3 build_loops.py` to regenerate `docs/loops/<name>.mmd` and the README's Mermaid

@@ -6,7 +6,7 @@
 > 63 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.13.2.
+> Version 0.13.3.
 
 ## Start here
 
@@ -17,16 +17,16 @@
 
 ## Loops — the operating model
 
-Four loops cover the lifecycle and are separated by reversibility (how expensive the
+Five loops cover the lifecycle and are separated by reversibility (how expensive the
 mistake is to unwind), which is also what decides who may sign off. One wrapper applies
 to any generator.
 
-- [build](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/loops/build/LOOP.md) — *loop*, cap 3. Stages: shape -> implement -> verify -> decide. Gates: G2 (mechanical), G2.1 (human).
-- [design](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/loops/design/LOOP.md) — *loop*, cap 3. Stages: constrain -> shape -> threat -> ratify -> record. Gates: G1 (review).
-- [discover](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/loops/discover/LOOP.md) — *loop*, cap 3. Stages: gather -> structure -> specify -> ratify. Gates: G0 (human).
-- [operate](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/loops/operate/LOOP.md) — *loop*, cap 3. Stages: instrument -> document -> respond -> learn. Gates: G3 (human).
-- [release](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/loops/release/LOOP.md) — *loop*, cap 3. Stages: plan -> ready -> announce -> go. Gates: G2.5 (review), G2.6 (human).
-- [ship-a-draft](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/loops/ship-a-draft/LOOP.md) — *wrapper*, cap 3. Stages: intake -> draft -> critique -> polish. Gates: G4 (review).
+- [build](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/dev-team/loops/build/LOOP.md) — *loop*, cap 3. Stages: shape -> implement -> verify -> decide. Gates: G2 (mechanical), G2.1 (human).
+- [design](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/solution-architect/loops/design/LOOP.md) — *loop*, cap 3. Stages: constrain -> shape -> threat -> ratify -> record. Gates: G1 (review).
+- [discover](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/product-manager/loops/discover/LOOP.md) — *loop*, cap 3. Stages: gather -> structure -> specify -> ratify. Gates: G0 (human).
+- [operate](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/sre-oncall/loops/operate/LOOP.md) — *loop*, cap 3. Stages: instrument -> document -> respond -> learn. Gates: G3 (human).
+- [release](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/dev-team/loops/release/LOOP.md) — *loop*, cap 3. Stages: plan -> ready -> announce -> go. Gates: G2.5 (review), G2.6 (human).
+- [ship-a-draft](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/core/loops/ship-a-draft/LOOP.md) — *wrapper*, cap 3. Stages: intake -> draft -> critique -> polish. Gates: G4 (review).
 
 ## Machine-readable contracts
 
@@ -34,9 +34,10 @@ Closed schemas — an unknown key is a failure, not an extension point. Checked 
 stdlib JSON Schema subset in validate.py, never by a dependency.
 
 - [contracts/agent.schema.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/contracts/agent.schema.json): agents/<name>.md is a single markdown file whose YAML frontmatter is already Claude Code's format; the body is the system prompt.
+- [contracts/catalogue.schema.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/contracts/catalogue.schema.json): The catalogue index: pack display order, and the outcome axis.
 - [contracts/guide.schema.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/contracts/guide.schema.json): Diátaxis `kind` is a PAGE CONTRACT, not a directory requirement — the directory is a convenience, the frontmatter is the truth.
 - [contracts/loop.schema.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/contracts/loop.schema.json): A loop sequences existing skills; it never contains one.
-- [contracts/pack.schema.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/contracts/pack.schema.json): Packs and outcomes are METADATA ONLY — skills never move out of flat skills/<name> folders.
+- [contracts/pack.schema.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/contracts/pack.schema.json): One pack's metadata.
 - [contracts/skill.schema.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/contracts/skill.schema.json): This shape lived only as prose in AGENTS.md, so the one authoritative statement of what a manifest is was a paragraph a contributor had to read and obey.
 - [contracts/terminals.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/contracts/terminals.json): the shared verdict vocabulary.
 
@@ -65,15 +66,18 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [From signal to signed-off PRD — the product manager workflow](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/product-manager-workflow.md) *(tutorial)*: A PM's full discovery-to-requirements session: sharpen the signal into a brief, test the narrative with a PR/FAQ, cascade OKRs, write the PRD, define metrics, critique before sharing.
 - [From brief to committed design — the solution architect workflow](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/solution-architect-workflow.md) *(tutorial)*: A full design session: capture the brief, draw the system, commit decisions as ADRs, write the design doc, threat-model it, gate with council review.
 
-## Role packs
+## Packs
+
+Each skill and loop sits in exactly one pack folder, `packs/<pack>/`. Every role pack
+except `claude-api` requires `core`, which installs with it.
 
 - **core** (4 skills, loops: ship-a-draft): The cross-role toolkit every pack builds on: structured intake, document critique, the review council, and output hygiene, plus the ship-a-draft wrapper. Installed automatically with every role pack.
-- **solution-architect** (11 skills, loops: design): Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.
-- **product-manager** (8 skills, loops: discover): Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, and success measurement.
-- **dev-team** (14 skills, loops: build, release): Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, migrations, launch readiness, release notes, agent-policy files, and code-quality gates.
-- **sre-oncall** (5 skills, loops: operate): Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.
-- **stakeholder-comms** (6 skills): Non-technical audiences: audience profiling, deck outlines and real .pptx decks, exec summaries, decision logs, and guides.
-- **ai-engineering** (11 skills): Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, and AI-usage reporting.
+- **solution-architect** (11 skills, loops: design, requires core): Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.
+- **product-manager** (8 skills, loops: discover, requires core): Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, and success measurement.
+- **dev-team** (14 skills, loops: build, release, requires core): Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, migrations, launch readiness, release notes, agent-policy files, and code-quality gates.
+- **sre-oncall** (5 skills, loops: operate, requires core): Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.
+- **stakeholder-comms** (6 skills, requires core): Non-technical audiences: audience profiling, deck outlines and real .pptx decks, exec summaries, decision logs, and guides.
+- **ai-engineering** (11 skills, requires core): Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, and AI-usage reporting.
 - **claude-api** (4 skills): Skills for teams building on the Anthropic API — prompt caching, token budgeting, eval generation for skills, and tool-use schema writing.
 
 ## Outcomes — browse by why you are here
@@ -97,11 +101,11 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 
 - [catalogue.json](https://sananthanarayan.github.io/skilldrop/catalogue.json): every skill, loop, pack and outcome as machine-readable JSON — name, description, tier, tags, related. Prefer this over scraping the site.
 - [model-routing.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/model-routing.json): the abstract tier per skill (light/standard/heavy) and the provider map that resolves a tier to a concrete model.
-- [packs.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs.json): pack and outcome membership.
-- All 63 skills live at `skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/skills/<name>/SKILL.md`.
+- [catalogue.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/catalogue.json): pack display order and outcome membership; each pack's metadata is in `packs/<pack>/pack.json`.
+- All 63 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
 
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 33 accepted RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 34 accepted RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.

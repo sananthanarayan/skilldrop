@@ -19,11 +19,11 @@ prose nothing enforces:
   comes out of either until it passes a review gate"*, drawn in
   `docs/knowledge-work-pipeline.mmd` and `docs/code-implement-verify.mmd` — both since
   retired, their content now generated into [`docs/loops/`](../loops/) from `loop.json`.
-- [`agent-loop-design`](../../skills/agent-loop-design/SKILL.md) already specifies the loop
+- [`agent-loop-design`](../../packs/ai-engineering/skills/agent-loop-design/SKILL.md) already specifies the loop
   schema — "every loop has exactly these three state types" (generate / verify / gate), with a
   revision cap defaulting to 3.
-- [`feature-implement-loop`](../../skills/feature-implement-loop/SKILL.md) is a working
-  instance of that schema; [`pre-merge-review`](../../skills/pre-merge-review/SKILL.md) ships
+- [`feature-implement-loop`](../../packs/dev-team/skills/feature-implement-loop/SKILL.md) is a working
+  instance of that schema; [`pre-merge-review`](../../packs/dev-team/skills/pre-merge-review/SKILL.md) ships
   a real deterministic gate script.
 - `packs.json` `outcomes` already reads as a lifecycle: decide → design → build → run.
 

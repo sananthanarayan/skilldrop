@@ -7,7 +7,7 @@
     python3 pack.py <pack> --install --project   # copy into ./.claude/skills/ (project scope)
     python3 pack.py <pack> --install --dest <dir># copy into any directory (e.g. .cursor/skills)
 
-Packs are defined in packs.json. For non-Claude IDEs, --dest points at your
+Packs are the folders under packs/ (RFC-0034). For non-Claude IDEs, --dest points at your
 tool's skills location; the per-IDE wiring steps stay as documented in README.md.
 """
 import json
@@ -15,8 +15,10 @@ import os
 import shutil
 import sys
 
+import catalog
+
 ROOT = os.path.dirname(os.path.abspath(__file__))
-PACKS = json.load(open(os.path.join(ROOT, "packs.json")))["packs"]
+PACKS = catalog.packs()
 
 
 def members(name):
@@ -57,7 +59,7 @@ def main():
 
     deps = []
     for s in skills:
-        src = os.path.join(ROOT, "skills", s)
+        src = catalog.skill_dir(s)
         shutil.copytree(src, os.path.join(dest, s), dirs_exist_ok=True)
         if os.path.exists(os.path.join(src, "requirements.txt")):
             deps.append(s)

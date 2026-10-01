@@ -1,0 +1,22 @@
+{
+  "description": "Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, migrations, launch readiness, release notes, agent-policy files, and code-quality gates.",
+  "display_name": "Dev team",
+  "keywords": ["review", "merge", "testing", "release", "code-quality"],
+  "links": {
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/dev-team/"
+  },
+  "maintainers": [
+    {
+      "name": "sananthanarayan"
+    }
+  ],
+  "first-value": {
+    "audience-posture": "technical",
+    "prerequisites": ["A git repository with changes on a branch", "The reviewer subagents, for the full panel: `skilldrop install --panel review` (the Claude plugin includes them)"],
+    "starter-task": "Find out whether your current branch is safe to merge",
+    "starter-prompt": "Is this branch safe to merge? Run a pre-merge review on the current diff.",
+    "verification": "pre-merge-review runs the project's lint, typecheck and tests through its gate script, then the reviewer panel, and ends with READY or NOT READY.",
+    "recovery": "If the gate script cannot find your lint or test commands, tell it what they are. If the panel is skipped, install the reviewer subagents with `skilldrop install --panel review`."
+  },
+  "requires": ["core"]
+}

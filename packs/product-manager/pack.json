@@ -1,0 +1,22 @@
+{
+  "description": "Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, and success measurement.",
+  "display_name": "Product manager",
+  "keywords": ["prfaq", "prd", "strategy", "okr", "discovery"],
+  "links": {
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/product-manager/"
+  },
+  "maintainers": [
+    {
+      "name": "sananthanarayan"
+    }
+  ],
+  "first-value": {
+    "audience-posture": "non-technical",
+    "prerequisites": [],
+    "starter-task": "Pressure-test a product idea before anyone builds it",
+    "starter-prompt": "Write a PR/FAQ for a feature that lets customers pause their subscription for up to three months instead of cancelling.",
+    "verification": "prfaq returns a launch press release, a customer FAQ and an internal FAQ that names the hard questions.",
+    "recovery": "If prfaq does not activate, ask for it by name (\"use prfaq\") and check that its folder exists in your skills folder (`~/.claude/skills/` by default)."
+  },
+  "requires": ["core"]
+}

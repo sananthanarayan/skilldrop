@@ -46,7 +46,7 @@ Five changes, all inside `build_site.py` except where noted.
    row renders — the disclosure is progressive enhancement, never a gate.
 2. **Put filter state in the URL.** `?q=&pack=&tier=&outcome=` written with `history.replaceState`
    on every change and read back on load. A filtered view becomes a link without adding a page.
-3. **Outcomes as a browse axis.** A new `outcomes` key in [`packs.json`](../../packs.json) —
+3. **Outcomes as a browse axis.** A new `outcomes` key in [`packs.json`](../../catalogue.json) —
    the README's nine categories restated as six outcomes, each `{description, skills[]}` —
    rendered as a third chip row. This is the existing taxonomy made machine-readable, not a
    fourth one invented. `validate.py` gains the same two-way check packs already get: every

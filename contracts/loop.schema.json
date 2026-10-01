@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/sananthanarayan/skilldrop/contracts/loop.schema.json",
   "title": "skilldrop loop",
-  "$comment": "RFC-0028. A loop sequences existing skills; it never contains one. Skills stay in flat skills/<name> folders and stay independently installable — a loop is a named order plus the gates between stages. Enforced by validate.py with hand-rolled stdlib checks: skilldrop ships zero runtime dependencies and this file must not become a reason to add `jsonschema`.",
+  "$comment": "RFC-0028. A loop sequences existing skills; it never contains one. Skills stay in their own packs/<pack>/skills/<name> folders and stay independently installable — a loop is a named order plus the gates between stages. Enforced by validate.py with hand-rolled stdlib checks: skilldrop ships zero runtime dependencies and this file must not become a reason to add `jsonschema`.",
   "type": "object",
   "additionalProperties": false,
   "required": ["name", "description", "entrypoint", "kind", "stages"],
@@ -48,7 +48,7 @@
             "type": "array",
             "minItems": 1,
             "items": { "type": "string" },
-            "description": "Skill folder names, in order. Each must be a real skills/<name>. `*` means any generator, and is legal only in a wrapper."
+            "description": "Skill folder names, in order. Each must be a real skill folder (packs/<pack>/skills/<name>). `*` means any generator, and is legal only in a wrapper."
           },
           "gate": {
             "type": "object",

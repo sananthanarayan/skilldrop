@@ -1,0 +1,22 @@
+{
+  "description": "Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, and AI-usage reporting.",
+  "display_name": "AI engineering",
+  "keywords": ["ai-adoption", "agents", "evals", "governance", "budgets"],
+  "links": {
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/ai-engineering/"
+  },
+  "maintainers": [
+    {
+      "name": "sananthanarayan"
+    }
+  ],
+  "first-value": {
+    "audience-posture": "non-technical",
+    "prerequisites": [],
+    "starter-task": "Find out whether a team is ready to adopt AI tools, and what blocks it first",
+    "starter-prompt": "Are we ready for AI? Our support team has 12 people on Zendesk, no AI tools today, and a legal team worried about customer data.",
+    "verification": "ai-readiness-assessment scores six dimensions (data, tooling, skills, governance, process, culture) with evidence for each, and ranks the gaps that block adoption first.",
+    "recovery": "If ai-readiness-assessment does not activate, ask for it by name and check that its folder exists in your skills folder (`~/.claude/skills/` by default)."
+  },
+  "requires": ["core"]
+}

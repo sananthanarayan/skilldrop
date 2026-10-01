@@ -15,8 +15,8 @@ Checks (FAIL):
     >=1 eval with prompt + assertions; eval_queries.json has both should_trigger
     true and false rows
   - manifest description == SKILL.md frontmatter description (whitespace-normalized)
-  - packs.json: every pack entry is a real skill folder, and every skill
-    belongs to exactly one pack (RFC-0033); `requires` is real and one level deep;
+  - packs/: every skill and loop sits in exactly one pack folder (RFC-0033, RFC-0034),
+    each pack has a valid pack.json, and catalogue.json lists every pack; `requires` is real and one level deep;
     a pack ships every skill its loops run
   - manifest hooks (optional): each entry's event is in the RFC-0006 vocabulary,
     its action is a real skill folder, and it carries a description
@@ -29,7 +29,7 @@ Checks (FAIL):
     (reference.md, references/, lenses/, rubrics/) is linked from SKILL.md; and
     prose markdown links across skills/agents/docs/root docs don't dangle
     (fenced blocks + {template} lines + placeholder targets are skipped)
-  - (RFC-0026) every skill belongs to at least one `outcomes` entry in packs.json,
+  - (RFC-0026) every skill belongs to at least one `outcomes` entry in catalogue.json,
     and every outcome entry names a real skill folder
   - (RFC-0016) every SKILL.md has a `## Quality bar` and `## Anti-patterns`
     section (golden rule 7); a skill with scripts/ cites both the
@@ -46,14 +46,16 @@ import os
 import re
 import sys
 
+import catalog           # where skills, loops and packs live (RFC-0034)
 import build_marketplace  # .claude-plugin/ drift check (RFC-0014)
 import build_loops        # docs/loops/*.mmd + README drift check (RFC-0028)
 import build_llms         # llms.txt drift check (RFC-0030)
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-SKILLS = os.path.join(ROOT, "skills")
 AGENTS = os.path.join(ROOT, "agents")
-LOOPS = os.path.join(ROOT, "loops")  # RFC-0028 — the third primitive
+# RFC-0034: skills and loops live in their pack — packs/<pack>/{skills,loops}/<name>/.
+SKILL_PATH = catalog.skills()
+LOOP_PATH = catalog.loops()
 HANDOFF_FIELDS = ("to", "when", "purpose", "fallback")  # RFC-0028, closed
 HOOK_EVENTS = {"session-start", "pre-commit-review", "on-demand"}  # RFC-0006; kept in sync with bin/skilldrop.js
 
@@ -207,7 +209,7 @@ def check_agents(skill_dirs):
                 warn(f"agents/{f}", f"no `{k}` in frontmatter (recommended)")
 
     for d in skill_dirs:
-        sp = os.path.join(SKILLS, d, "SKILL.md")
+        sp = os.path.join(SKILL_PATH[d], "SKILL.md")
         if not os.path.exists(sp):
             continue
         for ref in set(SUBAGENT_REF.findall(open(sp, encoding="utf-8").read())):
@@ -226,19 +228,19 @@ def check_loops(dir_set):
     """RFC-0028 — loops/ is the third primitive. A loop sequences skills; it never contains one.
     These checks exist because a loop that names a renamed skill, or a gate that can only say
     yes, is worse than no loop at all: it looks like governance and enforces nothing."""
-    if not os.path.isdir(LOOPS):
+    if not LOOP_PATH:
         return set()
     terminals = json.load(open(os.path.join(ROOT, "contracts", "terminals.json")))
     vclass = {v: m["class"] for v, m in terminals["verdicts"].items()}
     names, seen_gates = set(), {}
 
-    for d in sorted(x for x in os.listdir(LOOPS) if os.path.isdir(os.path.join(LOOPS, x))):
+    for d in sorted(LOOP_PATH):
         names.add(d)
+        p = LOOP_PATH[d]
+        where = catalog.rel(p)
         if d in dir_set:
-            fail(f"loops/{d}", "a skill folder already has this name — a loop installs into the "
-                               "same namespace (LOOP.md projects to SKILL.md), so the two collide")
-        p = os.path.join(LOOPS, d)
-        where = f"loops/{d}"
+            fail(where, "a skill folder already has this name — a loop installs into the "
+                        "same namespace (LOOP.md projects to SKILL.md), so the two collide")
         try:
             spec = json.load(open(os.path.join(p, "loop.json")))
         except (OSError, json.JSONDecodeError) as e:
@@ -365,13 +367,12 @@ def frontmatter(md_text):
 
 def main():
     routing = json.load(open(os.path.join(ROOT, "model-routing.json")))["skills"]
-    loop_dirs = {x for x in os.listdir(LOOPS) if os.path.isdir(os.path.join(LOOPS, x))} \
-        if os.path.isdir(LOOPS) else set()
-    skill_dirs = sorted(d for d in os.listdir(SKILLS) if os.path.isdir(os.path.join(SKILLS, d)))
+    loop_dirs = set(LOOP_PATH)
+    skill_dirs = sorted(SKILL_PATH)
     dir_set = set(skill_dirs)
 
     for d in skill_dirs:
-        p = os.path.join(SKILLS, d)
+        p = SKILL_PATH[d]
         try:
             manifest = json.load(open(os.path.join(p, "manifest.json")))
         except (OSError, json.JSONDecodeError) as e:
@@ -526,75 +527,83 @@ def main():
         else:
             fail("model-routing.json", f"entry '{r}' has no skill folder")
 
-    packs_doc = json.load(open(os.path.join(ROOT, "packs.json")))
-    for e in check_schema(packs_doc, schema("pack.schema.json")):
-        fail("packs.json", e)
-    packs = packs_doc["packs"]
-    packed = set()
-    for pname, pack in packs.items():
-        for s in pack.get("skills", []):
-            if s not in dir_set:
-                fail("packs.json", f"pack '{pname}' lists '{s}', which is not a skill folder")
-            packed.add(s)
-    for s in sorted(dir_set - packed):
-        fail("packs.json", f"skill '{s}' belongs to no pack — every skill needs an audience")
-
-    looped = set()
-    for pname, pack in packs.items():
-        for lp in pack.get("loops", []):
-            if lp not in loop_dirs:
-                fail("packs.json", f"pack '{pname}' lists loop '{lp}', which is not a loops/ folder")
-            looped.add(lp)
-    for lp in sorted(loop_dirs - looped):
-        fail("packs.json", f"loop '{lp}' belongs to no pack — a loop with no audience ships to nobody")
+    # RFC-0034: membership is the folder a skill or loop sits in, so "every skill is in a pack"
+    # holds by construction. What can still go wrong: a leftover flat folder, a pack folder with
+    # no pack.json, catalogue.json's pack order drifting from the folders, a bad pack.json.
+    for legacy in ("skills", "loops"):
+        if os.path.isdir(os.path.join(ROOT, legacy)):
+            fail(legacy + "/", f"flat {legacy}/ is gone (RFC-0034) — move each one into packs/<pack>/{legacy}/")
+    for d in sorted(os.listdir(catalog.PACKS_DIR)) if os.path.isdir(catalog.PACKS_DIR) else []:
+        if os.path.isdir(os.path.join(catalog.PACKS_DIR, d)) and not os.path.isfile(os.path.join(catalog.PACKS_DIR, d, "pack.json")):
+            fail(f"packs/{d}", "pack folder has no pack.json")
+    index_doc = catalog.index()
+    for e in check_schema(index_doc, schema("catalogue.schema.json")):
+        fail("catalogue.json", e)
+    on_disk = set(catalog._children(catalog.PACKS_DIR, "pack.json"))
+    listed = index_doc.get("packs", [])
+    for pn in sorted(on_disk - set(listed)):
+        fail("catalogue.json", f"pack '{pn}' is missing from `packs` — that list is the display order")
+    for pn in listed:
+        if pn not in on_disk:
+            fail("catalogue.json", f"`packs` lists '{pn}', which has no packs/{pn}/pack.json")
+    for pn in sorted(on_disk):
+        for e in check_schema(catalog.pack_meta(pn), schema("pack.schema.json")):
+            fail(f"packs/{pn}/pack.json", e)
+    packs = catalog.packs()
+    homes = {"skill": catalog.skill_homes(), "loop": catalog.loop_homes()}
 
     # RFC-0033: one home per skill and per loop — the shape a physical packs/<name>/ layout
     # needs. Shared skills live in a required pack (core), and `requires` is one level deep.
-    for kind, key in (("skill", "skills"), ("loop", "loops")):
-        homes = {}
-        for pname, pack in packs.items():
-            for x in pack.get(key, []):
-                homes.setdefault(x, []).append(pname)
-        for x, hs in sorted(homes.items()):
+    for kind in ("skill", "loop"):
+        for x, hs in sorted(homes[kind].items()):
             if len(hs) > 1:
-                fail("packs.json", f"{kind} '{x}' is in {len(hs)} packs ({', '.join(hs)}) — give it one home, or move it to core (RFC-0033)")
+                fail("packs/", f"{kind} '{x}' has a folder in {len(hs)} packs ({', '.join(hs)}) — give it one home, or move it to core (RFC-0033)")
     for pname, pack in packs.items():
         for r in pack.get("requires", []):
             if r == pname:
-                fail("packs.json", f"pack '{pname}' requires itself")
+                fail(f"packs/{pname}/pack.json", f"pack '{pname}' requires itself")
             elif r not in packs:
-                fail("packs.json", f"pack '{pname}' requires '{r}', which is not a pack")
+                fail(f"packs/{pname}/pack.json", f"pack '{pname}' requires '{r}', which is not a pack")
             elif packs[r].get("requires"):
-                fail("packs.json", f"pack '{pname}' requires '{r}', which itself requires — keep requires one level deep (RFC-0033)")
+                fail(f"packs/{pname}/pack.json", f"pack '{pname}' requires '{r}', which itself requires — keep requires one level deep (RFC-0033)")
+        # RFC-0032: the first-value check must name something this pack actually installs,
+        # or the "how to tell it worked" line points the reader at a skill they don't have.
+        fv = pack.get("first-value")
+        if fv:
+            reach_names = set(pack.get("skills", [])) | set(pack.get("loops", []))
+            for r in pack.get("requires", []):
+                reach_names |= set(packs.get(r, {}).get("skills", [])) | set(packs.get(r, {}).get("loops", []))
+            if not any(re.search(rf"(?<![\w-]){re.escape(n)}(?![\w-])", fv.get("verification", "")) for n in reach_names):
+                fail(f"packs/{pname}/pack.json", f"pack '{pname}' first-value verification names none of its skills or loops — say which one produces the result (RFC-0032)")
         # A pack ships every skill its loops run, so a pack install never hands over a loop
         # whose stages degrade for lack of a skill the same command could have installed.
         reach = set(pack.get("skills", []))
         for r in pack.get("requires", []):
             reach |= set(packs.get(r, {}).get("skills", []))
         for lp in pack.get("loops", []):
-            lj = os.path.join(ROOT, "loops", lp, "loop.json")
+            lj = os.path.join(LOOP_PATH.get(lp, ""), "loop.json")
             if not os.path.isfile(lj):
                 continue
             for st in json.load(open(lj, encoding="utf-8")).get("stages", []):
                 for sk in st.get("skills", []):
                     if sk != "*" and sk not in reach:
-                        fail("packs.json", f"pack '{pname}' ships loop '{lp}', whose '{st.get('id')}' stage runs '{sk}' — not in the pack or what it requires (RFC-0033)")
+                        fail(f"packs/{pname}/pack.json", f"pack '{pname}' ships loop '{lp}', whose '{st.get('id')}' stage runs '{sk}' — not in the pack or what it requires (RFC-0033)")
 
     # RFC-0026: outcomes are the site's second browse axis. Same two-way check as packs, so a
     # new skill can't quietly become unreachable from the outcome chips.
-    outcomes = packs_doc.get("outcomes", {})
+    outcomes = index_doc.get("outcomes", {})
     if not outcomes:
-        fail("packs.json", "no `outcomes` block — the site's outcome axis is generated from it (RFC-0026)")
+        fail("catalogue.json", "no `outcomes` block — the site's outcome axis is generated from it (RFC-0026)")
     outcomed = set()
     for oname, outcome in outcomes.items():
         if not outcome.get("description"):
-            fail("packs.json", f"outcome '{oname}' needs a description — it is the chip's tooltip")
+            fail("catalogue.json", f"outcome '{oname}' needs a description — it is the chip's tooltip")
         for s in outcome.get("skills", []):
             if s not in dir_set:
-                fail("packs.json", f"outcome '{oname}' lists '{s}', which is not a skill folder")
+                fail("catalogue.json", f"outcome '{oname}' lists '{s}', which is not a skill folder")
             outcomed.add(s)
     for s in sorted(dir_set - outcomed):
-        fail("packs.json", f"skill '{s}' belongs to no outcome — add it to one in packs.json (RFC-0026)")
+        fail("catalogue.json", f"skill '{s}' belongs to no outcome — add it to one in catalogue.json (RFC-0026)")
 
     # profiles.json: each named profile is an install recipe. Validate that every pack,
     # agent, and loop it names actually exists — a profile referencing a deleted pack is
@@ -609,7 +618,7 @@ def main():
             for pname, profile in profiles_doc.get("profiles", {}).items():
                 for pk in profile.get("packs", []):
                     if pk not in packs:
-                        fail("profiles.json", f"profile '{pname}' lists pack '{pk}', which is not in packs.json")
+                        fail("profiles.json", f"profile '{pname}' lists pack '{pk}', which is not a pack in packs/")
                 for ag in profile.get("agents", []):
                     if not os.path.exists(os.path.join(AGENTS, ag + ".md")):
                         fail("profiles.json", f"profile '{pname}' lists agent '{ag}', which is not in agents/")
@@ -646,7 +655,7 @@ def main():
         og_txt = open(og, encoding="utf-8").read()
         n_agents = len([f for f in os.listdir(AGENTS) if f.endswith(".md") and f != "README.md"]) \
             if os.path.isdir(AGENTS) else 0
-        n_packs = len(json.load(open(os.path.join(ROOT, "packs.json")))["packs"])
+        n_packs = len(catalog.pack_names())
         for claim, actual in ((r"(\d+) skills", len(skill_dirs)),
                               (r"(\d+) (?:role )?packs", n_packs),
                               (r"(\d+) reviewer subagents", n_agents)):
@@ -670,11 +679,9 @@ def main():
     for d in sorted(skill_dirs):
         if f"skills/{d}/SKILL.md" not in readme:
             fail("README.md", f"no row for skill '{d}' — the catalogue documents what it ships")
-    with open(os.path.join(ROOT, "packs.json"), encoding="utf-8") as fh:
-        pack_names = sorted(json.load(fh)["packs"])
-    for p in pack_names:
+    for p in sorted(catalog.pack_names()):
         if f"`{p}`" not in readme:
-            fail("README.md", f"pack '{p}' is in packs.json but not documented in README")
+            fail("README.md", f"pack '{p}' ships but is not documented in README")
     for a in sorted(agent_names):
         if f"agents/{a}.md" not in readme:
             fail("README.md", f"agent '{a}' ships but is not documented in README")
@@ -684,9 +691,9 @@ def main():
 
     # RFC-0015: prose markdown links across skills, agents, docs, and the root convention files
     # must resolve — fenced blocks, {template} lines, and placeholder targets are skipped.
-    md_files = set(glob.glob(os.path.join(SKILLS, "**", "*.md"), recursive=True))
+    md_files = set(glob.glob(os.path.join(catalog.PACKS_DIR, "*", "skills", "**", "*.md"), recursive=True))
     md_files |= set(glob.glob(os.path.join(AGENTS, "*.md")))
-    md_files |= set(glob.glob(os.path.join(LOOPS, "**", "*.md"), recursive=True))
+    md_files |= set(glob.glob(os.path.join(catalog.PACKS_DIR, "*", "loops", "**", "*.md"), recursive=True))
     md_files |= set(glob.glob(os.path.join(ROOT, "guides", "**", "*.md"), recursive=True))
     md_files |= set(glob.glob(os.path.join(ROOT, "docs", "**", "*.md"), recursive=True))
     md_files |= {os.path.join(ROOT, f) for f in LINK_DOCS if os.path.exists(os.path.join(ROOT, f))}
