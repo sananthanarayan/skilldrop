@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/v/skilldrop-cli)](https://www.npmjs.com/package/skilldrop-cli)
 [![license](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](LICENSE)
 
-**Portable AI-agent skills for the deliverables knowledge workers actually ship:** ADRs, design docs, PRDs, runbooks, threat models, decks, postmortems and adversarial reviews. Each one is a folder you copy into Claude Code, Cursor, Kiro, Codex or Copilot.
+**Portable AI-agent skills for the deliverables knowledge workers actually ship:** ADRs, design docs, PRDs, runbooks, threat models, decks, postmortems and adversarial reviews. Each one is a folder you copy into Claude Code, Cursor, Kiro, Codex, Antigravity or Copilot.
 
 ```text
 messy input → a skill with a quality bar → a gate that can say no → your decision
@@ -58,7 +58,9 @@ In Claude Code you can use the plugin marketplace instead: run `/plugin marketpl
 
 ## Go deeper
 
-- **Use it:** [docs portal](https://sananthanarayan.github.io/skilldrop/docs/) · [install in any IDE](guides/how-to/install-per-ide.md) · [profiles](guides/how-to/profiles.md) · [hooks](guides/how-to/wire-a-hook.md) · [publish your own catalogue](guides/how-to/publish-a-catalogue.md)
+- **Use it:** [docs portal](https://sananthanarayan.github.io/skilldrop/docs/) · [a guide for every pack](guides/README.md#per-pack) · [install in any IDE](guides/how-to/install-per-ide.md) · [try skills in a repo you don't own](guides/how-to/install-per-ide.md#trying-skills-in-a-repo-you-dont-own) · [profiles](guides/how-to/profiles.md) · [hooks](guides/how-to/wire-a-hook.md)
+- **Run it in CI:** [a skill on every pull request](guides/how-to/run-a-skill-in-ci.md) · [how skills are checked](https://sananthanarayan.github.io/skilldrop/evals/) · [measure your loops](guides/how-to/measure-your-loops.md)
+- **Roll it out:** [across your org, including an internal mirror](guides/how-to/enterprise-distribution.md) · [publish your own catalogue](guides/how-to/publish-a-catalogue.md) · [security and the OWASP Top 10s](guides/reference/owasp-mapping.md)
 - **Reviewers:** three subagents that push back on generated work: `devils-advocate`, `security-reviewer` and `code-quality`. See [`agents/`](agents/README.md).
 - **Cost:** each skill declares a provider-neutral model tier (`light`, `standard` or `heavy`). See [MODEL-ROUTING.md](MODEL-ROUTING.md).
 - **How it is built:** [ARCHITECTURE.md](ARCHITECTURE.md) · [machine-readable contracts](contracts/) · [decision records](docs/rfcs/) · [`llms.txt`](llms.txt) for tools
