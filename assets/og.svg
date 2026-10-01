@@ -25,12 +25,12 @@
   <!-- subline -->
   <text class="sans" x="80" y="404" font-size="27" fill="#9a9a95">Portable skills for the artifacts knowledge work actually ships.</text>
 
-  <!-- stat row -->
-  <text class="mono" x="80" y="486" font-size="26" fill="#ecebe8">63 skills</text>
-  <text class="mono" x="238" y="486" font-size="26" fill="#3a3a3f">/</text>
-  <text class="mono" x="268" y="486" font-size="26" fill="#ecebe8">8 packs</text>
-  <text class="mono" x="395" y="486" font-size="26" fill="#3a3a3f">/</text>
-  <text class="mono" x="425" y="486" font-size="26" fill="#ecebe8">3 reviewer subagents</text>
+  <!-- promise row: no counts, they say nothing about what you get back and they go stale -->
+  <text class="mono" x="80" y="486" font-size="24" fill="#ecebe8">copy, never transform</text>
+  <text class="mono" x="402" y="486" font-size="24" fill="#3a3a3f">/</text>
+  <text class="mono" x="432" y="486" font-size="24" fill="#ecebe8">gates that say no</text>
+  <text class="mono" x="694" y="486" font-size="24" fill="#3a3a3f">/</text>
+  <text class="mono" x="724" y="486" font-size="24" fill="#ecebe8">edits survive updates</text>
 
   <!-- footer strip -->
   <rect x="80" y="536" width="1040" height="1" fill="#2a2a2d"/>

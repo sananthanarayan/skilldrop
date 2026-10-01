@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/v/skilldrop-cli)](https://www.npmjs.com/package/skilldrop-cli)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-**63 portable AI-agent skills for the deliverables knowledge workers actually ship:** ADRs, design docs, PRDs, runbooks, threat models, decks, postmortems and adversarial reviews. Each one is a folder you copy into Claude Code, Cursor, Kiro, Codex or Copilot.
+**Portable AI-agent skills for the deliverables knowledge workers actually ship:** ADRs, design docs, PRDs, runbooks, threat models, decks, postmortems and adversarial reviews. Each one is a folder you copy into Claude Code, Cursor, Kiro, Codex or Copilot.
 
 ```text
 messy input → a skill with a quality bar → a gate that can say no → your decision

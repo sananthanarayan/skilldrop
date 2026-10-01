@@ -23,7 +23,7 @@ import re
 
 import catalog
 from build_docs import render_md, collect_guides, parse_frontmatter, _slug
-from build_site import collect, card, esc, loops, site_nav, NAV_CSS, REPO_URL, SITE_URL
+from build_site import collect, card, esc, loops, site_nav, example_parts, NAV_CSS, REPO_URL, SITE_URL
 from build_catalogue import CSS
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -85,7 +85,16 @@ PAGE_CSS = """
 .pk__meta b { color:var(--fg); font-weight:600; }
 .pk__bar li { margin:.35rem 0; }
 .pk__title code { font-size:1em; background:none; border:0; padding:0; }
+.pk pre code { background:none; border:0; padding:0; font-size:inherit; }
+.pk pre { overflow-x:auto; }
 .pk code { font:.86em var(--mono); background:var(--card); border:1px solid var(--border); border-radius:4px; padding:0 .3em; }
+.pk__ex { background:var(--card); border:1px solid var(--border); border-radius:var(--r); margin:.8rem 0; overflow:hidden; }
+.pk__exlabel { font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--fg-muted); padding:.6rem 1rem; border-bottom:1px solid var(--border); background:var(--surface-alt); }
+.pk__exbody { padding:.3rem 1.1rem .9rem; font-size:.9rem; max-height:640px; overflow:auto; }
+.pk__exbody table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.6rem 0; }
+.pk__exbody th, .pk__exbody td { border-bottom:1px solid var(--border); padding:.4rem .5rem; text-align:left; vertical-align:top; }
+.pk__exbody blockquote { margin:.6rem 0; padding:.1rem .9rem; border-left:3px solid var(--accent-700); color:var(--fg-muted); }
+.pk__exnote { font-size:.9rem; color:var(--fg-muted); }
 .cl h2 { margin:2.2rem 0 .4rem; }
 .cl li { margin:.45rem 0; }
 """
@@ -319,6 +328,15 @@ def skill_page(s, by_name, packs, outcome_of):
     if bar:
         parts.append('<h2>What a good result looks like</h2><ul class="pk__bar">'
                      + "".join(f"<li>{md(b)}</li>" for b in bar) + "</ul>")
+    ex = example_parts(name)
+    if ex:
+        ex_title, ex_in, ex_out, ex_note, ex_rel = ex
+        parts.append(f"""<section aria-labelledby="example"><h2 id="example">Example output</h2>
+<p class="pk__total">{esc(ex_title.replace('Worked example — ', ''))} · the skill's own worked example, <a href="{REPO_URL}/blob/main/{esc(ex_rel)}">source</a></p>
+{f'<div class="pk__ex"><div class="pk__exlabel">Input</div><div class="pk__exbody">{render_md(ex_in, src=ex_rel)}</div></div>' if ex_in else ''}
+<div class="pk__ex"><div class="pk__exlabel">{'Output' if ex_in else 'Worked example'}</div><div class="pk__exbody">{render_md(ex_out, src=ex_rel)}</div></div>
+{f'<div class="pk__exnote">{render_md(ex_note, src=ex_rel)}</div>' if ex_note else ''}
+</section>""")
     hand = manifest.get("handoff") or []
     if hand:
         parts.append("<h2>Hands off to</h2><ul>" + "".join(
