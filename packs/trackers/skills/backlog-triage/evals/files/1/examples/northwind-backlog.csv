@@ -1,0 +1,28 @@
+Issue key,Issue Type,Summary,Status,Priority,Assignee,Reporter,Created,Updated,Custom field (Story Points),Labels,Labels,Description
+CHK-101,Story,Guest checkout without creating an account,To Do,Highest,,Priya Nair,02/Jun/26 9:14 AM,10/Jun/26 4:02 PM,13,checkout,growth,"Let shoppers pay without signing up. Biggest drop-off in the funnel is the forced sign-up step."
+CHK-102,Story,Save card for future purchases,In Progress,High,Tom Okafor,Priya Nair,05/Jun/26 11:20 AM,28/Sep/26 2:45 PM,5,checkout,payments,"Acceptance criteria:
+- Given a signed-in shopper, when they tick Save card, then the card token is stored with the PSP
+- The full card number is never stored by us"
+CHK-103,Bug,Apple Pay button missing on Safari 17,To Do,High,Lena Fischer,Support,12/Aug/26 8:01 AM,25/Sep/26 10:30 AM,3,checkout,bug,"Reported by 14 customers. Given Safari 17 on macOS, when the shopper reaches payment, then the Apple Pay button shows."
+CHK-104,Story,Allow guest checkout without an account,Backlog,Medium,,Marco Rossi,19/Jul/26 3:30 PM,19/Jul/26 3:30 PM,8,checkout,,"Shoppers should be able to check out as a guest."
+CHK-105,Story,Show delivery date estimate on the cart page,To Do,Medium,Lena Fischer,Priya Nair,01/Sep/26 9:00 AM,29/Sep/26 9:15 AM,3,cart,,"Acceptance criteria:
+- Given an item with stock in the nearest warehouse, then the cart shows Arrives by <date>
+- Given no stock, then the line says Ships in 5-7 days"
+CHK-106,Story,Rebuild the payments service on the new platform,Backlog,High,Tom Okafor,Tom Okafor,14/Mar/26 10:00 AM,02/Apr/26 1:10 PM,21,payments,tech-debt,"Move everything off the legacy payments monolith."
+CHK-107,Task,Update PCI self-assessment questionnaire,To Do,Highest,Aisha Bello,Compliance,03/Sep/26 9:30 AM,30/Sep/26 8:40 AM,2,compliance,,"Definition of done: SAQ-A submitted to the acquirer before 31 Oct."
+CHK-108,Story,Promo code field on checkout,Done,Medium,Lena Fischer,Marco Rossi,10/May/26 2:00 PM,20/Jun/26 5:00 PM,3,checkout,,"Acceptance criteria:
+- Given a valid code, then the discount line appears"
+CHK-109,Bug,Apple Pay button not showing in Safari,Backlog,Medium,,Support,26/Aug/26 4:12 PM,26/Aug/26 4:12 PM,,checkout,bug,"Customer says the Apple Pay option is gone on their Mac."
+CHK-110,Story,Address autocomplete for UK postcodes,To Do,Low,Marco Rossi,Marco Rossi,22/Apr/26 11:00 AM,30/Apr/26 3:00 PM,5,checkout,,"Use a postcode lookup so shoppers don't type the full address."
+CHK-111,Story,Split shipment tracking emails,Backlog,Medium,,Priya Nair,08/Jan/26 9:00 AM,15/Feb/26 10:00 AM,8,notifications,,"One email per parcel when an order ships in more than one box."
+CHK-112,Story,One-click reorder from order history,To Do,High,Aisha Bello,Priya Nair,15/Sep/26 1:30 PM,27/Sep/26 11:00 AM,5,growth,,"Acceptance criteria:
+- Given a past order, when the shopper taps Reorder, then all in-stock items are added to the cart"
+CHK-113,Task,Add fraud score to order admin view,In Progress,Highest,Tom Okafor,Ops,10/Sep/26 10:00 AM,30/Sep/26 6:00 PM,3,payments,ops,"- [ ] Score shown next to order total
+- [ ] Orders above 80 highlighted"
+CHK-114,Story,Klarna pay-later option,Backlog,Highest,,Marco Rossi,20/Aug/26 2:00 PM,22/Aug/26 9:00 AM,13,payments,growth,"Partner deal signed. Add Klarna as a payment method."
+CHK-115,Story,Gift message at checkout,Backlog,Lowest,,Priya Nair,11/Nov/25 3:00 PM,11/Nov/25 3:00 PM,2,checkout,,"Let shoppers add a gift message."
+CHK-116,Story,Persist cart across devices for signed-in users,To Do,Medium,Lena Fischer,Priya Nair,04/Sep/26 9:00 AM,24/Sep/26 4:00 PM,5,cart,,"Given a signed-in shopper adds an item on mobile, when they open the site on desktop, then the item is in the cart."
+CHK-117,Story,Persist the cart across devices for logged-in shoppers,Backlog,Low,,Marco Rossi,18/Jun/26 10:00 AM,18/Jun/26 10:00 AM,,cart,,"Cart should follow the user."
+CHK-118,Bug,Order confirmation email sent twice,Closed,High,Tom Okafor,Support,01/Jul/26 9:00 AM,03/Jul/26 9:00 AM,2,notifications,bug,"Fixed by idempotency key on the send job."
+CHK-119,Story,Accessibility fixes on the payment form,To Do,High,,Aisha Bello,21/Sep/26 9:00 AM,21/Sep/26 9:00 AM,5,checkout,a11y,"Screen readers skip the card expiry field. Labels missing on CVV."
+CHK-120,Story,Checkout analytics dashboard,Backlog,Highest,Marco Rossi,Priya Nair,05/May/26 11:00 AM,12/May/26 2:00 PM,8,analytics,,"We need to see the funnel."

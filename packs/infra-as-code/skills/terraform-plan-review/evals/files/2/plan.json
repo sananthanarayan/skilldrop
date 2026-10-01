@@ -1,0 +1,133 @@
+{
+  "format_version": "1.2",
+  "terraform_version": "1.9.5",
+  "resource_drift": [
+    {
+      "address": "aws_route_table.private",
+      "mode": "managed",
+      "type": "aws_route_table",
+      "name": "private",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "update"
+        ],
+        "before": {
+          "id": "rtb-0aa11bb22cc33dd44",
+          "route": [
+            {
+              "cidr_block": "0.0.0.0/0",
+              "nat_gateway_id": "nat-0123456789abcdef0"
+            }
+          ],
+          "tags": {
+            "Name": "northwind-private"
+          }
+        },
+        "after": {
+          "id": "rtb-0aa11bb22cc33dd44",
+          "route": [
+            {
+              "cidr_block": "0.0.0.0/0",
+              "nat_gateway_id": "nat-0123456789abcdef0"
+            },
+            {
+              "cidr_block": "10.99.0.0/16",
+              "vpc_peering_connection_id": "pcx-0fedcba9876543210"
+            }
+          ],
+          "tags": {
+            "Name": "northwind-private"
+          }
+        },
+        "after_unknown": {},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      }
+    }
+  ],
+  "resource_changes": [
+    {
+      "address": "module.vpc.aws_subnet.private[\"c\"]",
+      "mode": "managed",
+      "type": "aws_subnet",
+      "name": "private",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "availability_zone": "eu-west-1c",
+          "cidr_block": "10.20.12.0/24",
+          "map_public_ip_on_launch": false,
+          "tags": {
+            "Name": "northwind-private-c"
+          },
+          "vpc_id": "vpc-0123456789abcdef0"
+        },
+        "after_unknown": {},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      },
+      "module_address": "module.vpc"
+    },
+    {
+      "address": "aws_iam_role_policy.ci",
+      "mode": "managed",
+      "type": "aws_iam_role_policy",
+      "name": "ci",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "update"
+        ],
+        "before": {
+          "id": "northwind-ci:deploy",
+          "name": "deploy",
+          "role": "northwind-ci",
+          "policy": "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Action\": \"ec2:Describe*\", \"Resource\": \"*\"}]}"
+        },
+        "after": {
+          "id": "northwind-ci:deploy",
+          "name": "deploy",
+          "role": "northwind-ci",
+          "policy": "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Action\": \"*\", \"Resource\": \"*\"}]}"
+        },
+        "after_unknown": {},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      }
+    },
+    {
+      "address": "module.vpc.aws_subnet.private[\"a\"]",
+      "mode": "managed",
+      "type": "aws_subnet",
+      "name": "private",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "no-op"
+        ],
+        "before": {
+          "availability_zone": "eu-west-1a",
+          "cidr_block": "10.20.10.0/24"
+        },
+        "after": {
+          "availability_zone": "eu-west-1a",
+          "cidr_block": "10.20.10.0/24"
+        },
+        "after_unknown": {},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      },
+      "module_address": "module.vpc"
+    }
+  ],
+  "output_changes": {},
+  "applyable": true,
+  "complete": true,
+  "errored": false,
+  "timestamp": "2026-09-30T10:12:00Z"
+}

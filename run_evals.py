@@ -77,6 +77,26 @@ JUDGE_SYSTEM = ("You grade an AI assistant's output against a list of assertions
                 "JSON only: [{\"n\": 1, \"pass\": true, \"why\": \"<one short sentence>\"}, ...]")
 
 
+def skill_system(md):
+    return (md + "\n\n---\nThis is a non-interactive run: the user cannot answer follow-up "
+            "questions. Work with what the request gives you, following the skill's rules for "
+            "non-interactive runs.")
+
+
+def grade(judge_model, output, asserts, send=None):
+    """Judge one output against its assertions. Returns (rows, whatever send returned second).
+    send replaces the API call for a caller that caches or meters it (run_bench.py)."""
+    numbered = "\n".join(f"{i}. {a}" for i, a in enumerate(asserts, 1))
+    verdict, meta = (send or messages)(judge_model, JUDGE_SYSTEM,
+                                       f"<output>\n{output}\n</output>\n\n<assertions>\n{numbered}\n</assertions>",
+                                       max_tokens=2000)
+    start = verdict.find("[")  # the first JSON array; a judge may add prose after it
+    grades = json.JSONDecoder().raw_decode(verdict[start:])[0] if start >= 0 else []
+    by_n = {g.get("n"): g for g in grades if isinstance(g, dict)}
+    return [{"assertion": a, "pass": bool(by_n.get(i, {}).get("pass")), "why": by_n.get(i, {}).get("why", "not graded")}
+            for i, a in enumerate(asserts, 1)], meta
+
+
 def assertions(skills, skill_model, judge_model, workers):
     jobs = []
     for s in skills:
@@ -87,22 +107,11 @@ def assertions(skills, skill_model, judge_model, workers):
 
     def run(job):
         s, md, e = job
-        system = (md + "\n\n---\nThis is a non-interactive run: the user cannot answer follow-up "
-                  "questions. Work with what the request gives you, following the skill's rules for "
-                  "non-interactive runs.")
         try:
-            out, _ = messages(skill_model, system, e["prompt"], max_tokens=8000)
-            numbered = "\n".join(f"{i}. {a}" for i, a in enumerate(e["assertions"], 1))
-            verdict, _ = messages(judge_model, JUDGE_SYSTEM,
-                                  f"<output>\n{out}\n</output>\n\n<assertions>\n{numbered}\n</assertions>",
-                                  max_tokens=2000)
-            m = re.search(r"\[.*\]", verdict, re.S)
-            grades = json.loads(m.group(0)) if m else []
+            out, _ = messages(skill_model, skill_system(md), e["prompt"], max_tokens=8000)
+            rows, _ = grade(judge_model, out, e["assertions"])
         except (APIError, json.JSONDecodeError) as err:
             return {"skill": s, "id": e.get("id"), "error": str(err)}
-        by_n = {g.get("n"): g for g in grades if isinstance(g, dict)}
-        rows = [{"assertion": a, "pass": bool(by_n.get(i, {}).get("pass")), "why": by_n.get(i, {}).get("why", "not graded")}
-                for i, a in enumerate(e["assertions"], 1)]
         return {"skill": s, "id": e.get("id"), "assertions": rows}
 
     with ThreadPoolExecutor(max_workers=max(1, workers // 2)) as ex:

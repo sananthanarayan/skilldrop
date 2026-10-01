@@ -1,0 +1,80 @@
+{
+  "$comment": "brand-kit output. deck-builder and marketing-flyer read this file; any field left out is asked for or defaulted by them. Paths are relative to this file. Every value carries where it came from in `sources`.",
+  "name": "Northwind Health",
+  "tagline": "Care that comes to you",
+  "logo": {
+    "primary": "logo.png",
+    "on_dark": "logo-white.png",
+    "mark": "mark.png",
+    "notes": "Keep clear space equal to the height of the N on every side. Never place the full-colour logo on the green."
+  },
+  "colors": {
+    "primary": "#0E5A46",
+    "secondary": "#3D7F6B",
+    "accent": "#F2A541",
+    "background": "#FFFFFF",
+    "text": "#1F2A28",
+    "extra": [
+      {
+        "name": "Mist",
+        "hex": "#E8F1EE",
+        "use": "panel backgrounds"
+      }
+    ]
+  },
+  "fonts": {
+    "heading": {
+      "family": "Georgia",
+      "fallback": "serif",
+      "weight": 700
+    },
+    "body": {
+      "family": "Arial",
+      "fallback": "sans-serif",
+      "weight": 400
+    }
+  },
+  "voice": {
+    "tone": "Warm, plain, confident. Short sentences.",
+    "use": [
+      "members",
+      "care team",
+      "near you"
+    ],
+    "avoid": [
+      "patients",
+      "cutting-edge",
+      "solutions"
+    ]
+  },
+  "imagery": {
+    "style": "Real people in daylight, community settings, no stock handshakes.",
+    "do": [
+      "natural light",
+      "diverse ages"
+    ],
+    "dont": [
+      "clinical close-ups",
+      "illustrated icons as hero images"
+    ]
+  },
+  "templates": {
+    "pptx": "northwind-master.potx"
+  },
+  "contact": {
+    "website": "northwindhealth.example",
+    "email": "hello@northwindhealth.example",
+    "phone": "",
+    "address": ""
+  },
+  "legal": {
+    "footer": "\u00a9 2026 Northwind Health",
+    "disclaimer": ""
+  },
+  "sources": {
+    "colors": "brand guidelines PDF, page 4 [explicit]",
+    "fonts": "brand guidelines PDF, page 6 [explicit]",
+    "voice": "website About page [inferred]",
+    "logo": "files supplied by the user [explicit]"
+  }
+}

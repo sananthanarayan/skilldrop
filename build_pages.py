@@ -384,7 +384,45 @@ def checks_section(name, sdir):
 </section>"""
 
 
+BENCH = os.path.join(ROOT, "docs", "benchmarks", "latest.json")
+
+
+def bench_section(b):
+    """The latest published run_bench.py summary (RFC-0040): each eval run as an agent session
+    with the skill and without it. Numbers are shown with their intervals and their limits."""
+    pc = lambda x: "–" if x is None else f"{100 * x:.0f}%"
+    rng = lambda c, signed=False: "" if not c else (
+        f" ({100 * c[0]:+.0f} to {100 * c[1]:+.0f})" if signed else f" ({100 * c[0]:.0f}% to {100 * c[1]:.0f}%)")
+    blocks = []
+    for model, d in b["models"].items():
+        blocks.append(f"""<dl class="pk__glance">
+<div><dt>Assertions met with the skill</dt><dd>{pc(d['skill'])}</dd></div>
+<div><dt>Without it</dt><dd>{pc(d['baseline'])}</dd></div>
+<div><dt>Lift, points</dt><dd>{100 * d['lift']:+.0f}{rng(d['lift_ci'], True)}</dd></div>
+<div><dt>Preferred by a blind judge</dt><dd>{pc(d['win'])}{rng(d['win_ci'])}</dd></div>
+<div><dt>Cost per run</dt><dd>${d['cost_skill']:.2f} with, ${d['cost_baseline']:.2f} without</dd></div>
+<div><dt>Model</dt><dd><code>{esc(model)}</code>, {d['evals']} evals</dd></div>
+</dl>""")
+    how = ("a Claude Code agent session with file and shell tools, sandboxed in an empty directory"
+           if b.get("backend") == "claude-cli" else "one model call with no tools")
+    return f"""<section aria-labelledby="measured"><h2 id="measured">Measured: with the skill and without it</h2>
+<p class="pk__lede">Each acceptance eval is run twice on the same model, once with the skill and once without, as {how}. Last run {esc(b['date'])}, judged by <code>{esc(b['judge_model'])}</code>, {b['trials']} trial{'s' if b['trials'] != 1 else ''} per eval.</p>
+{''.join(blocks)}
+<ul class="pk__bar">
+<li><b>Assertions met</b> is graded by a judge that doesn't know which run it is reading. The skill's author wrote the assertions, so the run without the skill is graded on a rubric it never saw. A non-answer meets {pc(b.get('floor'))} of them.</li>
+<li><b>Preferred by a blind judge</b> is the share of pairs where a judge that saw only the request and both results, in shuffled order, picked the skill's. 50% means no preference.</li>
+<li>Ranges are 95% intervals over evals. A lift range that includes 0, or a preference range that includes 50%, is not a result.</li>
+<li>Most skills have one eval, so a single row below is an anecdote. The judge is a model. Cost is list price for the tokens used.</li>
+</ul>
+<p>Reproduce it with <code>python3 run_bench.py</code> (<a href="{REPO_URL}/blob/main/docs/rfcs/0040-skill-benchmark.md">RFC-0040</a>).</p>
+</section>"""
+
+
 def evals_page(skills):
+    bench = json.load(open(BENCH, encoding="utf-8")) if os.path.exists(BENCH) else None
+    measured = {r["skill"]: r for r in (bench or {}).get("skills", [])}  # first model listed wins
+    for r in reversed((bench or {}).get("skills", [])):
+        measured[r["skill"]] = r
     rows, tot_e, tot_a, tot_q, covered = [], 0, 0, 0, 0
     for s in sorted(skills, key=lambda s: (s["packs"][0], s["name"])):
         sdir = catalog.skill_dir(s["name"])
@@ -394,8 +432,13 @@ def evals_page(skills):
         tot_e, tot_a, tot_q = tot_e + len(evs), tot_a + n_a, tot_q + len(qs)
         covered += bool(evs and qs)
         src = f"{REPO_URL}/tree/main/{s['path']}/evals"
+        m = measured.get(s["name"])
+        got = "" if not bench else (
+            f'<td>{100 * m["skill_met"]:.0f}%</td><td>{100 * m["baseline_met"]:.0f}%</td>'
+            f'<td>{"skill" if m["preferred"] > .5 else "no skill" if m["preferred"] < .5 else "tie"}</td>'
+            if m else "<td>–</td><td>–</td><td>–</td>")
         rows.append(f'<tr><td><a href="../skills/{esc(s["name"])}/#checked"><code>{esc(s["name"])}</code></a></td>'
-                    f'<td>{esc(s["packs"][0])}</td><td>{len(evs)}</td><td>{n_a}</td>'
+                    f'<td>{esc(s["packs"][0])}</td><td>{len(evs)}</td><td>{n_a}</td>{got}'
                     f'<td>{pos} / {len(qs) - pos}</td><td><a href="{src}">files</a></td></tr>')
     body = f"""<main class="inner pk" id="main">
 <h1 class="pk__title">How skills are checked</h1>
@@ -407,8 +450,10 @@ def evals_page(skills):
 <div><dt>Run</dt><dd>Weekly against a live model, <a href="{REPO_URL}/actions/workflows/evals.yml">report-only</a></dd></div>
 </dl>
 <p><code>validate.py</code> fails any skill without both files, on every pull request. The weekly run asks a model which skill it would load for each trigger query and reports the misses; assertion runs are started by hand. A miss is a prompt to look at the description, not a gate. Run them yourself with <code>python3 run_evals.py</code> and an <code>ANTHROPIC_API_KEY</code>.</p>
+{bench_section(bench) if bench else ""}
+<h2 id="every-skill">Every skill</h2>
 <div class="tbl"><table>
-<thead><tr><th>Skill</th><th>Pack</th><th>Evals</th><th>Assertions</th><th>Should / shouldn't trigger</th><th>Source</th></tr></thead>
+<thead><tr><th>Skill</th><th>Pack</th><th>Evals</th><th>Assertions</th>{"<th>Met with skill</th><th>Without</th><th>Blind judge preferred</th>" if bench else ""}<th>Should / shouldn't trigger</th><th>Source</th></tr></thead>
 <tbody>{''.join(rows)}</tbody></table></div>
 </main>"""
     return shell("How skills are checked", "Every skilldrop skill's acceptance evals and trigger queries, and how they run.",
