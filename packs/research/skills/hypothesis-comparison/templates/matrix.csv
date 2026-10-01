@@ -1,0 +1,4 @@
+id,evidence,weight,H1 short name,H2 short name,H3 short name,H4 measurement
+E1,One observation with its source,1,C,N,I,N
+E2,An absence: something expected under a hypothesis that did not happen,1,I,N,N,C
+E3,[assumption] An assumption the analysis depends on,0.5,N,C,N,N

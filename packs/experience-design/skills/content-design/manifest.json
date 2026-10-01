@@ -1,0 +1,40 @@
+{
+  "name": "content-design",
+  "version": "0.1.0",
+  "description": "Write a content spec for a page or journey from user needs — user-need statements (\"As a… I need… so that…\"), the questions the page must answer in priority order, the page structure, a plain-language rewrite at a target reading level with a before/after readability check, and an explicit list of what to cut and why. Use when the user wants a content spec, content design, \"rewrite this page in plain English\", \"what should this page say\", \"our page is too long and nobody reads it\", or content for a service or journey.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "guide-builder",
+    "information-architecture",
+    "user-journey-map",
+    "ux-writing"
+  ],
+  "handoff": [
+    {
+      "to": "ux-writing",
+      "when": "the page includes a form, flow or interactive component",
+      "purpose": "Write the interface strings inside it to the same terminology.",
+      "fallback": "If ux-writing is absent, list each control on the page with a verb-plus-object label and one error message per field rule."
+    }
+  ],
+  "tags": [
+    "content-design",
+    "plain-language",
+    "content-strategy",
+    "readability",
+    "ux",
+    "user-needs"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Rewrites source text from user needs under fixed plain-language rules, with a script for the readability numbers. Prioritising questions needs judgment, but facts come from the source."
+  }
+}

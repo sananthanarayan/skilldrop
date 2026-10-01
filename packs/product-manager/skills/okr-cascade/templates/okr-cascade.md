@@ -33,8 +33,8 @@ North-star: **{one user-behavioral outcome metric}**
 
 ```mermaid
 flowchart BT
-    KR1["{team KR}"] -->|{causal sentence, short}| NS["{north-star}"]
-    KR2["{team KR}"] -->|{…}| NS
+    KR1["{team KR}"] -->|"{causal sentence, short}"| NS["{north-star}"]
+    KR2["{team KR}"] -->|"{…}"| NS
     G1["{guardrail KR}"] -.->|guardrail| NS
 ```
 

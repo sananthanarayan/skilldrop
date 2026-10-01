@@ -1,0 +1,1085 @@
+lineItem/UsageStartDate,lineItem/UsageAccountId,lineItem/LineItemType,lineItem/ProductCode,product/ProductName,product/region,lineItem/UsageType,lineItem/ResourceId,lineItem/UnblendedCost,savingsPlan/SavingsPlanEffectiveCost,resourceTags/user:team,resourceTags/user:env
+2026-08-01T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-01T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-01T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-01T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-01T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-01T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-01T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-01T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-01T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,3.8710,,platform,prod
+2026-08-01T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-01T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-01T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,28.1935,,,
+2026-08-01T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,18.2510,,platform,prod
+2026-08-01T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-01T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.0250,,,
+2026-08-01T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,26.1901,,,
+2026-08-01T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,28.6161,,platform,prod
+2026-08-02T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-02T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-02T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-02T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-02T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-02T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-02T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-02T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-02T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,3.9113,,platform,prod
+2026-08-02T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-02T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-02T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,28.4161,,,
+2026-08-02T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,18.4256,,platform,prod
+2026-08-02T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-02T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.6767,,,
+2026-08-02T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,28.4118,,,
+2026-08-02T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,27.9347,,platform,prod
+2026-08-03T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-03T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-03T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-03T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-03T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-03T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,4.6080,,web,prod
+2026-08-03T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-03T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-03T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-03T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,3.9516,,platform,prod
+2026-08-03T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-03T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-03T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,28.6387,,,
+2026-08-03T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,17.1572,,platform,prod
+2026-08-03T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-03T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.0937,,,
+2026-08-03T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,26.0376,,,
+2026-08-03T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,30.5101,,platform,prod
+2026-08-04T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-04T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-04T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-04T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-04T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-04T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,5.3760,,web,prod
+2026-08-04T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-04T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-04T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-04T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,3.9919,,platform,prod
+2026-08-04T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-04T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-04T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,28.8613,,,
+2026-08-04T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,17.4579,,platform,prod
+2026-08-04T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-04T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.6499,,,
+2026-08-04T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.1618,,,
+2026-08-04T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,28.6022,,platform,prod
+2026-08-05T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-05T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-05T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-05T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-05T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-05T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,5.3760,,web,prod
+2026-08-05T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-05T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-05T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-05T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.0323,,platform,prod
+2026-08-05T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-05T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-05T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,29.0839,,,
+2026-08-05T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,17.6007,,platform,prod
+2026-08-05T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-05T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.8693,,,
+2026-08-05T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.9317,,,
+2026-08-05T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,28.2983,,platform,prod
+2026-08-06T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-06T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-06T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-06T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-06T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-06T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,4.6080,,web,prod
+2026-08-06T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-06T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-06T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-06T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.0726,,platform,prod
+2026-08-06T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-06T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-06T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,29.3065,,,
+2026-08-06T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,17.7125,,platform,prod
+2026-08-06T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-06T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.1555,,,
+2026-08-06T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,28.6460,,,
+2026-08-06T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,29.1830,,platform,prod
+2026-08-07T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-07T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-07T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-07T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-07T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-07T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,3.8400,,web,prod
+2026-08-07T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-07T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-07T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-07T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.1129,,platform,prod
+2026-08-07T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-07T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-07T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,29.5290,,,
+2026-08-07T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,17.7839,,platform,prod
+2026-08-07T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-07T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.3590,,,
+2026-08-07T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,26.4382,,,
+2026-08-07T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,28.8226,,platform,prod
+2026-08-08T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-08T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-08T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-08T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-08T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-08T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-08T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-08T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-08T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.1532,,platform,prod
+2026-08-08T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-08T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-08T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,29.7516,,,
+2026-08-08T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,17.1782,,platform,prod
+2026-08-08T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-08T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.4594,,,
+2026-08-08T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,25.6494,,,
+2026-08-08T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,32.1115,,platform,prod
+2026-08-09T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-09T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-09T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-09T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-09T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-09T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-09T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-09T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-09T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.1935,,platform,prod
+2026-08-09T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-09T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-09T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,29.9742,,,
+2026-08-09T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,17.2418,,platform,prod
+2026-08-09T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-09T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.2932,,,
+2026-08-09T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.4631,,,
+2026-08-09T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,31.9273,,platform,prod
+2026-08-10T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-10T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-10T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-10T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-10T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-10T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,4.6080,,web,prod
+2026-08-10T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-10T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-10T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-10T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.2339,,platform,prod
+2026-08-10T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-10T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-10T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,30.1968,,,
+2026-08-10T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,18.1392,,platform,prod
+2026-08-10T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-10T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.7046,,,
+2026-08-10T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,25.3650,,,
+2026-08-10T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,28.6395,,platform,prod
+2026-08-11T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-11T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-11T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-11T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-11T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-11T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,4.6080,,web,prod
+2026-08-11T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-11T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-11T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-11T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.2742,,platform,prod
+2026-08-11T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-11T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-11T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,30.4194,,,
+2026-08-11T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,18.8734,,platform,prod
+2026-08-11T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-11T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.8553,,,
+2026-08-11T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,28.3193,,,
+2026-08-11T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,29.4006,,platform,prod
+2026-08-12T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-12T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-12T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-12T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-12T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-12T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,4.6080,,web,prod
+2026-08-12T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-12T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-12T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-12T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.3145,,platform,prod
+2026-08-12T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-12T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-12T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,30.6419,,,
+2026-08-12T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,18.2442,,platform,prod
+2026-08-12T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-12T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.3648,,,
+2026-08-12T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,26.5327,,,
+2026-08-12T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,28.5475,,platform,prod
+2026-08-13T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-13T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-13T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-13T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-13T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-13T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,4.6080,,web,prod
+2026-08-13T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-13T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-13T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-13T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.3548,,platform,prod
+2026-08-13T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-13T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-13T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,30.8645,,,
+2026-08-13T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,18.3633,,platform,prod
+2026-08-13T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-13T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.6835,,,
+2026-08-13T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,25.4570,,,
+2026-08-13T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,30.6749,,platform,prod
+2026-08-14T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-14T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-14T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-14T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-14T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-14T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,5.3760,,web,prod
+2026-08-14T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-14T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-14T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-14T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.3952,,platform,prod
+2026-08-14T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-14T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-14T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,31.0871,,,
+2026-08-14T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,18.4124,,platform,prod
+2026-08-14T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-14T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.1634,,,
+2026-08-14T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,26.5660,,,
+2026-08-14T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,32.4476,,platform,prod
+2026-08-15T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-15T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-15T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-15T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-15T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-15T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-15T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-15T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-15T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.4355,,platform,prod
+2026-08-15T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-15T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-15T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,31.3097,,,
+2026-08-15T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,18.2520,,platform,prod
+2026-08-15T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-15T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.5569,,,
+2026-08-15T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.6646,,,
+2026-08-15T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,31.7143,,platform,prod
+2026-08-16T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-16T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-16T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-16T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-16T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-16T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-16T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-16T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-16T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.4758,,platform,prod
+2026-08-16T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-16T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-16T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,31.5323,,,
+2026-08-16T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,18.4968,,platform,prod
+2026-08-16T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-16T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.2290,,,
+2026-08-16T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,25.3156,,,
+2026-08-16T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,29.0773,,platform,prod
+2026-08-17T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-17T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-17T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-17T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-17T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-17T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,4.6080,,web,prod
+2026-08-17T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-17T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-17T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-17T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.5161,,platform,prod
+2026-08-17T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-17T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-17T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,31.7548,,,
+2026-08-17T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,17.2191,,platform,prod
+2026-08-17T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-17T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.9131,,,
+2026-08-17T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.2418,,,
+2026-08-17T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,31.0896,,platform,prod
+2026-08-18T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-18T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-18T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-18T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-18T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-18T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,3.8400,,web,prod
+2026-08-18T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-18T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-18T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-18T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.5565,,platform,prod
+2026-08-18T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-18T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-18T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,31.9774,,,
+2026-08-18T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,18.2798,,platform,prod
+2026-08-18T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-18T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.3956,,,
+2026-08-18T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,28.4924,,,
+2026-08-18T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,29.7943,,platform,prod
+2026-08-19T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-19T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-19T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-19T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-19T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-19T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,4.6080,,web,prod
+2026-08-19T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-19T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-19T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-19T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.5968,,platform,prod
+2026-08-19T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-19T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-19T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,32.2000,,,
+2026-08-19T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,17.3513,,platform,prod
+2026-08-19T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-19T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.7450,,,
+2026-08-19T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.1403,,,
+2026-08-19T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,31.2351,,platform,prod
+2026-08-20T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-20T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-20T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-20T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-20T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-20T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,4.6080,,web,prod
+2026-08-20T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-20T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-20T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-20T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.6371,,platform,prod
+2026-08-20T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-20T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-20T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,32.4226,,,
+2026-08-20T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,18.7161,,platform,prod
+2026-08-20T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-20T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.3994,,,
+2026-08-20T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,25.9896,,,
+2026-08-20T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,32.4877,,platform,prod
+2026-08-21T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-21T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-21T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-21T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-21T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-21T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,5.3760,,web,prod
+2026-08-21T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-21T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-21T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-21T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.6774,,platform,prod
+2026-08-21T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-21T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-21T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,32.6452,,,
+2026-08-21T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,17.9883,,platform,prod
+2026-08-21T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-21T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.7558,,,
+2026-08-21T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,28.3000,,,
+2026-08-21T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,28.2642,,platform,prod
+2026-08-22T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-22T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-22T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-22T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-22T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-22T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-22T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-22T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-22T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.7177,,platform,prod
+2026-08-22T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-22T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-22T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,32.8677,,,
+2026-08-22T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,17.3880,,platform,prod
+2026-08-22T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-22T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.6805,,,
+2026-08-22T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.3471,,,
+2026-08-22T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,29.4238,,platform,prod
+2026-08-23T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-23T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-23T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-23T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-23T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-23T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-23T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-23T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-23T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.7581,,platform,prod
+2026-08-23T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-23T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-23T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,33.0903,,,
+2026-08-23T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,18.1726,,platform,prod
+2026-08-23T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-23T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.4680,,,
+2026-08-23T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,26.1051,,,
+2026-08-23T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,30.2661,,platform,prod
+2026-08-24T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-24T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-24T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-24T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-24T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-24T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,3.8400,,web,prod
+2026-08-24T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-24T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-24T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-24T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.7984,,platform,prod
+2026-08-24T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-24T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-24T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,33.3129,,,
+2026-08-24T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,18.3245,,platform,prod
+2026-08-24T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-24T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.1146,,,
+2026-08-24T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,28.3852,,,
+2026-08-24T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,31.2544,,platform,prod
+2026-08-25T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-25T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-25T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-25T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-25T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-25T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,5.3760,,web,prod
+2026-08-25T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-25T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-25T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-25T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.8387,,platform,prod
+2026-08-25T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-25T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-25T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,33.5355,,,
+2026-08-25T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,17.7123,,platform,prod
+2026-08-25T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-25T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.2935,,,
+2026-08-25T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,25.7694,,,
+2026-08-25T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,27.5162,,platform,prod
+2026-08-26T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-26T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-26T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-26T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-26T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-26T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,5.3760,,web,prod
+2026-08-26T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-26T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-26T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-26T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.8790,,platform,prod
+2026-08-26T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-26T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-26T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,33.7581,,,
+2026-08-26T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,18.6765,,platform,prod
+2026-08-26T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-26T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.2634,,,
+2026-08-26T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.0021,,,
+2026-08-26T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,28.3933,,platform,prod
+2026-08-27T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-27T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-27T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-27T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-27T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-27T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,3.8400,,web,prod
+2026-08-27T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-27T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-27T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-27T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.9194,,platform,prod
+2026-08-27T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-27T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-27T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,33.9806,,,
+2026-08-27T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,18.6669,,platform,prod
+2026-08-27T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-27T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.2984,,,
+2026-08-27T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.5002,,,
+2026-08-27T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,30.5449,,platform,prod
+2026-08-28T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-28T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-28T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-28T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-28T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-28T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,3.8400,,web,prod
+2026-08-28T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-28T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-28T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-28T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,4.9597,,platform,prod
+2026-08-28T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-28T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-28T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,34.2032,,,
+2026-08-28T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,17.7730,,platform,prod
+2026-08-28T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-28T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.1615,,,
+2026-08-28T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,28.6326,,,
+2026-08-28T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,32.1122,,platform,prod
+2026-08-29T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-29T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-29T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-29T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-29T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-29T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-29T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-29T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-29T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.0000,,platform,prod
+2026-08-29T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-29T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-29T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,34.4258,,,
+2026-08-29T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,18.7533,,platform,prod
+2026-08-29T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-29T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.5989,,,
+2026-08-29T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,26.9590,,,
+2026-08-29T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,28.0593,,platform,prod
+2026-08-30T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-30T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-30T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-30T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-30T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-30T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-30T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-30T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-30T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.0403,,platform,prod
+2026-08-30T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-30T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-30T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,34.6484,,,
+2026-08-30T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,17.7534,,platform,prod
+2026-08-30T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-30T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.9853,,,
+2026-08-30T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,28.1044,,,
+2026-08-30T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,28.6973,,platform,prod
+2026-08-31T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-08-31T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-08-31T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-08-31T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-08-31T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-08-31T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,3.8400,,web,prod
+2026-08-31T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-08-31T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-08-31T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-08-31T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.0806,,platform,prod
+2026-08-31T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-08-31T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-08-31T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,34.8710,,,
+2026-08-31T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,18.6804,,platform,prod
+2026-08-31T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-08-31T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,9.9469,,,
+2026-08-31T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,25.5084,,,
+2026-08-31T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,29.9300,,platform,prod
+2026-09-01T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-01T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-01T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-01T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-01T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-01T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,3.8400,,web,prod
+2026-09-01T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-01T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-01T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-01T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.1210,,platform,prod
+2026-09-01T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-01T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-01T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,35.0935,,,
+2026-09-01T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,58.3514,,platform,prod
+2026-09-01T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-01T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.2523,,,
+2026-09-01T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,25.6527,,,
+2026-09-01T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,35.4186,,platform,prod
+2026-09-02T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-02T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-02T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-02T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-02T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-02T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,5.3760,,web,prod
+2026-09-02T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-02T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-02T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-02T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.1613,,platform,prod
+2026-09-02T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-02T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-02T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,35.3161,,,
+2026-09-02T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,52.8646,,platform,prod
+2026-09-02T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-02T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.2443,,,
+2026-09-02T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.3837,,,
+2026-09-02T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,37.1701,,platform,prod
+2026-09-03T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-03T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-03T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-03T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-03T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-03T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,5.3760,,web,prod
+2026-09-03T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-03T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-03T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-03T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.2016,,platform,prod
+2026-09-03T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-03T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-03T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,35.5387,,,
+2026-09-03T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,56.8480,,platform,prod
+2026-09-03T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-03T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.5038,,,
+2026-09-03T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.7666,,,
+2026-09-03T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,33.9192,,platform,prod
+2026-09-04T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-04T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-04T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-04T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-04T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-04T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,5.3760,,web,prod
+2026-09-04T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-04T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-04T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-04T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.2419,,platform,prod
+2026-09-04T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-04T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-04T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,35.7613,,,
+2026-09-04T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,56.1367,,platform,prod
+2026-09-04T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-04T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.1010,,,
+2026-09-04T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.0633,,,
+2026-09-04T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,32.3208,,platform,prod
+2026-09-05T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-05T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-05T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-05T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-05T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-05T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-05T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-05T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-05T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.2823,,platform,prod
+2026-09-05T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-05T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-05T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,35.9839,,,
+2026-09-05T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,53.2667,,platform,prod
+2026-09-05T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-05T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,14.9409,,,
+2026-09-05T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.3179,,,
+2026-09-05T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,32.9482,,platform,prod
+2026-09-06T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-06T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-06T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-06T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-06T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-06T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-06T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-06T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-06T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.3226,,platform,prod
+2026-09-06T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-06T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-06T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,36.2065,,,
+2026-09-06T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,53.2365,,platform,prod
+2026-09-06T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-06T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,14.5136,,,
+2026-09-06T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.4720,,,
+2026-09-06T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,32.9414,,platform,prod
+2026-09-07T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-07T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-07T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-07T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-07T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-07T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,3.8400,,web,prod
+2026-09-07T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-07T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-07T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-07T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.3629,,platform,prod
+2026-09-07T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-07T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-07T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,36.4290,,,
+2026-09-07T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,57.5525,,platform,prod
+2026-09-07T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-07T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,14.5134,,,
+2026-09-07T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,26.0568,,,
+2026-09-07T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,35.4716,,platform,prod
+2026-09-08T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-08T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-08T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-08T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-08T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-08T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,3.8400,,web,prod
+2026-09-08T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-08T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-08T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-08T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.4032,,platform,prod
+2026-09-08T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-08T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-08T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,36.6516,,,
+2026-09-08T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,55.3898,,platform,prod
+2026-09-08T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-08T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.5574,,,
+2026-09-08T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,28.3766,,,
+2026-09-08T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,34.9382,,platform,prod
+2026-09-09T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-09T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-09T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-09T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-09T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-09T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,3.8400,,web,prod
+2026-09-09T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-09T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-09T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-09T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.4435,,platform,prod
+2026-09-09T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-09T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-09T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,36.8742,,,
+2026-09-09T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,57.0462,,platform,prod
+2026-09-09T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-09T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.6920,,,
+2026-09-09T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,25.8855,,,
+2026-09-09T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,32.1824,,platform,prod
+2026-09-10T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-10T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-10T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-10T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-10T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-10T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,4.6080,,web,prod
+2026-09-10T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-10T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-10T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-10T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.4839,,platform,prod
+2026-09-10T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-10T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-10T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,37.0968,,,
+2026-09-10T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,54.1415,,platform,prod
+2026-09-10T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-10T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.0578,,,
+2026-09-10T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,28.3098,,,
+2026-09-10T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,31.9365,,platform,prod
+2026-09-11T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-11T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-11T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-11T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-11T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-11T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,5.3760,,web,prod
+2026-09-11T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-11T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-11T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-11T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.5242,,platform,prod
+2026-09-11T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-11T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-11T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,37.3194,,,
+2026-09-11T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,58.3931,,platform,prod
+2026-09-11T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-11T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,14.5575,,,
+2026-09-11T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,26.6494,,,
+2026-09-11T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,33.5760,,platform,prod
+2026-09-12T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-12T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-12T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-12T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-12T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-12T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-12T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-12T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-12T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.5645,,platform,prod
+2026-09-12T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-12T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-12T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,37.5419,,,
+2026-09-12T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,57.5663,,platform,prod
+2026-09-12T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-12T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,14.7979,,,
+2026-09-12T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,25.8848,,,
+2026-09-12T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,34.2045,,platform,prod
+2026-09-13T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-13T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-13T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-13T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-13T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-13T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-13T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-13T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-13T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.6048,,platform,prod
+2026-09-13T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-13T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-13T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,37.7645,,,
+2026-09-13T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,54.5977,,platform,prod
+2026-09-13T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-13T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,14.8457,,,
+2026-09-13T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,26.0993,,,
+2026-09-13T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,36.9338,,platform,prod
+2026-09-14T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-14T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-14T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-14T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-14T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-14T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,4.6080,,web,prod
+2026-09-14T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-14T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-14T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-14T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.6452,,platform,prod
+2026-09-14T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-14T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-14T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,37.9871,,,
+2026-09-14T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,57.2042,,platform,prod
+2026-09-14T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-14T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.7695,,,
+2026-09-14T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,25.5525,,,
+2026-09-14T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,35.3748,,platform,prod
+2026-09-15T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-15T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-15T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-15T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-15T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-15T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,5.3760,,web,prod
+2026-09-15T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-15T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-15T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-15T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.6855,,platform,prod
+2026-09-15T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-15T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-15T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,38.2097,,,
+2026-09-15T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,57.3932,,platform,prod
+2026-09-15T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-15T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.9504,,,
+2026-09-15T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,28.5349,,,
+2026-09-15T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,36.5050,,platform,prod
+2026-09-16T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-16T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-16T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-16T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-16T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-16T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,3.8400,,web,prod
+2026-09-16T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-16T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-16T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-16T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.7258,,platform,prod
+2026-09-16T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-16T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-16T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,38.4323,,,
+2026-09-16T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,54.4933,,platform,prod
+2026-09-16T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-16T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.1702,,,
+2026-09-16T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,28.3127,,,
+2026-09-16T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,36.8140,,platform,prod
+2026-09-17T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-17T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-17T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-17T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-17T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-17T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,3.8400,,web,prod
+2026-09-17T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-17T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-17T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-17T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.7661,,platform,prod
+2026-09-17T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-17T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-17T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,38.6548,,,
+2026-09-17T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,54.3081,,platform,prod
+2026-09-17T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-17T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.9765,,,
+2026-09-17T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,26.1547,,,
+2026-09-17T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,36.1334,,platform,prod
+2026-09-18T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-18T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-18T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-18T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-18T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-18T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,4.6080,,web,prod
+2026-09-18T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-18T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-18T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-18T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.8065,,platform,prod
+2026-09-18T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-18T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-18T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,38.8774,,,
+2026-09-18T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,53.6754,,platform,prod
+2026-09-18T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-18T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.5145,,,
+2026-09-18T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.8298,,,
+2026-09-18T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,36.1293,,platform,prod
+2026-09-19T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-19T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-19T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-19T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-19T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-19T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-19T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-19T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-19T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.8468,,platform,prod
+2026-09-19T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-19T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-19T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,39.1000,,,
+2026-09-19T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,56.2176,,platform,prod
+2026-09-19T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-19T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.1787,,,
+2026-09-19T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,25.8836,,,
+2026-09-19T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,32.8768,,platform,prod
+2026-09-20T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-20T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-20T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-20T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-20T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-20T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-20T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-20T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-20T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.8871,,platform,prod
+2026-09-20T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-20T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-20T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,39.3226,,,
+2026-09-20T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,52.1448,,platform,prod
+2026-09-20T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-20T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.5772,,,
+2026-09-20T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,25.4194,,,
+2026-09-20T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,33.4282,,platform,prod
+2026-09-21T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-21T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-21T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-21T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-21T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-21T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,3.8400,,web,prod
+2026-09-21T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-21T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-21T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-21T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.9274,,platform,prod
+2026-09-21T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-21T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-21T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,39.5452,,,
+2026-09-21T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,55.6932,,platform,prod
+2026-09-21T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-21T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.2046,,,
+2026-09-21T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,28.2698,,,
+2026-09-21T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,32.5302,,platform,prod
+2026-09-22T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-22T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-22T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-22T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-22T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-22T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,5.3760,,web,prod
+2026-09-22T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-22T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-22T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-22T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,5.9677,,platform,prod
+2026-09-22T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-22T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-22T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,39.7677,,,
+2026-09-22T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,52.2908,,platform,prod
+2026-09-22T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-22T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,14.6973,,,
+2026-09-22T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.3421,,,
+2026-09-22T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,35.5075,,platform,prod
+2026-09-23T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-23T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-23T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-23T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-23T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-23T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,3.8400,,web,prod
+2026-09-23T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-23T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-23T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-23T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,6.0081,,platform,prod
+2026-09-23T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-23T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-23T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,39.9903,,,
+2026-09-23T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,54.4755,,platform,prod
+2026-09-23T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-23T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.9066,,,
+2026-09-23T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.2508,,,
+2026-09-23T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,34.9538,,platform,prod
+2026-09-24T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-24T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-24T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-24T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-24T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-24T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,3.8400,,web,prod
+2026-09-24T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-24T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-24T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-24T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,6.0484,,platform,prod
+2026-09-24T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-24T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-24T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,40.2129,,,
+2026-09-24T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,55.9308,,platform,prod
+2026-09-24T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-24T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.0708,,,
+2026-09-24T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,27.3012,,,
+2026-09-24T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,34.6310,,platform,prod
+2026-09-25T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-25T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-25T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-25T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-25T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-25T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,4.6080,,web,prod
+2026-09-25T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-25T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-25T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-25T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,6.0887,,platform,prod
+2026-09-25T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-25T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-25T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,40.4355,,,
+2026-09-25T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,53.1287,,platform,prod
+2026-09-25T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-25T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.5459,,,
+2026-09-25T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,26.0593,,,
+2026-09-25T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,33.9008,,platform,prod
+2026-09-26T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-26T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-26T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-26T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-26T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-26T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-26T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-26T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-26T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,6.1290,,platform,prod
+2026-09-26T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-26T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-26T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,40.6581,,,
+2026-09-26T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,56.2839,,platform,prod
+2026-09-26T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-26T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,14.8800,,,
+2026-09-26T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,26.3382,,,
+2026-09-26T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,35.9482,,platform,prod
+2026-09-27T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-27T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-27T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-27T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-27T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-27T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-27T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-27T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-27T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,6.1694,,platform,prod
+2026-09-27T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-27T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-27T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,40.8806,,,
+2026-09-27T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,52.2397,,platform,prod
+2026-09-27T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-27T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.1333,,,
+2026-09-27T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,28.7944,,,
+2026-09-27T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,37.3526,,platform,prod
+2026-09-28T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-28T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-28T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-28T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-28T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-28T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,3.8400,,web,prod
+2026-09-28T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-28T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-28T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-28T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,6.2097,,platform,prod
+2026-09-28T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-28T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-28T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,41.1032,,,
+2026-09-28T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,55.3790,,platform,prod
+2026-09-28T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-28T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.2094,,,
+2026-09-28T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,25.6768,,,
+2026-09-28T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,33.6318,,platform,prod
+2026-09-29T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-29T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-29T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-29T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-29T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-29T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,3.8400,,web,prod
+2026-09-29T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-29T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-29T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-29T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,6.2500,,platform,prod
+2026-09-29T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-29T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-29T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,41.3258,,,
+2026-09-29T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,57.6851,,platform,prod
+2026-09-29T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-29T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,14.9912,,,
+2026-09-29T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,25.7679,,,
+2026-09-29T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,36.4190,,platform,prod
+2026-09-30T00:00:00Z,111111111111,SavingsPlanCoveredUsage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,9.2160,6.3600,web,prod
+2026-09-30T00:00:00Z,111111111111,SavingsPlanNegation,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web01,-9.2160,,web,prod
+2026-09-30T00:00:00Z,111111111111,SavingsPlanRecurringFee,ComputeSavingsPlans,Savings Plans for AWS Compute usage,us-east-1,ComputeSP:1yrNoUpfront,arn:aws:savingsplans::111111111111:savingsplan/sp-0f1e,6.3600,,,
+2026-09-30T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web02,9.2160,,web,prod
+2026-09-30T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web03,9.2160,,web,prod
+2026-09-30T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:m6i.2xlarge,i-0a1c3web04,5.3760,,web,prod
+2026-09-30T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-BoxUsage:r6i.4xlarge,i-0b7stgbatch,24.1920,,,
+2026-09-30T00:00:00Z,111111111111,Usage,AmazonRDS,Amazon Relational Database Service,us-east-1,USE1-InstanceUsage:db.r6g.2xlarge,arn:aws:rds:us-east-1:111111111111:db:payments-primary,20.6400,,payments,prod
+2026-09-30T00:00:00Z,222222222222,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:VolumeUsage.gp2,vol-0dead5stg,1.6129,,,
+2026-09-30T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-EBS:SnapshotUsage,snap-group-prod,6.2903,,platform,prod
+2026-09-30T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa1,0.1200,,,
+2026-09-30T00:00:00Z,222222222222,Usage,AmazonVPC,Amazon Virtual Private Cloud,us-east-1,USE1-PublicIPv4:IdleAddress,eipalloc-0aa2,0.1200,,,
+2026-09-30T00:00:00Z,111111111111,Usage,AmazonS3,Amazon Simple Storage Service,us-east-1,TimedStorage-ByteHrs,acme-logs-archive,41.5484,,,
+2026-09-30T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Bytes,nat-0c9prod,53.7920,,platform,prod
+2026-09-30T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-NatGateway-Hours,nat-0c9prod,1.0800,,platform,prod
+2026-09-30T00:00:00Z,111111111111,Usage,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,USE1-DataTransfer-Regional-Bytes,,15.9742,,,
+2026-09-30T00:00:00Z,111111111111,Usage,AWSDataTransfer,AWS Data Transfer,us-east-1,USE1-DataTransfer-Out-Bytes,,28.1056,,,
+2026-09-30T00:00:00Z,111111111111,Usage,AmazonCloudWatch,AmazonCloudWatch,us-east-1,USE1-DataProcessing-Bytes,,34.6664,,platform,prod
+2026-08-31T00:00:00Z,111111111111,Tax,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,,,412.3700,,,
+2026-08-31T00:00:00Z,111111111111,Credit,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,,,-250.0000,,,
+2026-09-30T00:00:00Z,111111111111,Tax,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,,,455.1200,,,
+2026-09-30T00:00:00Z,111111111111,Credit,AmazonEC2,Amazon Elastic Compute Cloud,us-east-1,,,-250.0000,,,

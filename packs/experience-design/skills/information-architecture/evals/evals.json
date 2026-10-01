@@ -1,0 +1,19 @@
+{
+  "skill_name": "information-architecture",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Acme Learning runs a course platform for corporate training. The current top menu is: Home, Catalog, My Courses, Paths, Certificates, Live Sessions, Admin, Reports, Users, Groups, Integrations, Billing, Support, Community. Learners and their managers both use it; admins are a separate small group. Support says learners can't find their certificates and managers can't find team progress. Design the IA.",
+      "assertions": [
+        "A flat content inventory listing every current menu item with a keep/merge/cut status appears before any grouping",
+        "Each sitemap level names one organising scheme, and any mixed scheme is flagged with a reason",
+        "Global nav has 5–7 items, and account, billing, support and similar items sit in utility nav, not global nav",
+        "The indented sitemap tree and the Mermaid diagram contain the same nodes",
+        "A label rationale table gives each global label a reason, rejected alternatives, and an evidence tag",
+        "Findability risks are listed with severity and a mitigation, including certificates and team progress",
+        "The validation plan is a tree test or card sort whose tasks do not contain the label words, each with a correct destination and a pre-set threshold",
+        "Does not invent user research, search data or content items not in the prompt; anything inferred is tagged [inferred] or [assumption]"
+      ]
+    }
+  ]
+}

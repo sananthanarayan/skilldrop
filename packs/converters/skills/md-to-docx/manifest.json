@@ -1,0 +1,51 @@
+{
+  "name": "md-to-docx",
+  "version": "0.1.0",
+  "description": "Turn a Markdown draft into a Word document (.docx) that someone outside engineering can open, edit and track changes in, with real Heading styles so the navigation pane and table of contents work, live hyperlinks, numbered and bulleted lists, tables, code blocks, embedded images and optional brand fonts and colours, and a warning for everything that could not be carried over. Use when the user wants a Markdown file as a Word doc, says \"send this as a .docx\", \"convert to Word\", \"legal needs it in Word\", or \"make this editable for the client\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "brand-kit",
+    "deck-builder",
+    "file-to-markdown",
+    "guide-builder",
+    "md-to-html",
+    "md-to-xlsx",
+    "mermaid-render",
+    "output-hygiene",
+    "release-notes"
+  ],
+  "handoff": [
+    {
+      "to": "mermaid-render",
+      "when": "the Markdown contains Mermaid diagram blocks",
+      "purpose": "Render each diagram to PNG so it can be embedded in the Word file instead of appearing as code.",
+      "fallback": "If mermaid-render is absent, leave the block as code, tell the user the diagram did not convert, and suggest exporting it to PNG from mermaid.live."
+    },
+    {
+      "to": "output-hygiene",
+      "when": "the Markdown was written by an agent and is going to someone outside the team",
+      "purpose": "Strip invisible characters and generated-by trailers before they are frozen into a Word file.",
+      "fallback": "If output-hygiene is absent, remove any 'Generated with' line and trailing chat closer by hand before converting."
+    }
+  ],
+  "tags": [
+    "word",
+    "docx",
+    "markdown",
+    "convert",
+    "document",
+    "export"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "A stdlib script does the conversion; the model restructures the Markdown so it converts cleanly (heading levels, footnotes, HTML), reads each warning and explains the losses. Bounded editing, no open-ended generation."
+  }
+}

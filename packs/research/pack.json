@@ -1,0 +1,52 @@
+{
+  "description": "Take a question from vague to answered: plan the research around the decision it serves, synthesise the sources with every claim cited, and rank rival explanations by the evidence against them.",
+  "display_name": "Research",
+  "keywords": ["research", "literature review", "synthesis", "citations", "hypotheses", "evidence"],
+  "links": {
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/research/"
+  },
+  "maintainers": [
+    {
+      "name": "sananthanarayan"
+    }
+  ],
+  "first-value": {
+    "audience-posture": "non-technical",
+    "prerequisites": ["A question you need answered and the decision it feeds; for synthesis, the text of your sources, not just titles"],
+    "starter-task": "Turn a vague research request into a plan you can finish",
+    "starter-prompt": "I need to research whether our 14-person support team should move to a four-day week. Our COO decides by 1 November. I have about 20 hours and can pull ticket data from Zendesk.",
+    "verification": "research-plan writes a plan that opens with the decision, the decider and the date, then gives three to six sub-questions, each with a finding that would change the decision, a method, search strings, and a stopping rule with a budget cap.",
+    "recovery": "If you get a plan built around a decision you didn't give, say who decides what and by when, and run it again. If research-plan does not activate, ask for it by name (\"use research-plan\")."
+  },
+  "requires": ["core"],
+  "journey": {
+    "when": "You've been asked to look into something before a decision, and you need an answer you can defend, with sources.",
+    "you_bring": [
+      "the decision the research feeds, who makes it, and by when",
+      "the time you have",
+      "the sources you collect: papers, reports, articles or interview transcripts, as text",
+      "any data or observations, if the question is why something happened"
+    ],
+    "time": "An hour to plan and an hour to synthesise, plus however long the research takes",
+    "steps": [
+      {
+        "skill": "research-plan",
+        "you_do": "Say what decision the research is for, then give it the topic and your time budget.",
+        "you_get": "A two-page plan: the precise question, sub-questions with the finding that would change the decision, a method for each, inclusion criteria, search strings, and a stopping rule.",
+        "decide": "Agree the thresholds before you start, so the findings can't be read to fit."
+      },
+      {
+        "skill": "source-synthesis",
+        "you_do": "Hand it the sources you collected, as text, with the plan's question.",
+        "you_get": "Findings with every claim cited to a source and page, agreement and disagreement made explicit, a strength rating per finding, the gaps, and a citation check report."
+      },
+      {
+        "skill": "hypothesis-comparison",
+        "you_do": "If the question is why something happened, give it the observation and the cited findings.",
+        "you_get": "A consistency matrix ranking the explanations by the evidence against them, the evidence the ranking rests on, and the next observation that would tell the leaders apart.",
+        "decide": "Act on the leading explanation, or run the next observation first."
+      }
+    ],
+    "you_end_with": "A decision-led plan, a cited synthesis you can check line by line, and, for why-questions, a ranked set of explanations with the next test to run."
+  }
+}

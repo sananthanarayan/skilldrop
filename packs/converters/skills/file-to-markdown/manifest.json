@@ -1,0 +1,48 @@
+{
+  "name": "file-to-markdown",
+  "version": "0.1.0",
+  "description": "Convert a Word document, PowerPoint deck, Excel workbook, web page, CSV, JSON, text file or PDF into clean Markdown that keeps headings, lists, tables, links, bold and italic, slide titles and speaker notes, and reports everything it dropped (images, charts, comments, formulas, tracked changes), so the content can be read, reviewed or fed to another skill. Use when the user hands over a .docx, .pptx, .xlsx, .html, .csv, .json or .pdf and says \"read this\", \"turn this into markdown\", \"extract the text\", or wants it critiqued or briefed.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "brief-intake",
+    "doc-critique",
+    "md-to-docx",
+    "md-to-html",
+    "md-to-xlsx"
+  ],
+  "handoff": [
+    {
+      "to": "doc-critique",
+      "when": "the user wants the converted document reviewed",
+      "purpose": "Critique the content against the archetype's quality bar.",
+      "fallback": "If doc-critique is absent, give a short verdict and the three most important fixes inline, and repeat what was dropped in the conversion."
+    },
+    {
+      "to": "brief-intake",
+      "when": "the converted document is source material for another skill",
+      "purpose": "Structure it into a brief the next generator can use without more questions.",
+      "fallback": "If brief-intake is absent, list the goal, audience, constraints and open questions found in the document inline."
+    }
+  ],
+  "tags": [
+    "markdown",
+    "convert",
+    "docx",
+    "pptx",
+    "xlsx",
+    "pdf",
+    "extract"
+  ],
+  "model": {
+    "tier": "light",
+    "rationale": "A deterministic stdlib script does the extraction; the model runs it, relays the dropped-content report and hands off. No generation beyond a short summary of losses."
+  }
+}

@@ -1,6 +1,6 @@
 ---
 name: capacity-cost-model
-description: Build a capacity and cost model for a service or feature — sized from a demand driver and its growth curve, not from instance types; unit economics (cost per request/tenant/GB); peak-vs-average and headroom as explicit decisions; cost at 1×/3×/10× with scaling cliffs named; and the forgotten line items (egress, logging, NAT, non-prod) checklisted. Use when the user needs to estimate cloud/infra cost, size capacity for launch or growth, project the bill at scale, or find what's driving a cost.
+description: Build a capacity and cost model for a service or feature — sized from a demand driver and its growth curve, not from instance types; unit economics (cost per request/tenant/GB); peak-vs-average and headroom as explicit decisions; cost at 1×/3×/10× with scaling cliffs named; and the forgotten line items (egress, logging, NAT, non-prod) checklisted. Use when the user needs to estimate cloud/infra cost, size capacity for launch or growth, project the bill at scale. For reviewing a bill you already have, use cloud-cost-review.
 ---
 
 # capacity-cost-model
@@ -44,13 +44,14 @@ Turns "how much will this cost to run?" into a model a reviewer can re-run and f
 - ✅ Estimating run cost for a new service/feature before launch
 - ✅ Sizing capacity for a launch or a known growth event
 - ✅ "What will this cost at 10× / when we hit N tenants?"
-- ✅ Finding what's driving an existing cloud bill and where the next cliff is
+- ✅ Finding where the next scaling cliff is as demand grows
 
 ## When NOT to use this skill
 
 - ❌ Deciding whether to build/buy/invest at all — that's `business-case` (this can feed its run-cost line)
 - ❌ Setting the performance/availability targets — that's `nfr-spec` (this sizes to meet them)
 - ❌ The migration/rollout sequence — that's `migration-plan`
+- ❌ Finding waste in a bill you already pay — that's `cloud-cost-review`, which works from the cost export
 - ❌ A fixed-price SaaS seat with no scaling math — just read the price sheet
 
 ## Anti-patterns to avoid

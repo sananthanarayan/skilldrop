@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Write a DPIA for our new employee location-tracking app",
+    "should_trigger": true
+  },
+  {
+    "query": "Do we need a data protection impact assessment for using CCTV with face recognition in our stores?",
+    "should_trigger": true
+  },
+  {
+    "query": "Draft the privacy impact assessment for the CRM migration, including the lawful basis and transfers to the US",
+    "should_trigger": true
+  },
+  {
+    "query": "Our DPO wants a GDPR Article 35 assessment before we launch the loyalty scoring feature",
+    "should_trigger": true
+  },
+  {
+    "query": "Threat model the new patient portal architecture using STRIDE",
+    "should_trigger": false
+  },
+  {
+    "query": "Write an acceptable-use policy for staff using ChatGPT and Copilot",
+    "should_trigger": false
+  },
+  {
+    "query": "Assess the prompt-injection and tool-misuse risks of our customer support agent",
+    "should_trigger": false
+  },
+  {
+    "query": "Update the company risk register and show me the heat map",
+    "should_trigger": false
+  }
+]

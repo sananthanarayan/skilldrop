@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Turn this markdown report into an HTML page I can attach to an email",
+    "should_trigger": true
+  },
+  {
+    "query": "Convert README.md to a standalone html file with our brand colours",
+    "should_trigger": true
+  },
+  {
+    "query": "I need a printable web version of design-notes.md with a table of contents",
+    "should_trigger": true
+  },
+  {
+    "query": "md to html please, single file, images inlined",
+    "should_trigger": true
+  },
+  {
+    "query": "Convert this markdown to a Word document legal can track changes in",
+    "should_trigger": false
+  },
+  {
+    "query": "Turn the markdown table of vendors into an Excel sheet",
+    "should_trigger": false
+  },
+  {
+    "query": "Render the Mermaid diagram in arch.mmd to an SVG",
+    "should_trigger": false
+  },
+  {
+    "query": "Make a one-page flyer for the open day in our branding",
+    "should_trigger": false
+  }
+]
