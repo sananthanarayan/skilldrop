@@ -108,3 +108,4 @@ and stop. With an export, use the defaults above, list each assumption at the to
 - ❌ **Inventing new dates for slipped items.** Leave them out until owners give them.
 - ❌ **A status wall.** Twenty in-progress items listed in full. Count them; list the ones that matter.
 - ❌ **Per-person scorecards.** WIP by owner is for spotting overload, not ranking people.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.

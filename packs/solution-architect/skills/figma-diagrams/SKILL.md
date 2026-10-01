@@ -84,3 +84,4 @@ If `FIGMA_TOKEN` is not set, tell the user how to set it before running the scri
 - ❌ Claiming the script "drew" something in the user's Figma file. It didn't (REST API can't).
 - ❌ Asking the user to paste their token into chat. They should `export FIGMA_TOKEN=…` in their own shell.
 - ❌ Posting test comments to an unfamiliar file without explicit confirmation.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.

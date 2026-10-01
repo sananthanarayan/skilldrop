@@ -21,7 +21,7 @@ Two modes, chosen by what's already there:
 
 2. **Apply the evidence rule without exception.** A command appears only if it traces to a file in the repo. Never infer from ecosystem convention: a Python repo does not necessarily run `pytest`, and a repo with `jest` in `devDependencies` may still have no test script.
 
-   When a section needs a command that doesn't exist, write the marker, not a guess: ✅ *"Test: `[missing: no test script in package.json or CI]`"* — ❌ *"Test: `npm test`"*. The marker is useful; the guess is a trap.
+   When a section needs a command that doesn't exist, record the gap, not a guess. In the provenance table it is `[missing: no test script in package.json or CI]`. In the file itself it is a plain line an agent can act on: ✅ *"Test: none defined in this repo. Do not run `npm test`."* — ❌ *"Test: `npm test`"*. The stated gap is useful; the guess is a trap.
 
 3. **Derive file placement from the actual tree**, not from what the framework usually does. Name the directories that exist and what belongs in each. Two or three rows beat a full tree dump.
 
@@ -46,7 +46,7 @@ Two modes, chosen by what's already there:
 
 ## Quality bar
 
-- **Zero unverified commands.** Every one traces to a file and key, or carries a `[missing: …]` marker. This is the bar; a file that fails it is worse than no file.
+- **Zero unverified commands.** Every one traces to a file and key, or is stated as a gap (`[missing: …]` in the provenance table, a plain "none defined" line in the file). This is the bar; a file that fails it is worse than no file.
 - **A newcomer agent could build and test from this file alone** — or can see plainly that the repo has no such command.
 - **Forbidden actions are named**, not implied.
 - **Every convention line passes the counterfactual test.** If an agent would do the right thing without it, it is padding.
@@ -78,3 +78,5 @@ Two modes, chosen by what's already there:
 - ❌ **A satellite that duplicates `AGENTS.md`.** Guaranteed drift, invisible until an agent acts on the stale copy.
 - ❌ **Silently rewriting a hand-tuned file.** Audit mode emits a diff and lets a human choose; the file may encode decisions the repo can't show you.
 - ❌ **Writing to the cap.** 150 lines is a ceiling, not a target. Most repos need far less.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.
+- ❌ **A bare `BLOCKED` line.** Keep the `BLOCKED: need <X>` line, then write for a person: what is missing in plain words, what you will produce once you have it, and anything the request already lets you say.

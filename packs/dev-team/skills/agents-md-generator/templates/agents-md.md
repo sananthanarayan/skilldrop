@@ -14,7 +14,7 @@
 |---|---|---|
 | Install | `{cmd}` | `{file}` → `{key}` |
 | Build | `{cmd}` | `{file}` → `{key}` |
-| Test | `{cmd}` *or* `[missing: no test command in CI or manifests]` | `{file}` → `{key}` |
+| Test | `{cmd}` *or* none defined in this repo; do not guess one | `{file}` → `{key}` |
 | Lint | `{cmd}` | `{file}` → `{key}` |
 | Run locally | `{cmd}` | `{file}` → `{key}` |
 
@@ -44,5 +44,5 @@
 
 <!--
 Line budget: 150. Provenance for every command was verified at generation time.
-Commands marked [missing] are findings, not omissions — the repo has no such command.
+A row that says "none defined" is a finding, not an omission — the repo has no such command.
 -->

@@ -1,6 +1,6 @@
 {
   "name": "agent-threat-model",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Threat-model an AI agent deployment against the lethal trifecta — private data, untrusted content, and an exfiltration vector — producing a per-capability matrix, a named architectural fix for every unsafe path, and a pre-launch checklist. Use before shipping an agent, when reviewing MCP server or tool permissions, when the user asks about prompt injection or data exfiltration risk, or when deciding whether an agent's capability surface is safe to expose.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },

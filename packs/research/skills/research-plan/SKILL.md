@@ -118,3 +118,5 @@ budgets become tagged assumptions (default: two weeks, 15 hours).
 - ❌ **"Search Google for four-day week".** Give the string, the synonyms, the engine and the date filter.
 - ❌ **No stopping rule.** The research ends when the budget runs out, with nothing written.
 - ❌ **Only sources that agree with the user's belief.** Include a search for the opposite.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.
+- ❌ **A bare `BLOCKED` line.** Keep the `BLOCKED: need <X>` line, then write for a person: what is missing in plain words, what you will produce once you have it, and anything the request already lets you say.

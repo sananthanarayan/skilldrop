@@ -1,6 +1,6 @@
 {
   "name": "mermaid-render",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Check Mermaid diagrams for the mistakes that stop them rendering (unknown diagram type, unbalanced brackets or quotes, unquoted parentheses in labels, the word end as a node id, missing arrows, unclosed subgraphs or alt blocks) with line numbers and a fix for each, then render them to SVG, PNG or PDF with mermaid-cli, or to a standalone HTML page when it is not installed. Works on a .mmd file or every mermaid fence in a Markdown doc. Use when a diagram \"won't render\", the user says \"check my mermaid\", \"export this diagram as SVG/PNG\", or needs the diagrams in a doc as image files.",
   "entrypoint": "SKILL.md",
   "deps": {

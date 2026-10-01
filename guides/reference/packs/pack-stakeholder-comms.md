@@ -23,7 +23,7 @@ Non-technical audiences: audience profiling, exec summaries, decision logs, and 
 
 Translate an audience type (exec, board, technical, sales, investor, internal, partner, customer) into structural rules — slide count, density, tone, must-have sections, things to avoid. Reusable across deck-builder, slide-outliner, and exec-summary.
 
-Tier **light** · v0.1.0 · [SKILL.md](../../../packs/stakeholder-comms/skills/audience-profile/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/audience-profile/)
+Tier **light** · v0.1.1 · [SKILL.md](../../../packs/stakeholder-comms/skills/audience-profile/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/audience-profile/)
 
 **Use it when** Use whenever a stakeholder communication deliverable is being designed for a specific audience.
 
@@ -42,7 +42,7 @@ Tier **light** · v0.1.0 · [SKILL.md](../../../packs/stakeholder-comms/skills/a
 
 Extract decisions, action items, owners, and due dates from meeting notes, Slack threads, design-review transcripts, or any unstructured discussion. Produces a clean structured log the user can paste into a doc, tracker, or ADR queue.
 
-Tier **light** · v0.1.0 · [SKILL.md](../../../packs/stakeholder-comms/skills/decision-log/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/decision-log/)
+Tier **light** · v0.1.1 · [SKILL.md](../../../packs/stakeholder-comms/skills/decision-log/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/decision-log/)
 
 **Use it when** the user has notes/threads/transcripts and asks for a "decision log", "action items", "what did we agree", or "follow-ups".
 
@@ -73,7 +73,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/stakeholder-comms/skill
 
 Turn raw notes, specs, or design material into an easy-to-follow guide, auto-styled to the content — a setup/quickstart, a design walkthrough, or an API/event-schema reference.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/stakeholder-comms/skills/guide-builder/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/guide-builder/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/stakeholder-comms/skills/guide-builder/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/guide-builder/)
 
 **Use it when** the user wants setup or getting-started instructions, an onboarding walkthrough of how a system works, or developer reference docs for an API or event schema — and it is NOT an SRE operational runbook (use runbook-generator) or a design proposal for review (use design-doc).
 

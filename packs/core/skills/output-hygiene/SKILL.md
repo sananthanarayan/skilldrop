@@ -93,3 +93,5 @@ There is no cryptographic watermark in Claude's text output, and this skill does
 - ❌ **Auto-replacing a homoglyph with the ASCII letter that looks like it.** The word may be genuinely non-English. Report it, show the codepoint, let the author decide.
 - ❌ **Re-reading the whole draft for characters the script already found.** The script is exhaustive on its classes and cheaper than a model pass. Spend the model on prose.
 - ❌ **Running `--fix` and reporting only the count.** "Removed 6 artifacts" is not auditable. List them.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.
+- ❌ **A bare `BLOCKED` line.** Keep the `BLOCKED: need <X>` line, then write for a person: what is missing in plain words, what you will produce once you have it, and anything the request already lets you say.

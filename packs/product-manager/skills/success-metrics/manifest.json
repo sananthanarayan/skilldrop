@@ -1,6 +1,6 @@
 {
   "name": "success-metrics",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Define how a feature's success will be measured before it's built — one primary metric with target, timeframe, and baseline; guardrail and counter-metrics; an instrumentation plan naming every event; and a pre-committed decision rule for what happens if the target is missed. Use when the user asks \"how do we know this worked\", needs KPIs or success criteria for a feature, or wants a measurement/instrumentation plan before launch.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },

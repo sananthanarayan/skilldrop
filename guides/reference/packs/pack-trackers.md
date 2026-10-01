@@ -23,7 +23,7 @@ For leads and PMs who run work in Jira, Linear or GitHub Projects: load a PRD in
 
 Triage a whole backlog export from Jira, Linear or GitHub Projects (CSV, JSON or an MCP tool) — duplicate and near-duplicate pairs with the reason, items missing acceptance criteria or an owner, stale items, oversized items to split, priority conflicts, and a proposed ordering with a reason per item — ending in a change list the user can apply. A stdlib script computes the mechanical checks.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/trackers/skills/backlog-triage/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/backlog-triage/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/trackers/skills/backlog-triage/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/backlog-triage/)
 
 **Use it when** the user wants to clean up, groom or refine a backlog, find duplicate tickets, or says "triage our backlog", "what should we pull next?".
 
@@ -52,7 +52,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/trackers/skills/backlog
 
 Write a weekly team status report from tracker data (Jira, Linear or GitHub Projects, via CSV, JSON or an MCP tool) — shipped, in progress, blocked with the blocker and owner, slipped against plan, risks and asks — with every number computed from the data by a stdlib script, never estimated, and a RAG status that states the rule that set it.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/trackers/skills/team-status-report/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/team-status-report/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/trackers/skills/team-status-report/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/team-status-report/)
 
 **Use it when** the user wants a weekly status update, sprint report or stakeholder update from the tracker, or says "write this week's status report", "are we on track?".
 

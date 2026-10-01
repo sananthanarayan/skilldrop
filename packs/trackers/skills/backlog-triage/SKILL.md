@@ -113,3 +113,4 @@ the defaults above and list each assumption at the top of the report.
 - ❌ **Writing acceptance criteria nobody asked for** and presenting them as the team's.
 - ❌ **A ranking with no reasons.** If you can't say why item 3 is above item 4, it isn't an ordering.
 - ❌ **Silently re-prioritising.** Every priority change is a proposal in the change list.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.

@@ -54,7 +54,7 @@ Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/research/skills/hypothesis
 
 Turn a vague research question into a research plan — the decision the research serves, the precise question and sub-questions, what finding would change the decision, a method per sub-question (desk research, interviews, data pull, experiment), source types with inclusion and exclusion criteria, ready-to-run search strings, a stopping rule for when you have enough, and the deliverable. Starts by asking what decision the research is for.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/research/skills/research-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/research-plan/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/research/skills/research-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/research-plan/)
 
 **Use it when** the user says "I need to research X", "help me scope this research", "how should I investigate…", "what should I look into before deciding…", or wants a research or discovery plan.
 

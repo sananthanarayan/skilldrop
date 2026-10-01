@@ -61,3 +61,5 @@ Answers "how will we know it worked?" *before* build, when the answer can still 
 - ❌ **Post-hoc decision rules.** Deciding what the numbers must show *after* seeing them — the moment measurement becomes marketing.
 - ❌ **Ignoring the patience window.** Judging at day 7 what needs a 60-day cohort — novelty spikes and weekly cycles read as signal.
 - ❌ **Proxy laundering.** Using clicks as a proxy for value and then forgetting it's a proxy — label proxies as proxies, every time they're cited.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.
+- ❌ **A bare `BLOCKED` line.** Keep the `BLOCKED: need <X>` line, then write for a person: what is missing in plain words, what you will produce once you have it, and anything the request already lets you say.
