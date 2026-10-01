@@ -78,7 +78,8 @@ nothing. Formulas stay off unless the request says otherwise, noted as an `[assu
 | Anything else, including `n/a`, `1.234,50`, `30/09/2026` | Text |
 
 In Markdown cells, `**bold**`, `` `code` ``, links and images are reduced to their text, and
-`<br>` becomes a line break inside a wrapped cell. JSON numbers and booleans keep their type.
+`<br>` becomes a line break inside a wrapped cell. JSON numbers and booleans keep their type,
+except integers over 15 digits, which become text.
 JSON strings stay text except ISO dates, because whoever produced the JSON chose a string.
 
 ## Useful references in this skill

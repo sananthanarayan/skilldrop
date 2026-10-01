@@ -23,7 +23,7 @@ Turn Markdown into Word, Excel and HTML files that people outside engineering ca
 
 Convert a Word document, PowerPoint deck, Excel workbook, web page, CSV, JSON, text file or PDF into clean Markdown that keeps headings, lists, tables, links, bold and italic, slide titles and speaker notes, and reports everything it dropped (images, charts, comments, formulas, tracked changes), so the content can be read, reviewed or fed to another skill.
 
-Tier **light** · v0.1.1 · [SKILL.md](../../../packs/converters/skills/file-to-markdown/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/file-to-markdown/)
+Tier **light** · v0.1.2 · [SKILL.md](../../../packs/converters/skills/file-to-markdown/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/file-to-markdown/)
 
 **Use it when** the user hands over a .docx, .pptx, .xlsx, .html, .csv, .json or .pdf and says "read this", "turn this into markdown", "extract the text", or wants it critiqued or briefed.
 
@@ -52,7 +52,7 @@ Tier **light** · v0.1.1 · [SKILL.md](../../../packs/converters/skills/file-to-
 
 Turn a Markdown draft into a Word document (.docx) that someone outside engineering can open, edit and track changes in, with real Heading styles so the navigation pane and table of contents work, live hyperlinks, numbered and bulleted lists, tables, code blocks, embedded images and optional brand fonts and colours, and a warning for everything that could not be carried over.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/converters/skills/md-to-docx/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/md-to-docx/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/converters/skills/md-to-docx/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/md-to-docx/)
 
 **Use it when** the user wants a Markdown file as a Word doc, says "send this as a .docx", "convert to Word", "legal needs it in Word", or "make this editable for the client".
 
@@ -110,7 +110,7 @@ Tier **light** · v0.1.0 · [SKILL.md](../../../packs/converters/skills/md-to-ht
 
 Turn the tables in a Markdown file, a CSV or a JSON array into an Excel workbook (.xlsx) that finance, ops or a client can sort, filter and sum, with one sheet per table named from its heading, real numbers, percentages, currency and dates instead of text, a bold frozen header row with filters, sensible column widths, and formulas left inert unless asked for.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/converters/skills/md-to-xlsx/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/md-to-xlsx/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/converters/skills/md-to-xlsx/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/md-to-xlsx/)
 
 **Use it when** the user wants a spreadsheet from Markdown tables or data, says "put this in Excel", "convert the CSV to xlsx", "give finance a spreadsheet", or "turn this JSON into a sheet".
 

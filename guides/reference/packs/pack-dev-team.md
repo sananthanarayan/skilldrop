@@ -205,7 +205,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/migrati
 
 Gate an existing change for merge — run one skill that fires the whole production-readiness pass. First a deterministic mechanical gate (lint + typecheck + tests, via a script whose exit code decides), then the three-reviewer panel dispatched in parallel — devils-advocate (correctness), security-reviewer (exploitability), code-quality (craft) — then a single READY / NOT READY verdict. Use before opening a PR or merging, when you want the full review fleet run on a diff you already have. Do NOT use to implement a feature from a spec (that's feature-implement-loop) or to review a document (that's doc-critique).
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/pre-merge-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/pre-merge-review/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/dev-team/skills/pre-merge-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/pre-merge-review/)
 
 **Needs:** Python 3 for its scripts (standard library only).
 

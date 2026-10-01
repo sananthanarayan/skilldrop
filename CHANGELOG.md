@@ -8,6 +8,15 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.1 — 2026-10-01
+
+- **`md-to-xlsx` no longer writes a workbook Excel can't open** when a cell holds a number too big to store, such as `1e999`. It is kept as text. A JSON integer longer than 15 digits is kept as text too, so an ID isn't rounded.
+- **`md-to-xlsx` tells you when it removes an HTML tag from a table cell.** A name like `Fabrikam <Ltd>` used to lose `<Ltd>` without a word.
+- **`file-to-markdown` keeps code blocks and quotes from a Word file.** Code comes back fenced with its indentation, quotes come back with `>`, and literal `<tag>` text is escaped so it survives being converted again.
+- **`md-to-docx` says each warning once.** A 60,000-row table with the same problem in every row printed 60,000 lines.
+- **`pre-merge-review --install-hook` respects your umask.** The pre-commit hook was always made world-readable (CodeQL `py/overly-permissive-file`); it now gets the execute bit only where the file was already readable.
+- The three converter scripts run without deprecation warnings on Python 3.14.
+
 ## 0.16.0 — 2026-10-01
 
 - **Pin a third-party catalogue to an exact commit:** `--from <url>#<commit-sha>`. A tag or branch can be moved to different code after you reviewed it, but a commit can't, and the CLI checks it got the commit you asked for. Every install records its commit in the ledger. An unpinned install prints the `#<commit>` URL that gets exactly those files again. Pinned skills stay put on `update` until you re-pin.

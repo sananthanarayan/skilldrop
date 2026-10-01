@@ -170,8 +170,11 @@ def type_text(s, formulas, stats, tz_flag, infer_numbers=True):
                         text = "0"
                     return Cell("n", text, fmt, width)
         if RE_SCI.match(s):
-            stats["numbers"] += 1
-            return Cell("n", repr(float(s)), None, width)
+            val = float(s)
+            # 1e999 overflows to inf, which is not a number Excel can read: keep it as text
+            if val == val and val not in (float("inf"), float("-inf")):
+                stats["numbers"] += 1
+                return Cell("n", num_text(val), None, width)
     if len(raw) > MAX_CELL:
         stats["truncated"] += 1
         s = s[:MAX_CELL]
@@ -187,6 +190,10 @@ def type_json(v, formulas, stats, tz_flag):
         return Cell("b", "1" if v else "0", None, 5)
     if isinstance(v, (int, float)):
         if v != v or v in (float("inf"), float("-inf")):
+            stats["text"] += 1
+            return Cell("s", str(v), None, len(str(v)))
+        if isinstance(v, int) and len(str(abs(v))) > 15:
+            # Excel keeps 15 significant digits; a longer integer is an ID, and rounding it is data loss
             stats["text"] += 1
             return Cell("s", str(v), None, len(str(v)))
         stats["numbers"] += 1
@@ -230,6 +237,9 @@ def split_row(line):
     return cells
 
 
+HTML_TAGS = [0]  # tags removed by strip_md, reported once per file
+
+
 def strip_md(s):
     """Plain text from a Markdown table cell."""
     s = re.sub(r"<br\s*/?>", "\n", s, flags=re.I)
@@ -240,7 +250,8 @@ def strip_md(s):
     s = re.sub(r"(?<![\w*])\*(?!\s)(.+?)(?<!\s)\*(?![\w*])", r"\1", s)
     s = re.sub(r"(?<!\w)_(?!\s)(.+?)(?<!\s)_(?!\w)", r"\1", s)
     s = re.sub(r"~~(.+?)~~", r"\1", s)
-    s = re.sub(r"</?[A-Za-z][^>]*>", "", s)
+    s, n = re.subn(r"</?[A-Za-z][^>]*>", "", s)
+    HTML_TAGS[0] += n
     s = re.sub(r"\\([\\`*_{}\[\]()#+\-.!|~])", r"\1", s)
     return s
 
@@ -280,6 +291,9 @@ def read_markdown(text):
             tables.append((heading, header, rows, start))
             continue
         i += 1
+    if HTML_TAGS[0]:
+        warn("%d HTML tag(s) removed from headings and cells (text between them kept); write a literal "
+             "<...> as &lt;...&gt; or in backticks to keep it" % HTML_TAGS[0])
     return tables
 
 
@@ -533,7 +547,7 @@ def write_xlsx(out, sheets, title, formulas):
                 '<bookViews><workbookView activeTab="0"/></bookViews><sheets>%s</sheets>'
                 '<definedNames>%s</definedNames>%s</workbook>') % (
                     "".join(sheet_tags), "".join(names), '<calcPr fullCalcOnLoad="1"/>' if formulas else "")
-    now = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     core = ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
             '<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" '
             'xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" '
