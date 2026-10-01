@@ -85,7 +85,16 @@ field: a SHA-256 of the installed files, recorded at install time. On `update`:
 - `--force` keeps the current overwrite behaviour.
 - A legacy entry with no `hash` behaves as today, then records a hash.
 
-**Delivery:** three PRs in the order above, each with a CHANGELOG entry and a third-digit bump.
+**Delivery order** (revised 2026-10-01, so pack-shaped content is written once):
+
+1. **Part 3, edit-preserving updates**, first. It does not depend on pack shape, and it
+   protects users' edits when skills later move.
+2. **Pack re-cut** (RFC-0033): a `core` pack and one pack per skill, still in `packs.json`.
+   Shipped in the same PR as step 1.
+3. **Parts 1 and 2, first-value metadata and per-pack pages**, written for the re-cut packs.
+4. **Physical migration** (RFC-0034) into `packs/<name>/`. Shipped in the same PR as step 3.
+
+Each PR carries a CHANGELOG entry and a third-digit bump.
 **Files touched:** `packs.json`, `contracts/pack.schema.json`, `validate.py`, `build_site.py`,
 `build_docs.py`, `build_marketplace.py`, `bin/skilldrop.js`, `guides/how-to/upgrade-skills.md`,
 README, and `llms.txt` (regenerated).
