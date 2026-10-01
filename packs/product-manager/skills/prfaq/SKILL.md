@@ -73,3 +73,4 @@ The working-backwards forcing function: write the launch press release *before* 
 - ❌ **Launch-as-adoption.** "Ship to beta" as first success conflates the team's delivery with the customer's value. First success is something the *customer* does.
 - ❌ **Moat without mechanism.** Claiming defensibility without naming what makes it hard to copy — data advantage, network effect, workflow lock-in — is a wish wearing a strategy's clothes.
 - ❌ **All-good-news FAQs.** If the customer FAQ reads like the pricing page, the hard questions were dodged and the document proves nothing.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.

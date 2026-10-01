@@ -197,3 +197,5 @@ A generated deck is a strong first draft. Always tell the user to:
 - ❌ Shipping the deck with a grey placeholder box still in it because the warning went unread.
 - ❌ Defaulting to bullets when a `big_number`, `chart`, `quote` or `two_column` would land harder.
 - ❌ More than ~20 slides for any audience. If the point needs 21, the deck is the wrong format.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.
+- ❌ **A bare `BLOCKED` line.** Keep the `BLOCKED: need <X>` line, then write for a person: what is missing in plain words, what you will produce once you have it, and anything the request already lets you say.

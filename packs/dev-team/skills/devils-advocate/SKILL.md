@@ -140,3 +140,4 @@ Specifically:
 - ❌ **Reviewing untouched code.** Out-of-scope. The skill challenges the *change*, not the codebase.
 - ❌ **Demanding tests for *everything* the change touches.** Only the new logic and new error paths. Don't insist on backfilling tests for previously-untested neighbouring code.
 - ❌ **Skipping "what's solid".** Trains the user (or downstream agent) to dread the skill. End on signal that's actionable in the other direction.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.

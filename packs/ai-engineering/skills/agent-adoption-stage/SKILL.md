@@ -85,5 +85,6 @@ The load-bearing idea: **the bottleneck moves.** Each stage is limited by someth
 - ❌ **Answering with a product list.** Tools don't move a team up a rung — a trusted verification loop does. Name the capability and the loop change.
 - ❌ **Prescribing the whole ladder.** Handing someone stages 2, 3 and 4 at once guarantees stage 1 forever.
 - ❌ **Treating the stage as a status symbol.** Stage 4 is not better for a team whose work doesn't need it; the right stage is the one the work and the trust support.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.
 
 **Non-interactive:** with no user to ask, infer the stage from whatever observables the input contains and tag the placement `[assumption]`, naming what to confirm. If the input has no observable at all — no agent counts, no review posture, no statement of who writes the code — emit `BLOCKED: need at least one observable (agents in flight per engineer, who writes most of the code, or what gets reviewed)` rather than guessing a stage, because a wrong placement prescribes the wrong unlock.

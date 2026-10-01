@@ -23,7 +23,7 @@ Adopt and build AI systems: readiness assessment, use-case triage, rollout and a
 
 Place an engineering team on the agentic-coding adoption ladder (0 gated → 4 intent-steered) using observables like agents-in-flight per engineer and who writes the code, name the one bottleneck gating the next step, prescribe the single next unlock, and state which current guardrail must change.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/agent-adoption-stage/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/agent-adoption-stage/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/ai-engineering/skills/agent-adoption-stage/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/agent-adoption-stage/)
 
 **Use it when** a leader asks "how far along are we with coding agents", "why has our AI adoption plateaued", or "what do we do next to get more out of this". Do NOT use to assess organisational preconditions like data, policy, and culture (that's ai-readiness-assessment) or to plan a tool's human rollout (that's ai-adoption-rollout).
 
@@ -50,7 +50,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/a
 
 Write the spend spec for an agentic workflow — per-stage model tiers, token caps with hard abort rules, a graceful-degradation order, and cost-per-outcome as the governing metric.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/agent-budget/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/agent-budget/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/ai-engineering/skills/agent-budget/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/agent-budget/)
 
 **Use it when** the user asks what an agent loop or multi-agent workflow should be allowed to spend, wants token/cost budgets and caps for AI automation, or got a surprise bill from an agent fleet.
 
@@ -76,7 +76,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/a
 
 Design a supervised agent loop — the generate→verify→gate cycle, observable exit criteria, hard iteration cap, human gates at irreversible steps, and failure routes — as a loop spec a team can implement in any agent harness.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/agent-loop-design/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/agent-loop-design/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/ai-engineering/skills/agent-loop-design/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/agent-loop-design/)
 
 **Use it when** the user wants to automate a recurring task with an AI agent loop, design a work loop / review loop / research loop, or asks "how do I stop my agent from running forever or shipping junk".
 
@@ -101,7 +101,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/a
 
 Threat-model an AI agent deployment against the lethal trifecta — private data, untrusted content, and an exfiltration vector — producing a per-capability matrix, a named architectural fix for every unsafe path, and a pre-launch checklist. Use before shipping an agent, when reviewing MCP server or tool permissions, when the user asks about prompt injection or data exfiltration risk, or when deciding whether an agent's capability surface is safe to expose.
 
-Tier **heavy** · v0.2.0 · [SKILL.md](../../../packs/ai-engineering/skills/agent-threat-model/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/agent-threat-model/)
+Tier **heavy** · v0.2.1 · [SKILL.md](../../../packs/ai-engineering/skills/agent-threat-model/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/agent-threat-model/)
 
 **A good result:**
 
@@ -152,7 +152,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/a
 
 Score an organisation's or team's readiness to adopt AI tooling across six gating dimensions — data, tooling, skills, governance, process, and culture — with an evidence line per score and the blocking gaps ranked by what stops adoption first.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/ai-readiness-assessment/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/ai-readiness-assessment/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/ai-engineering/skills/ai-readiness-assessment/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/ai-readiness-assessment/)
 
 **Use it when** the user asks "are we ready for AI", wants an AI maturity or readiness baseline, or needs to know what to fix before rolling tools out. Do NOT use to pick which use cases to build (that's ai-use-case-triage) or to plan the rollout itself (that's ai-adoption-rollout).
 
@@ -279,7 +279,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/l
 
 Decompose a task into an orchestrator and subagents — one-mission role cards with typed output contracts, a topology (pipeline / parallel / judge panel) chosen with a reason, context-isolation rationale, and a verification stage that is never a generator.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/ai-engineering/skills/subagent-design/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/subagent-design/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/ai-engineering/skills/subagent-design/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/subagent-design/)
 
 **Use it when** the user wants to fan work out across multiple agents, design a multi-agent workflow or orchestration, or asks "should this be one agent or several".
 

@@ -120,3 +120,5 @@ or page size uses the defaults, with an `[assumption]` line at the top of your r
 - ❌ **Pasting HTML tables into the Markdown.** They are dropped. Rewrite them as pipe tables.
 - ❌ **Editing the facts while restructuring.** Changing a heading level is formatting; rounding "3.4 hours" to "about 3 hours" is not.
 - ❌ **Converting a Markdown file of slide bullets.** One-line bullets under headings make a thin document. If it's a talk, it's a deck.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.
+- ❌ **A bare `BLOCKED` line.** Keep the `BLOCKED: need <X>` line, then write for a person: what is missing in plain words, what you will produce once you have it, and anything the request already lets you say.

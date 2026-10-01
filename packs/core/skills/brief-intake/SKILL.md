@@ -76,3 +76,4 @@ You help the user (or the next skill in the chain) absorb raw unstructured input
 - ❌ Skipping the gaps section because the brief looks fine — the gaps are the *most useful output* for the user about to invoke the downstream skill.
 - ❌ Asking 4+ clarifying questions. If the source is too thin, say so once and let the user decide whether to add material or proceed with gaps flagged.
 - ❌ Emitting the brief in prose. Downstream skills want structured fields, not paragraphs.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.

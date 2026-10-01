@@ -23,14 +23,14 @@ Design-phase artifacts: diagrams, decision records, design docs, contracts, sche
 
 Generate an Architecture Decision Record (ADR) from a context-decision-consequences brief. Supports the two common formats — MADR (Markdown Any Decision Records) and Michael Nygard's original ADR template.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skills/adr-generator/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/adr-generator/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/solution-architect/skills/adr-generator/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/adr-generator/)
 
 **Use it when** Use whenever the user wants to capture an architectural decision, write an ADR, or document a "we decided X because Y" moment.
 
 **A good result:**
 
-- **Status** must be one of: `Proposed`, `Accepted`, `Deprecated`, `Superseded by ADR-NNNN`. Default to `Proposed` unless the user says it's already been agreed.
-- **Title is a noun phrase**, not a verb phrase. ✅ "Use Postgres as primary datastore" — ❌ "Decide what database to use".
+- **Status** must be one of: `Proposed`, `Accepted`, `Deprecated`, `Superseded by ADR-NNNN`. Default to `Proposed` unless the user says it's already been agreed. "We decided", "we chose" and "we're going with" all say it was agreed: write `Accepted`.
+- **Title is a noun phrase**, not a verb phrase. ✅ "Postgres as the primary datastore" — ❌ "Decide what database to use".
 - **Consequences must include trade-offs, not just upsides.** If you can't list a downside, the decision wasn't real.
 - **Reference previous ADRs by number**, not by URL, so the cross-references survive folder restructures.
 - **Don't editorialize.** An ADR records what was decided, not what you (the AI) think was wisest.
@@ -147,7 +147,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skil
 
 Work with Figma and FigJam files via the Figma REST API — read existing file structure, list frames/pages, post comments, and produce FigJam-importable diagram specs.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skills/figma-diagrams/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/figma-diagrams/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/solution-architect/skills/figma-diagrams/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/figma-diagrams/)
 
 **Use it when** the user mentions a Figma URL, asks to inspect/audit a Figma file, wants to comment on a design programmatically, or wants their architecture diagram in Figma.
 

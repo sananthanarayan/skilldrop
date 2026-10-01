@@ -59,3 +59,5 @@ An unbudgeted agent loop is a runaway-cost incident with an architecture diagram
 - ❌ **Frontier-everything.** The orchestrator's model formatting JSON at heavy-tier prices because nobody assigned tiers per stage.
 - ❌ **Missing comparison line.** A cost-per-outcome with nothing beside it can justify anything or condemn anything.
 - ❌ **Estimates that never graduate.** `[assumption]` numbers still governing caps six months and a thousand runs later.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.
+- ❌ **A bare `BLOCKED` line.** Keep the `BLOCKED: need <X>` line, then write for a person: what is missing in plain words, what you will produce once you have it, and anything the request already lets you say.

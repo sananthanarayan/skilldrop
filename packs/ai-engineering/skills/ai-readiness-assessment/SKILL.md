@@ -63,5 +63,6 @@ Readiness assessments fail in one of two ways: a number with no evidence behind 
 - ❌ **Middle scores as a hedge.** A 2 everywhere means the assessment refused to commit. If the evidence is thin, say `[insufficient evidence]` and name what to collect.
 - ❌ **Gaps with no owner.** An unowned action is a wish. Roles, not names.
 - ❌ **Recommending tools.** This assesses readiness; vendor selection is a different decision (`tech-comparison-matrix`) and mixing them lets a vendor pitch masquerade as a diagnosis.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.
 
 **Non-interactive:** with no user to ask, derive the scope from the input and tag it `[assumption]`. If the input contains no observable evidence for any dimension — a request with no organisational context — emit `BLOCKED: need observable context (systems, current practice, or stated policy) for at least three dimensions` rather than scoring from imagination.

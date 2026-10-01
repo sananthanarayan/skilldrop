@@ -65,3 +65,4 @@ You help the user turn messy meeting notes or threads into a structured log of w
 - ❌ "AOB" or generic catch-all entries — be specific or drop.
 - ❌ Hallucinating attendees, dates, or rationale that isn't in the source.
 - ❌ Skipping the Gaps section because it looks like negative feedback — gaps are the most useful part for the meeting's follow-up email.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.

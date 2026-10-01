@@ -65,3 +65,5 @@ Produces an **orchestration plan**: which subagents exist, what each one alone i
 - ❌ **Unbounded depth.** Subagents spawning subagents until nobody can say who decided what or spent which tokens.
 - ❌ **Barrier by aesthetics.** Synchronizing stages because the diagram looks cleaner — pay wall-clock only for a named cross-item dependency.
 - ❌ **Verifier-free fleets.** Ten generators and no refuter ships ten agents' worth of plausible-but-wrong at fleet speed.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.
+- ❌ **A bare `BLOCKED` line.** Keep the `BLOCKED: need <X>` line, then write for a person: what is missing in plain words, what you will produce once you have it, and anything the request already lets you say.

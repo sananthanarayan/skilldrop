@@ -1,6 +1,6 @@
 {
   "name": "agents-md-generator",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Generate or audit a repository's AGENTS.md — the agent-policy file Claude Code, Codex, Cursor, Copilot, Kiro and Antigravity read — with every command traced to real evidence in the repo, generic virtue instructions stripped, and forbidden actions named. Use when a repo has no AGENTS.md, when an existing one is stale or ignored, when onboarding a codebase to agentic coding, or when an agent keeps running commands that don't exist.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },

@@ -67,7 +67,7 @@ It uses the metric names DORA currently publishes on [dora.dev](https://dora.dev
    - what to measure next
    Hand the incident narrative to `postmortem-generator` and alerting gaps to `observability-plan`.
 
-**Non-interactive runs** (subagent, CI, headless): a missing window defaults to the last 8 full ISO weeks, a missing service defaults to the only service in the file, and both are tagged `[assumption]` at the top. If there is no deployments file, or it holds several services and none was named, emit `BLOCKED: need a deployments CSV with deploy_id, service, deployed_at, status` or `BLOCKED: need --service (file has: <list>)`. Never type metric values the script did not produce.
+**Non-interactive runs** (subagent, CI, headless): a missing window defaults to the last 8 full ISO weeks, a missing service defaults to the only service in the file, and both are tagged `[assumption]` at the top. Timestamps with no offset don't stop a non-interactive run: rerun with `--assume-tz=+00:00`, tag UTC as an `[assumption]` at the top with the count of rows that relied on it, and say that weekly figures near a day boundary move if the tool wrote local time. If there is no deployments file, or it holds several services and none was named, emit `BLOCKED: need a deployments CSV with deploy_id, service, deployed_at, status` or `BLOCKED: need --service (file has: <list>)`. Never type metric values the script did not produce.
 
 ## Useful references in this skill
 
@@ -110,3 +110,5 @@ It uses the metric names DORA currently publishes on [dora.dev](https://dora.dev
 - ❌ **Counting only incidents as failures.** Rollbacks and hotfixes that never got an incident ticket are failed deployments too. Leaving them out undercounts change fail rate.
 - ❌ **Trend claims from two weeks.** Under four weeks of data is a snapshot.
 - ❌ **Mixing staging and production.** Counting every environment inflates deployment frequency.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.
+- ❌ **A bare `BLOCKED` line.** Keep the `BLOCKED: need <X>` line, then write for a person: what is missing in plain words, what you will produce once you have it, and anything the request already lets you say.

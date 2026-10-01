@@ -66,3 +66,5 @@ You shouldn't be prompting agents; you should be designing the loops that prompt
 - ❌ **Transcript escalations.** Escalating a 40-page log teaches humans to ignore escalations. Digest: rounds, findings, attempts, the ask.
 - ❌ **Gating the reversible, freeing the irreversible.** Human approval for a draft file but auto-send on the customer email is the exact wrong way around — gate placement follows blast radius, not effort.
 - ❌ **Loops without telemetry.** A loop that doesn't log rounds-and-spend per run degrades silently until the quarter's token bill or a shipped defect announces it.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.
+- ❌ **A bare `BLOCKED` line.** Keep the `BLOCKED: need <X>` line, then write for a person: what is missing in plain words, what you will produce once you have it, and anything the request already lets you say.

@@ -48,13 +48,13 @@ Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/accessibil
 
 Generate or audit a repository's AGENTS.md — the agent-policy file Claude Code, Codex, Cursor, Copilot, Kiro and Antigravity read — with every command traced to real evidence in the repo, generic virtue instructions stripped, and forbidden actions named.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/agents-md-generator/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/agents-md-generator/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/dev-team/skills/agents-md-generator/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/agents-md-generator/)
 
 **Use it when** a repo has no AGENTS.md, when an existing one is stale or ignored, when onboarding a codebase to agentic coding, or when an agent keeps running commands that don't exist.
 
 **A good result:**
 
-- **Zero unverified commands.** Every one traces to a file and key, or carries a `[missing: …]` marker. This is the bar; a file that fails it is worse than no file.
+- **Zero unverified commands.** Every one traces to a file and key, or is stated as a gap (`[missing: …]` in the provenance table, a plain "none defined" line in the file). This is the bar; a file that fails it is worse than no file.
 - **A newcomer agent could build and test from this file alone** — or can see plainly that the repo has no such command.
 - **Forbidden actions are named**, not implied.
 - **Every convention line passes the counterfactual test.** If an agent would do the right thing without it, it is padding.
@@ -107,7 +107,7 @@ Tier **standard** · v1.0.4 · [SKILL.md](../../../packs/dev-team/skills/contrib
 
 Adversarial review of just-generated code, run *after* an agent (or human) declares a feature done. Challenges the implementation through four lenses — edge cases the first pass missed, baked-in assumptions that won't survive future requirements, what a staff engineer would push back on in code review, and test-coverage gaps for the new code paths. Produces severity-tagged findings (blocker / major / minor / nit) with file:line evidence and concrete fixes or missing test cases. Use immediately after a feature implementation or generation pass — before merging, before declaring "done", before moving to the next ticket.
 
-Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/devils-advocate/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/devils-advocate/)
+Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/dev-team/skills/devils-advocate/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/devils-advocate/)
 
 **A good result:**
 
@@ -205,7 +205,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/migrati
 
 Gate an existing change for merge — run one skill that fires the whole production-readiness pass. First a deterministic mechanical gate (lint + typecheck + tests, via a script whose exit code decides), then the three-reviewer panel dispatched in parallel — devils-advocate (correctness), security-reviewer (exploitability), code-quality (craft) — then a single READY / NOT READY verdict. Use before opening a PR or merging, when you want the full review fleet run on a diff you already have. Do NOT use to implement a feature from a spec (that's feature-implement-loop) or to review a document (that's doc-critique).
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/dev-team/skills/pre-merge-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/pre-merge-review/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/dev-team/skills/pre-merge-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/pre-merge-review/)
 
 **Needs:** Python 3 for its scripts (standard library only).
 

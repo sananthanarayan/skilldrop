@@ -106,3 +106,4 @@ block end> at <file>:<line>` and do not render that diagram.
 - ❌ **Rendering with `--force` and shipping the result.** Mermaid draws an error graphic, not the diagram.
 - ❌ **Sending the HTML fallback as if it were an SVG.** It is a web page that needs network.
 - ❌ **Linting a copy and reporting line numbers from it.** Run the script on the user's own `.md` so the numbers match their editor.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.

@@ -1,6 +1,6 @@
 {
   "name": "agent-budget",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Write the spend spec for an agentic workflow — per-stage model tiers, token caps with hard abort rules, a graceful-degradation order, and cost-per-outcome as the governing metric. Use when the user asks what an agent loop or multi-agent workflow should be allowed to spend, wants token/cost budgets and caps for AI automation, or got a surprise bill from an agent fleet.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },

@@ -74,3 +74,4 @@ You help the user turn rough material — notes, a spec, an architecture descrip
 - ❌ Blending two styles into one undifferentiated doc. Pick the dominant style; link or append the rest.
 - ❌ Optimistic examples that omit the error/failure responses an API consumer is required to handle.
 - ❌ Reinventing `runbook-generator` (incident playbooks, on-call) or `design-doc` (alternatives, approval) — stay in the explain-and-follow lane.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.

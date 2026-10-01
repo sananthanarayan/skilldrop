@@ -63,3 +63,4 @@ Turns the debris of an incident — Slack scrollback, pager entries, half-rememb
 - ❌ **Timeline theater.** Forty rows of who-said-what-in-Slack instead of the ten events that changed system state.
 - ❌ **Quiet heroics as a fix.** "An engineer noticed by luck at 2am" is a detection gap wearing a cape — the action item is monitoring, not gratitude.
 - ❌ **Skipping the postmortem because impact was "minor".** Near-misses are the cheapest lessons; severity gates the meeting, not the doc.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.

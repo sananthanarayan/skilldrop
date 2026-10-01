@@ -62,3 +62,4 @@ Maps what one customer experiences on the way to one outcome — outside-in, fro
 - ❌ **Happy-path-only journeys.** A map with no dip below 3 didn't look — errors, waits, and re-entry live in every real journey.
 - ❌ **Solutioning in the opportunities row.** "Add SSO" pre-empts design with a guess; "signing in stops being the reason trials stall" keeps the problem open and measurable.
 - ❌ **The unranked pain inventory.** Fourteen equal pains means the reader does the prioritizing — the map's whole job was to do it for them.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.

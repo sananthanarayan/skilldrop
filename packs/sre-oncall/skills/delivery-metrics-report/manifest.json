@@ -1,6 +1,6 @@
 {
   "name": "delivery-metrics-report",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Produce a delivery metrics report for one service from deployment, incident and pull-request exports — the DORA metrics (deployment frequency, change lead time, change fail rate, failed deployment recovery time) plus flow metrics (WIP, cycle time p50/p85, throughput), computed by a script with per-week trends and explicit data gaps, then interpreted for what changed and why. Use when the user wants DORA metrics, says \"how are we doing on the four keys\", \"what's our change failure rate\", \"compute lead time and deploy frequency from this CSV\", or \"build our delivery metrics report\".",
   "entrypoint": "SKILL.md",
   "deps": {

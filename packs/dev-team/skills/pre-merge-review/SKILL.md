@@ -79,5 +79,7 @@ The honest limit: a portable *skill* can't physically block an agent — enforce
 - ❌ **Triple-reporting.** The same `file:line` flagged by all three lenses as three findings. Merge them.
 - ❌ **Adjudicating a design debate.** Settling "queue vs cron" inside the verdict instead of gating on gate+severity and offering `council-review`.
 - ❌ **Calling a reviewer *skill* from here.** Skills don't invoke skills (see CLAUDE.md). Drive the review *subagents* where they exist, or sweep the lenses inline.
+- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.
+- ❌ **A bare `BLOCKED` line.** Keep the `BLOCKED: need <X>` line, then write for a person: what is missing in plain words, what you will produce once you have it, and anything the request already lets you say.
 
 **Non-interactive:** if the verify commands can't be detected and none were supplied, emit `BLOCKED: need verify commands (--cmd/--config)` — never fabricate a green gate. If the change scope is ambiguous, default to the working-tree diff and tag it `[assumption]` at the top of the report.
