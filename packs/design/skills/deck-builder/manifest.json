@@ -13,5 +13,6 @@
     "pip": "python3 -m pip install -r requirements.txt"
   },
   "tags": ["powerpoint", "pptx", "deck", "presentation", "template", "charts", "stakeholder-communication"],
+  "permissions": {"network": [], "commands": [], "files": "named-paths", "notes": "Needs the python-pptx package (declared in deps)."},
   "model": { "tier": "standard", "rationale": "Shapes content, maps a brand template's layouts, and runs a script. Judgment, not hard reasoning." }
 }

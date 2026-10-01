@@ -26,6 +26,7 @@
     "ai-detection",
     "pre-ship"
   ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths", "notes": "Writes only with --fix, which rewrites the files it was given, in place."},
   "model": {
     "tier": "standard",
     "rationale": "The mechanical pass is a deterministic script; the model does bounded rewriting of flagged prose against a fixed tell list, not adversarial review."

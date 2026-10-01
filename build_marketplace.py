@@ -170,6 +170,8 @@ def _render():
     marketplace = {
         "name": MARKETPLACE_NAME,
         "owner": {"name": author["name"], "url": author["url"]},
+        # Without it, `claude plugin validate` warns that the marketplace has no description.
+        "metadata": {"description": description},
         "plugins": [
             {
                 "name": PLUGIN_NAME,

@@ -32,6 +32,7 @@
     "png",
     "render"
   ],
+  "permissions": {"network": [], "commands": ["mmdc"], "files": "named-paths", "notes": "mmdc (mermaid-cli) renders SVG, PNG and PDF if it is installed. Without it the script writes an HTML page that loads Mermaid from cdn.jsdelivr.net when opened; the script itself makes no network calls."},
   "model": {
     "tier": "standard",
     "rationale": "The script lints and renders deterministically, but fixing a broken diagram means reading the author's intent and rewriting syntax without changing nodes, edges or labels, and knowing when to ask instead."

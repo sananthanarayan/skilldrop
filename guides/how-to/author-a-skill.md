@@ -20,7 +20,7 @@ Full contributor guide — the three lanes, the PR gates, and the release flow �
    ```
 2. Add `manifest.json` beside it with the same `name` + `description` plus declared `deps` and required env vars — this is what makes the skill portable across IDEs.
 3. Keep `SKILL.md` short (under ~500 lines). Move long reference material into sibling files like `reference.md`, `examples.md`, or `templates/`.
-4. If your skill needs scripts, drop them in `scripts/` and reference them with a path relative to the skill folder — **avoid hard-coding `${CLAUDE_SKILL_DIR}` only**; show both paths so non–Claude-Code users aren't stuck.
+4. If your skill needs scripts, declare what they do in `manifest.json` `permissions` (hosts contacted, programs run, where files are written; see AGENTS.md), drop them in `scripts/`, and reference them with a path relative to the skill folder — **avoid hard-coding `${CLAUDE_SKILL_DIR}` only**; show both paths so non–Claude-Code users aren't stuck.
 5. Add an `evals/` folder (required; `validate.py` fails a skill without it): `evals.json` (at least one realistic prompt with a list of assertions the output must satisfy) and `eval_queries.json` (phrases that should and should **not** trigger the skill). These double as the checklist for the manual test pass and keep the `description` honest about when the skill fires.
 6. Add a row to [Every skill, by category](../reference/skill-catalogue.md), and to **Installing dependencies** in [Install a skill into your IDE](install-per-ide.md) if it has runtime deps.
 7. Add the skill to at least one outcome in `catalogue.json`. Its pack is already set by the folder you created it in.

@@ -41,6 +41,7 @@
     "savings",
     "sre"
   ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths"},
   "model": {
     "tier": "standard",
     "rationale": "A stdlib script does the aggregation; the model maps columns, checks evidence and computes savings with shown arithmetic against a fixed category checklist, which is bounded judgment."

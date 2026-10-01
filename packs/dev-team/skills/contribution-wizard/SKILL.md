@@ -46,6 +46,8 @@ After intake, produce the following in a single response, each in its own fenced
 }
 ```
 
+If the skill ships `scripts/`, add a `permissions` block before `model`: the hosts the scripts contact, the external programs they run, and where they write (`"none"`, `"named-paths"`, `"project"` or `"anywhere"`). For example: `"permissions": { "network": [], "commands": ["pdftotext"], "files": "named-paths" }`. Validation fails a script skill without it, and fails one whose code does something it doesn't declare.
+
 Tier guidance:
 - **light**: pattern matching, formatting, extraction with no judgment calls
 - **standard**: synthesis, judgment calls, structured output requiring reasoning (most skills)

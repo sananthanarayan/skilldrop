@@ -41,6 +41,7 @@
     "pdf",
     "extract"
   ],
+  "permissions": {"network": [], "commands": ["pdftotext"], "files": "named-paths", "notes": "pdftotext (Poppler) is used only for .pdf input, and only if it is installed."},
   "model": {
     "tier": "light",
     "rationale": "A deterministic stdlib script does the extraction; the model runs it, relays the dropped-content report and hands off. No generation beyond a short summary of losses."
