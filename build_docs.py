@@ -116,6 +116,11 @@ a{color:var(--accent-700);}
 .doc-card p{margin:0 0 .8rem;font-size:.85rem;color:var(--fg-muted);line-height:1.5;}
 .doc-card a.read{font-size:.85rem;font-weight:600;color:var(--accent-700);text-decoration:none;}
 .doc-card a.read:hover{text-decoration:underline;}
+.sidebar-search{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;
+  padding:.4rem .6rem;font-size:.8rem;color:var(--fg-muted);text-decoration:none;
+  border:1px solid var(--border);border-radius:4px;background:var(--card);}
+.sidebar-search:hover{border-color:var(--accent-700);color:var(--fg);}
+.sidebar-search kbd{font:600 .68rem ui-monospace,Menlo,monospace;border:1px solid var(--border);border-radius:4px;padding:0 .3rem;}
 /* tables */
 .table-wrap{overflow-x:auto;margin:1rem 0 1.4rem;}
 .content table{border-collapse:collapse;width:100%;font-size:.9rem;}
@@ -399,13 +404,10 @@ def _sidebar_html(by_kind, current_kind, current_slug, depth):
     prefix = "../" * (depth - 1)
     parts = ['<nav class="sidebar" aria-label="Guides">']
     if depth == 2:
+        # Opens the site-wide search dialog; without JavaScript it is a link to the docs index.
         parts.append(
-            '<form action="../index.html" method="get" style="margin-bottom:1rem;">'
-            '<input name="q" type="search" placeholder="Search docs…"'
-            ' style="width:100%;padding:.4rem .6rem;font-size:.8rem;'
-            'border:1px solid var(--border);border-radius:4px;'
-            'background:var(--card);color:var(--fg);">'
-            '</form>'
+            '<a class="js-search sidebar-search" href="../index.html">Search the site'
+            '<kbd>/</kbd></a>'
         )
     for kind in KINDS:
         guides = by_kind.get(kind, [])
