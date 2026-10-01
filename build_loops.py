@@ -8,7 +8,8 @@ Now `loop.json` is the single source and both outputs are generated.
 
 Outputs:
   docs/loops/<name>.mmd                    — the standalone Mermaid source
-  README.md between <!-- loop:<name>:start/end --> markers
+  guides/reference/loops.md between <!-- loop:<name>:start/end --> markers
+  (the README carried these until RFC-0035 moved the loop reference into a guide)
 
 Usage:
   python3 build_loops.py            # write
@@ -22,6 +23,8 @@ import sys
 import catalog  # where loops live (RFC-0034)
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
+DIAGRAM_REL = "guides/reference/loops.md"
+DIAGRAM_DOC = os.path.join(ROOT, *DIAGRAM_REL.split("/"))
 OUTDIR = os.path.join(ROOT, "docs", "loops")
 
 HEADER = ("%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial',"
@@ -90,7 +93,7 @@ def build():
 
 def readme_blocks(rendered):
     """Return (updated_readme_text, [names missing a marker pair])."""
-    path = os.path.join(ROOT, "README.md")
+    path = DIAGRAM_DOC
     text = open(path, encoding="utf-8").read()
     missing = []
     for name, body in rendered.items():
@@ -119,13 +122,13 @@ def main():
                 open(dest, "w", encoding="utf-8").write(content)
 
     new_readme, missing = readme_blocks(rendered)
-    rp = os.path.join(ROOT, "README.md")
+    rp = DIAGRAM_DOC
     if open(rp, encoding="utf-8").read() != new_readme:
-        stale.append("README.md")
+        stale.append(DIAGRAM_REL)
         if not check:
             open(rp, "w", encoding="utf-8").write(new_readme)
     for m in missing:
-        print(f"build_loops: README.md has no <!-- loop:{m}:start/end --> markers", file=sys.stderr)
+        print(f"build_loops: {DIAGRAM_REL} has no <!-- loop:{m}:start/end --> markers", file=sys.stderr)
 
     if check:
         if stale or missing:
@@ -155,7 +158,7 @@ def stale():
         if cur != content:
             out.append(os.path.relpath(dest, ROOT))
     new_readme, missing = readme_blocks(rendered)
-    if open(os.path.join(ROOT, "README.md"), encoding="utf-8").read() != new_readme:
-        out.append("README.md")
-    out += [f"README.md (no markers for loop '{m}')" for m in missing]
+    if open(DIAGRAM_DOC, encoding="utf-8").read() != new_readme:
+        out.append(DIAGRAM_REL)
+    out += [f"{DIAGRAM_REL} (no markers for loop '{m}')" for m in missing]
     return out

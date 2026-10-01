@@ -33,7 +33,7 @@ skilldrop's entire premise is copy-install portability: `cp -R packs/<pack>/skil
 4. **Add `evals/`** — `evals.json` (≥1 realistic prompt + assertions) and `eval_queries.json` (phrases that should *and* should not trigger the skill). The no-trigger list is what keeps the `description` honest.
 5. **Set the model tier in both places** — the `model` block in `manifest.json` and the skill's entry in [`model-routing.json`](model-routing.json). Tiers are abstract (`light` / `standard` / `heavy`); a vendor model name in a skill is always wrong. See [MODEL-ROUTING.md](MODEL-ROUTING.md).
 6. **Declare an audience** — the pack folder you put it in is its audience, and it also goes in at least one `outcomes` entry in [`catalogue.json`](catalogue.json). A skill with no audience should not have passed the RFC.
-7. **Update `README.md`** — a row in **Skills in this repo** under an existing category, and a row in **Installing dependencies** if it has runtime deps.
+7. **Update the skill catalogue** — a row in [`guides/reference/skill-catalogue.md`](guides/reference/skill-catalogue.md) under an existing category, and a row in **Installing dependencies** ([`guides/how-to/install-per-ide.md`](guides/how-to/install-per-ide.md)) if it has runtime deps.
 8. **Match the voice.** Opinionated, not hedged; decisions, not options; ≤2 clarifying questions; `✅`/`❌` are semantic, never decorative. The full rules are in [AGENTS.md](AGENTS.md#voice--tone-non-negotiable) — re-read them before drafting.
 
 ### 2. Changing an existing skill

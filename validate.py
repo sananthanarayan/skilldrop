@@ -684,18 +684,25 @@ def main():
 
     # A matching count is not coverage. The count guard can pass while skills, packs or agents
     # have no documentation at all — it checks the number, not the thing the number describes.
+    # RFC-0035: the README is a router now. It names every pack; the per-skill, per-loop and
+    # per-agent coverage it used to carry lives in the guide or file that documents each kind.
+    def _doc(rel):
+        p = os.path.join(ROOT, *rel.split("/"))
+        return open(p, encoding="utf-8").read() if os.path.exists(p) else ""
+    skill_ref, loop_ref, agent_ref = (_doc("guides/reference/skill-catalogue.md"),
+                                      _doc("guides/reference/loops.md"), _doc("agents/README.md"))
     for d in sorted(skill_dirs):
-        if f"skills/{d}/SKILL.md" not in readme:
-            fail("README.md", f"no row for skill '{d}' — the catalogue documents what it ships")
+        if f"skills/{d}/SKILL.md" not in skill_ref:
+            fail("guides/reference/skill-catalogue.md", f"no row for skill '{d}' — the catalogue documents what it ships")
     for p in sorted(catalog.pack_names()):
         if f"`{p}`" not in readme:
-            fail("README.md", f"pack '{p}' ships but is not documented in README")
+            fail("README.md", f"pack '{p}' ships but the README's role list does not name it")
     for a in sorted(agent_names):
-        if f"agents/{a}.md" not in readme:
-            fail("README.md", f"agent '{a}' ships but is not documented in README")
+        if f"{a}.md" not in agent_ref:
+            fail("agents/README.md", f"agent '{a}' ships but is not documented in agents/README.md")
     for lp in sorted(loop_names):
-        if f"loops/{lp}/LOOP.md" not in readme:
-            fail("README.md", f"loop '{lp}' ships but is not documented in README")
+        if f"loops/{lp}/LOOP.md" not in loop_ref:
+            fail("guides/reference/loops.md", f"loop '{lp}' ships but is not documented in the loop reference")
 
     # RFC-0015: prose markdown links across skills, agents, docs, and the root convention files
     # must resolve — fenced blocks, {template} lines, and placeholder targets are skipped.

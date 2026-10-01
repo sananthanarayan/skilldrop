@@ -8,6 +8,15 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.13.5 — 2026-10-01
+
+- Every skill has its own page on the site, at `skills/<name>/`. Each page has one install command, a realistic prompt to try, what a good result looks like, what it hands off to, and its source. Catalogue rows link to it.
+- Pack pages lead with one install command and fold the alternatives under "Other ways to install". A summary box above it says when to use the pack, which jobs it covers, where a person decides (each human or review gate), and how big it is.
+- The packs index groups packs by the job in front of you, so you can start from "decide what to build" rather than a role name.
+- Every page on the site (home, packs, skills, catalogue, docs, changelog) has the same navigation, and a new "What's new" page renders every release.
+- The README is a short router: one line per role pack, one install command and its starter prompt, then links. The full skill list, the loop reference with its diagrams, and every install route now live in the docs portal, which renders tables and diagrams.
+- `contribution-wizard` now tells authors to add a new skill's row to the skill catalogue guide rather than the README.
+
 ## 0.13.4 — 2026-10-01
 
 - `npx skilldrop-cli install --profile <name>` works. The npm package was missing `profiles.json`, so profiles only worked from a clone of the repo.
