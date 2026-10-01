@@ -48,6 +48,12 @@ SHIPPED_ENTRIES = 3
 ROADMAP_ENTRIES = 4  # how many upcoming items the "Now" strip shows
 SITE_URL = "https://sananthanarayan.github.io/skilldrop/"
 
+def _pack_total(name):
+    """Skills one `install --pack <name>` delivers: the pack's own plus what it requires."""
+    p = catalog.packs()
+    return len(set(p[name]["skills"]).union(*(p[r]["skills"] for r in p[name].get("requires", []))))
+
+
 # --- page copy -------------------------------------------------------------------
 PITCH = {
     "hero_h1": "Your agent can draft anything. What ships is still your call.",
@@ -186,10 +192,10 @@ GUIDES = {
 }
 
 INSTALL_TABS = [
-    ("a role pack", "npx skilldrop-cli install --pack solution-architect", "16 skills a solution architect reaches for, in one command."),
+    ("a role pack", "npx skilldrop-cli install --pack solution-architect", f"{_pack_total('solution-architect')} skills a solution architect reaches for, core included, in one command."),
     ("one skill", "npx skilldrop-cli install adr-generator --with-related", "--with-related also pulls the companions it hands off to."),
     ("by hand", "cp -R packs/solution-architect/skills/adr-generator ~/.claude/skills/", "No CLI required. The folder is the whole install."),
-    ("stay current", "npx skilldrop-cli outdated && npx skilldrop-cli update", "Skills improve; cp -R never tells you."),
+    ("stay current", "npx skilldrop-cli outdated && npx skilldrop-cli update", "Skills improve; cp -R never tells you. Files you edited are kept, with the new version beside them as .upstream."),
 ]
 
 
@@ -968,7 +974,7 @@ a {{ color:var(--accent-700); }}
   <div class="inner">
     <p class="eyebrow">Loops</p>
     <h2>A way of operating, not just a bag of parts</h2>
-    <p class="lede">A loop is an ordered sequence of stages over these skills, with a gate between them &mdash; nothing leaves a loop until its gate passes. Four cover the lifecycle and are separated by how expensive the mistake is to unwind; one wraps any generator. A loop sequences skills and never contains one, so every skill still installs and runs on its own.</p>
+    <p class="lede">A loop is an ordered sequence of stages over these skills, with a gate between them &mdash; nothing leaves a loop until its gate passes. Five cover the lifecycle and are separated by how expensive the mistake is to unwind; one wraps any generator. A loop sequences skills and never contains one, so every skill still installs and runs on its own.</p>
     <ul class="grid-3">{loop_cards}</ul>
     <p class="pack__install" style="margin-top:1.5rem"><code>skilldrop install --loop build</code> &mdash; the loop plus every stage skill it sequences.</p>
   </div>
@@ -1019,7 +1025,7 @@ a {{ color:var(--accent-700); }}
   <div class="inner">
     <p class="eyebrow">Packs</p>
     <h2>{esc(PITCH['catalogue_h2'])}</h2>
-    <p class="lede">Start with a role. A pack is a named list — skills never move out of their flat folders, so installing one is the same copy as installing any other.</p>
+    <p class="lede">Start with a role. Each pack is a folder, every skill sits in exactly one, and every role pack brings <code>core</code> with it. Open a pack to see what to try first.</p>
     <ul class="grid-3">{pack_cards}</ul>
 
     <div class="more">
