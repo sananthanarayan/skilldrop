@@ -18,10 +18,10 @@ merged change most often becomes an incident, and no loop sequences it.
 
 Two of the parts already exist and belong to no loop:
 
-- [`migration-plan`](../../skills/migration-plan/SKILL.md) already produces "a phased
+- [`migration-plan`](../../packs/dev-team/skills/migration-plan/SKILL.md) already produces "a phased
   migration or rollout plan". Every phase is reversible or names its point of no return, and
   observable gates sit between phases.
-- [`release-notes`](../../skills/release-notes/SKILL.md) turns the git range into a
+- [`release-notes`](../../packs/dev-team/skills/release-notes/SKILL.md) turns the git range into a
   customer-facing version and an internal version.
 
 Both are in the `dev-team` pack, but neither appears in any `loop.json`. A team that runs

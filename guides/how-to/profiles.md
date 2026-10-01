@@ -73,4 +73,4 @@ Every pack, agent, and loop you name must exist — `validate.py` enforces this 
 python3 validate.py
 ```
 
-Pack names must be keys in `packs.json`. Agent names must match files in `agents/`. Loop names must match folders in `loops/`.
+Pack names must be folders in `packs/`. Agent names must match files in `agents/`. Loop names must match a `packs/<pack>/loops/<name>/` folder.

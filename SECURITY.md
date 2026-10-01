@@ -20,7 +20,7 @@ skilldrop has an unusual threat surface, because **a skill is instructions an AI
 - A `SKILL.md` that directs an agent to exfiltrate data, weaken a security control, or run something destructive
 - A skill's `scripts/` that reads credentials it has no reason to read, or sends data anywhere other than the API it documents
 
-The second category is a real bug class, not a theoretical one — [`agent-threat-model`](skills/agent-threat-model/SKILL.md) is the lens this project uses for it.
+The second category is a real bug class, not a theoretical one — [`agent-threat-model`](packs/ai-engineering/skills/agent-threat-model/SKILL.md) is the lens this project uses for it.
 
 ## What the installer guarantees
 

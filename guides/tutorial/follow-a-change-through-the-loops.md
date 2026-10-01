@@ -24,11 +24,11 @@ The change: *"Enterprise customers keep hitting our API limits and complaining."
 ### `gather` → `structure` → `specify` → **G0 (human)**
 
 **gather.** The signal arrived as a complaint from an account manager, so this is a
-conversation, not a journey map. Run [`requirements-interview`](../../skills/requirements-interview/SKILL.md).
+conversation, not a journey map. Run [`requirements-interview`](../../packs/product-manager/skills/requirements-interview/SKILL.md).
 It comes back with the thing that matters: nobody has said *which* limit, *which* customers,
 or what "keep hitting" means numerically.
 
-**structure.** Run [`brief-intake`](../../skills/brief-intake/SKILL.md). Every field gets a tag:
+**structure.** Run [`brief-intake`](../../packs/core/skills/brief-intake/SKILL.md). Every field gets a tag:
 
 ```
 Problem     [explicit]  "Enterprise customers hit API limits" — AM, Slack, 12 Sep
@@ -43,7 +43,7 @@ Impact      [missing]   how many customers, how often
 **This is the loop doing its job.** Two `[missing]` tags are worth more than a confident PRD
 built on a guess. Go get the numbers: 3 customers, ~40 rejections/day, current limit 100 req/min.
 
-**specify.** Run [`prd-draft`](../../skills/prd-draft/SKILL.md) on the now-complete brief.
+**specify.** Run [`prd-draft`](../../packs/product-manager/skills/prd-draft/SKILL.md) on the now-complete brief.
 
 **G0 — human.** A person ratifies that *tiered limits per plan* is the problem worth solving.
 No script can tell you that you solved the wrong problem well, which is why this gate is a
@@ -60,19 +60,19 @@ Re-briefing cannot fix a wrong problem.
 
 ### `constrain` → `shape` → `threat` → **G1 (review)** → `record`
 
-**constrain first, always.** [`nfr-spec`](../../skills/nfr-spec/SKILL.md) before any
+**constrain first, always.** [`nfr-spec`](../../packs/solution-architect/skills/nfr-spec/SKILL.md) before any
 structure: *limit decisions add ≤5ms p99; the limiter survives a Redis failure read-only.*
 Design produced before its numbers exist gets judged on taste, and taste loses to a panel.
 
-**shape.** [`design-doc`](../../skills/design-doc/SKILL.md) and
-[`architecture-diagrams`](../../skills/architecture-diagrams/SKILL.md) together — one artifact
+**shape.** [`design-doc`](../../packs/solution-architect/skills/design-doc/SKILL.md) and
+[`architecture-diagrams`](../../packs/solution-architect/skills/architecture-diagrams/SKILL.md) together — one artifact
 in two renderings. A diagram that disagrees with the doc is a defect in both.
 
-**threat.** [`threat-model`](../../skills/threat-model/SKILL.md) *before* the panel, never
+**threat.** [`threat-model`](../../packs/solution-architect/skills/threat-model/SKILL.md) *before* the panel, never
 after. It finds that per-API-key limits let one customer's leaked key exhaust the org quota.
 Back to `shape` — and note this cost you nothing, because no code exists yet.
 
-**G1 — review panel.** [`council-review`](../../skills/council-review/SKILL.md) seats the
+**G1 — review panel.** [`council-review`](../../packs/core/skills/council-review/SKILL.md) seats the
 standing panel, takes positions *before* cross-talk, and records dissent. Verdict:
 `PROCEED WITH CONDITIONS` — ship it, but the operator seat wants the limiter's failure mode
 documented before launch.
@@ -81,7 +81,7 @@ documented before launch.
 `PROCEED WITH CONDITIONS` as `PROCEED` is the most common failure here — the condition is
 part of the decision and must reach the ADR.
 
-**record last.** [`adr-generator`](../../skills/adr-generator/SKILL.md) — *after* it is a
+**record last.** [`adr-generator`](../../packs/solution-architect/skills/adr-generator/SKILL.md) — *after* it is a
 decision, carrying the condition and the rejected options. An ADR written before G1 is a
 proposal in an ADR's clothes.
 
@@ -91,14 +91,14 @@ proposal in an ADR's clothes.
 
 ### `shape` → `implement` → **G2 (mechanical)** → `decide` → **G2.1 (human)**
 
-**shape.** [`user-story-splitter`](../../skills/user-story-splitter/SKILL.md) turns the ADR
+**shape.** [`user-story-splitter`](../../packs/dev-team/skills/user-story-splitter/SKILL.md) turns the ADR
 into vertical slices with criteria a test can assert. "Rate limiting works" is not a slice;
 *"a key over its plan limit gets 429 with Retry-After"* is.
 
-**implement.** [`feature-implement-loop`](../../skills/feature-implement-loop/SKILL.md) runs
+**implement.** [`feature-implement-loop`](../../packs/dev-team/skills/feature-implement-loop/SKILL.md) runs
 its own capped generate-challenge cycle inside this stage.
 
-**G2 — mechanical.** [`pre-merge-review`](../../skills/pre-merge-review/SKILL.md) runs
+**G2 — mechanical.** [`pre-merge-review`](../../packs/dev-team/skills/pre-merge-review/SKILL.md) runs
 `gate.py`. **The exit code is the verdict.** Round 1: `NOT READY` — no test for the Redis-down
 path, which the NFR explicitly required. Back to `implement`. Round 2: `READY`.
 
@@ -116,19 +116,19 @@ a defect in the loop, not diligence.
 
 ### `instrument` → `document` → `respond` → **G3 (human)**
 
-**instrument.** [`observability-plan`](../../skills/observability-plan/SKILL.md): alert when
+**instrument.** [`observability-plan`](../../packs/sre-oncall/skills/observability-plan/SKILL.md): alert when
 429 rate exceeds 5% for any single key over 10 minutes. You cannot respond to what you never
 detected.
 
-**document.** [`runbook-generator`](../../skills/runbook-generator/SKILL.md) writes the
+**document.** [`runbook-generator`](../../packs/sre-oncall/skills/runbook-generator/SKILL.md) writes the
 procedure for that alert. An alert with no procedure wakes someone who then has to think.
 
 **respond.** Two weeks later the alert fires — a customer's retry loop is hammering the API.
-[`incident-comms`](../../skills/incident-comms/SKILL.md), staged: *detect*, *mitigate*,
+[`incident-comms`](../../packs/sre-oncall/skills/incident-comms/SKILL.md), staged: *detect*, *mitigate*,
 *resolve* have different audiences and different truths.
 
 **G3 — human, and the feedback edge that matters.**
-[`postmortem-generator`](../../skills/postmortem-generator/SKILL.md) is blameless and ends in
+[`postmortem-generator`](../../packs/sre-oncall/skills/postmortem-generator/SKILL.md) is blameless and ends in
 **runbook deltas**. The finding: the runbook said "raise the limit," which treats the symptom.
 `REVISE` sends those deltas back to `document`, and the loop closes.
 
@@ -151,7 +151,7 @@ Four gates, four different kinds, chosen by **how expensive the mistake is to un
 re-brief, months of code, a revert, live users. That is the whole model.
 
 Every skill above also runs standalone. You can invoke
-[`adr-generator`](../../skills/adr-generator/SKILL.md) on its own and never touch a loop;
+[`adr-generator`](../../packs/solution-architect/skills/adr-generator/SKILL.md) on its own and never touch a loop;
 the loop is what supplies the order and the gates between them.
 
 Next: [Why loops](../explanation/loops.md) for the reasoning, or

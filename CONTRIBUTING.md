@@ -1,6 +1,6 @@
 # Contributing to skilldrop
 
-skilldrop has one primitive: **a skill** — a plain folder under `skills/` that any agentic IDE can install by copying it. Two supporting surfaces exist to make skills findable and installable: [`packs.json`](packs.json) (role bundles) and the `skilldrop-cli` npm package ([`bin/skilldrop.js`](bin/skilldrop.js)). Contributions come in three shapes, one per lane below.
+skilldrop has one primitive: **a skill** — a plain folder at `packs/<pack>/skills/<name>/` that any agentic IDE can install by copying it. Two supporting surfaces exist to make skills findable and installable: the [`packs/`](packs/) folders (role bundles, each with a `pack.json`) and the `skilldrop-cli` npm package ([`bin/skilldrop.js`](bin/skilldrop.js)). Contributions come in three shapes, one per lane below.
 
 ## Before you start
 
@@ -15,24 +15,24 @@ No setup step. The checks are stdlib Python and Node — `python3` and `node` ar
 
 ## The invariant this repo protects
 
-**Skills are flat folders. Packs are metadata. The name matches in three places.**
+**A skill is one self-contained folder. It has one home pack. The name matches in three places.**
 
-skilldrop's entire premise is copy-install portability: `cp -R skills/<name> ~/.claude/skills/` has to work, in every IDE, forever. Three rules fall out of that, and they are the ones a well-meaning PR most often breaks:
+skilldrop's entire premise is copy-install portability: `cp -R packs/<pack>/skills/<name> ~/.claude/skills/` has to work, in every IDE, forever. Three rules fall out of that, and they are the ones a well-meaning PR most often breaks:
 
-- **Skills never move out of `skills/<kebab-name>/`.** No `packs/<pack>/<skill>/` nesting, no per-IDE projection directories, no build step that generates a skill from an upstream. What is in the tree is what gets copied. A pack is a named list in `packs.json` and nothing more ([RFC-0001](docs/rfcs/0001-skill-packs.md) records why physical packs were rejected).
+- **A skill lives at `packs/<pack>/skills/<kebab-name>/`, in exactly one pack.** No per-IDE projection directories, no build step that generates a skill from an upstream. What is in the tree is what gets copied. Skills every role needs go in `core` ([RFC-0033](docs/rfcs/0033-core-pack-and-single-home-skills.md), [RFC-0034](docs/rfcs/0034-physical-pack-layout.md)).
 - **Folder name = `SKILL.md` `name` = `manifest.json` `name`.** Kebab-case, use-case-first, no version suffix. Change one without the others and slash-command invocation breaks. `validate.py` fails the build on this.
-- **`skills/`, `README.md`, and `LICENSE` do not move.** Every install instruction in the README is a hard-coded path.
+- **`packs/`, `README.md`, and `LICENSE` do not move, and a skill does not change packs without an RFC.** Every install instruction and GitHub link is a hard-coded path.
 
 ## The three lanes
 
 ### 1. Adding a new skill
 
 1. **RFC first** — `docs/rfcs/NNNN-<slug>.md`, including the four-part fit check (concrete artifact / portable / opinionated / category). A skill that is a generic chat helper with no artifact, a thin wrapper around one CLI command, or a duplicate of an existing skill does not belong here — improve the existing one instead.
-2. **Create the folder** — `skills/<your-skill>/SKILL.md` + `manifest.json`, per the frontmatter and manifest shapes in [AGENTS.md](AGENTS.md#skillmd-frontmatter-required-exactly-this-shape). Keep `SKILL.md` under ~500 lines; spill into `reference.md`, `templates/`, `examples/`, `lenses/`, or `rubrics/`.
+2. **Create the folder** — `packs/<pack>/skills/<your-skill>/SKILL.md` + `manifest.json`, per the frontmatter and manifest shapes in [AGENTS.md](AGENTS.md#skillmd-frontmatter-required-exactly-this-shape). Keep `SKILL.md` under ~500 lines; spill into `reference.md`, `templates/`, `examples/`, `lenses/`, or `rubrics/`.
 3. **Ship `Quality bar` and `Anti-patterns to avoid` sections.** A skill without them is a description, not a generator.
 4. **Add `evals/`** — `evals.json` (≥1 realistic prompt + assertions) and `eval_queries.json` (phrases that should *and* should not trigger the skill). The no-trigger list is what keeps the `description` honest.
 5. **Set the model tier in both places** — the `model` block in `manifest.json` and the skill's entry in [`model-routing.json`](model-routing.json). Tiers are abstract (`light` / `standard` / `heavy`); a vendor model name in a skill is always wrong. See [MODEL-ROUTING.md](MODEL-ROUTING.md).
-6. **Declare an audience** — add the skill to at least one pack in [`packs.json`](packs.json). A skill with no audience should not have passed the RFC.
+6. **Declare an audience** — the pack folder you put it in is its audience, and it also goes in at least one `outcomes` entry in [`catalogue.json`](catalogue.json). A skill with no audience should not have passed the RFC.
 7. **Update `README.md`** — a row in **Skills in this repo** under an existing category, and a row in **Installing dependencies** if it has runtime deps.
 8. **Match the voice.** Opinionated, not hedged; decisions, not options; ≤2 clarifying questions; `✅`/`❌` are semantic, never decorative. The full rules are in [AGENTS.md](AGENTS.md#voice--tone-non-negotiable) — re-read them before drafting.
 
@@ -43,7 +43,7 @@ No RFC. The bar is that the skill stays internally consistent, because `validate
 - **Description sync** — `SKILL.md` frontmatter and `manifest.json` must carry the same string.
 - **`related` sync, both directions** — every backticked sibling skill mentioned in `SKILL.md` must appear in the manifest's `related` list, and every `related` entry must be a real skill folder that `SKILL.md` actually references.
 - **Tier sync** — `manifest.json` `model.tier` must equal the skill's tier in `model-routing.json`.
-- **Pack membership** — the skill still belongs to a pack in `packs.json`.
+- **One home** — the skill's folder exists in exactly one pack.
 
 If the change alters *what the skill produces*, redo the manual test pass (lane 3's gates, below) and update `evals/` to match. If it changes the trigger surface, update `eval_queries.json`.
 
@@ -54,7 +54,7 @@ The CLI (`bin/skilldrop.js`), the installers (`pack.py`), routing (`route.py`, `
 Two things to keep true:
 
 - **The CLI copies skills verbatim and never transforms them.** The moment it rewrites a skill on the way in, a skill installed by the CLI stops being identical to one installed by `cp -R`, and portability is gone.
-- **`package.json` `files` must keep `bin/`, `skills/`, `packs.json`, and `model-routing.json`.** Dropping one ships a CLI that cannot find its catalog.
+- **`package.json` `files` must keep `bin/`, `packs/`, `catalogue.json`, and `model-routing.json`.** Dropping one ships a CLI that cannot find its catalog.
 
 If you add a new invariant, teach `validate.py` to enforce it. A rule that only lives in prose is a rule that drifts.
 
@@ -95,7 +95,7 @@ Bump whenever a skill change is worth shipping — users' `skilldrop outdated` o
 | **Minor** (`0.5.0`) | The CLI's public surface changed: a new command, a new flag, or a changed default. |
 | **Major** (`1.0.0`) | A deliberate stability commitment. Not yet. |
 
-A docs-only change that ships nothing in `package.json` `files` (`bin/`, `skills/`, `packs.json`, `model-routing.json`) needs no bump at all — there is nothing new for the registry to carry.
+A docs-only change that ships nothing in `package.json` `files` (`bin/`, `packs/`, `catalogue.json`, `model-routing.json`) needs no bump at all — there is nothing new for the registry to carry.
 
 ## Where to find authoritative information
 
@@ -106,7 +106,7 @@ A docs-only change that ships nothing in `package.json` `files` (`bin/`, `skills
 | What each skill does, per-IDE install steps | [README.md](README.md) |
 | Why a structural decision was made | [docs/rfcs/](docs/rfcs/) |
 | Long-form design (CLI surface, telemetry spec) | [docs/designs/](docs/designs/) |
-| Which skills a role gets | [packs.json](packs.json) |
+| Which skills a role gets | [packs/](packs/) — each pack's folder and `pack.json` |
 | What model tier a skill runs at, and why | [model-routing.json](model-routing.json) + [MODEL-ROUTING.md](MODEL-ROUTING.md) |
 | What CI actually runs | [.github/workflows/release.yml](.github/workflows/release.yml) |
 

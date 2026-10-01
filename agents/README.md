@@ -24,7 +24,7 @@ npx skilldrop-cli install --agent devils-advocate --ide kiro   # .kiro/agents/*.
 | [`code-quality`](code-quality.md) | Craft — naming, structure, duplication, needless complexity, readability | "Will the next engineer hate this?" |
 | [`security-reviewer`](security-reviewer.md) | Security — authz, injection, secret exposure, SSRF, unsafe deserialization, weak crypto, risky deps | "What can an attacker do with this?" |
 
-They are deliberately **split, not merged.** A single "review my code" agent dilutes all three — bug-hunting, craft, and exploitability pull in different directions. Run them as separate passes; together they are the reviewer panel [`feature-implement-loop`](../skills/feature-implement-loop/SKILL.md) drives after each generation round. `devils-advocate` here is the subagent form of the [`devils-advocate` skill](../skills/devils-advocate/SKILL.md); same persona, packaged for a tool's native agent slot instead of on-demand skill invocation.
+They are deliberately **split, not merged.** A single "review my code" agent dilutes all three — bug-hunting, craft, and exploitability pull in different directions. Run them as separate passes; together they are the reviewer panel [`feature-implement-loop`](../packs/dev-team/skills/feature-implement-loop/SKILL.md) drives after each generation round. `devils-advocate` here is the subagent form of the [`devils-advocate` skill](../packs/dev-team/skills/devils-advocate/SKILL.md); same persona, packaged for a tool's native agent slot instead of on-demand skill invocation.
 
 ## Fire them as a panel
 
@@ -35,7 +35,7 @@ npx skilldrop-cli install --panel review            # 3 subagents + the pre-merg
 npx skilldrop-cli install --panel review --project  # .claude/ (shared with the repo)
 ```
 
-The [`pre-merge-review`](../skills/pre-merge-review/SKILL.md) skill is the **portable orchestrator** — it dispatches the three as **parallel subagents** where the tool has a native subagent runner, and sweeps the lenses inline otherwise. The orchestration lives in the *skill* (portable); the reviewers are *native subagents* (per-tool):
+The [`pre-merge-review`](../packs/dev-team/skills/pre-merge-review/SKILL.md) skill is the **portable orchestrator** — it dispatches the three as **parallel subagents** where the tool has a native subagent runner, and sweeps the lenses inline otherwise. The orchestration lives in the *skill* (portable); the reviewers are *native subagents* (per-tool):
 
 | Tool | How the panel fires in parallel |
 |---|---|
@@ -46,7 +46,7 @@ The [`pre-merge-review`](../skills/pre-merge-review/SKILL.md) skill is the **por
 | **Copilot** | Agents install (`--agent … --ide copilot`); the skill drives them — sequentially unless your Copilot build exposes parallel subagents. |
 | **Cursor** | No agent format — `pre-merge-review` sweeps the three lenses inline (no subagents). |
 
-Designing your own fleet? Use [`subagent-design`](../skills/subagent-design/SKILL.md) — the reviewer panel is its "judge panel" topology.
+Designing your own fleet? Use [`subagent-design`](../packs/ai-engineering/skills/subagent-design/SKILL.md) — the reviewer panel is its "judge panel" topology.
 
 ## Installing an agent into your tool
 

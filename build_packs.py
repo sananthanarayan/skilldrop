@@ -2,7 +2,7 @@
 """build_packs.py — one landing page per pack, plus an index (RFC-0032 parts 1–2).
 
 A pack page answers what a new user asks right after installing: what do I try first, how
-do I know it worked, and what if it didn't. Everything on it comes from packs.json (the
+do I know it worked, and what if it didn't. Everything on it comes from packs/<pack>/pack.json (the
 `first-value` block), the skill manifests, and loop.json, through the same collect() the
 main site uses, so a pack page cannot disagree with the catalogue it links back to.
 
@@ -18,6 +18,7 @@ import json
 import os
 import re
 
+import catalog
 from build_site import collect, card, esc, loops, REPO_URL, SITE_URL
 from build_catalogue import CSS
 
@@ -111,7 +112,7 @@ def pack_page(name, pack, packs, by_name, loop_by_name):
     own_loops = [loop_by_name[l] for l in pack.get("loops", []) if l in loop_by_name]
     if own_loops:
         items = "".join(
-            f"""<li><a href="{REPO_URL}/blob/main/loops/{esc(l['name'])}/LOOP.md"><b>{esc(l['name'])}</b></a> — {esc(l['description'].split(' Use when')[0])}
+            f"""<li><a href="{REPO_URL}/blob/main/{esc(l['path'])}/LOOP.md"><b>{esc(l['name'])}</b></a> — {esc(l['description'].split(' Use when')[0])}
 <div class="pk__stages">{' → '.join(esc(st['id']) + (f" [{esc(st['gate']['id'])}]" if st['gate'] else '') for st in l['stages'])}</div></li>"""
             for l in own_loops)
         parts.append(f'<h2>Loops</h2><ul class="pk__loops">{items}</ul>')
@@ -142,7 +143,7 @@ def render():
     """Return {relative_path: html} for every pack page."""
     skills, _, _ = collect()
     by_name = {s["name"]: s for s in skills}
-    packs = json.load(open(os.path.join(ROOT, "packs.json"), encoding="utf-8"))["packs"]
+    packs = catalog.packs()
     loop_by_name = {l["name"]: l for l in loops()}
     out = {"packs/index.html": index_page(packs)}
     for name, pack in packs.items():

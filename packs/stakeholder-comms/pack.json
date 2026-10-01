@@ -1,0 +1,22 @@
+{
+  "description": "Non-technical audiences: audience profiling, deck outlines and real .pptx decks, exec summaries, decision logs, and guides.",
+  "display_name": "Stakeholder comms",
+  "keywords": ["exec-summary", "deck", "audience", "decision-log"],
+  "links": {
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/stakeholder-comms/"
+  },
+  "maintainers": [
+    {
+      "name": "sananthanarayan"
+    }
+  ],
+  "first-value": {
+    "audience-posture": "non-technical",
+    "prerequisites": [],
+    "starter-task": "Turn a long document into a one-page summary for leadership",
+    "starter-prompt": "Turn this design doc into a one-page executive summary for our steering committee: <paste the doc>.",
+    "verification": "exec-summary returns a one-page summary that a time-poor reader can act on in 30 seconds, written without jargon.",
+    "recovery": "If exec-summary does not activate, ask for it by name (\"use exec-summary\") and check that its folder exists in your skills folder (`~/.claude/skills/` by default)."
+  },
+  "requires": ["core"]
+}

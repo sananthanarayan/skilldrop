@@ -12,19 +12,19 @@ One marketplace, seven plugins:
     /plugin install skilldrop@skilldrop            # the whole catalogue
     /plugin install solution-architect@skilldrop   # one role pack
 
-The whole-catalogue plugin's source is the repo root (`"."`): the flat `skills/` and
-`agents/` trees are its content, discovered natively on install. Nothing moves and
-nothing is projected — the copy-install golden rule in Claude's own plugin format.
+The whole-catalogue plugin's source is the repo root (`"."`): its plugin.json lists every
+`packs/<pack>/skills/` folder (RFC-0034), and `agents/` is discovered at the root. Nothing
+is projected — the copy-install golden rule in Claude's own plugin format.
 
-A per-pack plugin cannot work that way. A plugin's skills come from a `skills/` folder
-inside the plugin, so six role packs need six directories each holding a subset —
-physical packs, which RFC-0001 rejected for the source tree. The resolution (RFC-0027)
-is `git-subdir`: the plugin entries on main point at `packs/<name>/` on the generated
-`plugins` branch, so discovery stays one command against main while the duplicated
-trees live only in build output. `skills/<name>` on main is still the only source.
+A role pack's plugin cannot point at `packs/<name>/` on main directly: it also has to carry
+`core` (RFC-0033), and a plugin cannot reach outside its own folder. The resolution
+(RFC-0027) is `git-subdir`: the plugin entries on main point at `packs/<name>/` on the
+generated `plugins` branch, where each pack is assembled with what it requires, so
+discovery stays one command against main while the duplicated trees live only in build
+output. `packs/<pack>/skills/<name>` on main is still the only source.
 
 Every field is single-sourced from package.json (name/version/description/author/links)
-and packs.json (membership), so a release version bump flows here with no second edit.
+and the packs/ folders (membership, RFC-0034), so a release version bump flows here with no second edit.
 validate.py imports `stale()` below and fails the lint if a committed file drifts.
 """
 import argparse
@@ -34,11 +34,11 @@ import re
 import shutil
 import sys
 
+import catalog  # where skills, loops and packs live (RFC-0034)
+
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT_DIR = os.path.join(ROOT, ".claude-plugin")
-SKILLS = os.path.join(ROOT, "skills")
 AGENTS = os.path.join(ROOT, "agents")
-LOOPS = os.path.join(ROOT, "loops")  # RFC-0028
 
 
 def _n(count, word):
@@ -70,9 +70,9 @@ def _repo_url(pkg):
 
 
 def _packs():
-    """packs.json with each pack's `requires` folded in (RFC-0033): a plugin is installed on
+    """Every pack (catalog.packs()) with its `requires` folded in (RFC-0033): a plugin is installed on
     its own, so the dev-team plugin has to carry core's skills and loops itself."""
-    packs = json.load(open(os.path.join(ROOT, "packs.json"), encoding="utf-8"))["packs"]
+    packs = catalog.packs()
     out = {}
     for name, pack in packs.items():
         p = dict(pack)
@@ -92,7 +92,7 @@ def _pack_agents(skill_names):
     `pre-merge-review` without `code-quality` would hand the user a dangling delegation."""
     wanted = set()
     for name in skill_names:
-        sp = os.path.join(SKILLS, name, "SKILL.md")
+        sp = os.path.join(catalog.skill_dir(name) or "", "SKILL.md")
         if os.path.exists(sp):
             wanted |= set(SUBAGENT_REF.findall(open(sp, encoding="utf-8").read()))
     return sorted(a for a in wanted if os.path.exists(os.path.join(AGENTS, a + ".md")))
@@ -162,6 +162,9 @@ def _render():
         "homepage": pkg.get("homepage", repo),
         "repository": repo,
         "license": pkg.get("license", "MIT"),
+        # RFC-0034: skills live in their pack's folder, not a root skills/, so the
+        # whole-catalogue plugin names each pack's skills directory explicitly.
+        "skills": [f"./packs/{n}/skills/" for n in catalog.pack_names() if catalog.pack_skills(n)],
     }
     packs = _packs()
     marketplace = {
@@ -215,7 +218,7 @@ def render_dist(out):
     """Write the per-pack plugin tree the `plugins` branch carries:
 
         packs/<pack>/.claude-plugin/plugin.json
-        packs/<pack>/skills/<skill>/…      (copied verbatim from skills/<skill>)
+        packs/<pack>/skills/<skill>/…      (copied verbatim from packs/<home>/skills/<skill>)
         packs/<pack>/skills/<loop>/SKILL.md (a loop; LOOP.md already has SKILL.md's shape)
         packs/<pack>/agents/<agent>.md     (only those the pack's skills delegate to)
 
@@ -230,16 +233,16 @@ def render_dist(out):
     os.makedirs(out)
 
     missing = sorted(sk for p in packs.values() for sk in p["skills"]
-                     if not os.path.isdir(os.path.join(SKILLS, sk)))
+                     if not catalog.skill_dir(sk))
     if missing:
         # A plugin advertising a skill it does not carry is worse than no plugin.
-        print("build_marketplace.py: refusing to render — packs.json names skills that do "
+        print("build_marketplace.py: refusing to render — a pack names skills that do "
               "not exist: " + ", ".join(missing), file=sys.stderr)
         sys.exit(1)
     missing_loops = sorted(lp for p in packs.values() for lp in p.get("loops", [])
-                           if not os.path.isfile(os.path.join(LOOPS, lp, "loop.json")))
+                           if not catalog.loop_dir(lp))
     if missing_loops:
-        print("build_marketplace.py: refusing to render — packs.json names loops that do "
+        print("build_marketplace.py: refusing to render — a pack names loops that do "
               "not exist: " + ", ".join(missing_loops), file=sys.stderr)
         sys.exit(1)
 
@@ -260,7 +263,7 @@ def render_dist(out):
         _write(os.path.join(pdir, "README.md"), _pack_readme(name, pack, repo))
 
         for sk in sorted(pack["skills"]):
-            shutil.copytree(os.path.join(SKILLS, sk), os.path.join(pdir, "skills", sk),
+            shutil.copytree(catalog.skill_dir(sk), os.path.join(pdir, "skills", sk),
                             ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
 
         # RFC-0028: a loop projects into the plugin's skills/ tree, because Claude Code
@@ -269,8 +272,8 @@ def render_dist(out):
         for lp in sorted(pack.get("loops", [])):
             ldest = os.path.join(pdir, "skills", lp)
             os.makedirs(ldest, exist_ok=True)
-            shutil.copyfile(os.path.join(LOOPS, lp, "LOOP.md"), os.path.join(ldest, "SKILL.md"))
-            shutil.copyfile(os.path.join(LOOPS, lp, "loop.json"), os.path.join(ldest, "loop.json"))
+            shutil.copyfile(os.path.join(catalog.loop_dir(lp), "LOOP.md"), os.path.join(ldest, "SKILL.md"))
+            shutil.copyfile(os.path.join(catalog.loop_dir(lp), "loop.json"), os.path.join(ldest, "loop.json"))
 
         agents = _pack_agents(pack["skills"])
         for a in agents:
@@ -291,7 +294,7 @@ def render_dist(out):
            "skills delegate to. The marketplace that points here lives on main, so install with:\n\n"
            "```\n/plugin marketplace add sananthanarayan/skilldrop\n"
            "/plugin install <pack-name>@skilldrop\n```\n\n"
-           f"Source of truth is the flat `skills/` tree on main. Rationale: RFC-0027.\n")
+           f"Source of truth is `packs/<pack>/skills/` on main. Rationale: RFC-0027, RFC-0034.\n")
     print(f"\n{len(packs)} pack plugins rendered into {out}")
 
 

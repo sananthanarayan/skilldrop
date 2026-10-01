@@ -53,7 +53,7 @@ A skill name and the task input — e.g. "route devils-advocate over the diff in
 
 7. **Delegate the actual work to a subagent on the chosen model.** Use the Agent tool with `subagent_type: "general-purpose"` and `model: <alias>`, mapping the tier to the alias the Agent tool accepts: `light`→`haiku`, `standard`→`sonnet`, `heavy`→`opus`. The subagent prompt must instruct it to load and follow the target skill's `SKILL.md` and produce the skill's normal artifact:
 
-   > Load and follow the instructions in `skills/<skill-name>/SKILL.md` (read its `reference.md`, `templates/`, `lenses/`, `rubrics/` as that file directs). Execute the skill on this input: `<verbatim task input>`. Produce the skill's normal artifact — nothing about model routing.
+   > Load and follow the instructions in the skill's `SKILL.md` — `packs/<pack>/skills/<skill-name>/SKILL.md` in the skilldrop repo, or the installed copy at `.claude/skills/<skill-name>/SKILL.md` (read its `reference.md`, `templates/`, `lenses/`, `rubrics/` as that file directs). Execute the skill on this input: `<verbatim task input>`. Produce the skill's normal artifact — nothing about model routing.
 
 8. **Relay the subagent's artifact** back to the user unchanged, prefixed with the one-line routing decision from step 6. Don't re-do or critique the work — you're the dispatcher.
 

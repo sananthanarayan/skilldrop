@@ -4,30 +4,30 @@
 
 ## Repo in one paragraph
 
-**skilldrop** is a collection of portable **Claude Skills** for the deliverables knowledge workers actually ship: diagrams, ADRs, design docs, runbooks, decks, decision logs, comparison matrices, exec summaries, structured critiques, and adversarial code review. Each skill is a plain directory under `skills/` containing a `SKILL.md` + `manifest.json` (+ optional `reference.md`, `templates/`, `lenses/`, `rubrics/`, `examples/`, `scripts/`, `requirements.txt`). Above the skills sit **loops** (`loops/<name>/LOOP.md` + `loop.json`, RFC-0028) — named sequences of stages over those skills with a gate between each, so the repo ships a way of operating and not only a bag of parts. A loop *sequences* skills; it never contains one. Installation is per-folder copy into the target IDE's skills/rules location — documented per-IDE install steps live in `README.md` (Claude Code, Cursor, Kiro, Continue, Cline, Aider).
+**skilldrop** is a collection of portable **Claude Skills** for the deliverables knowledge workers actually ship: diagrams, ADRs, design docs, runbooks, decks, decision logs, comparison matrices, exec summaries, structured critiques, and adversarial code review. Each skill is a plain directory at `packs/<pack>/skills/<name>/` containing a `SKILL.md` + `manifest.json` (+ optional `reference.md`, `templates/`, `lenses/`, `rubrics/`, `examples/`, `scripts/`, `requirements.txt`). Above the skills sit **loops** (`packs/<pack>/loops/<name>/LOOP.md` + `loop.json`, RFC-0028) — named sequences of stages over those skills with a gate between each, so the repo ships a way of operating and not only a bag of parts. A loop *sequences* skills; it never contains one. The pack a skill or loop sits in is its one home (RFC-0033, RFC-0034); each pack's metadata is `packs/<pack>/pack.json`, and `catalogue.json` holds pack order and outcomes. Installation is per-folder copy into the target IDE's skills/rules location — documented per-IDE install steps live in `README.md` (Claude Code, Cursor, Kiro, Continue, Cline, Aider).
 
 ## Golden rules
 
 1. **Folder name = `SKILL.md` `name` = `manifest.json` `name`** (and for a loop: folder = `LOOP.md` `name` = `loop.json` `name`). Kebab-case, use-case-first, no version suffix. Changing any of the three without the others breaks slash-command invocation.
-2. **Do not move** `skills/`, `LICENSE`, or `README.md`. Skills are discovered by path; moving the directory breaks every install instruction the README documents.
+2. **Do not move** `packs/`, `LICENSE`, or `README.md`, and do not move a skill between packs without an RFC. A skill's path is `packs/<pack>/skills/<name>/`; moving it breaks every install instruction, GitHub link, and plugin that names that path (RFC-0034).
 3. **Keep `SKILL.md` under ~500 lines.** Spill into `reference.md`, `templates/`, `lenses/`, `rubrics/`, or `examples/`. Agent context is the binding constraint — a bloated `SKILL.md` crowds out the user's actual prompt.
 4. **Never invent commands, env vars, or file conventions.** Use those documented below. The only automated checks are `python3 validate.py` and `node bin/skilldrop.js validate`, run locally and by CI (`.github/workflows/release.yml`, which also publishes to npm on version bump — see **Releasing**). Don't pretend other test runners or linters exist.
 5. **No secrets, no real customer names, no personal data** in templates, examples, or sample inputs. Placeholder data only.
 6. **Voice is opinionated, not hedged.** Strip "generally", "consider", "you might want to". The `✅` / `❌` markers have semantic meaning — don't use them decoratively, don't add other decorative emoji.
-7. **A skill never invokes a skill; a loop orders them.** Sequencing lives in `loops/<name>/loop.json` (RFC-0028) — that is what keeps a single-folder copy working in Cursor, Kiro, and Aider.
+7. **A skill never invokes a skill; a loop orders them.** Sequencing lives in `packs/<pack>/loops/<name>/loop.json` (RFC-0028) — that is what keeps a single-folder copy working in Cursor, Kiro, and Aider.
 8. **Every new skill ships with `Quality bar` and `Anti-patterns to avoid` sections** — and so does every `LOOP.md`. A skill without them is a description, not a generator; a loop without them is a diagram. Both are enforced by `validate.py` (RFC-0016, RFC-0028).
 
 ## Verified commands (do not invent variants)
 
 ```bash
 # Install a single skill into Claude Code — user-scope (every project)
-mkdir -p ~/.claude/skills && cp -R skills/<skill-name> ~/.claude/skills/
+mkdir -p ~/.claude/skills && cp -R packs/<pack>/skills/<skill-name> ~/.claude/skills/
 
 # Install a single skill into Claude Code — project-scope (tracked with repo)
-mkdir -p .claude/skills && cp -R skills/<skill-name> .claude/skills/
+mkdir -p .claude/skills && cp -R packs/<pack>/skills/<skill-name> .claude/skills/
 
 # Install Python deps for a skill that has them (currently figma-diagrams, deck-builder)
-cd skills/<skill-name> && python3 -m pip install -r requirements.txt
+cd packs/<pack>/skills/<skill-name> && python3 -m pip install -r requirements.txt
 
 # Consistency lint — run from the repo root before committing (works on Python 3.9+)
 python3 validate.py
@@ -82,30 +82,31 @@ Every version bump lands with a matching entry at the top of [`CHANGELOG.md`](CH
 
 | Kind | Where |
 |---|---|
-| New skill | `skills/<kebab-name>/SKILL.md` + `skills/<kebab-name>/manifest.json` |
-| Long-form reference for a skill | `skills/<skill-name>/reference.md` |
-| Paste-able starter content | `skills/<skill-name>/templates/<name>.md` |
-| Worked example (input → output) | `skills/<skill-name>/examples/<name>.md` |
-| Adversarial-sweep checklist (devils-advocate style) | `skills/<skill-name>/lenses/<name>.md` |
-| Per-archetype quality bar (doc-critique style) | `skills/<skill-name>/rubrics/<archetype>.md` |
-| Acceptance checks for a skill | `skills/<skill-name>/evals/evals.json` (prompt + assertions) + `evals/eval_queries.json` (should/shouldn't-trigger phrases) |
+| New skill | `packs/<pack>/skills/<kebab-name>/SKILL.md` + `packs/<pack>/skills/<kebab-name>/manifest.json` |
+| Long-form reference for a skill | `packs/<pack>/skills/<skill-name>/reference.md` |
+| Paste-able starter content | `packs/<pack>/skills/<skill-name>/templates/<name>.md` |
+| Worked example (input → output) | `packs/<pack>/skills/<skill-name>/examples/<name>.md` |
+| Adversarial-sweep checklist (devils-advocate style) | `packs/<pack>/skills/<skill-name>/lenses/<name>.md` |
+| Per-archetype quality bar (doc-critique style) | `packs/<pack>/skills/<skill-name>/rubrics/<archetype>.md` |
+| Acceptance checks for a skill | `packs/<pack>/skills/<skill-name>/evals/evals.json` (prompt + assertions) + `evals/eval_queries.json` (should/shouldn't-trigger phrases) |
 | RFC for a new skill or structural change | `docs/rfcs/NNNN-<kebab-slug>.md` — copy [`docs/rfcs/0000-template.md`](docs/rfcs/0000-template.md), next sequential number |
 | Long-form design doc (bigger than an RFC, not a skill) | `docs/designs/<name>.md` — e.g. the CLI command surface, the telemetry collection spec |
-| Pack membership for a skill | `packs.json` — add the skill to exactly one pack; a skill every role needs goes in `core` (RFC-0033) |
-| Pack membership for a loop | `packs.json` — add the loop to exactly one pack's `loops` array, and make sure that pack (or `core`) holds every skill the loop's stages run; `validate.py` checks all of it |
-| Outcome membership for a skill | `packs.json` `outcomes` — add the skill to at least one outcome (RFC-0026); packs say *who*, outcomes say *why* |
+| Pack membership for a skill | The folder: put the skill at `packs/<pack>/skills/<name>/`, in exactly one pack. A skill every role needs goes in `core` (RFC-0033, RFC-0034) |
+| Pack membership for a loop | The folder: `packs/<pack>/loops/<name>/`. That pack (or `core`) must hold every skill the loop's stages run; `validate.py` checks it |
+| Pack metadata (description, `requires`, first-value) | `packs/<pack>/pack.json` (RFC-0032); a new pack also goes in `catalogue.json` `packs`, which sets display order |
+| Outcome membership for a skill | `catalogue.json` `outcomes` — add the skill to at least one outcome (RFC-0026); packs say *who*, outcomes say *why* |
 | User-visible change for a release | `CHANGELOG.md` — one bullet under `## <version> — <YYYY-MM-DD>`; the site reads the newest three and `build_site.py` refuses to build if the top version disagrees with `package.json` |
-| Executable helper | `skills/<skill-name>/scripts/<name>.py` (or `.js`, `.sh`) |
-| Python dep manifest for a skill | `skills/<skill-name>/requirements.txt` |
-| New loop (a sequence over existing skills) | `loops/<kebab-name>/LOOP.md` + `loops/<kebab-name>/loop.json` — needs an RFC (RFC-0028) |
+| Executable helper | `packs/<pack>/skills/<skill-name>/scripts/<name>.py` (or `.js`, `.sh`) |
+| Python dep manifest for a skill | `packs/<pack>/skills/<skill-name>/requirements.txt` |
+| New loop (a sequence over existing skills) | `packs/<pack>/loops/<kebab-name>/LOOP.md` + `loop.json` beside it — needs an RFC (RFC-0028) |
 | Machine-readable index for models | Nothing to place by hand — `build_llms.py` generates `llms.txt` from the catalogue |
 | Loop diagram | Nothing to place by hand — `build_loops.py` generates `docs/loops/<loop>.mmd` and the README's mermaid blocks from `loop.json`. Edit the contract, not the picture. |
 | Machine-readable schema for a primitive | `contracts/<name>.schema.json` — closed schemas, checked by `validate.py`'s stdlib `check_schema()`. The shared gate verdict vocabulary is `contracts/terminals.json` |
 | Long-form doc that would bloat the README | `guides/<kind>/<slug>.md` — frontmatter `title`/`summary`/`kind` (Diátaxis), and a link from `guides/README.md`. Both enforced (RFC-0029) |
 | Claude Code project settings | `.claude/settings.json` — registers the repo as a local plugin marketplace for dogfooding; also holds hooks/permissions/env. Inert for non-Claude tools. |
-| Per-pack Claude plugin output | Nothing to place by hand — `build_marketplace.py --dist` generates it and CI publishes it to the `plugins` branch. Adding a skill to a pack in `packs.json` is the whole edit (RFC-0027). |
+| Per-pack Claude plugin output | Nothing to place by hand — `build_marketplace.py --dist` generates it and CI publishes it to the `plugins` branch. Putting a skill in a pack's folder is the whole edit (RFC-0027, RFC-0034). |
 
-Anything outside `skills/`, `loops/`, `agents/`, and `contracts/` is repo policy or hygiene. System design lives in [ARCHITECTURE.md](ARCHITECTURE.md); long-form docs live in [guides/](guides/). New top-level directories should be proposed in a PR with rationale, not added silently.
+Anything outside `packs/`, `agents/`, and `contracts/` is repo policy or hygiene. System design lives in [ARCHITECTURE.md](ARCHITECTURE.md); long-form docs live in [guides/](guides/). New top-level directories should be proposed in a PR with rationale, not added silently.
 
 ## SKILL.md frontmatter (required, exactly this shape)
 
@@ -166,7 +167,7 @@ The `model` block is the colocated cost-routing hint — an **abstract, provider
 Every skill folder follows the same layout, so installation is identical everywhere:
 
 ```
-skills/<skill-name>/
+packs/<pack>/skills/<skill-name>/
 ├── SKILL.md              # Instructions the agent reads — entry point
 ├── manifest.json         # Name, description, version, deps, required env vars
 ├── requirements.txt      # (optional) Python deps if the skill has scripts
@@ -227,7 +228,7 @@ The folder name is the slug used for `/`-invocation: kebab-case, descriptive, us
 
 **5. Update the README.** Add a row to the **Skills in this repo** table (under the right category), and to **Installing dependencies** if the skill has runtime deps.
 
-**6. Test it manually.** Install into a clean Claude Code session (`cp -R skills/<name> ~/.claude/skills/`), then run the `evals/evals.json` prompt and check each assertion against the output; spot-check a `should_trigger: false` query routes elsewhere. Also verify: the agent finds `SKILL.md` without confusion; templates/lenses/rubrics are read at the right moment; scripts work from both `${CLAUDE_SKILL_DIR}/scripts/…` *and* a plain relative path. If you can, run it in a second IDE to catch portability issues.
+**6. Test it manually.** Install into a clean Claude Code session (`cp -R packs/<pack>/skills/<name> ~/.claude/skills/`), then run the `evals/evals.json` prompt and check each assertion against the output; spot-check a `should_trigger: false` query routes elsewhere. Also verify: the agent finds `SKILL.md` without confusion; templates/lenses/rubrics are read at the right moment; scripts work from both `${CLAUDE_SKILL_DIR}/scripts/…` *and* a plain relative path. If you can, run it in a second IDE to catch portability issues.
 
 ## Authoring a new loop
 
@@ -236,7 +237,7 @@ gates between existing skills are the thing worth shipping; write a skill when a
 is. A loop that would need a skill nobody has written yet is blocked on that skill, not on
 this section.
 
-1. **RFC first**, same as a new skill — `loops/` is a primitive and its membership is a
+1. **RFC first**, same as a new skill — loops are a primitive and its membership is a
    structural decision (RFC-0028).
 2. **`loop.json`** — `name`, `description` (use-case-first, trigger phrases at the end),
    `entrypoint: "LOOP.md"`, `kind` (`loop` or `wrapper`), `cap` (default 3), and `stages`.
@@ -258,7 +259,7 @@ this section.
 7. **A loop's name may not collide with a skill's.** On install, `LOOP.md` projects to
    `<dest>/<name>/SKILL.md` — Claude Code and the other targets have no loop primitive, and
    `LOOP.md`'s frontmatter is already `SKILL.md`'s shape, so the two share one namespace.
-8. **Add it to a pack** (`packs.json` `loops`) and re-run `python3 build_loops.py`.
+8. **Put it in a pack** — the folder is `packs/<pack>/loops/<name>/` — and re-run `python3 build_loops.py`.
 
 ## Sibling hand-offs are advisory
 
@@ -285,7 +286,7 @@ If a skill has executable scripts (Python, Node, shell):
 - **Write outputs to a user-specified path**, not a hard-coded location.
 - **Don't shell out to interactive commands** (`gh auth login`, `aws configure`) — those need the user; the skill shouldn't drive them.
 
-See `skills/deck-builder/scripts/build_deck.py` for the reference pattern.
+See `packs/stakeholder-comms/skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 
 ## Before you commit
 
@@ -305,8 +306,8 @@ See `skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 - [ ] **Model tier set** — new skill has a `model` block in `manifest.json` AND a matching entry in `model-routing.json`. The two agree.
 - [ ] **`related` synced** — every sibling skill referenced in `SKILL.md` is in the manifest's `related` list.
 - [ ] **Non-interactive line present** if the skill has a hard-stop condition — a self-contained sentence saying which inputs degrade to `[assumption]` and which emit `BLOCKED: need <X>`.
-- [ ] **Pack membership** — new skill added to exactly one pack in `packs.json`; a new loop added to exactly one pack's `loops` array (RFC-0033).
-- [ ] **Outcome membership** — new skill added to at least one entry in `packs.json` `outcomes` (RFC-0026).
+- [ ] **Pack membership** — new skill created under exactly one `packs/<pack>/skills/`; a new loop under exactly one `packs/<pack>/loops/` (RFC-0033, RFC-0034).
+- [ ] **Outcome membership** — new skill added to at least one entry in `catalogue.json` `outcomes` (RFC-0026).
 - [ ] **`CHANGELOG.md` entry** if the version was bumped — the site build fails without one.
 - [ ] **GitHub About updated** if the skill/pack/subagent counts changed — `gh repo edit --description "…"`. This is the one surface `validate.py` cannot see (it is stdlib-only and off-repo), so it is the one that goes stale: it sat at `62 skills … 7 packs` for a while after the catalogue was 56 and 6. It is also what shows in search results and on the repo card, so it is the first thing a stranger reads.
 - [ ] **Loop (if any) is complete** — `loop.json` validates against the closed contract, every named skill exists, gate ids are repo-unique, every verdict is in `contracts/terminals.json`, and `LOOP.md` carries `Quality bar` + `Anti-patterns to avoid`.
@@ -318,7 +319,7 @@ See `skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 - [ ] **New long-form doc is a guide**, not a README section — `guides/<kind>/<slug>.md` with Diátaxis frontmatter and a link from `guides/README.md`.
 - [ ] **`python3 validate.py` passes** with no failures.
 
-Of these, **`validate.py` (+ `node bin/skilldrop.js validate`) mechanically enforces**: every `contracts/` schema (manifests, `packs.json`, loops, agent and guide frontmatter — all closed), the name triple (for skills *and* loops), the whole loop contract above, the ≤500-line warning, `Quality bar` + `Anti-patterns` sections, evals *shape* (when present), model-tier sync, `related` sync, pack membership, reference + link integrity, script dual-referencing, and a heavy-tier `examples/` oracle. The rest — the RFC existing, voice, the manual test pass, no-secrets / no-real-data, description discipline, the non-interactive line, the README update, and the GitHub About — are **human judgment**; a green lint does not vouch for them. Keep this split honest: if a rule becomes mechanically checkable, move it into `validate.py` rather than leaving it as a checklist claim.
+Of these, **`validate.py` (+ `node bin/skilldrop.js validate`) mechanically enforces**: every `contracts/` schema (manifests, `pack.json`, `catalogue.json`, loops, agent and guide frontmatter — all closed), the name triple (for skills *and* loops), the whole loop contract above, the ≤500-line warning, `Quality bar` + `Anti-patterns` sections, evals *shape* (when present), model-tier sync, `related` sync, pack membership, reference + link integrity, script dual-referencing, and a heavy-tier `examples/` oracle. The rest — the RFC existing, voice, the manual test pass, no-secrets / no-real-data, description discipline, the non-interactive line, the README update, and the GitHub About — are **human judgment**; a green lint does not vouch for them. Keep this split honest: if a rule becomes mechanically checkable, move it into `validate.py` rather than leaving it as a checklist claim.
 
 ## Voice & tone (non-negotiable)
 
@@ -368,12 +369,12 @@ A new section needs a use-case-first name, a one-sentence definition of what bel
 
 ## Skill packs
 
-Categories say what a skill *is*; packs say *who needs it*. [`packs.json`](packs.json) defines `core` plus role-based bundles (`solution-architect`, `product-manager`, `dev-team`, `sre-oncall`, `stakeholder-comms`, `ai-engineering`, `claude-api`), each installed in one command via the CLI or [`pack.py`](pack.py). Rules — rationale in [RFC-0001](docs/rfcs/0001-skill-packs.md) and [RFC-0033](docs/rfcs/0033-core-pack-and-single-home-skills.md):
+Categories say what a skill *is*; packs say *who needs it*. [`packs/`](packs/) holds `core` plus role-based packs (`solution-architect`, `product-manager`, `dev-team`, `sre-oncall`, `stakeholder-comms`, `ai-engineering`, `claude-api`), each installed in one command via the CLI or [`pack.py`](pack.py). Rules — rationale in [RFC-0001](docs/rfcs/0001-skill-packs.md), [RFC-0033](docs/rfcs/0033-core-pack-and-single-home-skills.md) and [RFC-0034](docs/rfcs/0034-physical-pack-layout.md):
 
-- **Packs are metadata only.** Skills never move out of flat `skills/<name>` folders (golden rules 1–2); a pack is a named list, nothing more.
-- **One home per skill** (RFC-0033). A skill that serves every role, like `brief-intake`, goes in `core`, which each role pack `requires` and every installer brings along. Otherwise pick the role that produces the artifact. This is the shape a later physical `packs/<name>/` layout needs.
-- **Every skill belongs to exactly one pack.** A skill with no audience shouldn't have passed the RFC. `validate.py` enforces this, that every pack entry is a real skill folder, and that a pack holds every skill its loops run.
-- **Every skill belongs to at least one outcome.** `packs.json` carries a second block, `outcomes` (RFC-0026) — the README's nine categories restated as seven outcomes and made machine-readable, so the catalogue site can offer a *why am I here* axis beside the *who am I* one. Outcomes are a browse aid, never an install unit; the CLI does not take `--outcome`. `validate.py` applies the same two-way check packs get.
+- **A pack is a folder.** `packs/<pack>/skills/<name>/` is where a skill lives, and that path is the membership — there is no separate list to keep in sync. `packs/<pack>/pack.json` holds the pack's metadata.
+- **One home per skill** (RFC-0033). A skill that serves every role, like `brief-intake`, goes in `core`, which each role pack `requires` and every installer brings along. Otherwise pick the role that produces the artifact. Every installer — the CLI, `pack.py`, the Claude plugins — brings `core` with a role pack.
+- **Every skill belongs to exactly one pack.** A skill with no audience shouldn't have passed the RFC. The folder layout makes this structural; `validate.py` checks that no name has a folder in two packs, that every pack folder has a `pack.json` and is listed in `catalogue.json`, and that a pack holds every skill its loops run.
+- **Every skill belongs to at least one outcome.** `catalogue.json` carries the second axis, `outcomes` (RFC-0026) — the README's nine categories restated as seven outcomes and made machine-readable, so the catalogue site can offer a *why am I here* axis beside the *who am I* one. Outcomes are a browse aid, never an install unit; the CLI does not take `--outcome`. `validate.py` applies the same two-way check packs get.
 
 ## Model routing
 
@@ -393,11 +394,11 @@ When you add or change a skill, set its tier in **both** `model-routing.json` an
 - Human-facing contributor entry point (lanes, gates, release): [CONTRIBUTING.md](CONTRIBUTING.md) — a router over this file, which stays the source of truth
 - Repo overview & per-IDE install steps: [README.md](README.md)
 - RFCs (template + decisions): [docs/rfcs/](docs/rfcs/)
-- Skill packs and outcomes: [packs.json](packs.json) + [pack.py](pack.py)
+- Skill packs and outcomes: [packs/](packs/) + [catalogue.json](catalogue.json) + [catalog.py](catalog.py) (the one loader every script uses) + [pack.py](pack.py)
 - Release history: [CHANGELOG.md](CHANGELOG.md)
-- CLI (npm `skilldrop-cli`): [bin/skilldrop.js](bin/skilldrop.js) + [package.json](package.json) — copies skills verbatim, never transforms them; the npm `files` list must keep `skills/`, `packs.json`, `model-routing.json`
+- CLI (npm `skilldrop-cli`): [bin/skilldrop.js](bin/skilldrop.js) + [package.json](package.json) — copies skills verbatim, never transforms them; the npm `files` list must keep `packs/`, `catalogue.json`, `model-routing.json`
 - Claude Code plugins: [build_marketplace.py](build_marketplace.py) — writes the committed `.claude-plugin/` on main, and (`--dist`) the per-pack plugin tree CI force-pushes to the generated `plugins` branch ([RFC-0027](docs/rfcs/0027-retire-agentbundle-export.md))
-- Loops (the sequencing primitive): [loops/](loops/) + [RFC-0028](docs/rfcs/0028-loops-as-a-primitive.md)
+- Loops (the sequencing primitive): `packs/<pack>/loops/` + [RFC-0028](docs/rfcs/0028-loops-as-a-primitive.md)
 - Loop diagram generator: [build_loops.py](build_loops.py) → [docs/loops/](docs/loops/)
 - Machine-readable index: [build_llms.py](build_llms.py) → [llms.txt](llms.txt) (RFC-0030)
 - System design and the enforcement model: [ARCHITECTURE.md](ARCHITECTURE.md)
@@ -405,4 +406,4 @@ When you add or change a skill, set its tier in **both** `model-routing.json` an
 - Machine-readable contracts: [contracts/loop.schema.json](contracts/loop.schema.json), [contracts/terminals.json](contracts/terminals.json)
 - Model routing: [MODEL-ROUTING.md](MODEL-ROUTING.md) + [model-routing.json](model-routing.json)
 - Claude Code project settings: [.claude/settings.json](.claude/settings.json) — registers the repo as a local plugin marketplace (`skilldrop@skilldrop-local`) so the catalogue can be dogfooded from the working tree
-- Reference implementations for skill scripts: [`skills/deck-builder/scripts/`](skills/deck-builder/scripts/), [`skills/figma-diagrams/scripts/`](skills/figma-diagrams/scripts/)
+- Reference implementations for skill scripts: [`packs/stakeholder-comms/skills/deck-builder/scripts/`](packs/stakeholder-comms/skills/deck-builder/scripts/), [`packs/solution-architect/skills/figma-diagrams/scripts/`](packs/solution-architect/skills/figma-diagrams/scripts/)

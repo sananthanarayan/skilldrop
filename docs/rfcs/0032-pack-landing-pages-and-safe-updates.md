@@ -1,7 +1,7 @@
 ---
 rfc: 0032
 title: Pack landing pages, first-value metadata, and edit-preserving updates
-status: accepted
+status: implemented
 date: 2026-10-01
 author: sanjay-ananth
 ---
@@ -132,4 +132,4 @@ Path A. This RFC is shaped so that move is cheap:
 
 ## Decision
 
-Accepted 2026-10-01. Delivery follows in separate PRs.
+Accepted 2026-10-01. Part 3 shipped in #27 with the RFC-0033 re-cut; parts 1 and 2 shipped with the RFC-0034 physical layout.
