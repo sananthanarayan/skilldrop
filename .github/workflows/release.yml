@@ -45,14 +45,31 @@ jobs:
         run: npm install -g npm@latest && npm --version
       - name: Publish if version is new
         run: |
+          set -o pipefail  # the publish below is piped through tee; its exit code must survive
           LOCAL=$(node -p "require('./package.json').version")
           PUBLISHED=$(npm view skilldrop-cli version 2>/dev/null || echo none)
           if [ "$LOCAL" = "$PUBLISHED" ]; then
             echo "skilldrop-cli@$LOCAL already on the registry — nothing to publish"
             exit 0
           fi
+          # npm stages CI publishes until a maintainer approves them with 2FA, and a staged
+          # version is invisible to `npm view`. The v<version> tag is pushed only after a
+          # publish succeeds, so it is the record that this version already went up.
+          if [ -n "$(git ls-remote --tags origin "refs/tags/v$LOCAL")" ]; then
+            echo "::notice title=skilldrop-cli@$LOCAL awaiting approval::v$LOCAL is tagged but the registry shows $PUBLISHED. It is staged on npm: approve it with 'npm stage list skilldrop-cli' then 'npm stage approve <id>'."
+            exit 0
+          fi
           echo "publishing skilldrop-cli@$LOCAL (registry has $PUBLISHED)"
-          npm publish --provenance
+          if ! npm publish --provenance 2>&1 | tee /tmp/publish.log; then
+            if grep -q "previously staged version" /tmp/publish.log; then
+              echo "::notice title=skilldrop-cli@$LOCAL already staged::approve it with 'npm stage approve <id>'."
+            else
+              exit 1
+            fi
+          fi
+          if grep -qi "staged" /tmp/publish.log; then
+            echo "::notice title=skilldrop-cli@$LOCAL staged::npm is holding this version until a maintainer approves it with 2FA: 'npm stage list skilldrop-cli', then 'npm stage approve <id>'."
+          fi
           if git rev-parse "v$LOCAL" >/dev/null 2>&1; then
             echo "tag v$LOCAL already exists — skipping"
           else
