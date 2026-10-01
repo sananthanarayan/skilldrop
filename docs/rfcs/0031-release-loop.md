@@ -1,7 +1,7 @@
 ---
 rfc: 0031
 title: Release loop
-status: draft
+status: accepted
 date: 2026-10-01
 author: sanjay-ananth
 ---
@@ -101,4 +101,5 @@ Add `loops/release/` (`LOOP.md` + `loop.json`). It has `kind: loop` and `cap: 3`
 
 ## Decision
 
-{Filled in when status moves past draft.}
+Accepted 2026-10-01. `release` ships as the fifth lifecycle loop with one new skill,
+`launch-readiness`, in the same PR as this RFC.
