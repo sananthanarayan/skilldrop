@@ -280,7 +280,11 @@ def render_md(text, src=None, docs_base=None):
         if not raw.strip():
             flush_all(); i += 1
             continue
-        if re.match(r"^\s*<!--.*-->\s*$", raw):  # marker comments (generated-block fences)
+        if raw.lstrip().startswith("<!--"):
+            # HTML comments (e.g. the generated-block markers) never reach the page, including
+            # ones that span several lines: skip through the line that closes the comment.
+            while i < len(lines) and "-->" not in lines[i]:
+                i += 1
             i += 1
             continue
         m = re.match(r"^(#{1,6})\s+(.*)", raw)
