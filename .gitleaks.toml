@@ -1,0 +1,12 @@
+# gitleaks config: the default rules, plus one narrow allowlist.
+# Skills document API calls that read a token from the environment, e.g.
+#   curl -s -u "$SONAR_TOKEN:" ...
+# A shell reference to an environment variable is not a secret, but the curl-auth-user rule
+# matches it. Only that shape is allowed; a literal user:password after -u is still caught.
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "curl -u with an environment-variable reference, not a literal credential"
+regexTarget = "match"
+regexes = ['''-u\s+"?\$\{?[A-Z_][A-Z0-9_]*\}?:"?''']

@@ -17,5 +17,34 @@
     "starter-prompt": "Here are my notes from today's planning call: <paste them>. Turn them into a brief, then critique the draft you write from it.",
     "verification": "brief-intake returns a structured brief with gaps tagged, and doc-critique ends with a verdict: SHIP IT, SHIP WITH CHANGES, MAJOR REWRITE or WRONG ARTIFACT.",
     "recovery": "If neither skill activates, check that `brief-intake/SKILL.md` and `doc-critique/SKILL.md` exist in your skills folder (`~/.claude/skills/` by default). In Claude Code, start a new session after installing."
+  },
+  "journey": {
+    "when": "You have rough notes, a transcript or a ticket and want a finished document, not a first draft.",
+    "you_bring": [
+      "the raw material: notes, a Slack thread, a transcript or a ticket",
+      "the kind of document you want at the end, such as an ADR, a runbook or an exec summary",
+      "answers to the gaps the brief flags as missing"
+    ],
+    "time": "20–45 minutes",
+    "steps": [
+      {
+        "skill": "brief-intake",
+        "you_do": "Paste the raw material and name the document you want it to become.",
+        "you_get": "A structured brief with every field tagged explicit, implied, inferred or missing, plus a list of what the next step will refuse to start without.",
+        "decide": "Answer or explicitly accept each missing field before drafting; the brief never fills them in for you."
+      },
+      {
+        "skill": "doc-critique",
+        "you_do": "Hand over the draft you wrote from the brief, by hand or with any generator skill.",
+        "you_get": "A critique that opens with a verdict and lists findings as blocker, major, minor or nit, each pointing to the section and suggesting a fix.",
+        "decide": "Gate G4: SHIP IT or SHIP WITH CHANGES moves on; MAJOR REWRITE sends you back to the brief; WRONG ARTIFACT means you need a different kind of document."
+      },
+      {
+        "skill": "output-hygiene",
+        "you_do": "Run it on the settled draft and say where it is going (markdown, commit message, plain text).",
+        "you_get": "The draft with invisible Unicode, provenance trailers and chat closers stripped, prose tells quoted with rewrites, and a 'Not touched' list."
+      }
+    ],
+    "you_end_with": "A reviewed, cleaned document with its verdict, the changes it carried, and a note of what the scrub did not touch."
   }
 }

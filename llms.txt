@@ -6,7 +6,7 @@
 > 65 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.13.7.
+> Version 0.13.8.
 
 ## Start here
 
@@ -57,10 +57,12 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use skilldrop with Linear](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/integrate-with-linear.md) *(how-to)*: Feed Linear issues, cycles, and projects into skilldrop skills for triage, story splitting, implementation tracking, and release notes.
 - [Install a profile](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/profiles.md) *(how-to)*: Named bundles of packs, agents, and loops — install a complete setup in one command.
 - [Publish your own catalogue](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/publish-a-catalogue.md) *(how-to)*: Shape a repo so `skilldrop --from <you>` installs from it, and how the CLI reads agentbundle-shaped catalogues too.
+- [Run a skill in CI](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/run-a-skill-in-ci.md) *(how-to)*: Use the skilldrop GitHub Action to run a skill on every pull request, such as a document critique or a pre-merge review, post the result to the job summary, and optionally fail the check on a verdict.
 - [Supply credentials to skills](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/supply-credentials.md) *(how-to)*: How to provide API keys and tokens to skills that declare env.required — covers local shells, CI environments, and enterprise secret managers.
 - [Upgrade installed skills](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/upgrade-skills.md) *(how-to)*: Check which installed skills are stale and bring them current, keeping any files you edited and your hook wiring.
 - [Wire a skill to an event](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/wire-a-hook.md) *(how-to)*: Opt-in hooks: how a loop-shaped skill binds to session-start or pre-commit-review, and how the CLI projects that onto each target.
 - [The loops, stage by stage](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/loops.md) *(reference)*: Every loop's stages, skills and gates, with a generated diagram per loop — what each takes, what it produces, and what a mistake costs.
+- [skilldrop and the OWASP Top 10s](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/owasp-mapping.md) *(reference)*: Where skilldrop's controls meet the OWASP Agentic Skills Top 10 and the LLM Top 10 2025, what each control actually does, and the gaps it leaves.
 - [Every skill, by category](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/skill-catalogue.md) *(reference)*: All the skills grouped by what they produce, one line each, plus the anatomy every skill folder shares.
 - [Skills that ship scripts](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/skills-with-scripts.md) *(reference)*: The two skills with executable helpers — what they need on PATH, what environment variables they read, and how to invoke them from Claude Code or any other IDE.
 - [From use-case to deployed agent — the AI engineering workflow](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/ai-engineering-workflow.md) *(tutorial)*: End-to-end AI adoption: triage the use case, assess org readiness, design the loop and agents, threat-model the system, build the evals, measure what shipped.

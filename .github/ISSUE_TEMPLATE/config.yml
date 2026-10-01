@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/sananthanarayan/skilldrop/blob/main/SECURITY.md
+    about: Report privately, never in a public issue.
+  - name: Questions and how-tos
+    url: https://sananthanarayan.github.io/skilldrop/docs/
+    about: Install routes, per-IDE steps and authoring guides.

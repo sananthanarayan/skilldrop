@@ -17,5 +17,32 @@
     "starter-prompt": "Here is our system prompt and a typical request: <paste them>. Where should the cache_control breakpoints go, and what hit rate should we expect?",
     "verification": "prompt-caching-advisor marks where each cache_control checkpoint goes and estimates the cache hit rate.",
     "recovery": "If prompt-caching-advisor does not activate, ask for it by name and check that its folder exists in your skills folder (`~/.claude/skills/` by default)."
+  },
+  "journey": {
+    "when": "You are building or tuning a Claude API integration and want its tools defined properly and its token costs under control.",
+    "you_bring": [
+      "the functions your agent should call: name, purpose and parameters",
+      "your system prompt and a typical request",
+      "a description of the workflow: turns, tool results, output length"
+    ],
+    "time": "30–60 minutes",
+    "steps": [
+      {
+        "skill": "tool-use-schema-writer",
+        "you_do": "Describe each function the model should call.",
+        "you_get": "A tool_use JSON schema per function with types, required fields and parameter descriptions, plus a Python client.messages.create snippet."
+      },
+      {
+        "skill": "token-budget-estimator",
+        "you_do": "Describe the workflow or share a sample request and response.",
+        "you_get": "A per-component token table, the dominant cost driver, and max_tokens and other budget controls per component."
+      },
+      {
+        "skill": "prompt-caching-advisor",
+        "you_do": "Paste the system prompt and a typical request.",
+        "you_get": "Each block classed as static, quasi-static or dynamic, where each cache_control breakpoint goes with code, and an expected cache hit rate."
+      }
+    ],
+    "you_end_with": "Tool schemas ready to wire in, a token budget with its main cost driver named, and a caching plan."
   }
 }

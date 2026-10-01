@@ -18,5 +18,37 @@
     "verification": "runbook-generator returns a runbook with rollback commands, the common incidents and what to do for each, and an escalation path. Facts you did not give it are marked missing, not invented.",
     "recovery": "If runbook-generator does not activate, ask for it by name (\"use runbook-generator\") and check that its folder exists in your skills folder (`~/.claude/skills/` by default)."
   },
-  "requires": ["core"]
+  "requires": ["core"],
+  "journey": {
+    "when": "You are getting a service ready to run, handling an incident, or writing it up afterwards; you can join at whichever stage you are in.",
+    "you_bring": [
+      "the service: what it does, where it runs, what it depends on, who gets paged",
+      "during or after an incident: the timeline, the Slack thread or pager log, and the known impact",
+      "facts only; the skills mark anything you leave out as missing rather than guessing it"
+    ],
+    "steps": [
+      {
+        "skill": "observability-plan",
+        "you_do": "Describe the service and its main user journeys.",
+        "you_get": "SLIs and SLOs with error budgets, burn-rate alerts split into page and ticket, and a metrics, logs and traces plan with a cardinality and cost budget."
+      },
+      {
+        "skill": "runbook-generator",
+        "you_do": "Give it the service details and the alerts from the plan.",
+        "you_get": "A runbook with deploy and rollback steps, what to do for each common incident, escalation, SLOs, dashboards and dependencies, with unknown facts marked missing."
+      },
+      {
+        "skill": "incident-comms",
+        "you_do": "During an incident, say what users are seeing and what stage you are in (detect, mitigate or resolve).",
+        "you_get": "Separate updates for the status page, internal stakeholders and execs, each leading with user impact and naming the next update time, with no guessed cause or ETA."
+      },
+      {
+        "skill": "postmortem-generator",
+        "you_do": "Paste the incident thread, pager timeline and notes once it is over.",
+        "you_get": "A blameless postmortem with quantified impact, a UTC timeline showing detection and mitigation gaps, contributing factors, up to eight action items, and runbook deltas phrased as edits.",
+        "decide": "Gate G3, a human call: PROCEED closes it, PROCEED WITH CONDITIONS closes it with named follow-ups, REVISE sends the deltas back to the runbook."
+      }
+    ],
+    "you_end_with": "An observability plan, a runbook tied to its alerts, the incident updates you sent, and a postmortem whose deltas go back into the runbook."
+  }
 }

@@ -71,27 +71,49 @@ Kiro matches the skill by its `SKILL.md` frontmatter `name` (which must equal th
 
 **No steering file needed.** Earlier versions of the CLI also wrote `.kiro/steering/<skill-name>.md` pointing back at the skill. That predates native Agent Skills, and because a steering file without frontmatter is *always* loaded, it pinned one description per installed skill into every session's context — to point at a folder Kiro already reads. The CLI no longer writes them, and `install`/`uninstall` remove any it wrote before. A steering file it didn't author is left alone, with a note.
 
-#### Codex and GitHub Copilot
+#### Codex, Antigravity and GitHub Copilot
 
-Both read `SKILL.md` folders, and both deliberately read *other* tools' directories — so a skilldrop install often already works with no extra step:
+Each has its own flag. Without `--project` the skills go to your personal folder and work in
+every repo; with it, they go into the repo:
+
+```bash
+npx skilldrop-cli install --pack dev-team --ide codex              # ~/.codex/skills
+npx skilldrop-cli install --pack dev-team --ide antigravity        # ~/.gemini/antigravity-cli/skills
+npx skilldrop-cli install --pack dev-team --ide copilot            # ~/.copilot/skills
+npx skilldrop-cli install --pack dev-team --ide copilot --project  # .github/skills
+npx skilldrop-cli install --pack dev-team --ide codex --project    # .agents/skills
+```
+
+All three also read other tools' folders, so a project install often reaches more than one:
 
 | Path | Read by |
 |---|---|
 | `.claude/skills/` | Claude Code, **Copilot CLI** |
-| `.agents/skills/` | **Codex** (project), **Copilot CLI** |
+| `.agents/skills/` | **Codex**, **Antigravity**, **Copilot CLI** (`--ide codex --project` or `--ide antigravity --project`) |
 | `.github/skills/` | **Copilot** |
 | `~/.codex/skills/` | Codex (personal) |
+| `~/.gemini/antigravity-cli/skills/` | Antigravity CLI (personal) |
 | `~/.copilot/skills/` | Copilot (personal) |
 
-**If you already ran `skilldrop install --project`, Copilot CLI can use every skill you installed** — `.claude/skills/` is one of its discovery paths. Otherwise pick the path your tool reads:
+**If you already ran `skilldrop install --project`, Copilot CLI can use every skill you
+installed**, because `.claude/skills/` is one of its discovery paths. Codex and Copilot also
+read a repo-root `AGENTS.md`. Google retired Gemini CLI for most users on 2026-06-18;
+Antigravity CLI replaced it, and `--ide antigravity` is its target.
+
+#### Trying skills in a repo you don't own
+
+`--local` installs into the repo (the same place `--project` would) and lists every file it
+writes in the repo's own `.git/info/exclude`. Git ignores those files the way it ignores
+`.gitignore` entries, but the exclude file is never committed, so `git status` stays clean
+and nothing can be committed by accident:
 
 ```bash
-npx skilldrop-cli install --pack dev-team --dest .agents/skills    # Codex + Copilot CLI
-npx skilldrop-cli install --pack dev-team --dest .github/skills    # Copilot
-npx skilldrop-cli install --pack dev-team --dest ~/.codex/skills   # Codex, all projects
+npx skilldrop-cli install --pack dev-team --local
+npx skilldrop-cli uninstall pre-merge-review --local   # removes the files and the exclude entries
 ```
 
-There is no `--ide codex` or `--ide copilot` flag yet, and `--dest` is not a workaround here — it writes the identical folder the native flags would. Both tools also read a repo-root `AGENTS.md`, which this repo has.
+It works with every `--ide`. With `--with-hooks` on Claude Code, the session-start hook goes
+into `.claude/settings.local.json` rather than the shared `settings.json`.
 
 #### Continue, Cline, Aider, and other agents
 

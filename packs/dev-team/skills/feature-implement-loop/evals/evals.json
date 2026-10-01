@@ -1,0 +1,19 @@
+{
+  "skill_name": "feature-implement-loop",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Implement this story in our Python/FastAPI service (pytest, ruff, mypy already set up):\n\nAs an admin, I can export the audit log for a date range as CSV.\nAcceptance criteria:\n1. GET /admin/audit/export?from=YYYY-MM-DD&to=YYYY-MM-DD returns text/csv.\n2. Non-admins get 403.\n3. from after to returns 400 with a clear message.\n4. Ranges over 90 days return 400.\n5. The CSV opens cleanly in Excel.\n\nBuild it and check your own work.",
+      "assertions": [
+        "Restates the five acceptance criteria as a numbered checklist before writing code",
+        "Plans a named test per criterion up front and flags criterion 5 (opens cleanly in Excel) as manual-verify",
+        "Runs the project's tests plus ruff and mypy, and does not report VERIFIED while any command is red",
+        "Review findings are tagged blocker/major/minor/nit with file:line and a concrete fix, covering edge cases, security (e.g. authz on the admin route, CSV formula injection), and craft",
+        "Tests assert the criterion's expected output (status codes, content type, messages), not just that the call didn't throw",
+        "Stops at or before 3 rounds, and later rounds patch only the named gaps rather than regenerating the whole feature",
+        "Final report has a status (VERIFIED, VERIFIED WITH OPEN ITEMS, or BLOCKED), an acceptance-criteria table mapping each criterion to a test, manual-verify, or open item, an honest round log, and open items",
+        "Does not add criteria the user did not give without echoing them back first"
+      ]
+    }
+  ]
+}

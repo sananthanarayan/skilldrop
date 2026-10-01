@@ -1,0 +1,19 @@
+{
+  "skill_name": "capacity-cost-model",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Model the run cost for our new document-search service at Northwind on AWS. Demand: 1,200 active tenants today, growing about 8% a month; average 15 searches/sec, peak 60/sec weekday mornings. Each tenant indexes about 2 GB. We'll use OpenSearch, ECS Fargate for the API, and CloudWatch for logs. There are dev and staging environments too. What will it cost now and at 3x and 10x?",
+      "assertions": [
+        "Sizes from the demand driver (tenants and searches/sec, with the 8%/month growth curve), not from a chosen instance count",
+        "Every cost line is a unit price x quantity, with the unit price's source and date tagged",
+        "Expresses unit economics (e.g. cost per active tenant per month), not just a bare monthly total",
+        "Egress, observability (CloudWatch logs), and non-prod (dev and staging) lines are present or explicitly marked n/a",
+        "States average and peak load separately and makes the headroom/target-utilization choice explicit with reasoning",
+        "Projects 1x/3x/10x and names at least one scaling cliff (e.g. an OpenSearch tier or shard step) rather than extrapolating linearly",
+        "Outputs are low/expected/high ranges with a lean, and the cost-per-tenant trend at scale is checked and flagged if it rises",
+        "Does not invent demand figures or services beyond those in the prompt; unknown inputs are stated as assumptions"
+      ]
+    }
+  ]
+}

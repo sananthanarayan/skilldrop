@@ -1,0 +1,19 @@
+{
+  "skill_name": "ai-usage-report",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's our AI usage export for September 1-30: northwind-ai-events.csv, 4,212 rows, 14 engineers on the platform team. Columns are timestamp, user_email, tool_name, session_id, output_consumed. There's no discard field. I want the team-rollup view for our VP's monthly staff meeting — she wants to know whether people are actually using what the AI gives them or just clicking the button.",
+      "assertions": [
+        "The report header states the exact period covered (2026-09-01 to 2026-09-30)",
+        "The team-rollup names no individual anywhere — no emails, names, or per-person rows, even in passing",
+        "The handoff is three sentences above the report: volume, what the data does and doesn't show, and the most actionable pattern",
+        "The discard-rate signal is omitted with a note that the input has no discard field, rather than estimated or shown with '~' or 'est.' placeholders",
+        "The output-consumed rate and other numbers are computed from the input rows and reconcile with the 4,212-row count; no metric is invented",
+        "The 'AI theater' framing appears only in section headers and pattern-level observations, never as a judgment about a person",
+        "Recommendations target team patterns (e.g. a workshop), not specific people",
+        "No prompt text is embedded in the report; it works from metadata only"
+      ]
+    }
+  ]
+}

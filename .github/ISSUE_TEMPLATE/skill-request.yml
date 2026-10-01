@@ -1,0 +1,41 @@
+name: Skill request
+description: Propose a new skill, or a change to what an existing one produces
+labels: [skill-request]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A skill earns its place when a plain prompt gets you a draft but not the deliverable. Say what the deliverable is and who it's for.
+  - type: input
+    id: deliverable
+    attributes:
+      label: What it produces
+      placeholder: "e.g. a go/no-go launch readiness report with evidence per criterion"
+    validations:
+      required: true
+  - type: input
+    id: who
+    attributes:
+      label: Who uses it, and which pack it belongs in
+      placeholder: "e.g. a release manager, dev-team"
+    validations:
+      required: true
+  - type: textarea
+    id: prompts
+    attributes:
+      label: What someone would type to get it
+      description: Two or three real phrasings. These become the skill's trigger queries.
+    validations:
+      required: true
+  - type: textarea
+    id: bar
+    attributes:
+      label: What a good result looks like
+      description: Checkable properties, not adjectives. These become the quality bar and the eval assertions.
+    validations:
+      required: true
+  - type: textarea
+    id: overlap
+    attributes:
+      label: Which existing skills come close, and why they don't do it
+      description: Check https://sananthanarayan.github.io/skilldrop/catalogue/ first.

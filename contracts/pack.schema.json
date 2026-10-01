@@ -40,6 +40,32 @@
         "recovery": { "type": "string" }
       }
     },
+    "journey": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A typical session with the pack, rendered as its walkthrough page: when you'd reach for it, what you bring, each step's skill with what you do, what you get and where you decide, and what you end with. Every step's skill must sit in this pack or in a pack it requires.",
+      "required": ["when", "you_bring", "steps", "you_end_with"],
+      "properties": {
+        "when": { "type": "string" },
+        "you_bring": { "type": "array", "items": { "type": "string" } },
+        "time": { "type": "string", "description": "A rough range for one session; left out when it depends too much on the work." },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["skill", "you_do", "you_get"],
+            "properties": {
+              "skill": { "type": "string" },
+              "you_do": { "type": "string" },
+              "you_get": { "type": "string" },
+              "decide": { "type": "string", "description": "The human decision at this step, if any: a loop gate or a judgment call." }
+            }
+          }
+        },
+        "you_end_with": { "type": "string" }
+      }
+    },
     "requires": {
       "type": "array",
       "items": { "type": "string" },

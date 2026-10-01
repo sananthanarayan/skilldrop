@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Write setup instructions for getting our service running locally from these notes",
+    "should_trigger": true
+  },
+  {
+    "query": "Turn this architecture description into an onboarding walkthrough for new engineers",
+    "should_trigger": true
+  },
+  {
+    "query": "Document these webhook events and payloads for the developers who'll consume them",
+    "should_trigger": true
+  },
+  {
+    "query": "Make a quickstart guide out of this messy README",
+    "should_trigger": true
+  },
+  {
+    "query": "Write the on-call runbook with escalation and rollback for the billing service",
+    "should_trigger": false
+  },
+  {
+    "query": "Draft a design proposal with options and trade-offs for the new billing architecture",
+    "should_trigger": false
+  },
+  {
+    "query": "Summarize this 20-page spec for the executive team",
+    "should_trigger": false
+  },
+  {
+    "query": "Here's a raw Slack thread — structure it into a brief first",
+    "should_trigger": false
+  }
+]

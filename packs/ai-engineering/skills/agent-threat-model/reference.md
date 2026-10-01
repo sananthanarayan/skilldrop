@@ -80,3 +80,22 @@ Prompts to run each source against when enumerating paths:
 | 🟧 | All three legs, held only by a human gate or an allowlist — the control is load-bearing and must be named and verified |
 | 🟨 | Two legs; the third arrives with a plausible change (a new tool, a widened credential) |
 | ⚪ | One leg, or explicitly accepted by a named owner with a revisit trigger |
+
+## OWASP mapping — step 7
+
+Tag by what the path *does*, not by its keywords. A path usually carries two or three IDs.
+Lists verified against [genai.owasp.org/llm-top-10](https://genai.owasp.org/llm-top-10/) (2025)
+and the [OWASP Agentic Skills Top 10](https://owasp.org/www-project-agentic-skills-top-10/) (v1.0-2026).
+
+| What the finding is | LLM Top 10 2025 | Agentic Skills Top 10 |
+|---|---|---|
+| Untrusted content can steer a tool call (any 🟥 or 🟧 path) | `LLM01:2025` Prompt Injection | `AST05` Untrusted External Instructions, when the content arrives through a skill |
+| Private data can leave through an egress leg | `LLM02:2025` Sensitive Information Disclosure | — |
+| A tool, credential or subagent reaches further than the task needs | `LLM06:2025` Excessive Agency | `AST03` Over-Privileged Skills |
+| Agent output is rendered or executed downstream (markdown images, HTML, SQL, shell) | `LLM05:2025` Improper Output Handling | — |
+| A secret or a boundary lives only in the system prompt | `LLM07:2025` System Prompt Leakage | — |
+| Retrieved documents or an index can be written by untrusted parties | `LLM08:2025` Vector and Embedding Weaknesses, `LLM04:2025` Data and Model Poisoning | — |
+| No cap on loops, tokens or spend | `LLM10:2025` Unbounded Consumption | — |
+| A third-party skill, plugin or MCP server is in the capability inventory | `LLM03:2025` Supply Chain | `AST01` Malicious Skills, `AST02` Supply Chain Compromise |
+| A skill runs with the host agent's full permissions | `LLM06:2025` | `AST06` Weak Isolation |
+| Installed skills update without review | `LLM03:2025` | `AST07` Update Drift |

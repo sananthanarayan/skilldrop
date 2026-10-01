@@ -25,9 +25,9 @@
 
 One row per **path**: content source → tools it can influence → egress.
 
-| # | Path | Private data | Untrusted content | Egress | Rank |
-|---|---|---|---|---|---|
-| 1 | {source} → {tool} → {egress} | ✅ {what} | ✅ {who writes} | ✅ {channel} | 🟥 |
+| # | Path | Private data | Untrusted content | Egress | Rank | OWASP |
+|---|---|---|---|---|---|---|
+| 1 | {source} → {tool} → {egress} | ✅ {what} | ✅ {who writes} | ✅ {channel} | 🟥 | {LLM01:2025, LLM02:2025} |
 | 2 | … | ✅ | ❌ | ✅ | ⚪ |
 
 ## Fixes

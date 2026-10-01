@@ -18,5 +18,44 @@
     "verification": "prfaq returns a launch press release, a customer FAQ and an internal FAQ that names the hard questions.",
     "recovery": "If prfaq does not activate, ask for it by name (\"use prfaq\") and check that its folder exists in your skills folder (`~/.claude/skills/` by default)."
   },
-  "requires": ["core"]
+  "requires": ["core"],
+  "journey": {
+    "when": "You are deciding what to build and need a requirement a human has agreed to before design starts.",
+    "you_bring": [
+      "the feature idea or problem and who it is for",
+      "the stakeholders you can talk to",
+      "interview notes or evidence you already have"
+    ],
+    "time": "1–2 hours of working time, plus the interviews themselves",
+    "steps": [
+      {
+        "skill": "requirements-interview",
+        "you_do": "Describe the feature idea and list the stakeholders.",
+        "you_get": "An interview kit per stakeholder with up to seven questions ranked by how much the answer changes the design, at least one disconfirming question each, and an assumptions ledger."
+      },
+      {
+        "skill": "brief-intake",
+        "you_do": "Paste the interview notes once you have run the interviews.",
+        "you_get": "One brief with every field tagged explicit, implied, inferred or missing, quoting the source.",
+        "decide": "Resolve the missing fields yourself; the PRD must not invent them."
+      },
+      {
+        "skill": "prd-draft",
+        "you_do": "Hand it the resolved brief.",
+        "you_get": "A PRD with an evidence-backed problem statement, numbered MoSCoW requirements, non-goals, and a success line per goal."
+      },
+      {
+        "skill": "doc-critique",
+        "you_do": "Run it on the PRD, then take the result to whoever owns the decision.",
+        "you_get": "A severity-tagged critique of the PRD with a verdict and a fix for each finding.",
+        "decide": "Gate G0, a human call: PROCEED, PROCEED WITH CONDITIONS, REVISE (back to the brief), RECONSIDER (wrong problem) or BLOCKED."
+      },
+      {
+        "skill": "success-metrics",
+        "you_do": "Once the PRD is ratified, ask how you will know the feature worked.",
+        "you_get": "One primary metric with baseline, target and timeframe, guardrail metrics, the events to instrument, and a decision rule if the target is missed."
+      }
+    ],
+    "you_end_with": "Interview kits, a tagged brief, a ratified PRD, and a measurement plan agreed before anyone builds."
+  }
 }

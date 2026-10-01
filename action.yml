@@ -1,0 +1,73 @@
+name: skilldrop skill runner
+description: Run a skilldrop skill (or any SKILL.md) on a PR diff, a file or a request, write the result to the job summary, and optionally fail on a verdict.
+author: sananthanarayan
+branding:
+  icon: check-square
+  color: green
+
+inputs:
+  skill:
+    description: Skill name, e.g. doc-critique, pre-merge-review, release-notes
+    required: true
+  input:
+    description: The request to run the skill on
+    required: false
+    default: ""
+  input-file:
+    description: A file whose contents are appended to the request
+    required: false
+    default: ""
+  diff-base:
+    description: A git ref; `git diff <ref>...HEAD` is appended (check out with fetch-depth 0)
+    required: false
+    default: ""
+  catalog:
+    description: Where the skill lives — a skilldrop catalog or a folder of <skill>/SKILL.md. Default is skilldrop's own catalogue.
+    required: false
+    default: ""
+  model:
+    description: Claude model ID
+    required: false
+    default: claude-sonnet-5-5
+  max-tokens:
+    description: Output token cap
+    required: false
+    default: "8000"
+  fail-on:
+    description: A regex; the step fails when the output matches it (e.g. "MAJOR REWRITE|BLOCKED")
+    required: false
+    default: ""
+  output-file:
+    description: Where to write the skill's output
+    required: false
+    default: skill-output.md
+  anthropic-api-key:
+    description: Anthropic API key — pass a secret, never a literal
+    required: true
+
+outputs:
+  output-file:
+    description: Path of the file holding the skill's output
+    value: ${{ steps.run.outputs.output-file }}
+  failed:
+    description: "true when fail-on matched"
+    value: ${{ steps.run.outputs.failed }}
+
+runs:
+  using: composite
+  steps:
+    - id: run
+      shell: bash
+      env:
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        SKILL: ${{ inputs.skill }}
+        INPUT: ${{ inputs.input }}
+        INPUT_FILE: ${{ inputs.input-file }}
+        DIFF_BASE: ${{ inputs.diff-base }}
+        CATALOG: ${{ inputs.catalog }}
+        MODEL: ${{ inputs.model }}
+        MAX_TOKENS: ${{ inputs.max-tokens }}
+        FAIL_ON: ${{ inputs.fail-on }}
+        OUTPUT_FILE: ${{ inputs.output-file }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: python3 "$ACTION_PATH/run_skill.py"
