@@ -43,12 +43,13 @@ def die(msg):
     sys.exit(1)
 
 
-_BAD_XML = re.compile("[\x00-\x08\x0b\x0c\x0e-\x1f]")
+# Control characters XML 1.0 forbids: every code point below 0x20 except tab, LF and CR.
+_BAD_XML = dict.fromkeys(c for c in range(0x20) if c not in (0x09, 0x0A, 0x0D))
 
 
 def x(s):
     """Escape text for XML element content and attributes."""
-    return _esc(_BAD_XML.sub("", s), {'"': "&quot;"})
+    return _esc(s.translate(_BAD_XML), {'"': "&quot;"})
 
 
 # --------------------------------------------------------------------------- block parsing
