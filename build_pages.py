@@ -473,7 +473,7 @@ def skill_page(s, by_name, packs, outcome_of):
                             (home, f"{SITE_URL}packs/{home}/"), (name, url)])
             + ld({"@context": "https://schema.org", "@type": "SoftwareSourceCode", "name": name,
                   "description": s["description"], "url": url,
-                  "codeRepository": f"{REPO_URL}/tree/main/{s['path']}", "license": "https://opensource.org/licenses/MIT",
+                  "codeRepository": f"{REPO_URL}/tree/main/{s['path']}", "license": ["https://opensource.org/licenses/MIT", "https://www.apache.org/licenses/LICENSE-2.0"],
                   "version": s["version"], "isPartOf": {"@type": "Collection", "name": f"skilldrop {home} pack",
                                                         "url": f"{SITE_URL}packs/{home}/"}}))
     return shell(name, s["description"], url, 2, "\n".join(parts), current="catalogue/", extra_head=meta)

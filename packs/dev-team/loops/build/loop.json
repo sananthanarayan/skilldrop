@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0028. This loop is docs/code-implement-verify.mmd promoted from a hand-maintained diagram into the machine-readable source that diagram is now generated from.",
   "name": "build",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Take an agreed requirement to merged code through a capped generate-verify-gate loop, with a mechanical gate that decides and a human who owns the merge. Use when the user wants to implement a story, fix a triaged bug, or ask whether a change is safe to merge.",
   "entrypoint": "LOOP.md",
   "kind": "loop",

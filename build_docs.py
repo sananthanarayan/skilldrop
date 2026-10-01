@@ -124,6 +124,9 @@ a{color:var(--accent-700);}
   border-radius:var(--r);padding:1.2rem;}
 .doc-card h3{margin:0 0 .4rem;font-size:1rem;letter-spacing:-.01em;}
 .doc-card p{margin:0 0 .8rem;font-size:.85rem;color:var(--fg-muted);line-height:1.5;}
+.doc-card--packs{grid-column:1/-1;}
+.doc-card--packs p{font-size:.9rem;line-height:1.9;}
+.doc-card--packs a{color:var(--accent-700);white-space:nowrap;}
 .doc-card a.read{font-size:.85rem;font-weight:600;color:var(--accent-700);text-decoration:none;}
 .doc-card a.read:hover{text-decoration:underline;}
 .sidebar-search{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;
@@ -372,6 +375,9 @@ def collect_guides():
                 "slug":     slug,
                 "rel_path": rel_path,
                 "abs_path": abs_path,
+                # Generated per-pack guides (build_pack_guides.py) live in a packs/ subfolder and
+                # are grouped, so 2 × N pack pages don't bury the hand-written guides.
+                "group":    "packs" if os.path.basename(dirpath) == "packs" else "",
             })
     return by_kind
 
@@ -435,11 +441,20 @@ def _sidebar_html(by_kind, current_kind, current_slug, depth):
             continue
         label = KIND_LABELS[kind]
         parts.append(f'<details open><summary>{label}</summary><ul>')
-        for g in guides:
+        grouped = [g for g in guides if g.get("group")]
+        for g in [g for g in guides if not g.get("group")]:
             href = f"{prefix}{g['kind']}/{g['slug']}.html"
             current = g["kind"] == current_kind and g["slug"] == current_slug
             aria = ' aria-current="page"' if current else ""
             parts.append(f'<li><a href="{href}"{aria}>{_esc(g["title"])}</a></li>')
+        if grouped:
+            inside = any(g["kind"] == current_kind and g["slug"] == current_slug for g in grouped)
+            parts.append(f'<li><details{" open" if inside else ""}><summary>Per pack ({len(grouped)})</summary><ul>')
+            for g in grouped:
+                href = f"{prefix}{g['kind']}/{g['slug']}.html"
+                aria = ' aria-current="page"' if g["kind"] == current_kind and g["slug"] == current_slug else ""
+                parts.append(f'<li><a href="{href}"{aria}>{_esc(g["title"])}</a></li>')
+            parts.append("</ul></details></li>")
         parts.append("</ul></details>")
     parts.append("</nav>")
     return "\n".join(parts)
@@ -520,8 +535,13 @@ def build_portal_index(by_kind, out_dir):
             f'<p>{_esc(g["summary"])}</p>'
             f'<a class="read" href="{g["kind"]}/{g["slug"]}.html">Read &rarr;</a>'
             f'</div>'
-            for g in guides
+            for g in guides if not g.get("group")
         )
+        grouped = [g for g in guides if g.get("group")]
+        if grouped:
+            cards += (f'<div class="doc-card doc-card--packs" data-kind="{_esc(kind)}"><h3>Per pack</h3>'
+                      f'<p>' + " · ".join(f'<a href="{g["kind"]}/{g["slug"]}.html">{_esc(g["title"].replace("Use the ", "").replace(" pack reference", "").replace(" pack", ""))}</a>'
+                                          for g in grouped) + '</p></div>')
         cards_html.append(
             f'<section class="kind-section">'
             f'<h2>{_esc(label)}</h2>'
