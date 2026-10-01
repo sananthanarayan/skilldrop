@@ -18,5 +18,48 @@
     "verification": "adr-generator returns an ADR with context, the options considered with their trade-offs, the decision, and its consequences.",
     "recovery": "If adr-generator does not activate, ask for it by name (\"use adr-generator\") and check that its folder exists in your skills folder (`~/.claude/skills/` by default)."
   },
-  "requires": ["core"]
+  "requires": ["core"],
+  "journey": {
+    "when": "You have an agreed requirement and need to decide how to build it, then record that decision.",
+    "you_bring": [
+      "the ratified requirement or PRD",
+      "known constraints: traffic, data, compliance, existing systems",
+      "the options you are weighing, if you already have them"
+    ],
+    "time": "1–3 hours",
+    "steps": [
+      {
+        "skill": "nfr-spec",
+        "you_do": "Describe the feature or system and what you know about load, data and users.",
+        "you_get": "Every non-functional category set to a measurable target, an explicit n/a, or a tagged default."
+      },
+      {
+        "skill": "design-doc",
+        "you_do": "Give it the requirement and the NFR targets.",
+        "you_get": "A design doc with problem, goals and non-goals, options considered, the recommended approach, risks and rollout."
+      },
+      {
+        "skill": "architecture-diagrams",
+        "you_do": "Ask for diagrams of the recommended approach from the design doc.",
+        "you_get": "Mermaid, PlantUML or C4 diagrams that must agree with the doc."
+      },
+      {
+        "skill": "threat-model",
+        "you_do": "Hand it the design doc and diagrams.",
+        "you_get": "A STRIDE threat model with assets and trust boundaries, attack scenarios at each boundary crossing, and ranked, verifiable mitigations."
+      },
+      {
+        "skill": "council-review",
+        "you_do": "Put the design and threat model in front of the review panel.",
+        "you_get": "Independent positions from each seat, the named cruxes, and a Chair's verdict that records dissent and what would change the decision.",
+        "decide": "Gate G1: PROCEED or PROCEED WITH CONDITIONS moves on; REVISE sends you back to the design doc; SPLIT or RECONSIDER leaves the loop."
+      },
+      {
+        "skill": "adr-generator",
+        "you_do": "Ask for the ADR once the panel has agreed, including any conditions it set.",
+        "you_get": "An ADR in MADR or Nygard format with context, the options and why each was rejected, the decision and its consequences."
+      }
+    ],
+    "you_end_with": "NFR targets, a design doc with matching diagrams, a threat model, the panel's verdict, and an ADR that carries its conditions."
+  }
 }

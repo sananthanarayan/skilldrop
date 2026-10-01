@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Help me create a new skilldrop skill from scratch",
+    "should_trigger": true
+  },
+  {
+    "query": "Generate the manifest, SKILL.md, and evals for a skill I want to contribute",
+    "should_trigger": true
+  },
+  {
+    "query": "I have an idea for a skill in the dev-team pack — walk me through authoring it",
+    "should_trigger": true
+  },
+  {
+    "query": "Scaffold a new skill for our private fork so it passes validate.py",
+    "should_trigger": true
+  },
+  {
+    "query": "I edited the bug-triage SKILL.md — regenerate its eval cases",
+    "should_trigger": false
+  },
+  {
+    "query": "Add more eval coverage to an existing skill's evals folder",
+    "should_trigger": false
+  },
+  {
+    "query": "Generate an AGENTS.md for this repository",
+    "should_trigger": false
+  }
+]

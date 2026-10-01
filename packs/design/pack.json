@@ -18,5 +18,43 @@
     "verification": "brand-kit writes brand.json and a one-page BRAND.md with contrast checked, and marketing-flyer writes flyer.html in your colours with your logo, one call to action, and only the facts you gave it.",
     "recovery": "If the flyer comes out in default colours, check that marketing-flyer was given the brand.json path. If brand-kit does not activate, ask for it by name (\"use brand-kit\")."
   },
-  "requires": ["core"]
+  "requires": ["core"],
+  "journey": {
+    "when": "You need a deck or a flyer in your own branding and do not want to answer the brand questions every time.",
+    "you_bring": [
+      "your logo as a PNG, and a white version if you have one",
+      "brand colours, fonts or a PowerPoint template, if you know them",
+      "the content: the doc or points for the deck, and the event facts for a flyer",
+      "the audience and how long you have to present"
+    ],
+    "steps": [
+      {
+        "skill": "brand-kit",
+        "you_do": "Hand over your logo, colours and any brand guidelines or template.",
+        "you_get": "A brand.json and a one-page BRAND.md, with text contrast checked and each value traced to where it came from."
+      },
+      {
+        "skill": "slide-outliner",
+        "you_do": "Give it the content, the audience and the time slot.",
+        "you_get": "A slide-by-slide outline with takeaway titles, key points, speaker notes, backup slides for likely questions, and a slide-count check against the time."
+      },
+      {
+        "skill": "deck-builder",
+        "you_do": "Hand it the outline, the audience and your brand.json.",
+        "you_get": "An editable .pptx in your brand, with charts, tables and images where the content calls for them."
+      },
+      {
+        "skill": "doc-critique",
+        "you_do": "Run it on the deck against the deck rubric, as deck-builder recommends.",
+        "you_get": "A verdict and severity-tagged findings with a fix for each.",
+        "decide": "Ship the deck, apply the changes, or rework the outline."
+      },
+      {
+        "skill": "marketing-flyer",
+        "you_do": "If you also need a flyer, give it the event facts and the same brand.json.",
+        "you_get": "A print-ready flyer.html with one call to action and only the facts you gave it, which you can save to PDF."
+      }
+    ],
+    "you_end_with": "A reusable brand kit, a reviewed on-brand .pptx, and optionally a flyer built from the same brand."
+  }
 }

@@ -1,0 +1,53 @@
+# Weekly skill evals against a live model — report-only, never a merge gate.
+# Needs an ANTHROPIC_API_KEY repository secret; without it the run prints a notice and passes.
+# Activation (trigger queries) runs every week; assertion evals are opt-in from the Run button.
+name: evals
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"  # Mondays 06:17 UTC
+  workflow_dispatch:
+    inputs:
+      skills:
+        description: "Comma-separated skill names (blank = every skill)"
+        required: false
+        default: ""
+      assertions:
+        description: "Also run evals.json assertions (a generation + a judgement per eval)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: evals
+  cancel-in-progress: false
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Run evals
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SKILLS: ${{ inputs.skills }}
+          ASSERTIONS: ${{ inputs.assertions }}
+        run: |
+          set -euo pipefail
+          args=()
+          if [ -n "${SKILLS:-}" ]; then args+=(--skills "$SKILLS"); fi
+          if [ "${ASSERTIONS:-false}" = "true" ]; then args+=(--assertions); fi
+          python3 run_evals.py --out evals-results.json "${args[@]}"
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: hashFiles('evals-results.json') != ''
+        with:
+          name: evals-results
+          path: evals-results.json
+          retention-days: 90

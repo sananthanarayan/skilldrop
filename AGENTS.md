@@ -51,9 +51,15 @@ node bin/skilldrop.js install --agent <name...> [--project | --dest <dir>]   # s
 node bin/skilldrop.js install --loop <name...> [--no-skills]     # loops + the stage skills they sequence (RFC-0028)
 node bin/skilldrop.js install --loop --pack <name>               # every loop a pack declares
 node bin/skilldrop.js uninstall --loop <name...>                 # removes the loop; stage skills stay
-node bin/skilldrop.js install <skill...> [--pack <name>] [--all] [--with-related] [--from <src>] [--project | --ide cursor|kiro | --dest <dir>]
+node bin/skilldrop.js install <skill...> [--pack <name>] [--all] [--with-related] [--from <src>] [--project | --local | --ide cursor|kiro|codex|antigravity|copilot | --dest <dir>]
 node bin/skilldrop.js update | outdated | uninstall <skill...>   # same target flags; update follows each skill's recorded source
+node bin/skilldrop.js install | update | uninstall ... --dry-run # print what would change, change nothing
+node bin/skilldrop.js diff <skill> | doctor                      # installed copy vs catalog; ledger vs disk (report-only)
+node bin/skilldrop.js new-skill <name> --pack <pack>             # scaffold a skill with every file validate.py checks
 node bin/skilldrop.js validate [--from <src>]                    # structural check of a catalog (catalog authors)
+
+# Evals against a live model (needs ANTHROPIC_API_KEY; report-only, also weekly in CI)
+python3 run_evals.py [--skills a,b] [--assertions]
 
 # Skill packs — list packs / list a pack's skills / install a pack
 python3 pack.py
@@ -224,7 +230,7 @@ The folder name is the slug used for `/`-invocation: kebab-case, descriptive, us
 - `evals/evals.json` — `{ "skill_name": …, "evals": [ { "id", "prompt", "assertions": [ … ] } ] }`. At least one realistic prompt; assertions are the checkable statements a passing output satisfies (they should restate the skill's own `Quality bar` as verifiable claims about one concrete output).
 - `evals/eval_queries.json` — `[ { "query": …, "should_trigger": true|false } ]`. 4+ phrases that should invoke the skill and 3+ near-misses that should route to a sibling skill instead. The `false` rows are the discipline: they force the `description` to draw a real boundary against sibling skills.
 
-**Backfilling an older skill:** do it **by activation-collision cluster**, never as a coverage sweep. A skill earns evals when its trigger phrases genuinely compete with a sibling's — "help me present this" (`exec-summary` / `slide-outliner` / `deck-builder` / `audience-profile`), "define the contract" (`api-contract-draft` / `data-contract` / `db-schema-design`), "review this" (`devils-advocate` / `doc-critique` / `council-review` / `sonar-review`). Skills whose vocabulary is already distinctive are **deliberately left without evals**; writing `should_trigger: false` rows for a collision that doesn't exist invents a boundary rather than documenting one, and that filler is worse than nothing.
+**Every skill ships evals** (full coverage since 0.13.8; `validate.py` fails a skill without both files). The `should_trigger: false` rows are where the care goes: each one is a real near-miss that belongs to a **named sibling**, taken from the skill's "When NOT to use" section and its `related` list — "help me present this" (`exec-summary` / `slide-outliner` / `deck-builder` / `audience-profile`), "define the contract" (`api-contract-draft` / `data-contract` / `db-schema-design`), "review this" (`devils-advocate` / `doc-critique` / `council-review` / `sonar-review`). Don't invent a collision to fill the file: a no-trigger row nobody would actually type documents nothing. Assertions come from the skill's own Quality bar, and every skill that handles facts gets a "does not invent X not in the prompt" assertion. The weekly [evals workflow](.github/workflows/evals.yml) runs the trigger queries against a live model and reports the results.
 
 **5. Update the skill catalogue.** Add a row to [`guides/reference/skill-catalogue.md`](guides/reference/skill-catalogue.md) (under the right category), and to **Installing dependencies** in [`guides/how-to/install-per-ide.md`](guides/how-to/install-per-ide.md) if the skill has runtime deps.
 
@@ -295,7 +301,7 @@ See `packs/design/skills/deck-builder/scripts/build_deck.py` for the reference p
 - [ ] Folder name = `SKILL.md` `name` = `manifest.json` `name`.
 - [ ] `SKILL.md` is **≤ ~500 lines** — long material moved into siblings.
 - [ ] `Quality bar` and `Anti-patterns to avoid` sections are present.
-- [ ] **`evals/` present** — required for a **new** skill: `evals.json` with ≥1 prompt + assertions, `eval_queries.json` with trigger *and* no-trigger queries. (Catalogue-wide coverage is partial and backfilled by activation-collision cluster, not all at once — a filler eval is worse than none. `validate.py` checks the *shape* when present, never presence.)
+- [ ] **`evals/` present**: `evals.json` with ≥1 prompt + assertions, `eval_queries.json` with trigger *and* no-trigger queries, the no-trigger rows naming real siblings. `validate.py` enforces presence and shape; whether the queries are realistic is your judgment.
 - [ ] At least one **worked example** for new diagram, deck, or review skills.
 - [ ] Description **leads with the use case** and **ends with trigger phrases**.
 - [ ] Skill catalogue updated — a row in `guides/reference/skill-catalogue.md`, and in **Installing dependencies** (`guides/how-to/install-per-ide.md`) if the skill has runtime deps. The README is a short router (RFC-0035); only a new *pack* needs a README line.
@@ -319,7 +325,7 @@ See `packs/design/skills/deck-builder/scripts/build_deck.py` for the reference p
 - [ ] **New long-form doc is a guide**, not a README section — `guides/<kind>/<slug>.md` with Diátaxis frontmatter and a link from `guides/README.md`.
 - [ ] **`python3 validate.py` passes** with no failures.
 
-Of these, **`validate.py` (+ `node bin/skilldrop.js validate`) mechanically enforces**: every `contracts/` schema (manifests, `pack.json`, `catalogue.json`, loops, agent and guide frontmatter — all closed), the name triple (for skills *and* loops), the whole loop contract above, the ≤500-line warning, `Quality bar` + `Anti-patterns` sections, evals *shape* (when present), model-tier sync, `related` sync, pack membership, reference + link integrity, script dual-referencing, and a heavy-tier `examples/` oracle. The rest — the RFC existing, voice, the manual test pass, no-secrets / no-real-data, description discipline, the non-interactive line, the README update, and the GitHub About — are **human judgment**; a green lint does not vouch for them. Keep this split honest: if a rule becomes mechanically checkable, move it into `validate.py` rather than leaving it as a checklist claim.
+Of these, **`validate.py` (+ `node bin/skilldrop.js validate`) mechanically enforces**: every `contracts/` schema (manifests, `pack.json`, `catalogue.json`, loops, agent and guide frontmatter — all closed), the name triple (for skills *and* loops), the whole loop contract above, the ≤500-line warning, `Quality bar` + `Anti-patterns` sections, evals presence + shape, model-tier sync, `related` sync, pack membership, reference + link integrity, script dual-referencing, and a heavy-tier `examples/` oracle. The rest — the RFC existing, voice, the manual test pass, no-secrets / no-real-data, description discipline, the non-interactive line, the README update, and the GitHub About — are **human judgment**; a green lint does not vouch for them. Keep this split honest: if a rule becomes mechanically checkable, move it into `validate.py` rather than leaving it as a checklist claim.
 
 ## Voice & tone (non-negotiable)
 

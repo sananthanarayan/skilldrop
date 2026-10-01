@@ -9,6 +9,8 @@ kind: how-to
 Full contributor guide — the three lanes, the PR gates, and the release flow — is in [CONTRIBUTING.md](../../CONTRIBUTING.md). The short version:
 
 0. Write a one-page RFC first — copy [`docs/rfcs/0000-template.md`](../../docs/rfcs/0000-template.md) to `docs/rfcs/NNNN-<slug>.md` and record the problem, the fit check, and the alternatives. New skills and structural changes need one; fixes to existing skills don't.
+**Fastest start:** `node bin/skilldrop.js new-skill <your-skill> --pack <pack>` writes `SKILL.md`, `manifest.json` and both eval files with every required section, and registers the skill in `model-routing.json`. Replace the TODOs, then pick up at step 6. The steps below are what it's doing for you.
+
 1. Pick the one pack it belongs in (`core` only if every role needs it) and create `packs/<pack>/skills/<your-skill>/SKILL.md` with this frontmatter:
    ```yaml
    ---
@@ -19,8 +21,11 @@ Full contributor guide — the three lanes, the PR gates, and the release flow �
 2. Add `manifest.json` beside it with the same `name` + `description` plus declared `deps` and required env vars — this is what makes the skill portable across IDEs.
 3. Keep `SKILL.md` short (under ~500 lines). Move long reference material into sibling files like `reference.md`, `examples.md`, or `templates/`.
 4. If your skill needs scripts, drop them in `scripts/` and reference them with a path relative to the skill folder — **avoid hard-coding `${CLAUDE_SKILL_DIR}` only**; show both paths so non–Claude-Code users aren't stuck.
-5. Add an `evals/` folder: `evals.json` (at least one realistic prompt with a list of assertions the output must satisfy) and `eval_queries.json` (phrases that should and should **not** trigger the skill). These double as the checklist for the manual test pass and keep the `description` honest about when the skill fires.
+5. Add an `evals/` folder (required; `validate.py` fails a skill without it): `evals.json` (at least one realistic prompt with a list of assertions the output must satisfy) and `eval_queries.json` (phrases that should and should **not** trigger the skill). These double as the checklist for the manual test pass and keep the `description` honest about when the skill fires.
 6. Add a row to [Every skill, by category](../reference/skill-catalogue.md), and to **Installing dependencies** in [Install a skill into your IDE](install-per-ide.md) if it has runtime deps.
 7. Add the skill to at least one outcome in `catalogue.json`. Its pack is already set by the folder you created it in.
 8. If the change is going out in a release, add a bullet to [`CHANGELOG.md`](../../CHANGELOG.md) under the new version — the site build fails without one.
 9. Run `python3 validate.py` from the repo root — it checks name consistency, the tier sync with `model-routing.json`, the `related`↔SKILL.md reference sync, description sync, pack and outcome membership, and eval file shape.
+
+Try it in any repo without touching that repo's git history: from inside the other repo, run `node ~/src/skilldrop/bin/skilldrop.js install <your-skill> --from ~/src/skilldrop --local`, with both paths pointing at your clone.
+

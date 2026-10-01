@@ -1,0 +1,19 @@
+{
+  "skill_name": "accessibility-audit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit this checkout form component before we ship:\n\n<form>\n  <div class=\"title\">Payment</div>\n  <input placeholder=\"Card number\" style=\"color:#999;background:#fff\">\n  <input placeholder=\"Expiry\">\n  <span class=\"err\" style=\"color:red\">Invalid</span>\n  <img src=\"lock.svg\" alt=\"image\">\n  <div class=\"btn\" onclick=\"submit()\" style=\"width:20px;height:20px\">Pay</div>\n</form>\n\nTarget is WCAG 2.2 AA.",
+      "assertions": [
+        "Opens with a coverage note stating what markup alone can and cannot verify (e.g. actual screen-reader output, live focus order)",
+        "Every finding cites a specific success criterion with number, name, and level (e.g. 2.1.1 Keyboard [A], 4.1.2 Name, Role, Value [A])",
+        "Every finding names the user group and assistive tech it blocks (e.g. keyboard-only, NVDA/VoiceOver users)",
+        "The div-as-button is a blocker for keyboard and screen-reader users; minor issues like the lock icon's alt text are not inflated to blocker",
+        "Contrast for #999 on #fff is given as a computed ratio (about 2.85:1) against the 4.5:1 threshold, and the 20x20 target is checked against 2.5.8's 24x24 minimum",
+        "Each finding is tagged [auto] or [manual] and has a concrete fix",
+        "Ends with a 'what's solid' section and a must-verify-with-live-AT checklist",
+        "Does not claim a pass on any behavior the markup can't show, and does not invent elements not in the snippet"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "skill_name": "llm-eval-harness",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We have a RAG assistant that answers HR policy questions for Acme's 3,000 employees from a 400-page handbook. We're about to swap the model and rewrite the system prompt. We have about 1,200 real logged questions from the last quarter, and HR has hand-labeled 80 of them with correct answers. The answer that hurts most is confidently wrong parental-leave or termination guidance. Design the eval harness so we don't ship a regression.",
+      "assertions": [
+        "The golden set is split into representative, adversarial/edge, and regression buckets, with a case count and sourcing stated for each",
+        "Representative cases are drawn from the 1,200 logged questions and 80 HR labels the user supplied; any synthetic or model-generated cases are flagged as weak evidence",
+        "Each bucket or case names its grading method, and programmatic or structured-assertion checks are preferred over LLM-as-judge where the output is checkable",
+        "If an LLM judge is used (e.g. for faithfulness), it has its own rubric, is validated against the HR human labels, and controls for position, verbosity, and self-preference bias",
+        "The metric, the no-regression gate against baseline, and a critical subset (parental-leave and termination answers) held at 100% are all set before any run",
+        "A held-out split is defined and the rule against tuning on the test set is stated explicitly",
+        "Cost per run and p95 latency are tracked alongside the quality metric",
+        "A failure taxonomy (e.g. hallucination, refusal, missed-edge-case) is defined so iteration targets the biggest bucket"
+      ]
+    }
+  ]
+}

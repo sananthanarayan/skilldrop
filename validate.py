@@ -11,12 +11,13 @@ Checks (FAIL):
   - manifest `model.tier` == model-routing.json tier, both directions
   - manifest `related`: every entry is a real skill folder, and every sibling
     skill referenced in SKILL.md (backticked) appears in `related` — and vice versa
-  - evals/ files, when present, parse and have the right shape: evals.json has
-    >=1 eval with prompt + assertions; eval_queries.json has both should_trigger
-    true and false rows
+  - every skill ships evals/evals.json and evals/eval_queries.json, and they have the
+    right shape: evals.json has >=1 eval with prompt + assertions; eval_queries.json
+    has both should_trigger true and false rows
   - manifest description == SKILL.md frontmatter description (whitespace-normalized)
   - packs/: every skill and loop sits in exactly one pack folder (RFC-0033, RFC-0034),
     each pack has a valid pack.json, and catalogue.json lists every pack; `requires` is real and one level deep;
+    every journey step names a skill the pack's install delivers;
     a pack ships every skill its loops run
   - manifest hooks (optional): each entry's event is in the RFC-0006 vocabulary,
     its action is a real skill folder, and it carries a description
@@ -460,6 +461,11 @@ def main():
 
         evals_path = os.path.join(p, "evals", "evals.json")
         queries_path = os.path.join(p, "evals", "eval_queries.json")
+        # Every skill has had both files since 0.13.8, so presence is now enforced, not just shape.
+        for need in (evals_path, queries_path):
+            if not os.path.exists(need):
+                fail(d, f"no evals/{os.path.basename(need)} — every skill ships acceptance evals and "
+                        f"trigger queries (`skilldrop new-skill` scaffolds both)")
         if os.path.exists(evals_path):
             try:
                 ev = json.load(open(evals_path))
@@ -588,6 +594,11 @@ def main():
                 for sk in st.get("skills", []):
                     if sk != "*" and sk not in reach:
                         fail(f"packs/{pname}/pack.json", f"pack '{pname}' ships loop '{lp}', whose '{st.get('id')}' stage runs '{sk}' — not in the pack or what it requires (RFC-0033)")
+        # The walkthrough page tells a reader "run this skill next" — so it must be one the pack's
+        # own install command delivers.
+        for i, step in enumerate((pack.get("journey") or {}).get("steps", []), 1):
+            if step.get("skill") not in reach:
+                fail(f"packs/{pname}/pack.json", f"journey step {i} runs '{step.get('skill')}', which `install --pack {pname}` doesn't install")
 
     # RFC-0026: outcomes are the site's second browse axis. Same two-way check as packs, so a
     # new skill can't quietly become unreachable from the outcome chips.

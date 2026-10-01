@@ -1,0 +1,19 @@
+{
+  "skill_name": "contribution-wizard",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want to add a new skill to skilldrop called `sla-credit-calculator`. It takes a customer contract's SLA terms plus a month of uptime data and outputs the service credit owed, with the calculation shown. It belongs in the sre-oncall pack, it generates an artifact (not a gate), it relates to runbook-generator and incident-comms, and it needs no external deps. Generate everything I need to submit it.",
+      "assertions": [
+        "Produces manifest.json, SKILL.md, evals/cases.json, and a skill-catalogue row, each in its own fenced code block, in a single response",
+        "The manifest includes every required field (name, version, description, entrypoint, deps, env, related, tags, model with tier and rationale)",
+        "The related array lists only skills that exist (runbook-generator, incident-comms) and tells the author to check the skills directory before finalizing",
+        "SKILL.md's How to respond steps are observable actions — none read 'think about X' or 'consider Y'",
+        "The quality bar names at least two things the output must never do (e.g. never invent uptime figures not in the input)",
+        "evals/cases.json has eight cases with realistic triggers, covering happy-path, edge, anti-pattern, and boundary cases",
+        "Ends with next steps that place files under packs/sre-oncall/skills/sla-credit-calculator/ and require python3 validate.py to pass before opening a PR",
+        "Does not invent inputs, deps, or related skills the author did not give"
+      ]
+    }
+  ]
+}

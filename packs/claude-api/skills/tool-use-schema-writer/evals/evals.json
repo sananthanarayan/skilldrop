@@ -1,0 +1,18 @@
+{
+  "skill_name": "tool-use-schema-writer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write the Claude tool definition for this Python function in our Acme order service:\n\ndef search_orders(customer_id: str, status: str | None = None, placed_after: str | None = None, sort: str = 'desc', limit: int = 20):\n    \"\"\"Find a customer's orders. status is one of pending, shipped, delivered, cancelled. placed_after is an ISO date. sort is by order date, asc or desc. limit 1-100.\"\"\"\n\nThe agent also has a separate get_order(order_id) tool, so the descriptions need to keep them apart.",
+      "assertions": [
+        "Produces a valid Anthropic tool definition with name, description, and input_schema of type object",
+        "The top-level description names a decision condition (when to call search_orders versus get_order), not just a restatement of the function name",
+        "A required array is present and contains customer_id; every name in required exists in properties",
+        "Every parameter has a non-empty description, and limit states its valid range (1-100)",
+        "The status and sort enums list their values with a one-phrase explanation of each value",
+        "Includes a Python snippet passing the tool to client.messages.create(tools=[...]) and handling stop_reason == 'tool_use'",
+        "Does not invent parameters, enum values, or behaviors not in the supplied signature and docstring"
+      ]
+    }
+  ]
+}

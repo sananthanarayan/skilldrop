@@ -8,6 +8,26 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.13.8 — 2026-10-01
+
+- New install targets: `--ide codex`, `--ide antigravity` and `--ide copilot`. Each installs to the tool's personal skills folder, or into the repo with `--project` (`.agents/skills` for Codex and Antigravity, `.github/skills` for Copilot). `--panel review` works with all three.
+- `--local` lets you try skills in a repo you don't own. It installs into the repo and lists every file in `.git/info/exclude`, so `git status` stays clean and nothing can be committed by accident. `uninstall --local` removes both the files and the entries.
+- `--dry-run` on `install`, `update`, `uninstall` and `new-skill` shows exactly what would change, including which of your edited files would be overwritten, and changes nothing.
+- `uninstall` and `update --force` ask before going ahead when you're at a terminal, and name any files you edited. `--yes` skips the question; scripts and CI are never asked.
+- `skilldrop diff <skill>` shows how your installed copy differs from the catalogue's, file by file: your edit, a catalogue change, or both.
+- `skilldrop doctor` checks an install against its ledger and reports missing skills, `.upstream` files waiting to be merged, and leftover wiring or hooks, each with the command that fixes it. It changes nothing.
+- `skilldrop new-skill <name> --pack <pack>` scaffolds a skill with `SKILL.md`, `manifest.json` and both eval files, and registers it in `model-routing.json`. `skilldrop --version` prints the version.
+- `skilldrop scan` tags each finding with its OWASP Agentic Skills Top 10 and LLM Top 10 2025 IDs. It now scans every markdown file in a skill, not only `SKILL.md`, and flags a skill that tells the agent to fetch instructions from a URL at run time. `update` scans skills from third-party catalogues again after updating them. [skilldrop and the OWASP Top 10s](guides/reference/owasp-mapping.md) maps each control and names the gaps.
+- `agent-threat-model` tags every 🟥 and 🟧 path with its OWASP IDs, from a mapping table in its reference.
+- Every skill now ships acceptance evals and trigger queries. The 14 that had none got them, and `validate.py` now requires both files. A new page on the site, *How skills are checked*, lists each skill's evals, and each skill page shows its assertions and trigger queries.
+- A weekly workflow runs the trigger queries against a live model and reports which ones go to the wrong skill. It's report-only and needs an `ANTHROPIC_API_KEY` secret. `python3 run_evals.py` runs the same check locally, and `--assertions` grades the acceptance evals too.
+- The repo is now a GitHub Action: `uses: sananthanarayan/skilldrop@<sha>` with `skill: doc-critique` runs a skill on a pull request's diff, writes the result to the job summary, and can fail the check on a verdict. See [Run a skill in CI](guides/how-to/run-a-skill-in-ci.md).
+- Each pack page has *A typical session*: what you bring, then each step's skill with what you type, what you get and where you decide.
+- Every release has its own page at `changelog/<version>/`, and `changelog/feed.xml` is an Atom feed for feed readers and Slack.
+- Issue templates for bugs and skill requests, and a pull request template with the pre-commit checklist.
+- CI scans every push for secrets (gitleaks), workflow errors (actionlint) and workflow security problems (zizmor).
+- A Homebrew formula and a PyPI wheel builder, in `packaging/`, for when the tap and the PyPI project exist.
+
 ## 0.13.7 — 2026-10-01
 
 - `install --with-hooks` and `uninstall` work inside a git worktree or submodule, where `.git` is a file rather than a folder. Both crashed there before. The pre-commit reminder now goes wherever git reads hooks from, including a custom `core.hooksPath`.

@@ -6,6 +6,9 @@
   build/skills/<skill>/index.html one skill: what it makes, a prompt to try, its quality bar
   build/skills/index.html         redirect to the searchable catalogue
   build/changelog/index.html      every release, rendered from CHANGELOG.md
+  build/changelog/<v>/index.html  one release, linkable on its own
+  build/changelog/feed.xml        the releases as an Atom feed, for feed readers and Slack
+  build/evals/index.html          how every skill is checked: acceptance evals and trigger queries
   build/loops/index.html          every loop, and who decides at each gate
   build/loops/<loop>/index.html   one loop: diagram, stages, gates, install, how to run it
   build/search.json               the site search index the shared nav's search dialog reads
@@ -112,6 +115,29 @@ PAGE_CSS = """
 .pk__doc table { border-collapse:collapse; width:100%; font-size:.88rem; }
 .pk__doc th, .pk__doc td { border-bottom:1px solid var(--border); padding:.45rem .55rem; text-align:left; vertical-align:top; }
 .cl li { margin:.45rem 0; }
+.jr { margin-top:1rem; }
+.jr__time { color:var(--fg-muted); }
+.jr__steps { list-style:none; counter-reset:jr; padding:0; margin:1.2rem 0; }
+.jr__steps > li { counter-increment:jr; position:relative; padding:0 0 1.1rem 2.4rem; border-left:2px solid var(--border); margin-left:.8rem; }
+.jr__steps > li:last-child { border-left-color:transparent; }
+.jr__steps > li::before { content:counter(jr); position:absolute; left:-.85rem; top:0; width:1.6rem; height:1.6rem; border-radius:50%;
+  background:var(--accent-10); color:var(--fg); font-size:.8rem; font-weight:700; display:grid; place-items:center; }
+.jr__skill { font-weight:600; margin-bottom:.3rem; }
+.jr dl { display:grid; grid-template-columns:max-content 1fr; gap:.25rem .8rem; margin:0; font-size:.92rem; }
+.jr dt { color:var(--fg-muted); font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; padding-top:.15rem; }
+.jr dd { margin:0; }
+.jr dt.jr__decide { color:var(--fg); font-weight:700; }
+.jr dd.jr__decide { background:var(--accent-10); border-radius:6px; padding:.15rem .5rem; }
+.jr__end { margin-top:0; }
+.tbl { overflow-x:auto; margin-top:1.4rem; }
+.tbl table { border-collapse:collapse; width:100%; font-size:.88rem; }
+.tbl th, .tbl td { text-align:left; padding:.45rem .6rem; border-bottom:1px solid var(--border); }
+.tbl th { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--fg-muted); }
+@media (max-width:560px) { .jr dl { grid-template-columns:1fr; } }
+.cl h2 a { color:inherit; text-decoration:none; }
+.cl h2 a:hover { text-decoration:underline; }
+.cl__date { color:var(--fg-muted); font-weight:400; font-size:.9em; }
+.cl__pager { display:flex; justify-content:space-between; margin-top:2.4rem; padding-top:1rem; border-top:1px solid var(--border); }
 """
 
 COPY_JS = """<script>
@@ -247,6 +273,10 @@ def pack_page(name, pack, packs, by_name, loop_by_name, outcome_of):
 </dl>
 </section>""")
 
+    j = pack.get("journey")
+    if j:
+        parts.append(journey_section(j, by_name))
+
     if own_loops:
         items = "".join(
             f"""<li><a href="../../loops/{esc(l['name'])}/"><b>{esc(l['name'])}</b></a> — {esc(l['description'].split(' Use when')[0])}
@@ -263,6 +293,24 @@ def pack_page(name, pack, packs, by_name, loop_by_name, outcome_of):
     crumbs = breadcrumbs_ld([("skilldrop", SITE_URL), ("Packs", f"{SITE_URL}packs/"), (title, f"{SITE_URL}packs/{name}/")])
     return shell(title, pack["description"], f"{SITE_URL}packs/{name}/", 2, "\n".join(parts),
                  current="packs/", extra_head=crumbs)
+
+
+def journey_section(j, by_name):
+    """A typical session: what you type, what you get, and where you decide, step by step."""
+    skill = lambda n: f'<a href="../../skills/{esc(n)}/"><code>{esc(n)}</code></a>' if n in by_name else f"<code>{esc(n)}</code>"
+    steps = "".join(
+        f"""<li><div class="jr__skill">{skill(st['skill'])}</div>
+<dl><dt>You</dt><dd>{md(st['you_do'])}</dd><dt>You get</dt><dd>{md(st['you_get'])}</dd>
+{f'<dt class="jr__decide">You decide</dt><dd class="jr__decide">{md(st["decide"])}</dd>' if st.get('decide') else ''}</dl></li>"""
+        for st in j["steps"])
+    bring = "".join(f"<li>{md(b)}</li>" for b in j["you_bring"])
+    return f"""<section class="jr" aria-labelledby="session">
+<h2 id="session">A typical session</h2>
+<p><b>When:</b> {md(j['when'])}{f" <span class='jr__time'>About {esc(j['time'])}.</span>" if j.get('time') else ''}</p>
+<p><b>You bring:</b></p><ul>{bring}</ul>
+<ol class="jr__steps">{steps}</ol>
+<p class="jr__end"><b>You end with:</b> {md(j['you_end_with'])}</p>
+</section>"""
 
 
 def index_page(packs, outcomes, home_of):
@@ -283,7 +331,8 @@ def index_page(packs, outcomes, home_of):
     items = "".join(
         f"""<li><a href="{esc(n)}/">{esc(p.get('display_name', n))}</a>
 <p>{esc(p['description'])}</p>
-{f'<p><b>Start here:</b> {esc(p["first-value"]["starter-task"])}</p>' if p.get('first-value') else ''}</li>"""
+{f'<p><b>Start here:</b> {esc(p["first-value"]["starter-task"])}</p>' if p.get('first-value') else ''}
+{f'<p><a href="{esc(n)}/#session">Walk through a typical session</a>: {" → ".join(esc(st["skill"]) for st in p["journey"]["steps"])}</p>' if p.get('journey') else ''}</li>"""
         for n, p in packs.items())
     body = f"""<main class="inner pk" id="main">
 <h1 class="pk__title">Packs</h1>
@@ -309,6 +358,61 @@ def _section(md_text, heading):
         elif cur is not None and line.startswith("  ") and line.strip():
             out[-1] += " " + line.strip()
     return out
+
+
+def eval_files(sdir):
+    load = lambda f: json.load(open(os.path.join(sdir, "evals", f), encoding="utf-8")) \
+        if os.path.exists(os.path.join(sdir, "evals", f)) else None
+    return (load("evals.json") or {}).get("evals", []), load("eval_queries.json") or []
+
+
+def checks_section(name, sdir):
+    """The skill's acceptance evals and trigger queries, so a reader sees what "working" means
+    before installing — the same files the weekly eval run uses."""
+    evs, qs = eval_files(sdir)
+    if not evs and not qs:
+        return ""
+    asserts = "".join(f"<li>{md(a)}</li>" for e in evs for a in e.get("assertions", []))
+    yes = "".join(f"<li>{esc(q['query'])}</li>" for q in qs if q.get("should_trigger"))
+    no = "".join(f"<li>{esc(q['query'])}</li>" for q in qs if not q.get("should_trigger"))
+    n_a = sum(len(e.get("assertions", [])) for e in evs)
+    return f"""<section aria-labelledby="checked"><h2 id="checked">How it's checked</h2>
+<p class="pk__total">{n_a} assertion{'s' if n_a != 1 else ''} across {len(evs)} acceptance eval{'s' if len(evs) != 1 else ''}, and {len(qs)} trigger queries. <a href="../../evals/">Every skill's checks</a></p>
+<details class="pk__other"><summary>What the output must do</summary><ul class="pk__bar">{asserts}</ul></details>
+<details class="pk__other"><summary>When it should and shouldn't activate</summary>
+<p><b>Should activate:</b></p><ul>{yes}</ul><p><b>Should leave to another skill:</b></p><ul>{no}</ul></details>
+</section>"""
+
+
+def evals_page(skills):
+    rows, tot_e, tot_a, tot_q, covered = [], 0, 0, 0, 0
+    for s in sorted(skills, key=lambda s: (s["packs"][0], s["name"])):
+        sdir = catalog.skill_dir(s["name"])
+        evs, qs = eval_files(sdir)
+        n_a = sum(len(e.get("assertions", [])) for e in evs)
+        pos = sum(1 for q in qs if q.get("should_trigger"))
+        tot_e, tot_a, tot_q = tot_e + len(evs), tot_a + n_a, tot_q + len(qs)
+        covered += bool(evs and qs)
+        src = f"{REPO_URL}/tree/main/{s['path']}/evals"
+        rows.append(f'<tr><td><a href="../skills/{esc(s["name"])}/#checked"><code>{esc(s["name"])}</code></a></td>'
+                    f'<td>{esc(s["packs"][0])}</td><td>{len(evs)}</td><td>{n_a}</td>'
+                    f'<td>{pos} / {len(qs) - pos}</td><td><a href="{src}">files</a></td></tr>')
+    body = f"""<main class="inner pk" id="main">
+<h1 class="pk__title">How skills are checked</h1>
+<p class="pk__lede">Every skill ships two eval files. <b>Acceptance evals</b> are realistic prompts with assertions the output must meet, taken from the skill's own quality bar. <b>Trigger queries</b> are phrasings that should activate the skill, and near-misses that belong to a named sibling instead.</p>
+<dl class="pk__glance">
+<div><dt>Skills with both files</dt><dd>{covered} of {len(skills)}</dd></div>
+<div><dt>Acceptance evals</dt><dd>{tot_e}, with {tot_a} assertions</dd></div>
+<div><dt>Trigger queries</dt><dd>{tot_q}</dd></div>
+<div><dt>Run</dt><dd>Weekly against a live model, <a href="{REPO_URL}/actions/workflows/evals.yml">report-only</a></dd></div>
+</dl>
+<p><code>validate.py</code> fails any skill without both files, on every pull request. The weekly run asks a model which skill it would load for each trigger query and reports the misses; assertion runs are started by hand. A miss is a prompt to look at the description, not a gate. Run them yourself with <code>python3 run_evals.py</code> and an <code>ANTHROPIC_API_KEY</code>.</p>
+<div class="tbl"><table>
+<thead><tr><th>Skill</th><th>Pack</th><th>Evals</th><th>Assertions</th><th>Should / shouldn't trigger</th><th>Source</th></tr></thead>
+<tbody>{''.join(rows)}</tbody></table></div>
+</main>"""
+    return shell("How skills are checked", "Every skilldrop skill's acceptance evals and trigger queries, and how they run.",
+                 f"{SITE_URL}evals/", 1, body)
 
 
 def skill_page(s, by_name, packs, outcome_of):
@@ -354,6 +458,7 @@ def skill_page(s, by_name, packs, outcome_of):
 <div class="pk__ex"><div class="pk__exlabel">{'Output' if ex_in else 'Worked example'}</div><div class="pk__exbody">{render_md(ex_out, src=ex_rel)}</div></div>
 {f'<div class="pk__exnote">{render_md(ex_note, src=ex_rel)}</div>' if ex_note else ''}
 </section>""")
+    parts.append(checks_section(name, sdir))
     hand = manifest.get("handoff") or []
     if hand:
         parts.append("<h2>Hands off to</h2><ul>" + "".join(
@@ -374,22 +479,89 @@ def skill_page(s, by_name, packs, outcome_of):
     return shell(name, s["description"], url, 2, "\n".join(parts), current="catalogue/", extra_head=meta)
 
 
-def changelog_page():
-    """CHANGELOG.md, every release. Wrapped bullet lines are joined first, because the docs
-    renderer treats each source line as its own block."""
+RELEASE_HEAD = re.compile(r"^##\s+(\d+\.\d+\.\d+)\s+[—-]\s+(\d{4}-\d{2}-\d{2})\s*$")
+
+
+def releases():
+    """CHANGELOG.md -> [{version, date, md}], newest first. Wrapped bullet lines are joined first,
+    because the docs renderer treats each source line as its own block. The file's own intro is
+    for maintainers (format rules), so it is skipped."""
     lines, out = open(os.path.join(ROOT, "CHANGELOG.md"), encoding="utf-8").read().splitlines(), []
     for line in lines:
         if line.startswith("  ") and line.strip() and out and out[-1].startswith("- "):
             out[-1] += " " + line.strip()
         else:
             out.append(line)
-    text = "\n".join(out)
-    # The file's own intro is for maintainers (format rules); the page starts at the releases.
-    text = text[text.index("\n## ") + 1:] if "\n## " in text else text
-    body = (f'<main class="inner pk cl" id="main"><h1 class="pk__title">What\'s new</h1>'
-            f'{render_md(text, src="CHANGELOG.md", docs_base="../docs/")}</main>')
+    rels = []
+    for line in out:
+        m = RELEASE_HEAD.match(line)
+        if m:
+            rels.append({"version": m.group(1), "date": m.group(2), "md": []})
+        elif rels:
+            rels[-1]["md"].append(line)
+    for r in rels:
+        r["md"] = "\n".join(r["md"]).strip()
+    return rels
+
+
+def changelog_page(rels):
+    """Every release on one page; each heading links to that release's own page."""
+    parts = ['<main class="inner pk cl" id="main"><h1 class="pk__title">What\'s new</h1>',
+             '<p class="pk__crumb">Every release and what it lets you do. '
+             '<a href="feed.xml">Follow the release feed (Atom)</a>.</p>']
+    for r in rels:
+        parts.append(f'<h2 id="v{esc(r["version"])}"><a href="{esc(r["version"])}/">{esc(r["version"])}</a> '
+                     f'<span class="cl__date">— {esc(r["date"])}</span></h2>')
+        parts.append(render_md(r["md"], src="CHANGELOG.md", docs_base="../docs/"))
+    parts.append("</main>")
     return shell("What's new", "Every skilldrop release and what it lets you do.",
-                 f"{SITE_URL}changelog/", 1, body, current="changelog/")
+                 f"{SITE_URL}changelog/", 1, "\n".join(parts), current="changelog/")
+
+
+def release_page(rels, i):
+    r = rels[i]
+    newer = rels[i - 1] if i > 0 else None
+    older = rels[i + 1] if i + 1 < len(rels) else None
+    pager = '<nav class="cl__pager" aria-label="Other releases">' + (
+        f'<a href="../{esc(older["version"])}/">← {esc(older["version"])}</a>' if older else "<span></span>") + (
+        f'<a href="../{esc(newer["version"])}/">{esc(newer["version"])} →</a>' if newer else "<span></span>") + "</nav>"
+    body = (f'<main class="inner pk cl" id="main"><p class="pk__crumb"><a href="../">What\'s new</a> ›</p>'
+            f'<h1 class="pk__title">skilldrop {esc(r["version"])}</h1>'
+            f'<p class="pk__crumb">Released {esc(r["date"])} · <code>npx skilldrop-cli@{esc(r["version"])}</code></p>'
+            f'{render_md(r["md"], src="CHANGELOG.md", docs_base="../../docs/")}{pager}</main>')
+    first = re.sub(r"[`*]", "", next((l[2:] for l in r["md"].splitlines() if l.startswith("- ")), ""))
+    return shell(f"skilldrop {r['version']}", first or f"What shipped in skilldrop {r['version']}.",
+                 f"{SITE_URL}changelog/{r['version']}/", 2, body, current="changelog/")
+
+
+def feed(rels):
+    """Atom 1.0. Entry ids are the release pages' URLs, which never change, so a reader shows
+    each release once. Content is the rendered HTML with links made absolute."""
+    def x(t):
+        return t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
+    entries = []
+    for r in rels[:30]:
+        url = f"{SITE_URL}changelog/{r['version']}/"
+        html_body = render_md(r["md"], src="CHANGELOG.md", docs_base=f"{SITE_URL}docs/")
+        entries.append(f"""  <entry>
+    <title>skilldrop {x(r['version'])}</title>
+    <id>{url}</id>
+    <link rel="alternate" type="text/html" href="{url}"/>
+    <updated>{r['date']}T00:00:00Z</updated>
+    <content type="html">{x(html_body)}</content>
+  </entry>""")
+    return f"""<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>skilldrop releases</title>
+  <subtitle>What each skilldrop release lets you do.</subtitle>
+  <id>{SITE_URL}changelog/</id>
+  <link rel="self" type="application/atom+xml" href="{SITE_URL}changelog/feed.xml"/>
+  <link rel="alternate" type="text/html" href="{SITE_URL}changelog/"/>
+  <updated>{rels[0]['date']}T00:00:00Z</updated>
+  <author><name>skilldrop</name><uri>{REPO_URL}</uri></author>
+{chr(10).join(entries)}
+</feed>
+"""
 
 
 class _Text(html.parser.HTMLParser):
@@ -556,10 +728,13 @@ def render():
             outcome_of.setdefault(s, []).append(oname)
     home_of = {s["name"]: s["packs"][0] for s in skills if s["packs"]}
     loop_by_name = {l["name"]: l for l in loops()}
+    rels = releases()
     out = {"packs/index.html": index_page(packs, outcomes, home_of),
            "loops/index.html": loops_index(list(loop_by_name.values())),
            "404.html": not_found_page(),
-           "changelog/index.html": changelog_page(),
+           "changelog/index.html": changelog_page(rels),
+           "changelog/feed.xml": feed(rels),
+           "evals/index.html": evals_page(skills),
            "skills/index.html": '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=../catalogue/">'
                                 '<link rel="canonical" href="' + SITE_URL + 'catalogue/"><a href="../catalogue/">All skills</a>\n'}
     for name, pack in packs.items():
@@ -568,6 +743,8 @@ def render():
         out[f"skills/{s['name']}/index.html"] = skill_page(s, by_name, packs, outcome_of)
     for lp in loop_by_name.values():
         out[f"loops/{lp['name']}/index.html"] = loop_page(lp, by_name)
+    for i, r in enumerate(rels):
+        out[f"changelog/{r['version']}/index.html"] = release_page(rels, i)
     out["search.json"] = json.dumps(search_index(skills, packs, list(loop_by_name.values())),
                                     ensure_ascii=False, separators=(",", ":")) + "\n"
     return out

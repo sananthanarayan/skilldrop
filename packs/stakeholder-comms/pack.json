@@ -18,5 +18,43 @@
     "verification": "exec-summary returns a one-page summary that a time-poor reader can act on in 30 seconds, written without jargon.",
     "recovery": "If exec-summary does not activate, ask for it by name (\"use exec-summary\") and check that its folder exists in your skills folder (`~/.claude/skills/` by default)."
   },
-  "requires": ["core"]
+  "requires": ["core"],
+  "journey": {
+    "when": "You need to turn a long document or a meeting into something a non-technical or time-poor audience can act on.",
+    "you_bring": [
+      "the long document, such as a design doc or proposal",
+      "notes or a transcript from the meeting where it was discussed",
+      "who the audience is, such as a steering committee or an exec sponsor"
+    ],
+    "time": "30–60 minutes",
+    "steps": [
+      {
+        "skill": "decision-log",
+        "you_do": "Paste the meeting notes, thread or transcript.",
+        "you_get": "A structured log of decisions, action items, owners and due dates you can paste into a doc or tracker."
+      },
+      {
+        "skill": "audience-profile",
+        "you_do": "Say who will read it, in your own words.",
+        "you_get": "The audience archetype with its rules: length, density, tone, must-have sections and things to never include."
+      },
+      {
+        "skill": "exec-summary",
+        "you_do": "Hand it the long document, the decisions, and the audience profile.",
+        "you_get": "A one-page summary a time-poor reader can act on in 30 seconds, without jargon."
+      },
+      {
+        "skill": "doc-critique",
+        "you_do": "Run it on the summary before it goes out.",
+        "you_get": "A verdict and severity-tagged findings, such as a missing Ask, each with a suggested fix.",
+        "decide": "Ship, ship with the listed changes, or rewrite."
+      },
+      {
+        "skill": "output-hygiene",
+        "you_do": "Run it on the final version.",
+        "you_get": "The text with machine artifacts stripped and any prose tells quoted with rewrites."
+      }
+    ],
+    "you_end_with": "A decision log with owners and dates, and a reviewed one-page summary ready to send."
+  }
 }

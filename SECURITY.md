@@ -45,3 +45,9 @@ Only the latest `skilldrop-cli` on npm is supported. Fixes ship forward; there a
 - **GitHub Actions are pinned to commit SHAs**, so a repointed tag cannot inject code into a job that holds publish rights.
 - Workflows default to `permissions: contents: read`; write scopes are granted per job.
 - `main` requires a pull request; every change is owned by [CODEOWNERS](.github/CODEOWNERS).
+- Every push and pull request runs **gitleaks** over the full history, **actionlint**, and **zizmor** over the workflows and `action.yml` ([security.yml](.github/workflows/security.yml)). The tools are pinned to exact versions, and their downloads are checksum-verified.
+- Read-only jobs check out with `persist-credentials: false`, so a later step can't reuse the job token.
+
+## OWASP
+
+[skilldrop and the OWASP Top 10s](guides/reference/owasp-mapping.md) maps each control to the Agentic Skills Top 10 and the LLM Top 10 2025, and lists the gaps. `skilldrop scan` tags its findings with the same IDs.

@@ -48,3 +48,6 @@ renders/
 
 # agent tooling scratch (attachments, session state) — never repo content
 .context/
+
+# PyPI wheel and sdist from packaging/pypi/build_wheel.py
+/dist/

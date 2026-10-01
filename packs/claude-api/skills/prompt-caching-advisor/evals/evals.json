@@ -1,0 +1,19 @@
+{
+  "skill_name": "prompt-caching-advisor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our Claude contract-review service on Sonnet sends this on every request: a system prompt of about 9,000 characters of review instructions, then a 'reference' block with our 40,000-character clause library, then a line 'Today's date: {now}' appended to the end of that reference block, then 6 fixed few-shot examples (~12,000 characters), then the user's uploaded contract (varies per request). It's single-turn, roughly 2,000 requests a day. Where should the cache_control breakpoints go?",
+      "assertions": [
+        "Flags that the per-request timestamp appended to the reference block makes that block dynamic and would cause every request to miss, and recommends moving it out of the cached prefix before caching",
+        "No recommended cached block contains dynamic content — the user's contract and the date stay outside every breakpoint",
+        "Shows an annotated messages/system structure with each cache_control placement marked and commented",
+        "Explains that a breakpoint caches the entire prefix up to and including that block, not just the block itself",
+        "Uses at most three breakpoints, one per logical boundary",
+        "Checks block sizes against the Sonnet minimum (~2,048 tokens) using ~4 characters per token before recommending a cache",
+        "Gives a cache strategy summary paragraph with what is cached, why, expected hit rate, and the dominant cost driver before and after",
+        "Does not invent prompt sections, request volumes, or models beyond those in the prompt"
+      ]
+    }
+  ]
+}

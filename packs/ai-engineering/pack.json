@@ -18,5 +18,40 @@
     "verification": "ai-readiness-assessment scores six dimensions (data, tooling, skills, governance, process, culture) with evidence for each, and ranks the gaps that block adoption first.",
     "recovery": "If ai-readiness-assessment does not activate, ask for it by name and check that its folder exists in your skills folder (`~/.claude/skills/` by default)."
   },
-  "requires": ["core"]
+  "requires": ["core"],
+  "journey": {
+    "when": "A team wants to adopt AI tools and needs to know whether it is ready, where to start, what the rules are, and how to roll out.",
+    "you_bring": [
+      "the team or organisation in scope and what the answer will feed (a go/no-go, a budget, a sequence)",
+      "evidence about current tools, data, policies and practices",
+      "the candidate AI use cases",
+      "any regulatory or contractual limits on data"
+    ],
+    "steps": [
+      {
+        "skill": "ai-readiness-assessment",
+        "you_do": "Describe the team, its tools and data, and the concerns already raised.",
+        "you_get": "Scores from 0 to 4 on data, tooling, skills, governance, process and culture, each with an evidence line, the gaps ranked by what blocks first, and a one-sentence posture.",
+        "decide": "Decide whether to go ahead, and at what scope, from the stated posture."
+      },
+      {
+        "skill": "ai-use-case-triage",
+        "you_do": "List the candidate use cases.",
+        "you_get": "A ranked portfolio scored on value, feasibility and risk with the weights shown, one first slice with the observable that proves or kills it, and a not-yet list with promotion conditions.",
+        "decide": "Confirm the first slice."
+      },
+      {
+        "skill": "ai-usage-policy",
+        "you_do": "Give the population, the tools and any data rules already in force.",
+        "you_get": "An acceptable-use policy with three data tiers, permitted and prohibited uses as behaviours, a human-review matrix, approved tools with an exception route, and an owner per section."
+      },
+      {
+        "skill": "ai-adoption-rollout",
+        "you_do": "Name the chosen tool or workflow and who it is for.",
+        "you_get": "A rollout in waves with enablement per cohort, named champions, a comms plan that says what will not change, and an adoption gate on every wave.",
+        "decide": "Each wave's gate must be met before the next cohort opens."
+      }
+    ],
+    "you_end_with": "A readiness baseline, a chosen first use case, a usage policy, and a gated rollout plan."
+  }
 }

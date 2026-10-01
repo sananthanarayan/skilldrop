@@ -31,6 +31,7 @@ its directory, so the tree stays shallow.
 - [Wire a skill to an event](how-to/wire-a-hook.md) — opt-in hooks, projected per target
 - [Publish your own catalogue](how-to/publish-a-catalogue.md) — make `skilldrop --from <you>` work
 - [Upgrade installed skills](how-to/upgrade-skills.md) — keep what you have installed current; files you edited are kept and the new version lands beside them as `.upstream`
+- [Run a skill in CI](how-to/run-a-skill-in-ci.md) — the GitHub Action: a skill on every pull request, results in the job summary, optional fail on a verdict
 - [Roll out across your org](how-to/enterprise-distribution.md) — bootstrap the hosted marketplace for every machine in one command
 - [Use with Jira](how-to/integrate-with-jira.md) — bug triage, story splitting, implementation loops, and release notes from Jira tickets
 - [Use with GitHub Projects](how-to/integrate-with-github-projects.md) — implementation loops, review gates, and release notes linked to GitHub issues
@@ -43,6 +44,7 @@ its directory, so the tree stays shallow.
 - [Every skill, by category](reference/skill-catalogue.md) — all the skills, one line each, plus the anatomy every skill folder shares
 - [The loops, stage by stage](reference/loops.md) — each loop's stages, gates and generated diagram
 - [Skills that ship scripts](reference/skills-with-scripts.md) — the two skills with executable helpers
+- [skilldrop and the OWASP Top 10s](reference/owasp-mapping.md) — what skilldrop covers in the Agentic Skills Top 10 and LLM Top 10 2025, and the gaps
 
 ## explanation
 

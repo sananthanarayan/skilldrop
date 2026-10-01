@@ -226,7 +226,7 @@ def collect():
 RELEASE_RE = re.compile(r"^##\s+(\d+\.\d+\.\d+)\s+[—-]\s+(\d{4}-\d{2}-\d{2})\s*$")
 
 
-def changelog():
+def changelog(limit=SHIPPED_ENTRIES):
     """CHANGELOG.md -> [{version, date, bullets}], newest first. The newest entry must match
     package.json, or a release could ship with nothing said about it — the same refuse-to-render
     discipline collect() applies to a half-row skill."""
@@ -250,7 +250,7 @@ def changelog():
               f"{releases[0]['version']} but package.json says {version}. One of them is wrong.",
               file=sys.stderr)
         sys.exit(1)
-    return version, releases[:SHIPPED_ENTRIES]
+    return version, releases[:limit] if limit else releases
 
 
 
@@ -527,6 +527,7 @@ def head_meta(title, desc, url, image_alt="skilldrop — a prompt gets you a dra
     desc = desc if len(desc) <= 200 else desc[:197].rsplit(" ", 1)[0] + "…"
     return f"""<meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{esc(url)}">
+<link rel="alternate" type="application/atom+xml" title="skilldrop releases" href="{SITE_URL}changelog/feed.xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="skilldrop">
 <meta property="og:locale" content="en_US">
@@ -1204,10 +1205,12 @@ a {{ color:var(--accent-700); }}
     <div class="footer__col"><h3>Contribute</h3><ul>
       <li><a href="{REPO_URL}/blob/main/CONTRIBUTING.md">Contributing</a></li>
       <li><a href="{REPO_URL}/blob/main/SECURITY.md">Security</a></li>
+      <li><a href="evals/">How skills are checked</a></li>
       <li><a href="{REPO_URL}/issues">Issues</a></li>
     </ul></div>
     <div class="footer__col"><h3>Release</h3><ul>
       <li><a href="changelog/">Changelog</a></li>
+      <li><a href="changelog/feed.xml">Release feed (Atom)</a></li>
       <li><a href="{REPO_URL}/releases">Releases</a></li>
       <li><a href="{NPM_URL}/v/{esc(version)}">v{esc(version)}</a></li>
     </ul></div>
@@ -1347,6 +1350,9 @@ def outputs(skills, packs, outcomes, version, releases):
             f"  <url><loc>{SITE_URL}packs/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>\n"
             + "".join(f"  <url><loc>{SITE_URL}packs/{p['name']}/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>\n" for p in packs)
             + f"  <url><loc>{SITE_URL}changelog/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>\n"
+            + "".join(f"  <url><loc>{SITE_URL}changelog/{r['version']}/</loc><lastmod>{r['date']}</lastmod><priority>0.4</priority></url>\n"
+                      for r in changelog(limit=None)[1])
+            + f"  <url><loc>{SITE_URL}evals/</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>\n"
             + f"  <url><loc>{SITE_URL}loops/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>\n"
             + "".join(f"  <url><loc>{SITE_URL}loops/{lp['name']}/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>\n" for lp in loops())
             + "".join(f"  <url><loc>{SITE_URL}docs/{g['kind']}/{g['slug']}.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>\n"
