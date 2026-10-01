@@ -15,7 +15,7 @@ points:
 
 1. **After install, nothing says what to try first.** A pack in `packs.json` has a one-line
    description and a list of skills. There is no starter prompt, no description of what a good
-   result looks like, and no page to land on. For example, a new `sre-oncall` user faces 5
+   result looks like, and no page to land on. For example, a new `sre-oncall` user faces 6
    skills and no obvious first move.
 2. **Updating erases their changes.** `skilldrop update` overwrites a skill wholesale
    ([`guides/how-to/upgrade-skills.md`](../../guides/how-to/upgrade-skills.md)). Adopters are
@@ -99,11 +99,12 @@ Path A. This RFC is shaped so that move is cheap:
 - **Field names** match `pack.toml`, so converting `packs.json` to `pack.toml` is a direct copy.
 - **The CLI already reads the agentbundle shape** (`packs/<p>/.apm/skills`, RFC-0014), so a
   migrated catalogue stays installable with the current CLI.
-- **The obstacle to physical nesting is known.** 11 skills belong to more than one pack
+- **The obstacle to physical nesting is known.** 12 skills belong to more than one pack
   (`brief-intake` and `doc-critique` are in three each; `council-review`, `output-hygiene`,
-  `exec-summary` and others are in two). The intended answer is a `core` pack, in the style of
-  agent-ready-repo's `core` and `governance-extras`, for skills every role needs. The remaining
-  role packs then get smaller and each skill has exactly one home. Those 11 are the starting
+  `exec-summary`, `launch-readiness` and others are in two). The intended answer is a `core`
+  pack, in the style of agent-ready-repo's `core` and `governance-extras`, for skills every
+  role needs. The remaining
+  role packs then get smaller and each skill has exactly one home. Those 12 are the starting
   candidate list, not a decision.
 
 ## Alternatives considered
