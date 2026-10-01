@@ -23,6 +23,7 @@ its directory, so the tree stays shallow.
 
 ## how-to
 
+- [Install skills, packs and loops](how-to/install.md) — every route: the CLI for any IDE, the Claude Code plugin marketplace, and by hand
 - [Install a skill into your IDE](how-to/install-per-ide.md) — per-IDE steps for every target, plus dependency installs
 - [Install a profile](how-to/profiles.md) — named bundles of packs, agents, and loops in one command
 - [Author a new skill](how-to/author-a-skill.md) — what a skill must contain and what gates it
@@ -39,11 +40,13 @@ its directory, so the tree stays shallow.
 
 ## reference
 
+- [Every skill, by category](reference/skill-catalogue.md) — all the skills, one line each, plus the anatomy every skill folder shares
+- [The loops, stage by stage](reference/loops.md) — each loop's stages, gates and generated diagram
 - [Skills that ship scripts](reference/skills-with-scripts.md) — the two skills with executable helpers
 
 ## explanation
 
-- [Why loops](explanation/loops.md) — why sequencing is its own primitive, and why four loops
+- [Why loops](explanation/loops.md) — why sequencing is its own primitive, and why five loops
 - [Cost-aware model routing](../MODEL-ROUTING.md) — abstract tiers and the provider map
 
 Architecture and the enforcement model: [ARCHITECTURE.md](../ARCHITECTURE.md).

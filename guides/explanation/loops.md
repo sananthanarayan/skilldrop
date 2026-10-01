@@ -1,6 +1,6 @@
 ---
 title: Why loops
-summary: Why skilldrop sequences skills in a separate primitive instead of letting skills call each other, and why there are four lifecycle loops rather than three.
+summary: Why skilldrop sequences skills in a separate primitive instead of letting skills call each other, and why there are five lifecycle loops rather than three.
 kind: explanation
 ---
 

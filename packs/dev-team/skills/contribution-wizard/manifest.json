@@ -1,7 +1,7 @@
 {
   "name": "contribution-wizard",
-  "version": "1.0.1",
-  "description": "Guides an author through creating a new skilldrop skill from scratch — generates the manifest, SKILL.md, eval cases, and README entry from a plain-language description of the skill's purpose. Use when authoring a new skill for this repo or a private fork, ensuring a new skill meets the schema and validation requirements before submission.",
+  "version": "1.0.2",
+  "description": "Guides an author through creating a new skilldrop skill from scratch — generates the manifest, SKILL.md, eval cases, and skill-catalogue entry from a plain-language description of the skill's purpose. Use when authoring a new skill for this repo or a private fork, ensuring a new skill meets the schema and validation requirements before submission.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
