@@ -8,6 +8,10 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.13.7 — 2026-10-01
+
+- `install --with-hooks` and `uninstall` work inside a git worktree or submodule, where `.git` is a file rather than a folder. Both crashed there before. The pre-commit reminder now goes wherever git reads hooks from, including a custom `core.hooksPath`.
+
 ## 0.13.6 — 2026-10-01
 
 - New **design** pack: `npx skilldrop-cli install --pack design` gets on-brand decks and flyers, with `core`.
