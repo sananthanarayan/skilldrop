@@ -28,11 +28,21 @@ PAGE_CSS = """
 .pk { padding-block:2.4rem 3.5rem; }
 .pk h2 { font-size:1.15rem; margin:2.4rem 0 .7rem; letter-spacing:-.01em; }
 .pk__lede { font-size:1.05rem; color:var(--fg-muted); max-width:46rem; margin:.2rem 0 1.4rem; }
-.pk__req { font-size:.9rem; color:var(--fg-muted); }
 .pk pre, .pk__cmd {
   font:.88rem/1.55 var(--mono); background:var(--card); border:1px solid var(--border);
   border-radius:var(--r-sm); padding:.8rem 1rem; white-space:pre-wrap; margin:.4rem 0;
 }
+.pk__cmds { display:flex; flex-direction:column; gap:.4rem; margin:.4rem 0; }
+.pk__row { position:relative; }
+.pk__row .pk__cmd, .pk__row pre { margin:0; padding-right:5.5rem; }
+.copy {
+  position:absolute; top:.45rem; right:.45rem; cursor:pointer; font:600 .74rem/1 inherit;
+  color:var(--accent-700); background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r-sm); padding:.4rem .6rem;
+}
+.copy:hover { border-color:var(--accent-700); }
+.copy:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+.pk__total { font-size:.9rem; color:var(--fg-muted); margin:.2rem 0 0; }
 .pk__start { background:var(--accent-10); border-radius:var(--r); padding:1.1rem 1.3rem 1.2rem; }
 .pk__start h2 { margin-top:0; }
 .pk__start dt { font-weight:600; margin-top:.9rem; font-size:.9rem; }
@@ -51,6 +61,13 @@ PAGE_CSS = """
 def md(text):
     """Escape, then render `code` spans — the first-value strings carry shell commands."""
     return re.sub(r"`([^`]+)`", r"<code>\1</code>", esc(text))
+
+
+def copyable(text, tag="div", cls="pk__cmd", label="Copy"):
+    """A block of text with a copy button. With scripting off the button does nothing and
+    the text is still selectable, so the page never depends on it."""
+    return (f'<div class="pk__row"><{tag} class="{cls}">{esc(text)}</{tag}>'
+            f'<button class="copy" type="button" data-copy="{esc(text)}" aria-label="{esc(label)}: {esc(text[:60])}">Copy</button></div>')
 
 
 def shell(title, desc, canonical, depth, body):
@@ -75,6 +92,24 @@ def shell(title, desc, canonical, depth, body):
   <a class="page-head__count" href="{up}catalogue/">all skills &#8594;</a>
 </header>
 {body}
+<script>
+/* copy buttons — the text to copy lives in data-copy, so the visible label never leaks in */
+document.querySelectorAll('.copy').forEach(function (b) {{
+  b.addEventListener('click', function () {{
+    var t = b.getAttribute('data-copy');
+    var say = function (msg) {{ b.textContent = msg; setTimeout(function () {{ b.textContent = 'Copy'; }}, 1500); }};
+    var legacy = function () {{
+      var a = document.createElement('textarea'); a.value = t; a.setAttribute('readonly', '');
+      a.style.position = 'absolute'; a.style.left = '-9999px'; document.body.appendChild(a); a.select();
+      var ok = false; try {{ ok = document.execCommand('copy'); }} catch (e) {{}} document.body.removeChild(a);
+      say(ok ? 'Copied' : 'Select & copy');
+    }};
+    // The async API can be refused (permissions, iframes, headless); fall back rather than fail silently.
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(function () {{ say('Copied'); }}, legacy);
+    else legacy();
+  }});
+}});
+</script>
 </body>
 </html>
 """
@@ -88,20 +123,21 @@ def pack_page(name, pack, packs, by_name, loop_by_name):
     install = [f"npx skilldrop-cli install --pack {name}"]
     if pack.get("loops") or any(packs[r].get("loops") for r in reqs):
         install.append(f"npx skilldrop-cli install --loop --pack {name}")
-    install.append(f"/plugin install {name}@skilldrop   # in Claude Code, after: /plugin marketplace add sananthanarayan/skilldrop")
+    install.append(f"/plugin install {name}@skilldrop")
+    total = len(set(pack["skills"]).union(*(packs[r]["skills"] for r in reqs)))
     parts = [f'<main class="inner pk">',
              f'<p class="pk__lede">{esc(pack["description"])}</p>',
-             '<div class="pk__cmd">' + "<br>".join(esc(c) for c in install) + "</div>"]
-    if reqs:
-        links = ", ".join(f'<a href="../{esc(r)}/">{esc(r)}</a>' for r in reqs)
-        parts.append(f'<p class="pk__req">Installs together with {links}, which holds the skills every role uses.</p>')
+             '<div class="pk__cmds">' + "".join(copyable(c, label="Copy command") for c in install) + "</div>",
+             f'<p class="pk__total">Installs {total} skills'
+             + (", including " + ", ".join(f'<a href="../{esc(r)}/">{esc(r)}</a>' for r in reqs) + ", which holds the skills every role uses" if reqs else "")
+             + '. The <code>/plugin</code> line is for Claude Code, after <code>/plugin marketplace add sananthanarayan/skilldrop</code>.</p>']
 
     if fv:
         pre = "".join(f"<li>{md(p)}</li>" for p in fv["prerequisites"])
         parts.append(f"""<section class="pk__start" aria-labelledby="start">
 <h2 id="start">Start here: {esc(fv['starter-task'])}</h2>
 <p>Paste this into your agent:</p>
-<pre>{esc(fv['starter-prompt'])}</pre>
+{copyable(fv['starter-prompt'], tag="pre", cls="pk__prompt", label="Copy prompt")}
 <dl>
 {f'<dt>Before you start</dt><dd><ul>{pre}</ul></dd>' if pre else ''}
 <dt>How to tell it worked</dt><dd>{md(fv['verification'])}</dd>
@@ -117,10 +153,10 @@ def pack_page(name, pack, packs, by_name, loop_by_name):
             for l in own_loops)
         parts.append(f'<h2>Loops</h2><ul class="pk__loops">{items}</ul>')
 
-    cards = "\n".join(card(by_name[s]) for s in sorted(pack["skills"]) if s in by_name)
+    cards = "\n".join(card(by_name[s], root="../../", show_pack=False) for s in sorted(pack["skills"]) if s in by_name)
     parts.append(f'<h2>Skills in this pack ({len(pack["skills"])})</h2><ul class="skills">{cards}</ul>')
     for r in reqs:
-        rc = "\n".join(card(by_name[s]) for s in sorted(packs[r]["skills"]) if s in by_name)
+        rc = "\n".join(card(by_name[s], root="../../", show_pack=False) for s in sorted(packs[r]["skills"]) if s in by_name)
         parts.append(f'<h2>Included from <a href="../{esc(r)}/">{esc(r)}</a> ({len(packs[r]["skills"])})</h2><ul class="skills">{rc}</ul>')
     parts.append("</main>")
     return shell(title, pack["description"], f"{SITE_URL}packs/{name}/", 2, "\n".join(parts))
