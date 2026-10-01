@@ -1,9 +1,9 @@
 {
   "description": "Skills for teams building on the Anthropic API — prompt caching, token budgeting, eval generation for skills, and tool-use schema writing.",
-  "display_name": "Claude API",
+  "display_name": "API builder",
   "keywords": ["anthropic", "prompt-caching", "tokens", "tool-use", "evals"],
   "links": {
-    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/claude-api/"
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/api-builder/"
   },
   "maintainers": [
     {

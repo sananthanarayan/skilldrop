@@ -879,11 +879,23 @@ function removeHooksFor(skill, dest, ide) {
 
 /* ---------- commands ---------- */
 
+/* Packs that were renamed, so an old command or script keeps working. claude-api became
+   api-builder in 0.13.9: Claude Code reserves plugin names that start with "claude-". */
+const PACK_ALIASES = { "claude-api": "api-builder" };
+function packAlias(flags, ps) {
+  const n = flags.pack;
+  if (n && ps && !ps[n] && PACK_ALIASES[n] && ps[PACK_ALIASES[n]]) {
+    console.error(`note: pack '${n}' is now '${PACK_ALIASES[n]}' — use --pack ${PACK_ALIASES[n]}`);
+    flags.pack = PACK_ALIASES[n];
+  }
+}
+
 function expandNames(args, cat) {
   if (args.flags.all) return skillsIn(cat);
   if (args.flags.pack) {
     const ps = packsOf(cat);
     if (!ps) die(`catalog '${cat.source}' defines no packs — install skills by name`);
+    packAlias(args.flags, ps);
     const p = ps[args.flags.pack];
     if (!p) die(`unknown pack '${args.flags.pack}' in catalog '${cat.source}'`);
     return packMembers(ps, args.flags.pack, "skills");
@@ -1535,6 +1547,7 @@ function installLoops(args) {
   if (!names.length && args.flags.pack) {
     const ps = packsOf(cat);
     if (!ps) die(`catalog '${cat.source}' defines no packs`);
+    packAlias(args.flags, ps);
     const pk = ps[args.flags.pack];
     if (!pk) die(`unknown pack '${args.flags.pack}' in catalog '${cat.source}'`);
     names = packMembers(ps, args.flags.pack, "loops");
@@ -1693,6 +1706,7 @@ function firstValueLines(p) {
 function infoPack(args) {
   const cat = resolveCatalog(args.flags.from);
   const ps = packsOf(cat) || die(`catalog '${cat.source}' has no packs`);
+  packAlias(args.flags, ps);
   const name = args.flags.pack;
   const p = ps[name] || die(`unknown pack '${name}' — available: ${Object.keys(ps).join(", ")}`);
   if (args.flags.json)

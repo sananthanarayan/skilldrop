@@ -22,7 +22,7 @@ Install one pack. Every role pack also brings `core` (intake, critique, review c
 - **Explaining things to decision-makers:** `stakeholder-comms` — audience profiles, exec summaries, decision logs, guides. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/stakeholder-comms/)
 - **On-brand decks and flyers:** `design` — capture your brand once, then build `.pptx` decks and print-ready flyers with your logo, colours and fonts. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/design/)
 - **Adopting and building AI:** `ai-engineering` — readiness, use-case triage, policy, agent loops, budgets, agent threat models, evals. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/ai-engineering/)
-- **Building on the Claude API:** `claude-api` — prompt caching, token budgets, eval generation, tool schemas. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/claude-api/)
+- **Building on the Claude API:** `api-builder` — prompt caching, token budgets, eval generation, tool schemas. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/api-builder/)
 - **Everyone:** `core` on its own. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/core/)
 
 ## Start in one command

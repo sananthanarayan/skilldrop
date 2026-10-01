@@ -375,7 +375,7 @@ A new section needs a use-case-first name, a one-sentence definition of what bel
 
 ## Skill packs
 
-Categories say what a skill *is*; packs say *who needs it*. [`packs/`](packs/) holds `core` plus role-based packs (`solution-architect`, `product-manager`, `dev-team`, `sre-oncall`, `stakeholder-comms`, `design`, `ai-engineering`, `claude-api`), each installed in one command via the CLI or [`pack.py`](pack.py). Rules — rationale in [RFC-0001](docs/rfcs/0001-skill-packs.md), [RFC-0033](docs/rfcs/0033-core-pack-and-single-home-skills.md) and [RFC-0034](docs/rfcs/0034-physical-pack-layout.md):
+Categories say what a skill *is*; packs say *who needs it*. [`packs/`](packs/) holds `core` plus role-based packs (`solution-architect`, `product-manager`, `dev-team`, `sre-oncall`, `stakeholder-comms`, `design`, `ai-engineering`, `api-builder`), each installed in one command via the CLI or [`pack.py`](pack.py). Rules — rationale in [RFC-0001](docs/rfcs/0001-skill-packs.md), [RFC-0033](docs/rfcs/0033-core-pack-and-single-home-skills.md) and [RFC-0034](docs/rfcs/0034-physical-pack-layout.md):
 
 - **A pack is a folder.** `packs/<pack>/skills/<name>/` is where a skill lives, and that path is the membership — there is no separate list to keep in sync. `packs/<pack>/pack.json` holds the pack's metadata.
 - **One home per skill** (RFC-0033). A skill that serves every role, like `brief-intake`, goes in `core`, which each role pack `requires` and every installer brings along. Otherwise pick the role that produces the artifact. Every installer — the CLI, `pack.py`, the Claude plugins — brings `core` with a role pack.
