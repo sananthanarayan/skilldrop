@@ -6,7 +6,7 @@
 > 65 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.13.8.
+> Version 0.13.9.
 
 ## Start here
 
@@ -76,7 +76,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 ## Packs
 
 Each skill and loop sits in exactly one pack folder, `packs/<pack>/`. Every role pack
-except `claude-api` requires `core`, which installs with it.
+except `api-builder` requires `core`, which installs with it.
 
 - **core** (4 skills, loops: ship-a-draft): The cross-role toolkit every pack builds on: structured intake, document critique, the review council, and output hygiene, plus the ship-a-draft wrapper. Installed automatically with every role pack.
 - **solution-architect** (11 skills, loops: design, requires core): Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.
@@ -86,7 +86,7 @@ except `claude-api` requires `core`, which installs with it.
 - **stakeholder-comms** (4 skills, requires core): Non-technical audiences: audience profiling, exec summaries, decision logs, and guides. Decks live in the design pack.
 - **design** (4 skills, requires core): On-brand visual work: capture a brand once, then build real PowerPoint decks and print-ready marketing flyers in that brand, with logo, colours and fonts applied.
 - **ai-engineering** (11 skills, requires core): Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, and AI-usage reporting.
-- **claude-api** (4 skills): Skills for teams building on the Anthropic API — prompt caching, token budgeting, eval generation for skills, and tool-use schema writing.
+- **api-builder** (4 skills): Skills for teams building on the Anthropic API — prompt caching, token budgeting, eval generation for skills, and tool-use schema writing.
 
 ## Outcomes — browse by why you are here
 

@@ -737,6 +737,10 @@ def render():
            "evals/index.html": evals_page(skills),
            "skills/index.html": '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=../catalogue/">'
                                 '<link rel="canonical" href="' + SITE_URL + 'catalogue/"><a href="../catalogue/">All skills</a>\n'}
+    # Renamed packs: the old URL redirects, so links shared before the rename still land.
+    for old, new in {"claude-api": "api-builder"}.items():
+        out[f"packs/{old}/index.html"] = (f'<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=../{new}/">'
+                                          f'<link rel="canonical" href="{SITE_URL}packs/{new}/"><a href="../{new}/">{new}</a>\n')
     for name, pack in packs.items():
         out[f"packs/{name}/index.html"] = pack_page(name, pack, packs, by_name, loop_by_name, outcome_of)
     for s in skills:

@@ -18,7 +18,7 @@ Ask these questions in a single block — not one at a time:
 > 1. **Purpose**: what does this skill do in one sentence?
 > 2. **Input**: what does the agent receive? (paste, file, structured data, conversational context)
 > 3. **Output**: what does the agent produce? (artifact type, format, length)
-> 4. **Pack**: which role pack does it belong to? (solution-architect / product-manager / dev-team / sre-oncall / stakeholder-comms / ai-engineering / claude-api / new pack)
+> 4. **Pack**: which role pack does it belong to? (solution-architect / product-manager / dev-team / sre-oncall / stakeholder-comms / ai-engineering / api-builder / new pack)
 > 5. **Is it a gate?** Does it emit a pass/fail verdict, or generate an artifact?
 > 6. **Related skills**: which existing skills does it complement or hand off to?
 > 7. **External deps**: does it need API keys, npm packages, or pip libraries?

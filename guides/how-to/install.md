@@ -48,7 +48,7 @@ Then take the whole catalogue, or just your role's pack:
 /plugin install product-manager@skilldrop       # 12 skills (incl. core)
 /plugin install stakeholder-comms@skilldrop     # 10 skills (incl. core)
 /plugin install sre-oncall@skilldrop            # 9 skills (incl. core)
-/plugin install claude-api@skilldrop            # 4 skills
+/plugin install api-builder@skilldrop           # 4 skills
 /plugin install core@skilldrop                  # 4 skills, on their own
 ```
 
