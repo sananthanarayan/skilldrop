@@ -131,12 +131,11 @@ NAV = [
     ("Outcomes", "#outcomes", False),
     ("What's in one", "#quality", False),
     ("Portability", "#portability", False),
+    ("Packs", "packs/", False),
     ("Catalogue", "catalogue/", False),
     ("Reviewers", "#reviewers", False),
-    ("Now", "#now", False),
     ("Docs", "docs/", False),
     ("Shipped", "#shipped", False),
-    ("Contributing", f"{REPO_URL}/blob/main/CONTRIBUTING.md", True),
     ("GitHub", REPO_URL, True),
 ]
 
@@ -250,7 +249,8 @@ def collect():
 
     pack_meta = [{"name": k, "description": v["description"],
                   "count": len(v["skills"]), "skills": sorted(v["skills"]),
-                  "requires": v.get("requires", [])}
+                  "requires": v.get("requires", []),
+                  "starter": (v.get("first-value") or {}).get("starter-task", "")}
                  for k, v in packs.items()]
 
     # RFC-0026: outcomes are the second browse axis, read from the same file as packs.
@@ -332,11 +332,16 @@ def inline_md(s):
     return re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", out)
 
 
-def card(s):
+def card(s, root="", show_pack=True):
     """One compact row. The full description is one clamped line — the whole point of the
     redesign is that the page does not dump 49 paragraphs at a reader who hasn't chosen yet.
-    Tags and `related` are deliberately absent: they live in catalogue.json and on GitHub."""
+    Tags and `related` are deliberately absent: they live in catalogue.json and on GitHub.
+    `root` is the relative path back to the site root, so the pack label links to the
+    skill's pack page from any depth; a pack page listing its own skills hides the label."""
     tier = s["tier"]
+    home = s["packs"][0] if s["packs"] else ""
+    pack = (f'<a class="skill__pack" href="{root}packs/{esc(home)}/" title="In the {esc(home)} pack">{esc(home)}</a>'
+            if home and show_pack else "")
     return f"""<li class="skill" id="{esc(s['name'])}"
    data-tier="{esc(tier)}" data-packs="{esc(' '.join(s['packs']))}"
    data-outcomes="{esc(' '.join(s.get('outcomes', [])))}"
@@ -346,7 +351,7 @@ def card(s):
     <span class="skill__name">{esc(s['name'])}</span>
     <span class="skill__desc">{esc(s['description'])}</span>
   </a>
-  <span class="tier tier--{esc(tier)}" title="{esc(s['rationale'])}">{esc(tier)}</span>
+  {pack}<span class="tier tier--{esc(tier)}" title="{esc(s['rationale'])}">{esc(tier)}</span>
 </li>"""
 
 
@@ -447,8 +452,12 @@ def render(skills, packs, outcomes, version, releases):
         <h3 class="pack__name"><a href="packs/{esc(p['name'])}/">{esc(p['name'])}</a></h3><span class="pack__n">{p['count']} skills{''.join(' + ' + esc(r) for r in p['requires'])}</span>
       </div>
       <p class="pack__desc">{esc(p['description'])}</p>
+      {f'<p class="pack__start"><b>Start here:</b> {esc(p["starter"])}</p>' if p.get('starter') else ''}
       <p class="pack__install"><code>skilldrop install --pack {esc(p['name'])}</code></p>
-      <button class="pack__cta" data-filter="pack" data-value="{esc(p['name'])}">See what's inside &rarr;</button>
+      <div class="pack__ctas">
+        <a class="pack__cta" href="packs/{esc(p['name'])}/">Open pack &rarr;</a>
+        <button class="pack__cta pack__cta--sub" data-filter="pack" data-value="{esc(p['name'])}">Filter the catalogue</button>
+      </div>
     </li>""" for p in packs)
 
     pack_chips = "".join(
@@ -649,10 +658,14 @@ a {{ color:var(--accent-700); }}
   padding:.45rem .6rem; overflow-x:auto;
 }}
 .pack__cta {{
-  align-self:flex-start; cursor:pointer; font:600 .84rem/1 inherit; color:var(--accent-700);
-  background:none; border:0; padding:0;
+  align-self:flex-start; cursor:pointer; font-family:inherit; font-size:.84rem; font-weight:600;
+  line-height:1; color:var(--accent-700); background:none; border:0; padding:0; text-decoration:none;
 }}
 .pack__cta:hover {{ text-decoration:underline; }}
+.pack__ctas {{ display:flex; flex-wrap:wrap; align-items:baseline; gap:1.1rem; }}
+.pack__cta--sub {{ font-weight:500; color:var(--fg-muted); }}
+.pack__start {{ margin:-.4rem 0 1rem; font-size:.84rem; }}
+.pack__start b {{ color:var(--accent-700); font-weight:600; }}
 
 /* The list is open. Rows past PREVIEW_ROWS are folded by JS, never by markup — with
    scripting off every row renders, because a search box that needs JS must not gate the
@@ -720,6 +733,11 @@ a {{ color:var(--accent-700); }}
 .skill__link:hover {{ background:var(--surface-alt); }}
 .skill__link:hover .skill__name {{ color:var(--accent-700); }}
 .skill__name {{ font:.9rem var(--mono); letter-spacing:-.01em; flex:0 0 15.5rem; }}
+.skill__pack {{
+  flex:0 0 auto; font:.7rem var(--mono); color:var(--fg-muted); text-decoration:none;
+  border:1px solid var(--border); border-radius:999px; padding:1px 8px; white-space:nowrap;
+}}
+.skill__pack:hover {{ color:var(--accent-700); border-color:var(--accent-700); }}
 .skill__desc {{
   flex:1; min-width:0; font-size:.85rem; color:var(--fg-muted);
   overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
@@ -753,13 +771,14 @@ a {{ color:var(--accent-700); }}
   font:700 1.06rem var(--mono); letter-spacing:-.02em; color:#fff; text-decoration:none;
 }}
 .nav__logo:hover {{ color:var(--accent-300); }}
-.nav__links {{ display:flex; align-items:center; gap:1.65rem; margin:0; padding:0; list-style:none; }}
-.nav__link {{ font-size:.87rem; font-weight:500; color:var(--w-80); text-decoration:none; }}
+.nav__links {{ display:flex; align-items:center; gap:1.15rem; margin:0; padding:0; list-style:none; }}
+.nav__link {{ font-size:.87rem; font-weight:500; color:var(--w-80); text-decoration:none; white-space:nowrap; }}
 .nav__link:hover {{ color:#fff; }}
 .nav__link--ext {{ color:var(--w-60); }}
 .nav__cta {{
   display:inline-block; padding:.5rem 1.05rem; border-radius:999px;
   background:var(--accent); color:#0d0d0f; font-size:.87rem; font-weight:600; text-decoration:none;
+  white-space:nowrap;
 }}
 .nav__cta:hover {{ background:var(--accent-300); }}
 .nav__mobile {{ display:none; }}
@@ -784,7 +803,8 @@ a {{ color:var(--accent-700); }}
   padding:1.35rem var(--pad-x) 1.7rem;
 }}
 .nav__drawer .nav__cta {{ display:block; text-align:center; margin-top:.4rem; }}
-@media (max-width:760px) {{
+/* 11 links stop fitting on one line below ~1120px; switch to the drawer rather than wrap */
+@media (max-width:1120px) {{
   .nav__links {{ display:none; }}
   .nav__mobile {{ display:block; }}
 }}
@@ -883,7 +903,7 @@ a {{ color:var(--accent-700); }}
 
 /* four-step strip */
 .steps-strip {{ background:var(--dark-900); border-bottom:1px solid rgba(255,255,255,.08); }}
-.steps {{ display:grid; grid-template-columns:repeat(4,1fr); }}
+.steps {{ display:grid; grid-template-columns:repeat(5,1fr); }}
 @media (max-width:700px) {{ .steps {{ grid-template-columns:1fr 1fr; }} }}
 @media (max-width:400px) {{ .steps {{ grid-template-columns:1fr; }} }}
 .step {{
@@ -954,6 +974,11 @@ a {{ color:var(--accent-700); }}
       </div>
       <div class="step">
         <p class="step__n">Step 04</p>
+        <p class="step__name">Release</p>
+        <p class="step__desc">Roll out with a way back. Gate: readiness, then go/no-go.</p>
+      </div>
+      <div class="step">
+        <p class="step__n">Step 05</p>
         <p class="step__name">Operate</p>
         <p class="step__desc">Detect, respond, and close the loop. Gate: postmortem.</p>
       </div>
