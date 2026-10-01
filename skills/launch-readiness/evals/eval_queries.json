@@ -1,0 +1,10 @@
+[
+  { "query": "Are we ready to launch this to users on Monday?", "should_trigger": true },
+  { "query": "Run a go/no-go check on the checkout redesign before we turn it on", "should_trigger": true },
+  { "query": "Do a production readiness review for the new search service", "should_trigger": true },
+  { "query": "Give me a launch checklist for this release and tell me what's missing", "should_trigger": true },
+  { "query": "Is this PR safe to merge?", "should_trigger": false },
+  { "query": "Plan the phased rollout and backfill for moving users to the new auth provider", "should_trigger": false },
+  { "query": "Write the release notes for everything since v2.3", "should_trigger": false },
+  { "query": "Write the runbook for the payments service", "should_trigger": false }
+]

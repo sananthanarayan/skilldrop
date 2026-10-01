@@ -45,9 +45,9 @@ Making `fallback` a required field turns it into a contract: every hand-off stat
 when its target is absent. A hand-off now degrades in a stated, reviewable way instead of
 dead-ending or being silently skipped.
 
-## Why four loops, not three
+## Why five loops, not three
 
-The obvious model is discovery → build → release. skilldrop uses four plus a wrapper, on the
+The obvious model is discovery → build → release. skilldrop uses five plus a wrapper, on the
 criterion that actually distinguishes them: **reversibility**, which is also what decides who
 is allowed to sign off.
 
@@ -56,6 +56,7 @@ is allowed to sign off.
 | `discover` | a re-brief | a **human** — no check can tell you that you solved the wrong problem well |
 | `design` | months, unwound in code | a **review panel** — independent positions, recorded dissent |
 | `build` | a revert | **mechanical** — a script's exit code, which cannot be argued with |
+| `release` | users and data, often irreversible | a **review** on evidence (can it ship?), then a **human** (should it ship now?) |
 | `operate` | live users; irreversible | a **human** closing the incident |
 
 Three loops do not fit this catalogue. `design` is 15 skills and does not fold into discovery
