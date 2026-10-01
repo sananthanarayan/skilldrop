@@ -150,6 +150,14 @@
       "tier": "standard",
       "rationale": "Checks evidence against a fixed checklist. Bounded synthesis, not adversarial review."
     },
+    "brand-kit": {
+      "tier": "standard",
+      "rationale": "Extracts and normalises brand facts from files and pages, then runs a checker. Bounded synthesis."
+    },
+    "marketing-flyer": {
+      "tier": "standard",
+      "rationale": "Writes short copy to fit and fills a spec for a deterministic builder. Bounded generation."
+    },
     "runbook-generator": {
       "tier": "standard",
       "rationale": "Operational doc from service facts. Bounded synthesis."

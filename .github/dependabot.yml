@@ -25,7 +25,7 @@ updates:
           - "*"
 
   - package-ecosystem: pip
-    directory: /packs/stakeholder-comms/skills/deck-builder
+    directory: /packs/design/skills/deck-builder
     schedule:
       interval: monthly
     commit-message:

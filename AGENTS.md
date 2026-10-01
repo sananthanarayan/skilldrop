@@ -286,7 +286,7 @@ If a skill has executable scripts (Python, Node, shell):
 - **Write outputs to a user-specified path**, not a hard-coded location.
 - **Don't shell out to interactive commands** (`gh auth login`, `aws configure`) — those need the user; the skill shouldn't drive them.
 
-See `packs/stakeholder-comms/skills/deck-builder/scripts/build_deck.py` for the reference pattern.
+See `packs/design/skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 
 ## Before you commit
 
@@ -369,7 +369,7 @@ A new section needs a use-case-first name, a one-sentence definition of what bel
 
 ## Skill packs
 
-Categories say what a skill *is*; packs say *who needs it*. [`packs/`](packs/) holds `core` plus role-based packs (`solution-architect`, `product-manager`, `dev-team`, `sre-oncall`, `stakeholder-comms`, `ai-engineering`, `claude-api`), each installed in one command via the CLI or [`pack.py`](pack.py). Rules — rationale in [RFC-0001](docs/rfcs/0001-skill-packs.md), [RFC-0033](docs/rfcs/0033-core-pack-and-single-home-skills.md) and [RFC-0034](docs/rfcs/0034-physical-pack-layout.md):
+Categories say what a skill *is*; packs say *who needs it*. [`packs/`](packs/) holds `core` plus role-based packs (`solution-architect`, `product-manager`, `dev-team`, `sre-oncall`, `stakeholder-comms`, `design`, `ai-engineering`, `claude-api`), each installed in one command via the CLI or [`pack.py`](pack.py). Rules — rationale in [RFC-0001](docs/rfcs/0001-skill-packs.md), [RFC-0033](docs/rfcs/0033-core-pack-and-single-home-skills.md) and [RFC-0034](docs/rfcs/0034-physical-pack-layout.md):
 
 - **A pack is a folder.** `packs/<pack>/skills/<name>/` is where a skill lives, and that path is the membership — there is no separate list to keep in sync. `packs/<pack>/pack.json` holds the pack's metadata.
 - **One home per skill** (RFC-0033). A skill that serves every role, like `brief-intake`, goes in `core`, which each role pack `requires` and every installer brings along. Otherwise pick the role that produces the artifact. Every installer — the CLI, `pack.py`, the Claude plugins — brings `core` with a role pack.
@@ -406,4 +406,4 @@ When you add or change a skill, set its tier in **both** `model-routing.json` an
 - Machine-readable contracts: [contracts/loop.schema.json](contracts/loop.schema.json), [contracts/terminals.json](contracts/terminals.json)
 - Model routing: [MODEL-ROUTING.md](MODEL-ROUTING.md) + [model-routing.json](model-routing.json)
 - Claude Code project settings: [.claude/settings.json](.claude/settings.json) — registers the repo as a local plugin marketplace (`skilldrop@skilldrop-local`) so the catalogue can be dogfooded from the working tree
-- Reference implementations for skill scripts: [`packs/stakeholder-comms/skills/deck-builder/scripts/`](packs/stakeholder-comms/skills/deck-builder/scripts/), [`packs/solution-architect/skills/figma-diagrams/scripts/`](packs/solution-architect/skills/figma-diagrams/scripts/)
+- Reference implementations for skill scripts: [`packs/design/skills/deck-builder/scripts/`](packs/design/skills/deck-builder/scripts/), [`packs/solution-architect/skills/figma-diagrams/scripts/`](packs/solution-architect/skills/figma-diagrams/scripts/)
