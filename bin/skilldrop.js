@@ -1431,8 +1431,9 @@ function newSkill(args) {
     console.log(`wrote ${path.relative(root, path.join(dir, f))}`);
   }
   const rp = path.join(root, "model-routing.json");
-  if (fs.existsSync(rp)) {
-    const routing = readJSON(rp);
+  const routingRaw = readIfPresent(rp, null);  // read-and-handle, not check-then-read
+  if (routingRaw !== null) {
+    const routing = JSON.parse(routingRaw);
     routing.skills = routing.skills || {};
     routing.skills[name] = { tier, rationale: "TODO: why this tier" };
     routing.skills = Object.fromEntries(Object.entries(routing.skills).sort(([a], [b]) => a.localeCompare(b)));
