@@ -25,7 +25,7 @@ the build refuses, for the same reason collect() refuses a half-row catalogue.
 import argparse
 import build_llms  # llms.txt is served at the site root too (RFC-0030)
 import catalog     # where skills, loops and packs live (RFC-0034)
-from build_docs import render_md, _slug  # the proof section renders a skill's worked example
+from build_docs import render_md, _slug, collect_guides  # proof section, loop anchors, sitemap
 import html
 import json
 import os
@@ -464,6 +464,13 @@ NAV_CSS = """/* nav — sits on the hero background, so it reads as one dark blo
 .reveal-delay-1 { transition-delay:.07s; }
 .reveal-delay-2 { transition-delay:.14s; }
 .reveal-delay-3 { transition-delay:.21s; }
+/* Reduced motion: nothing animates and nothing starts hidden. Lives in the shared nav CSS, so
+   it covers every page's animations (hero fade-up, orb drift, logo shimmer, scroll reveal). */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior:auto; }
+  *, *::before, *::after { animation:none !important; transition:none !important; }
+  .reveal { opacity:1; transform:none; }
+}
 
 .pack, .ship, .roadmap-item {
   transition:transform .2s cubic-bezier(.16,1,.3,1), box-shadow .2s cubic-bezier(.16,1,.3,1);
@@ -617,6 +624,41 @@ SEARCH_JS = r"""<script>
 </script>"""
 
 
+def head_meta(title, desc, url, image_alt="skilldrop — a prompt gets you a draft, a skill gets you a deliverable"):
+    """Description, canonical, Open Graph and Twitter tags for one page. Every page carries the
+    full set, so a pack or skill page shared in a chat unfurls like the home page does."""
+    desc = desc if len(desc) <= 200 else desc[:197].rsplit(" ", 1)[0] + "…"
+    return f"""<meta name="description" content="{esc(desc)}">
+<link rel="canonical" href="{esc(url)}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="skilldrop">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="{esc(title)}">
+<meta property="og:description" content="{esc(desc)}">
+<meta property="og:url" content="{esc(url)}">
+<meta property="og:image" content="{SITE_URL}og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{esc(image_alt)}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{esc(title)}">
+<meta name="twitter:description" content="{esc(desc)}">
+<meta name="twitter:image" content="{SITE_URL}og.png">"""
+
+
+def ld(obj):
+    """A JSON-LD block. "</" is escaped so a description can never close the script tag."""
+    return ('<script type="application/ld+json">'
+            + json.dumps(obj, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/") + "</script>")
+
+
+def breadcrumbs_ld(pairs):
+    """BreadcrumbList for [(name, absolute url), ...], matching the visible breadcrumb."""
+    return ld({"@context": "https://schema.org", "@type": "BreadcrumbList",
+               "itemListElement": [{"@type": "ListItem", "position": n + 1, "name": name, "item": url}
+                                   for n, (name, url) in enumerate(pairs)]})
+
+
 def site_nav(root="", current=None):
     """The shared top nav. `root` is the relative path back to the site root ("", "../",
     "../../"); `current` is the NAV href of the page being rendered, marked aria-current."""
@@ -632,7 +674,8 @@ def site_nav(root="", current=None):
     search = (f'<li><a class="nav__search js-search" href="{esc(root)}docs/" aria-label="Search the site (press /)">'
               '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">'
               '<circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5"/></svg><span>Search</span><kbd>/</kbd></a></li>')
-    return f"""<nav class="nav" id="top" aria-label="Primary">
+    return f"""<a class="skip-nav" href="#main">Skip to content</a>
+<nav class="nav" id="top" aria-label="Primary">
   <div class="nav__inner">
     <a class="nav__logo" href="{esc(root or './')}">skilldrop</a>
     <ul class="nav__links">{search}{links}
@@ -897,6 +940,7 @@ def render(skills, packs, outcomes, version, releases):
 <meta name="theme-color" content="#111113">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="skilldrop">
+<meta property="og:locale" content="en_US">
 <meta property="og:title" content="skilldrop">
 <meta property="og:description" content="{esc(PITCH['hero_h1'])}">
 <meta property="og:url" content="{SITE_URL}">
@@ -1219,8 +1263,6 @@ a {{ color:var(--accent-700); }}
 </style>
 </head>
 <body>
-<a class="skip-nav" href="#main">Skip to content</a>
-
 {site_nav()}
 
 <header class="hero">
@@ -1460,8 +1502,11 @@ document.querySelectorAll(".pack__cta[data-filter='pack']").forEach(function(b) 
   }});
 }});
 
-/* scroll reveal */
+var REDUCE = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* scroll reveal — skipped under reduced motion, so nothing starts hidden */
 (function() {{
+  if (REDUCE || !('IntersectionObserver' in window)) return;
   var io = new IntersectionObserver(function(entries) {{
     entries.forEach(function(e) {{
       if (e.isIntersecting) {{ e.target.classList.add('in'); io.unobserve(e.target); }}
@@ -1475,6 +1520,7 @@ document.querySelectorAll(".pack__cta[data-filter='pack']").forEach(function(b) 
 
 /* animated stat counters */
 (function() {{
+  if (REDUCE || !('IntersectionObserver' in window)) return;
   function animateCount(el) {{
     var raw = el.querySelector('.stat__n');
     if (!raw) return;
@@ -1595,6 +1641,8 @@ def outputs(skills, packs, outcomes, version, releases):
             f"  <url><loc>{SITE_URL}packs/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>\n"
             + "".join(f"  <url><loc>{SITE_URL}packs/{p['name']}/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>\n" for p in packs)
             + f"  <url><loc>{SITE_URL}changelog/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>\n"
+            + "".join(f"  <url><loc>{SITE_URL}docs/{g['kind']}/{g['slug']}.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>\n"
+                      for gs in collect_guides().values() for g in gs)
             + "".join(f"  <url><loc>{SITE_URL}skills/{s['name']}/</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>\n" for s in skills)
             + "</urlset>\n"
         ),

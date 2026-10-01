@@ -72,6 +72,23 @@ a{color:var(--accent-700);}
 .layout{display:grid;grid-template-columns:220px 1fr;gap:2.5rem;
   max-width:1100px;margin:2rem auto;padding:0 1.5rem;}
 @media(max-width:700px){.layout{grid-template-columns:1fr;}.sidebar{display:none;}}
+.layout--toc{max-width:1320px;}
+@media(min-width:1180px){.layout--toc{grid-template-columns:220px minmax(0,1fr) 210px;}}
+.toc{display:none;}
+@media(min-width:1180px){.toc{display:block;position:sticky;top:1.5rem;align-self:start;font-size:.8rem;
+  border-left:1px solid var(--border);padding-left:1rem;max-height:calc(100vh - 3rem);overflow:auto;}}
+.toc__h{font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-muted);margin:0 0 .6rem;}
+.toc ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.35rem;}
+.toc a{color:var(--fg-muted);text-decoration:none;}
+.toc a:hover{color:var(--accent-700);}
+.toc__3{padding-left:.8rem;}
+.edit{margin:2.5rem 0 1rem;font-size:.85rem;color:var(--fg-muted);}
+.edit a{color:var(--fg-muted);}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0 2rem;}
+.pager a{display:block;border:1px solid var(--border);border-radius:8px;padding:.8rem 1rem;text-decoration:none;color:var(--fg);font-weight:600;font-size:.92rem;}
+.pager a:hover{border-color:var(--accent-700);}
+.pager span{display:block;font-size:.72rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-muted);margin-bottom:.2rem;}
+.pager__next{text-align:right;}
 /* sidebar */
 .sidebar{font-size:.85rem;position:sticky;top:1.5rem;align-self:start;}
 .sidebar details{margin-bottom:1rem;}
@@ -272,13 +289,16 @@ def render_md(text, src=None, docs_base=None):
     i = 0
     while i < len(lines):
         raw = lines[i]
-        if raw.startswith("```"):
+        if raw.lstrip().startswith("```"):
+            # Fences may be indented (a code block inside a list item); strip that indent.
             flush_all()
-            lang = raw[3:].strip()
+            pad = len(raw) - len(raw.lstrip())
+            lang = raw.strip()[3:].strip()
             cls = f' class="language-{_esc(lang)}"' if lang else ""
             buf, i = [], i + 1
-            while i < len(lines) and not lines[i].startswith("```"):
-                buf.append(lines[i]); i += 1
+            while i < len(lines) and not lines[i].lstrip().startswith("```"):
+                ln = lines[i]
+                buf.append(ln[pad:] if ln[:pad].strip() == "" else ln.lstrip()); i += 1
             out.append(f"<pre><code{cls}>{_esc(chr(10).join(buf))}</code></pre>")
             i += 1
             continue
@@ -364,9 +384,9 @@ def collect_guides():
 
 # ── HTML page builders ────────────────────────────────────────────────────────
 
-def _page(title, header_html, body_html, depth=2):
+def _page(title, header_html, body_html, depth=2, desc="", url="", extra_head=""):
     # The shared site nav (RFC-0035), so a reader deep in a guide can still reach packs and skills.
-    from build_site import site_nav, NAV_CSS
+    from build_site import site_nav, head_meta, NAV_CSS
     nav = site_nav("../" * depth, "docs/")
     # Mermaid blocks (the loop diagrams in guides/reference/loops.md) render as diagrams, not code.
     mermaid = ""
@@ -381,6 +401,8 @@ def _page(title, header_html, body_html, depth=2):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{_esc(title)}</title>
+{head_meta(title, desc, url) if url else ""}
+{extra_head}
 <link rel="icon" href="{"../" * depth}favicon.svg" type="image/svg+xml">
 <style>
 {SHARED_CSS}
@@ -388,16 +410,18 @@ def _page(title, header_html, body_html, depth=2):
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-tomorrow.min.css">
 <style>
-.content pre[class*="language-"]{{background:var(--surface-alt);border:1px solid var(--border);border-radius:6px;}}
-.content pre[class*="language-"] code{{background:none;}}
+/* Code keeps the Tomorrow theme's own dark background: its token colours are made for it,
+   and on the page's light surface they were close to unreadable. */
+.content pre[class*="language-"]{{border-radius:6px;font-size:.84rem;}}
+.content pre[class*="language-"] code{{background:none;border:0;padding:0;}}
 </style>
 </head>
 <body>
 {nav}
 {header_html}
 {body_html}
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1/prism.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1/prism.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
 {mermaid}
 </body>
 </html>"""
@@ -442,15 +466,43 @@ def build_guide_page(guide, by_kind, out_dir):
         f'<span class="sep">·</span><span>{_esc(KIND_LABELS[guide["kind"]])}</span>'
         "</header>"
     )
+    # Reading aids: an "On this page" rail from the h2/h3 headings, previous/next in sidebar
+    # order, and an edit link to the source on GitHub.
+    heads = [(lvl, hid, re.sub(r"<[^>]+>", "", txt)) for lvl, hid, txt in
+             re.findall(r'<h([23]) id="([^"]+)">(.*?)</h\1>', body_html)]
+    toc = ""
+    if len(heads) >= 2:
+        toc = ('<aside class="toc" aria-label="On this page"><p class="toc__h">On this page</p><ul>'
+               + "".join(f'<li class="toc__{lvl}"><a href="#{_esc(hid)}">{txt}</a></li>' for lvl, hid, txt in heads)
+               + "</ul></aside>")
+    order = [g for k in KINDS for g in by_kind.get(k, [])]
+    at = next(n for n, g in enumerate(order) if g["slug"] == guide["slug"] and g["kind"] == guide["kind"])
+    prev_g = order[at - 1] if at > 0 else None
+    next_g = order[at + 1] if at + 1 < len(order) else None
+    pager = ('<nav class="pager" aria-label="Previous and next guide">'
+             + (f'<a class="pager__prev" href="../{prev_g["kind"]}/{prev_g["slug"]}.html"><span>Previous</span>{_esc(prev_g["title"])}</a>' if prev_g else '<span></span>')
+             + (f'<a class="pager__next" href="../{next_g["kind"]}/{next_g["slug"]}.html"><span>Next</span>{_esc(next_g["title"])}</a>' if next_g else '<span></span>')
+             + "</nav>")
+    rel = os.path.relpath(guide["abs_path"], ROOT).replace(os.sep, "/")
+    edit = (f'<p class="edit"><a href="{REPO_URL}/edit/main/{_esc(rel)}">Edit this page on GitHub</a>'
+            f' · <a href="{REPO_URL}/blob/main/{_esc(rel)}">View source</a></p>')
     content = (
-        f'<main class="content">'
+        f'<main class="content" id="main">'
         f'<h1>{_esc(guide["title"])}</h1>'
         f'<p class="summary">{_esc(guide["summary"])}</p>'
         f'{body_html}'
+        f'{edit}{pager}'
         f'</main>'
     )
-    page_body = f'<div class="layout">{sidebar}{content}</div>'
-    page_html = _page(f'{guide["title"]} — skilldrop docs', header, page_body)
+    page_body = f'<div class="layout{" layout--toc" if toc else ""}">{sidebar}{content}{toc}</div>'
+    from build_site import SITE_URL, breadcrumbs_ld, ld
+    url = f"{SITE_URL}docs/{guide['kind']}/{guide['slug']}.html"
+    meta = (breadcrumbs_ld([("skilldrop", SITE_URL), ("Docs", f"{SITE_URL}docs/"),
+                            (KIND_LABELS[guide["kind"]], f"{SITE_URL}docs/"), (guide["title"], url)])
+            + ld({"@context": "https://schema.org", "@type": "TechArticle", "headline": guide["title"],
+                  "description": guide["summary"], "url": url, "inLanguage": "en"}))
+    page_html = _page(f'{guide["title"]} — skilldrop docs', header, page_body,
+                      desc=guide["summary"], url=url, extra_head=meta)
     out_path = os.path.join(out_dir, guide["kind"], f'{guide["slug"]}.html')
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     return out_path, page_html
@@ -514,7 +566,7 @@ def build_portal_index(by_kind, out_dir):
         "})();</script>"
     )
     body = (
-        '<div class="portal-inner">'
+        '<main class="portal-inner" id="main">'
         '<div class="portal-hero">'
         '<h1>Documentation</h1>'
         '<p>Long-form guides split by Diátaxis kind. '
@@ -528,10 +580,13 @@ def build_portal_index(by_kind, out_dir):
         f'<p style="margin-top:2rem;font-size:.85rem;color:var(--fg-muted)">'
         f'<a href="{REPO_URL}/blob/main/llms.txt"><code>llms.txt</code></a> '
         f'&mdash; the same index in plain text, for agents to read instead of crawling the tree.</p>'
-        '</div>'
+        '</main>'
         + search_js
     )
-    page_html = _page("Documentation — skilldrop", header, body, depth=1)
+    from build_site import SITE_URL
+    page_html = _page("Documentation — skilldrop", header, body, depth=1,
+                      desc="Install guides, tutorials, the loop reference and the full skill catalogue for skilldrop.",
+                      url=f"{SITE_URL}docs/")
     out_path = os.path.join(out_dir, "index.html")
     return out_path, page_html
 
