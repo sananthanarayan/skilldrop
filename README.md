@@ -3,9 +3,9 @@
 [![npm](https://img.shields.io/npm/v/skilldrop-cli)](https://www.npmjs.com/package/skilldrop-cli)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-**[Browse the catalogue →](https://sananthanarayan.github.io/skilldrop/)** — all 62 skills, filterable by outcome, pack, tag, and model tier.
+**[Browse the catalogue →](https://sananthanarayan.github.io/skilldrop/)** — all 63 skills, filterable by outcome, pack, tag, and model tier.
 
-**62 portable AI-agent skills for the deliverables knowledge workers actually ship** — diagrams, design docs, ADRs, PRDs, runbooks, decks, decision logs, threat models, adversarial reviews — installable into **Claude Code**, **Cursor**, **Kiro**, **Codex**, **GitHub Copilot**, and any AI tool that accepts custom instructions, one skill or one role-based pack at a time:
+**63 portable AI-agent skills for the deliverables knowledge workers actually ship** — diagrams, design docs, ADRs, PRDs, runbooks, decks, decision logs, threat models, adversarial reviews — installable into **Claude Code**, **Cursor**, **Kiro**, **Codex**, **GitHub Copilot**, and any AI tool that accepts custom instructions, one skill or one role-based pack at a time:
 
 ```bash
 npx skilldrop-cli install --pack product-manager     # or: solution-architect, dev-team,
@@ -24,13 +24,14 @@ skilldrop ships **loops**, not just parts. A loop is a named sequence of stages 
 
 A loop *sequences* skills — it never contains one. Every skill stays independently installable and runnable on its own, which is what keeps a single-folder copy working in Cursor, Kiro, or Aider.
 
-Four loops cover the lifecycle, and they are separated by **reversibility** — how expensive the mistake is to unwind — which is why each gets its own gate rather than folding into a neighbour:
+Five loops cover the lifecycle, and they are separated by **reversibility** — how expensive the mistake is to unwind — which is why each gets its own gate rather than folding into a neighbour:
 
 | Loop | Takes | Gate | Produces | Mistake costs |
 |---|---|---|---|---|
 | [`discover`](loops/discover/LOOP.md) | interviews, journeys, a strategy question | **G0** human — a person ratifies the brief | a ratified requirement | a re-brief |
 | [`design`](loops/design/LOOP.md) | a ratified requirement | **G1** review — `council-review`'s panel | a recorded decision (ADR) | months, unwound in code |
 | [`build`](loops/build/LOOP.md) | an agreed requirement or triaged defect | **G2** mechanical — `pre-merge-review`'s gate script decides | merged code | a revert |
+| [`release`](loops/release/LOOP.md) | merged code | **G2.5** review — `launch-readiness` on evidence; **G2.6** human go/no-go | a live, reversible rollout | users and data, often irreversible |
 | [`operate`](loops/operate/LOOP.md) | a shipped service | **G3** human — the incident is closed | a postmortem and runbook deltas | live users, irreversible |
 
 Plus one **wrapper**, which is not a lifecycle stage but the two passes either side of *any* generator:
@@ -144,6 +145,41 @@ flowchart LR
 
 <!-- loop:build:end -->
 
+### `release` — merged code to live users
+
+Plan the rollout and the way back, judge readiness on evidence, draft the release notes, then a human makes the go/no-go call. The gap between a merge you can revert and a launch you often cannot.
+
+<!-- loop:release:start -->
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    plan["plan<br/><small>migration-plan</small>"]:::gen
+    ready["ready<br/><small>launch-readiness</small>"]:::review
+    announce["announce<br/><small>release-notes</small>"]:::gen
+    go["go<br/><small>council-review</small>"]:::gate
+    G2_5{"G2.5 · review"}:::gate
+    G2_6{"G2.6 · human"}:::gate
+    DONE(["complete"]):::ship
+
+    plan --> ready
+    ready --> G2_5
+    G2_5 == "PROCEED" ==> announce
+    announce --> go
+    go --> G2_6
+    G2_6 == "PROCEED" ==> DONE
+
+    G2_5 -- "REVISE (max 3)" --> plan
+    G2_6 -- "REVISE (max 3)" --> plan
+```
+
+<!-- loop:release:end -->
+
 ### `operate` — a shipped service through detection and learning
 
 Instrument, write the runbook, communicate the incident, then feed the postmortem's runbook deltas straight back into the runbook. The one loop whose failures are live.
@@ -235,6 +271,7 @@ Skills for the SDLC steps around the code itself — turning raw requirements in
 | [`release-notes`](skills/release-notes/SKILL.md) | Turn git history between two refs (default: last tag → HEAD) into two artifacts: customer-facing release notes rewritten in reader benefits — no commit-speak, no ticket IDs, no "various improvements" — and an internal Keep-a-Changelog version with a commit hash on every line. Breaking changes hoisted to the top of both with an "Action required" line (detected via `!:` markers, removed public API, migration files, major bumps); internal noise (refactors, CI, deps) never leaks into customer notes; vague commits land in a "Needs review" list instead of being guessed at. |
 | [`bug-triage`](skills/bug-triage/SKILL.md) | Turn a vague bug report ("it's broken on mobile sometimes") into a ticket an engineer can start without contacting the reporter: searchable symptom-plus-condition title, numbered repro steps from a clean state (or an explicit "no repro yet" with the exact diagnostics to collect), expected-vs-actual with the verbatim error string, every claim tagged `[reported]` / `[verified]` / `[assumption]`, severity and priority judged independently (S4/P1 is a legitimate combination), ≤3 hypotheses each with a 5-minute check, and duplicate-search hints. One bug per ticket — multi-symptom reports get split. |
 | [`migration-plan`](skills/migration-plan/SKILL.md) | Phased migration/rollout plan (schema change with live backfill, API version, datastore/auth/platform swap) built on the parallel-change pattern: expand → migrate → contract. One change per phase (a failed phase implicates exactly one thing); every phase carries an observable gate with bake time, a tested rollback with an explicit data story, and a blast radius; at most one **named point of no return**; backfill specified idempotent + resumable + rate-limited with 3-depth parity checks; dual-write requires a named reconciler; the contract phase gets a date and an owner so "we'll remove the old path later" actually happens. |
+| [`launch-readiness`](skills/launch-readiness/SKILL.md) | Go/no-go readiness report for a merged change before it reaches users. It lists the change's own failure modes first, then judges seven checks in order: rollback, detection, response, measured NFR targets, data & privacy, comms, staged exposure. Each row is met / not met / n/a-with-reason, with an evidence link and an owner role, and a row with no evidence is `not met`. The verdict (PROCEED / PROCEED WITH CONDITIONS / REVISE / BLOCKED) follows mechanically from the rows, and a missing rollback blocks on its own. Gaps go to `migration-plan`, `observability-plan` or `runbook-generator` instead of being drafted inline. The `ready` stage of the `release` loop. |
 
 ### Product strategy
 
@@ -442,7 +479,7 @@ npx skilldrop-cli install --pack dev-team --project     # .claude/skills — als
 npx skilldrop-cli install prfaq --ide cursor            # + writes .cursor/rules/prfaq.mdc
 npx skilldrop-cli install --pack sre-oncall --ide kiro  # .kiro/skills — Kiro IDE + Kiro CLI, discovered natively
 npx skilldrop-cli install adr-generator --dest .agents/skills   # Codex + Copilot CLI (see below)
-npx skilldrop-cli loops                                 # the five loops, their stages and gates
+npx skilldrop-cli loops                                 # the six loops, their stages and gates
 npx skilldrop-cli install --loop build                  # a loop + every stage skill it sequences (RFC-0028)
 npx skilldrop-cli install --loop --pack sre-oncall      # every loop that pack declares
 npx skilldrop-cli agents                                # the reviewer subagents
@@ -466,7 +503,7 @@ skilldrop is also a **Claude Code plugin marketplace** — one marketplace, seve
 Then take the whole catalogue, or just your role's pack:
 
 ```text
-/plugin install skilldrop@skilldrop             # all 62 skills + 3 reviewer subagents
+/plugin install skilldrop@skilldrop             # all 63 skills + 3 reviewer subagents
 /plugin install solution-architect@skilldrop    # 17 skills
 /plugin install dev-team@skilldrop              # 14 skills + the 3 reviewer subagents
 /plugin install product-manager@skilldrop       # 13 skills

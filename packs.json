@@ -46,7 +46,7 @@
     },
     "dev-team": {
       "description": "Build-and-ship loop: story implementation with adversarial review, test plans, triage, migrations, release notes, agent-policy files, and code-quality gates.",
-      "loops": ["build", "ship-a-draft"],
+      "loops": ["build", "release", "ship-a-draft"],
       "skills": [
         "agents-md-generator",
         "user-story-splitter",
@@ -62,18 +62,20 @@
         "sonar-review",
         "accessibility-audit",
         "output-hygiene",
-        "contribution-wizard"
+        "contribution-wizard",
+        "launch-readiness"
       ]
     },
     "sre-oncall": {
       "description": "Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.",
-      "loops": ["operate"],
+      "loops": ["release", "operate"],
       "skills": [
         "runbook-generator",
         "observability-plan",
         "incident-comms",
         "postmortem-generator",
-        "capacity-cost-model"
+        "capacity-cost-model",
+        "launch-readiness"
       ]
     },
     "stakeholder-comms": {
@@ -191,7 +193,8 @@
         "observability-plan",
         "release-notes",
         "incident-comms",
-        "postmortem-generator"
+        "postmortem-generator",
+        "launch-readiness"
       ]
     },
     "explain-it-to-decision-makers": {

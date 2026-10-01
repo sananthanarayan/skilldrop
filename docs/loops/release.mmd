@@ -1,0 +1,24 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    plan["plan<br/><small>migration-plan</small>"]:::gen
+    ready["ready<br/><small>launch-readiness</small>"]:::review
+    announce["announce<br/><small>release-notes</small>"]:::gen
+    go["go<br/><small>council-review</small>"]:::gate
+    G2_5{"G2.5 · review"}:::gate
+    G2_6{"G2.6 · human"}:::gate
+    DONE(["complete"]):::ship
+
+    plan --> ready
+    ready --> G2_5
+    G2_5 == "PROCEED" ==> announce
+    announce --> go
+    go --> G2_6
+    G2_6 == "PROCEED" ==> DONE
+
+    G2_5 -- "REVISE (max 3)" --> plan
+    G2_6 -- "REVISE (max 3)" --> plan
