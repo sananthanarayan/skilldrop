@@ -252,7 +252,7 @@ function skillDir(cat, s) {
 // vanish in between and the read throws. Handle the absence, do not predict it.
 function readIfPresent(p, absent = "") {
   try { return fs.readFileSync(p, "utf8"); }
-  catch (e) { if (e.code === "ENOENT") return absent; throw e; }
+  catch (e) { if (e.code === "ENOENT" || e.code === "ENOTDIR") return absent; throw e; }
 }
 function reEscape(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
 function skillExists(cat, s) { const d = skillDir(cat, s); return !!d && fs.existsSync(d); }
@@ -651,9 +651,21 @@ function gitRoot(startDir) {
   }
 }
 
-// Append an idempotent, marker-fenced reminder to .git/hooks/pre-commit. IDE-agnostic.
+/* Where git actually reads the pre-commit hook. In a worktree or a submodule .git is a file
+   ("gitdir: ..."), not a folder, and core.hooksPath can move hooks anywhere — so ask git, and
+   only fall back to .git/hooks when git isn't on the PATH. */
+function preCommitPath(root) {
+  try {
+    const out = execFileSync("git", ["rev-parse", "--git-path", "hooks/pre-commit"],
+      { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+    if (out) return path.resolve(root, out);
+  } catch (e) { /* no git binary, or not a repo after all */ }
+  return path.join(root, ".git", "hooks", "pre-commit");
+}
+
+// Append an idempotent, marker-fenced reminder to the repo's pre-commit hook. IDE-agnostic.
 function writeGitPreCommitHook(root, skill, hook) {
-  const p = path.join(root, ".git", "hooks", "pre-commit");
+  const p = preCommitPath(root);
   const marker = `skilldrop-hook:${skill}:pre-commit-review`;
   let body = readIfPresent(p);  // read-and-handle, not check-then-read
   if (!body.startsWith("#!")) body = "#!/bin/sh\n" + body;
@@ -695,7 +707,7 @@ function emitHooks(cat, skill, dest, ide) {
   for (const h of hooks) {
     if (h.event === "pre-commit-review") {
       const root = gitRoot(process.cwd());
-      if (root) lines.push(`  ${skill}: pre-commit reminder -> ${path.join(root, ".git/hooks/pre-commit")}`);
+      if (root) lines.push(`  ${skill}: pre-commit reminder -> ${preCommitPath(root)}`);
       else lines.push(`  ${skill}: pre-commit-review skipped — no git repo at ${process.cwd()}`);
       if (root) writeGitPreCommitHook(root, skill, h);
     } else if (h.event === "session-start") {
@@ -717,7 +729,7 @@ function emitHooks(cat, skill, dest, ide) {
 function removeHooksFor(skill, dest, ide) {
   const root = gitRoot(process.cwd());
   if (root) {
-    const p = path.join(root, ".git", "hooks", "pre-commit");
+    const p = preCommitPath(root);
     const body = readIfPresent(p, null);
     if (body !== null) {
       const q = reEscape(skill);
