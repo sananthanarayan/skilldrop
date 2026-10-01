@@ -1,0 +1,19 @@
+{
+  "skill_name": "metric-definition",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Product and sales at Northwind both report 'active customers' and the numbers never match. Product counts any account with a login in the last 30 days; sales counts accounts with a paid subscription. We use BigQuery: `analytics.logins` (account_id, login_ts TIMESTAMP), `billing.subscriptions` (account_id, status, plan, started_at, ended_at), and `crm.accounts` (account_id, segment, is_internal BOOL). Leadership wants one monthly number for the board, reported in London time. Write the definition.",
+      "assertions": [
+        "Splits the two meanings into separately named metrics (for example login-based and paid-subscription-based) instead of one name with a footnote, and states which one the board number uses or lists it as an open decision",
+        "Writes the formula as an aggregation over the named columns, using COUNT(DISTINCT account_id)",
+        "States the time column, a half-open window and the timezone as Europe/London",
+        "States that the metric is not additive and that monthly or segment values must be recomputed, not summed",
+        "Excludes internal accounts with an explicit predicate on crm.accounts.is_internal and gives a reason",
+        "Provides reference SQL in BigQuery syntax that converts the window boundaries to Europe/London",
+        "Includes at least three runnable sanity checks, including a known-answer fixture or a reconciliation with billing",
+        "Does not invent tables, columns or an owner not given in the prompt; anything assumed is tagged [assumption] and listed under open decisions"
+      ]
+    }
+  ]
+}

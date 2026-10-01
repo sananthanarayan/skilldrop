@@ -9,7 +9,7 @@
       "name": "skilldrop",
       "source": ".",
       "description": "Portable AI-agent skills for the deliverables knowledge workers ship — diagrams, ADRs, PRDs, runbooks, decks, reviews — installable into Claude Code, Cursor, Kiro, and any IDE that takes custom instructions. One command per skill or per role-based pack.",
-      "version": "0.13.9",
+      "version": "0.14.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -24,7 +24,7 @@
         "ref": "plugins"
       },
       "description": "The cross-role toolkit every pack builds on: structured intake, document critique, the review council, and output hygiene, plus the ship-a-draft wrapper. Installed automatically with every role pack. (4 skills)",
-      "version": "0.13.9",
+      "version": "0.14.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -46,7 +46,7 @@
         "ref": "plugins"
       },
       "description": "Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them. (15 skills)",
-      "version": "0.13.9",
+      "version": "0.14.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -69,7 +69,7 @@
         "ref": "plugins"
       },
       "description": "Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, and success measurement. (12 skills)",
-      "version": "0.13.9",
+      "version": "0.14.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -92,7 +92,7 @@
         "ref": "plugins"
       },
       "description": "Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, migrations, launch readiness, release notes, agent-policy files, and code-quality gates. (18 skills)",
-      "version": "0.13.9",
+      "version": "0.14.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -114,8 +114,8 @@
         "path": "packs/sre-oncall",
         "ref": "plugins"
       },
-      "description": "Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models. (9 skills)",
-      "version": "0.13.9",
+      "description": "Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models. (11 skills)",
+      "version": "0.14.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -138,7 +138,7 @@
         "ref": "plugins"
       },
       "description": "Non-technical audiences: audience profiling, exec summaries, decision logs, and guides. Decks live in the design pack. (8 skills)",
-      "version": "0.13.9",
+      "version": "0.14.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -160,7 +160,7 @@
         "ref": "plugins"
       },
       "description": "On-brand visual work: capture a brand once, then build real PowerPoint decks and print-ready marketing flyers in that brand, with logo, colours and fonts applied. (8 skills)",
-      "version": "0.13.9",
+      "version": "0.14.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -184,7 +184,7 @@
         "ref": "plugins"
       },
       "description": "Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, and AI-usage reporting. (15 skills)",
-      "version": "0.13.9",
+      "version": "0.14.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -207,7 +207,7 @@
         "ref": "plugins"
       },
       "description": "Skills for teams building on the Anthropic API — prompt caching, token budgeting, eval generation for skills, and tool-use schema writing. (4 skills)",
-      "version": "0.13.9",
+      "version": "0.14.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -220,6 +220,209 @@
         "evals"
       ],
       "homepage": "https://sananthanarayan.github.io/skilldrop/packs/api-builder/"
+    },
+    {
+      "name": "converters",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/sananthanarayan/skilldrop.git",
+        "path": "packs/converters",
+        "ref": "plugins"
+      },
+      "description": "Turn Markdown into Word, Excel and HTML files that people outside engineering can open, turn their files back into Markdown, and render diagrams to images. Standard-library Python scripts, with nothing to install. (9 skills)",
+      "version": "0.14.0",
+      "author": {
+        "name": "Sanjay Ananthanarayan",
+        "url": "https://github.com/sananthanarayan"
+      },
+      "keywords": [
+        "convert",
+        "markdown",
+        "word",
+        "docx",
+        "excel",
+        "xlsx",
+        "html",
+        "mermaid"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/converters/"
+    },
+    {
+      "name": "experience-design",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/sananthanarayan/skilldrop.git",
+        "path": "packs/experience-design",
+        "ref": "plugins"
+      },
+      "description": "The experience around a product: the structure people navigate, the content and interface words they read, the components they use, and the service behind it all. (9 skills)",
+      "version": "0.14.0",
+      "author": {
+        "name": "Sanjay Ananthanarayan",
+        "url": "https://github.com/sananthanarayan"
+      },
+      "keywords": [
+        "ux",
+        "information-architecture",
+        "ux-writing",
+        "content-design",
+        "design-system",
+        "service-design"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/experience-design/"
+    },
+    {
+      "name": "research",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/sananthanarayan/skilldrop.git",
+        "path": "packs/research",
+        "ref": "plugins"
+      },
+      "description": "Take a question from vague to answered: plan the research around the decision it serves, synthesise the sources with every claim cited, and rank rival explanations by the evidence against them. (7 skills)",
+      "version": "0.14.0",
+      "author": {
+        "name": "Sanjay Ananthanarayan",
+        "url": "https://github.com/sananthanarayan"
+      },
+      "keywords": [
+        "research",
+        "literature review",
+        "synthesis",
+        "citations",
+        "hypotheses",
+        "evidence"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/research/"
+    },
+    {
+      "name": "trackers",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/sananthanarayan/skilldrop.git",
+        "path": "packs/trackers",
+        "ref": "plugins"
+      },
+      "description": "For leads and PMs who run work in Jira, Linear or GitHub Projects: load a PRD into the tracker, triage the backlog, write the weekly status report, and check the tracker still matches the doc, all from an export or an MCP tool, with the numbers computed rather than estimated. (7 skills)",
+      "version": "0.14.0",
+      "author": {
+        "name": "Sanjay Ananthanarayan",
+        "url": "https://github.com/sananthanarayan"
+      },
+      "keywords": [
+        "jira",
+        "linear",
+        "github-projects",
+        "backlog",
+        "status-report",
+        "triage",
+        "prd"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/trackers/"
+    },
+    {
+      "name": "data-analytics",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/sananthanarayan/skilldrop.git",
+        "path": "packs/data-analytics",
+        "ref": "plugins"
+      },
+      "description": "For analysts and the people who rely on their numbers: define a metric once so everyone gets the same figure, review SQL for the bugs that quietly inflate it, and spec dashboards around a decision instead of every chart that was easy to make. (7 skills)",
+      "version": "0.14.0",
+      "author": {
+        "name": "Sanjay Ananthanarayan",
+        "url": "https://github.com/sananthanarayan"
+      },
+      "keywords": [
+        "metrics",
+        "sql",
+        "dashboard",
+        "semantic-layer",
+        "dbt",
+        "bi",
+        "analytics"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/data-analytics/"
+    },
+    {
+      "name": "grc",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/sananthanarayan/skilldrop.git",
+        "path": "packs/grc",
+        "ref": "plugins"
+      },
+      "description": "Governance, risk and compliance drafts for compliance leads, DPOs and risk owners: a risk register with a checked heat map, a GDPR data protection impact assessment, and a SOC 2 control-to-evidence map, each prepared for a qualified person to review. (7 skills)",
+      "version": "0.14.0",
+      "author": {
+        "name": "Sanjay Ananthanarayan",
+        "url": "https://github.com/sananthanarayan"
+      },
+      "keywords": [
+        "grc",
+        "risk register",
+        "dpia",
+        "gdpr",
+        "soc 2",
+        "compliance",
+        "audit evidence",
+        "privacy"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/grc/"
+    },
+    {
+      "name": "infra-as-code",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/sananthanarayan/skilldrop.git",
+        "path": "packs/infra-as-code",
+        "ref": "plugins"
+      },
+      "description": "Terraform you can hand to another team and plans you can trust before apply: reusable modules with secure defaults, and a plan review that catches destroys, data loss, access widening and drift. (6 skills)",
+      "version": "0.14.0",
+      "author": {
+        "name": "Sanjay Ananthanarayan",
+        "url": "https://github.com/sananthanarayan"
+      },
+      "keywords": [
+        "terraform",
+        "infrastructure-as-code",
+        "iac",
+        "module",
+        "plan",
+        "aws",
+        "gcp",
+        "azure"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/infra-as-code/"
+    },
+    {
+      "name": "skill-engineering",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/sananthanarayan/skilldrop.git",
+        "path": "packs/skill-engineering",
+        "ref": "plugins"
+      },
+      "description": "For people writing Agent Skills in their own repos: write a portable SKILL.md folder from a described task, then audit any skill for routing, portability, safety, structure and evals before you share it. (6 skills)",
+      "version": "0.14.0",
+      "author": {
+        "name": "Sanjay Ananthanarayan",
+        "url": "https://github.com/sananthanarayan"
+      },
+      "keywords": [
+        "agent-skills",
+        "skill-md",
+        "claude-code",
+        "codex",
+        "copilot",
+        "cursor",
+        "kiro",
+        "antigravity",
+        "lint"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/skill-engineering/"
     }
   ]
 }

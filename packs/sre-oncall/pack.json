@@ -47,6 +47,11 @@
         "you_do": "Paste the incident thread, pager timeline and notes once it is over.",
         "you_get": "A blameless postmortem with quantified impact, a UTC timeline showing detection and mitigation gaps, contributing factors, up to eight action items, and runbook deltas phrased as edits.",
         "decide": "Gate G3, a human call: PROCEED closes it, PROCEED WITH CONDITIONS closes it with named follow-ups, REVISE sends the deltas back to the runbook."
+      },
+      {
+        "skill": "delivery-metrics-report",
+        "you_do": "A few weeks later, export deployments and incidents as CSV and ask whether the postmortem's actions moved anything.",
+        "you_get": "Change fail rate, failed deployment recovery time, lead time and deployment frequency computed from the exports, with the weekly trend and the rows it had to skip."
       }
     ],
     "you_end_with": "An observability plan, a runbook tied to its alerts, the incident updates you sent, and a postmortem whose deltas go back into the runbook."

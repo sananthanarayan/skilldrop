@@ -1,0 +1,28 @@
+{
+  "skill_name": "md-to-xlsx",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Acme finance wants this in Excel: exports/northwind-invoices.csv. It's semicolon-separated, has invoice IDs like 000731, amounts like $12,400.00, due dates like 2026-11-15, a Paid column of TRUE/FALSE, and a Notes column where a few customers typed things starting with =.",
+      "assertions": [
+        "Runs md_to_xlsx.py on the CSV and writes a .xlsx",
+        "Leaves --formulas off and explains that cells starting with = from an export are kept as text because of formula injection",
+        "Reports that invoice IDs with leading zeros stay text so 000731 keeps its zeros",
+        "Reports the per-sheet summary (rows, columns, numbers, dates, booleans, text) and checks the amounts became numbers",
+        "Does not change, round or fill in any value from the CSV",
+        "Reopens or previews the workbook to confirm it opens, rather than relying on exit code 0"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Turn the tables in reports/q3-ops-review.md into a spreadsheet for Northwind's ops leads. There are four tables; two are under '## Results' and one has the heading '### Incidents by severity: P1 / P2 / P3 (Jul–Sep, all regions)'.",
+      "assertions": [
+        "Gives each table its own short heading before converting, so no sheet is named 'Results (2)' or cut off by the script",
+        "The incidents sheet name is 31 characters or fewer with no / or : in it",
+        "Lists every sheet with its name, rows and columns in the reply",
+        "Reports any WARN lines (renames, padded rows) with what was done about them",
+        "Does not invent rows, totals or values that are not in the Markdown"
+      ]
+    }
+  ]
+}

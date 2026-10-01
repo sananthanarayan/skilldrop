@@ -23,6 +23,14 @@ Install one pack. Every role pack also brings `core` (intake, critique, review c
 - **On-brand decks and flyers:** `design` — capture your brand once, then build `.pptx` decks and print-ready flyers with your logo, colours and fonts. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/design/)
 - **Adopting and building AI:** `ai-engineering` — readiness, use-case triage, policy, agent loops, budgets, agent threat models, evals. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/ai-engineering/)
 - **Building on the Claude API:** `api-builder` — prompt caching, token budgets, eval generation, tool schemas. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/api-builder/)
+- **Moving between formats:** `converters` — Markdown to Word, Excel and HTML, files back to Markdown, and Mermaid diagrams checked and rendered. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/converters/)
+- **Designing the experience:** `experience-design` — information architecture, UX writing, content design, component specs, service blueprints. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/experience-design/)
+- **Researching a question:** `research` — research plans, cited source synthesis, competing hypotheses. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/research/)
+- **Keeping the tracker straight:** `trackers` — backlog triage, weekly status from tracker data, briefs turned into issues. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/trackers/)
+- **Data and analytics:** `data-analytics` — metric definitions, SQL review, dashboard specs. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/data-analytics/)
+- **Governance, risk and compliance:** `grc` — DPIAs, SOC 2 evidence maps, risk registers. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/grc/)
+- **Infrastructure as code:** `infra-as-code` — Terraform modules with secure defaults, and plan reviews before apply. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/infra-as-code/)
+- **Writing agent skills:** `skill-engineering` — author a portable skill with evals, and review one before it ships. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/skill-engineering/)
 - **Everyone:** `core` on its own. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/core/)
 
 ## Start in one command

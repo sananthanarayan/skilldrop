@@ -8,6 +8,21 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.14.0 — 2026-10-01
+
+Eight new packs and 28 new skills (93 in all, across 17 packs). Install any pack with `npx skilldrop-cli install --pack <name>`; each brings `core`.
+
+- **converters**: `md-to-docx`, `md-to-xlsx` and `md-to-html` turn Markdown into Word, Excel and a self-contained HTML file, in your brand.json's fonts and colours. Excel cells are typed, so numbers, percentages and dates sort and sum. `file-to-markdown` turns .docx, .pptx, .xlsx, HTML, CSV and JSON back into Markdown, and lists what it dropped. `mermaid-render` finds the errors that stop a Mermaid diagram rendering, with the line, then renders it. All of them are standard-library scripts, with nothing to install.
+- **experience-design**: `information-architecture`, `ux-writing`, `content-design` (with a readability check on the before and after), `design-system-spec` and `service-blueprint`.
+- **research**: `research-plan`, `source-synthesis` (a script checks that every claim cites a listed source) and `hypothesis-comparison` (competing explanations ranked by how little evidence contradicts them).
+- **trackers**: `backlog-triage` finds duplicates, missing owners and acceptance criteria, and stale items in a Jira, Linear or GitHub export. `team-status-report` builds a weekly status whose numbers come from the export, with the rule that set its RAG. `tracker-brief-sync` turns a PRD into importable issues and reports drift between the two.
+- **data-analytics**: `metric-definition`, `sql-review` (correctness first: fan-out joins, NULLs, time zones, with corrected SQL) and `dashboard-spec`.
+- **grc**: `dpia`, `soc2-evidence-map` and `risk-register`, which checks a register CSV and prints a heat map. They prepare material for a qualified reviewer; they aren't legal or audit advice.
+- **infra-as-code**: `terraform-module` writes a module with secure defaults. `terraform-plan-review` reads `terraform show -json` and gives SAFE TO APPLY, APPLY WITH CARE or DO NOT APPLY, naming every destroy, replacement and widened permission.
+- **skill-engineering**: `skill-author` writes a portable skill with evals for any tool. `skill-review` audits one, with a lint script, and ends READY, FIX FIRST or REWRITE.
+- **sre-oncall** adds `delivery-metrics-report` (DORA's four metrics and flow metrics, computed from your deploy and incident exports) and `cloud-cost-review` (waste and savings in an AWS, GCP or Azure cost export, with savings computed from the bill's own rates). `capacity-cost-model` now covers forward-looking estimates only.
+- Five new jobs to browse by on the site: design the experience, research a question, define and trust the numbers, manage risk and compliance, and build agent skills.
+
 ## 0.13.9 — 2026-10-01
 
 - The `claude-api` pack is now **`api-builder`**, because Claude Code now rejects plugin names that start with `claude-`, which could stop the whole marketplace from loading. Install it with `npx skilldrop-cli install --pack api-builder` or `/plugin install api-builder@skilldrop`. The old `--pack claude-api` still works, with a note, and the old pack page redirects. If you installed the `claude-api` plugin, uninstall it and install `api-builder`. The four skills are unchanged.

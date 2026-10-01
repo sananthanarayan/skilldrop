@@ -1,0 +1,46 @@
+{
+  "description": "For people writing Agent Skills in their own repos: write a portable SKILL.md folder from a described task, then audit any skill for routing, portability, safety, structure and evals before you share it.",
+  "display_name": "Skill engineering",
+  "keywords": ["agent-skills", "skill-md", "claude-code", "codex", "copilot", "cursor", "kiro", "antigravity", "lint"],
+  "links": {
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/skill-engineering/"
+  },
+  "maintainers": [
+    {
+      "name": "sananthanarayan"
+    }
+  ],
+  "first-value": {
+    "audience-posture": "technical",
+    "prerequisites": ["A task you repeat with your coding agent, and Python 3.9 or later for the lint script"],
+    "starter-task": "Turn a task you keep explaining into a skill, then review it",
+    "starter-prompt": "Make a skill that writes customer-facing release notes from the merged PRs I paste: grouped New / Improved / Fixed, breaking changes first, one line per PR with its number. We use Claude Code and Copilot, and we already have a launch-post skill for announcements. Then review the skill before I commit it.",
+    "verification": "skill-author writes a folder with SKILL.md, a template and evals, plus the install path for each of your tools, and skill-review returns a READY, FIX FIRST or REWRITE verdict with the lint script's output pasted in.",
+    "recovery": "If a skill does not activate, ask for it by name (\"use skill-author\"). If the lint script will not run, check that python3 is on your PATH; skill-review can walk the same checks by hand."
+  },
+  "requires": ["core"],
+  "journey": {
+    "when": "You keep explaining the same task to your coding agent, or you are about to share or install a skill and want to know it will route, work in every tool, and do nothing unsafe.",
+    "you_bring": [
+      "the task: what it produces and what makes a good one",
+      "three to five things you'd type to ask for it",
+      "the skills already installed next to it, and which requests belong to them",
+      "the tools your team uses: Claude Code, Codex, Copilot, Cursor, Kiro or Antigravity"
+    ],
+    "time": "20–40 minutes",
+    "steps": [
+      {
+        "skill": "skill-author",
+        "you_do": "Describe the task, the trigger phrases and the nearby skills, and answer one round of questions.",
+        "you_get": "A skill folder: SKILL.md with a routable description, steps, quality bar, boundaries and anti-patterns, plus a template, evals, and the install path for each tool."
+      },
+      {
+        "skill": "skill-review",
+        "you_do": "Point it at the folder and at the folder that holds your other skills.",
+        "you_get": "The lint script's output and a verdict with severity-tagged findings on routing, portability, safety, structure and evals, each with a fix.",
+        "decide": "Commit the skill, apply the fixes and review again, or rewrite it around one artifact."
+      }
+    ],
+    "you_end_with": "A reviewed skill that installs into each of your tools from one folder, with evals to rerun when you change it."
+  }
+}

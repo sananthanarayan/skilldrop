@@ -1,0 +1,68 @@
+{
+  "description": "The experience around a product: the structure people navigate, the content and interface words they read, the components they use, and the service behind it all.",
+  "display_name": "Experience design",
+  "keywords": ["ux", "information-architecture", "ux-writing", "content-design", "design-system", "service-design"],
+  "links": {
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/experience-design/"
+  },
+  "maintainers": [
+    {
+      "name": "sananthanarayan"
+    }
+  ],
+  "first-value": {
+    "audience-posture": "non-technical",
+    "prerequisites": ["A current menu, page list or feature list for the product, and who uses it"],
+    "starter-task": "Restructure a menu users get lost in, and get the test that proves the new one works",
+    "starter-prompt": "Our help centre menu has grown to 15 items and customers can't find refunds or delivery tracking. Current menu: Getting Started, Account, Orders, Shipping, Delivery, Returns, Refunds, Payments, Gift Cards, Promotions, Membership, Privacy, Terms, Contact Us, Community. Design the information architecture and the tree test to validate it.",
+    "verification": "information-architecture returns an inventory with a keep/merge/cut status for every item, a sitemap tree and a Mermaid diagram that match, a label rationale table, findability risks for refunds and tracking, and tree-test tasks that don't use the menu's words.",
+    "recovery": "If you get a journey map instead, ask for it by name (\"use information-architecture\"). If labels look invented, give it your search terms or support ticket themes and ask it to tag every label's evidence."
+  },
+  "requires": ["core"],
+  "journey": {
+    "when": "You're designing or fixing the experience around a product or service: how it's organised, what it says, how its components behave, and what happens behind the scenes.",
+    "you_bring": [
+      "who the users are and their top tasks",
+      "the current menu, page list or feature list",
+      "existing page text, screenshots or wireframes for the flow you're working on",
+      "your design tokens or brand kit, if you have one",
+      "what you know about the teams and systems that deliver the service"
+    ],
+    "time": "1–3 hours for one product area",
+    "steps": [
+      {
+        "skill": "information-architecture",
+        "you_do": "Hand over the content or feature list and the users' top tasks.",
+        "you_get": "A sitemap and nav model with a label rationale table, findability risks, and a tree-test plan.",
+        "decide": "Run the tree test before building, or accept the structure as a hypothesis."
+      },
+      {
+        "skill": "content-design",
+        "you_do": "Pick a key page from the sitemap and give it the current text or the facts it must contain.",
+        "you_get": "User-need statements, the questions in priority order, a plain-language draft with a before/after readability check, and a cut list."
+      },
+      {
+        "skill": "ux-writing",
+        "you_do": "Give it the flow's screens or steps and your voice.",
+        "you_get": "A string table with budgets and variants for every button, label, error and empty state, plus a terminology list."
+      },
+      {
+        "skill": "design-system-spec",
+        "you_do": "Name a component the flow needs and your token set.",
+        "you_get": "A component spec with anatomy, every state by token, keyboard and ARIA behaviour cited to WCAG 2.2, and open questions for engineering."
+      },
+      {
+        "skill": "service-blueprint",
+        "you_do": "Describe one customer scenario and what you know about the teams and systems behind it.",
+        "you_get": "A blueprint table and Mermaid diagram with fail points, waits, pains traced to causes, and 2–3 ranked fixes.",
+        "decide": "Which fix becomes committed work."
+      },
+      {
+        "skill": "doc-critique",
+        "you_do": "Run it on any of the specs before you share them.",
+        "you_get": "A verdict and severity-tagged findings with a fix for each."
+      }
+    ],
+    "you_end_with": "A tested-or-testable structure, the content and strings for a key page and flow, a buildable component spec, and a service blueprint with the fixes ranked."
+  }
+}

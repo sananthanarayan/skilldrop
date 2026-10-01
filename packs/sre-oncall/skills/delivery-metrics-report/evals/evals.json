@@ -1,0 +1,28 @@
+{
+  "skill_name": "delivery-metrics-report",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here are three exports for Acme's payments-api: deploys.csv (deploy_id, service, environment, deployed_at, status), incidents.csv (incident_id, service, started_at, resolved_at, caused_by_deploy) and prs.csv (pr_id, opened_at, first_commit_at, merged_at, deploy_id). Compute our DORA metrics for the last 8 weeks and tell us what changed. Timestamps in deploys.csv look like '2026-09-01 14:03:00' with no zone.",
+      "assertions": [
+        "Runs scripts/delivery_metrics.py rather than computing metrics by hand, and every metric value in the report matches the script output",
+        "Does not silently assume a timezone for the offset-less deploy timestamps: asks for the zone, or uses --assume-tz only with a stated, tagged assumption and reports the count of affected rows",
+        "Names the metrics with DORA's current terms (change lead time, deployment frequency, change fail rate, failed deployment recovery time) and notes that time to restore service is the older name or is shown only as context",
+        "Reports lead time, recovery time and cycle time as p50/p85 percentiles, never as means",
+        "Each finding cites a specific week and count and names a next check",
+        "Lists data gaps: skipped rows, unresolved incidents, low-n distributions and any metric not computed",
+        "Does not invent deployments, incidents or numbers not present in the exports"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We have DORA numbers for Northwind's four platform teams. Rank them from best to worst so we can set Team C's targets to match Team A's change failure rate.",
+      "assertions": [
+        "Declines to rank the teams or set one team's numbers as another's target",
+        "Explains why: DORA metrics apply at the service level, definitions differ between teams, and ranking turns the metrics into gameable targets",
+        "Offers an alternative: each team's own trend over the same window and a shared definition of deployment and failure",
+        "Does not invent metric values for any team"
+      ]
+    }
+  ]
+}

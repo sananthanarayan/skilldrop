@@ -1,0 +1,66 @@
+{
+  "description": "Turn Markdown into Word, Excel and HTML files that people outside engineering can open, turn their files back into Markdown, and render diagrams to images. Standard-library Python scripts, with nothing to install.",
+  "display_name": "Converters",
+  "keywords": ["convert", "markdown", "word", "docx", "excel", "xlsx", "html", "mermaid"],
+  "links": {
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/converters/"
+  },
+  "maintainers": [
+    {
+      "name": "sananthanarayan"
+    }
+  ],
+  "first-value": {
+    "audience-posture": "technical",
+    "prerequisites": ["Python 3.9 or later", "A Markdown file with a heading or two, and a table if you want a spreadsheet"],
+    "starter-task": "Send a Markdown report as a Word document and its tables as a spreadsheet",
+    "starter-prompt": "Convert reports/q3-review.md to a Word document for the Acme account team, and put its tables in an Excel workbook for finance.",
+    "verification": "md-to-docx writes q3-review.docx with the headings in Word's navigation pane and a WARN line for anything it dropped, and md-to-xlsx writes q3-review.xlsx with one sheet per table, numbers typed as numbers, and a frozen, filtered header row.",
+    "recovery": "If the script says python3 is not found, install Python 3.9 or later. If a skill does not activate, ask for it by name (\"use md-to-docx\"). If a table lands as text, read the per-sheet counts md-to-xlsx printed: a unit typed inside the number cells is the usual cause."
+  },
+  "requires": ["core"],
+  "journey": {
+    "when": "Your draft is in Markdown, but the people who need it work in Word, Excel or a browser, or they sent you their files and you want to work on them as Markdown.",
+    "you_bring": [
+      "the Markdown draft, or the Word, PDF, Excel or HTML files you were sent",
+      "any Mermaid diagrams the draft contains",
+      "a brand.json from brand-kit, if the Word file should be in your brand",
+      "who it is for, and whether they edit it, calculate with it or only read it"
+    ],
+    "time": "10 to 20 minutes",
+    "steps": [
+      {
+        "skill": "file-to-markdown",
+        "you_do": "If you start from someone else's files, hand them over.",
+        "you_get": "Markdown you can edit and diff, with a count of what could not come across (images, charts, comments, formulas, tracked changes)."
+      },
+      {
+        "skill": "output-hygiene",
+        "you_do": "Run it on the finished draft before it leaves the team.",
+        "you_get": "The draft with invisible characters and generated-by trailers stripped, and machine-sounding lines flagged with rewrites."
+      },
+      {
+        "skill": "mermaid-render",
+        "you_do": "If the draft has Mermaid diagrams, render them.",
+        "you_get": "Each diagram checked for the errors that stop it rendering, then an SVG or PNG per diagram to embed in the Word or HTML version (PNG and SVG need mermaid-cli installed)."
+      },
+      {
+        "skill": "md-to-docx",
+        "you_do": "Convert the draft for readers who will edit or comment in Word.",
+        "you_get": "A .docx with real headings, live links, tables and embedded images, plus a list of anything dropped.",
+        "decide": "Send it, or fix the warnings in the Markdown and convert again."
+      },
+      {
+        "skill": "md-to-xlsx",
+        "you_do": "Convert the tables for readers who will filter or total them.",
+        "you_get": "A .xlsx with one sheet per table, typed numbers, dates and percentages, and formulas off unless you ask."
+      },
+      {
+        "skill": "md-to-html",
+        "you_do": "Convert the draft for readers who only need to read it in a browser.",
+        "you_get": "One self-contained, print-friendly HTML file with images embedded, so it still works when emailed."
+      }
+    ],
+    "you_end_with": "The same content in the format each reader uses, with nothing dropped silently, and a Markdown source you can keep editing."
+  }
+}

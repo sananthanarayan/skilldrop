@@ -1,0 +1,49 @@
+{
+  "name": "skill-review",
+  "version": "0.1.0",
+  "description": "Audit an existing Agent Skill folder (SKILL.md plus its scripts, references and evals) for Claude Code, Codex, Copilot, Cursor, Kiro or Antigravity, and return a READY / FIX FIRST / REWRITE verdict with severity-tagged findings across five areas — whether a router would pick it and whether it collides with a sibling, portability, safety (mapped to the OWASP Agentic Skills Top 10), structure, and eval coverage — backed by a stdlib lint script for the mechanical checks. Use when the user says \"review this skill\", \"is my SKILL.md any good\", \"why doesn't my skill trigger\", \"is this skill safe to install\", or wants a skill checked before sharing or publishing it.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "agent-threat-model",
+    "agents-md-generator",
+    "contribution-wizard",
+    "doc-critique",
+    "eval-harness-generator",
+    "skill-author"
+  ],
+  "handoff": [
+    {
+      "to": "skill-author",
+      "when": "the verdict is REWRITE",
+      "purpose": "Rebuild the skill around one artifact with a routable description, a quality bar and evals.",
+      "fallback": "If skill-author is absent, state the one artifact, write the new description, and list the sections the rewrite needs inline."
+    },
+    {
+      "to": "eval-harness-generator",
+      "when": "the only material gap is eval coverage",
+      "purpose": "Generate acceptance prompts and trigger queries from the skill's own quality bar.",
+      "fallback": "If eval-harness-generator is absent, write one acceptance prompt with assertions from the quality bar and three near-miss queries inline."
+    }
+  ],
+  "tags": [
+    "agent-skills",
+    "skill-md",
+    "review",
+    "lint",
+    "portability",
+    "security",
+    "owasp"
+  ],
+  "model": {
+    "tier": "heavy",
+    "rationale": "Adversarial audit with a verdict: routing collisions and paraphrased safety issues are what a fast pass misses, and the lint script covers only the mechanical half."
+  }
+}

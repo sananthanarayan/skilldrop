@@ -1,0 +1,9 @@
+flowchart LR
+    start([Customer]) --> api["Orders API (v2)"]
+    api --> db[(Orders DB)]
+    api --> queue{{Events}}
+    queue --> done([Done])
+    worker[Worker] --> cache[(Cache)]
+    subgraph Billing["Billing zone"]
+        inv[Invoicer] -->|"monthly"| api
+    end

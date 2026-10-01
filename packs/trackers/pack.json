@@ -1,0 +1,61 @@
+{
+  "description": "For leads and PMs who run work in Jira, Linear or GitHub Projects: load a PRD into the tracker, triage the backlog, write the weekly status report, and check the tracker still matches the doc, all from an export or an MCP tool, with the numbers computed rather than estimated.",
+  "display_name": "Trackers",
+  "keywords": ["jira", "linear", "github-projects", "backlog", "status-report", "triage", "prd"],
+  "links": {
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/trackers/"
+  },
+  "maintainers": [
+    {
+      "name": "sananthanarayan"
+    }
+  ],
+  "first-value": {
+    "audience-posture": "non-technical",
+    "prerequisites": [
+      "A CSV or JSON export of your backlog from Jira, Linear or GitHub, or a tracker MCP tool installed",
+      "Python 3.9 or later, for the counting scripts"
+    ],
+    "starter-task": "Triage your backlog before the next refinement session",
+    "starter-prompt": "Here's our backlog exported from Jira: ./backlog.csv. Refinement is Thursday. Find the duplicates, tell me what isn't ready to pull and why, and propose an order for what we take next. Anything without an update in 30 days counts as stale.",
+    "verification": "backlog-triage runs its script and reports exact counts (duplicate pairs, items with no owner or no acceptance criteria, stale and oversized items), names each duplicate pair with why they match, gives a reason for every position in the ordering, and ends with a change list you can apply.",
+    "recovery": "If the counts say \"n/a\", the script didn't find a column: rerun it with --map, e.g. --map owner=\"Team Lead\". If backlog-triage doesn't activate, ask for it by name (\"use backlog-triage\")."
+  },
+  "requires": ["core"],
+  "journey": {
+    "when": "A PRD has been agreed and the work is about to live in the tracker for weeks, and you want the tracker, the backlog and the weekly update to stay honest.",
+    "you_bring": [
+      "the PRD or brief, ideally with numbered requirements",
+      "which tracker you use, and where the team reads the doc",
+      "a CSV or JSON export of the tracker, or a tracker MCP tool",
+      "the reporting period and what was planned for it"
+    ],
+    "time": "About 20 minutes for the import, then 10 to 15 minutes a week",
+    "steps": [
+      {
+        "skill": "tracker-brief-sync",
+        "you_do": "Hand over the PRD and name your tracker.",
+        "you_get": "A checked import file (Jira CSV, mapped CSV or gh commands) with one epic per goal and one story per requirement, each with acceptance criteria and a link back to its section.",
+        "decide": "Import as is, or adjust the mapping first."
+      },
+      {
+        "skill": "backlog-triage",
+        "you_do": "Before refinement, give it a fresh export of the backlog.",
+        "you_get": "Exact counts, confirmed duplicate pairs, what isn't ready and why, priority conflicts, a reasoned ordering and a change list.",
+        "decide": "Which changes to apply, and who owns the unowned items."
+      },
+      {
+        "skill": "team-status-report",
+        "you_do": "Each week, give it the export, the period, the plan, and anything the tracker doesn't show about blockers.",
+        "you_get": "A one-screen report: shipped, in progress, blocked with blocker and owner, slipped against plan, risks and asks, with a RAG status and the rule that set it."
+      },
+      {
+        "skill": "tracker-brief-sync",
+        "you_do": "Mid-build or before launch, give it the PRD and a fresh export.",
+        "you_get": "A drift report: requirements with no issue, issues with no requirement, issues pointing at removed sections, and issues for Won't-have items, each with both ways to resolve it.",
+        "decide": "Change the tracker, or change the doc."
+      }
+    ],
+    "you_end_with": "A tracker that traces back to the PRD, a groomed backlog, a weekly report built from counted numbers, and a record of where the plan and the work have drifted apart."
+  }
+}

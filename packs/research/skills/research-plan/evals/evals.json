@@ -1,0 +1,28 @@
+{
+  "skill_name": "research-plan",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to research whether Northwind should build a self-serve onboarding flow instead of our current sales-led onboarding for small customers. The VP of Growth decides in Q1 planning on 15 January. We have product analytics in Amplitude and about 200 small customers. I've got maybe 25 hours.",
+      "assertions": [
+        "Opens with the decision, who makes it (VP of Growth) and the date (15 January), taken from the prompt",
+        "States one precise question naming the population, the change, the comparison and a timeframe",
+        "Breaks it into three to six sub-questions, each tied to the decision",
+        "Gives each sub-question a finding that would change the decision, with a threshold where one makes sense",
+        "Picks a method per sub-question with scope, owner and time, and prefers the existing Amplitude data over a new survey",
+        "Writes inclusion and exclusion criteria and paste-ready search strings, including one for the opposite view",
+        "Sets a stopping rule with both a sufficiency test and a budget cap within the 25 hours",
+        "Does not state findings or invent facts about Northwind not in the prompt; inferred items are tagged [assumption]"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Research AI coding assistants for me.",
+      "assertions": [
+        "Asks what decision the research will inform, who makes it and by when, before writing a plan",
+        "Asks no more than two questions",
+        "Does not produce a full plan around an invented decision"
+      ]
+    }
+  ]
+}

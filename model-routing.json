@@ -102,9 +102,93 @@
       "tier": "light",
       "rationale": "Maps a fixed set of audience archetypes to structural rules. Lookup against a rubric, not synthesis."
     },
+    "backlog-triage": {
+      "tier": "standard",
+      "rationale": "A script does the counting; the model confirms duplicates by reading, judges readiness and writes a reasoned ordering. Bounded judgment over structured data."
+    },
+    "cloud-cost-review": {
+      "tier": "standard",
+      "rationale": "A stdlib script does the aggregation; the model maps columns, checks evidence and computes savings with shown arithmetic against a fixed category checklist, which is bounded judgment."
+    },
+    "content-design": {
+      "tier": "standard",
+      "rationale": "Rewrites source text from user needs under fixed plain-language rules, with a script for the readability numbers. Prioritising questions needs judgment, but facts come from the source."
+    },
+    "dashboard-spec": {
+      "tier": "standard",
+      "rationale": "Structured spec from a decision and a metric list; the vanity-metric cut and chart choice need judgment but follow fixed rules."
+    },
     "decision-log": {
       "tier": "light",
       "rationale": "Extracts decisions/owners/dates from notes. Pattern extraction; escalate on long transcripts via large-input rule."
+    },
+    "delivery-metrics-report": {
+      "tier": "standard",
+      "rationale": "A stdlib script computes every number; the model maps columns, checks data quality and interprets weekly trends against fixed DORA definitions, which is bounded judgment."
+    },
+    "design-system-spec": {
+      "tier": "standard",
+      "rationale": "Fills a fixed spec shape (anatomy, states, tokens, accessibility) against a checked WCAG list. Needs care on states and keyboard patterns, but the structure bounds it."
+    },
+    "dpia": {
+      "tier": "heavy",
+      "rationale": "Legal-structure judgment: screening, choosing a lawful basis per purpose, spotting inferred special category data and transfers, and scoring harm to individuals. Errors are costly and the input is usually incomplete."
+    },
+    "file-to-markdown": {
+      "tier": "light",
+      "rationale": "A deterministic stdlib script does the extraction; the model runs it, relays the dropped-content report and hands off. No generation beyond a short summary of losses."
+    },
+    "hypothesis-comparison": {
+      "tier": "heavy",
+      "rationale": "Judgment-heavy: generating real rivals, rating every evidence-hypothesis cell honestly and resisting the favourite theory is where a fast pass fails; the script only does the arithmetic."
+    },
+    "information-architecture": {
+      "tier": "standard",
+      "rationale": "Structured synthesis from a content list into groups, labels and a nav model against fixed IA practice. Grouping needs judgment, but the method and the validation plan bound it."
+    },
+    "md-to-docx": {
+      "tier": "standard",
+      "rationale": "A stdlib script does the conversion; the model restructures the Markdown so it converts cleanly (heading levels, footnotes, HTML), reads each warning and explains the losses. Bounded editing, no open-ended generation."
+    },
+    "md-to-html": {
+      "tier": "light",
+      "rationale": "A deterministic stdlib script does the conversion; the model picks options, fixes a few unsupported Markdown constructs and relays the script's warnings. Little judgment."
+    },
+    "md-to-xlsx": {
+      "tier": "standard",
+      "rationale": "A stdlib script types and writes the cells; the model shapes tables from the source (headings, units, one header row), decides whether formulas are safe to enable, and checks the per-sheet type counts against the data. Bounded, mostly mechanical judgment."
+    },
+    "mermaid-render": {
+      "tier": "standard",
+      "rationale": "The script lints and renders deterministically, but fixing a broken diagram means reading the author's intent and rewriting syntax without changing nodes, edges or labels, and knowing when to ask instead."
+    },
+    "metric-definition": {
+      "tier": "standard",
+      "rationale": "Structured specification against a fixed checklist (formula, grain, window, exclusions, edge cases, checks). Needs care with SQL and additivity but no adversarial judgment."
+    },
+    "research-plan": {
+      "tier": "standard",
+      "rationale": "Structured planning against a fixed shape (decision, sub-questions, methods, criteria, stopping rule); needs judgment to cut scope but no adversarial reasoning."
+    },
+    "risk-register": {
+      "tier": "standard",
+      "rationale": "Structured writing against a fixed format and scale, with a script doing the checks and counts. Scoring needs some judgment but is bounded by the written scale."
+    },
+    "service-blueprint": {
+      "tier": "standard",
+      "rationale": "Structured mapping of a described service into fixed lanes, with fail points, waits and a ranking. Tracing causes needs judgment, but the lane structure and the input bound it."
+    },
+    "skill-author": {
+      "tier": "standard",
+      "rationale": "Structured authoring against a fixed anatomy. The judgment is in the description and sibling boundaries, which the interview anchors; skill-review is the adversarial pass."
+    },
+    "skill-review": {
+      "tier": "heavy",
+      "rationale": "Adversarial audit with a verdict: routing collisions and paraphrased safety issues are what a fast pass misses, and the lint script covers only the mechanical half."
+    },
+    "soc2-evidence-map": {
+      "tier": "standard",
+      "rationale": "Maps controls against a fixed criteria set and a known Type I vs Type II evidence pattern. Judgment is needed on coverage and gap status, but the structure is bounded by the reference."
     },
     "sonar-onboard": {
       "tier": "light",
@@ -201,6 +285,30 @@
     "pre-merge-review": {
       "tier": "standard",
       "rationale": "Orchestration: runs a deterministic gate script, dispatches the (heavy) reviewer subagents, and renders a rule-based go/no-go. The adversarial reasoning is delegated to the panel, so the skill itself is coordination."
+    },
+    "source-synthesis": {
+      "tier": "standard",
+      "rationale": "Bounded synthesis over supplied text with a fixed citation format and strength criteria; the citation checker catches the mechanical failures, so mid-tier judgment is enough."
+    },
+    "sql-review": {
+      "tier": "heavy",
+      "rationale": "Adversarial correctness review: finding join fan-out, NULL and timezone bugs means reasoning about data the query never shows, and a missed finding ships a wrong number. Never downgrade."
+    },
+    "team-status-report": {
+      "tier": "standard",
+      "rationale": "A script computes every count and the suggested RAG; the model writes plain-language summaries, attributes outside facts and frames risks and asks. Bounded writing over computed numbers."
+    },
+    "terraform-module": {
+      "tier": "standard",
+      "rationale": "Structured generation against fixed module conventions and a secure-defaults checklist; the judgment is bounded to choosing defaults and validation rules for a described need."
+    },
+    "terraform-plan-review": {
+      "tier": "heavy",
+      "rationale": "Adversarial review of a destructive change: judging which replacements lose data, which access changes widen exposure, and what is out of scope needs careful reasoning; a missed destroy costs far more than the model."
+    },
+    "tracker-brief-sync": {
+      "tier": "standard",
+      "rationale": "Maps doc sections to items and writes acceptance criteria that restate requirements; a script checks the spec, writes the import file and computes drift. Bounded transformation with a deterministic check."
     },
     "user-story-splitter": {
       "tier": "standard",
@@ -357,6 +465,10 @@
     "contribution-wizard": {
       "tier": "standard",
       "rationale": "Intake plus structured generation \u2014 standard tier covers template-filling and schema-adherence judgment."
+    },
+    "ux-writing": {
+      "tier": "standard",
+      "rationale": "Short-form writing to fixed slot rules and character budgets, plus a terminology consistency pass. Bounded generation with clear checks."
     }
   }
 }

@@ -1,0 +1,57 @@
+{
+  "description": "Governance, risk and compliance drafts for compliance leads, DPOs and risk owners: a risk register with a checked heat map, a GDPR data protection impact assessment, and a SOC 2 control-to-evidence map, each prepared for a qualified person to review.",
+  "display_name": "Governance, risk and compliance",
+  "keywords": ["grc", "risk register", "dpia", "gdpr", "soc 2", "compliance", "audit evidence", "privacy"],
+  "links": {
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/grc/"
+  },
+  "maintainers": [
+    {
+      "name": "sananthanarayan"
+    }
+  ],
+  "first-value": {
+    "audience-posture": "non-technical",
+    "prerequisites": ["A list of the risks you already worry about, with an owner for each if you know them"],
+    "starter-task": "Turn a list of worries into a scored, owned risk register",
+    "starter-prompt": "Build a risk register for our office relocation project. Risks: the lease on the new floor isn't signed yet (owner: Facilities Manager, Dana Cole), the network fit-out might slip past the move date (owner: IT Manager, Raj Patel), and staff may push back on desk sharing (owner: HR Business Partner, Lena Fox). Use a 5x5 scale; today is 2026-10-01.",
+    "verification": "risk-register writes a CSV where each risk has a cause, an event and a consequence, inherent and residual scores on a defined 5x5 scale, a named owner and a treatment with a date; its check script prints PASS, a heat map, and the top risks needing a decision.",
+    "recovery": "If the script fails, read its error lines: each names the row and the field to fix. If risk-register does not activate, ask for it by name (\"use risk-register\")."
+  },
+  "requires": ["core"],
+  "journey": {
+    "when": "An audit, a regulator, a new processing activity or a risk committee needs a written, defensible view of what could go wrong and what you do about it.",
+    "you_bring": [
+      "the scope: a project, a product, a business unit or the whole company",
+      "the risks you know about and who owns each",
+      "for a DPIA: what personal data you process, why, where it goes and how long you keep it",
+      "for SOC 2: the Trust Services Criteria in scope, the report type, and your controls list if you have one"
+    ],
+    "steps": [
+      {
+        "skill": "risk-register",
+        "you_do": "Give it the scope, the risks and the owners.",
+        "you_get": "A register CSV with each risk as cause, event and consequence, inherent and residual scores on a defined scale, treatments with dates, a checked heat map, and the top risks needing a decision.",
+        "decide": "Which risks to accept, fund or avoid."
+      },
+      {
+        "skill": "dpia",
+        "you_do": "For any activity that processes personal data and looks high risk, describe the processing, the data and the recipients.",
+        "you_get": "A DPIA draft in the structure GDPR requires, with a data inventory, lawful basis per purpose, risks to individuals, measures, residual risk, a view on prior consultation, and questions for the DPO.",
+        "decide": "Whether the DPO signs off, asks for more measures, or recommends prior consultation."
+      },
+      {
+        "skill": "soc2-evidence-map",
+        "you_do": "Name the criteria in scope, Type I or Type II, the audit period, and your controls and systems.",
+        "you_get": "A control-to-criteria map with the evidence an auditor will ask for, where it lives, who owns it, how often it is produced, and the gaps, as a table and a CSV."
+      },
+      {
+        "skill": "doc-critique",
+        "you_do": "Run it on the DPIA or the evidence map before it goes to the DPO or the auditor.",
+        "you_get": "A verdict and severity-tagged findings with a fix for each.",
+        "decide": "Send it, fix it, or go back for missing facts."
+      }
+    ],
+    "you_end_with": "A risk register you can keep up to date, a DPIA draft ready for the DPO, and an evidence map that tells each control owner what to collect before the audit."
+  }
+}

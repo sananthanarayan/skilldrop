@@ -1,0 +1,11 @@
+[
+  {"query": "Review this SKILL.md before I share it with my team", "should_trigger": true},
+  {"query": "My skill never triggers in Codex. Can you audit the folder and tell me why?", "should_trigger": true},
+  {"query": "Is this third-party skill safe to install? Check its scripts and instructions", "should_trigger": true},
+  {"query": "Lint my agent skill and give me a ready or not verdict", "should_trigger": true},
+  {"query": "Check whether my Claude Code skill will work in Copilot and Kiro too", "should_trigger": true},
+  {"query": "Write a new skill that turns support tickets into a weekly digest", "should_trigger": false},
+  {"query": "Generate eval cases for my existing skill so I can catch regressions", "should_trigger": false},
+  {"query": "Audit our repo's AGENTS.md; agents keep running commands that don't exist", "should_trigger": false},
+  {"query": "Threat-model our support agent that can read the CRM and send emails", "should_trigger": false}
+]

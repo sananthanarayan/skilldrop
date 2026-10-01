@@ -1,0 +1,30 @@
+[
+  {
+    "query": "My mermaid diagram says syntax error, can you find what's wrong?",
+    "should_trigger": true
+  },
+  {
+    "query": "Export the diagrams in design.md as PNGs for my slides",
+    "should_trigger": true
+  },
+  {
+    "query": "Check every mermaid block in this doc renders before I open the PR",
+    "should_trigger": true
+  },
+  {
+    "query": "Convert arch.mmd to an SVG",
+    "should_trigger": true
+  },
+  {
+    "query": "Draw an architecture diagram of our three-tier AWS app",
+    "should_trigger": false
+  },
+  {
+    "query": "Turn design.md into an HTML page I can email",
+    "should_trigger": false
+  },
+  {
+    "query": "Make design.md a Word document with the diagrams in it",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "skill_name": "md-to-html",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Convert docs/q3-review.md to an HTML file I can email to the Northwind Health ops committee. Use ./brand/brand.json and add a contents box. It has a results table, a screenshot at img/dashboard.png and one Mermaid flowchart. Some people on the committee read email offline on the train.",
+      "assertions": [
+        "Runs md_to_html.py with --brand ./brand/brand.json and --toc, writing a single .html file",
+        "Does not use --mermaid cdn without saying the file then needs network; because readers are offline, offers to render the flowchart to SVG with mermaid-render or keeps it as text",
+        "Reports the image as embedded, or names it as missing if the script warned it was not found",
+        "Relays every warning the script printed in plain words, not just the counts",
+        "Does not pass --allow-html",
+        "Does not invent content, numbers or sections that are not in docs/q3-review.md",
+        "Tells the user to print-preview the file and check an anchor link"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "name": "mermaid-render",
+  "version": "0.1.0",
+  "description": "Check Mermaid diagrams for the mistakes that stop them rendering (unknown diagram type, unbalanced brackets or quotes, unquoted parentheses in labels, the word end as a node id, missing arrows, unclosed subgraphs or alt blocks) with line numbers and a fix for each, then render them to SVG, PNG or PDF with mermaid-cli, or to a standalone HTML page when it is not installed. Works on a .mmd file or every mermaid fence in a Markdown doc. Use when a diagram \"won't render\", the user says \"check my mermaid\", \"export this diagram as SVG/PNG\", or needs the diagrams in a doc as image files.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "architecture-diagrams",
+    "md-to-docx",
+    "md-to-html"
+  ],
+  "handoff": [
+    {
+      "to": "md-to-html",
+      "when": "the diagrams are rendered and the doc around them needs sharing",
+      "purpose": "Embed the SVGs in a self-contained HTML file that works offline.",
+      "fallback": "If md-to-html is absent, give the user the SVG paths and the Markdown image lines (![…](figures/x-1.svg)) to paste in place of each fence."
+    }
+  ],
+  "tags": [
+    "mermaid",
+    "diagram",
+    "lint",
+    "svg",
+    "png",
+    "render"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "The script lints and renders deterministically, but fixing a broken diagram means reading the author's intent and rewriting syntax without changing nodes, edges or labels, and knowing when to ask instead."
+  }
+}

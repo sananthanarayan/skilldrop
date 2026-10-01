@@ -1,0 +1,19 @@
+{
+  "skill_name": "source-synthesis",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Synthesise these three sources on whether Northwind should offer annual billing discounts. S1: Contoso pricing benchmark 2026 (40 pp.): p12 'median annual discount among 300 SaaS firms is 17%'; p15 'annual plans churn 40% less, though firms self-select annual buyers'. S2: Acme finance memo, 3 pp., Feb 2026: p2 'our 2025 annual-plan pilot lifted cash collected up front by $210k'; p3 'net revenue retention unchanged'. S3: transcript, Northwind sales lead, 22 min: 08:40 'customers ask for annual all the time'; 15:10 'the big deals want 25% off'. Question: what discount, if any, should we offer?",
+      "assertions": [
+        "Every claim carries a citation with a source id and a location such as [S1:p12] or [S3:08:40]",
+        "Findings are organised by theme or sub-question, not as a source-by-source summary",
+        "Agreement and disagreement are explicit, naming which sources sit on each side (for example S1's 17% median vs S3's 25% ask)",
+        "Each finding has an evidence-strength rating and names the criteria behind it",
+        "The self-selection caveat on S1's churn figure is kept rather than turned into a causal claim",
+        "Lists gaps and what the sources do not say, such as no source testing a specific discount level on Northwind's own customers",
+        "Does not add facts, benchmarks or figures that are not in the three sources, unless tagged [outside]",
+        "Runs or recommends the citation checker and reports its result"
+      ]
+    }
+  ]
+}

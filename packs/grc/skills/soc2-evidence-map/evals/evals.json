@@ -1,0 +1,19 @@
+{
+  "skill_name": "soc2-evidence-map",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Acme Payments is going for SOC 2 Type II, Security and Availability, for 1 April to 30 September 2027. Controls today: Google Workspace SSO with MFA, joiners requested in Linear and approved by the hiring manager, leavers removed by IT 'usually the same day' with no ticket, GitHub PR reviews required on main, GCP Cloud SQL backups nightly, an uptime status page, PagerDuty on-call run by Priya Nair (SRE lead). Map our controls to the criteria, list the evidence the auditor will want, and show the gaps as a table and a CSV.",
+      "assertions": [
+        "Every common criterion and every Availability criterion in scope is either mapped to a control or listed as a gap",
+        "Each control is written as who does what, how often, and where it is recorded",
+        "Type II evidence names the full population, the system it is exported from, and what each sampled item must show",
+        "The leaver process with no ticket is marked partial or gap, not in place, because it leaves no per-sample record",
+        "Criteria IDs used are real AICPA TSC IDs (for example CC6.2, A1.2); areas without a confident ID are described in words",
+        "System, owner and frequency are given for every row, and owners not in the prompt are marked to confirm rather than invented",
+        "GCP is treated as a subservice organisation with its SOC report to collect",
+        "A CSV with one row per control-criterion pair is provided alongside the table"
+      ]
+    }
+  ]
+}

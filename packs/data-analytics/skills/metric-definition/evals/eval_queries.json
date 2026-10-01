@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Define exactly how we calculate monthly active users so every dashboard agrees",
+    "should_trigger": true
+  },
+  {
+    "query": "Finance and product get different churn numbers. Write one definition with the SQL",
+    "should_trigger": true
+  },
+  {
+    "query": "Write the metric spec for net revenue for our dbt semantic layer",
+    "should_trigger": true
+  },
+  {
+    "query": "What should count as an active customer? Test accounts, refunds, timezone, all of it",
+    "should_trigger": true
+  },
+  {
+    "query": "How will we know the new onboarding flow worked? Pick the KPIs and targets",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a data contract for the events table other teams consume",
+    "should_trigger": false
+  },
+  {
+    "query": "Set SLOs and error budgets for the checkout API",
+    "should_trigger": false
+  },
+  {
+    "query": "Spec the executive sales dashboard before the BI team builds it",
+    "should_trigger": false
+  }
+]

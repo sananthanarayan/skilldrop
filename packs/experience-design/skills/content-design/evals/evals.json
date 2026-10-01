@@ -1,0 +1,18 @@
+{
+  "skill_name": "content-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's our 'Making a claim' page for Acme Home Insurance. Please make it something people can actually use. Current text: 'Policyholders wishing to initiate a claim in respect of loss or damage to insured property are required to notify Acme Home Insurance at the earliest practicable opportunity and in any event within 30 days of the incident. Notification may be effected via the online portal or by telephone. Claimants will be required to furnish supporting documentation including photographs, receipts and, where applicable, a crime reference number. Acme Home Insurance is committed to delivering market-leading service and has been recognised with numerous industry accolades. Claims are typically assessed within 15 working days of receipt of all documentation.' Most calls we get are 'what do I need to send' and 'how long will it take'.",
+      "assertions": [
+        "User-need statements follow 'As a… I need… so that…' with a specific reader and an evidence tag",
+        "Questions are listed in priority order and the page headings follow that order, written in the reader's words",
+        "The draft keeps every fact: 30 days, online or phone, photos, receipts, crime reference number where applicable, and 15 working days after all documents",
+        "No sentence in the draft is over 25 words",
+        "Before/after readability numbers are reported from the script, or the output says the grade was not computed",
+        "The cut list includes the 'market-leading service' and 'industry accolades' sentence with a reason",
+        "Does not invent a phone number, URL, excess amount or other fact not in the prompt; unknowns are placeholders listed as open questions"
+      ]
+    }
+  ]
+}

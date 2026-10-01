@@ -8,7 +8,7 @@
     "should_trigger": true
   },
   {
-    "query": "Our cloud bill jumped — model what's driving it and where the next cliff is",
+    "query": "We expect 5x traffic next year — model where the next cost cliff is",
     "should_trigger": true
   },
   {
@@ -25,6 +25,10 @@
   },
   {
     "query": "Plan the cutover sequence for moving search from Elasticsearch to OpenSearch",
+    "should_trigger": false
+  },
+  {
+    "query": "Our AWS bill jumped 24% last month — find the waste in this cost export",
     "should_trigger": false
   }
 ]

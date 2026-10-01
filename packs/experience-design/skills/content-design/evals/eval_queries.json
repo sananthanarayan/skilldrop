@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Rewrite our refunds policy page in plain English so customers understand it",
+    "should_trigger": true
+  },
+  {
+    "query": "Write a content spec for the new 'Apply for a grant' page — user needs, what it must answer, what to cut",
+    "should_trigger": true
+  },
+  {
+    "query": "Our benefits page is 2,000 words and nobody reads it. What should it actually say?",
+    "should_trigger": true
+  },
+  {
+    "query": "Work out the content for each page of our account-closure journey from user needs",
+    "should_trigger": true
+  },
+  {
+    "query": "Write the error messages and button labels for the claim form",
+    "should_trigger": false
+  },
+  {
+    "query": "Turn these setup notes into a step-by-step getting-started guide for new developers",
+    "should_trigger": false
+  },
+  {
+    "query": "Design the navigation and sitemap for our help centre",
+    "should_trigger": false
+  },
+  {
+    "query": "Map the customer's journey from first quote to renewal with emotions at each stage",
+    "should_trigger": false
+  }
+]

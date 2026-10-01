@@ -1,0 +1,31 @@
+{
+  "skill_name": "terraform-module",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write a Terraform module for Acme's Postgres database on AWS RDS. The payments team and the orders team will both call it. They need to pick instance class and storage size; everything else should be safe by default.",
+      "assertions": [
+        "Produces versions.tf, variables.tf, main.tf, outputs.tf, a basic usage example and a README with inputs and outputs tables",
+        "versions.tf sets required_version and a provider version constraint with an upper bound on the major version",
+        "Every variable has a type and a description, and inputs such as instance class or storage size have validation blocks with fixable error messages",
+        "Defaults set storage_encrypted = true, publicly_accessible = false, deletion_protection = true and skip_final_snapshot = false",
+        "The master password is not a literal or a variable default; it is a sensitive variable, a managed password, or a secret-manager reference",
+        "A tags variable is merged with module defaults and applied to taggable resources",
+        "The module contains no provider block, no backend block, and no hard-coded account ID, region or ARN",
+        "Does not claim terraform validate or plan was run unless it was actually run"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Turn this into a reusable module for Northwind's GCP projects: a GCS bucket for nightly exports, kept 90 days, readable by the analytics service account only.",
+      "assertions": [
+        "Uses labels with lowercase keys rather than AWS-style tags",
+        "Sets public_access_prevention to enforced and uniform_bucket_level_access to true by default",
+        "Grants access with a member-level IAM binding scoped to the named service account variable, not a project-wide or primitive role",
+        "Adds a lifecycle rule deleting objects after a retention variable defaulting to 90",
+        "Takes the project ID as a variable or data source rather than a literal",
+        "Ends with the terraform fmt, validate and plan commands for the user to run"
+      ]
+    }
+  ]
+}

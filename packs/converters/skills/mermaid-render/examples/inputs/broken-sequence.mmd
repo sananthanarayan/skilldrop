@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant C as Client
+    participant S as Server
+    C->>S: GET /report
+    alt cached
+        S-->>C: 200 from cache
+    else stale
+        S-->>C: 200 rebuilt
+    loop every 5 min
+        S->>S: refresh
+    end

@@ -1,0 +1,30 @@
+{
+  "skill_name": "backlog-triage",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's the Northwind checkout backlog exported from Jira: examples/northwind-backlog.csv. Refinement is Thursday. Find the duplicates, tell me what isn't ready, and give me an order for what we pull next. Anything untouched for 30 days counts as stale.",
+      "assertions": [
+        "Runs the triage script (or states the counts from the export) rather than estimating counts",
+        "Each duplicate names both keys, why they are the same work, and which one survives",
+        "Rejects or questions candidates that are similar in title but different work, rather than closing every flagged pair",
+        "Each item in the proposed ordering has a reason and says whether it is ready to pull",
+        "Oversized items are handed to user-story-splitter rather than scheduled as is",
+        "Priority changes are presented as proposals with the facts behind them, not applied silently",
+        "Ends with a change list of key, change and reason",
+        "Does not invent owners, dates, estimates or customer counts not in the export"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Acme's platform team has 340 open GitHub issues. I ran gh issue list --json number,title,body,state,assignees,labels,updatedAt > issues.json. We don't use estimates or a priority field, just labels like p1/p2. Clean it up.",
+      "assertions": [
+        "Notes that the estimate and priority columns are missing and that the oversized and priority checks are skipped or mapped from labels",
+        "Uses --map or label-based priority rather than guessing priorities",
+        "Reports staleness from updatedAt with exact day counts",
+        "Confirms duplicates by reading descriptions, not title similarity alone",
+        "Does not invent a priority or estimate for items that have none"
+      ]
+    }
+  ]
+}

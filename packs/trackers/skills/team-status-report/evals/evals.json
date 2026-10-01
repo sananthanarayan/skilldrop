@@ -1,0 +1,30 @@
+{
+  "skill_name": "team-status-report",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Weekly status for the Northwind checkout team, 24-30 Sept, for our head of e-commerce. Export is examples/northwind-week-40.csv. SEC-88 is the security team's pen-test report; they say it lands 3 Oct. API-412 is the platform team's endpoint, no date yet.",
+      "assertions": [
+        "Every count (shipped, in progress, blocked, planned, slipped) matches the script's output for the export, not an estimate",
+        "States a RAG colour together with the rule and the number that set it",
+        "Each blocked item names its blocker and its owner",
+        "Slipped items are measured against a stated plan source (here, items due in the period)",
+        "Unplanned shipped work (CHK-121) is shown separately and not counted toward plan completion",
+        "Attributes the 3 Oct date to the security team via the user rather than presenting it as tracker data",
+        "Each ask names who, what and by when",
+        "Does not invent new dates, causes or blockers not in the export or the prompt"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Can you write Acme platform's status update from issues.json (gh issue list output)? We don't use sprints or due dates.",
+      "assertions": [
+        "Notices there is no plan source and asks for one (a key list or milestone) or states that slipped vs plan cannot be computed",
+        "Does not present a Green status as 'on track' when there is no plan; says the status reflects blockers only",
+        "Counts shipped from closedAt within the period",
+        "Writes 'blocker not recorded' or asks, rather than guessing what blocks an item",
+        "Does not invent velocity or percentage-complete figures"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "skill_name": "sql-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our Snowflake query for weekly active users per plan looks too high compared with the product dashboard. Can you review it?\n\nSELECT p.plan_name, DATE_TRUNC('week', e.event_ts) AS wk, COUNT(e.user_id) AS wau\nFROM events e\nJOIN subscriptions s ON s.user_id = e.user_id\nJOIN plans p ON p.plan_id = s.plan_id\nWHERE e.event_ts BETWEEN '2026-08-31' AND '2026-09-27'\n  AND e.user_id NOT IN (SELECT user_id FROM internal_users)\nGROUP BY 1, 2;\n\nsubscriptions keeps one row per plan change, so a user who upgraded has two rows. event_ts is TIMESTAMP_NTZ written in UTC. Acme reports weeks in UTC.",
+      "assertions": [
+        "Identifies that COUNT(e.user_id) counts events, not distinct users, so WAU is really weekly events",
+        "Identifies that the subscriptions join fans out for users with plan changes and attributes their events to every plan they ever had",
+        "Flags NOT IN against internal_users as returning no rows if that subquery contains a NULL, and proposes NOT EXISTS",
+        "Flags BETWEEN on event_ts as dropping 27 September after midnight and proposes a half-open window",
+        "Does not claim integer division is a problem, because there is no division and Snowflake's / returns a decimal anyway",
+        "Provides a full corrected query in Snowflake syntax that picks one plan per user per week (for example the plan active at the event time)",
+        "Provides verification queries, such as a uniqueness check on the subscription join and a reconciliation against a distinct-user count",
+        "Does not invent row counts or magnitudes not given in the prompt"
+      ]
+    }
+  ]
+}

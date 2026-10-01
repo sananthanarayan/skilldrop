@@ -1,0 +1,47 @@
+{
+  "name": "delivery-metrics-report",
+  "version": "0.1.0",
+  "description": "Produce a delivery metrics report for one service from deployment, incident and pull-request exports — the DORA metrics (deployment frequency, change lead time, change fail rate, failed deployment recovery time) plus flow metrics (WIP, cycle time p50/p85, throughput), computed by a script with per-week trends and explicit data gaps, then interpreted for what changed and why. Use when the user wants DORA metrics, says \"how are we doing on the four keys\", \"what's our change failure rate\", \"compute lead time and deploy frequency from this CSV\", or \"build our delivery metrics report\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "ai-usage-report",
+    "capacity-cost-model",
+    "observability-plan",
+    "postmortem-generator",
+    "success-metrics"
+  ],
+  "handoff": [
+    {
+      "to": "postmortem-generator",
+      "when": "a failed deployment or incident in the window has no write-up",
+      "purpose": "Turn the incident behind a fail-rate spike into a blameless postmortem.",
+      "fallback": "If postmortem-generator is absent, list the incident id, deploy id, impact window and open questions inline."
+    },
+    {
+      "to": "observability-plan",
+      "when": "failed deployment recovery time shows long undetected failures",
+      "purpose": "Design the alerting that would have caught the failure sooner.",
+      "fallback": "If observability-plan is absent, name the user-facing symptom that went unalerted and the burn-rate alert that would page on it."
+    }
+  ],
+  "tags": [
+    "dora",
+    "delivery-metrics",
+    "flow-metrics",
+    "sre",
+    "engineering-metrics",
+    "reporting"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "A stdlib script computes every number; the model maps columns, checks data quality and interprets weekly trends against fixed DORA definitions, which is bounded judgment."
+  }
+}

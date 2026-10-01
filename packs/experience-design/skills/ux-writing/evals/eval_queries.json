@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Write the button labels and error messages for our signup form",
+    "should_trigger": true
+  },
+  {
+    "query": "We need empty states, loading and success messages for the file upload screen",
+    "should_trigger": true
+  },
+  {
+    "query": "Our app calls the same thing a project, a board and a space — fix the microcopy and give us a terminology list",
+    "should_trigger": true
+  },
+  {
+    "query": "Rewrite these error messages so people know what to do: 'Invalid input', 'Error 500', 'Request failed'",
+    "should_trigger": true
+  },
+  {
+    "query": "Plan the content for our benefits page from user needs: what questions it answers and what to cut",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a getting-started guide for new admins setting up the product",
+    "should_trigger": false
+  },
+  {
+    "query": "Set up our brand kit from this logo and our tone-of-voice guidelines",
+    "should_trigger": false
+  },
+  {
+    "query": "Audit this checkout page for WCAG 2.2 AA issues",
+    "should_trigger": false
+  }
+]

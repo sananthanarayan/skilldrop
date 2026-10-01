@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0034. The catalogue index: pack display order and the outcome browse axis (RFC-0026). Pack metadata lives in packs/<pack>/pack.json; membership is the folders — a skill is in a pack because it sits at packs/<pack>/skills/<name>/.",
   "version": "1.0.0",
-  "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "api-builder"],
+  "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "api-builder", "converters", "experience-design", "research", "trackers", "data-analytics", "grc", "infra-as-code", "skill-engineering"],
   "outcomes": {
     "decide-what-to-build": {
       "for": "Product managers · founders · strategists",
@@ -38,7 +38,8 @@
         "migration-plan",
         "agent-loop-design",
         "subagent-design",
-        "agent-budget"
+        "agent-budget",
+        "terraform-module"
       ]
     },
     "build-and-review-software": {
@@ -57,7 +58,9 @@
         "agents-md-generator",
         "llm-eval-harness",
         "eval-harness-generator",
-        "contribution-wizard"
+        "contribution-wizard",
+        "backlog-triage",
+        "tracker-brief-sync"
       ]
     },
     "build-on-the-claude-api": {
@@ -79,7 +82,10 @@
         "release-notes",
         "incident-comms",
         "postmortem-generator",
-        "launch-readiness"
+        "launch-readiness",
+        "cloud-cost-review",
+        "delivery-metrics-report",
+        "terraform-plan-review"
       ]
     },
     "explain-it-to-decision-makers": {
@@ -91,7 +97,8 @@
         "deck-builder",
         "exec-summary",
         "decision-log",
-        "guide-builder"
+        "guide-builder",
+        "team-status-report"
       ]
     },
     "govern-ai-use": {
@@ -122,7 +129,58 @@
       "skills": [
         "brief-intake",
         "doc-critique",
-        "output-hygiene"
+        "output-hygiene",
+        "file-to-markdown",
+        "md-to-docx",
+        "md-to-html",
+        "md-to-xlsx",
+        "mermaid-render"
+      ]
+    },
+    "design-the-experience": {
+      "for": "Designers · content designers · UX writers",
+      "description": "Shape what people see and read before it's built: information architecture, interface copy, content specs, component specs and service blueprints.",
+      "skills": [
+        "content-design",
+        "design-system-spec",
+        "information-architecture",
+        "service-blueprint",
+        "ux-writing"
+      ]
+    },
+    "research-a-question": {
+      "for": "Researchers · analysts · anyone with a question to answer",
+      "description": "Take a question to a sourced answer: a research plan with a stopping rule, a cited synthesis of the sources, and competing explanations weighed against the evidence.",
+      "skills": [
+        "hypothesis-comparison",
+        "research-plan",
+        "source-synthesis"
+      ]
+    },
+    "define-and-trust-the-numbers": {
+      "for": "Data analysts · analytics engineers",
+      "description": "Make the numbers a business runs on mean one thing: metric definitions a semantic layer can implement, SQL reviewed for wrong answers, and dashboards specced before they're built.",
+      "skills": [
+        "dashboard-spec",
+        "metric-definition",
+        "sql-review"
+      ]
+    },
+    "manage-risk-and-compliance": {
+      "for": "Compliance, privacy and risk leads",
+      "description": "Prepare the material compliance asks for: a data protection impact assessment, a SOC 2 evidence map, and a risk register with owners and review dates.",
+      "skills": [
+        "dpia",
+        "risk-register",
+        "soc2-evidence-map"
+      ]
+    },
+    "build-agent-skills": {
+      "for": "Anyone writing skills for an AI agent",
+      "description": "Write and review Agent Skills for any tool: a portable SKILL.md with evals, and an audit of an existing skill before it ships.",
+      "skills": [
+        "skill-author",
+        "skill-review"
       ]
     }
   }

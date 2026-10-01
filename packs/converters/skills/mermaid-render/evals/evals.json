@@ -1,0 +1,17 @@
+{
+  "skill_name": "mermaid-render",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "My diagram in docs/contoso-orders.md won't render on GitHub, it just says parse error. It's the second mermaid block. Can you fix it and export both diagrams as SVG for the design review deck?",
+      "assertions": [
+        "Runs render_mermaid.py on docs/contoso-orders.md (the user's file, not a copy) and reports errors with line numbers from that file",
+        "Each fix quotes labels or corrects syntax without removing or renaming nodes, edges or label text",
+        "Shows a before/after for every changed line",
+        "Asks the user, rather than guessing, when a fix depends on intent (a missing arrow, where a block ends)",
+        "Renders only after lint is clean, writing contoso-orders-1.svg and contoso-orders-2.svg, or, without mmdc, says it wrote an HTML page that needs network and gives the mermaid-cli install line",
+        "Does not invent nodes or connections that are not in the original diagram"
+      ]
+    }
+  ]
+}

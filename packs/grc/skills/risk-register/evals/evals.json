@@ -1,0 +1,19 @@
+{
+  "skill_name": "risk-register",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build a risk register for Acme Retail's ERP migration programme for the steering group next week. Risks from the kickoff: data migration errors in product master data (owner: Data Lead, Jo Park), the systems integrator's key architect rolling off in January (owner: Programme Director, Lee Grant), cutover clashing with Black Friday trading, and finance users not trained in time (owner: Finance Systems Manager, Ravi Mehta). We use a 5x5 scale. Today is 2026-10-01.",
+      "assertions": [
+        "Every risk is written as a cause, an uncertain event and a consequence, not a one-word category",
+        "The likelihood and impact scale is defined in the output, with what each number means and the review horizon",
+        "Each risk has both an inherent and a residual score, and residual is never higher than inherent",
+        "Each risk has one treatment from avoid, reduce, transfer or accept, with an action and a due date, or a named acceptor for accept",
+        "The cutover risk, which has no owner in the prompt, is flagged as needing an owner rather than given an invented person's name",
+        "Each open risk has a next review date and a review trigger that names an event, not just 'quarterly'",
+        "The summary includes a heat map and at most five risks needing a decision, each naming the decision",
+        "It does not invent controls, people or dates that are not in the prompt; any it proposes are marked as proposals or assumptions"
+      ]
+    }
+  ]
+}

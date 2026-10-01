@@ -1,0 +1,19 @@
+{
+  "skill_name": "ux-writing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write the UI copy for Acme Bank's 'add a payee' flow in our mobile app. Steps: enter payee name, sort code and account number; we run a name check against the bank's records (match, close match, no match); then confirm and add. Users can also see an empty Payees list before they've added anyone. Our style guide says: plain, calm, second person, no exclamation marks.",
+      "assertions": [
+        "Every slot has a string, including an error for each field rule, each name-check result, a network failure, the empty Payees list, loading and success",
+        "Every string shows a character count against a stated budget, and no recommended string exceeds its budget",
+        "Every error says what happened and what to do next, names the field, and does not blame the user",
+        "Primary buttons are verb plus object; none says Submit, OK or Yes",
+        "Each string has one labelled variant and a recommendation",
+        "A terminology list picks one term per concept (e.g. payee vs recipient) with terms to avoid, and the strings follow it",
+        "No exclamation marks, matching the given style guide",
+        "Does not invent limits, fees, processing times or policies not in the prompt; unknowns are placeholders listed as open questions"
+      ]
+    }
+  ]
+}

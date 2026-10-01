@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Convert this Word doc to markdown",
+    "should_trigger": true
+  },
+  {
+    "query": "Extract the text and tables from budget.xlsx so you can read it",
+    "should_trigger": true
+  },
+  {
+    "query": "Here's the deck as a pptx, pull out the slide text and speaker notes",
+    "should_trigger": true
+  },
+  {
+    "query": "Turn this saved HTML page into clean markdown",
+    "should_trigger": true
+  },
+  {
+    "query": "Convert my markdown notes into a .docx for the client",
+    "should_trigger": false
+  },
+  {
+    "query": "Make an HTML version of README.md I can email",
+    "should_trigger": false
+  },
+  {
+    "query": "Here's a messy Slack thread, turn it into a brief for the design doc",
+    "should_trigger": false
+  },
+  {
+    "query": "Review this design doc markdown and tell me what to fix",
+    "should_trigger": false
+  }
+]

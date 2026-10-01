@@ -1,0 +1,19 @@
+{
+  "skill_name": "design-system-spec",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write the component spec for Acme's modal dialog. It's used for confirmations (delete project), short forms (rename), and a long terms-and-conditions view that scrolls. Our tokens include color.background.surface, color.background.overlay, color.border.subtle, color.text.default, space.200, space.300, radius.large, font.heading.md, font.body.md, shadow.overlay. Web, built in Vue.",
+      "assertions": [
+        "States purpose and boundary, including when to use something other than a modal",
+        "Anatomy parts are numbered and the same numbers are used in the state and token tables",
+        "Every applicable state is specified, including focus, and focus is distinguishable from hover without relying on colour alone",
+        "Styling uses only token names, never hex codes or pixel values; any needed token not in the prompt is tagged [proposed token]",
+        "Keyboard behaviour covers focus moving into the dialog on open, Tab staying inside, Esc closing, and focus returning to the trigger",
+        "Specifies a native <dialog> or role=dialog with aria-modal and an accessible name from the heading",
+        "Every WCAG citation is a real WCAG 2.2 criterion with the correct number and name",
+        "Ends with open questions for engineering, each naming the decision it blocks"
+      ]
+    }
+  ]
+}

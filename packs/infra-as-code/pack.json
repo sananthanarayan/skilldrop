@@ -1,0 +1,51 @@
+{
+  "description": "Terraform you can hand to another team and plans you can trust before apply: reusable modules with secure defaults, and a plan review that catches destroys, data loss, access widening and drift.",
+  "display_name": "Infrastructure as code",
+  "keywords": ["terraform", "infrastructure-as-code", "iac", "module", "plan", "aws", "gcp", "azure"],
+  "links": {
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/infra-as-code/"
+  },
+  "maintainers": [
+    {
+      "name": "sananthanarayan"
+    }
+  ],
+  "first-value": {
+    "audience-posture": "technical",
+    "prerequisites": ["A Terraform project or a described piece of infrastructure", "Terraform installed locally if you want to validate and plan the result"],
+    "starter-task": "Write a module, then review its plan before the first apply",
+    "starter-prompt": "Write a Terraform module for an S3 bucket that stores our access logs for a year. Several teams will call it. Then, once I've run terraform plan on the example, review the plan before I apply.",
+    "verification": "terraform-module writes versions.tf, variables.tf, main.tf, outputs.tf, a basic example and a README with inputs and outputs tables, with encryption on and public access off by default. terraform-plan-review returns SAFE TO APPLY, APPLY WITH CARE or DO NOT APPLY with every destroy and replace named.",
+    "recovery": "If terraform validate fails, paste the error back and ask terraform-module to fix that file. If terraform-plan-review does not activate, ask for it by name (\"use terraform-plan-review\") and give it the output of terraform show -json tfplan."
+  },
+  "requires": ["core"],
+  "journey": {
+    "when": "You need new infrastructure as a reusable Terraform module, or you have a plan in front of you and want to know whether it is safe to apply.",
+    "you_bring": [
+      "what the infrastructure is for and which cloud it runs on",
+      "who will call the module",
+      "the output of terraform plan, ideally terraform show -json tfplan",
+      "one sentence on what the change is meant to do"
+    ],
+    "time": "20 to 45 minutes",
+    "steps": [
+      {
+        "skill": "terraform-module",
+        "you_do": "Describe the need, the cloud and the callers.",
+        "you_get": "A module with versions.tf, typed and validated variables, secure defaults, a tags variable, a basic example, a README, and the commands to check it."
+      },
+      {
+        "skill": "terraform-plan-review",
+        "you_do": "Run terraform plan, save it with terraform show -json, and hand it over with the intent of the change.",
+        "you_get": "Counts, every destroy and replace with its cause, stateful and access changes, drift, out-of-scope changes and a verdict.",
+        "decide": "Apply, apply after the listed checks, or fix the code and re-plan."
+      },
+      {
+        "skill": "doc-critique",
+        "you_do": "Optionally, run it on the module README before you publish the module to other teams.",
+        "you_get": "Severity-tagged findings on gaps and unclear inputs, with a fix for each."
+      }
+    ],
+    "you_end_with": "A reusable module with safe defaults, and a reviewed plan with a clear apply decision."
+  }
+}

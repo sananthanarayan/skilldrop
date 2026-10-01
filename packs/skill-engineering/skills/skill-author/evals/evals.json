@@ -1,0 +1,19 @@
+{
+  "skill_name": "skill-author",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Make me an agent skill for Northwind's support team: every Monday someone pastes last week's Zendesk ticket export (CSV with id, subject, tags, created_at, status) and wants a one-page digest with the top five themes, counts per theme, and three example ticket ids each. We use Codex and Cursor. We already have a skill called incident-summary for single outages and one called csat-report for survey scores. It should never make up ticket counts.",
+      "assertions": [
+        "The frontmatter name is kebab-case, leads with the artifact, and matches the folder name in the file tree",
+        "The description leads with the digest as the artifact and ends with quoted trigger phrases a support lead would type",
+        "incident-summary and csat-report each appear in a When NOT line and in a should-not-trigger query",
+        "The counts are computed by a stdlib script, and SKILL.md shows the script with both the ${CLAUDE_SKILL_DIR} form and a plain relative scripts/ path",
+        "SKILL.md has a non-interactive line that emits BLOCKED when there is no ticket export, rather than inventing counts",
+        "The quality bar and the eval assertions include that no count or ticket id appears that is not in the export",
+        "Install instructions give .agents/skills/ for Codex and the .cursor/skills/ plus .cursor/rules/ pattern for Cursor",
+        "The interview asks at most two questions, because the deliverable, the tools and the siblings were already given"
+      ]
+    }
+  ]
+}
