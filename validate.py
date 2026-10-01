@@ -16,7 +16,8 @@ Checks (FAIL):
     true and false rows
   - manifest description == SKILL.md frontmatter description (whitespace-normalized)
   - packs.json: every pack entry is a real skill folder, and every skill
-    belongs to at least one pack
+    belongs to exactly one pack (RFC-0033); `requires` is real and one level deep;
+    a pack ships every skill its loops run
   - manifest hooks (optional): each entry's event is in the RFC-0006 vocabulary,
     its action is a real skill folder, and it carries a description
   - README.md skill counts match the number of skills on disk (prose drifts; the
@@ -547,6 +548,38 @@ def main():
     for lp in sorted(loop_dirs - looped):
         fail("packs.json", f"loop '{lp}' belongs to no pack — a loop with no audience ships to nobody")
 
+    # RFC-0033: one home per skill and per loop — the shape a physical packs/<name>/ layout
+    # needs. Shared skills live in a required pack (core), and `requires` is one level deep.
+    for kind, key in (("skill", "skills"), ("loop", "loops")):
+        homes = {}
+        for pname, pack in packs.items():
+            for x in pack.get(key, []):
+                homes.setdefault(x, []).append(pname)
+        for x, hs in sorted(homes.items()):
+            if len(hs) > 1:
+                fail("packs.json", f"{kind} '{x}' is in {len(hs)} packs ({', '.join(hs)}) — give it one home, or move it to core (RFC-0033)")
+    for pname, pack in packs.items():
+        for r in pack.get("requires", []):
+            if r == pname:
+                fail("packs.json", f"pack '{pname}' requires itself")
+            elif r not in packs:
+                fail("packs.json", f"pack '{pname}' requires '{r}', which is not a pack")
+            elif packs[r].get("requires"):
+                fail("packs.json", f"pack '{pname}' requires '{r}', which itself requires — keep requires one level deep (RFC-0033)")
+        # A pack ships every skill its loops run, so a pack install never hands over a loop
+        # whose stages degrade for lack of a skill the same command could have installed.
+        reach = set(pack.get("skills", []))
+        for r in pack.get("requires", []):
+            reach |= set(packs.get(r, {}).get("skills", []))
+        for lp in pack.get("loops", []):
+            lj = os.path.join(ROOT, "loops", lp, "loop.json")
+            if not os.path.isfile(lj):
+                continue
+            for st in json.load(open(lj, encoding="utf-8")).get("stages", []):
+                for sk in st.get("skills", []):
+                    if sk != "*" and sk not in reach:
+                        fail("packs.json", f"pack '{pname}' ships loop '{lp}', whose '{st.get('id')}' stage runs '{sk}' — not in the pack or what it requires (RFC-0033)")
+
     # RFC-0026: outcomes are the site's second browse axis. Same two-way check as packs, so a
     # new skill can't quietly become unreachable from the outcome chips.
     outcomes = packs_doc.get("outcomes", {})
@@ -615,7 +648,7 @@ def main():
             if os.path.isdir(AGENTS) else 0
         n_packs = len(json.load(open(os.path.join(ROOT, "packs.json")))["packs"])
         for claim, actual in ((r"(\d+) skills", len(skill_dirs)),
-                              (r"(\d+) role packs", n_packs),
+                              (r"(\d+) (?:role )?packs", n_packs),
                               (r"(\d+) reviewer subagents", n_agents)):
             m = re.search(claim, og_txt)
             if m and int(m.group(1)) != actual:

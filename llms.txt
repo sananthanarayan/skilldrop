@@ -6,7 +6,7 @@
 > 63 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.13.1.
+> Version 0.13.2.
 
 ## Start here
 
@@ -54,7 +54,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Install a profile](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/profiles.md) *(how-to)*: Named bundles of packs, agents, and loops — install a complete setup in one command.
 - [Publish your own catalogue](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/publish-a-catalogue.md) *(how-to)*: Shape a repo so `skilldrop --from <you>` installs from it, and how the CLI reads agentbundle-shaped catalogues too.
 - [Supply credentials to skills](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/supply-credentials.md) *(how-to)*: How to provide API keys and tokens to skills that declare env.required — covers local shells, CI environments, and enterprise secret managers.
-- [Upgrade installed skills](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/upgrade-skills.md) *(how-to)*: Check which installed skills are stale and bring them current without clobbering your settings or hook wiring.
+- [Upgrade installed skills](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/upgrade-skills.md) *(how-to)*: Check which installed skills are stale and bring them current, keeping any files you edited and your hook wiring.
 - [Wire a skill to an event](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/wire-a-hook.md) *(how-to)*: Opt-in hooks: how a loop-shaped skill binds to session-start or pre-commit-review, and how the CLI projects that onto each target.
 - [Skills that ship scripts](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/skills-with-scripts.md) *(reference)*: The two skills with executable helpers — what they need on PATH, what environment variables they read, and how to invoke them from Claude Code or any other IDE.
 - [From use-case to deployed agent — the AI engineering workflow](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/ai-engineering-workflow.md) *(tutorial)*: End-to-end AI adoption: triage the use case, assess org readiness, design the loop and agents, threat-model the system, build the evals, measure what shipped.
@@ -67,12 +67,13 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 
 ## Role packs
 
-- **solution-architect** (17 skills, loops: design, ship-a-draft): Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.
-- **product-manager** (13 skills, loops: discover, ship-a-draft): Direction to requirements: PR/FAQs, strategy frameworks, OKRs, PRDs, journey maps, story splitting, and success measurement.
-- **dev-team** (16 skills, loops: build, release, ship-a-draft): Build-and-ship loop: story implementation with adversarial review, test plans, triage, migrations, release notes, agent-policy files, and code-quality gates.
-- **sre-oncall** (6 skills, loops: release, operate): Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.
-- **stakeholder-comms** (9 skills, loops: ship-a-draft): Non-technical audiences: audience profiling, deck outlines and real .pptx decks, exec summaries, decision logs, and guides.
-- **ai-engineering** (12 skills, loops: design, build): Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, AI-usage reporting, and the data contracts AI pipelines depend on.
+- **core** (4 skills, loops: ship-a-draft): The cross-role toolkit every pack builds on: structured intake, document critique, the review council, and output hygiene, plus the ship-a-draft wrapper. Installed automatically with every role pack.
+- **solution-architect** (11 skills, loops: design): Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.
+- **product-manager** (8 skills, loops: discover): Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, and success measurement.
+- **dev-team** (14 skills, loops: build, release): Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, migrations, launch readiness, release notes, agent-policy files, and code-quality gates.
+- **sre-oncall** (5 skills, loops: operate): Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.
+- **stakeholder-comms** (6 skills): Non-technical audiences: audience profiling, deck outlines and real .pptx decks, exec summaries, decision logs, and guides.
+- **ai-engineering** (11 skills): Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, and AI-usage reporting.
 - **claude-api** (4 skills): Skills for teams building on the Anthropic API — prompt caching, token budgeting, eval generation for skills, and tool-use schema writing.
 
 ## Outcomes — browse by why you are here
@@ -102,5 +103,5 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 32 accepted RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 33 accepted RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.

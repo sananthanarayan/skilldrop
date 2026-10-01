@@ -8,6 +8,13 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.13.2 — 2026-10-01
+
+- `skilldrop update` no longer erases your edits to an installed skill. A file you changed is kept, and the new version is written next to it as `<file>.upstream` for you to merge. Files you didn't touch update as before, and `--force` still overwrites everything. Skills installed with an earlier version overwrite once on their next update, then keep edits from then on.
+- Packs are re-cut so every skill and loop has exactly one home. A new `core` pack holds the skills every role uses (`brief-intake`, `doc-critique`, `output-hygiene`, `council-review`) and the `ship-a-draft` wrapper. Every role pack except `claude-api` installs `core` with it, through the CLI, `pack.py` and the Claude plugins alike, so one `--pack` command still gives a role its whole toolkit.
+- Eight skills moved to a single pack: `user-story-splitter`, `launch-readiness` and `agents-md-generator` → `dev-team`; `capacity-cost-model` → `sre-oncall`; `data-contract` → `solution-architect`; `agent-threat-model` and `ai-use-case-triage` → `ai-engineering`; `exec-summary` → `stakeholder-comms`. If you installed a pack for one of these, install it by name or add the pack that now holds it.
+- The `full` profile now includes every pack and every loop. It had been missing `claude-api` and `release`.
+
 ## 0.13.1 — 2026-10-01
 
 - Run the new `release` loop to take merged code to live users: `migration-plan` plans the rollout and the rollback, `launch-readiness` judges readiness at G2.5, `release-notes` drafts the announcement, and a human makes the go/no-go call at G2.6. Install it with `skilldrop install --loop release`, or get it in the `dev-team` and `sre-oncall` packs.

@@ -1,5 +1,5 @@
 {
-  "$comment": "Named install presets — one command installs a bundle of packs, agents, and loops. A profile is an install recipe, not a skill: nothing moves into profiles/, and a skill can belong to any number of profiles. validate.py enforces that every pack, agent, and loop named here exists. Rationale: docs/rfcs/ (RFC to be written).",
+  "$comment": "Named install presets — one command installs a bundle of packs, agents, and loops. A profile is an install recipe, not a skill: nothing moves into profiles/, and a skill can belong to any number of profiles. validate.py enforces that every pack, agent, and loop named here exists. Rationale: docs/rfcs/ (RFC to be written). A role pack already brings `core` through `requires` (RFC-0033), so profiles never need to list it beside one.",
   "version": "0.1.0",
   "profiles": {
     "starter": {
@@ -16,9 +16,9 @@
     },
     "full": {
       "description": "The complete catalogue: every pack, every reviewer agent, every loop.",
-      "packs": ["solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "ai-engineering"],
+      "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "ai-engineering", "claude-api"],
       "agents": ["devils-advocate", "security-reviewer", "code-quality"],
-      "loops": ["build", "design", "discover", "operate", "ship-a-draft"]
+      "loops": ["discover", "design", "build", "release", "operate", "ship-a-draft"]
     }
   }
 }

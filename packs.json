@@ -1,12 +1,22 @@
 {
-  "$comment": "Virtual skill packs — role-based bundles for one-command install. Packs are METADATA ONLY: skills stay in flat skills/<name> folders (golden rule: skills are discovered by path), a skill may belong to several packs, and every skill must belong to at least one (validate.py enforces both directions). Install a pack with `python3 pack.py <pack> --install`; see README. Rationale: docs/rfcs/0001-skill-packs.md. `outcomes` (RFC-0026) is the second browse axis: packs say WHO needs a skill, outcomes say WHY someone opens the catalogue. It is the README's nine categories restated as seven outcomes and made machine-readable so the site cannot drift from them. Outcomes are a browse aid only — not an install unit — and validate.py enforces the same two-way check packs get.",
-  "version": "0.1.0",
+  "$comment": "Virtual skill packs — role-based bundles for one-command install. Packs are METADATA ONLY: skills stay in flat skills/<name> folders (golden rule: skills are discovered by path), every skill and every loop belongs to exactly one pack (RFC-0033 — the shape a later physical packs/<name>/ layout needs), and a pack may `requires` the `core` pack, which every installer then installs with it. validate.py enforces all of this. Install a pack with `python3 pack.py <pack> --install`; see README. Rationale: docs/rfcs/0001-skill-packs.md. `outcomes` (RFC-0026) is the second browse axis: packs say WHO needs a skill, outcomes say WHY someone opens the catalogue. It is the README's nine categories restated as seven outcomes and made machine-readable so the site cannot drift from them. Outcomes are a browse aid only — not an install unit — and validate.py enforces the same two-way check packs get.",
+  "version": "0.2.0",
   "packs": {
-    "solution-architect": {
-      "description": "Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.",
-      "loops": ["design", "ship-a-draft"],
+    "core": {
+      "description": "The cross-role toolkit every pack builds on: structured intake, document critique, the review council, and output hygiene, plus the ship-a-draft wrapper. Installed automatically with every role pack.",
+      "loops": ["ship-a-draft"],
       "skills": [
         "brief-intake",
+        "doc-critique",
+        "output-hygiene",
+        "council-review"
+      ]
+    },
+    "solution-architect": {
+      "description": "Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.",
+      "requires": ["core"],
+      "loops": ["design"],
+      "skills": [
         "architecture-diagrams",
         "reverse-architecture",
         "figma-diagrams",
@@ -14,22 +24,17 @@
         "design-doc",
         "tech-comparison-matrix",
         "threat-model",
-        "agent-threat-model",
-        "agents-md-generator",
         "api-contract-draft",
         "data-contract",
         "db-schema-design",
-        "nfr-spec",
-        "capacity-cost-model",
-        "council-review",
-        "doc-critique"
+        "nfr-spec"
       ]
     },
     "product-manager": {
-      "description": "Direction to requirements: PR/FAQs, strategy frameworks, OKRs, PRDs, journey maps, story splitting, and success measurement.",
-      "loops": ["discover", "ship-a-draft"],
+      "description": "Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, and success measurement.",
+      "requires": ["core"],
+      "loops": ["discover"],
       "skills": [
-        "brief-intake",
         "prfaq",
         "strategy-analysis",
         "okr-cascade",
@@ -37,23 +42,19 @@
         "requirements-interview",
         "prd-draft",
         "user-journey-map",
-        "user-story-splitter",
-        "success-metrics",
-        "exec-summary",
-        "doc-critique",
-        "ai-use-case-triage"
+        "success-metrics"
       ]
     },
     "dev-team": {
-      "description": "Build-and-ship loop: story implementation with adversarial review, test plans, triage, migrations, release notes, agent-policy files, and code-quality gates.",
-      "loops": ["build", "release", "ship-a-draft"],
+      "description": "Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, migrations, launch readiness, release notes, agent-policy files, and code-quality gates.",
+      "requires": ["core"],
+      "loops": ["build", "release"],
       "skills": [
         "agents-md-generator",
         "user-story-splitter",
         "feature-implement-loop",
         "pre-merge-review",
         "devils-advocate",
-        "council-review",
         "test-plan-generator",
         "bug-triage",
         "migration-plan",
@@ -61,41 +62,39 @@
         "sonar-onboard",
         "sonar-review",
         "accessibility-audit",
-        "output-hygiene",
         "contribution-wizard",
         "launch-readiness"
       ]
     },
     "sre-oncall": {
       "description": "Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.",
-      "loops": ["release", "operate"],
+      "requires": ["core"],
+      "loops": ["operate"],
       "skills": [
         "runbook-generator",
         "observability-plan",
         "incident-comms",
         "postmortem-generator",
-        "capacity-cost-model",
-        "launch-readiness"
+        "capacity-cost-model"
       ]
     },
     "stakeholder-comms": {
       "description": "Non-technical audiences: audience profiling, deck outlines and real .pptx decks, exec summaries, decision logs, and guides.",
-      "loops": ["ship-a-draft"],
+      "requires": ["core"],
+      "loops": [],
       "skills": [
-        "brief-intake",
         "audience-profile",
         "slide-outliner",
         "deck-builder",
         "exec-summary",
         "decision-log",
-        "guide-builder",
-        "doc-critique",
-        "output-hygiene"
+        "guide-builder"
       ]
     },
     "ai-engineering": {
-      "description": "Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, AI-usage reporting, and the data contracts AI pipelines depend on.",
-      "loops": ["design", "build"],
+      "description": "Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, and AI-usage reporting.",
+      "requires": ["core"],
+      "loops": [],
       "skills": [
         "agent-loop-design",
         "subagent-design",
@@ -103,7 +102,6 @@
         "agent-threat-model",
         "llm-eval-harness",
         "ai-usage-report",
-        "data-contract",
         "ai-readiness-assessment",
         "ai-use-case-triage",
         "ai-adoption-rollout",

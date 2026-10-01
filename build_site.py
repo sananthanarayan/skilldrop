@@ -241,7 +241,8 @@ def collect():
         sys.exit(1)
 
     pack_meta = [{"name": k, "description": v["description"],
-                  "count": len(v["skills"]), "skills": sorted(v["skills"])}
+                  "count": len(v["skills"]), "skills": sorted(v["skills"]),
+                  "requires": v.get("requires", [])}
                  for k, v in packs.items()]
 
     # RFC-0026: outcomes are the second browse axis, read from the same file as packs.
@@ -357,7 +358,7 @@ def render(skills, packs, outcomes, version, releases):
 
     loop_list = loops()
     stats = [(str(len(skills)), "skills"), (str(len(loop_list)), "loops"),
-             (str(len(packs)), "role packs"), ("0", "runtime deps")]
+             (str(len(packs)), "packs"), ("0", "runtime deps")]
     stats_html = "".join(
         f'<div class="stat"><div class="stat__n">{esc(n)}</div><div class="stat__l">{esc(l)}</div></div>'
         for n, l in stats)
@@ -435,7 +436,7 @@ def render(skills, packs, outcomes, version, releases):
     pack_cards = "".join(
         f"""<li class="pack">
       <div class="pack__head">
-        <h3 class="pack__name">{esc(p['name'])}</h3><span class="pack__n">{p['count']} skills</span>
+        <h3 class="pack__name">{esc(p['name'])}</h3><span class="pack__n">{p['count']} skills{''.join(' + ' + esc(r) for r in p['requires'])}</span>
       </div>
       <p class="pack__desc">{esc(p['description'])}</p>
       <p class="pack__install"><code>skilldrop install --pack {esc(p['name'])}</code></p>

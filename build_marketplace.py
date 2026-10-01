@@ -70,7 +70,21 @@ def _repo_url(pkg):
 
 
 def _packs():
-    return json.load(open(os.path.join(ROOT, "packs.json"), encoding="utf-8"))["packs"]
+    """packs.json with each pack's `requires` folded in (RFC-0033): a plugin is installed on
+    its own, so the dev-team plugin has to carry core's skills and loops itself."""
+    packs = json.load(open(os.path.join(ROOT, "packs.json"), encoding="utf-8"))["packs"]
+    out = {}
+    for name, pack in packs.items():
+        p = dict(pack)
+        for key in ("skills", "loops"):
+            merged = []
+            for n in pack.get("requires", []) + [name]:
+                for x in packs.get(n, {}).get(key, []):
+                    if x not in merged:
+                        merged.append(x)
+            p[key] = merged
+        out[name] = p
+    return out
 
 
 def _pack_agents(skill_names):

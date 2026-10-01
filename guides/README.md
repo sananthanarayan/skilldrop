@@ -29,7 +29,7 @@ its directory, so the tree stays shallow.
 - [Author a new loop](how-to/author-a-loop.md) — the closed `loop.json` contract and the gate rules
 - [Wire a skill to an event](how-to/wire-a-hook.md) — opt-in hooks, projected per target
 - [Publish your own catalogue](how-to/publish-a-catalogue.md) — make `skilldrop --from <you>` work
-- [Upgrade installed skills](how-to/upgrade-skills.md) — keep what you have installed current without clobbering your settings
+- [Upgrade installed skills](how-to/upgrade-skills.md) — keep what you have installed current; files you edited are kept and the new version lands beside them as `.upstream`
 - [Roll out across your org](how-to/enterprise-distribution.md) — bootstrap the hosted marketplace for every machine in one command
 - [Use with Jira](how-to/integrate-with-jira.md) — bug triage, story splitting, implementation loops, and release notes from Jira tickets
 - [Use with GitHub Projects](how-to/integrate-with-github-projects.md) — implementation loops, review gates, and release notes linked to GitHub issues

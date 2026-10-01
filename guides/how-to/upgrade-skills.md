@@ -1,6 +1,6 @@
 ---
 title: Upgrade installed skills
-summary: Check which installed skills are stale and bring them current without clobbering your settings or hook wiring.
+summary: Check which installed skills are stale and bring them current, keeping any files you edited and your hook wiring.
 kind: how-to
 ---
 
@@ -35,8 +35,22 @@ npx skilldrop-cli update --project
 
 ## What update preserves
 
-- The ledger (`.skilldrop.json`) is updated to record the new version
-- Hook wiring is left in place — `update` only re-copies the skill folder
-- Any customisations you made inside the installed skill folder are overwritten
+- **Files you edited are kept.** When you install a skill, the ledger (`.skilldrop.json`) records a hash of every file in it. On update, a file whose hash still matches is replaced with the new version. A file you changed is left alone, and the new version is written next to it as `<file>.upstream`:
 
-Copy local edits out before updating.
+  ```
+  updated runbook-generator 0.1.0 -> 0.2.0 (bundled)
+    kept your edits in SKILL.md — new version at SKILL.md.upstream
+  ```
+
+  Merge what you want from `SKILL.md.upstream` into `SKILL.md`, then delete the `.upstream` file. If the catalogue didn't change a file you edited, update leaves it alone and writes no `.upstream`.
+- **Files the catalogue removed** are deleted only if you never edited them. An edited one is kept and named in the output.
+- **Hook wiring** is left in place.
+- The ledger is updated to record the new version and the new hashes.
+
+## Take every new version anyway
+
+```bash
+npx skilldrop-cli update --force
+```
+
+`--force` overwrites every file, including ones you edited. Skills installed before this feature have no recorded hashes. Their first update overwrites as `--force` does, then records hashes, so later updates keep your edits.
