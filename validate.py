@@ -626,6 +626,14 @@ def main():
                     if lp not in loop_dirs:
                         fail("profiles.json", f"profile '{pname}' lists loop '{lp}', which is not in loops/")
 
+    # The npm package is the bundled catalog: whatever the CLI reads from its own root has to
+    # ship in package.json `files`, or `npx skilldrop-cli` works from a clone and breaks from
+    # the registry. profiles.json was missing until 0.13.4, so --profile failed only for npx users.
+    shipped = set(json.load(open(os.path.join(ROOT, "package.json"))).get("files", []))
+    for needed in ("bin/", "packs/", "agents/", "contracts/", "catalogue.json", "profiles.json", "model-routing.json"):
+        if needed not in shipped:
+            fail("package.json", f"`files` must include {needed!r} — the bundled CLI reads it at runtime")
+
     # The Claude Code plugin marketplace (RFC-0014) is generated from package.json;
     # a committed file drifting from that generator fails here so it can't ship stale.
     for rel in build_marketplace.stale():
