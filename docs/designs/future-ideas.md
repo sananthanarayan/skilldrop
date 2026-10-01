@@ -37,6 +37,8 @@ Last reviewed 2026-10-01, after 0.16.0.
 |---|---|---|---|
 | **Turn on the weekly evals** | The workflow exists but skips without an `ANTHROPIC_API_KEY` secret. | S | You adding the secret |
 | **Eval trend on the site** | Publish each weekly run's results to the *How skills are checked* page, so trigger accuracy is visible over time. | M | Weekly evals running |
+| **Benchmark on the light and heavy tiers** | `run_bench.py` (RFC-0040) has run on the standard tier only. Running all three shows where a cheaper model is enough, per skill. | S | Claude Code usage to spare |
+| **Three or more evals per skill** | 69 of 93 skills have one acceptance eval, so a per-skill benchmark number is an anecdote. | L | Authoring time |
 | **Monthly assertion evals** | Run the acceptance assertions on a schedule, not only by hand. They cost more than trigger checks. | S | Weekly evals running; a budget |
 | **Open the converters' output in real Word and Excel** | The .docx and .xlsx files are checked in Quick Look only. | S | Someone with Office |
 | **OCR for scanned PDFs** | `file-to-markdown` stops at a PDF with no text layer. Tesseract could add a text layer first. | M | An optional system dependency |

@@ -23,9 +23,10 @@ def api_key():
     return os.environ.get("ANTHROPIC_API_KEY", "").strip()
 
 
-def messages(model, system, user, max_tokens=1024, cache_system=False, retries=4, timeout=180):
+def messages(model, system, user, max_tokens=1024, cache_system=False, retries=4, timeout=180, raw=False):
     """One user turn; returns (text, usage). cache_system marks the system prompt cacheable,
-    which pays off when the same long system prompt is sent many times in a row."""
+    which pays off when the same long system prompt is sent many times in a row. raw=True
+    returns (text, response) instead, for callers that need the served model or stop_reason."""
     key = api_key()
     if not key:
         raise APIError("ANTHROPIC_API_KEY is not set")
@@ -45,7 +46,7 @@ def messages(model, system, user, max_tokens=1024, cache_system=False, retries=4
             with urllib.request.urlopen(req, timeout=timeout) as r:
                 data = json.load(r)
             text = "".join(b.get("text", "") for b in data.get("content", []) if b.get("type") == "text")
-            return text, data.get("usage", {})
+            return text, (data if raw else data.get("usage", {}))
         except urllib.error.HTTPError as e:
             detail = e.read().decode("utf8", "replace")[:300]
             if e.code in RETRY_STATUS and attempt < retries:

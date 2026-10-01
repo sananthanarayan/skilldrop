@@ -68,6 +68,12 @@ python3 build_pack_guides.py --check
 # Evals against a live model (needs ANTHROPIC_API_KEY; report-only, also weekly in CI)
 python3 run_evals.py [--skills a,b] [--assertions]
 
+# Benchmark: each eval with the skill and without it, with cost (RFC-0040). Paid; capped by --budget.
+python3 run_bench.py --dry-run                                    # call count and rough cost; spends nothing
+python3 run_bench.py [--skills a,b] [--models light,standard,heavy] [--trials N] [--budget USD]
+python3 run_bench.py --backend claude-cli ...                     # agent runs through a signed-in Claude Code; no API key
+python3 run_bench.py --backend claude-cli --publish docs/benchmarks/latest.json   # the summary the site renders
+
 # Skill packs — list packs / list a pack's skills / install a pack
 python3 pack.py
 python3 pack.py <pack-name>
@@ -101,6 +107,7 @@ Every version bump lands with a matching entry at the top of [`CHANGELOG.md`](CH
 | Worked example (input → output) | `packs/<pack>/skills/<skill-name>/examples/<name>.md` |
 | Adversarial-sweep checklist (devils-advocate style) | `packs/<pack>/skills/<skill-name>/lenses/<name>.md` |
 | Per-archetype quality bar (doc-critique style) | `packs/<pack>/skills/<skill-name>/rubrics/<archetype>.md` |
+| Input files an eval's prompt names | `packs/<pack>/skills/<skill-name>/evals/files/<eval id>/` — copied into the working directory of a benchmark run (RFC-0040) |
 | Acceptance checks for a skill | `packs/<pack>/skills/<skill-name>/evals/evals.json` (prompt + assertions) + `evals/eval_queries.json` (should/shouldn't-trigger phrases) |
 | RFC for a new skill or structural change | `docs/rfcs/NNNN-<kebab-slug>.md` — copy [`docs/rfcs/0000-template.md`](docs/rfcs/0000-template.md), next sequential number |
 | Long-form design doc (bigger than an RFC, not a skill) | `docs/designs/<name>.md` — e.g. the CLI command surface, the telemetry collection spec |
