@@ -1011,7 +1011,13 @@ def json_to_md(path, rep):
 
 _GAP = re.compile(r"\s{3,}")
 _BULLET = re.compile(r"^[\u2022\u25e6\u25aa\u2023\u2043\u2013*-]\s+")
-_CODEISH = re.compile(r"-->|==>|[{};]|^\s*(def|function|class|SELECT|FROM)\b")
+_CODEISH_RE = re.compile(r"[{};]|^\s*(def|function|class|SELECT|FROM)\b")
+
+
+def _codeish(line):
+    """Looks like code: diagram arrows, braces or semicolons, or a definition keyword.
+    Arrows are a plain substring test (a regex for them reads like an HTML-comment filter)."""
+    return "-->" in line or "==>" in line or bool(_CODEISH_RE.search(line))
 _CODE_START = re.compile(r"^\s*(def |class |function |import |from \S+ import |SELECT |WITH |#include|package |func |public |const |let |var )")
 
 
@@ -1112,7 +1118,7 @@ def _pdf_page_md(page, rep):
         if not block:  # a single table-like line on its own
             block = [lines[i]]; i += 1
         base = min(_indent(l) for l in block)
-        if (base >= 8 and any(_CODEISH.search(l) for l in block)) or _CODE_START.match(block[0]):
+        if (base >= 8 and any(_codeish(l) for l in block)) or _CODE_START.match(block[0]):
             out += ["```"] + [l[base:].rstrip() for l in block] + ["```", ""]
             rep.keep("pdf code blocks", 1)
             continue
