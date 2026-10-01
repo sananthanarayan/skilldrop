@@ -109,6 +109,11 @@ a { color:var(--accent-700); }
 .skill__link:hover { background:var(--surface-alt); }
 .skill__link:hover .skill__name { color:var(--accent-700); }
 .skill__name { font:.9rem var(--mono); letter-spacing:-.01em; flex:0 0 15.5rem; }
+.skill__pack {
+  flex:0 0 auto; font:.7rem var(--mono); color:var(--fg-muted); text-decoration:none;
+  border:1px solid var(--border); border-radius:999px; padding:1px 8px; white-space:nowrap;
+}
+.skill__pack:hover { color:var(--accent-700); border-color:var(--accent-700); }
 .skill__desc {
   flex:1; min-width:0; font-size:.85rem; color:var(--fg-muted);
   overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
@@ -147,7 +152,7 @@ def render_catalogue(skills, packs, outcomes):
         f'<b>{o["count"]}</b></button>'
         for o in outcomes)
 
-    cards = "\n".join(card(s) for s in skills)
+    cards = "\n".join(card(s, root="../") for s in skills)
 
     return f"""<!doctype html>
 <html lang="en">
@@ -166,6 +171,7 @@ def render_catalogue(skills, packs, outcomes):
 <header class="page-head">
   <a class="page-head__back" href="../">&#8592; skilldrop</a>
   <h1 class="page-head__title">All skills</h1>
+  <a class="page-head__back" href="../packs/">packs</a>
   <span class="page-head__count">{len(skills)} skills</span>
 </header>
 
