@@ -50,13 +50,6 @@ SHARED_CSS = """
   --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
   --r-sm:5px; --r:10px;
 }
-@media (prefers-color-scheme:dark) {
-  :root {
-    --surface:#111113; --surface-alt:#17171a; --fg:#ecebe8; --fg-muted:#9a9a95;
-    --border:#2a2a2d; --card:#1a1a1d; --accent:#a48cff; --accent-700:#c4b5ff;
-    --accent-10:rgba(164,140,255,.12);
-  }
-}
 *{box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{margin:0;background:var(--surface);color:var(--fg);

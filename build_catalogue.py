@@ -36,13 +36,6 @@ CSS = """:root {
   --r-sm:5px; --r:10px; --r-lg:16px;
   --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --surface:#111113; --surface-alt:#17171a; --fg:#ecebe8; --fg-muted:#9a9a95;
-    --border:#2a2a2d; --card:#1a1a1d; --accent:#a48cff; --accent-700:#c4b5ff;
-    --accent-10:rgba(164,140,255,.12);
-  }
-}
 * { box-sizing:border-box; }
 html { scroll-behavior:smooth; }
 body {
@@ -153,7 +146,7 @@ def render_catalogue(skills, packs, outcomes):
 {head_meta("All skills — skilldrop", "Search and filter every skilldrop skill by the job it does, the pack it is in, or its model tier.", SITE_URL + "catalogue/")}
 {breadcrumbs_ld([("skilldrop", SITE_URL), ("Skills", SITE_URL + "catalogue/")])}
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#111113">
+<meta name="theme-color" content="#ffffff">
 <style>
 {CSS}{NAV_CSS}</style>
 </head>
