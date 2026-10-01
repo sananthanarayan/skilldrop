@@ -6,7 +6,7 @@
 > 93 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.15.1.
+> Version 0.16.0.
 
 ## Start here
 
@@ -78,6 +78,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Run a skill in CI](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/run-a-skill-in-ci.md) *(how-to)*: Use the skilldrop GitHub Action to run a skill on every pull request, such as a document critique or a pre-merge review, post the result to the job summary, and optionally fail the check on a verdict.
 - [Supply credentials to skills](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/supply-credentials.md) *(how-to)*: How to provide API keys and tokens to skills that declare env.required — covers local shells, CI environments, and enterprise secret managers.
 - [Upgrade installed skills](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/upgrade-skills.md) *(how-to)*: Check which installed skills are stale and bring them current, keeping any files you edited and your hook wiring.
+- [Use skills with MCP servers](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/use-with-mcp-servers.md) *(how-to)*: Pair skilldrop skills and loops with MCP servers so the agent fetches tickets, designs, PRs, incidents, query results and cost data itself, add a server in each supported tool, and do it without handing an attacker your data.
 - [Wire a skill to an event](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/wire-a-hook.md) *(how-to)*: Opt-in hooks: how a loop-shaped skill binds to session-start or pre-commit-review, and how the CLI projects that onto each target.
 - [The loops, stage by stage](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/loops.md) *(reference)*: Every loop's stages, skills and gates, with a generated diagram per loop — what each takes, what it produces, and what a mistake costs.
 - [skilldrop and the OWASP Top 10s](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/owasp-mapping.md) *(reference)*: Where skilldrop's controls meet the OWASP Agentic Skills Top 10 and the LLM Top 10 2025, what each control actually does, and the gaps it leaves.
@@ -164,5 +165,5 @@ except `api-builder` requires `core`, which installs with it.
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 38 accepted RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 39 accepted RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.

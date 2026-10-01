@@ -34,6 +34,7 @@
     "bigquery",
     "snowflake"
   ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths"},
   "model": {
     "tier": "heavy",
     "rationale": "Adversarial correctness review: finding join fan-out, NULL and timezone bugs means reasoning about data the query never shows, and a missed finding ships a wrong number. Never downgrade."

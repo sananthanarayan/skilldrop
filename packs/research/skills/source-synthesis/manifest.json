@@ -34,6 +34,7 @@
     "citations",
     "evidence"
   ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths"},
   "model": {
     "tier": "standard",
     "rationale": "Bounded synthesis over supplied text with a fixed citation format and strength criteria; the citation checker catches the mechanical failures, so mid-tier judgment is enough."

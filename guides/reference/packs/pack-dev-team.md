@@ -99,7 +99,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/bug-tri
 
 Guides an author through creating a new skilldrop skill from scratch — generates the manifest, SKILL.md, eval cases, and skill-catalogue entry from a plain-language description of the skill's purpose.
 
-Tier **standard** · v1.0.3 · [SKILL.md](../../../packs/dev-team/skills/contribution-wizard/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/contribution-wizard/)
+Tier **standard** · v1.0.4 · [SKILL.md](../../../packs/dev-team/skills/contribution-wizard/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/contribution-wizard/)
 
 **Use it when** authoring a new skill for this repo or a private fork, ensuring a new skill meets the schema and validation requirements before submission.
 

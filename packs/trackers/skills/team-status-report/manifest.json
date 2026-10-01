@@ -25,6 +25,7 @@
     "rag",
     "stakeholder-update"
   ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths"},
   "model": {
     "tier": "standard",
     "rationale": "A script computes every count and the suggested RAG; the model writes plain-language summaries, attributes outside facts and frames risks and asks. Bounded writing over computed numbers."

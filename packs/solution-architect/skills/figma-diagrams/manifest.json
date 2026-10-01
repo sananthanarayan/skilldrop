@@ -28,6 +28,7 @@
     "design",
     "api"
   ],
+  "permissions": {"network": ["api.figma.com"], "commands": [], "files": "named-paths", "notes": "Reads FIGMA_TOKEN from the environment to call the Figma REST API."},
   "model": {
     "tier": "standard",
     "rationale": "API calls + spec generation. Bounded transformation."

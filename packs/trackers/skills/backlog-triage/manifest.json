@@ -34,6 +34,7 @@
     "refinement",
     "duplicates"
   ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths"},
   "model": {
     "tier": "standard",
     "rationale": "A script does the counting; the model confirms duplicates by reading, judges readiness and writes a reasoned ordering. Bounded judgment over structured data."

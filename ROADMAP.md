@@ -4,7 +4,10 @@ What is being worked on next. Not a commitment — a direction. Shipped work mov
 
 ## Upcoming
 
-- **MCP integration guide** — how to combine skilldrop skills with Claude Code MCP servers; which skills pair naturally with the Figma MCP, Linear MCP, and GitHub MCP
-- **Commit-pinned third-party catalogs** — record the resolved commit SHA in the ledger, and warn when `update` sees new content under an unchanged version (OWASP AST02, AST07; see [the OWASP mapping](guides/reference/owasp-mapping.md))
-- **A permission manifest for skills** — declare network, shell and filesystem needs, so `skilldrop scan` can compare what a skill says with what it does (AST03, AST10)
-- **Homebrew tap and PyPI release from CI** — publishing both channels with the npm release; the formula and wheel builder are in [`packaging/`](packaging/README.md)
+- **Homebrew tap and PyPI release from CI** — publishing both channels with the npm release; the formula and wheel builder are in [`packaging/`](packaging/README.md). Waits on the tap repository and a PyPI account.
+
+## Considering
+
+Everything else raised in the 2026 reviews and not yet built, with why, size and dependencies, is in
+[docs/designs/future-ideas.md](docs/designs/future-ideas.md): distribution, the remaining OWASP gaps
+(signing, containment, org governance), live evals, new skills and loops, and docs depth.

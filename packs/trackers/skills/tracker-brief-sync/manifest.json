@@ -33,6 +33,7 @@
     "traceability",
     "drift"
   ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths", "notes": "The github target writes a shell script of gh commands for the user to run; it runs nothing itself."},
   "model": {
     "tier": "standard",
     "rationale": "Maps doc sections to items and writes acceptance criteria that restate requirements; a script checks the spec, writes the import file and computes drift. Bounded transformation with a deterministic check."

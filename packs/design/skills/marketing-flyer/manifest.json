@@ -32,6 +32,7 @@
     "brand",
     "design"
   ],
+  "permissions": {"network": [], "commands": ["google-chrome", "chromium", "chrome"], "files": "named-paths", "notes": "A local Chrome or Chromium is run headless only for --pdf and --png; the HTML needs nothing."},
   "model": {
     "tier": "standard",
     "rationale": "Writes short copy to fit and fills a spec for a deterministic builder. Bounded generation."

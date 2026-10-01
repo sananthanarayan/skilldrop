@@ -44,6 +44,7 @@
     "document",
     "export"
   ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths"},
   "model": {
     "tier": "standard",
     "rationale": "A stdlib script does the conversion; the model restructures the Markdown so it converts cleanly (heading levels, footnotes, HTML), reads each warning and explains the losses. Bounded editing, no open-ended generation."

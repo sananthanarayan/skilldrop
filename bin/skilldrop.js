@@ -51,9 +51,11 @@ Usage:
                                           (--no-skills for the loop alone) (RFC-0028)
   skilldrop install --panel review        install the review panel — the 3 reviewer subagents +
                                           the pre-merge-review orchestrator that fires them (RFC-0020)
-  skilldrop update [--force]              re-copy installed skills whose version changed; files
+  skilldrop update [--force] [--changed]  re-copy installed skills whose version changed; files
                                           you edited are kept and the new copy lands beside them
-                                          as <file>.upstream (--force overwrites) (RFC-0032)
+                                          as <file>.upstream (--force overwrites) (RFC-0032).
+                                          Files changed upstream under the same version are named,
+                                          not taken, unless you add --changed (RFC-0039)
   skilldrop outdated                      show installed vs current versions, change nothing
   skilldrop diff <skill> [--stat]         what differs between your installed copy and the catalog's —
                                           your edits, upstream changes, or both
@@ -81,7 +83,8 @@ Catalogs:
   (default)          the catalog bundled with this package
   --from <dir|url>   a skilldrop catalog (packs/<pack>/skills/<name>/ or flat skills/<name>/) OR
                      an agentbundle one (packs/<pack>/.apm/skills/<name>/SKILL.md); a git URL
-                     works for either — append #<branch-or-tag> to pin
+                     works for either. Append #<commit-sha> to pin exactly (a branch or tag can
+                     move after you review it); installs record the commit they got
 
 Install/update/uninstall targets (pick one):
   (default)          ~/.claude/skills           Claude Code, user scope
@@ -150,29 +153,68 @@ function parseArgs(argv) {
    manifestOf; never touch cat.skillsDir directly (it exists only on the flat skilldrop shape). */
 
 const catalogCache = {};
+/* Commit pinning (RFC-0039, OWASP AST02/AST07). A tag or branch can be moved to point at
+   different code after you reviewed it; a commit SHA cannot. `--from <url>#<sha>` fetches
+   exactly that commit, and every install records the commit it actually got, so the ledger
+   says what is on disk and an unpinned install can tell you how to pin it. */
+const SHA_RE = /^[0-9a-f]{7,40}$/i;
+function gitHead(dir) {
+  try {
+    return execFileSync("git", ["rev-parse", "HEAD"], { cwd: dir, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim() || null;
+  } catch (e) { return null; }
+}
+function splitSource(source) {
+  const i = source.lastIndexOf("#");
+  return i > 0 ? [source.slice(0, i), source.slice(i + 1)] : [source, ""];
+}
+function isPinned(source) { return !!source && SHA_RE.test(splitSource(source)[1]); }
+
+function fetchCatalog(source) {
+  const [url, ref] = splitSource(source);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "skilldrop-cat-"));
+  const git = (args, cwd) => execFileSync("git", args, { cwd, stdio: ["ignore", "ignore", "pipe"] });
+  try {
+    if (SHA_RE.test(ref)) {
+      // `git clone --branch` takes branches and tags, not commits: fetch the commit itself.
+      git(["init", "-q"], dir);
+      git(["remote", "add", "origin", url], dir);
+      let direct = ref.length === 40;
+      if (direct) {
+        try { git(["fetch", "-q", "--depth", "1", "origin", ref], dir); }
+        catch (e) { direct = false; }  // a host that won't serve a commit by itself
+      }
+      if (!direct) git(["fetch", "-q", "origin", "+refs/heads/*:refs/remotes/origin/*", "+refs/tags/*:refs/tags/*"], dir);
+      try { git(["checkout", "-q", direct ? "FETCH_HEAD" : ref], dir); }
+      catch (e) { die(`catalog '${source}': commit ${ref} isn't in that repository (check the SHA, or that it was pushed)`); }
+    } else {
+      git(["clone", "-q", "--depth", "1", ...(ref ? ["--branch", ref] : []), url, dir]);
+    }
+  } catch (e) {
+    die(`could not fetch catalog '${source}' — not a local path, and git ${SHA_RE.test(ref) ? "could not fetch that commit" : "clone failed"}`);
+  }
+  const head = gitHead(dir);
+  if (SHA_RE.test(ref) && (!head || !head.startsWith(ref.toLowerCase())))
+    die(`catalog '${source}' resolved to ${head || "nothing"}, not the pinned commit ${ref}`);
+  return dir;
+}
+
 function resolveCatalog(source) {
   const key = source || BUNDLED;
   if (catalogCache[key]) return catalogCache[key];
   let dir;
   if (!source) dir = ROOT;
   else if (fs.existsSync(source)) dir = path.resolve(source);
-  else {
-    const [url, ref] = source.split("#");
-    dir = fs.mkdtempSync(path.join(os.tmpdir(), "skilldrop-cat-"));
-    try {
-      execFileSync("git", ["clone", "--depth", "1", ...(ref ? ["--branch", ref] : []), url, dir], { stdio: ["ignore", "ignore", "pipe"] });
-    } catch (e) {
-      die(`could not fetch catalog '${source}' — not a local path, and git clone failed`);
-    }
-  }
+  else dir = fetchCatalog(source);
   const src = source || BUNDLED;
+  // The bundled catalog is versioned by the npm package; anything else by its git commit.
+  const meta = { commit: source ? gitHead(dir) : null, pinned: isPinned(source) };
   const packsDir = path.join(dir, "packs");
   if (fs.existsSync(packsDir) && fs.readdirSync(packsDir).some((p) => fs.existsSync(path.join(packsDir, p, "pack.json"))))
-    return (catalogCache[key] = readPacksCatalog(dir, src));
+    return (catalogCache[key] = Object.assign(readPacksCatalog(dir, src), meta));
   if (fs.existsSync(path.join(dir, "skills")))
-    return (catalogCache[key] = { dir, source: src, shape: "skilldrop", skillsDir: path.join(dir, "skills") });
+    return (catalogCache[key] = Object.assign({ dir, source: src, shape: "skilldrop", skillsDir: path.join(dir, "skills") }, meta));
   if (fs.existsSync(path.join(dir, "packs")))
-    return (catalogCache[key] = readApmCatalog(dir, src));
+    return (catalogCache[key] = Object.assign(readApmCatalog(dir, src), meta));
   die(`'${src}' is not a catalog — expected packs/<pack>/pack.json, a skills/ directory, or packs/<pack>/pack.toml (agentbundle)`);
 }
 
@@ -389,7 +431,7 @@ const SCRIPT_RULES = [
   { id: "shell-exec", sev: "🟧", owasp: ["AST03", "LLM06"], why: "executes shell commands",
     re: /\b(os\.system|subprocess\.(run|call|Popen|check_output)|child_process|execSync|spawnSync|shell_exec|`[^`\n]*\$\()/ },
   { id: "network", sev: "🟧", owasp: ["AST03", "LLM02"], why: "makes outbound network calls",
-    re: /\b(requests\.(get|post|put)|urllib\.request|httpx\.|axios\.|node-fetch|\bfetch\s*\(\s*["'`]https?:|curl\s+https?:|wget\s+https?:)/i },
+    re: /\b(requests\.(get|post|put|patch|delete|head|request|Session)\b|urllib\.request|urlopen\s*\(|http\.client|httpx\.|aiohttp\.|axios\.|node-fetch|\bfetch\s*\(\s*["'`]https?:|curl\s+https?:|wget\s+https?:)/i },
   { id: "credentials", sev: "🟧", owasp: ["AST01", "LLM02"], why: "reads credentials or secret material",
     re: /\b(os\.environ|process\.env)\b[^\n]{0,40}(TOKEN|KEY|SECRET|PASSWORD|CREDENTIAL)|~\/\.(aws|ssh|npmrc|netrc)|\.env\b|id_rsa/i },
   { id: "broad-fs", sev: "🟨", owasp: ["AST03", "LLM06"], why: "writes outside the skill's own directory",
@@ -441,8 +483,45 @@ function scanSkill(cat, s) {
       }
     });
   }
+  findings.push(...permissionGaps(cat, s, findings));
   const order = { "🟥": 0, "🟧": 1, "🟨": 2, "⚪": 3 };
   return findings.sort((a, b) => order[a.sev] - order[b.sev]);
+}
+
+/* RFC-0039: compare what a skill's scripts do (the scan's script findings) with what its
+   manifest says they do. A capability the code shows and the manifest doesn't declare is the
+   finding that matters most: it is either an honest omission or something hiding. */
+function permissionsOf(cat, s) {
+  if (cat.shape === "apm") return null;
+  try { return manifestOf(cat, s).permissions || null; } catch (e) { return null; }
+}
+function permissionGaps(cat, s, findings) {
+  const dir = skillDir(cat, s);
+  if (!dir || !fs.existsSync(path.join(dir, "scripts"))) return [];
+  const perm = permissionsOf(cat, s);
+  if (!perm)
+    return [{ sev: "🟨", id: "no-permissions", owasp: ["AST03", "AST10"], file: "manifest.json", line: 0,
+              why: "ships scripts but declares no permissions (network, commands, files) — nothing to check them against",
+              text: "add a `permissions` block to manifest.json (RFC-0039)" }];
+  const code = findings.filter((f) => SCRIPT_EXT.has(path.extname(f.file).toLowerCase()));
+  const gaps = [];
+  const gap = (id, f, why) => gaps.push({ sev: "🟥", id, owasp: ["AST03", "AST01"], why, file: f.file, line: f.line, text: f.text });
+  for (const f of code) {
+    if ((f.id === "network" || f.id === "exec-remote") && !(perm.network || []).length)
+      gap("undeclared-network", f, "makes network calls, but the manifest declares no network hosts");
+    if ((f.id === "shell-exec" || f.id === "exec-remote") && !(perm.commands || []).length)
+      gap("undeclared-commands", f, "runs commands, but the manifest declares none");
+    if (f.id === "broad-fs" && perm.files !== "anywhere")
+      gap("undeclared-files", f, `writes outside its own paths, but the manifest declares files: "${perm.files}"`);
+  }
+  return gaps;
+}
+function permissionSummary(perm) {
+  if (!perm) return "no permissions declared";
+  const net = (perm.network || []).length ? `contacts ${perm.network.join(", ")}` : "no network";
+  const cmds = (perm.commands || []).length ? `runs ${perm.commands.map((c) => c === "*" ? "commands you configure" : c).join(", ")}` : "runs no commands";
+  const files = { none: "writes nothing", "named-paths": "writes only paths you name", project: "writes inside the project", anywhere: "writes anywhere" }[perm.files] || `files: ${perm.files}`;
+  return `${net} · ${cmds} · ${files}`;
 }
 
 function printScan(cat, names, { compact = false } = {}) {
@@ -916,6 +995,7 @@ function copyOne(cat, s, dest, ide, l, notes) {
   const note = writeWiring(ide, dest, s, m.description);
   if (note && notes) notes.push(note);
   l.data[s] = { version: m.version, source: cat.source, files: fileHashes(skillDir(cat, s)) };
+  if (cat.commit) l.data[s].commit = cat.commit;
   return m;
 }
 
@@ -974,6 +1054,7 @@ function mergeOne(cat, s, dest, ide, l, notes, dry = false) {
   const note = writeWiring(ide, dest, s, m.description);
   if (note && notes) notes.push(note);
   l.data[s] = { version: m.version, source: cat.source, files: next };
+  if (cat.commit) l.data[s].commit = cat.commit;
   return { m, kept, orphaned };
 }
 
@@ -1110,10 +1191,20 @@ function install(args) {
     console.log(`\n${withHooks.join(", ")} declare hooks — re-run with --with-hooks to wire them (git pre-commit reminders / session-start context).`);
   }
 
+  if (cat.source !== BUNDLED && cat.commit) {
+    if (cat.pinned) console.log(`\nPinned: these skills came from commit ${cat.commit.slice(0, 12)}, as requested.`);
+    else console.log(`\nNot pinned: '${cat.source}' can change after you review it. These skills came from commit ${cat.commit.slice(0, 12)};` +
+                     `\n  to get exactly these files again, install with --from ${splitSource(cat.source)[0]}#${cat.commit}`);
+  }
   if (cat.source !== BUNDLED) {
     console.log(`\nWARNING: third-party catalog '${cat.source}'. Skills are instructions your AI agent will follow — review each installed SKILL.md under ${dest} before first use. Install copied files only; nothing was executed.`);
     // Supply-chain scan (RFC-0022): surface risky patterns at the moment of trust. Reports only —
     // the files are already copied, and a match is a prompt to read, not a verdict.
+    const scripted = names.filter((s) => fs.existsSync(path.join(skillDir(cat, s), "scripts")));
+    if (scripted.length) {
+      console.log(`\nWhat the scripts declare they do (RFC-0039):`);
+      for (const s of scripted) console.log(`  ${s}: ${permissionSummary(permissionsOf(cat, s))}`);
+    }
     const { total } = printScan(cat, names, { compact: true });
     console.log(total
       ? `\n${total} pattern(s) worth reading before you trust these skills. Full detail: skilldrop scan --from ${cat.source}`
@@ -1159,12 +1250,22 @@ function installedRows(flags) {
   const l = ledger(dest);
   const rows = Object.keys(l.data).sort().map((s) => {
     const src = lsrc(l.data[s]);
-    let current = null, cat = null;
+    let current = null, cat = null, changed = [];
+    const entry = l.data[s];
     try {
       cat = resolveCatalog(src === BUNDLED ? undefined : src);
-      if (skillExists(cat, s)) current = manifestOf(cat, s).version;
+      if (skillExists(cat, s)) {
+        current = manifestOf(cat, s).version;
+        // Same version, different files: the catalog changed the skill without bumping it.
+        // The version check alone would never see that (OWASP AST07, update drift).
+        if (current === lver(entry) && typeof entry === "object" && entry.files) {
+          const now = fileHashes(skillDir(cat, s));
+          changed = [...new Set([...Object.keys(now), ...Object.keys(entry.files)])]
+            .filter((f) => now[f] !== entry.files[f]).sort();
+        }
+      }
     } catch (e) { /* unreachable source: current stays null */ }
-    return { s, src, cat, installed: lver(l.data[s]), current };
+    return { s, src, cat, installed: lver(entry), current, changed, pinned: isPinned(src) };
   });
   return { dest, ide, l, rows };
 }
@@ -1173,7 +1274,10 @@ function update(args) {
   const { dest, ide, l, rows } = installedRows(args.flags);
   if (!rows.length) return console.log(`nothing installed at ${dest}`);
   const dry = !!args.flags["dry-run"];
-  const due = rows.filter((r) => r.current && r.current !== r.installed);
+  // A row is due when its version moved, or (with --changed) when its files moved under the
+  // same version. Same-version changes are never taken silently: they are named and skipped.
+  const isDue = (r) => r.current && (r.current !== r.installed || (args.flags.changed && r.changed.length));
+  const due = rows.filter(isDue);
   if (args.flags.force && !dry) {
     const lost = due.flatMap((r) => editedFiles(dest, r.s, l.data[r.s]).map((f) => `${r.s}/${f}`));
     if (lost.length) {
@@ -1183,19 +1287,20 @@ function update(args) {
   }
   if (dry) return planUpdate(dest, ide, l, rows, args.flags);
   let n = 0, conflicts = 0;
+  const silent = rows.filter((r) => r.current === r.installed && r.changed.length && !args.flags.changed);
   for (const r of rows) {
     if (!r.current) { console.log(`skip ${r.s}: source '${r.src}' unreachable or skill gone from it`); continue; }
-    if (r.current === r.installed) continue;
+    if (!isDue(r)) continue;
     const problems = checkSkill(r.cat, r.s);
     if (problems.length) { console.log(`skip ${r.s}: fails structural check in '${r.src}' (${problems[0]})`); continue; }
     // No baseline (installed before RFC-0032) or --force: overwrite as before, and record one.
     const entry = l.data[r.s];
     if (args.flags.force || typeof entry !== "object" || !entry.files) {
       copyOne(r.cat, r.s, dest, ide, l);
-      console.log(`updated ${r.s} ${r.installed} -> ${r.current} (${r.src})`);
+      console.log(`updated ${r.s} ${r.installed === r.current ? `${r.current} (same version, changed upstream)` : `${r.installed} -> ${r.current}`} (${r.src})`);
     } else {
       const { kept, orphaned } = mergeOne(r.cat, r.s, dest, ide, l);
-      console.log(`updated ${r.s} ${r.installed} -> ${r.current} (${r.src})`);
+      console.log(`updated ${r.s} ${r.installed === r.current ? `${r.current} (same version, changed upstream)` : `${r.installed} -> ${r.current}`} (${r.src})`);
       for (const f of kept) console.log(`  kept your edits in ${f} — new version at ${f}.upstream`);
       for (const f of orphaned) console.log(`  kept ${f} — dropped upstream, but you edited it`);
       conflicts += kept.length;
@@ -1203,10 +1308,17 @@ function update(args) {
     n++;
   }
   saveLedger(l);
-  console.log(n ? `\n${n} skill(s) updated.` : "everything up to date.");
+  console.log(n ? `\n${n} skill(s) updated.` : (silent.length ? "no version changes." : "everything up to date."));
+  if (silent.length)
+    console.log(`\nNot taken: ${silent.map((r) => r.s).join(", ")} changed upstream without a version bump.` +
+                `\n  Read the change (skilldrop diff <skill>), then take it with: skilldrop update --changed`);
+  const pinned = rows.filter((r) => r.pinned);
+  if (pinned.length)
+    console.log(`\n${pinned.length} skill(s) come from a catalog pinned to a commit, so they stay as they are. To move them,` +
+                `\n  reinstall with the new commit: skilldrop install <skill> --from <url>#<new-commit>`);
   // An update is a fresh act of trust in a third-party catalog (OWASP AST07): scan what changed.
   const thirdParty = {};
-  for (const r of rows) if (r.current && r.current !== r.installed && r.src !== BUNDLED) (thirdParty[r.src] = thirdParty[r.src] || { cat: r.cat, names: [] }).names.push(r.s);
+  for (const r of rows) if (isDue(r) && r.src !== BUNDLED) (thirdParty[r.src] = thirdParty[r.src] || { cat: r.cat, names: [] }).names.push(r.s);
   for (const { cat, names } of Object.values(thirdParty)) {
     const { total } = printScan(cat, names, { compact: true });
     console.log(total ? `\n${total} pattern(s) in the updated skills from '${cat.source}' worth reading. Full detail: skilldrop scan --from ${cat.source}`
@@ -1222,7 +1334,11 @@ function planUpdate(dest, ide, l, rows, flags) {
   let n = 0;
   for (const r of rows) {
     if (!r.current) { console.log(`would skip ${r.s}: source '${r.src}' unreachable or skill gone from it`); continue; }
-    if (r.current === r.installed) continue;
+    if (r.current === r.installed && !r.changed.length) continue;
+    if (r.current === r.installed && !flags.changed) {
+      console.log(`would not take ${r.s}: ${r.changed.length} file(s) changed upstream without a version bump (add --changed to take them)`);
+      continue;
+    }
     const problems = checkSkill(r.cat, r.s);
     if (problems.length) { console.log(`would skip ${r.s}: fails structural check (${problems[0]})`); continue; }
     n++;
@@ -1237,25 +1353,34 @@ function planUpdate(dest, ide, l, rows, flags) {
     for (const f of kept) console.log(`  would keep your edits in ${f} and write the new version to ${f}.upstream`);
     for (const f of orphaned) console.log(`  would keep ${f} — dropped upstream, but you edited it`);
   }
-  console.log(n ? `\n${n} skill(s) would update. Rerun without --dry-run to apply.` : "everything up to date.");
+  const held = rows.filter((r) => r.current && r.current === r.installed && r.changed.length && !flags.changed).length;
+  console.log(n ? `\n${n} skill(s) would update. Rerun without --dry-run to apply.` : (held ? "no version changes." : "everything up to date."));
 }
 
 function outdated(args) {
   const { dest, rows } = installedRows(args.flags);
   const stale = rows.filter((r) => r.current && r.current !== r.installed);
+  const drift = rows.filter((r) => r.changed && r.changed.length);
   if (args.flags.json)
     return emitJSON({
       dest,
       count: rows.length,
       outdatedCount: stale.length,
+      changedWithoutVersionCount: drift.length,
       skills: rows.map((r) => ({
         name: r.s, installed: r.installed, current: r.current,
         source: r.src, outdated: !!(r.current && r.current !== r.installed),
+        changedWithoutVersion: r.changed || [], pinned: r.pinned,
       })),
     });
   if (!rows.length) return console.log(`nothing installed at ${dest}`);
   for (const r of stale) console.log(`${r.s}: installed ${r.installed}, current ${r.current} (${r.src})`);
-  console.log(stale.length ? `\n${stale.length} outdated — run: skilldrop update` : "everything up to date.");
+  for (const r of drift)
+    console.log(`${r.s}: ${r.changed.length} file(s) changed in '${r.src}' without a version bump (${r.changed.slice(0, 3).join(", ")}${r.changed.length > 3 ? ", …" : ""})`);
+  if (drift.length)
+    console.log(`\n${drift.length} skill(s) changed upstream with the same version. Read the change first (skilldrop diff <skill>),` +
+                `\nthen take it with: skilldrop update --changed`);
+  console.log(stale.length ? `\n${stale.length} outdated — run: skilldrop update` : (drift.length ? "" : "everything up to date."));
 }
 
 function uninstall(args) {
@@ -1890,6 +2015,7 @@ function info(args) {
       deps: { pip: (m.deps || {}).pip || [], npm: (m.deps || {}).npm || [], requirementsTxt: needsPip },
       env: { required: (m.env || {}).required || [], optional: (m.env || {}).optional || [] },
       hooks: m.hooks || [],
+      permissions: m.permissions || null,
     });
   console.log(`${m.name}@${m.version}  (tier: ${(m.model && m.model.tier) || "n/a"})\n\n${m.description}\n`);
   console.log(`catalog: ${cat.source}`);
@@ -1898,6 +2024,8 @@ function info(args) {
   if (((m.deps || {}).pip || []).length || fs.existsSync(path.join(skillDir(cat, s), "requirements.txt")))
     console.log("deps:    python (requirements.txt)");
   if (((m.env || {}).required || []).length) console.log(`env:     ${m.env.required.join(", ")} (required)`);
+  if (fs.existsSync(path.join(skillDir(cat, s), "scripts")))
+    console.log(`scripts: ${permissionSummary(m.permissions)}${m.permissions && m.permissions.notes ? `\n         ${m.permissions.notes}` : ""}`);
 }
 
 function listPacks(args) {
@@ -1924,6 +2052,8 @@ function validateCmd(args) {
   let bad = 0;
   for (const s of names) {
     const problems = checkSkill(cat, s);
+    for (const f of scanSkill(cat, s).filter((x) => x.id.startsWith("undeclared-")))
+      problems.push(`${f.file}:${f.line} ${f.why} (RFC-0039)`);
     for (const p of problems) console.log(`FAIL ${s}: ${p}`);
     if (problems.length) bad++;
   }

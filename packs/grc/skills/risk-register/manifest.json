@@ -35,6 +35,7 @@
     "governance",
     "compliance"
   ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths"},
   "model": {
     "tier": "standard",
     "rationale": "Structured writing against a fixed format and scale, with a script doing the checks and counts. Scoring needs some judgment but is bounded by the written scale."

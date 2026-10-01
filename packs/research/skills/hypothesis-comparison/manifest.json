@@ -35,6 +35,7 @@
     "analysis",
     "evidence"
   ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths"},
   "model": {
     "tier": "heavy",
     "rationale": "Judgment-heavy: generating real rivals, rating every evidence-hypothesis cell honestly and resisting the favourite theory is where a fast pass fails; the script only does the arithmetic."

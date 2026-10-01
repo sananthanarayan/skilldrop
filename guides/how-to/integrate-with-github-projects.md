@@ -71,3 +71,5 @@ Run user-story-splitter.
 ```
 
 The output slices can be created as new issues or sub-tasks in a GitHub Project board.
+
+See also: [Use skills with MCP servers](use-with-mcp-servers.md)

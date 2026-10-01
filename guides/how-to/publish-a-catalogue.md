@@ -16,7 +16,8 @@ A git repo or directory is a **catalog** if it has either shape the CLI reads ([
 
 ```bash
 npx skilldrop-cli list --from https://github.com/you/your-skills
-npx skilldrop-cli install my-skill --from https://github.com/you/your-skills#v1.2   # #ref pins a branch/tag
+npx skilldrop-cli install my-skill --from https://github.com/you/your-skills#3f9c2ab   # #<commit> pins exactly
+npx skilldrop-cli install my-skill --from https://github.com/you/your-skills#v1.2      # a tag or branch works, but can move
 npx skilldrop-cli install --pack starter --from ../local-catalog
 npx skilldrop-cli update      # updates bundled and third-party skills side by side — the ledger remembers each skill's source
 ```
@@ -28,6 +29,17 @@ npx skilldrop-cli packs --from https://github.com/eugenelim/agent-ready-repo
 npx skilldrop-cli install --pack contracts --from https://github.com/eugenelim/agent-ready-repo --dest .agents/skills
 ```
 
+**Pin to a commit.** A tag or branch can be moved to different code after you reviewed it; a
+commit SHA can't. Every install records the commit it got in the ledger, and an unpinned
+third-party install prints the exact `--from <url>#<commit>` that reproduces it. A pinned skill
+stays put on `update` until you reinstall with a new commit. If a catalogue changes a skill's
+files without bumping its version, `outdated` names it and `update` leaves it alone unless you
+add `--changed` ([RFC-0039](../../docs/rfcs/0039-commit-pins-and-skill-permissions.md)).
+
 Safety model: installs **copy files only — nothing from a catalog is ever executed**; every skill passes a structural check before copying (broken folders are refused with reasons); and third-party installs print a review-before-use warning, because skills are instructions your AI agent will follow — read a stranger's `SKILL.md` before letting your agent obey it.
 
-**Authoring a catalog:** mirror the layout above, then check it with `npx skilldrop-cli validate --from <your-repo-or-path>` before publishing. `related`, packs (either shape), `requires`, and `requirements.txt` all work in third-party catalogs exactly as they do here.
+Third-party installs also print what each skill's scripts declare they do (hosts contacted,
+programs run, where files are written) from its `permissions` block, and `scan` flags any
+script that does something its skill doesn't declare.
+
+**Authoring a catalog:** mirror the layout above, give every skill that ships scripts a `permissions` block (see [AGENTS.md](../../AGENTS.md)), then check it with `npx skilldrop-cli validate --from <your-repo-or-path>` before publishing. `related`, packs (either shape), `requires`, and `requirements.txt` all work in third-party catalogs exactly as they do here.

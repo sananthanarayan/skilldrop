@@ -32,17 +32,17 @@ v1.0-2026 (IDs and titles from the project's repository) and the
 | Risk | What skilldrop does | Coverage | Gap |
 |---|---|---|---|
 | **AST01 Malicious Skills** | `skilldrop scan` checks scripts for remote execution, shell, network, credential and broad filesystem patterns. It checks every markdown file in a skill (SKILL.md, reference, templates, examples) for instructions to override, conceal, rewrite memory, exfiltrate, or fetch remote instructions. It runs automatically after any `--from` install and `update`. Installs copy files and never execute them. | Partial | A heuristic that reports and never blocks, by design. Findings print after the files are copied. Agents are not scanned. |
-| **AST02 Supply Chain Compromise** | `--from <git-url>#<tag>` pins a third-party catalog, and the ledger records each skill's source. skilldrop's own release has zero runtime dependencies, npm provenance through OIDC, SHA-pinned Actions, CODEOWNERS, Dependabot, CodeQL and gitleaks. | Partial | Third-party skills carry no signature. Pinning is optional and uses a tag or branch, which can move, and the ledger records no commit SHA. |
-| **AST03 Over-Privileged Skills** | Agents declare `tools:`, and projecting an agent to another IDE drops tools that have no equivalent, with a warning. Manifests declare `deps` and `env`. The scan's network, shell and credential rules stand in for undeclared capability. | Partial | Skills have no permission manifest, so declared and observed capability can't be compared. |
+| **AST02 Supply Chain Compromise** | `--from <git-url>#<commit>` pins a third-party catalog to an exact commit, which can't be moved the way a tag or branch can, and the CLI checks it got that commit. Every install records the commit in the ledger, and an unpinned install prints the pinned URL that reproduces it. skilldrop's own release has zero runtime dependencies, npm provenance through OIDC, SHA-pinned Actions, CODEOWNERS, Dependabot, CodeQL and gitleaks. | Partial | Third-party skills carry no signature, and pinning is opt-in. A catalogue owner who pushes a malicious commit still reaches anyone who installs unpinned. |
+| **AST03 Over-Privileged Skills** | A skill that ships scripts declares `permissions`: the hosts it contacts, the programs it runs, and where it writes. `skilldrop scan` checks the scripts against it and raises any undeclared network call, command or broad write as a 🟥 finding, and `skilldrop validate` fails a catalogue that has one. All 24 bundled script skills declare theirs. Agents declare `tools:`, and projecting an agent to another IDE drops tools that have no equivalent, with a warning. | Partial | The check is only as good as the scan's patterns, so code that hides what it does can pass. Instruction-only skills (no scripts) declare nothing, though their prose can still tell an agent to run things. |
 | **AST04 Insecure Metadata** | The structural gate refuses a whole install if any manifest is invalid JSON, a name doesn't match its folder, or a required field is missing. Frontmatter is read by pattern, never by a YAML loader. Skill names are regex-escaped before use. | Partial | Parsing is safe, but nothing checks meaning: an impersonating name or a misleading description passes. |
 | **AST05 Untrusted External Instructions** | The scan's `remote-instructions` rule flags a skill that tells the agent to fetch instructions, rules or a prompt from a URL at run time. | Partial | A pattern match, so a paraphrase evades it. External material is not hash-pinned. |
 | **AST06 Weak Isolation** | Only at install time: catalog content is never executed, and hooks are opt-in (`--with-hooks`) and printed. | Not covered | Installed skills run with the host agent's full permissions. skilldrop provides no sandbox. |
-| **AST07 Update Drift** | The ledger keeps each skill's version, source and a SHA-256 per file. `outdated` shows what changed. `update` is explicit, re-runs the structural gate and the supply-chain scan, and keeps your edited files, writing new versions as `.upstream`. `update --dry-run` and `diff` show what would change first. | Partial | Updates are triggered by the version string, so content that changes without a version bump goes unnoticed. |
+| **AST07 Update Drift** | The ledger keeps each skill's version, source, commit and a SHA-256 per file. `outdated` compares files as well as versions, so a skill changed upstream under the same version is named, and `update` takes it only with `--changed`. A pinned skill doesn't move until you re-pin it. `update` re-runs the structural gate and the supply-chain scan, keeps your edited files, and `update --dry-run` and `diff` show what would change first. | Covered | Detection needs the catalogue to be fetched; nothing watches it in the background. |
 | **AST08 Poor Scanning** | The scan has a prose rule set aimed at natural-language instructions, kept separate from code rules and tuned not to flag skills that are *about* security. `--json` feeds other tools. | Partial | Pattern matching over prose is the weakness AST08 describes. RFC-0022 deliberately rejects semantic and LLM-assisted review. |
 | **AST09 No Governance** | Each target has a ledger (an inventory), `doctor` checks it against disk, profiles give curated bundles, and `ai-usage-policy` writes an approved-tool list with owners. | Partial | Everything is per machine. There is no organisation-wide inventory, approval flow or audit log. |
-| **AST10 Cross-Platform Reuse** | Installing across platforms is the product: Claude Code, Cursor, Kiro, Codex, Antigravity, Copilot and any folder. Agent projection warns when a tool is dropped. | Partial | Skills carry no security metadata, so there is nothing to keep when a skill moves between tools. |
+| **AST10 Cross-Platform Reuse** | Installing across platforms is the product: Claude Code, Cursor, Kiro, Codex, Antigravity, Copilot and any folder. The `permissions` block travels inside `manifest.json` to every tool, and `skilldrop info` and third-party installs show it. Agent projection warns when a tool is dropped. | Partial | No target tool reads `permissions` itself; it informs the person installing, and the scan, but nothing enforces it at run time. |
 
-**Covered 0 · Partial 9 · Not covered 1.**
+**Covered 1 · Partial 8 · Not covered 1.**
 
 ## OWASP Top 10 for LLM Applications 2025
 
@@ -63,13 +63,13 @@ v1.0-2026 (IDs and titles from the project's repository) and the
 
 ## The biggest gaps, in order
 
-1. **No signing or commit pinning for third-party catalogs** (AST02, AST07). Recording the
-   resolved commit SHA in the ledger, and warning when `update` sees new content under an
-   unchanged version, would close most of it.
-2. **No permission manifest for skills** (AST03, AST10). Declaring network, shell and
-   filesystem needs would give the scan something to compare against and a property to carry
-   across tools.
-3. **The scan is pattern matching** (AST08). That's a deliberate trade for a zero-dependency,
-   offline CLI. The weekly evals and human review are the backstop.
-4. **No run-time isolation** (AST06). That belongs to the agent host, not an installer, but a
-   skill could at least say what containment it expects.
+1. **No run-time isolation** (AST06). Installed skills run with the host agent's full
+   permissions. That belongs to the agent host, not an installer, but a skill could at least
+   say what containment it expects.
+2. **The scan is pattern matching** (AST08). That's a deliberate trade for a zero-dependency,
+   offline CLI, and it limits how much the `permissions` check can prove. The weekly evals and
+   human review are the backstop.
+3. **No signing for third-party catalogues** (AST02). Commit pins stop a moved tag; they don't
+   prove who wrote the commit.
+4. **No organisation-wide governance** (AST09): inventory, approval and audit stay per machine.
+   `skilldrop package` mirrors and `MIRROR.json` are the closest thing today.

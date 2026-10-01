@@ -78,3 +78,5 @@ Fetch ENG-204 from Linear and run bug-triage on it.
 ```
 
 The agent retrieves the issue text and passes it to the skill without you copying anything.
+
+See also: [Use skills with MCP servers](use-with-mcp-servers.md)

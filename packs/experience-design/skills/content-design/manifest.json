@@ -33,6 +33,7 @@
     "ux",
     "user-needs"
   ],
+  "permissions": {"network": [], "commands": [], "files": "none", "notes": "Prints readability figures; writes nothing."},
   "model": {
     "tier": "standard",
     "rationale": "Rewrites source text from user needs under fixed plain-language rules, with a script for the readability numbers. Prioritising questions needs judgment, but facts come from the source."

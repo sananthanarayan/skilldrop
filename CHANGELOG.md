@@ -8,6 +8,16 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.0 — 2026-10-01
+
+- **Pin a third-party catalogue to an exact commit:** `--from <url>#<commit-sha>`. A tag or branch can be moved to different code after you reviewed it, but a commit can't, and the CLI checks it got the commit you asked for. Every install records its commit in the ledger. An unpinned install prints the `#<commit>` URL that gets exactly those files again. Pinned skills stay put on `update` until you re-pin.
+- **`outdated` and `update` catch a skill that changed upstream under the same version**, which the version check alone missed. `update` names it and leaves it alone; read it with `skilldrop diff`, then take it with `update --changed`.
+- **Skills that ship scripts now declare what those scripts do** (`permissions` in `manifest.json`): the hosts they contact, the programs they run, and where they write. `skilldrop scan` raises any script that does something its skill doesn't declare as a top-severity finding, and `skilldrop validate` fails the catalogue. `skilldrop info` and third-party installs show the declaration. All 24 bundled script skills declare theirs.
+- **The scan's network rule catches more:** every `requests` call form, `urlopen`, `http.client` and `aiohttp`. It had missed `figma-diagrams`'s calls to the Figma API.
+- **New guide: [Use skills with MCP servers](guides/how-to/use-with-mcp-servers.md).** Which servers (GitHub, Atlassian, Linear, Figma, Sentry, Supabase, AWS cost, Slack) pair with which skills, how to add one in Claude Code, Cursor, Codex, VS Code, Kiro and Antigravity, and how to do it safely. Every endpoint and config key was checked against the vendor's docs.
+- The OWASP mapping is updated: update drift (AST07) is now covered, and supply chain (AST02), over-privileged skills (AST03) and cross-platform reuse (AST10) are stronger. Ideas not yet built are collected in [docs/designs/future-ideas.md](docs/designs/future-ideas.md).
+- The Claude plugin marketplace now has a description, so `claude plugin validate` passes without a warning.
+
 ## 0.15.1 — 2026-10-01
 
 - `file-to-markdown` gets far more out of a PDF. Tables with aligned columns come through as Markdown tables, indented lists stay lists, code stays code, and short standalone lines become headings (it says those were guessed). A table whose cells wrap is kept as aligned text. A page with two columns of prose side by side is read in column order, and the script names those pages. Before, every PDF came out as run-together paragraphs.

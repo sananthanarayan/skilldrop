@@ -7,5 +7,6 @@
   "env": { "required": [], "optional": [] },
   "related": [],
   "tags": ["ai-usage", "reporting", "telemetry", "adoption", "observability", "manager-tools"],
+  "permissions": {"network": [], "commands": [], "files": "named-paths"},
   "model": { "tier": "standard", "rationale": "Tabulates telemetry; the 'AI theater' effectiveness call needs some judgment." }
 }
