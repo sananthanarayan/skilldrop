@@ -9,10 +9,10 @@ Every skill fact on the page comes from packs/<pack>/skills/<name>/manifest.json
 model-routing.json. A description typed into this file would be a fourth copy of a
 string validate.py already keeps in sync across two (RFC-0011).
 
-The prose (hero, section headings, the tool matrix) is the page's own copy and lives in
-the PITCH and TOOLS blocks below — the one place to edit wording. Every claim in it is
-checkable against the repo; the tool matrix lists only paths confirmed in
-docs/designs/ide-primitive-coverage.md, which is why Gemini CLI is absent.
+The prose (hero, section headings, the promises, the own and team lists) is the page's own
+copy and lives in the PITCH, PROMISES, OWN and TEAM blocks below — the one place to edit
+wording. Every claim in it is checkable against the repo. The home page keeps to six sections
+(RFC-0035 follow-up); anything longer has its own page in the nav.
 
 The page is one self-contained file: CSS and JS inline, no external requests, no absolute
 paths. That is what makes it work unchanged under the /skilldrop/ project-pages base path.
@@ -40,13 +40,9 @@ ASSETS = os.path.join(ROOT, "assets")
 BINARY_ASSETS = ["og.png"]
 REPO_URL = "https://github.com/sananthanarayan/skilldrop"
 NPM_URL = "https://www.npmjs.com/package/skilldrop-cli"
-# How many skill rows render before the "show all" button. Past this the list stops being
-# scannable and starts being a dump; a query, a filter, or a deep link reveals the rest.
-PREVIEW_ROWS = 8
 # How many releases the "Recently shipped" strip carries. Three is enough to show a pulse
 # without turning the landing page into a changelog.
 SHIPPED_ENTRIES = 3
-ROADMAP_ENTRIES = 4  # how many upcoming items the "Now" strip shows
 SITE_URL = "https://sananthanarayan.github.io/skilldrop/"
 
 def _pack_total(name):
@@ -130,23 +126,7 @@ TEAM = [
 # The home page's proof: one real worked example, input then output, from a skill's examples/.
 PROOF_SKILL = "launch-readiness"
 
-QUALITY = [
-    ("Quality bar", "A checkable standard for the output — not adjectives. A skill without one is a description, not a generator."),
-    ("Anti-patterns", "The specific mistakes the skill refuses to make, named and countered with a passing example beside a failing one."),
-    ("Acceptance evals", "Realistic prompts with assertions, plus phrases that should <em>not</em> trigger the skill — so the description stays honest."),
-    ("Model tier", "A provider-neutral <code>light</code>/<code>standard</code>/<code>heavy</code> hint that travels with the skill, so cheap work runs cheap."),
-]
 
-# Only paths confirmed in docs/designs/ide-primitive-coverage.md. Anything unsurveyed is absent
-# rather than guessed — an invented install path is worse than a missing row.
-TOOLS = [
-    ("Claude Code", "~/.claude/skills/ · .claude/skills/", "skilldrop install", True),
-    ("Cursor", ".cursor/skills/ + a .cursor/rules/*.mdc pointer", "skilldrop install --ide cursor", True),
-    ("Kiro IDE + CLI", ".kiro/skills/ · ~/.kiro/skills/", "skilldrop install --ide kiro", True),
-    ("OpenAI Codex", ".agents/skills/ · ~/.codex/skills/", "skilldrop install --dest .agents/skills", False),
-    ("GitHub Copilot", ".github/skills/ — its CLI also reads .claude/skills/ and .agents/skills/", "skilldrop install --dest .github/skills", False),
-    ("Antigravity CLI", ".agents/skills/ · ~/.gemini/antigravity-cli/skills/", "skilldrop install --dest .agents/skills", False),
-]
 # Gemini CLI is absent on purpose, not by omission: Google retired it for free, AI Pro, Ultra
 # and individual Code Assist users on 2026-06-18, leaving only Standard/Enterprise licences.
 # Antigravity CLI is its successor and is listed above. Listing a tool that no longer serves
@@ -164,56 +144,6 @@ NAV = [
     ("GitHub", REPO_URL, True),
 ]
 
-# Guides by Diátaxis kind. Each tuple: (title, path-from-repo-root, one-line description).
-# Path is used to build the GitHub blob URL; keep it relative to repo root.
-GUIDES = {
-    "Tutorial": {
-        "tagline": "Learn by doing something real.",
-        "items": [
-            ("Follow one change through the loops",
-             "guides/tutorial/follow-a-change-through-the-loops.md",
-             "One realistic change from complaint to closed incident — every gate shown"),
-            ("From complaint to closed incident", "guides/tutorial/complaint-to-closed-incident.md", "discover → operate: support complaint to root-cause fix and postmortem"),
-            ("From idea to shipped feature",      "guides/tutorial/idea-to-shipped-feature.md",      "All four lifecycle loops: idea → design → build → operate → closed incident"),
-            ("Dev-team workflow",             "guides/tutorial/dev-team-workflow.md",             "Story → implementation → review panel → release notes"),
-            ("Solution architect workflow",   "guides/tutorial/solution-architect-workflow.md",   "Brief → diagrams → ADRs → design doc → threat model → council gate"),
-            ("Product manager workflow",      "guides/tutorial/product-manager-workflow.md",      "Signal → PR/FAQ → OKRs → PRD → metrics → critique gate"),
-            ("AI engineering workflow",       "guides/tutorial/ai-engineering-workflow.md",       "Use-case triage → readiness → loop design → threat model → evals → usage report"),
-        ],
-    },
-    "How-to": {
-        "tagline": "I have a goal — what are the steps?",
-        "items": [
-            ("Install into your IDE",           "guides/how-to/install-per-ide.md",            "Per-IDE steps for every target, plus dependency installs"),
-            ("Install a profile",               "guides/how-to/profiles.md",                   "Named bundles of packs, agents, and loops — one command for a complete setup"),
-            ("Author a new skill",              "guides/how-to/author-a-skill.md",             "What a skill must contain and what gates it"),
-            ("Author a new loop",               "guides/how-to/author-a-loop.md",              "The closed loop.json contract and the gate rules"),
-            ("Wire a skill to an event",        "guides/how-to/wire-a-hook.md",                "Opt-in hooks, projected per target"),
-            ("Publish your own catalogue",      "guides/how-to/publish-a-catalogue.md",        "Make skilldrop --from <you> work"),
-            ("Upgrade installed skills",        "guides/how-to/upgrade-skills.md",             "Keep installed skills current without clobbering your settings"),
-            ("Roll out across your org",        "guides/how-to/enterprise-distribution.md",    "Bootstrap the hosted marketplace for every machine in one command"),
-            ("Use with Jira",                   "guides/how-to/integrate-with-jira.md",        "Bug triage, story splitting, implementation loops, and release notes from Jira tickets"),
-            ("Use with GitHub Projects",        "guides/how-to/integrate-with-github-projects.md", "Implementation loops, review gates, and release notes linked to GitHub issues"),
-            ("Use with Figma",                  "guides/how-to/integrate-with-figma.md",       "Generate diagrams for FigJam, reverse-engineer decisions from mockups"),
-            ("Use with Linear",                 "guides/how-to/integrate-with-linear.md",      "Triage, story splitting, implementation tracking, and release notes from Linear issues"),
-            ("Supply credentials to skills",    "guides/how-to/supply-credentials.md",         "How to set FIGMA_TOKEN, SONAR_TOKEN, and other env vars locally, in CI, and via secret managers"),
-        ],
-    },
-    "Reference": {
-        "tagline": "What exactly does this field or command do?",
-        "items": [
-            ("Skills that ship scripts", "guides/reference/skills-with-scripts.md", "The two skills with executable helpers and what they do"),
-            ("Model routing",            "MODEL-ROUTING.md",                         "Abstract tiers, the provider map, and how to override"),
-        ],
-    },
-    "Explanation": {
-        "tagline": "Why is it built this way?",
-        "items": [
-            ("Architecture",  "ARCHITECTURE.md",              "Four primitives, the install contract, the enforcement table, five invariants"),
-            ("Why loops",     "guides/explanation/loops.md",  "Why sequencing is its own primitive and why four lifecycle loops"),
-        ],
-    },
-}
 
 INSTALL_TABS = [
     ("a role pack", "npx skilldrop-cli install --pack solution-architect", f"{_pack_total('solution-architect')} skills a solution architect reaches for, core included, in one command."),
@@ -323,26 +253,6 @@ def changelog():
     return version, releases[:SHIPPED_ENTRIES]
 
 
-def roadmap():
-    """ROADMAP.md -> list of bullet strings under ## Upcoming, up to ROADMAP_ENTRIES items."""
-    path = os.path.join(ROOT, "ROADMAP.md")
-    if not os.path.exists(path):
-        print("build_site.py: refusing to build — ROADMAP.md is missing", file=sys.stderr)
-        sys.exit(1)
-    items, in_upcoming = [], False
-    for line in open(path, encoding="utf-8"):
-        if line.strip() == "## Upcoming":
-            in_upcoming = True
-            continue
-        if in_upcoming and line.startswith("## "):
-            break
-        if in_upcoming and line.startswith("- "):
-            items.append(line[2:].strip())
-    if not items:
-        print("build_site.py: refusing to build — ROADMAP.md has no bullets under ## Upcoming",
-              file=sys.stderr)
-        sys.exit(1)
-    return items[:ROADMAP_ENTRIES]
 
 
 def esc(s):
@@ -359,27 +269,27 @@ def inline_md(s):
 
 # Self-contained: literal values, not the page's CSS variables, because the catalogue, pack
 # and docs pages each carry their own stylesheet and the nav must look the same on all of them.
-NAV_CSS = """/* nav — sits on the hero background, so it reads as one dark block with it.
+NAV_CSS = """/* nav — light, on every page; a hairline separates it from the content.
    Not sticky: the catalogue's filter bar owns top:0, and two sticky layers fight. */
 .skip-nav {
   position:absolute; left:-9999px; top:0; z-index:20; background:#7c5cff;
   color:#0d0d0f; padding:.6rem 1rem; font-weight:600; border-radius:0 0 5px 0;
 }
 .skip-nav:focus { left:0; }
-.nav { background:#0d0d0f; color:#fff; position:relative; }
+.nav { background:#fff; color:#17171a; position:relative; border-bottom:1px solid #e4e4e0; }
 .nav__inner {
   max-width:1140px; margin-inline:auto; padding:1.05rem clamp(1.25rem,5vw,2.5rem);
   display:flex; align-items:center; justify-content:space-between; gap:1.5rem;
 }
 .nav__logo {
-  font:700 1.06rem ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace; letter-spacing:-.02em; color:#fff; text-decoration:none;
+  font:700 1.06rem ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace; letter-spacing:-.02em; color:#17171a; text-decoration:none;
 }
-.nav__logo:hover { color:#a48cff; }
+.nav__logo:hover { color:#4c31d6; }
 .nav__links { display:flex; align-items:center; gap:1.15rem; margin:0; padding:0; list-style:none; }
-.nav__link[aria-current=page] { color:#fff; box-shadow:0 2px 0 #a48cff; }
-.nav__link { font-size:.87rem; font-weight:500; color:rgba(255,255,255,.80); text-decoration:none; white-space:nowrap; }
-.nav__link:hover { color:#fff; }
-.nav__link--ext { color:rgba(255,255,255,.60); }
+.nav__link[aria-current=page] { color:#17171a; box-shadow:0 2px 0 #7c5cff; }
+.nav__link { font-size:.87rem; font-weight:500; color:#3a3a3f; text-decoration:none; white-space:nowrap; }
+.nav__link:hover { color:#4c31d6; }
+.nav__link--ext { color:#6a6a66; }
 .nav__cta {
   display:inline-block; padding:.5rem 1.05rem; border-radius:999px;
   background:#7c5cff; color:#0d0d0f; font-size:.87rem; font-weight:600; text-decoration:none;
@@ -393,7 +303,7 @@ NAV_CSS = """/* nav — sits on the hero background, so it reads as one dark blo
 }
 .nav__toggle::-webkit-details-marker { display:none; }
 .nav__burger, .nav__burger::before, .nav__burger::after {
-  content:""; display:block; width:22px; height:2px; background:#fff; position:relative;
+  content:""; display:block; width:22px; height:2px; background:#17171a; position:relative;
   transition:transform .18s ease, background-color .18s ease;
 }
 .nav__burger::before { position:absolute; top:-7px; }
@@ -404,7 +314,7 @@ NAV_CSS = """/* nav — sits on the hero background, so it reads as one dark blo
 .nav__drawer {
   position:absolute; top:100%; left:0; right:0; z-index:10;
   display:flex; flex-direction:column; gap:1.05rem; margin:0; list-style:none;
-  background:#0d0d0f; border-top:1px solid rgba(255,255,255,.06);
+  background:#fff; border-top:1px solid #e4e4e0; border-bottom:1px solid #e4e4e0;
   padding:1.35rem clamp(1.25rem,5vw,2.5rem) 1.7rem;
 }
 .nav__drawer .nav__cta { display:block; text-align:center; margin-top:.4rem; }
@@ -414,27 +324,27 @@ NAV_CSS = """/* nav — sits on the hero background, so it reads as one dark blo
 }
 
 /* closing + footer */
-.closing { background:#0d0d0f; color:#fff; padding-block:clamp(3.5rem,7vw,5.5rem); }
-.closing h2 { color:#fff; }
-.closing .lede { color:rgba(255,255,255,.60); }
-.footer { background:#0d0d0f; color:rgba(255,255,255,.60); font-size:.85rem; padding-bottom:3.2rem; }
+.closing { background:#f3f3f1; color:#17171a; padding-block:clamp(3.5rem,7vw,5.5rem); }
+.closing h2 { color:#17171a; }
+.closing .lede { color:#6a6a66; }
+.footer { background:#f3f3f1; color:#6a6a66; border-top:1px solid #e4e4e0; padding-top:.4rem; font-size:.85rem; padding-bottom:3.2rem; }
 .footer__inner {
   max-width:1140px; margin-inline:auto; padding-inline:clamp(1.25rem,5vw,2.5rem);
-  border-top:1px solid rgba(255,255,255,.06); padding-top:1.8rem;
+  padding-top:1.8rem;
   display:flex; flex-wrap:wrap; align-items:center; gap:1rem 1.6rem;
 }
-.footer__brand { margin:0; font:700 .95rem ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace; color:#fff; letter-spacing:-.01em; }
+.footer__brand { margin:0; font:700 .95rem ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace; color:#17171a; letter-spacing:-.01em; }
 .footer__links { display:flex; flex-wrap:wrap; gap:1.35rem; }
 .footer__cols { display:grid; gap:1.6rem 2.6rem; flex-basis:100%;
   grid-template-columns:repeat(auto-fit,minmax(9rem,1fr)); margin-top:.6rem; }
 .footer__col h3 { font-size:.72rem; text-transform:uppercase; letter-spacing:.09em;
-  color:rgba(255,255,255,.60); margin:0 0 .6rem; font-weight:600; }
+  color:#6a6a66; margin:0 0 .6rem; font-weight:600; }
 .footer__col ul { list-style:none; margin:0; padding:0; display:grid; gap:.42rem; }
-.footer__col a { color:rgba(255,255,255,.80); text-decoration:none; }
-.footer__col a:hover { color:#fff; text-decoration:underline; }
-.footer__links a { color:rgba(255,255,255,.80); text-decoration:none; }
-.footer__links a:hover { color:#fff; text-decoration:underline; }
-.footer__copy { margin:0; flex-basis:100%; color:rgba(255,255,255,.60); font-size:.8rem; }
+.footer__col a { color:#3a3a3f; text-decoration:none; }
+.footer__col a:hover { color:#4c31d6; text-decoration:underline; }
+.footer__links a { color:#3a3a3f; text-decoration:none; }
+.footer__links a:hover { color:#4c31d6; text-decoration:underline; }
+.footer__copy { margin:0; flex-basis:100%; color:#6a6a66; font-size:.8rem; }
 
 /* ── motion ── */
 @keyframes fade-up {
@@ -479,11 +389,6 @@ NAV_CSS = """/* nav — sits on the hero background, so it reads as one dark blo
   transform:translateY(-4px);
   box-shadow:0 8px 28px rgba(0,0,0,.10);
 }
-@media (prefers-color-scheme:dark) {
-  .pack:hover, .ship:hover, .roadmap-item:hover {
-    box-shadow:0 8px 28px rgba(0,0,0,.35);
-  }
-}
 
 .cta--primary { transition:transform .15s ease, box-shadow .2s ease; }
 .cta--primary:hover {
@@ -498,12 +403,12 @@ SEARCH_CSS = """
 /* site search (RFC-0035 follow-up) — a nav button that opens a <dialog> over one JSON index */
 .nav__search {
   display:inline-flex; align-items:center; gap:.45rem; cursor:pointer; text-decoration:none;
-  font:500 .84rem/1 inherit; color:rgba(255,255,255,.80); background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.14); border-radius:999px; padding:.42rem .75rem; white-space:nowrap;
+  font:500 .84rem/1 inherit; color:#3a3a3f; background:#f3f3f1;
+  border:1px solid #e4e4e0; border-radius:999px; padding:.42rem .75rem; white-space:nowrap;
 }
-.nav__search:hover { color:#fff; border-color:rgba(255,255,255,.35); }
+.nav__search:hover { color:#17171a; border-color:#c9c9c4; }
 .nav__search svg { width:14px; height:14px; }
-.nav__search kbd { font:600 .68rem ui-monospace,Menlo,monospace; border:1px solid rgba(255,255,255,.25); border-radius:4px; padding:0 .3rem; }
+.nav__search kbd { font:600 .68rem ui-monospace,Menlo,monospace; border:1px solid #c9c9c4; border-radius:4px; padding:0 .3rem; }
 .sx {
   width:min(680px,calc(100vw - 2rem)); max-height:min(76vh,720px); margin:9vh auto auto; padding:0;
   border:1px solid #e4e4e0; border-radius:14px; background:#fff; color:#17171a;
@@ -523,14 +428,6 @@ SEARCH_CSS = """
 .sx__title { font-weight:600; font-size:.95rem; }
 .sx__snip { font-size:.84rem; color:#6a6a66; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
 .sx mark { background:rgba(124,92,255,.22); color:inherit; border-radius:2px; padding:0 1px; }
-@media (prefers-color-scheme: dark) {
-  .sx { background:#1a1a1d; color:#ecebe8; border-color:#2a2a2d; }
-  .sx__bar { border-color:#2a2a2d; }
-  .sx__close { color:#9a9a95; border-color:#2a2a2d; }
-  .sx__status, .sx__snip { color:#9a9a95; }
-  .sx__kind { color:#c4b5ff; }
-  .sx__hit:hover, .sx__hit.is-sel { background:rgba(164,140,255,.14); }
-}
 @media (max-width:760px) { .nav__search span, .nav__search kbd { display:none; } }
 """
 NAV_CSS += SEARCH_CSS
@@ -787,22 +684,13 @@ def terminal(lines):
 
 
 def render(skills, packs, outcomes, version, releases):
-    tiers = ["light", "standard", "heavy"]
-    tier_counts = {t: sum(1 for s in skills if s["tier"] == t) for t in tiers}
 
     loop_list = loops()
     promises_html = "".join(
         f'<div class="promise"><div class="promise__t">{esc(t)}</div><div class="promise__l">{esc(l)}</div></div>'
         for t, l in PROMISES)
 
-    quality_html = "".join(
-        f'<article class="qcard"><h3>{esc(t)}</h3><p>{b}</p></article>' for t, b in QUALITY)
 
-    tools_html = "".join(
-        f"""<tr><th scope="row">{esc(n)}</th><td><code>{esc(p)}</code></td>
-        <td><code class="cmd">{esc(c)}</code></td>
-        <td class="cap">{'<span class="cap--yes">native flag</span>' if flag else '<span class="cap--no">via --dest</span>'}</td></tr>"""
-        for n, p, c, flag in TOOLS)
 
     tabs = ""
     for i, (label, cmd, note) in enumerate(INSTALL_TABS):
@@ -819,6 +707,7 @@ def render(skills, packs, outcomes, version, releases):
         _overrides = {
             "build-on-the-claude-api": "Build on the Claude API",
             "govern-ai-use": "Govern AI use",
+            "create-on-brand-collateral": "Create on-brand collateral",
         }
         if slug in _overrides:
             return _overrides[slug]
@@ -833,98 +722,40 @@ def render(skills, packs, outcomes, version, releases):
                 tally[sk["packs"][0]] = tally.get(sk["packs"][0], 0) + 1
         return [p for p, _ in sorted(tally.items(), key=lambda kv: (-kv[1], kv[0]))][:3]
 
-    outcome_cards = "".join(
-        f"""<li class="pack">
-      <div class="pack__head">
-        <h3 class="pack__name">{esc(humanize_slug(o['name']))}</h3><span class="pack__n">{o['count']} skills</span>
-      </div>
-      {f'<p class="pack__for">{esc(o["for"])}</p>' if o.get("for") else ''}
-      <p class="pack__desc">{esc(o['description'])}</p>
-      <p class="pack__packs">{" ".join(f'<a href="packs/{esc(p)}/">{esc(p)}</a>' for p in serving(o))}</p>
-      <div class="pack__ctas">
-        <a class="pack__cta" href="packs/{esc(serving(o)[0])}/">Open {esc(serving(o)[0])} &rarr;</a>
-        <button class="pack__cta pack__cta--sub" data-filter="outcome" data-value="{esc(o['name'])}">Filter the catalogue</button>
-      </div>
-    </li>""" for o in outcomes)
 
-    guides_html = "".join(
-        f"""<div class="guides-group">
-      <h3>{esc(kind)}</h3>
-      <p class="guides-tagline">{esc(meta['tagline'])}</p>
-      <ul>{"".join(
-        f'<li><a href="{esc(guide_href(path_))}">{esc(title)}</a>'
-        f'<span class="guides-desc">{esc(desc)}</span></li>'
-        for title, path_, desc in meta['items']
-      )}</ul>
-    </div>"""
-        for kind, meta in GUIDES.items())
 
     # Plain language on the home page: who decides, at which step. Gate ids, caps and stage
     # contracts live in the loop reference the card links to.
     WHO = {"mechanical": "a script decides", "review": "a review panel decides", "human": "you decide"}
-    loop_cards = "".join(
-        f"""<li class="pack">
-      <div class="pack__head">
-        <h3 class="pack__name">{esc(lp['name'])}</h3><span class="pack__n">{'wrapper' if lp['kind'] == 'wrapper' else 'loop'}</span>
-      </div>
-      <p class="pack__desc">{esc(lp['description'].split(' Use when')[0].rstrip('.'))}.</p>
-      <ul class="pack__who">{"".join(f"<li><b>{esc(st['id'].capitalize())}</b>: {WHO.get(st['gate']['kind'], st['gate']['kind'])}</li>" for st in lp['stages'] if st['gate'])}</ul>
-      <a class="pack__cta" href="loops/{esc(lp['name'])}/">Every stage &rarr;</a>
-    </li>""" for lp in loop_list)
 
-    own_cards = "".join(
-        f'<article class="qcard"><h3>{esc(t)}</h3><p>{b}</p><p><a href="{h}">How it works &rarr;</a></p></article>'
-        for t, b, h in OWN)
-    team_cards = "".join(
-        f'<article class="qcard"><h3>{esc(t)}</h3><p>{esc(b)}</p><p class="pack__install"><code>{esc(c)}</code></p>'
-        f'<p><a href="{h}">Read the guide &rarr;</a></p></article>' for t, b, c, h in TEAM)
+    usecase_rows = "".join(
+        f"""<li class="uc">
+      <div class="uc__main"><h3>{esc(humanize_slug(o['name']))}</h3>
+        {f'<p class="uc__for">{esc(o["for"])}</p>' if o.get("for") else ''}
+        <p class="uc__desc">{esc(o['description'])}</p></div>
+      <div class="uc__packs">{" ".join(f'<a href="packs/{esc(p)}/">{esc(p)}</a>' for p in serving(o))}
+        <a class="uc__open" href="packs/{esc(serving(o)[0])}/">Open {esc(serving(o)[0])} &rarr;</a></div>
+    </li>""" for o in outcomes)
+
+    LIFE = [("discover", "Discover", "raw signal to a ratified requirement"),
+            ("design", "Design", "a requirement to a recorded decision"),
+            ("build", "Build", "a requirement to merged code"),
+            ("release", "Release", "merged code to live users, with a way back"),
+            ("operate", "Operate", "a live service through incidents and what you learn")]
+    by_loop = {lp["name"]: lp for lp in loop_list}
+    flow_steps = "".join(
+        f"""<li class="flow__step"><a href="loops/{n}/"><span class="flow__n">{k + 1:02d}</span>
+      <b>{label}</b><span class="flow__what">{what}</span>
+      <span class="flow__who">{esc('; '.join(f"{st['id']}: {WHO.get(st['gate']['kind'], st['gate']['kind'])}" for st in by_loop[n]['stages'] if st['gate']))}</span></a></li>"""
+        for k, (n, label, what) in enumerate(LIFE) if n in by_loop)
+    own_items = "".join(f'<li><b>{esc(t)}</b><p>{b}</p><a href="{h}">How it works &rarr;</a></li>' for t, b, h in OWN)
+    team_items = "".join(f'<li><b>{esc(t)}</b><p>{esc(b)}</p><code>{esc(c)}</code> <a href="{h}">Guide &rarr;</a></li>'
+                         for t, b, c, h in TEAM)
+
     proof_html = proof(PROOF_SKILL)
 
-    agent_cards = "".join(
-        f"""<li class="pack">
-      <div class="pack__head">
-        <h3 class="pack__name">{esc(a['name'])}</h3><span class="pack__n">subagent</span>
-      </div>
-      <p class="pack__desc">{esc(a['description'])}</p>
-      <p class="pack__install"><code>skilldrop install --agent {esc(a['name'])}</code></p>
-    </li>""" for a in agents())
 
-    pack_cards = "".join(
-        f"""<li class="pack">
-      <div class="pack__head">
-        <h3 class="pack__name"><a href="packs/{esc(p['name'])}/">{esc(p['name'])}</a></h3><span class="pack__n">{p['count']} skills{''.join(' + ' + esc(r) for r in p['requires'])}</span>
-      </div>
-      <p class="pack__desc">{esc(p['description'])}</p>
-      {f'<p class="pack__start"><b>Start here:</b> {esc(p["starter"])}</p>' if p.get('starter') else ''}
-      <p class="pack__install"><code>skilldrop install --pack {esc(p['name'])}</code></p>
-      <div class="pack__ctas">
-        <a class="pack__cta" href="packs/{esc(p['name'])}/">Open pack &rarr;</a>
-        <button class="pack__cta pack__cta--sub" data-filter="pack" data-value="{esc(p['name'])}">Filter the catalogue</button>
-      </div>
-    </li>""" for p in packs)
 
-    pack_chips = "".join(
-        f'<button class="chip" data-filter="pack" data-value="{esc(p["name"])}">{esc(p["name"])} <b>{p["count"]}</b></button>'
-        for p in packs)
-    tier_chips = "".join(
-        f'<button class="chip chip--{t}" data-filter="tier" data-value="{t}">{t} <b>{tier_counts[t]}</b></button>'
-        for t in tiers)
-    outcome_chips = "".join(
-        f'<button class="chip" data-filter="outcome" data-value="{esc(o["name"])}" '
-        f'title="{esc(o["description"])}">{esc(o["name"].replace("-", " "))} <b>{o["count"]}</b></button>'
-        for o in outcomes)
-    roadmap_items = roadmap()
-    roadmap_html = "".join(
-        f'<li class="roadmap-item">{inline_md(item)}</li>'
-        for item in roadmap_items)
-    shipped_html = "".join(
-        f"""<li class="ship">
-      <p class="ship__head"><a class="ship__v" href="{NPM_URL}/v/{esc(r['version'])}">{esc(r['version'])}</a>
-        <time class="ship__d" datetime="{esc(r['date'])}">{esc(r['date'])}</time></p>
-      <ul class="ship__list">{"".join(f'<li>{inline_md(b)}</li>' for b in r['bullets'])}</ul>
-    </li>""" for r in releases)
-    cards = "\n".join(card(s) for s in skills)
-    preview_cards = "\n".join(card(s) for s in skills[:PREVIEW_ROWS])
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -934,7 +765,7 @@ def render(skills, packs, outcomes, version, releases):
 <meta name="description" content="{esc(PITCH['meta_description'])}">
 <link rel="canonical" href="{SITE_URL}">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#111113">
+<meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="skilldrop">
 <meta property="og:locale" content="en_US">
@@ -964,13 +795,6 @@ def render(skills, packs, outcomes, version, releases):
   --r-sm:5px; --r:10px; --r-lg:16px;
   --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
 }}
-@media (prefers-color-scheme: dark) {{
-  :root {{
-    --surface:#111113; --surface-alt:#17171a; --fg:#ecebe8; --fg-muted:#9a9a95;
-    --border:#2a2a2d; --card:#1a1a1d; --accent:#a48cff; --accent-700:#c4b5ff;
-    --accent-10:rgba(164,140,255,.12);
-  }}
-}}
 * {{ box-sizing:border-box; }}
 html {{ scroll-behavior:smooth; }}
 body {{
@@ -994,13 +818,13 @@ h2 {{ font-size:var(--h2); line-height:1.18; letter-spacing:-.02em; margin:0 0 .
 a {{ color:var(--accent-700); }}
 
 /* hero */
-.hero {{ background:var(--dark-950); color:#fff; padding-block:clamp(4.5rem,10vw,7.5rem) clamp(3.5rem,7vw,5.5rem); }}
+.hero {{ background:linear-gradient(180deg,#fff 0%,var(--surface) 100%); color:var(--fg); padding-block:clamp(4.5rem,10vw,7.5rem) clamp(3.5rem,7vw,5.5rem); }}
 .hero h1 {{
   font-size:var(--display); line-height:1.08; letter-spacing:-.032em;
   font-weight:700; margin:0 0 1.3rem; max-width:17ch;
 }}
-.hero .lede {{ color:var(--w-60); font-size:1.14rem; max-width:60ch; margin-bottom:2.2rem; }}
-.hero .eyebrow {{ color:var(--accent-300); }}
+.hero .lede {{ color:var(--fg-muted); font-size:1.14rem; max-width:60ch; margin-bottom:2.2rem; }}
+.hero .eyebrow {{ color:var(--accent-700); }}
 .cta-row {{ display:flex; flex-wrap:wrap; gap:.75rem; margin-bottom:3.2rem; }}
 .cta {{
   display:inline-block; padding:.72rem 1.35rem; border-radius:var(--r-sm);
@@ -1008,16 +832,44 @@ a {{ color:var(--accent-700); }}
 }}
 .cta--primary {{ background:var(--accent); color:#0d0d0f; }}
 .cta--primary:hover {{ background:var(--accent-300); }}
-.cta--ghost {{ border-color:var(--w-20); color:var(--w-80); }}
-.cta--ghost:hover {{ background:var(--w-10); }}
+.cta--ghost {{ border-color:var(--border); color:var(--fg); background:var(--card); }}
+.cta--ghost:hover {{ border-color:var(--accent-700); color:var(--accent-700); }}
 .stats {{ display:flex; flex-wrap:wrap; gap:2.6rem; border-top:1px solid var(--w-06); padding-top:1.9rem; }}
-.promises {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:1.6rem 2.4rem; border-top:1px solid var(--w-06); padding-top:1.9rem; }}
-.promise__t {{ font-size:1.02rem; font-weight:700; letter-spacing:-.01em; color:#fff; }}
-.promise__l {{ font-size:.86rem; color:var(--w-60); margin-top:.25rem; }}
+.promises {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:1.6rem 2.4rem; border-top:1px solid var(--border); padding-top:1.9rem; }}
+.promise__t {{ font-size:1.02rem; font-weight:700; letter-spacing:-.01em; color:var(--fg); }}
+.promise__l {{ font-size:.86rem; color:var(--fg-muted); margin-top:.25rem; }}
 .pack__for {{ margin:-.2rem 0 .6rem; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--accent-700); }}
 .pack__packs {{ display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }}
 .pack__packs a {{ font:.76rem var(--mono); text-decoration:none; color:var(--fg); border:1px solid var(--border); border-radius:999px; padding:2px 9px; }}
 .pack__packs a:hover {{ border-color:var(--accent-700); color:var(--accent-700); }}
+.usecases {{ list-style:none; margin:0; padding:0; border-top:1px solid var(--border); }}
+.uc {{ display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); gap:.6rem 2rem; padding:1.1rem 0; border-bottom:1px solid var(--border); align-items:center; }}
+@media (max-width:760px) {{ .uc {{ grid-template-columns:1fr; }} }}
+.uc h3 {{ margin:0; font-size:1.05rem; letter-spacing:-.01em; }}
+.uc__for {{ margin:.15rem 0 .3rem; font-size:.74rem; text-transform:uppercase; letter-spacing:.06em; color:var(--accent-700); }}
+.uc__desc {{ margin:0; font-size:.9rem; color:var(--fg-muted); }}
+.uc__packs {{ display:flex; flex-wrap:wrap; gap:.4rem; align-items:center; }}
+.uc__packs a {{ font:.76rem var(--mono); text-decoration:none; color:var(--fg); border:1px solid var(--border); border-radius:999px; padding:2px 9px; }}
+.uc__packs a:hover {{ border-color:var(--accent-700); color:var(--accent-700); }}
+.uc__packs .uc__open {{ border:0; font-family:inherit; font-size:.84rem; font-weight:600; color:var(--accent-700); padding:0 0 0 .3rem; }}
+.flow {{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(5,1fr); gap:.8rem; }}
+@media (max-width:900px) {{ .flow {{ grid-template-columns:1fr 1fr; }} }}
+@media (max-width:520px) {{ .flow {{ grid-template-columns:1fr; }} }}
+.flow__step a {{ display:flex; flex-direction:column; gap:.3rem; height:100%; background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:1rem; text-decoration:none; color:var(--fg); }}
+.flow__step a:hover {{ border-color:var(--accent-700); }}
+.flow__n {{ font:600 .7rem var(--mono); color:var(--accent-700); }}
+.flow__step b {{ font-size:1.02rem; }}
+.flow__what {{ font-size:.86rem; color:var(--fg-muted); }}
+.flow__who {{ margin-top:auto; padding-top:.5rem; font-size:.8rem; color:var(--fg); border-top:1px solid var(--border); }}
+.flow__more {{ margin:1.2rem 0 0; font-size:.92rem; color:var(--fg-muted); }}
+.ownteam {{ display:grid; grid-template-columns:1fr 1fr; gap:1.2rem 3rem; }}
+@media (max-width:760px) {{ .ownteam {{ grid-template-columns:1fr; }} }}
+.ownteam__col {{ list-style:none; margin:0; padding:0; }}
+.ownteam__col li {{ padding:1rem 0; border-top:1px solid var(--border); font-size:.9rem; }}
+.ownteam__col b {{ font-size:1rem; }}
+.ownteam__col p {{ margin:.3rem 0 .4rem; color:var(--fg-muted); }}
+.ownteam__col code {{ font:.8rem var(--mono); background:var(--surface-alt); border:1px solid var(--border); border-radius:4px; padding:1px 6px; }}
+.ownteam__col a {{ font-size:.85rem; font-weight:600; text-decoration:none; }}
 .pack__who {{ list-style:none; margin:0 0 1rem; padding:0; font-size:.86rem; color:var(--fg-muted); flex:1; }}
 .pack__who li {{ margin:.2rem 0; }}
 .pack__who b {{ color:var(--fg); font-weight:600; }}
@@ -1221,7 +1073,7 @@ a {{ color:var(--accent-700); }}
   to   {{ background-position:-200% center; }}
 }}
 .nav__logo {{
-  background:linear-gradient(90deg, #fff 0%, var(--accent-300) 50%, #fff 100%);
+  background:linear-gradient(90deg, var(--fg) 0%, var(--accent-700) 50%, var(--fg) 100%);
   background-size:200% auto;
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
@@ -1231,10 +1083,10 @@ a {{ color:var(--accent-700); }}
 
 .nav {{ transition:background .3s, box-shadow .3s; }}
 .nav.scrolled {{
-  background:rgba(13,13,15,.85);
+  background:rgba(255,255,255,.9);
   backdrop-filter:blur(14px);
   -webkit-backdrop-filter:blur(14px);
-  box-shadow:0 1px 0 rgba(255,255,255,.06);
+  box-shadow:0 1px 0 rgba(0,0,0,.06);
 }}
 
 /* four-step strip */
@@ -1275,38 +1127,6 @@ a {{ color:var(--accent-700); }}
   </div>
 </header>
 
-<div class="steps-strip">
-  <div class="inner">
-    <div class="steps">
-      <div class="step">
-        <p class="step__n">Step 01</p>
-        <p class="step__name">Discover</p>
-        <p class="step__desc">Turn raw signal into a ratified requirement. Gate: you decide.</p>
-      </div>
-      <div class="step">
-        <p class="step__n">Step 02</p>
-        <p class="step__name">Design</p>
-        <p class="step__desc">Commit the shape before code is written. Gate: council review.</p>
-      </div>
-      <div class="step">
-        <p class="step__n">Step 03</p>
-        <p class="step__name">Build</p>
-        <p class="step__desc">Implement and gate the change. Gate: review panel.</p>
-      </div>
-      <div class="step">
-        <p class="step__n">Step 04</p>
-        <p class="step__name">Release</p>
-        <p class="step__desc">Roll out with a way back. Gate: readiness, then go/no-go.</p>
-      </div>
-      <div class="step">
-        <p class="step__n">Step 05</p>
-        <p class="step__name">Operate</p>
-        <p class="step__desc">Detect, respond, and close the loop. Gate: postmortem.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
 <main id="main">
 <section class="section" id="problem">
   <div class="inner"><div class="narrow">
@@ -1320,7 +1140,7 @@ a {{ color:var(--accent-700); }}
   <div class="inner">
     <p class="eyebrow">See it work</p>
     <h2>One real run: a launch that is not ready yet.</h2>
-    <p class="lede">The input is what a team would paste. The output is what <a href="skills/{PROOF_SKILL}/"><code>{PROOF_SKILL}</code></a> returns, unedited, from its worked example. Note what it refuses: the rollback is fine, so it does not block, but two failure modes nothing would detect send it back.</p>
+    <p class="lede">The input is what a team would paste. The output is what <a href="skills/{PROOF_SKILL}/"><code>{PROOF_SKILL}</code></a> returns, unedited, from its worked example. The rollback is fine, so it does not block, but two failure modes nothing would detect send it back.</p>
     {proof_html}
   </div>
 </section>
@@ -1329,60 +1149,32 @@ a {{ color:var(--accent-700); }}
   <div class="inner">
     <p class="eyebrow">Use cases</p>
     <h2>Start with the job. Meet the packs second.</h2>
-    <p class="lede">Pick the outcome you need today. Each one names who it is for and the packs that do it; every role pack brings <code>core</code> with it.</p>
-    <ul class="grid-3">{outcome_cards}</ul>
+    <ul class="usecases">{usecase_rows}</ul>
   </div>
 </section>
 
 <section class="section section--alt" id="loops">
   <div class="inner">
-    <p class="eyebrow">Loops</p>
+    <p class="eyebrow">How it works</p>
     <h2>The agent does the work. The decisions you can't undo stay yours.</h2>
-    <p class="lede">A loop runs skills in order and stops at a gate before anything moves on. The cheaper the mistake, the more a script decides; the harder it is to undo, the more it waits for you. Each loop comes with its pack, and every skill still runs on its own.</p>
-    <ul class="grid-3">{loop_cards}</ul>
+    <p class="lede">Five loops run skills in order and stop at a gate before anything moves on. The cheaper the mistake, the more a script decides; the harder it is to undo, the more it waits for you.</p>
+    <ol class="flow">{flow_steps}</ol>
+    <p class="flow__more">Plus <a href="loops/ship-a-draft/"><code>ship-a-draft</code></a>, which wraps any document in intake before and critique after. <a href="loops/">Every loop &rarr;</a></p>
   </div>
 </section>
 
-
-<section class="section" id="quality">
-  <div class="inner">
-    <p class="eyebrow">What makes a skill</p>
-    <h2>{esc(PITCH['quality_h2'])}</h2>
-    <p class="lede">{esc(PITCH['quality_lede'])}</p>
-    <div class="grid-4">{quality_html}</div>
-  </div>
-</section>
-
-<section class="section section--alt" id="own">
+<section class="section" id="own">
   <div class="inner">
     <p class="eyebrow">Yours after it lands</p>
-    <h2>What lands is files you can read, diff and edit.</h2>
-    <div class="grid-4">{own_cards}</div>
+    <h2>Files you can read, diff and edit, for you or your whole team.</h2>
+    <div class="ownteam">
+      <ul class="ownteam__col">{own_items}</ul>
+      <ul class="ownteam__col">{team_items}</ul>
+    </div>
   </div>
 </section>
 
-<section class="section" id="team">
-  <div class="inner">
-    <p class="eyebrow">For teams</p>
-    <h2>Run it for your team.</h2>
-    <p class="lede">The same commands scale from one person to an organisation: a shared setup, every machine pointed at the catalogue, and your own skills alongside these.</p>
-    <div class="grid-4">{team_cards}</div>
-  </div>
-</section>
-
-<section class="section section--alt" id="portability">
-  <div class="inner">
-    <p class="eyebrow">Portability</p>
-    <h2>{esc(PITCH['tools_h2'])}</h2>
-    <p class="lede">{esc(PITCH['tools_lede'])}</p>
-    <div class="scroll-x"><table class="matrix">
-      <thead><tr><th scope="col">Agent</th><th scope="col">Skills directory</th><th scope="col">Install</th><th scope="col">Support</th></tr></thead>
-      <tbody>{tools_html}</tbody>
-    </table></div>
-  </div>
-</section>
-
-<section class="section" id="install">
+<section class="section section--alt" id="install">
   <div class="inner">
     <p class="eyebrow">Install</p>
     <h2>{esc(PITCH['install_h2'])}</h2>
@@ -1390,75 +1182,7 @@ a {{ color:var(--accent-700); }}
       <div class="tabs__labels">{labels}</div>
       <div class="tabs__panels">{panels}</div>
     </div>
-  </div>
-</section>
-
-<section class="section section--alt" id="catalogue">
-  <div class="inner">
-    <p class="eyebrow">Packs</p>
-    <h2>{esc(PITCH['catalogue_h2'])}</h2>
-    <p class="lede">Start with a role. Each pack is a folder, every skill sits in exactly one, and every role pack brings <code>core</code> with it. Open a pack to see what to try first.</p>
-    <ul class="grid-3">{pack_cards}</ul>
-
-    <div class="more">
-      <h3 class="more__h">A sample</h3>
-      <ul class="skills">
-{preview_cards}
-      </ul>
-      <p class="catalogue-cta-row">
-        <a class="cta cta--ghost catalogue-cta" href="catalogue/">Browse every skill &rarr;</a>
-      </p>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="reviewers">
-  <div class="inner">
-    <p class="eyebrow">Reviewers</p>
-    <h2>{esc(PITCH['reviewers_h2'])}</h2>
-    <p class="lede">{esc(PITCH['reviewers_lede'])}</p>
-    <ul class="grid-3">{agent_cards}</ul>
-    <p class="pack__install" style="margin-top:1.5rem"><code>skilldrop install --panel review</code> &mdash; all three, plus the orchestrator that runs them.</p>
-  </div>
-</section>
-
-<section class="section" id="now">
-  <div class="inner">
-    <p class="eyebrow">Now</p>
-    <h2>What&rsquo;s being worked on</h2>
-    <p class="lede">Not a promise &mdash; a direction. Shipped work moves to the <a href="changelog/">changelog</a>.</p>
-    <ul class="roadmap-list">{roadmap_html}</ul>
-  </div>
-</section>
-
-<section class="section section--alt" id="docs">
-  <div class="inner">
-    <p class="eyebrow">Docs</p>
-    <h2>Everything you need</h2>
-    <p class="lede">Long-form material split by Di&aacute;taxis kind &mdash; tutorial, how-to, reference, explanation. A page declares what job it does in its own frontmatter, and the lint rejects one that is not indexed. <a href="docs/">Open the full docs portal &rarr;</a></p>
-    <div class="guides-grid">{guides_html}</div>
-    <p class="pack__install" style="margin-top:.5rem"><a href="{REPO_URL}/blob/main/llms.txt"><code>llms.txt</code></a> &mdash; the same index, generated, for a model to read instead of crawling the tree.</p>
-  </div>
-</section>
-
-<section class="section" id="shipped">
-  <div class="inner">
-    <p class="eyebrow">Shipped</p>
-    <h2>{esc(PITCH['shipped_h2'])}</h2>
-    <p class="lede">{esc(PITCH['shipped_lede'])}</p>
-    <ul class="ships">{shipped_html}</ul>
-    <p class="tabs__note" style="margin-top:1.4rem"><a href="changelog/">Full changelog &rarr;</a></p>
-  </div>
-</section>
-
-<section class="closing">
-  <div class="inner">
-    <h2>{esc(PITCH['closing_h2'])}</h2>
-    <p class="lede">{esc(PITCH['closing_body'])}</p>
-    <div class="cta-row" style="margin-bottom:0">
-      <a class="cta cta--primary" href="{REPO_URL}">Get started</a>
-      <a class="cta cta--ghost" href="{REPO_URL}/blob/main/CONTRIBUTING.md">Contribute a skill</a>
-    </div>
+    <p class="flow__more"><a href="packs/">Find your pack &rarr;</a> &nbsp;·&nbsp; <a href="docs/how-to/install.html">Every install route &rarr;</a></p>
   </div>
 </section>
 </main>
@@ -1605,21 +1329,6 @@ def loops():
     return out
 
 
-def agents():
-    """The reviewer subagents (RFC-0012). Read straight from agents/<name>.md frontmatter, so the
-    site can never disagree with the files — same source validate.py checks."""
-    d = os.path.join(ROOT, "agents")
-    if not os.path.isdir(d):
-        return []
-    out = []
-    for f in sorted(os.listdir(d)):
-        if not f.endswith(".md") or f == "README.md":
-            continue
-        head = open(os.path.join(d, f), encoding="utf-8").read().split("---")
-        fm = head[1] if len(head) >= 3 else ""
-        get = lambda k: (re.search(rf"^{k}:\s*(.+)$", fm, re.M) or [None, ""])[1].strip()
-        out.append({"name": f[:-3], "description": get("description"), "tools": get("tools")})
-    return out
 
 
 def outputs(skills, packs, outcomes, version, releases):

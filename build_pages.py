@@ -167,7 +167,7 @@ def shell(title, desc, canonical, depth, body, current=None, extra_head="", root
 {head_meta(f"{title} — skilldrop", desc, canonical)}
 {extra_head}
 <link rel="icon" href="{root}favicon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#111113">
+<meta name="theme-color" content="#ffffff">
 <style>
 {CSS}{NAV_CSS}{PAGE_CSS}</style>
 </head>
