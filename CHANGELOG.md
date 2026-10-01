@@ -8,6 +8,11 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.13.1 — 2026-10-01
+
+- Run the new `release` loop to take merged code to live users: `migration-plan` plans the rollout and the rollback, `launch-readiness` judges readiness at G2.5, `release-notes` drafts the announcement, and a human makes the go/no-go call at G2.6. Install it with `skilldrop install --loop release`, or get it in the `dev-team` and `sre-oncall` packs.
+- Ask "are we ready to launch?" and `launch-readiness` returns a go/no-go report: the change's own failure modes, then seven checks, each with evidence and an owner role. A missing rollback blocks the launch on its own, and detection or runbook gaps are handed to `observability-plan` and `runbook-generator`.
+
 ## 0.13.0 — 2026-09-30
 
 - Browse every guide in a full docs portal at `sananthanarayan.github.io/skilldrop/docs/` — each of the 22 guides renders as a standalone HTML page with a persistent sidebar grouped by Diátaxis kind (tutorial, how-to, reference, explanation) and a live client-side search box that filters by title, summary, and body text.
