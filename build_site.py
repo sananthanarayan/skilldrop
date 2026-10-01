@@ -25,7 +25,7 @@ the build refuses, for the same reason collect() refuses a half-row catalogue.
 import argparse
 import build_llms  # llms.txt is served at the site root too (RFC-0030)
 import catalog     # where skills, loops and packs live (RFC-0034)
-from build_docs import render_md, _slug, collect_guides  # proof section, loop anchors, sitemap
+from build_docs import render_md, collect_guides  # the proof section and the sitemap
 import html
 import json
 import os
@@ -158,7 +158,7 @@ TOOLS = [
 NAV = [
     ("Packs", "packs/", False),
     ("Skills", "catalogue/", False),
-    ("Loops", "#loops", False),
+    ("Loops", "loops/", False),
     ("Docs", "docs/", False),
     ("What's new", "changelog/", False),
     ("GitHub", REPO_URL, True),
@@ -862,9 +862,6 @@ def render(skills, packs, outcomes, version, releases):
     # Plain language on the home page: who decides, at which step. Gate ids, caps and stage
     # contracts live in the loop reference the card links to.
     WHO = {"mechanical": "a script decides", "review": "a review panel decides", "human": "you decide"}
-    ref = open(os.path.join(ROOT, "guides", "reference", "loops.md"), encoding="utf-8").read()
-    anchors = {m.group(1): _slug(re.sub(r"[*`\[\]]", "", m.group(0)[3:]))
-               for m in re.finditer(r"^## `([a-z0-9-]+)`.*$", ref, re.M)}
     loop_cards = "".join(
         f"""<li class="pack">
       <div class="pack__head">
@@ -872,7 +869,7 @@ def render(skills, packs, outcomes, version, releases):
       </div>
       <p class="pack__desc">{esc(lp['description'].split(' Use when')[0].rstrip('.'))}.</p>
       <ul class="pack__who">{"".join(f"<li><b>{esc(st['id'].capitalize())}</b>: {WHO.get(st['gate']['kind'], st['gate']['kind'])}</li>" for st in lp['stages'] if st['gate'])}</ul>
-      <a class="pack__cta" href="docs/reference/loops.html#{esc(anchors.get(lp['name'], ''))}">Every stage &rarr;</a>
+      <a class="pack__cta" href="loops/{esc(lp['name'])}/">Every stage &rarr;</a>
     </li>""" for lp in loop_list)
 
     own_cards = "".join(
@@ -1641,6 +1638,8 @@ def outputs(skills, packs, outcomes, version, releases):
             f"  <url><loc>{SITE_URL}packs/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>\n"
             + "".join(f"  <url><loc>{SITE_URL}packs/{p['name']}/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>\n" for p in packs)
             + f"  <url><loc>{SITE_URL}changelog/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>\n"
+            + f"  <url><loc>{SITE_URL}loops/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>\n"
+            + "".join(f"  <url><loc>{SITE_URL}loops/{lp['name']}/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>\n" for lp in loops())
             + "".join(f"  <url><loc>{SITE_URL}docs/{g['kind']}/{g['slug']}.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>\n"
                       for gs in collect_guides().values() for g in gs)
             + "".join(f"  <url><loc>{SITE_URL}skills/{s['name']}/</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>\n" for s in skills)
