@@ -46,7 +46,7 @@ def main():
         src = os.path.join(tmp, "skilldrop_cli")
         data = os.path.join(src, "data")
         os.makedirs(data)
-        for entry in pkg["files"] + ["package.json", "LICENSE", "LICENSE-MIT", "LICENSE-APACHE"]:
+        for entry in pkg["files"] + ["package.json", "LICENSE"]:
             s = os.path.join(ROOT, entry.rstrip("/"))
             d = os.path.join(data, entry.rstrip("/"))
             if os.path.isdir(s):

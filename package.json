@@ -16,7 +16,9 @@
     "contracts/",
     "catalogue.json",
     "profiles.json",
-    "model-routing.json"
+    "model-routing.json",
+    "LICENSE-MIT",
+    "LICENSE-APACHE"
   ],
   "engines": {
     "node": ">=16.7.0"

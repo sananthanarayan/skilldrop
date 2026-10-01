@@ -195,15 +195,17 @@ def _href(target, src, docs_base=None):
     if repo_path.startswith(".."):
         return target
     frag = f"#{anchor}" if anchor else ""
-    m = re.match(r"^guides/([^/]+)/([^/]+)\.md$", repo_path)
+    # Guides publish flat, as docs/<kind>/<slug>.html, even from a subfolder such as
+    # guides/how-to/packs/ (the generated pack guides), so match on kind + file name only.
+    m = re.match(r"^guides/([^/]+)/(?:[^/]+/)*([^/]+)\.md$", repo_path)
     if m and not src.startswith("guides/"):
         # A page outside the docs portal (the changelog) links into it through docs_base.
         return f"{docs_base or ''}{m.group(1)}/{m.group(2)}.html" + frag
+    here = src[len("guides/"):].split("/")[0] if src.count("/") > 1 else "."
     if m:
-        here = os.path.dirname(src)[len("guides/"):] or "."
         return os.path.relpath(f"{m.group(1)}/{m.group(2)}.html", here).replace(os.sep, "/") + frag
     if repo_path == "guides/README.md":
-        return os.path.relpath("index.html", os.path.dirname(src)[len("guides/"):] or ".").replace(os.sep, "/") + frag
+        return os.path.relpath("index.html", here).replace(os.sep, "/") + frag
     full = os.path.join(ROOT, repo_path)
     if os.path.exists(full):
         kind = "tree" if os.path.isdir(full) else "blob"
