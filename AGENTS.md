@@ -91,8 +91,8 @@ Every version bump lands with a matching entry at the top of [`CHANGELOG.md`](CH
 | Acceptance checks for a skill | `skills/<skill-name>/evals/evals.json` (prompt + assertions) + `evals/eval_queries.json` (should/shouldn't-trigger phrases) |
 | RFC for a new skill or structural change | `docs/rfcs/NNNN-<kebab-slug>.md` — copy [`docs/rfcs/0000-template.md`](docs/rfcs/0000-template.md), next sequential number |
 | Long-form design doc (bigger than an RFC, not a skill) | `docs/designs/<name>.md` — e.g. the CLI command surface, the telemetry collection spec |
-| Pack membership for a skill | `packs.json` — add the skill to at least one pack |
-| Pack membership for a loop | `packs.json` — add the loop to at least one pack's `loops` array; `validate.py` checks both directions |
+| Pack membership for a skill | `packs.json` — add the skill to exactly one pack; a skill every role needs goes in `core` (RFC-0033) |
+| Pack membership for a loop | `packs.json` — add the loop to exactly one pack's `loops` array, and make sure that pack (or `core`) holds every skill the loop's stages run; `validate.py` checks all of it |
 | Outcome membership for a skill | `packs.json` `outcomes` — add the skill to at least one outcome (RFC-0026); packs say *who*, outcomes say *why* |
 | User-visible change for a release | `CHANGELOG.md` — one bullet under `## <version> — <YYYY-MM-DD>`; the site reads the newest three and `build_site.py` refuses to build if the top version disagrees with `package.json` |
 | Executable helper | `skills/<skill-name>/scripts/<name>.py` (or `.js`, `.sh`) |
@@ -305,7 +305,7 @@ See `skills/deck-builder/scripts/build_deck.py` for the reference pattern.
 - [ ] **Model tier set** — new skill has a `model` block in `manifest.json` AND a matching entry in `model-routing.json`. The two agree.
 - [ ] **`related` synced** — every sibling skill referenced in `SKILL.md` is in the manifest's `related` list.
 - [ ] **Non-interactive line present** if the skill has a hard-stop condition — a self-contained sentence saying which inputs degrade to `[assumption]` and which emit `BLOCKED: need <X>`.
-- [ ] **Pack membership** — new skill added to at least one pack in `packs.json`; a new loop added to at least one pack's `loops` array.
+- [ ] **Pack membership** — new skill added to exactly one pack in `packs.json`; a new loop added to exactly one pack's `loops` array (RFC-0033).
 - [ ] **Outcome membership** — new skill added to at least one entry in `packs.json` `outcomes` (RFC-0026).
 - [ ] **`CHANGELOG.md` entry** if the version was bumped — the site build fails without one.
 - [ ] **GitHub About updated** if the skill/pack/subagent counts changed — `gh repo edit --description "…"`. This is the one surface `validate.py` cannot see (it is stdlib-only and off-repo), so it is the one that goes stale: it sat at `62 skills … 7 packs` for a while after the catalogue was 56 and 6. It is also what shows in search results and on the repo card, so it is the first thing a stranger reads.
@@ -368,11 +368,11 @@ A new section needs a use-case-first name, a one-sentence definition of what bel
 
 ## Skill packs
 
-Categories say what a skill *is*; packs say *who needs it*. [`packs.json`](packs.json) defines role-based bundles (`solution-architect`, `product-manager`, `dev-team`, `sre-oncall`, `stakeholder-comms`, `ai-engineering`) installed in one command via [`pack.py`](pack.py). Rules — rationale in [RFC-0001](docs/rfcs/0001-skill-packs.md):
+Categories say what a skill *is*; packs say *who needs it*. [`packs.json`](packs.json) defines `core` plus role-based bundles (`solution-architect`, `product-manager`, `dev-team`, `sre-oncall`, `stakeholder-comms`, `ai-engineering`, `claude-api`), each installed in one command via the CLI or [`pack.py`](pack.py). Rules — rationale in [RFC-0001](docs/rfcs/0001-skill-packs.md) and [RFC-0033](docs/rfcs/0033-core-pack-and-single-home-skills.md):
 
 - **Packs are metadata only.** Skills never move out of flat `skills/<name>` folders (golden rules 1–2); a pack is a named list, nothing more.
-- **Packs may overlap** — `brief-intake` legitimately serves three roles. A skill listed in every pack is a smell (it means the packs aren't choosing).
-- **Every skill belongs to at least one pack.** A skill with no audience shouldn't have passed the RFC. `validate.py` enforces both this and that every pack entry is a real skill folder.
+- **One home per skill** (RFC-0033). A skill that serves every role, like `brief-intake`, goes in `core`, which each role pack `requires` and every installer brings along. Otherwise pick the role that produces the artifact. This is the shape a later physical `packs/<name>/` layout needs.
+- **Every skill belongs to exactly one pack.** A skill with no audience shouldn't have passed the RFC. `validate.py` enforces this, that every pack entry is a real skill folder, and that a pack holds every skill its loops run.
 - **Every skill belongs to at least one outcome.** `packs.json` carries a second block, `outcomes` (RFC-0026) — the README's nine categories restated as seven outcomes and made machine-readable, so the catalogue site can offer a *why am I here* axis beside the *who am I* one. Outcomes are a browse aid, never an install unit; the CLI does not take `--outcome`. `validate.py` applies the same two-way check packs get.
 
 ## Model routing

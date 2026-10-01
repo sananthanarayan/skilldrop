@@ -267,6 +267,15 @@ function packsOf(cat) {
   const p = path.join(cat.dir, "packs.json");
   return fs.existsSync(p) ? readJSON(p).packs : null;
 }
+/* RFC-0033: a pack installs together with the packs it `requires` (in practice, core), so
+   one --pack still delivers a role's whole toolkit now that shared skills have one home. */
+function packMembers(ps, name, key) {
+  const req = (ps[name].requires || []).filter((r) => ps[r]);
+  const out = [];
+  for (const n of [...req, name]) for (const x of ps[n][key] || []) if (!out.includes(x)) out.push(x);
+  if (req.length) console.log(`pack '${name}' includes ${req.join(", ")}`);
+  return out;
+}
 function profilesOf(cat) {
   const p = path.join(cat.dir, "profiles.json");
   return fs.existsSync(p) ? readJSON(p).profiles : null;
@@ -712,7 +721,7 @@ function expandNames(args, cat) {
     if (!ps) die(`catalog '${cat.source}' has no packs.json — install skills by name`);
     const p = ps[args.flags.pack];
     if (!p) die(`unknown pack '${args.flags.pack}' in catalog '${cat.source}'`);
-    return p.skills.slice();
+    return packMembers(ps, args.flags.pack, "skills");
   }
   if (!args._.length) die("nothing to install — pass skill names, --pack <name>, or --all");
   for (const s of args._) if (!skillExists(cat, s)) die(`unknown skill '${s}' in catalog '${cat.source}'`);
@@ -1082,7 +1091,7 @@ function installLoops(args) {
     if (!ps) die(`catalog '${cat.source}' has no packs.json`);
     const pk = ps[args.flags.pack];
     if (!pk) die(`unknown pack '${args.flags.pack}' in catalog '${cat.source}'`);
-    names = (pk.loops || []).slice();
+    names = packMembers(ps, args.flags.pack, "loops");
     if (!names.length) die(`pack '${args.flags.pack}' declares no loops`);
   }
   if (!names.length && args.flags.all) names = available.slice();
@@ -1251,13 +1260,13 @@ function listPacks(args) {
       catalog: cat.source,
       count: ps ? Object.keys(ps).length : 0,
       packs: Object.entries(ps || {}).map(([name, p]) => ({
-        name, description: p.description || null, skills: p.skills || [],
+        name, description: p.description || null, skills: p.skills || [], requires: p.requires || [],
       })),
     });
   if (!ps) return console.log(`catalog '${cat.source}' defines no packs.`);
   const w = Math.max(...Object.keys(ps).map((n) => n.length));
   for (const [n, p] of Object.entries(ps))
-    console.log(`${n.padEnd(w)}  (${p.skills.length} skills)  ${p.description}`);
+    console.log(`${n.padEnd(w)}  (${p.skills.length} skills${(p.requires || []).length ? ` + ${p.requires.join(", ")}` : ""})  ${p.description}`);
   console.log("\nInstall one: skilldrop install --pack <name>");
 }
 

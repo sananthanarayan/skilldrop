@@ -28,9 +28,9 @@
   <!-- stat row -->
   <text class="mono" x="80" y="486" font-size="26" fill="#ecebe8">63 skills</text>
   <text class="mono" x="238" y="486" font-size="26" fill="#3a3a3f">/</text>
-  <text class="mono" x="268" y="486" font-size="26" fill="#ecebe8">7 role packs</text>
-  <text class="mono" x="472" y="486" font-size="26" fill="#3a3a3f">/</text>
-  <text class="mono" x="502" y="486" font-size="26" fill="#ecebe8">3 reviewer subagents</text>
+  <text class="mono" x="268" y="486" font-size="26" fill="#ecebe8">8 packs</text>
+  <text class="mono" x="395" y="486" font-size="26" fill="#3a3a3f">/</text>
+  <text class="mono" x="425" y="486" font-size="26" fill="#ecebe8">3 reviewer subagents</text>
 
   <!-- footer strip -->
   <rect x="80" y="536" width="1040" height="1" fill="#2a2a2d"/>

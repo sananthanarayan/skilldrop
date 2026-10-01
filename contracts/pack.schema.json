@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/sananthanarayan/skilldrop/contracts/pack.schema.json",
   "title": "skilldrop packs.json",
-  "$comment": "RFC-0001 / RFC-0026 / RFC-0029. Packs and outcomes are METADATA ONLY — skills never move out of flat skills/<name> folders. Packs answer WHO needs a skill; outcomes answer WHY someone opened the catalogue. Both get the same two-way membership check in validate.py.",
+  "$comment": "RFC-0001 / RFC-0026 / RFC-0029 / RFC-0033. Packs and outcomes are METADATA ONLY — skills never move out of flat skills/<name> folders. RFC-0033: each skill and loop sits in exactly one pack; shared skills live in `core`, which other packs pull in via `requires`. Packs answer WHO needs a skill; outcomes answer WHY someone opened the catalogue. Both get the same two-way membership check in validate.py.",
   "type": "object",
   "additionalProperties": false,
   "required": ["version", "packs", "outcomes"],
@@ -20,7 +20,14 @@
           "description": { "type": "string", "description": "One line — who this pack is for." },
           "skills": { "type": "array", "items": { "type": "string" }, "minItems": 1,
                       "description": "Real skill folders. Every skill must appear in at least one pack." },
-          "loops": { "type": "array", "items": { "type": "string" },
+          "requires": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "RFC-0033. Packs installed together with this one (in practice, `core`). One level only: a required pack may not itself require."
+     },
+     "loops": { "type": "array", "items": { "type": "string" },
                      "description": "RFC-0028. Real loops/ folders. Every loop must appear in at least one pack." }
         }
       }

@@ -71,7 +71,7 @@ is a diagram.
 
 ## 5. Register and generate
 
-- Add the loop to at least one pack's `loops` array in [`packs.json`](../../packs.json).
+- Add the loop to exactly one pack's `loops` array in [`packs.json`](../../packs.json). That pack, together with `core`, must hold every skill the loop's stages run.
 - **Do not** add it to `model-routing.json` — a loop sequences skills and makes no model call
   of its own, so it carries no tier.
 - Run `python3 build_loops.py` to regenerate `docs/loops/<name>.mmd` and the README's Mermaid

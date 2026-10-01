@@ -19,18 +19,29 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 PACKS = json.load(open(os.path.join(ROOT, "packs.json")))["packs"]
 
 
+def members(name):
+    """RFC-0033: a pack installs with the packs it `requires` (in practice, core)."""
+    out = []
+    for n in PACKS[name].get("requires", []) + [name]:
+        for s in PACKS.get(n, {}).get("skills", []):
+            if s not in out:
+                out.append(s)
+    return out
+
+
 def main():
     args = sys.argv[1:]
     if not args:
         width = max(len(n) for n in PACKS)
         for name, p in PACKS.items():
-            print(f"{name:<{width}}  ({len(p['skills'])} skills)  {p['description']}")
+            req = f" + {', '.join(p['requires'])}" if p.get("requires") else ""
+            print(f"{name:<{width}}  ({len(p['skills'])} skills{req})  {p['description']}")
         return
 
     name = args[0]
     if name not in PACKS:
         sys.exit(f"unknown pack '{name}' — run with no arguments to list packs")
-    skills = PACKS[name]["skills"]
+    skills = members(name)
 
     if "--install" not in args:
         print("\n".join(skills))
