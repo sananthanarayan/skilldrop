@@ -65,6 +65,39 @@ node skilldrop.js bootstrap
 npx your-org-skilldrop-cli bootstrap
 ```
 
+## Mirror a vetted subset internally
+
+Not every org can install from a public git host, and most want a reviewer to sign off on what
+reaches their machines. `package` copies the packs or skills you choose into a standalone
+catalogue you can host anywhere git runs:
+
+```bash
+npx skilldrop-cli package ./skills-mirror --pack dev-team,design   # brings core along, plus loops whose skills are all included
+npx skilldrop-cli package ./skills-mirror --skills doc-critique,adr-generator
+npx skilldrop-cli scan --from ./skills-mirror                       # the supply-chain scan, before anyone reviews it
+```
+
+`MIRROR.json` in the output records the source, the CLI version, the date, and a SHA-256 for
+every file, so the reviewer can see exactly what came across and a later mirror can be diffed
+against it. Push the folder to your internal git host, tag it, and install from the tag:
+
+```bash
+npx skilldrop-cli install --pack dev-team --from https://git.example.internal/platform/skills-mirror#2026-10
+```
+
+## Start your own catalogue
+
+For skills your teams write themselves:
+
+```bash
+npx skilldrop-cli init-catalogue ./team-skills --pack platform
+cd team-skills && npx skilldrop-cli new-skill deploy-checklist --pack platform
+```
+
+`init-catalogue` writes the layout the CLI reads, one example skill that passes
+`skilldrop validate`, a README with the install command, and a GitHub workflow that runs
+`validate` and `scan` on every pull request.
+
 ## What bootstrap writes
 
 ```json

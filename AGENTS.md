@@ -57,6 +57,13 @@ node bin/skilldrop.js install | update | uninstall ... --dry-run # print what wo
 node bin/skilldrop.js diff <skill> | doctor                      # installed copy vs catalog; ledger vs disk (report-only)
 node bin/skilldrop.js new-skill <name> --pack <pack>             # scaffold a skill with every file validate.py checks
 node bin/skilldrop.js validate [--from <src>]                    # structural check of a catalog (catalog authors)
+node bin/skilldrop.js package <dir> [--pack a,b] [--skills x,y]  # vetted subset as a standalone catalogue + MIRROR.json
+node bin/skilldrop.js init-catalogue <dir> [--pack <name>]       # start a private catalogue
+node bin/skilldrop.js loop-stats [<file>] [--days N]             # summarise the opt-in loop run log (SKILLDROP_LOOP_LOG)
+
+# Per-pack how-to + reference guides. Generated; validate.py fails on drift.
+python3 build_pack_guides.py
+python3 build_pack_guides.py --check
 
 # Evals against a live model (needs ANTHROPIC_API_KEY; report-only, also weekly in CI)
 python3 run_evals.py [--skills a,b] [--assertions]
@@ -259,7 +266,8 @@ this section.
    least one non-pass, and must be able to emit `BLOCKED`.
 5. **`LOOP.md`** — frontmatter `name` + `description` matching `loop.json` exactly, the stage
    table, how to run it, and the same `Quality bar` + `Anti-patterns to avoid` sections a
-   skill ships. Include the degradation line: what to do when a stage's skill isn't installed.
+   skill ships. Include the degradation line: what to do when a stage's skill isn't installed,
+   and the `## Run log (opt-in)` section copied from an existing loop (RFC-0038).
 6. **No model tier.** A loop sequences skills and makes no model call of its own, so it has no
    entry in `model-routing.json`; `validate.py` fails one that does, by name.
 7. **A loop's name may not collide with a skill's.** On install, `LOOP.md` projects to

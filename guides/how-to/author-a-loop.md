@@ -67,7 +67,9 @@ This is where a loop is won or lost. A gate that cannot fail is decoration.
 Frontmatter `name` + `description` must match `loop.json` exactly. Then: the stage table, how
 to run it, the verdicts, what to do when a stage's skill is not installed, and the same
 `Quality bar` + `Anti-patterns to avoid` sections a skill ships. A `LOOP.md` without those two
-is a diagram.
+is a diagram. Copy the `## Run log (opt-in)` section from any existing loop and change the
+example line to your loop's name and first gate; `validate.py` requires it, so
+`skilldrop loop-stats` can read every loop the same way ([Measure your loops](measure-your-loops.md)).
 
 ## 5. Register and generate
 

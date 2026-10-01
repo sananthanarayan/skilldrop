@@ -68,6 +68,11 @@ Usage:
                                           in SKILL.md before you trust a catalog (RFC-0022)
   skilldrop new-skill <name> --pack <p>   scaffold a skill in the catalog you're in (for catalog authors;
                                           --tier light|standard|heavy, default standard)
+  skilldrop loop-stats [<file>] [--days N]  summarise the opt-in loop run log (SKILLDROP_LOOP_LOG):
+                                          which gates pass first time, loop back, or block. Local only.
+  skilldrop init-catalogue <dir> [--pack <name>]  start a private catalogue for your team's skills
+  skilldrop package <dir> [--pack a,b] [--skills x,y] [--agents]  copy a vetted subset of a catalogue
+                                          into a standalone one to host internally (writes MIRROR.json)
   skilldrop --version                     print the CLI version
   skilldrop bootstrap                     add the skilldrop marketplace to ~/.claude/settings.json
                                           (idempotent — safe to run in onboarding scripts)
@@ -123,7 +128,7 @@ function parseArgs(argv) {
   const out = { _: [], flags: {} };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a === "--pack" || a === "--ide" || a === "--dest" || a === "--from" || a === "--panel" || a === "--profile" || a === "--tier") out.flags[a.slice(2)] = argv[++i];
+    if (a === "--pack" || a === "--ide" || a === "--dest" || a === "--from" || a === "--panel" || a === "--profile" || a === "--tier" || a === "--skills" || a === "--days") out.flags[a.slice(2)] = argv[++i];
     else if (a.startsWith("--")) out.flags[a.slice(2)] = true;
     else out._.push(a);
   }
@@ -1458,6 +1463,149 @@ function newSkill(args) {
               `\n  4. Try it from another repo: skilldrop install ${name} --from ${root} --local`);
 }
 
+/* loop-stats: summarise the opt-in run log loops append to when SKILLDROP_LOOP_LOG is set.
+   Local only — the file is the user's, nothing is sent anywhere. Answers the questions a team
+   asks of its loops: which gates pass first time, which keep looping back, which block. */
+function loopStats(args) {
+  const file = args._[0] || process.env.SKILLDROP_LOOP_LOG || path.join(".skilldrop", "loop-log.jsonl");
+  const raw = readIfPresent(file, null);
+  if (raw === null)
+    die(`no run log at ${file}.\n       Turn it on: export SKILLDROP_LOOP_LOG="$PWD/.skilldrop/loop-log.jsonl" — each loop then appends one line per gate verdict.`);
+  const days = Number(args.flags.days) || 0;
+  const since = days ? Date.now() - days * 864e5 : 0;
+  const rows = [], bad = [];
+  raw.split(/\r?\n/).forEach((line, i) => {
+    if (!line.trim()) return;
+    try {
+      const r = JSON.parse(line);
+      if (!r.loop || !r.verdict) throw new Error("missing loop or verdict");
+      if (since && Date.parse(r.ts) < since) return;
+      rows.push(r);
+    } catch (e) { bad.push(i + 1); }
+  });
+  const terms = (() => { try { return readJSON(path.join(ROOT, "contracts", "terminals.json")); } catch (e) { return {}; } })();
+  // Verdict classes come from the shared vocabulary (RFC-0028), so a new verdict word is
+  // classified the same way here as in the loops.
+  const classOf = (v) => ((terms.verdicts || {})[v] || {}).class || (/BLOCK/.test(v) ? "blocked" : "unknown");
+  const by = {};
+  for (const r of rows) {
+    const k = `${r.loop}  ${r.gate || "-"} (${r.stage || "?"})`;
+    const g = by[k] = by[k] || { n: 0, verdicts: {}, firstPass: 0, firsts: 0, blocked: 0, rounds: [] };
+    g.n++; g.verdicts[r.verdict] = (g.verdicts[r.verdict] || 0) + 1;
+    const cls = classOf(r.verdict);
+    if (Number(r.round) === 1) { g.firsts++; if (cls === "pass" || cls === "conditional") g.firstPass++; }
+    if (cls === "blocked") g.blocked++;
+    if (r.round) g.rounds.push(Number(r.round));
+  }
+  if (args.flags.json) return emitJSON({ file, entries: rows.length, skipped: bad.length, gates: by });
+  console.log(`${rows.length} gate verdict(s) in ${file}${days ? ` from the last ${days} days` : ""}\n`);
+  for (const [k, g] of Object.entries(by).sort()) {
+    const mix = Object.entries(g.verdicts).sort((a, b) => b[1] - a[1]).map(([v, n]) => `${v} ${n}`).join(", ");
+    const fp = g.firsts ? `${Math.round(100 * g.firstPass / g.firsts)}% pass first time` : "no first-round entries";
+    const maxRound = g.rounds.length ? Math.max(...g.rounds) : 0;
+    console.log(`${k}\n  ${g.n} verdict(s): ${mix}\n  ${fp} · ${g.blocked} blocked · longest run ${maxRound} round(s)`);
+  }
+  if (bad.length) console.log(`\n${bad.length} line(s) skipped as unreadable: ${bad.slice(0, 10).join(", ")}${bad.length > 10 ? "…" : ""}`);
+}
+
+/* init-catalogue <dir>: start a private catalogue (an internal mirror or a team's own skills)
+   in the layout this CLI reads, with one example skill that passes `skilldrop validate`. */
+function initCatalogue(args) {
+  const dir = path.resolve(args._[0] || die("usage: skilldrop init-catalogue <dir> [--pack <name>]"));
+  const pack = args.flags.pack || "team";
+  if (!/^[a-z][a-z0-9-]*$/.test(pack)) die(`--pack '${pack}' isn't kebab-case`);
+  if (fs.existsSync(dir) && fs.readdirSync(dir).length) die(`${dir} isn't empty — pick a new folder`);
+  const sk = "example-skill";
+  const files = {
+    "catalogue.json": JSON.stringify({ version: "0.1.0", packs: [pack] }, null, 2) + "\n",
+    [`packs/${pack}/pack.json`]: JSON.stringify({ description: `Skills for the ${pack} team.`, display_name: pack }, null, 2) + "\n",
+    [`packs/${pack}/skills/${sk}/SKILL.md`]: `---\nname: ${sk}\ndescription: Replace with one sentence on what this skill produces. Use when the user asks for …\n---\n\n# ${sk}\n\n` +
+      `## How to respond\n\n1. Ask for what's missing in one message.\n2. Do the work.\n3. Say how to check it.\n\n## Quality bar\n\n- A checkable property of a good result\n\n## Anti-patterns to avoid\n\n- ❌ The most common way this goes wrong\n`,
+    [`packs/${pack}/skills/${sk}/manifest.json`]: JSON.stringify({ name: sk, version: "0.1.0",
+      description: "Replace with one sentence on what this skill produces. Use when the user asks for …",
+      entrypoint: "SKILL.md", deps: { npm: [], pip: [] }, env: { required: [], optional: [] }, related: [], tags: ["example"],
+      model: { tier: "standard", rationale: "Replace: how much reasoning the task needs." } }, null, 2) + "\n",
+    "README.md": `# Skills catalogue\n\nInstall from it with the skilldrop CLI:\n\n\`\`\`bash\nnpx skilldrop-cli list --from <this repo's git URL>\nnpx skilldrop-cli install --pack ${pack} --from <this repo's git URL>#<tag>\n\`\`\`\n\n` +
+      `Pin a tag: a branch can change under you. Add a skill with \`npx skilldrop-cli new-skill <name> --pack ${pack}\` from this folder.\n` +
+      `Check the catalogue with \`npx skilldrop-cli validate --from .\` (CI runs it on every pull request).\n`,
+    ".github/workflows/validate.yml": `name: validate\non: [push, pull_request]\npermissions:\n  contents: read\njobs:\n  validate:\n    runs-on: ubuntu-latest\n    steps:\n` +
+      `      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1\n        with:\n          persist-credentials: false\n` +
+      `      - run: npx --yes skilldrop-cli@${readJSON(path.join(ROOT, "package.json")).version} validate --from .\n      - run: npx --yes skilldrop-cli@${readJSON(path.join(ROOT, "package.json")).version} scan --from .\n`,
+  };
+  for (const [rel, body] of Object.entries(files)) {
+    fs.mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true });
+    fs.writeFileSync(path.join(dir, rel), body);
+    console.log(`wrote ${path.relative(process.cwd(), path.join(dir, rel))}`);
+  }
+  console.log(`\nNext: push ${path.basename(dir)} to your git host, then: npx skilldrop-cli install --pack ${pack} --from <git-url>#<tag>`);
+  console.log(`To mirror skills from this catalogue instead, use: skilldrop package <dir> --pack <name>`);
+}
+
+/* package <out-dir>: copy a vetted subset of a catalogue into a standalone catalogue an
+   organisation can host internally (an air-gapped or reviewed mirror). Packs bring the packs
+   they require; loops come only when every stage skill is included. MIRROR.json records where
+   each file came from and its SHA-256, so a reviewer can tell exactly what was mirrored. */
+function packageCatalogue(args) {
+  const out = path.resolve(args._[0] || die("usage: skilldrop package <out-dir> [--pack a,b] [--skills x,y] [--from <src>] [--agents]"));
+  if (fs.existsSync(out) && fs.readdirSync(out).length) die(`${out} isn't empty — pick a new folder`);
+  const cat = resolveCatalog(args.flags.from);
+  if (cat.shape === "apm") die("package reads skilldrop catalogues; agentbundle ones aren't supported yet");
+  const ps = packsOf(cat) || {};
+  let packNames = args.flags.pack && args.flags.pack !== true ? String(args.flags.pack).split(",") : [];
+  for (const p of packNames) if (!ps[p]) die(`unknown pack '${p}' in catalog '${cat.source}'`);
+  for (const p of packNames.slice()) for (const r of ps[p].requires || []) if (!packNames.includes(r)) packNames.unshift(r);
+  let skills = [];
+  for (const p of packNames) for (const s of ps[p].skills || []) if (!skills.includes(s)) skills.push(s);
+  if (args.flags.skills) for (const s of String(args.flags.skills).split(",")) {
+    if (!skillExists(cat, s)) die(`unknown skill '${s}' in catalog '${cat.source}'`);
+    if (!skills.includes(s)) skills.push(s);
+  }
+  if (!packNames.length && !args.flags.skills) { skills = skillsIn(cat); packNames = Object.keys(ps); }
+  gate(cat, skills);
+  const home = (s) => Object.keys(ps).find((p) => (ps[p].skills || []).includes(s)) || "mirror";
+  const manifest = { source: cat.source, cli: readJSON(path.join(ROOT, "package.json")).version,
+                     created: new Date().toISOString(), files: {} };
+  const copyTree = (src, dstRel) => {
+    for (const f of walkFiles(src)) {
+      const rel = path.join(dstRel, path.relative(src, f)).split(path.sep).join("/");
+      fs.mkdirSync(path.dirname(path.join(out, rel)), { recursive: true });
+      fs.copyFileSync(f, path.join(out, rel));
+      manifest.files[rel] = sha256(fs.readFileSync(f));
+    }
+  };
+  const usedPacks = [];
+  for (const s of skills) {
+    const p = home(s);
+    if (!usedPacks.includes(p)) usedPacks.push(p);
+    copyTree(skillDir(cat, s), path.join("packs", p, "skills", s));
+  }
+  const loops = [];
+  for (const l of loopsIn(cat)) {
+    if (loopSkills(cat, l).every((s) => skills.includes(s))) {
+      const p = Object.keys(ps).find((x) => (ps[x].loops || []).includes(l)) || usedPacks[0];
+      if (!usedPacks.includes(p)) continue;
+      copyTree(loopDir(cat, l), path.join("packs", p, "loops", l));
+      loops.push(l);
+    }
+  }
+  for (const p of usedPacks) {
+    const meta = Object.assign({}, ps[p] || { description: "Mirrored skills." });
+    delete meta.skills; delete meta.loops;
+    if (meta.requires) meta.requires = meta.requires.filter((r) => usedPacks.includes(r));
+    if (meta.journey) meta.journey.steps = (meta.journey.steps || []).filter((st) => skills.includes(st.skill));
+    const rel = `packs/${p}/pack.json`;
+    fs.mkdirSync(path.dirname(path.join(out, rel)), { recursive: true });
+    fs.writeFileSync(path.join(out, rel), JSON.stringify(meta, null, 2) + "\n");
+  }
+  fs.writeFileSync(path.join(out, "catalogue.json"), JSON.stringify({ version: "0.1.0", packs: usedPacks }, null, 2) + "\n");
+  let agents = [];
+  if (args.flags.agents) for (const a of agentsIn(cat)) { copyTree(path.dirname(agentPath(cat, a)), "agents"); agents = agentsIn(cat); break; }
+  fs.writeFileSync(path.join(out, "MIRROR.json"), JSON.stringify(manifest, null, 2) + "\n");
+  console.log(`packaged ${skills.length} skill(s), ${loops.length} loop(s)${agents.length ? `, ${agents.length} agent(s)` : ""} in ${usedPacks.length} pack(s) from '${cat.source}' -> ${out}`);
+  console.log(`MIRROR.json records the source and a SHA-256 for each of the ${Object.keys(manifest.files).length} files.`);
+  console.log(`Next: review it, push it to your internal git host, then: npx skilldrop-cli install --pack <name> --from <internal-git-url>#<tag>`);
+}
+
 function listAgents(args) {
   const cat = resolveCatalog(args.flags.from);
   const names = agentsIn(cat);
@@ -1825,7 +1973,7 @@ function bootstrap() {
 
 const args = parseArgs(process.argv.slice(2));
 const cmd = args._.shift();
-const commands = { list, info, packs: listPacks, profiles: listProfiles, agents: listAgents, loops: listLoops, install, update, outdated, uninstall, diff, doctor, "new-skill": newSkill, validate: validateCmd, scan, bootstrap };
+const commands = { list, info, packs: listPacks, profiles: listProfiles, agents: listAgents, loops: listLoops, install, update, outdated, uninstall, diff, doctor, "new-skill": newSkill, "loop-stats": loopStats, "init-catalogue": initCatalogue, package: packageCatalogue, validate: validateCmd, scan, bootstrap };
 if (args.flags.version || cmd === "version") console.log(readJSON(path.join(ROOT, "package.json")).version);
 else if (!cmd || cmd === "help" || args.flags.help) console.log(HELP);
 else if (commands[cmd]) commands[cmd](args);

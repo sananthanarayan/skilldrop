@@ -49,6 +49,21 @@ Name the missing skill and skilldrop as its source, do the minimal inline versio
 stage, and record that the stage ran degraded. A missing skill is never a reason to skip a
 **gate** — the gate is the loop's whole value.
 
+## Run log (opt-in)
+
+Only when the environment variable `SKILLDROP_LOOP_LOG` is set to a file path: after each
+gate's verdict, append one JSON line to that file. Nothing else is recorded, and nothing is
+sent anywhere. When the variable isn't set, or you can't read it, skip this section.
+
+```bash
+printf '%s\n' '{"ts":"2026-10-01T14:03:00Z","loop":"build","stage":"verify","gate":"G2","verdict":"READY","round":1}' >> "$SKILLDROP_LOOP_LOG"
+```
+
+Fields: `ts` (UTC), `loop`, `stage`, `gate` (`null` for a stage without one), `verdict` (the
+gate's exact word), and `round` (1 for the first attempt, counting returns under the cap).
+`skilldrop loop-stats` summarises the file: which gates pass first time, which loop back, and
+which end in `BLOCKED`.
+
 ## Quality bar
 
 - **The gate decides, not the agent.** G2's verdict is `gate.py`'s exit code. An agent that reasons its way past a red gate has broken the loop, not passed it.

@@ -1117,7 +1117,7 @@ a {{ color:var(--accent-700); }}
 
 <header class="hero">
   <div class="inner">
-    <p class="eyebrow">Open catalogue · MIT · no runtime</p>
+    <p class="eyebrow">Open catalogue · MIT or Apache-2.0 · no runtime</p>
     <h1>{esc(PITCH['hero_h1'])}</h1>
     <p class="lede">{esc(PITCH['hero_lede'])}</p>
     <div class="cta-row">
@@ -1194,7 +1194,7 @@ a {{ color:var(--accent-700); }}
     <div class="footer__col"><h3>Project</h3><ul>
       <li><a href="{REPO_URL}">GitHub</a></li>
       <li><a href="{NPM_URL}">npm</a></li>
-      <li><a href="{REPO_URL}/blob/main/LICENSE">MIT licence</a></li>
+      <li><a href="{REPO_URL}/blob/main/LICENSE">MIT or Apache-2.0</a></li>
     </ul></div>
     <div class="footer__col"><h3>Docs</h3><ul>
       <li><a href="{REPO_URL}#readme">README</a></li>
@@ -1299,7 +1299,7 @@ def ld_json(skills):
         "url": SITE_URL,
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Any",
-        "license": "https://opensource.org/licenses/MIT",
+        "license": ["https://opensource.org/licenses/MIT", "https://www.apache.org/licenses/LICENSE-2.0"],
         "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
         "author": {"@type": "Person", "name": "Sanjay Ananthanarayan"},
         "codeRepository": REPO_URL,

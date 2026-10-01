@@ -66,10 +66,10 @@ name = "skilldrop-cli"
 version = "{pkg['version']}"
 description = "{pkg['description'].replace('"', "'")}"
 readme = "README.md"
-license = {{ text = "MIT" }}
+license = {{ text = "MIT OR Apache-2.0" }}
 requires-python = ">=3.8"
 keywords = ["ai", "agent", "skills", "claude-code", "cursor", "kiro", "codex"]
-classifiers = ["Environment :: Console", "License :: OSI Approved :: MIT License", "Programming Language :: JavaScript"]
+classifiers = ["Environment :: Console", "License :: OSI Approved :: MIT License", "License :: OSI Approved :: Apache Software License", "Programming Language :: JavaScript"]
 
 [project.urls]
 Homepage = "https://sananthanarayan.github.io/skilldrop/"

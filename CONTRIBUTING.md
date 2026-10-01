@@ -116,4 +116,4 @@ Flag the drift in your PR instead of working around it. `AGENTS.md` wins any dis
 
 ## License
 
-MIT ([LICENSE](LICENSE)). Opening a PR means you agree your contribution ships under it.
+MIT or Apache-2.0, at the user's option ([LICENSE](LICENSE)). Opening a PR means you agree your contribution ships under both.

@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0028. This wrapper is docs/knowledge-work-pipeline.mmd promoted from a hand-maintained diagram into the machine-readable source that diagram is now generated from. It is a wrapper, not a loop: the generator at its centre is chosen at run time from whichever artifact the user actually wants.",
   "name": "ship-a-draft",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Take raw mess to a stakeholder-ready artifact by wrapping any skilldrop generator in the two passes either side of it — structured intake before, critique and machine-residue scrub after. Use when the user has notes, a transcript, or a ticket and wants a finished document rather than a first draft.",
   "entrypoint": "LOOP.md",
   "kind": "wrapper",

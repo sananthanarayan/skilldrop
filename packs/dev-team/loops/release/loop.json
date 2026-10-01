@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0031. Covers the step between build (ends at merge, G2.1) and operate (starts at instrument). The gate ids sit between G2 and G3 to match where the loop sits in the lifecycle.",
   "name": "release",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Take merged code to live users through a planned, reversible rollout — plan the phases and the rollback, judge readiness on evidence, draft the release notes, then a human makes the go/no-go call. Use when the user has merged a change and asks how to roll it out, whether they are ready to launch, or for a go/no-go decision.",
   "entrypoint": "LOOP.md",
   "kind": "loop",

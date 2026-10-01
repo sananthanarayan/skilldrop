@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0028. The loop with the worst reversibility profile: a design mistake surfaces months later in code nobody wants to unwind. That is why its gate is a panel, not a script.",
   "name": "design",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Take a ratified requirement to a recorded architectural decision — constraints, structure, diagrams, threats, then a panel that must agree before the decision is written down. Use when the user is designing a system, choosing an architecture, or asking how something should be built.",
   "entrypoint": "LOOP.md",
   "kind": "loop",
