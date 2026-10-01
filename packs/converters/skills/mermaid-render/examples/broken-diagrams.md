@@ -98,7 +98,7 @@ lint: 1 diagram(s), 0 error(s), 0 warning(s)
 On a machine without `mmdc`, asking for an SVG writes an HTML page instead and says so:
 
 ```text
-$ python3 scripts/render_mermaid.py examples/inputs/checkout-flow.mmd -o /private/tmp/claude-502/-Users-s-ananthanarayan-Documents-skilldrop/945999c6-5b53-48d9-b3c5-5a8f858f33d0/scratchpad/checkout.svg
+$ python3 scripts/render_mermaid.py examples/inputs/checkout-flow.mmd -o checkout.svg
 checkout-flow.mmd: flowchart: ok
 lint: 1 diagram(s), 0 error(s), 0 warning(s)
 mmdc (mermaid-cli) is not on PATH, so no .svg was written. Wrote checkout.html instead: it draws the diagram(s) with Mermaid 11.4.1 from cdn.jsdelivr.net and needs network when opened. For .svg output: npm install -g @mermaid-js/mermaid-cli, then rerun.
@@ -108,3 +108,40 @@ Opened in headless Chrome with network, that page drew the flowchart as an SVG. 
 installed, the same command writes `checkout.svg`; for `design-notes.md` it would write
 `design-notes-1.svg`, `design-notes-2.svg` and `design-notes-3.svg` (after the state diagram's
 missing `}` is fixed).
+
+## Rendering with mermaid-cli installed
+
+With `mmdc` (mermaid-cli 12.0.0) on `PATH`, the same script writes real images. Run on
+2026-10-01:
+
+```text
+$ python3 scripts/render_mermaid.py examples/inputs/checkout-flow.mmd -o checkout-flow.png
+checkout-flow.mmd: flowchart: ok
+lint: 1 diagram(s), 0 error(s), 0 warning(s)
+wrote checkout-flow.png
+```
+
+The PNG is 1268 × 1442 pixels: `-s 2` doubles the scale so it stays sharp in a document.
+
+A Markdown file with three diagrams, the third one broken, rendered with `--force`:
+
+```text
+$ python3 scripts/render_mermaid.py examples/inputs/design-notes.md -o notes.svg --force
+mmdc failed on design-notes.md, diagram 3 (line 29):
+Error: Parse error on line 6:
+...  [*] --> Cancelled
+----------------------^
+Expecting 'SPACE', 'NL', 'HIDE_EMPTY', 'scale', 'COMPOSIT_STATE', 'STRUCT_STOP', 'STATE_DESCR', 'ID', 'FORK', 'JOIN', 'CHOICE', 'CONCURRENT', 'note', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'CLICK', 'classDef', 'style', 'class', 'direction_tb', 'direction_bt', 'direction_rl', 'direction_lr', 'EDGE_STATE', got '1'
+design-notes.md: diagram 1 (flowchart): ok
+design-notes.md: diagram 2 (sequenceDiagram): ok
+design-notes.md:31: error: `{` opened here is never closed
+lint: 3 diagram(s), 1 error(s), 0 warning(s)
+wrote notes-1.svg
+wrote notes-2.svg
+```
+
+`--force` still writes every diagram that renders (`notes-1.svg`, `notes-2.svg`), prints
+Mermaid's own parse error for the one that doesn't, and exits 1, so a CI step still fails.
+Here Mermaid stopped at line 6 of that diagram, a few lines after the lint's line 31 (the
+diagram starts at line 29 of the file). The lint found the cause first.
+

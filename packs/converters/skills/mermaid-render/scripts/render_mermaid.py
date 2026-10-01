@@ -381,8 +381,23 @@ def run_mmdc(exe, text, out_path):
         except subprocess.TimeoutExpired:
             return "mmdc timed out after 180 s"
         if proc.returncode != 0:
-            return (proc.stderr or proc.stdout).decode("utf-8", "replace").strip()[-800:]
+            return mmdc_error((proc.stderr or proc.stdout).decode("utf-8", "replace"))
     return None
+
+
+def mmdc_error(raw):
+    """Mermaid's own message (from "Error:" up to the stack trace), not the stack trace:
+    mmdc prints a browser-library trace after the parse error, and the parse error is the
+    part a person can act on."""
+    lines = raw.strip().splitlines()
+    start = next((k for k, l in enumerate(lines) if l.lstrip().startswith("Error")), 0)
+    keep = []
+    for l in lines[start:]:
+        if re.match(r"^\s+at\s", l) or re.search(r"\((https?|file)://[^)]*\)\s*$", l):
+            break
+        keep.append(l.rstrip())
+    msg = "\n".join(keep[:8]).strip()
+    return msg or raw.strip()[-800:]
 
 
 def main(argv=None):

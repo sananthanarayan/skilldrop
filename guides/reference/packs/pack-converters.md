@@ -23,7 +23,7 @@ Turn Markdown into Word, Excel and HTML files that people outside engineering ca
 
 Convert a Word document, PowerPoint deck, Excel workbook, web page, CSV, JSON, text file or PDF into clean Markdown that keeps headings, lists, tables, links, bold and italic, slide titles and speaker notes, and reports everything it dropped (images, charts, comments, formulas, tracked changes), so the content can be read, reviewed or fed to another skill.
 
-Tier **light** · v0.1.0 · [SKILL.md](../../../packs/converters/skills/file-to-markdown/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/file-to-markdown/)
+Tier **light** · v0.1.1 · [SKILL.md](../../../packs/converters/skills/file-to-markdown/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/file-to-markdown/)
 
 **Use it when** the user hands over a .docx, .pptx, .xlsx, .html, .csv, .json or .pdf and says "read this", "turn this into markdown", "extract the text", or wants it critiqued or briefed.
 
@@ -136,7 +136,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/converters/skills/md-to
 
 Check Mermaid diagrams for the mistakes that stop them rendering (unknown diagram type, unbalanced brackets or quotes, unquoted parentheses in labels, the word end as a node id, missing arrows, unclosed subgraphs or alt blocks) with line numbers and a fix for each, then render them to SVG, PNG or PDF with mermaid-cli, or to a standalone HTML page when it is not installed. Works on a .mmd file or every mermaid fence in a Markdown doc.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/converters/skills/mermaid-render/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/mermaid-render/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/converters/skills/mermaid-render/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/mermaid-render/)
 
 **Use it when** a diagram "won't render", the user says "check my mermaid", "export this diagram as SVG/PNG", or needs the diagrams in a doc as image files.
 

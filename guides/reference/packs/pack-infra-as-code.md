@@ -23,7 +23,7 @@ Terraform you can hand to another team and plans you can trust before apply: reu
 
 Generate a Terraform module from a described need, with main.tf, variables.tf, outputs.tf and versions.tf, typed and validated variables, secure defaults (encryption on, public access off, least-privilege IAM), a merged tags variable, a basic usage example and a README with inputs and outputs tables.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/infra-as-code/skills/terraform-module/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/terraform-module/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/infra-as-code/skills/terraform-module/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/terraform-module/)
 
 **Use it when** the user says "write a terraform module for", "create terraform for an S3 bucket / VPC / database", "turn this into a reusable module", or "scaffold infrastructure as code for".
 
