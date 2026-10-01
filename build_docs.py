@@ -285,6 +285,9 @@ def render_md(text, src=None, docs_base=None):
         if not raw.strip():
             flush_all(); i += 1
             continue
+        if re.match(r"^\s*(-{3,}|\*{3,})\s*$", raw):
+            flush_all(); out.append("<hr>"); i += 1
+            continue
         if raw.lstrip().startswith("<!--"):
             # HTML comments (e.g. the generated-block markers) never reach the page, including
             # ones that span several lines: skip through the line that closes the comment.
