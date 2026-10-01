@@ -127,17 +127,15 @@ TOOLS = [
 # Antigravity CLI is its successor and is listed above. Listing a tool that no longer serves
 # this audience would be worse than the gap.
 
+# One nav on every page (home, catalogue, packs, skills, docs, changelog), so a reader who
+# lands deep never loses the way back. Hrefs are relative to the site root; site_nav()
+# prefixes them for the page's depth. The home page's in-page sections are reached by scrolling.
 NAV = [
-    ("Why skills", "#problem", False),
-    ("Loops", "#loops", False),
-    ("Outcomes", "#outcomes", False),
-    ("What's in one", "#quality", False),
-    ("Portability", "#portability", False),
     ("Packs", "packs/", False),
-    ("Catalogue", "catalogue/", False),
-    ("Reviewers", "#reviewers", False),
+    ("Skills", "catalogue/", False),
+    ("Loops", "#loops", False),
     ("Docs", "docs/", False),
-    ("Shipped", "#shipped", False),
+    ("What's new", "changelog/", False),
     ("GitHub", REPO_URL, True),
 ]
 
@@ -334,6 +332,163 @@ def inline_md(s):
     return re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", out)
 
 
+# Self-contained: literal values, not the page's CSS variables, because the catalogue, pack
+# and docs pages each carry their own stylesheet and the nav must look the same on all of them.
+NAV_CSS = """/* nav — sits on the hero background, so it reads as one dark block with it.
+   Not sticky: the catalogue's filter bar owns top:0, and two sticky layers fight. */
+.skip-nav {
+  position:absolute; left:-9999px; top:0; z-index:20; background:#7c5cff;
+  color:#0d0d0f; padding:.6rem 1rem; font-weight:600; border-radius:0 0 5px 0;
+}
+.skip-nav:focus { left:0; }
+.nav { background:#0d0d0f; color:#fff; position:relative; }
+.nav__inner {
+  max-width:1140px; margin-inline:auto; padding:1.05rem clamp(1.25rem,5vw,2.5rem);
+  display:flex; align-items:center; justify-content:space-between; gap:1.5rem;
+}
+.nav__logo {
+  font:700 1.06rem ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace; letter-spacing:-.02em; color:#fff; text-decoration:none;
+}
+.nav__logo:hover { color:#a48cff; }
+.nav__links { display:flex; align-items:center; gap:1.15rem; margin:0; padding:0; list-style:none; }
+.nav__link[aria-current=page] { color:#fff; box-shadow:0 2px 0 #a48cff; }
+.nav__link { font-size:.87rem; font-weight:500; color:rgba(255,255,255,.80); text-decoration:none; white-space:nowrap; }
+.nav__link:hover { color:#fff; }
+.nav__link--ext { color:rgba(255,255,255,.60); }
+.nav__cta {
+  display:inline-block; padding:.5rem 1.05rem; border-radius:999px;
+  background:#7c5cff; color:#0d0d0f; font-size:.87rem; font-weight:600; text-decoration:none;
+  white-space:nowrap;
+}
+.nav__cta:hover { background:#a48cff; }
+.nav__mobile { display:none; }
+.nav__toggle {
+  cursor:pointer; list-style:none; width:44px; height:44px;
+  display:inline-flex; align-items:center; justify-content:center;
+}
+.nav__toggle::-webkit-details-marker { display:none; }
+.nav__burger, .nav__burger::before, .nav__burger::after {
+  content:""; display:block; width:22px; height:2px; background:#fff; position:relative;
+  transition:transform .18s ease, background-color .18s ease;
+}
+.nav__burger::before { position:absolute; top:-7px; }
+.nav__burger::after { position:absolute; top:7px; }
+.nav__mobile[open] .nav__burger { background:transparent; }
+.nav__mobile[open] .nav__burger::before { transform:translateY(7px) rotate(45deg); }
+.nav__mobile[open] .nav__burger::after { transform:translateY(-7px) rotate(-45deg); }
+.nav__drawer {
+  position:absolute; top:100%; left:0; right:0; z-index:10;
+  display:flex; flex-direction:column; gap:1.05rem; margin:0; list-style:none;
+  background:#0d0d0f; border-top:1px solid rgba(255,255,255,.06);
+  padding:1.35rem clamp(1.25rem,5vw,2.5rem) 1.7rem;
+}
+.nav__drawer .nav__cta { display:block; text-align:center; margin-top:.4rem; }
+@media (max-width:760px) {
+  .nav__links { display:none; }
+  .nav__mobile { display:block; }
+}
+
+/* closing + footer */
+.closing { background:#0d0d0f; color:#fff; padding-block:clamp(3.5rem,7vw,5.5rem); }
+.closing h2 { color:#fff; }
+.closing .lede { color:rgba(255,255,255,.60); }
+.footer { background:#0d0d0f; color:rgba(255,255,255,.60); font-size:.85rem; padding-bottom:3.2rem; }
+.footer__inner {
+  max-width:1140px; margin-inline:auto; padding-inline:clamp(1.25rem,5vw,2.5rem);
+  border-top:1px solid rgba(255,255,255,.06); padding-top:1.8rem;
+  display:flex; flex-wrap:wrap; align-items:center; gap:1rem 1.6rem;
+}
+.footer__brand { margin:0; font:700 .95rem ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace; color:#fff; letter-spacing:-.01em; }
+.footer__links { display:flex; flex-wrap:wrap; gap:1.35rem; }
+.footer__cols { display:grid; gap:1.6rem 2.6rem; flex-basis:100%;
+  grid-template-columns:repeat(auto-fit,minmax(9rem,1fr)); margin-top:.6rem; }
+.footer__col h3 { font-size:.72rem; text-transform:uppercase; letter-spacing:.09em;
+  color:rgba(255,255,255,.60); margin:0 0 .6rem; font-weight:600; }
+.footer__col ul { list-style:none; margin:0; padding:0; display:grid; gap:.42rem; }
+.footer__col a { color:rgba(255,255,255,.80); text-decoration:none; }
+.footer__col a:hover { color:#fff; text-decoration:underline; }
+.footer__links a { color:rgba(255,255,255,.80); text-decoration:none; }
+.footer__links a:hover { color:#fff; text-decoration:underline; }
+.footer__copy { margin:0; flex-basis:100%; color:rgba(255,255,255,.60); font-size:.8rem; }
+
+/* ── motion ── */
+@keyframes fade-up {
+  from { opacity:0; transform:translateY(22px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.hero .eyebrow { animation:fade-up .55s cubic-bezier(.16,1,.3,1) both; }
+.hero h1       { animation:fade-up .65s .08s cubic-bezier(.16,1,.3,1) both; }
+.hero .lede    { animation:fade-up .6s .18s cubic-bezier(.16,1,.3,1) both; }
+.hero .cta-row { animation:fade-up .55s .28s cubic-bezier(.16,1,.3,1) both; }
+.hero .stats   { animation:fade-up .55s .38s cubic-bezier(.16,1,.3,1) both; }
+
+.hero { position:relative; overflow:hidden; }
+.hero::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse 60% 55% at 65% 40%, rgba(124,92,255,.18) 0%, transparent 70%);
+  animation:orb-drift 12s ease-in-out infinite alternate;
+}
+@keyframes orb-drift {
+  from { transform:translate(0,0) scale(1); }
+  to   { transform:translate(4%,6%) scale(1.08); }
+}
+
+.reveal { opacity:0; transform:translateY(18px);
+  transition:opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1); }
+.reveal.in { opacity:1; transform:none; }
+.reveal-delay-1 { transition-delay:.07s; }
+.reveal-delay-2 { transition-delay:.14s; }
+.reveal-delay-3 { transition-delay:.21s; }
+
+.pack, .ship, .roadmap-item {
+  transition:transform .2s cubic-bezier(.16,1,.3,1), box-shadow .2s cubic-bezier(.16,1,.3,1);
+}
+.pack:hover, .ship:hover, .roadmap-item:hover {
+  transform:translateY(-4px);
+  box-shadow:0 8px 28px rgba(0,0,0,.10);
+}
+@media (prefers-color-scheme:dark) {
+  .pack:hover, .ship:hover, .roadmap-item:hover {
+    box-shadow:0 8px 28px rgba(0,0,0,.35);
+  }
+}
+
+.cta--primary { transition:transform .15s ease, box-shadow .2s ease; }
+.cta--primary:hover {
+  transform:translateY(-2px);
+  box-shadow:0 0 0 3px rgba(124,92,255,.25), 0 6px 20px rgba(124,92,255,.25);
+}
+
+"""
+
+
+def site_nav(root="", current=None):
+    """The shared top nav. `root` is the relative path back to the site root ("", "../",
+    "../../"); `current` is the NAV href of the page being rendered, marked aria-current."""
+    def href(h):
+        return h if h.startswith("http") else (root + h if not h.startswith("#") else f"{root or './'}{h}")
+    links = "".join(
+        f'<li><a class="nav__link{" nav__link--ext" if ext else ""}" href="{esc(href(h))}"'
+        f'{" aria-current=\"page\"" if h == current else ""}>'
+        f'{esc(label)}{" <span aria-hidden=\"true\">&#8599;</span>" if ext else ""}</a></li>'
+        for label, h, ext in NAV)
+    cta = f'<li><a class="nav__cta" href="{esc(href("#install"))}">Install <span aria-hidden="true">&rarr;</span></a></li>'
+    return f"""<nav class="nav" id="top" aria-label="Primary">
+  <div class="nav__inner">
+    <a class="nav__logo" href="{esc(root or './')}">skilldrop</a>
+    <ul class="nav__links">{links}
+      {cta}
+    </ul>
+    <details class="nav__mobile">
+      <summary class="nav__toggle" aria-label="Toggle navigation menu"><span class="nav__burger" aria-hidden="true"></span></summary>
+      <ul class="nav__drawer">{links}
+        {cta}
+      </ul>
+    </details>
+  </div>
+</nav>"""
+
+
 def card(s, root="", show_pack=True):
     """One compact row. The full description is one clamped line — the whole point of the
     redesign is that the page does not dump 49 paragraphs at a reader who hasn't chosen yet.
@@ -348,7 +503,7 @@ def card(s, root="", show_pack=True):
    data-tier="{esc(tier)}" data-packs="{esc(' '.join(s['packs']))}"
    data-outcomes="{esc(' '.join(s.get('outcomes', [])))}"
    data-text="{esc((s['name'] + ' ' + s['description'] + ' ' + ' '.join(s['tags'])).lower())}">
-  <a class="skill__link" href="{REPO_URL}/blob/main/{esc(s['path'])}/SKILL.md"
+  <a class="skill__link" href="{root}skills/{esc(s['name'])}/"
      title="{esc(s['description'])}">
     <span class="skill__name">{esc(s['name'])}</span>
     <span class="skill__desc">{esc(s['description'])}</span>
@@ -484,11 +639,6 @@ def render(skills, packs, outcomes, version, releases):
     </li>""" for r in releases)
     cards = "\n".join(card(s) for s in skills)
     preview_cards = "\n".join(card(s) for s in skills[:PREVIEW_ROWS])
-    nav_links = "".join(
-        f'<li><a class="nav__link{" nav__link--ext" if ext else ""}" href="{esc(href)}">'
-        f'{esc(label)}{" <span aria-hidden=\"true\">&#8599;</span>" if ext else ""}</a></li>'
-        for label, href, ext in NAV)
-
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -757,131 +907,7 @@ a {{ color:var(--accent-700); }}
 }}
 .empty {{ padding:3rem 0; text-align:center; color:var(--fg-muted); }}
 
-/* nav — sits on the hero background, so it reads as one dark block with it.
-   Not sticky: the catalogue's filter bar owns top:0, and two sticky layers fight. */
-.skip-nav {{
-  position:absolute; left:-9999px; top:0; z-index:20; background:var(--accent);
-  color:#0d0d0f; padding:.6rem 1rem; font-weight:600; border-radius:0 0 var(--r-sm) 0;
-}}
-.skip-nav:focus {{ left:0; }}
-.nav {{ background:var(--dark-950); color:#fff; position:relative; }}
-.nav__inner {{
-  max-width:var(--max); margin-inline:auto; padding:1.05rem var(--pad-x);
-  display:flex; align-items:center; justify-content:space-between; gap:1.5rem;
-}}
-.nav__logo {{
-  font:700 1.06rem var(--mono); letter-spacing:-.02em; color:#fff; text-decoration:none;
-}}
-.nav__logo:hover {{ color:var(--accent-300); }}
-.nav__links {{ display:flex; align-items:center; gap:1.15rem; margin:0; padding:0; list-style:none; }}
-.nav__link {{ font-size:.87rem; font-weight:500; color:var(--w-80); text-decoration:none; white-space:nowrap; }}
-.nav__link:hover {{ color:#fff; }}
-.nav__link--ext {{ color:var(--w-60); }}
-.nav__cta {{
-  display:inline-block; padding:.5rem 1.05rem; border-radius:999px;
-  background:var(--accent); color:#0d0d0f; font-size:.87rem; font-weight:600; text-decoration:none;
-  white-space:nowrap;
-}}
-.nav__cta:hover {{ background:var(--accent-300); }}
-.nav__mobile {{ display:none; }}
-.nav__toggle {{
-  cursor:pointer; list-style:none; width:44px; height:44px;
-  display:inline-flex; align-items:center; justify-content:center;
-}}
-.nav__toggle::-webkit-details-marker {{ display:none; }}
-.nav__burger, .nav__burger::before, .nav__burger::after {{
-  content:""; display:block; width:22px; height:2px; background:#fff; position:relative;
-  transition:transform .18s ease, background-color .18s ease;
-}}
-.nav__burger::before {{ position:absolute; top:-7px; }}
-.nav__burger::after {{ position:absolute; top:7px; }}
-.nav__mobile[open] .nav__burger {{ background:transparent; }}
-.nav__mobile[open] .nav__burger::before {{ transform:translateY(7px) rotate(45deg); }}
-.nav__mobile[open] .nav__burger::after {{ transform:translateY(-7px) rotate(-45deg); }}
-.nav__drawer {{
-  position:absolute; top:100%; left:0; right:0; z-index:10;
-  display:flex; flex-direction:column; gap:1.05rem; margin:0; list-style:none;
-  background:var(--dark-950); border-top:1px solid var(--w-06);
-  padding:1.35rem var(--pad-x) 1.7rem;
-}}
-.nav__drawer .nav__cta {{ display:block; text-align:center; margin-top:.4rem; }}
-/* 11 links stop fitting on one line below ~1120px; switch to the drawer rather than wrap */
-@media (max-width:1120px) {{
-  .nav__links {{ display:none; }}
-  .nav__mobile {{ display:block; }}
-}}
-
-/* closing + footer */
-.closing {{ background:var(--dark-950); color:#fff; padding-block:clamp(3.5rem,7vw,5.5rem); }}
-.closing h2 {{ color:#fff; }}
-.closing .lede {{ color:var(--w-60); }}
-.footer {{ background:var(--dark-950); color:var(--w-60); font-size:.85rem; padding-bottom:3.2rem; }}
-.footer__inner {{
-  max-width:var(--max); margin-inline:auto; padding-inline:var(--pad-x);
-  border-top:1px solid var(--w-06); padding-top:1.8rem;
-  display:flex; flex-wrap:wrap; align-items:center; gap:1rem 1.6rem;
-}}
-.footer__brand {{ margin:0; font:700 .95rem var(--mono); color:#fff; letter-spacing:-.01em; }}
-.footer__links {{ display:flex; flex-wrap:wrap; gap:1.35rem; }}
-.footer__cols {{ display:grid; gap:1.6rem 2.6rem; flex-basis:100%;
-  grid-template-columns:repeat(auto-fit,minmax(9rem,1fr)); margin-top:.6rem; }}
-.footer__col h3 {{ font-size:.72rem; text-transform:uppercase; letter-spacing:.09em;
-  color:var(--w-60); margin:0 0 .6rem; font-weight:600; }}
-.footer__col ul {{ list-style:none; margin:0; padding:0; display:grid; gap:.42rem; }}
-.footer__col a {{ color:var(--w-80); text-decoration:none; }}
-.footer__col a:hover {{ color:#fff; text-decoration:underline; }}
-.footer__links a {{ color:var(--w-80); text-decoration:none; }}
-.footer__links a:hover {{ color:#fff; text-decoration:underline; }}
-.footer__copy {{ margin:0; flex-basis:100%; color:var(--w-60); font-size:.8rem; }}
-
-/* ── motion ── */
-@keyframes fade-up {{
-  from {{ opacity:0; transform:translateY(22px); }}
-  to   {{ opacity:1; transform:translateY(0); }}
-}}
-.hero .eyebrow {{ animation:fade-up .55s cubic-bezier(.16,1,.3,1) both; }}
-.hero h1       {{ animation:fade-up .65s .08s cubic-bezier(.16,1,.3,1) both; }}
-.hero .lede    {{ animation:fade-up .6s .18s cubic-bezier(.16,1,.3,1) both; }}
-.hero .cta-row {{ animation:fade-up .55s .28s cubic-bezier(.16,1,.3,1) both; }}
-.hero .stats   {{ animation:fade-up .55s .38s cubic-bezier(.16,1,.3,1) both; }}
-
-.hero {{ position:relative; overflow:hidden; }}
-.hero::before {{
-  content:''; position:absolute; inset:0; pointer-events:none;
-  background:radial-gradient(ellipse 60% 55% at 65% 40%, rgba(124,92,255,.18) 0%, transparent 70%);
-  animation:orb-drift 12s ease-in-out infinite alternate;
-}}
-@keyframes orb-drift {{
-  from {{ transform:translate(0,0) scale(1); }}
-  to   {{ transform:translate(4%,6%) scale(1.08); }}
-}}
-
-.reveal {{ opacity:0; transform:translateY(18px);
-  transition:opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1); }}
-.reveal.in {{ opacity:1; transform:none; }}
-.reveal-delay-1 {{ transition-delay:.07s; }}
-.reveal-delay-2 {{ transition-delay:.14s; }}
-.reveal-delay-3 {{ transition-delay:.21s; }}
-
-.pack, .ship, .roadmap-item {{
-  transition:transform .2s cubic-bezier(.16,1,.3,1), box-shadow .2s cubic-bezier(.16,1,.3,1);
-}}
-.pack:hover, .ship:hover, .roadmap-item:hover {{
-  transform:translateY(-4px);
-  box-shadow:0 8px 28px rgba(0,0,0,.10);
-}}
-@media (prefers-color-scheme:dark) {{
-  .pack:hover, .ship:hover, .roadmap-item:hover {{
-    box-shadow:0 8px 28px rgba(0,0,0,.35);
-  }}
-}}
-
-.cta--primary {{ transition:transform .15s ease, box-shadow .2s ease; }}
-.cta--primary:hover {{
-  transform:translateY(-2px);
-  box-shadow:0 0 0 3px rgba(124,92,255,.25), 0 6px 20px rgba(124,92,255,.25);
-}}
-
+{NAV_CSS}
 @keyframes shimmer {{
   from {{ background-position:200% center; }}
   to   {{ background-position:-200% center; }}
@@ -928,20 +954,7 @@ a {{ color:var(--accent-700); }}
 <body>
 <a class="skip-nav" href="#main">Skip to content</a>
 
-<nav class="nav" id="top" aria-label="Primary">
-  <div class="nav__inner">
-    <a class="nav__logo" href="#top">skilldrop</a>
-    <ul class="nav__links">{nav_links}
-      <li><a class="nav__cta" href="#install">Install <span aria-hidden="true">&rarr;</span></a></li>
-    </ul>
-    <details class="nav__mobile">
-      <summary class="nav__toggle" aria-label="Toggle navigation menu"><span class="nav__burger" aria-hidden="true"></span></summary>
-      <ul class="nav__drawer">{nav_links}
-        <li><a class="nav__cta" href="#install">Install <span aria-hidden="true">&rarr;</span></a></li>
-      </ul>
-    </details>
-  </div>
-</nav>
+{site_nav()}
 
 <header class="hero">
   <div class="inner">
@@ -1081,7 +1094,7 @@ a {{ color:var(--accent-700); }}
   <div class="inner">
     <p class="eyebrow">Now</p>
     <h2>What&rsquo;s being worked on</h2>
-    <p class="lede">Not a promise &mdash; a direction. Shipped work moves to the <a href="{REPO_URL}/blob/main/CHANGELOG.md">changelog</a>.</p>
+    <p class="lede">Not a promise &mdash; a direction. Shipped work moves to the <a href="changelog/">changelog</a>.</p>
     <ul class="roadmap-list">{roadmap_html}</ul>
   </div>
 </section>
@@ -1102,7 +1115,7 @@ a {{ color:var(--accent-700); }}
     <h2>{esc(PITCH['shipped_h2'])}</h2>
     <p class="lede">{esc(PITCH['shipped_lede'])}</p>
     <ul class="ships">{shipped_html}</ul>
-    <p class="tabs__note" style="margin-top:1.4rem"><a href="{REPO_URL}/blob/main/CHANGELOG.md">Full changelog &rarr;</a></p>
+    <p class="tabs__note" style="margin-top:1.4rem"><a href="changelog/">Full changelog &rarr;</a></p>
   </div>
 </section>
 
@@ -1138,7 +1151,7 @@ a {{ color:var(--accent-700); }}
       <li><a href="{REPO_URL}/issues">Issues</a></li>
     </ul></div>
     <div class="footer__col"><h3>Release</h3><ul>
-      <li><a href="{REPO_URL}/blob/main/CHANGELOG.md">Changelog</a></li>
+      <li><a href="changelog/">Changelog</a></li>
       <li><a href="{REPO_URL}/releases">Releases</a></li>
       <li><a href="{NPM_URL}/v/{esc(version)}">v{esc(version)}</a></li>
     </ul></div>
@@ -1288,6 +1301,8 @@ def outputs(skills, packs, outcomes, version, releases):
             f"  <url><loc>{SITE_URL}docs/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>\n"
             f"  <url><loc>{SITE_URL}packs/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>\n"
             + "".join(f"  <url><loc>{SITE_URL}packs/{p['name']}/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>\n" for p in packs)
+            + f"  <url><loc>{SITE_URL}changelog/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>\n"
+            + "".join(f"  <url><loc>{SITE_URL}skills/{s['name']}/</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>\n" for s in skills)
             + "</urlset>\n"
         ),
     }

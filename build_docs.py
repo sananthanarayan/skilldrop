@@ -116,6 +116,13 @@ a{color:var(--accent-700);}
 .doc-card p{margin:0 0 .8rem;font-size:.85rem;color:var(--fg-muted);line-height:1.5;}
 .doc-card a.read{font-size:.85rem;font-weight:600;color:var(--accent-700);text-decoration:none;}
 .doc-card a.read:hover{text-decoration:underline;}
+/* tables */
+.table-wrap{overflow-x:auto;margin:1rem 0 1.4rem;}
+.content table{border-collapse:collapse;width:100%;font-size:.9rem;}
+.content th,.content td{border-bottom:1px solid var(--border);padding:.5rem .7rem;text-align:left;vertical-align:top;}
+.content td:first-child{white-space:nowrap;}
+.content th{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-muted);}
+.content blockquote{margin:1rem 0;padding:.2rem 1rem;border-left:3px solid var(--accent-700);color:var(--fg-muted);}
 /* search */
 .search-wrap{margin:1.5rem 0;}
 #docs-search{width:100%;max-width:520px;padding:.7rem 1rem;font-size:1rem;
@@ -155,9 +162,10 @@ def _slug(text):
 
 _INLINE_CODE = re.compile(r"`([^`]+)`")
 _BOLD = re.compile(r"\*\*(.+?)\*\*")
+_ITAL = re.compile(r"(?<![*\w])\*(?![*\s])(.+?)(?<![*\s])\*(?![*\w])")
 _LINK = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
 
-def _href(target, src):
+def _href(target, src, docs_base=None):
     """Point a guide's markdown link at something that exists on the published site. A link
     to another guide becomes that guide's .html page; a link to any other repo file (AGENTS.md,
     an RFC, a skill's SKILL.md) goes to GitHub, because the site does not carry those files.
@@ -170,6 +178,9 @@ def _href(target, src):
         return target
     frag = f"#{anchor}" if anchor else ""
     m = re.match(r"^guides/([^/]+)/([^/]+)\.md$", repo_path)
+    if m and not src.startswith("guides/"):
+        # A page outside the docs portal (the changelog) links into it through docs_base.
+        return f"{docs_base or ''}{m.group(1)}/{m.group(2)}.html" + frag
     if m:
         here = os.path.dirname(src)[len("guides/"):] or "."
         return os.path.relpath(f"{m.group(1)}/{m.group(2)}.html", here).replace(os.sep, "/") + frag
@@ -182,13 +193,13 @@ def _href(target, src):
     return target
 
 
-def _inline(text, src=None):
+def _inline(text, src=None, docs_base=None):
     # Order matters: escape HTML first on raw parts, then apply inline markup.
     # Process link/code/bold as replacements on the original text.
     parts = []
     pos = 0
     tokens = sorted(
-        [m for pat in (_INLINE_CODE, _BOLD, _LINK) for m in pat.finditer(text)],
+        [m for pat in (_INLINE_CODE, _BOLD, _LINK, _ITAL) for m in pat.finditer(text)],
         key=lambda m: m.start()
     )
     for m in tokens:
@@ -198,92 +209,116 @@ def _inline(text, src=None):
         if m.re is _INLINE_CODE:
             parts.append(f"<code>{_esc(m.group(1))}</code>")
         elif m.re is _BOLD:
-            parts.append(f"<strong>{_esc(m.group(1))}</strong>")
-        else:  # link
-            parts.append(f'<a href="{_esc(_href(m.group(2), src))}">{_esc(m.group(1))}</a>')
+            parts.append(f"<strong>{_inline(m.group(1), src, docs_base)}</strong>")
+        elif m.re is _ITAL:
+            parts.append(f"<em>{_inline(m.group(1), src, docs_base)}</em>")
+        else:  # link — its text may carry `code` or **bold**, so render it inline too
+            parts.append(f'<a href="{_esc(_href(m.group(2), src, docs_base))}">{_inline(m.group(1), src, docs_base)}</a>')
         pos = m.end()
     parts.append(_esc(text[pos:]))
     return "".join(parts)
 
-def render_md(text, src=None):
+_TABLE_SEP = re.compile(r"^\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$")
+
+
+def _cells(row):
+    row = row.strip()
+    if row.startswith("|"):
+        row = row[1:]
+    if row.endswith("|"):
+        row = row[:-1]
+    return [c.strip() for c in row.split("|")]
+
+
+def render_md(text, src=None, docs_base=None):
+    """The markdown subset the guides use: ATX headings, fenced code, lists (with wrapped
+    continuation lines), pipe tables, blockquotes, and paragraphs that span several lines."""
     lines = text.splitlines()
-    out = []
-    in_code = False
-    code_lang = ""
-    code_buf = []
+    out, para, item, quote = [], [], None, []
     list_type = None  # "ul" | "ol" | None
+    il = lambda t: _inline(t, src, docs_base)
+
+    def flush_para():
+        if para:
+            out.append(f"<p>{il(' '.join(para))}</p>")
+            para.clear()
+
+    def flush_item():
+        nonlocal item
+        if item is not None:
+            out.append(f"<li>{il(item)}</li>")
+            item = None
 
     def flush_list():
         nonlocal list_type
+        flush_item()
         if list_type:
             out.append(f"</{list_type}>")
             list_type = None
 
-    for raw in lines:
-        # Fenced code block
+    def flush_quote():
+        if quote:
+            out.append(f"<blockquote><p>{il(' '.join(quote))}</p></blockquote>")
+            quote.clear()
+
+    def flush_all():
+        flush_para(); flush_list(); flush_quote()
+
+    i = 0
+    while i < len(lines):
+        raw = lines[i]
         if raw.startswith("```"):
-            if in_code:
-                out.append(_esc("\n".join(code_buf)))
-                out.append("</code></pre>")
-                code_buf = []
-                in_code = False
-            else:
-                flush_list()
-                lang = raw[3:].strip()
-                cls = f' class="language-{_esc(lang)}"' if lang else ""
-                out.append(f"<pre><code{cls}>")
-                in_code = True
-                code_lang = lang
+            flush_all()
+            lang = raw[3:].strip()
+            cls = f' class="language-{_esc(lang)}"' if lang else ""
+            buf, i = [], i + 1
+            while i < len(lines) and not lines[i].startswith("```"):
+                buf.append(lines[i]); i += 1
+            out.append(f"<pre><code{cls}>{_esc(chr(10).join(buf))}</code></pre>")
+            i += 1
             continue
-
-        if in_code:
-            code_buf.append(raw)
-            continue
-
-        # Blank line
         if not raw.strip():
-            flush_list()
+            flush_all(); i += 1
             continue
-
-        # ATX headings
+        if re.match(r"^\s*<!--.*-->\s*$", raw):  # marker comments (generated-block fences)
+            i += 1
+            continue
         m = re.match(r"^(#{1,6})\s+(.*)", raw)
         if m:
-            flush_list()
-            level = len(m.group(1))
-            text_content = m.group(2).strip()
+            flush_all()
+            level, text_content = len(m.group(1)), m.group(2).strip()
             slug = _slug(re.sub(r"[*`\[\]]", "", text_content))
-            out.append(f'<h{level} id="{slug}">{_inline(text_content, src)}</h{level}>')
+            out.append(f'<h{level} id="{slug}">{il(text_content)}</h{level}>')
+            i += 1
             continue
-
-        # Unordered list
-        m = re.match(r"^- (.*)", raw)
+        if raw.lstrip().startswith("|") and i + 1 < len(lines) and _TABLE_SEP.match(lines[i + 1].strip()):
+            flush_all()
+            head = "".join(f"<th>{il(c)}</th>" for c in _cells(raw))
+            rows, i = [], i + 2
+            while i < len(lines) and lines[i].lstrip().startswith("|"):
+                rows.append("<tr>" + "".join(f"<td>{il(c)}</td>" for c in _cells(lines[i])) + "</tr>")
+                i += 1
+            out.append(f'<div class="table-wrap"><table><thead><tr>{head}</tr></thead><tbody>{"".join(rows)}</tbody></table></div>')
+            continue
+        if raw.startswith(">"):
+            flush_para(); flush_list()
+            quote.append(raw.lstrip(">").strip()); i += 1
+            continue
+        m = re.match(r"^(- |\d+\. )(.*)", raw)
         if m:
-            if list_type != "ul":
-                flush_list()
-                out.append("<ul>")
-                list_type = "ul"
-            out.append(f"<li>{_inline(m.group(1), src)}</li>")
+            flush_para(); flush_quote()
+            kind = "ul" if m.group(1) == "- " else "ol"
+            if list_type != kind:
+                flush_list(); out.append(f"<{kind}>"); list_type = kind
+            flush_item(); item = m.group(2)
+            i += 1
             continue
-
-        # Ordered list
-        m = re.match(r"^\d+\. (.*)", raw)
-        if m:
-            if list_type != "ol":
-                flush_list()
-                out.append("<ol>")
-                list_type = "ol"
-            out.append(f"<li>{_inline(m.group(1), src)}</li>")
+        if item is not None and raw.startswith(("  ", "\t")):
+            item += " " + raw.strip(); i += 1
             continue
-
-        # Paragraph
-        flush_list()
-        out.append(f"<p>{_inline(raw, src)}</p>")
-
-    flush_list()
-    if in_code and code_buf:
-        out.append(_esc("\n".join(code_buf)))
-        out.append("</code></pre>")
-
+        flush_list(); flush_quote()
+        para.append(raw.strip()); i += 1
+    flush_all()
     return "\n".join(out)
 
 # ── Guide discovery ───────────────────────────────────────────────────────────
@@ -318,6 +353,16 @@ def collect_guides():
 # ── HTML page builders ────────────────────────────────────────────────────────
 
 def _page(title, header_html, body_html, depth=2):
+    # The shared site nav (RFC-0035), so a reader deep in a guide can still reach packs and skills.
+    from build_site import site_nav, NAV_CSS
+    nav = site_nav("../" * depth, "docs/")
+    # Mermaid blocks (the loop diagrams in guides/reference/loops.md) render as diagrams, not code.
+    mermaid = ""
+    if 'class="language-mermaid"' in body_html:
+        body_html = re.sub(r'<pre><code class="language-mermaid">(.*?)</code></pre>',
+                           r'<pre class="mermaid">\1</pre>', body_html, flags=re.S)
+        mermaid = ('<script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";'
+                   'mermaid.initialize({ startOnLoad: true, securityLevel: "strict" });</script>')
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -327,6 +372,7 @@ def _page(title, header_html, body_html, depth=2):
 <link rel="icon" href="{"../" * depth}favicon.svg" type="image/svg+xml">
 <style>
 {SHARED_CSS}
+{NAV_CSS}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-tomorrow.min.css">
 <style>
@@ -335,10 +381,12 @@ def _page(title, header_html, body_html, depth=2):
 </style>
 </head>
 <body>
+{nav}
 {header_html}
 {body_html}
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1/prism.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
+{mermaid}
 </body>
 </html>"""
 
@@ -373,6 +421,8 @@ def _sidebar_html(by_kind, current_kind, current_slug, depth):
 def build_guide_page(guide, by_kind, out_dir):
     text = open(guide["abs_path"], encoding="utf-8").read()
     _, body_md = parse_frontmatter(text)
+    # The page header already shows the frontmatter title; drop the body's own "# Title".
+    body_md = re.sub(r"\A\s*# [^\n]*\n", "", body_md)
     body_html = render_md(body_md, src=os.path.relpath(guide["abs_path"], ROOT).replace(os.sep, "/"))
     sidebar = _sidebar_html(by_kind, guide["kind"], guide["slug"], depth=2)
     header = (

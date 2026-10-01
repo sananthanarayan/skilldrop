@@ -17,12 +17,12 @@ import sys
 # Reuse the data layer from build_site — collect(), card(), esc(), and the
 # constants are all defined there and kept authoritative.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from build_site import collect, card, esc, REPO_URL, SITE_URL
+from build_site import collect, card, esc, site_nav, NAV_CSS, REPO_URL, SITE_URL
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
-# Shared with build_packs.py, so the per-pack pages look like the catalogue they link to.
+# Shared with build_pages.py, so the per-pack pages look like the catalogue they link to.
 CSS = """:root {
   --dark-950:#0d0d0f; --dark-900:#141417;
   --n-50:#fafaf9; --n-100:#f3f3f1; --n-200:#e4e4e0; --n-600:#6a6a66; --n-900:#17171a;
@@ -57,23 +57,13 @@ body {
 .inner { max-width:var(--max); margin:0 auto; padding-inline:var(--pad-x); }
 a { color:var(--accent-700); }
 
-/* page header */
+/* page header — sits under the shared dark nav, so it is light */
 .page-head {
-  background:var(--dark-950); color:#fff;
-  padding:1.1rem var(--pad-x);
-  display:flex; align-items:center; gap:1.2rem;
+  max-width:var(--max); margin:0 auto; padding:1.6rem var(--pad-x) .2rem;
+  display:flex; align-items:baseline; gap:1.2rem;
 }
-.page-head__back {
-  font-size:.84rem; color:rgba(255,255,255,.65); text-decoration:none; white-space:nowrap;
-}
-.page-head__back:hover { color:#fff; }
-.page-head__title {
-  margin:0; font-size:1.05rem; font-weight:600; letter-spacing:-.01em; color:#fff;
-}
-.page-head__count {
-  margin-left:auto; font-size:.78rem; color:rgba(255,255,255,.5);
-  white-space:nowrap;
-}
+.page-head__title { margin:0; font-size:clamp(1.5rem,3vw,2rem); letter-spacing:-.02em; color:var(--fg); }
+.page-head__count { margin-left:auto; font-size:.85rem; color:var(--fg-muted); white-space:nowrap; }
 
 /* controls */
 .controls-wrap {
@@ -165,14 +155,13 @@ def render_catalogue(skills, packs, outcomes):
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#111113">
 <style>
-{CSS}</style>
+{CSS}{NAV_CSS}</style>
 </head>
 <body>
+{site_nav("../", "catalogue/")}
 <header class="page-head">
-  <a class="page-head__back" href="../">&#8592; skilldrop</a>
   <h1 class="page-head__title">All skills</h1>
-  <a class="page-head__back" href="../packs/">packs</a>
-  <span class="page-head__count">{len(skills)} skills</span>
+  <span class="page-head__count">{len(skills)} skills · <a href="../packs/">browse by pack</a></span>
 </header>
 
 <div class="controls-wrap">
