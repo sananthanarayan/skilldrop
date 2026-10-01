@@ -1009,6 +1009,153 @@ def json_to_md(path, rep):
     return md_escape(scalar(data)) + "\n"
 
 
+_GAP = re.compile(r"\s{3,}")
+_BULLET = re.compile(r"^[\u2022\u25e6\u25aa\u2023\u2043\u2013*-]\s+")
+_CODEISH = re.compile(r"-->|==>|[{};]|^\s*(def|function|class|SELECT|FROM)\b")
+_CODE_START = re.compile(r"^\s*(def |class |function |import |from \S+ import |SELECT |WITH |#include|package |func |public |const |let |var )")
+
+
+def _indent(line):
+    return len(line) - len(line.lstrip(" "))
+
+
+def _cells(line):
+    return [c for c in _GAP.split(line.strip()) if c]
+
+
+def _col_starts(line):
+    """Character positions where each of the line's text segments begins."""
+    return set(m.start() for m in re.finditer(r"(?:(?<=^)|(?<= {3}))\S", line))
+
+
+def _near(cols):
+    """Column positions, widened by two characters either side."""
+    return set(c + d for c in cols for d in (-2, -1, 0, 1, 2))
+
+
+def _multi_column(page):
+    """True when prose sits in side-by-side columns. Layout mode interleaves such columns line
+    by line, so these pages are read in pdftotext's reading order instead. The signal: a text
+    segment (after 3+ spaces, or a deep indent) starting at the same horizontal position on
+    many lines, and carrying prose (3+ words on average). Table columns line up too, but
+    their cells are short, so they don't qualify."""
+    lines = [l for l in page.splitlines() if l.strip()]
+    if len(lines) < 8:
+        return False
+    starts = {}
+    for l in lines:
+        for m in re.finditer(r"(?:^ {20,}|\S {3,})(\S.*?)(?= {3,}|$)", l):
+            col = m.start(1) // 3  # bucket nearby positions together
+            if col >= 7:  # at least ~20 characters in from the left margin
+                starts.setdefault(col, []).append(len(m.group(1).split()))
+    for words in starts.values():
+        if len(words) >= max(6, 0.25 * len(lines)) and sum(words) / len(words) >= 3:
+            return True
+    return False
+
+
+def _pdf_page_plain(page):
+    """Reading-order text: paragraphs joined, nothing inferred."""
+    paras = [re.sub(r"\s*\n\s*", " ", p).strip() for p in re.split(r"\n\s*\n", page)]
+    out = []
+    for p in paras:
+        if p:
+            out += [escape_line_start(md_escape(p)), ""]
+    return out
+
+
+def _pdf_page_md(page, rep):
+    """One page of `pdftotext -layout` text -> Markdown. Layout mode keeps line breaks,
+    indentation and column alignment, which is what tables and lists are recovered from."""
+    lines = page.splitlines()
+    out, i, n = [], 0, len(lines)
+    while i < n:
+        if not lines[i].strip():
+            i += 1
+            continue
+        # A table: two or more lines that each split into 2+ cells on wide gaps, with single
+        # blank lines allowed between rows (PDF row spacing often reads as one). A line whose
+        # text starts under one of the table's columns is a wrapped cell, so it belongs too.
+        if len(_cells(lines[i])) >= 2:
+            cols = _col_starts(lines[i])
+            region, rows, j = [], 0, i
+            while j < n:
+                line = lines[j]
+                if line.strip() and len(_cells(line)) >= 2:
+                    region.append(line); rows += 1; cols |= _col_starts(line); j += 1
+                elif line.strip() and _col_starts(line) and _col_starts(line) <= _near(cols):
+                    region.append(line); j += 1
+                elif not line.strip() and j + 1 < n and lines[j + 1].strip() and (
+                        len(_cells(lines[j + 1])) >= 2 or _col_starts(lines[j + 1]) <= _near(cols)):
+                    j += 1
+                else:
+                    break
+            if rows >= 2:
+                widths = set(len(_cells(r)) for r in region)
+                if len(widths) == 1 and rows == len(region):
+                    cells = [[cell_text(md_escape(c)) for c in _cells(r)] for r in region]
+                    width = len(cells[0])
+                    out.append("| " + " | ".join(cells[0]) + " |")
+                    out.append("|" + "---|" * width)
+                    out += ["| " + " | ".join(r) + " |" for r in cells[1:]]
+                    rep.keep("pdf tables", 1)
+                else:
+                    out += ["```text"] + [r.rstrip() for r in region] + ["```"]
+                    rep.keep("pdf tables kept as aligned text", 1)
+                out.append("")
+                i = j
+                continue
+        # Otherwise a block of consecutive non-blank lines.
+        block = []
+        while i < n and lines[i].strip() and not (block and len(_cells(lines[i])) >= 2 and len(_cells(lines[i - 1])) >= 2):
+            block.append(lines[i]); i += 1
+        if not block:  # a single table-like line on its own
+            block = [lines[i]]; i += 1
+        base = min(_indent(l) for l in block)
+        if (base >= 8 and any(_CODEISH.search(l) for l in block)) or _CODE_START.match(block[0]):
+            out += ["```"] + [l[base:].rstrip() for l in block] + ["```", ""]
+            rep.keep("pdf code blocks", 1)
+            continue
+        first, rest = block[0], block[1:]
+        indented = [l for l in rest if _indent(l) > _indent(first)]
+        bulleted = [l for l in block if _BULLET.match(l.strip())]
+        if bulleted or (rest and len(indented) == len(rest) and len(first.split()) <= 8):
+            items = block
+            if not bulleted:  # a short lead line over an indented run: heading, then the list
+                lead = first.strip()
+                if lead and lead[-1] not in ".:;,!?":
+                    out.append("### " + md_escape(lead)); rep.keep("pdf headings guessed", 1)
+                else:
+                    out.append(escape_line_start(md_escape(lead)))
+                out.append("")
+                items = rest
+            # Indents within 2 spaces are one level: renderers offset numbered and bulleted
+            # items by a space or so, which is not nesting.
+            levels = []
+            for ind in sorted(set(_indent(l) for l in items)):
+                if not levels or ind - levels[-1] > 2:
+                    levels.append(ind)
+            for l in items:
+                depth = min(max(k for k, lv in enumerate(levels) if lv <= _indent(l) + 2), 3)
+                text = _BULLET.sub("", l.strip())
+                out.append("  " * depth + "- " + md_escape(text))
+            out.append("")
+            continue
+        lead = block[0].strip()
+        if len(block) > 1 and len(lead.split()) <= 10 and lead[-1:] not in ".:;,!?" and lead[:1].isupper() \
+                and len(lead) < 0.7 * max(len(l.strip()) for l in block[1:]):
+            out += ["### " + md_escape(lead), ""]  # a title line over its first paragraph
+            rep.keep("pdf headings guessed", 1)
+            block = block[1:]
+        para = " ".join(l.strip() for l in block)
+        if len(block) == 1 and len(para.split()) <= 8 and para[-1:] not in ".:;,!?" and para[:1].isupper():
+            out += ["### " + md_escape(para), ""]
+            rep.keep("pdf headings guessed", 1)
+        else:
+            out += [escape_line_start(md_escape(para)), ""]
+    return out
+
+
 def pdf_to_md(path, rep):
     exe = shutil.which("pdftotext")
     if not exe:
@@ -1017,25 +1164,35 @@ def pdf_to_md(path, rep):
                  "  Debian/Ubuntu:  sudo apt install poppler-utils\n"
                  "  Windows:        install Poppler for Windows and add its bin folder to PATH\n"
                  "Then rerun. Or export the PDF to .docx or .txt and convert that.")
-    proc = subprocess.run([exe, "-enc", "UTF-8", str(path), "-"], stdout=subprocess.PIPE,
-                          stderr=subprocess.PIPE, check=False)
-    if proc.returncode != 0:
-        sys.exit("error: pdftotext failed: %s" % proc.stderr.decode("utf-8", "replace").strip())
-    text = proc.stdout.decode("utf-8", "replace")
-    pages = text.split("\f")
-    if pages and not pages[-1].strip():
-        pages = pages[:-1]
-    if not text.strip():
+    def run(mode):
+        proc = subprocess.run([exe] + mode + ["-enc", "UTF-8", str(path), "-"], stdout=subprocess.PIPE,
+                              stderr=subprocess.PIPE, check=False)
+        if proc.returncode != 0:
+            sys.exit("error: pdftotext failed: %s" % proc.stderr.decode("utf-8", "replace").strip())
+        text = proc.stdout.decode("utf-8", "replace")
+        pages = text.split("\f")
+        return pages[:-1] if pages and not pages[-1].strip() else pages
+
+    layout, reading = run(["-layout"]), run([])
+    if not "".join(layout).strip():
         sys.exit("error: %s has no text layer (probably scanned). It needs OCR first; "
                  "this script does not do OCR." % path)
-    out = []
-    for n, page in enumerate(pages, 1):
-        paras = [re.sub(r"\s*\n\s*", " ", p).strip() for p in re.split(r"\n\s*\n", page)]
-        out.append("<!-- page %d -->" % n)
-        out.append("")
-        out += [escape_line_start(md_escape(p)) + "\n" for p in paras if p]
+    out, plain_pages = [], []
+    for n, page in enumerate(layout, 1):
+        out += ["<!-- page %d -->" % n, ""]
+        if _multi_column(page) and n <= len(reading):
+            out += _pdf_page_plain(reading[n - 1])
+            plain_pages.append(n)
+        else:
+            out += _pdf_page_md(page, rep)
+    pages = layout
+    if plain_pages:
+        rep.notes.append("page(s) %s have side-by-side columns, so they were read in column order with "
+                         "no tables, lists or headings inferred" % ", ".join(str(p) for p in plain_pages))
     rep.keep("pages", len(pages))
-    rep.notes.append("PDF gives text only: headings, tables, images and layout are not recovered")
+    rep.notes.append("PDF gives no structure, so it is inferred from the layout: tables from aligned columns, "
+                     "lists from indentation, and short standalone lines as ### headings. Check them against the PDF; "
+                     "images and charts are not recovered")
     return "\n".join(out).rstrip() + "\n"
 
 
