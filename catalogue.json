@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0034. The catalogue index: pack display order and the outcome browse axis (RFC-0026). Pack metadata lives in packs/<pack>/pack.json; membership is the folders — a skill is in a pack because it sits at packs/<pack>/skills/<name>/.",
   "version": "1.0.0",
-  "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "claude-api"],
+  "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "api-builder"],
   "outcomes": {
     "decide-what-to-build": {
       "for": "Product managers · founders · strategists",

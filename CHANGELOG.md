@@ -8,6 +8,10 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.13.9 — 2026-10-01
+
+- The `claude-api` pack is now **`api-builder`**, because Claude Code now rejects plugin names that start with `claude-`, which could stop the whole marketplace from loading. Install it with `npx skilldrop-cli install --pack api-builder` or `/plugin install api-builder@skilldrop`. The old `--pack claude-api` still works, with a note, and the old pack page redirects. If you installed the `claude-api` plugin, uninstall it and install `api-builder`. The four skills are unchanged.
+
 ## 0.13.8 — 2026-10-01
 
 - New install targets: `--ide codex`, `--ide antigravity` and `--ide copilot`. Each installs to the tool's personal skills folder, or into the repo with `--project` (`.agents/skills` for Codex and Antigravity, `.github/skills` for Copilot). `--panel review` works with all three.

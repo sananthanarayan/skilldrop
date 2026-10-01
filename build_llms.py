@@ -97,7 +97,7 @@ def render():
 
     L.append("## Packs\n")
     L.append("Each skill and loop sits in exactly one pack folder, `packs/<pack>/`. Every role pack\n"
-             "except `claude-api` requires `core`, which installs with it.\n")
+             "except `api-builder` requires `core`, which installs with it.\n")
     for name, p in packs.items():
         lp = f", loops: {', '.join(p.get('loops', []))}" if p.get("loops") else ""
         req = f", requires {', '.join(p['requires'])}" if p.get("requires") else ""
