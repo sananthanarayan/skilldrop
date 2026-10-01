@@ -9,6 +9,9 @@ The spec schema is documented in templates/deck-spec.json. Top-level fields:
              colors and slide size are inherited
 - layout_map: logical layout -> template layout name or index (template mode)
 - palette:   a hex-color block, or a name resolvable from templates/palettes.json
+- brand:     path to a brand.json (the brand-kit skill writes one) or the same object
+             inline. It supplies anything the spec leaves out: palette colours, template,
+             logo files and fonts. --brand on the command line overrides it.
 - slide_numbers: true/false (default: true when the deck has more than 10 slides)
 - slides:    list of slide specs, each with a `layout` field
 
@@ -16,7 +19,7 @@ Supported layouts: title, section, content, two_column, big_number, quote,
 image, table, chart, closing.
 
 Usage:
-    python3 build_deck.py <spec.json> [-o output.pptx] [--strict]
+    python3 build_deck.py <spec.json> [-o output.pptx] [--strict] [--brand brand.json]
 """
 
 from __future__ import annotations
@@ -71,6 +74,12 @@ CHART_TYPES = {
 RASTER_OK = {".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tif", ".tiff"}
 
 WARNINGS: list[str] = []
+
+
+# Set from brand.json in build(): fonts for the built-in design, and the logo files placed on
+# its slides. A supplied template already carries its own fonts and logo, so these are only
+# used when a slide renders on the built-in design.
+BRAND = {"heading_font": None, "body_font": None, "logo": None, "logo_on_dark": None}
 
 
 def warn(msg: str) -> None:
@@ -405,6 +414,9 @@ def add_textbox(slide, text: str, *, left, top, width, height,
     run.font.size = size
     run.font.bold = bold
     run.font.color.rgb = hex_color(color)
+    font = BRAND["heading_font"] if (bold or size >= Pt(24)) else BRAND["body_font"]
+    if font:
+        run.font.name = font
 
 
 def add_bullets(slide, bullets, *, left, top, width, height,
@@ -419,6 +431,8 @@ def add_bullets(slide, bullets, *, left, top, width, height,
         for run in p.runs:
             run.font.size = size
             run.font.color.rgb = hex_color(color)
+            if BRAND["body_font"]:
+                run.font.name = BRAND["body_font"]
 
 
 def add_rect(slide, *, left, top, width, height, fill: str) -> None:
@@ -503,6 +517,8 @@ def place_table(slide, columns, rows, region: Region, c: Canvas, palette: dict) 
                 run.font.bold = True
                 run.font.size = c.pt(body_pt + 1)
                 run.font.color.rgb = hex_color("#FFFFFF")
+                if BRAND["heading_font"]:
+                    run.font.name = BRAND["heading_font"]
 
     for i, row in enumerate(rows, start=1):
         for j in range(n_cols):
@@ -514,6 +530,8 @@ def place_table(slide, columns, rows, region: Region, c: Canvas, palette: dict) 
             for p in cell.text_frame.paragraphs:
                 for run in p.runs:
                     run.font.size = c.pt(body_pt)
+                    if BRAND["body_font"]:
+                        run.font.name = BRAND["body_font"]
                     run.font.color.rgb = hex_color(palette["text"])
 
 
@@ -543,6 +561,8 @@ def place_chart(slide, chart_spec: dict, region: Region, c: Canvas, palette: dic
                                  region.width, region.height, data)
     chart = gfx.chart
     chart.font.size = c.pt(13)
+    if BRAND["body_font"]:
+        chart.font.name = BRAND["body_font"]
     chart.font.color.rgb = hex_color(palette["text"])
 
     is_pie = kind in ("pie", "doughnut")
@@ -934,9 +954,81 @@ def layout_numbers_slides(layout) -> bool:
 # ----------------------------------------------------------------- driver
 
 
-def build(spec_path: Path, out_path: Path, script_dir: Path, *, strict: bool) -> None:
+def load_brand(ref, base: Path):
+    """brand.json path or inline object -> (dict, directory its relative paths resolve from)."""
+    if not ref:
+        return {}, base
+    if isinstance(ref, dict):
+        return ref, base
+    path = (base / ref).expanduser() if not Path(ref).is_absolute() else Path(ref)
+    if not path.exists():
+        warn(f"brand file not found: {path}; building without it")
+        return {}, base
+    try:
+        return json.loads(path.read_text()), path.parent
+    except json.JSONDecodeError as e:
+        warn(f"brand file {path} is not valid JSON ({e}); building without it")
+        return {}, base
+
+
+def apply_brand(spec: dict, brand: dict, brand_dir: Path, spec_dir: Path) -> None:
+    """Fill what the spec leaves out from the brand. The spec always wins: a deck can still
+    override one colour or swap the template without editing the brand file."""
+    colors = {k: v for k, v in (brand.get("colors") or {}).items()
+              if k in ("primary", "secondary", "accent", "background", "text") and v}
+    if colors and not spec.get("palette"):
+        spec["palette"] = colors
+    elif colors and isinstance(spec.get("palette"), dict):
+        spec["palette"] = {**colors, **spec["palette"]}
+    tpl = (brand.get("templates") or {}).get("pptx") or brand.get("template")
+    if tpl and not spec.get("template"):
+        spec["template"] = str((brand_dir / tpl).resolve()) if not Path(tpl).is_absolute() else tpl
+    fonts = brand.get("fonts") or {}
+    BRAND["heading_font"] = (fonts.get("heading") or {}).get("family") if isinstance(fonts.get("heading"), dict) else fonts.get("heading")
+    BRAND["body_font"] = (fonts.get("body") or {}).get("family") if isinstance(fonts.get("body"), dict) else fonts.get("body")
+    logo = brand.get("logo") or {}
+    for key, field in (("logo", "primary"), ("logo_on_dark", "on_dark")):
+        ref = logo.get(field) if isinstance(logo, dict) else (logo if field == "primary" else None)
+        if not ref:
+            continue
+        lp = (brand_dir / ref) if not Path(ref).is_absolute() else Path(ref)
+        if lp.suffix.lower() not in (".png", ".jpg", ".jpeg", ".gif", ".bmp"):
+            warn(f"logo {lp.name} is {lp.suffix or 'not an image'}; PowerPoint needs PNG or JPG. Export the logo as PNG.")
+        elif not lp.exists():
+            warn(f"logo not found: {lp}")
+        else:
+            BRAND[key] = str(lp)
+
+
+def is_dark(hex_str: str) -> bool:
+    h = hex_str.lstrip("#")
+    r, g, b = (int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b < 0.45
+
+
+def place_logo(slide, c: "Canvas", palette: dict, logical: str) -> None:
+    """The brand logo on the built-in design: large on the cover, small in a fixed corner on
+    every other slide, using the on-dark variant on dark slides when there is one."""
+    if not BRAND["logo"] and not BRAND["logo_on_dark"]:
+        return
+    dark_bg = logical in ("section", "closing") and is_dark(palette["primary"]) or \
+        (logical == "title" and is_dark(palette["background"]))
+    path = (BRAND["logo_on_dark"] or BRAND["logo"]) if dark_bg else (BRAND["logo"] or BRAND["logo_on_dark"])
+    if logical == "title":
+        slide.shapes.add_picture(path, c.x(0.75), c.y(0.6), height=c.y(0.7))
+    elif logical == "closing":
+        pic = slide.shapes.add_picture(path, 0, c.h - c.y(1.25), height=c.y(0.6))
+        pic.left = int((c.w - pic.width) / 2)
+    else:
+        slide.shapes.add_picture(path, c.x(0.5), c.h - c.y(0.55), height=c.y(0.32))
+
+
+def build(spec_path: Path, out_path: Path, script_dir: Path, *, strict: bool, brand_ref=None) -> None:
     spec = json.loads(spec_path.read_text())
     spec_dir = spec_path.parent
+    brand, brand_dir = load_brand(brand_ref or spec.get("brand"), spec_dir)
+    if brand:
+        apply_brand(spec, brand, brand_dir, spec_dir)
     palette = resolve_palette(spec.get("palette"), script_dir)
 
     slides = spec.get("slides", [])
@@ -970,6 +1062,8 @@ def build(spec_path: Path, out_path: Path, script_dir: Path, *, strict: bool) ->
                 render_templated(slide, canvas, palette, slide_spec, ctx, logical)
             else:
                 RENDERERS[logical](slide, canvas, palette, slide_spec, ctx)
+                if not using_template:  # a template's masters already carry its logo
+                    place_logo(slide, canvas, palette, logical)
 
             if slide_spec.get("notes"):
                 set_notes(slide, slide_spec["notes"])
@@ -982,6 +1076,10 @@ def build(spec_path: Path, out_path: Path, script_dir: Path, *, strict: bool) ->
         prs.save(str(out_path))
 
     mode = "template" if using_template else "built-in design"
+    if brand:
+        mode += ", brand: " + ", ".join(x for x, on in (("colours", bool(brand.get("colors"))),
+                                                         ("logo", bool(BRAND["logo"] or BRAND["logo_on_dark"])),
+                                                         ("fonts", bool(BRAND["heading_font"] or BRAND["body_font"]))) if on)
     print(f"wrote {out_path} ({len(slides)} slides, {mode})")
     if WARNINGS:
         print(f"{len(WARNINGS)} warning(s) — see stderr; fix them before presenting")
@@ -995,6 +1093,9 @@ def main(argv) -> int:
                     help="Output .pptx path (default: alongside the spec)")
     ap.add_argument("--strict", action="store_true",
                     help="Fail on a missing/unsupported image instead of drawing a placeholder")
+    ap.add_argument("--brand", metavar="BRAND_JSON",
+                    help="brand.json (from the brand-kit skill): colours, template, logo, fonts. "
+                         "Fills anything the spec leaves out")
     ap.add_argument("--list-layouts", metavar="TEMPLATE",
                     help="Print a template's layout names and indices, then exit "
                          "(use them to write layout_map)")
@@ -1024,7 +1125,8 @@ def main(argv) -> int:
     out_path = (Path(args.output).expanduser().resolve()
                 if args.output else spec_path.with_suffix(".pptx"))
 
-    build(spec_path, out_path, Path(__file__).resolve().parent, strict=args.strict)
+    build(spec_path, out_path, Path(__file__).resolve().parent, strict=args.strict,
+          brand_ref=str(Path(args.brand).expanduser().resolve()) if args.brand else None)
     return 0
 
 

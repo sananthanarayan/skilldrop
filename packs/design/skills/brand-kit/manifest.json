@@ -1,0 +1,44 @@
+{
+  "name": "brand-kit",
+  "version": "0.1.0",
+  "description": "Capture a brand once as a reusable brand.json — logo files (and an on-dark version), colour roles as hex codes, heading and body fonts, voice, imagery rules, a PowerPoint template, contact details and the legal footer — plus a one-page BRAND.md, with text contrast checked and every value traced to where it came from. Use when the user wants decks, flyers or documents in their branding, says \"use our brand\", \"here's our logo and colours\", \"set up our brand kit\", or hands over brand guidelines.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "deck-builder",
+    "marketing-flyer"
+  ],
+  "handoff": [
+    {
+      "to": "deck-builder",
+      "when": "the brand kit is written and the user wants a deck",
+      "purpose": "Build the PowerPoint deck in this brand: build_deck.py --brand brand.json.",
+      "fallback": "If deck-builder is absent, give the user the brand.json path and the five hex codes to paste into whatever deck tool they use."
+    },
+    {
+      "to": "marketing-flyer",
+      "when": "the brand kit is written and the user wants a flyer or one-page sheet",
+      "purpose": "Build a print-ready flyer in this brand from the flyer spec's brand field.",
+      "fallback": "If marketing-flyer is absent, give the user BRAND.md so a designer or tool can apply it by hand."
+    }
+  ],
+  "tags": [
+    "brand",
+    "logo",
+    "colours",
+    "fonts",
+    "design",
+    "style-guide"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Extracts and normalises brand facts from files and pages, then runs a checker. Bounded synthesis."
+  }
+}

@@ -7,10 +7,11 @@ description: Generate a real PowerPoint (.pptx) file from content, audience, and
 
 This skill produces an **actual editable `.pptx` file**, not an outline. It runs `python-pptx`
 to materialise slides — either on a brand template's own masters and layouts, or on the skill's
-built-in design driven by a colour palette.
+built-in design in the user's brand: their colours, logo and fonts.
 
-It pairs with two others:
-- **[`audience-profile`](../audience-profile/SKILL.md)** — decides how dense, how many, which sections
+It pairs with three others:
+- **[`brand-kit`](../brand-kit/SKILL.md)** — captures the brand once as a `brand.json` this skill reads, so nobody answers the brand questions for every deck
+- **[`audience-profile`](../../../stakeholder-comms/skills/audience-profile/SKILL.md)** — decides how dense, how many, which sections
 - **[`slide-outliner`](../slide-outliner/SKILL.md)** — drafts per-slide content before this skill builds it
 
 For a single fast pipeline, run all three in order: profile → outline → build.
@@ -26,9 +27,11 @@ with the design silently defaulted.
 > Before I build, confirm these — reply "go" to take the defaults:
 > 1. **Audience** — `exec` · `board` · `technical` · `sales` · `internal` · `investor` · `partner` · `customer`
 > 2. **Format** — live presentation / read-ahead / async share, **how many minutes**, and **16:9** (default) or **4:3**
-> 3. **Design** — either
->    - a **template**: path to a corporate `.pptx` / `.potx`, and the deck inherits its masters, fonts, colours and slide size; or
->    - a **palette**: `corporate-blue` (default for B2B) · `monochrome` · `vibrant` · `dark-mode` · `editorial` · `forest` · `sunset`, or brand hex values for `primary` / `secondary` / `accent` / `background` / `text`
+> 3. **Brand** — the deck should look like it came from your team. Send any of:
+>    - a **`brand.json`** from brand-kit, which covers everything below in one file;
+>    - a **template**: path to a corporate `.pptx` / `.potx`, and the deck inherits its masters, fonts, colours, logo and slide size;
+>    - your **logo** as a PNG (and a white version for dark slides), **brand colours** as hex values for `primary` / `secondary` / `accent` / `background` / `text`, and your **heading and body fonts**;
+>    - or, with no brand, a named **palette**: `corporate-blue` (default for B2B) · `monochrome` · `vibrant` · `dark-mode` · `editorial` · `forest` · `sunset`
 > 4. **Anything to embed** — numbers to chart, a table, diagram PNGs
 
 Rules for reading the answers:
@@ -44,10 +47,15 @@ Rules for reading the answers:
   [`reference.md`](reference.md#color-palette-principles) — say which roles were filled in.
 - **Template beats palette** for chrome; the palette still colours charts, tables, big numbers
   and quote bars, so ask for brand hexes even when a template is supplied.
+- **Brand material beats a named palette.** If the user sent a logo or brand colours, never fall
+  back to `corporate-blue`. If they have brand material but no `brand.json`, suggest running
+  `brand-kit` first, so the next deck and any flyer match this one.
+- **Logos must be PNG or JPG.** PowerPoint can't place SVG or EPS: ask for a PNG export, and
+  never build with the logo silently missing.
 
 **Non-interactive runs** (subagent, CI, headless): audience, format, time and palette degrade to
 `[assumption]` lines stated at the top of the response — default `exec`, live, 16:9,
-`corporate-blue`. Missing *content* does not degrade: emit `BLOCKED: need deck content
+`corporate-blue`, or the `brand.json` when one is in the input. Never invent a logo or brand colour. Missing *content* does not degrade: emit `BLOCKED: need deck content
 (outline, doc, or point list)` and build nothing.
 
 ### 2. Plan the slide list against the audience archetype
@@ -61,7 +69,7 @@ Rules for reading the answers:
 | `internal` | 5–10 | Mixed | Context • Proposal • Discussion topics • Action items |
 | `investor` | 10–15 | Polished, narrative | Problem • Market • Product • Traction • Team • Ask |
 
-Full archetype spec: [`audience-profile`](../audience-profile/SKILL.md). Slide-count budgets per
+Full archetype spec: [`audience-profile`](../../../stakeholder-comms/skills/audience-profile/SKILL.md). Slide-count budgets per
 format and time: [`reference.md`](reference.md#slide-count-budgets).
 
 ### 3. Build a deck spec
@@ -77,6 +85,7 @@ A JSON document — full schema, with every layout and the template block, in
   "template": "./brand/acme-master.potx",
   "layout_map": { "title": "Title Slide", "content": "Title and Content" },
   "palette": { "primary": "#1A2A6C", "accent": "#FDBB2D" },
+  "brand": "./brand/brand.json",
   "slides": [
     { "layout": "title", "title": "...", "subtitle": "...", "presenter": "...", "date": "..." },
     { "layout": "content", "title": "...", "bullets": ["..."], "notes": "..." },
@@ -129,6 +138,13 @@ python3 "${CLAUDE_SKILL_DIR}/scripts/build_deck.py" /tmp/deck-spec.json -o ./out
 cd path/to/deck-builder && python3 scripts/build_deck.py /tmp/deck-spec.json -o ./out/deck.pptx
 ```
 
+Add `--brand ./brand/brand.json` to build in the user's brand (or set `"brand"` in the spec).
+The brand fills whatever the spec leaves out: palette colours, the template, logo files and
+fonts. On the built-in design the logo goes on every slide: large on the cover, small in the
+lower-left corner elsewhere, and the on-dark version on dark section and closing slides. The
+brand's heading and body fonts are applied to titles, text, tables and charts. A template
+already carries its own logo and fonts, so they come from the template instead.
+
 Add `--strict` to fail the build on a missing or unreadable image instead of drawing a
 placeholder box — use it in CI, not in a conversation.
 
@@ -157,7 +173,8 @@ A generated deck is a strong first draft. Always tell the user to:
 
 ## Quality bar
 
-- **Design is chosen by the user, never silently defaulted** — a template path or a named palette, confirmed in the setup block.
+- **Design is chosen by the user, never silently defaulted** — a `brand.json`, a template, brand colours and logo, or a named palette, confirmed in the setup block.
+- **The user's brand shows on every slide** — their logo (PNG) and colours, and their fonts when they gave them. A deck built from brand material that comes out in `corporate-blue` has failed.
 - **A supplied template is actually inherited** — `layout_map` covers `title`, `section`, `content` and `closing` at minimum. A branded deck rendered on the blank layout has thrown away the branding.
 - **Title slide isn't blank** — real title, subtitle, presenter, date.
 - **Numbers are charted, not bulleted** — three or more comparable figures belong in a `chart` or a `table`, not a bullet list.
@@ -171,6 +188,7 @@ A generated deck is a strong first draft. Always tell the user to:
 ## Anti-patterns to avoid
 
 - ❌ Ignoring a template the user already named, or asking for a palette after they supplied one. The template is the answer to "what should this look like".
+- ❌ Asking for brand colours when a `brand.json` was supplied, or building without the logo because it was an SVG. Ask for a PNG export instead.
 - ❌ Mapping every logical layout onto the template's one title-and-bullets layout. That is a branded deck that still looks generated.
 - ❌ Generating without confirming audience. The same content for execs and engineers is a different deck.
 - ❌ Inventing a statistic to fill a `big_number`, or a series to fill a chart. No source, no chart.

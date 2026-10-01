@@ -1,5 +1,5 @@
 {
-  "_comment": "Full deck-spec schema. The build_deck.py script consumes this. Top-level fields: title, audience, aspect, template, layout_map, palette, slide_numbers, slides[].",
+  "_comment": "Full deck-spec schema. The build_deck.py script consumes this. Top-level fields: title, audience, aspect, template, layout_map, palette, brand, slide_numbers, slides[].",
 
   "title": "ProjectX Migration — Board Update",
   "audience": "board",
@@ -21,6 +21,9 @@
     "chart": "Title Only",
     "closing": "Closing"
   },
+
+  "_brand_comment": "Path to a brand.json from the brand-kit skill, or the same object inline. It fills anything this spec leaves out: palette colours, template, logo files (logo.primary, logo.on_dark — PNG or JPG) and fonts (fonts.heading.family, fonts.body.family). --brand on the command line overrides it.",
+  "brand": "./brand/brand.json",
 
   "palette": {
     "primary": "#1A2A6C",

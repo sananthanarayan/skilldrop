@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0034. The catalogue index: pack display order and the outcome browse axis (RFC-0026). Pack metadata lives in packs/<pack>/pack.json; membership is the folders — a skill is in a pack because it sits at packs/<pack>/skills/<name>/.",
   "version": "1.0.0",
-  "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "ai-engineering", "claude-api"],
+  "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "claude-api"],
   "outcomes": {
     "decide-what-to-build": {
       "for": "Product managers · founders · strategists",
@@ -104,6 +104,16 @@
         "ai-usage-policy",
         "agent-adoption-stage",
         "ai-usage-report"
+      ]
+    },
+    "create-on-brand-collateral": {
+      "for": "Marketers · designers · anyone making a deck or flyer",
+      "description": "Make collateral that looks like it came from your team: capture the brand once, then build decks and print-ready flyers with your logo, colours and fonts.",
+      "skills": [
+        "brand-kit",
+        "deck-builder",
+        "marketing-flyer",
+        "slide-outliner"
       ]
     },
     "get-a-draft-ready-to-ship": {

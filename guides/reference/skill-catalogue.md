@@ -129,11 +129,20 @@ Skills for teams building directly on the Anthropic API — prompt caching strat
 | Skill | What it does |
 |---|---|
 | [`audience-profile`](../../packs/stakeholder-comms/skills/audience-profile/SKILL.md) | Translate an audience type (exec, board, technical, sales, investor, internal, partner, customer) into structural rules — slide count, density, tone, must-have sections. Reusable input for the next three skills. |
-| [`slide-outliner`](../../packs/stakeholder-comms/skills/slide-outliner/SKILL.md) | Outline an architecture-review or pitch deck — slide titles, key points, and speaker notes — sized to a target time budget. Doesn't generate PPTX. |
-| [`deck-builder`](../../packs/stakeholder-comms/skills/deck-builder/SKILL.md) | Generate a real PowerPoint (`.pptx`) file from content + audience + a brand `.potx`/`.pptx` template or colour palette. Uses `python-pptx`; 10 layouts including charts, tables and images, audience-tuned density. Pairs naturally with `audience-profile` + `slide-outliner`. |
 | [`exec-summary`](../../packs/stakeholder-comms/skills/exec-summary/SKILL.md) | Compress a long technical document into a one-page executive summary structured around an Ask, business impact, cost/timeline, risks, and what you need from the audience. |
 | [`decision-log`](../../packs/stakeholder-comms/skills/decision-log/SKILL.md) | Extract decisions, action items, owners, and due dates from meeting notes, Slack threads, or transcripts into a structured log with source attribution. |
 | [`incident-comms`](../../packs/sre-oncall/skills/incident-comms/SKILL.md) | Draft the messages you send *while an incident is still burning* — audience-segmented into customer status-page posts, internal stakeholder updates that arm the relayer, and three-sentence exec briefs (business impact + the ask). Every message leads with reader-facing impact (not internal symptom), uses the precise status vocabulary (investigating / identified / monitoring / resolved), commits only to the **next-update time** (never a fix ETA or speculative cause you'd have to retract), and stays blameless and screenshot-safe. Acknowledge → update-on-committed-cadence → verified resolve. Completes the operate triad with `runbook-generator` (how to fix) and `postmortem-generator` (what to say after). |
+
+## Design and brand
+
+Capture a brand once, then build decks and flyers that use it. `brand-kit` writes the `brand.json` that `deck-builder` and `marketing-flyer` read; each also asks for branding itself when there is none.
+
+| Skill | What it does |
+|---|---|
+| [`brand-kit`](../../packs/design/skills/brand-kit/SKILL.md) | Capture a brand as a reusable `brand.json`: logo files (and an on-dark version), five colour roles as hex codes, heading and body fonts, voice (words to use and avoid), imagery rules, a PowerPoint template, contact details and legal footer. Every value is traced to its source and tagged `[explicit]` or `[inferred]`; a stdlib checker fails malformed hex codes, text contrast below 4.5:1 and missing files, and flags SVG logos PowerPoint can't use. Writes a one-page `BRAND.md` too. |
+| [`marketing-flyer`](../../packs/design/skills/marketing-flyer/SKILL.md) | A print-ready flyer in the user's brand — event, launch, offer, hiring — as one self-contained HTML file (Letter, A4, A5, or square and story sizes for social) that saves to PDF, or exports through headless Chrome with `--pdf` / `--png`. Four layouts (hero, split, event, minimal); one call to action; a headline of ten words or fewer; at most four points; contrast checked, with band text flipped to whichever colour reads; no invented dates, prices or contact details. Stdlib only. |
+| [`slide-outliner`](../../packs/design/skills/slide-outliner/SKILL.md) | Outline an architecture-review or pitch deck — slide titles, key points, and speaker notes — sized to a target time budget. Doesn't generate PPTX. |
+| [`deck-builder`](../../packs/design/skills/deck-builder/SKILL.md) | Generate a real PowerPoint (`.pptx`) file from content + audience + a brand `.potx`/`.pptx` template or colour palette. Uses `python-pptx`; 10 layouts including charts, tables and images, audience-tuned density. Pairs naturally with `audience-profile` + `slide-outliner`. |
 
 ## What's in a skill
 
