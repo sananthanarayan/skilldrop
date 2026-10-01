@@ -6,6 +6,7 @@
   build/skills/<skill>/index.html one skill: what it makes, a prompt to try, its quality bar
   build/skills/index.html         redirect to the searchable catalogue
   build/changelog/index.html      every release, rendered from CHANGELOG.md
+  build/search.json               the site search index the shared nav's search dialog reads
 
 Everything comes from pack.json, the skill manifests and SKILL.md files, loop.json and
 CHANGELOG.md, read through the same collect() the home page uses, so an inner page cannot
@@ -15,12 +16,13 @@ Usage:
   python3 build_pages.py [--out build]
 """
 import argparse
+import html.parser
 import json
 import os
 import re
 
 import catalog
-from build_docs import render_md
+from build_docs import render_md, collect_guides, parse_frontmatter, _slug
 from build_site import collect, card, esc, loops, site_nav, NAV_CSS, REPO_URL, SITE_URL
 from build_catalogue import CSS
 
@@ -347,6 +349,55 @@ def changelog_page():
                  f"{SITE_URL}changelog/", 1, body, current="changelog/")
 
 
+class _Text(html.parser.HTMLParser):
+    """Visible text of rendered HTML, for the search index. A real parser rather than a tag
+    regex, so markup in a guide cannot leak into (or hide from) the index."""
+    def __init__(self):
+        super().__init__()
+        self.out = []
+
+    def handle_data(self, data):
+        self.out.append(data)
+
+
+def plain(html_text, limit):
+    p = _Text()
+    p.feed(html_text)
+    return re.sub(r"\s+", " ", " ".join(p.out)).strip()[:limit]
+
+
+def search_index(skills, packs, loop_list):
+    """One flat list for the site search: every skill, pack, loop and guide, each with a
+    root-relative URL. Skill and guide bodies are trimmed so the index stays small enough to
+    fetch on first use (it is only loaded when someone opens search)."""
+    out = []
+    for s in skills:
+        body = open(os.path.join(catalog.skill_dir(s["name"]), "SKILL.md"), encoding="utf-8").read()
+        _, body = parse_frontmatter(body)
+        out.append({"type": "skill", "title": s["name"], "summary": s["description"],
+                    "url": f"skills/{s['name']}/",
+                    "text": " ".join(s.get("tags", [])) + " " + plain(render_md(body), 1800)})
+    for n, p in packs.items():
+        fv = p.get("first-value") or {}
+        out.append({"type": "pack", "title": p.get("display_name", n) + (f" ({n})" if p.get("display_name") else ""),
+                    "summary": p["description"], "url": f"packs/{n}/",
+                    "text": " ".join([fv.get("starter-task", ""), fv.get("starter-prompt", "")] + p["skills"] + p.get("loops", []))})
+    ref = open(os.path.join(ROOT, "guides", "reference", "loops.md"), encoding="utf-8").read()
+    anchors = {m.group(1): _slug(re.sub(r"[*`\[\]]", "", m.group(0)[3:]))
+               for m in re.finditer(r"^## `([a-z0-9-]+)`.*$", ref, re.M)}
+    for l in loop_list:
+        out.append({"type": "loop", "title": l["name"], "summary": l["description"],
+                    "url": "docs/reference/loops.html" + (f"#{anchors[l['name']]}" if l["name"] in anchors else ""),
+                    "text": " ".join(st["id"] + " " + " ".join(st["skills"]) + " " + st.get("intent", "") for st in l["stages"])})
+    for kind, guides in collect_guides().items():
+        for g in guides:
+            _, body = parse_frontmatter(open(g["abs_path"], encoding="utf-8").read())
+            out.append({"type": kind, "title": g["title"], "summary": g["summary"],
+                        "url": f"docs/{kind}/{g['slug']}.html",
+                        "text": plain(render_md(body), 3000)})
+    return out
+
+
 def render():
     """Return {relative_path: html} for every generated inner page."""
     skills, _, _ = collect()
@@ -367,6 +418,8 @@ def render():
         out[f"packs/{name}/index.html"] = pack_page(name, pack, packs, by_name, loop_by_name, outcome_of)
     for s in skills:
         out[f"skills/{s['name']}/index.html"] = skill_page(s, by_name, packs, outcome_of)
+    out["search.json"] = json.dumps(search_index(skills, packs, list(loop_by_name.values())),
+                                    ensure_ascii=False, separators=(",", ":")) + "\n"
     return out
 
 
@@ -380,7 +433,7 @@ def main():
         os.makedirs(os.path.dirname(p), exist_ok=True)
         with open(p, "w", encoding="utf-8") as f:
             f.write(body)
-    print(f"wrote {len(pages)} pages (packs, skills, changelog) under {args.out}")
+    print(f"wrote {len(pages) - 1} pages (packs, skills, changelog) and search.json under {args.out}")
 
 
 if __name__ == "__main__":
