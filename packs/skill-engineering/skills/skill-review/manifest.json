@@ -42,6 +42,7 @@
     "security",
     "owasp"
   ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths"},
   "model": {
     "tier": "heavy",
     "rationale": "Adversarial audit with a verdict: routing collisions and paraphrased safety issues are what a fast pass misses, and the lint script covers only the mechanical half."

@@ -35,6 +35,7 @@
     "export",
     "brand"
   ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths", "notes": "The script makes no network calls. With --mermaid cdn, the HTML it writes loads Mermaid from cdn.jsdelivr.net when someone opens it."},
   "model": {
     "tier": "light",
     "rationale": "A deterministic stdlib script does the conversion; the model picks options, fixes a few unsupported Markdown constructs and relays the script's warnings. Little judgment."

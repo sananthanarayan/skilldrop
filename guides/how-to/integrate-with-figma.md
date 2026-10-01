@@ -79,3 +79,5 @@ If the Figma MCP is installed in Claude Code, the agent can pull Figma node data
 ```
 Fetch the component structure from https://figma.com/file/abc123 and run reverse-architecture.
 ```
+
+See also: [Use skills with MCP servers](use-with-mcp-servers.md)

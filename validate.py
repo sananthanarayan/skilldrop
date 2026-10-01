@@ -9,6 +9,7 @@ Checks (FAIL):
   - manifest has all required fields (name, version, description, entrypoint,
     deps, env, related, tags, model)
   - manifest `model.tier` == model-routing.json tier, both directions
+  - a skill with scripts/ declares `permissions` (RFC-0039)
   - manifest `related`: every entry is a real skill folder, and every sibling
     skill referenced in SKILL.md (backticked) appears in `related` — and vice versa
   - every skill ships evals/evals.json and evals/eval_queries.json, and they have the
@@ -461,6 +462,12 @@ def main():
                 fail(d, f"hook action {h.get('action')!r} is not a skill folder")
             if not h.get("description"):
                 fail(d, f"hook for event {h.get('event')!r} needs a description")
+
+        # RFC-0039: a skill that ships code says what that code may do. `skilldrop validate`
+        # (the CLI) then checks the scripts against the declaration.
+        if os.path.isdir(os.path.join(p, "scripts")) and "permissions" not in manifest:
+            fail(d, "ships scripts/ but manifest.json has no `permissions` (network, commands, files) — "
+                    "declare what the scripts do (RFC-0039)")
 
         evals_path = os.path.join(p, "evals", "evals.json")
         queries_path = os.path.join(p, "evals", "eval_queries.json")

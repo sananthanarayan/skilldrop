@@ -150,6 +150,14 @@ description: One sentence, use-case-first. First half says *what it does*; secon
 
 If the skill has no scripts, leave `deps` empty. `env.required` is for vars the skill cannot work without (e.g. `FIGMA_TOKEN` for `figma-diagrams`); `env.optional` is for vars that change behaviour but aren't blockers.
 
+**A skill with `scripts/` also declares `permissions`** (RFC-0039), so a reader and `skilldrop scan` can compare what the code does with what it says:
+
+```json
+"permissions": { "network": ["api.figma.com"], "commands": [], "files": "named-paths", "notes": "Reads FIGMA_TOKEN to call the Figma REST API." }
+```
+
+`network` lists the hosts the scripts contact (empty for none); `commands` the external programs they run (`"*"` for commands the user configures); `files` is `none`, `named-paths` (only paths the user passes), `project`, or `anywhere`. `validate.py` fails a script skill without the block, and `node bin/skilldrop.js validate` fails one whose scripts do something it doesn't declare. Declare what the code can do, not what it usually does.
+
 `related` is the flat list of sibling skills this skill's `SKILL.md` references — hand-off targets, upstream feeders, and named alternatives alike (direction lives in the SKILL.md prose, not here). It exists so installers and users can grab a skill's companions in one pass. `validate.py` enforces the sync in both directions: every backticked sibling reference in `SKILL.md` must appear in `related`, and every `related` entry must be a real skill folder that `SKILL.md` actually references.
 
 `handoff` is the **directed** companion to `related`, which is undirected and not a DAG
@@ -296,6 +304,7 @@ If a skill has executable scripts (Python, Node, shell):
 
 - **Reference them with both `${CLAUDE_SKILL_DIR}/scripts/…` and a plain relative `scripts/…`** in `SKILL.md`. Claude Code sets `CLAUDE_SKILL_DIR`; other IDEs don't.
 - **Pin dependencies** in `requirements.txt` (Python) or `package.json` (Node). Don't rely on a globally installed version.
+- **Declare `permissions`** in `manifest.json`: hosts contacted, external programs run, and where files are written (RFC-0039).
 - **Read inputs from a file-path argument or stdin**, not a hard-coded Claude Code variable — the script should run as a standalone CLI.
 - **Write outputs to a user-specified path**, not a hard-coded location.
 - **Don't shell out to interactive commands** (`gh auth login`, `aws configure`) — those need the user; the skill shouldn't drive them.

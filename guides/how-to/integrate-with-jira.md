@@ -80,3 +80,5 @@ Fetch PROJ-123 from Jira and run bug-triage on it.
 ```
 
 The agent retrieves the ticket and passes it to the skill inline.
+
+See also: [Use skills with MCP servers](use-with-mcp-servers.md)

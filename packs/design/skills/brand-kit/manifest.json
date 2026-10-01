@@ -37,6 +37,7 @@
     "design",
     "style-guide"
   ],
+  "permissions": {"network": [], "commands": [], "files": "none", "notes": "The checker reads brand.json and the files it names, and writes nothing."},
   "model": {
     "tier": "standard",
     "rationale": "Extracts and normalises brand facts from files and pages, then runs a checker. Bounded synthesis."

@@ -38,6 +38,21 @@
                       "description": "Vars that change behaviour but do not block." }
       }
     },
+    "permissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["network", "commands", "files"],
+      "description": "RFC-0039 (OWASP AST03, AST10). What the skill's scripts do, declared so a reader and `skilldrop scan` can compare it with what the code does. Required for every skill that ships scripts/.",
+      "properties": {
+        "network": { "type": "array", "items": { "type": "string" },
+                     "description": "Hosts the scripts contact, e.g. api.figma.com. Empty means none." },
+        "commands": { "type": "array", "items": { "type": "string" },
+                      "description": "External programs the scripts run, e.g. pdftotext. \"*\" means commands the user configures. Empty means none." },
+        "files": { "type": "string", "enum": ["none", "named-paths", "project", "anywhere"],
+                   "description": "What the scripts write: nothing; only paths the user names; inside the current project; or anywhere." },
+        "notes": { "type": "string", "description": "Anything a reviewer should know that the fields can't say." }
+      }
+    },
     "related": {
       "type": "array",
       "items": { "type": "string" },

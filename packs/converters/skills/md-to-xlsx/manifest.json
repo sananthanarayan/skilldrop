@@ -25,6 +25,7 @@
     "markdown",
     "convert"
   ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths"},
   "model": {
     "tier": "standard",
     "rationale": "A stdlib script types and writes the cells; the model shapes tables from the source (headings, units, one header row), decides whether formulas are safe to enable, and checks the per-sheet type counts against the data. Bounded, mostly mechanical judgment."

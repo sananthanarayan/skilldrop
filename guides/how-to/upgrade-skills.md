@@ -76,3 +76,21 @@ skills on disk that nothing recorded, `.upstream` files waiting to be merged, an
 hooks left behind for skills that are gone. Each finding comes with the command that fixes it.
 `doctor` itself changes nothing.
 
+## Same version, different files
+
+A catalogue can change a skill's files without bumping its version. The version check alone
+would never see that, so `outdated` compares the files too:
+
+```text
+example-skill: 1 file(s) changed in 'https://github.com/acme/skills' without a version bump (SKILL.md)
+```
+
+`update` names these and doesn't take them. Read the change with `skilldrop diff <skill>`, then
+take it with `skilldrop update --changed`, which keeps your edits the same way as any update.
+
+## Pinned catalogues
+
+A skill installed with `--from <url>#<commit>` stays at that commit: `update` leaves it alone
+and says so. To move it, reinstall with the new commit. Every install records the commit it
+came from in `.skilldrop.json`, pinned or not.
+
