@@ -157,7 +157,32 @@ _INLINE_CODE = re.compile(r"`([^`]+)`")
 _BOLD = re.compile(r"\*\*(.+?)\*\*")
 _LINK = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
 
-def _inline(text):
+def _href(target, src):
+    """Point a guide's markdown link at something that exists on the published site. A link
+    to another guide becomes that guide's .html page; a link to any other repo file (AGENTS.md,
+    an RFC, a skill's SKILL.md) goes to GitHub, because the site does not carry those files.
+    `src` is the guide's repo-relative path; without it, links pass through unchanged."""
+    if not src or re.match(r"^([a-z]+:|#|/)", target):
+        return target
+    path, _, anchor = target.partition("#")
+    repo_path = os.path.normpath(os.path.join(os.path.dirname(src), path)).replace(os.sep, "/")
+    if repo_path.startswith(".."):
+        return target
+    frag = f"#{anchor}" if anchor else ""
+    m = re.match(r"^guides/([^/]+)/([^/]+)\.md$", repo_path)
+    if m:
+        here = os.path.dirname(src)[len("guides/"):] or "."
+        return os.path.relpath(f"{m.group(1)}/{m.group(2)}.html", here).replace(os.sep, "/") + frag
+    if repo_path == "guides/README.md":
+        return os.path.relpath("index.html", os.path.dirname(src)[len("guides/"):] or ".").replace(os.sep, "/") + frag
+    full = os.path.join(ROOT, repo_path)
+    if os.path.exists(full):
+        kind = "tree" if os.path.isdir(full) else "blob"
+        return f"{REPO_URL}/{kind}/main/{repo_path}{frag}"
+    return target
+
+
+def _inline(text, src=None):
     # Order matters: escape HTML first on raw parts, then apply inline markup.
     # Process link/code/bold as replacements on the original text.
     parts = []
@@ -175,12 +200,12 @@ def _inline(text):
         elif m.re is _BOLD:
             parts.append(f"<strong>{_esc(m.group(1))}</strong>")
         else:  # link
-            parts.append(f'<a href="{_esc(m.group(2))}">{_esc(m.group(1))}</a>')
+            parts.append(f'<a href="{_esc(_href(m.group(2), src))}">{_esc(m.group(1))}</a>')
         pos = m.end()
     parts.append(_esc(text[pos:]))
     return "".join(parts)
 
-def render_md(text):
+def render_md(text, src=None):
     lines = text.splitlines()
     out = []
     in_code = False
@@ -227,7 +252,7 @@ def render_md(text):
             level = len(m.group(1))
             text_content = m.group(2).strip()
             slug = _slug(re.sub(r"[*`\[\]]", "", text_content))
-            out.append(f'<h{level} id="{slug}">{_inline(text_content)}</h{level}>')
+            out.append(f'<h{level} id="{slug}">{_inline(text_content, src)}</h{level}>')
             continue
 
         # Unordered list
@@ -237,7 +262,7 @@ def render_md(text):
                 flush_list()
                 out.append("<ul>")
                 list_type = "ul"
-            out.append(f"<li>{_inline(m.group(1))}</li>")
+            out.append(f"<li>{_inline(m.group(1), src)}</li>")
             continue
 
         # Ordered list
@@ -247,12 +272,12 @@ def render_md(text):
                 flush_list()
                 out.append("<ol>")
                 list_type = "ol"
-            out.append(f"<li>{_inline(m.group(1))}</li>")
+            out.append(f"<li>{_inline(m.group(1), src)}</li>")
             continue
 
         # Paragraph
         flush_list()
-        out.append(f"<p>{_inline(raw)}</p>")
+        out.append(f"<p>{_inline(raw, src)}</p>")
 
     flush_list()
     if in_code and code_buf:
@@ -292,14 +317,14 @@ def collect_guides():
 
 # ── HTML page builders ────────────────────────────────────────────────────────
 
-def _page(title, header_html, body_html):
+def _page(title, header_html, body_html, depth=2):
     return f"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{_esc(title)}</title>
-<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="{"../" * depth}favicon.svg" type="image/svg+xml">
 <style>
 {SHARED_CSS}
 </style>
@@ -348,7 +373,7 @@ def _sidebar_html(by_kind, current_kind, current_slug, depth):
 def build_guide_page(guide, by_kind, out_dir):
     text = open(guide["abs_path"], encoding="utf-8").read()
     _, body_md = parse_frontmatter(text)
-    body_html = render_md(body_md)
+    body_html = render_md(body_md, src=os.path.relpath(guide["abs_path"], ROOT).replace(os.sep, "/"))
     sidebar = _sidebar_html(by_kind, guide["kind"], guide["slug"], depth=2)
     header = (
         '<header class="doc-header">'
@@ -447,7 +472,7 @@ def build_portal_index(by_kind, out_dir):
         '</div>'
         + search_js
     )
-    page_html = _page("Documentation — skilldrop", header, body)
+    page_html = _page("Documentation — skilldrop", header, body, depth=1)
     out_path = os.path.join(out_dir, "index.html")
     return out_path, page_html
 
