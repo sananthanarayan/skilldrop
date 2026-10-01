@@ -39,7 +39,7 @@ or a rewrite that goes back out through `md-to-docx` or `md-to-html`.
    | `.csv` / `.tsv` | One table, delimiter detected |
    | `.json` | An array of objects becomes a table; an object becomes a key/value table plus a table per array |
    | `.txt` / `.md` | Passed through |
-   | `.pdf` | Text by page through `pdftotext`; no headings or tables |
+   | `.pdf` | Through `pdftotext`. Tables from aligned columns, lists from indentation, short standalone lines as `###` headings (guessed, and said so); pages with side-by-side columns are read in column order with nothing inferred. No images |
 
 3. **PDF without `pdftotext`.** The script stops with install steps (`brew install poppler`
    on macOS, `sudo apt install poppler-utils` on Debian/Ubuntu). Pass those on; don't try to

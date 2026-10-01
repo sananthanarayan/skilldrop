@@ -8,6 +8,12 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.15.1 — 2026-10-01
+
+- `file-to-markdown` gets far more out of a PDF. Tables with aligned columns come through as Markdown tables, indented lists stay lists, code stays code, and short standalone lines become headings (it says those were guessed). A table whose cells wrap is kept as aligned text. A page with two columns of prose side by side is read in column order, and the script names those pages. Before, every PDF came out as run-together paragraphs.
+- `mermaid-render` shows Mermaid's own parse error ("Parse error on line 6 …") when mermaid-cli can't draw a diagram, not a browser stack trace. Its lint agreed with real Mermaid (mermaid-cli 12.0.0) on all 57 diagrams tested: every one in the repo plus 21 edge cases.
+- The `terraform-module` example now passes `terraform fmt -check` and `terraform validate` (Terraform 1.16.4), with the AWS provider at 5.0.0, 5.100.0 and 6.67.0. That's both ends of the range it declares. `terraform-plan-review`'s script was checked against real plans from Terraform 1.16.4, and flags an IAM wildcard, a public bucket policy and open SSH, without ever printing a secret from the plan.
+
 ## 0.15.0 — 2026-10-01
 
 - Every pack has a how-to and a reference page in the docs: install it, run its first task, follow a typical session and its loops; then every skill's output, needs, quality bar, hand-offs and what it isn't for. They're generated from the skills' own files, so they stay current. Find them under *Per pack* in the docs.

@@ -1,6 +1,6 @@
 {
   "name": "file-to-markdown",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Convert a Word document, PowerPoint deck, Excel workbook, web page, CSV, JSON, text file or PDF into clean Markdown that keeps headings, lists, tables, links, bold and italic, slide titles and speaker notes, and reports everything it dropped (images, charts, comments, formulas, tracked changes), so the content can be read, reviewed or fed to another skill. Use when the user hands over a .docx, .pptx, .xlsx, .html, .csv, .json or .pdf and says \"read this\", \"turn this into markdown\", \"extract the text\", or wants it critiqued or briefed.",
   "entrypoint": "SKILL.md",
   "deps": {

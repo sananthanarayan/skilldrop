@@ -239,6 +239,60 @@ Markdown:
 | 2 | Northwind |  |  | EU |
 ````
 
+## `ops-review.pdf`
+
+A two-page PDF printed from Chrome: the `md-to-html` example's output, so it has a title,
+a nested list, a table, a chart image, a Mermaid diagram kept as text, and a code block.
+
+```bash
+python3 scripts/to_markdown.py ops-review.pdf -o ops-review.md
+```
+
+stderr:
+
+```text
+converted ops-review.pdf -> ops-review.md: 6 pdf headings guessed, 1 pdf tables, 2 pdf code blocks, 2 pages
+dropped: nothing detected
+note: PDF gives no structure, so it is inferred from the layout: tables from aligned columns, lists from indentation, and short standalone lines as ### headings. Check them against the PDF; images and charts are not recovered
+```
+
+Page 1 of `ops-review.md`, unedited:
+
+````markdown
+<!-- page 1 -->
+
+### Northwind Health: Q3 platform review
+
+Prepared for the operations committee. Figures are placeholders for this example.
+
+### Summary
+
+- Uptime held at the target for the quarter
+- Two incidents, both under 30 minutes
+  - INC-101: login latency
+  - INC-102: delayed reminder emails
+- Migrate reminders to the new queue
+- Retire the old scheduler
+
+Decision needed: approve the scheduler retirement for October.
+
+### Numbers
+
+| Metric | Q2 | Q3 | Change |
+|---|---|---|---|
+| Uptime | 99.90% | 99.95% | up |
+| Incidents | 4 | 2 | down |
+| p95 login (ms) | 410 | 380 | down |
+
+### Weekly active members, Q1 to Q4 (illustrative)
+````
+
+What to tell the user: the headings were guessed from short standalone lines, and the chart
+image is gone (a PDF's text layer has no images). The table and the list came through. A
+page with two columns of prose side by side is read in column order instead, with nothing
+inferred, and the script says which pages those were. A table that starts at the bottom of
+one page and continues on the next loses its header row to the previous page.
+
 ## What to tell the user (for the first three files)
 
 > I converted all three. Before we review, here is what is **not** in the Markdown:

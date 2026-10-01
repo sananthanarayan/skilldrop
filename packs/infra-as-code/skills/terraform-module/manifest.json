@@ -1,6 +1,6 @@
 {
   "name": "terraform-module",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Generate a Terraform module from a described need, with main.tf, variables.tf, outputs.tf and versions.tf, typed and validated variables, secure defaults (encryption on, public access off, least-privilege IAM), a merged tags variable, a basic usage example and a README with inputs and outputs tables. Use when the user says \"write a terraform module for\", \"create terraform for an S3 bucket / VPC / database\", \"turn this into a reusable module\", or \"scaffold infrastructure as code for\".",
   "entrypoint": "SKILL.md",
   "deps": {
