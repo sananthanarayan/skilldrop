@@ -17,7 +17,7 @@ import sys
 # Reuse the data layer from build_site — collect(), card(), esc(), and the
 # constants are all defined there and kept authoritative.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from build_site import collect, card, esc, site_nav, NAV_CSS, REPO_URL, SITE_URL
+from build_site import collect, card, esc, site_nav, head_meta, breadcrumbs_ld, NAV_CSS, REPO_URL, SITE_URL
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -150,8 +150,8 @@ def render_catalogue(skills, packs, outcomes):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>All skills — skilldrop</title>
-<meta name="description" content="Browse all {len(skills)} skilldrop skills. Filter by outcome, role pack, or model tier.">
-<link rel="canonical" href="{SITE_URL}catalogue/">
+{head_meta("All skills — skilldrop", "Search and filter every skilldrop skill by the job it does, the pack it is in, or its model tier.", SITE_URL + "catalogue/")}
+{breadcrumbs_ld([("skilldrop", SITE_URL), ("Skills", SITE_URL + "catalogue/")])}
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#111113">
 <style>
@@ -175,7 +175,7 @@ def render_catalogue(skills, packs, outcomes):
   </div>
 </div>
 
-<main>
+<main id="main">
   <ul class="skills" id="grid">
 {cards}
   </ul>
