@@ -7,6 +7,7 @@
   build/skills/index.html         redirect to the searchable catalogue
   build/changelog/index.html      every release, rendered from CHANGELOG.md
   build/search.json               the site search index the shared nav's search dialog reads
+  build/404.html                  the page GitHub Pages serves for a missing URL, with the shared nav
 
 Everything comes from pack.json, the skill manifests and SKILL.md files, loop.json and
 CHANGELOG.md, read through the same collect() the home page uses, so an inner page cannot
@@ -23,7 +24,8 @@ import re
 
 import catalog
 from build_docs import render_md, collect_guides, parse_frontmatter, _slug
-from build_site import collect, card, esc, loops, site_nav, example_parts, NAV_CSS, REPO_URL, SITE_URL
+from build_site import (collect, card, esc, loops, site_nav, example_parts, head_meta, ld, breadcrumbs_ld,
+                        NAV_CSS, REPO_URL, SITE_URL)
 from build_catalogue import CSS
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -141,16 +143,16 @@ def install_block(primary, others, note=""):
             + (f'<details class="pk__other"><summary>Other ways to install</summary>{alt}</details>' if others else ""))
 
 
-def shell(title, desc, canonical, depth, body, current=None):
-    root = "../" * depth
+def shell(title, desc, canonical, depth, body, current=None, extra_head="", root=None):
+    root = "../" * depth if root is None else root
     return f"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)} — skilldrop</title>
-<meta name="description" content="{esc(desc[:200])}">
-<link rel="canonical" href="{canonical}">
+{head_meta(f"{title} — skilldrop", desc, canonical)}
+{extra_head}
 <link rel="icon" href="{root}favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#111113">
 <style>
@@ -213,7 +215,7 @@ def pack_page(name, pack, packs, by_name, loop_by_name, outcome_of):
     note = f"Installs {total} skills" + (
         ", including " + ", ".join(f'<a href="../{esc(r)}/">{esc(r)}</a>' for r in reqs) if reqs else "") + "."
 
-    parts = ['<main class="inner pk">',
+    parts = ['<main class="inner pk" id="main">',
              '<p class="pk__crumb"><a href="../">Packs</a></p>',
              f'<h1 class="pk__title">{esc(title)}</h1>',
              glance(pack, total, own_loops, outcome_counts),
@@ -245,7 +247,9 @@ def pack_page(name, pack, packs, by_name, loop_by_name, outcome_of):
         rc = "\n".join(card(by_name[s], root="../../", show_pack=False) for s in sorted(packs[r]["skills"]) if s in by_name)
         parts.append(f'<h2>Included from <a href="../{esc(r)}/">{esc(r)}</a> ({len(packs[r]["skills"])})</h2><ul class="skills">{rc}</ul>')
     parts.append("</main>")
-    return shell(title, pack["description"], f"{SITE_URL}packs/{name}/", 2, "\n".join(parts), current="packs/")
+    crumbs = breadcrumbs_ld([("skilldrop", SITE_URL), ("Packs", f"{SITE_URL}packs/"), (title, f"{SITE_URL}packs/{name}/")])
+    return shell(title, pack["description"], f"{SITE_URL}packs/{name}/", 2, "\n".join(parts),
+                 current="packs/", extra_head=crumbs)
 
 
 def index_page(packs, outcomes, home_of):
@@ -268,7 +272,7 @@ def index_page(packs, outcomes, home_of):
 <p>{esc(p['description'])}</p>
 {f'<p><b>Start here:</b> {esc(p["first-value"]["starter-task"])}</p>' if p.get('first-value') else ''}</li>"""
         for n, p in packs.items())
-    body = f"""<main class="inner pk">
+    body = f"""<main class="inner pk" id="main">
 <h1 class="pk__title">Packs</h1>
 <p class="pk__lede">Start from the job in front of you. Each pack installs with one command, and every role pack brings <a href="core/">core</a> with it. The number beside a pack is how many of that job's skills it holds.</p>
 {''.join(groups)}
@@ -315,7 +319,7 @@ def skill_page(s, by_name, packs, outcome_of):
               ("The whole pack it belongs to:", f"npx skilldrop-cli install --pack {home}"),
               ("By hand, from a clone of the repo:", f"cp -R {s['path']} ~/.claude/skills/"),
               (f"In Claude Code, with the {home} plugin installed, invoke it as:", f"/{home}:{name}")]
-    parts = ['<main class="inner pk">',
+    parts = ['<main class="inner pk" id="main">',
              f'<p class="pk__crumb"><a href="../../catalogue/">Skills</a> · <a href="../../packs/{esc(home)}/">{esc(home)}</a></p>',
              f'<h1 class="pk__title"><code>{esc(name)}</code></h1>',
              f'<p class="pk__lede">{esc(s["description"])}</p>',
@@ -346,7 +350,15 @@ def skill_page(s, by_name, packs, outcome_of):
         parts.append(f"<h2>Related skills</h2><p>{', '.join(rel(r) for r in related)}</p>")
     parts.append(f'<h2>Source</h2><p><a href="{REPO_URL}/blob/main/{esc(s["path"])}/SKILL.md">SKILL.md</a> · '
                  f'<a href="{REPO_URL}/tree/main/{esc(s["path"])}">the whole folder</a> on GitHub.</p></main>')
-    return shell(name, s["description"], f"{SITE_URL}skills/{name}/", 2, "\n".join(parts), current="catalogue/")
+    url = f"{SITE_URL}skills/{name}/"
+    meta = (breadcrumbs_ld([("skilldrop", SITE_URL), ("Skills", f"{SITE_URL}catalogue/"),
+                            (home, f"{SITE_URL}packs/{home}/"), (name, url)])
+            + ld({"@context": "https://schema.org", "@type": "SoftwareSourceCode", "name": name,
+                  "description": s["description"], "url": url,
+                  "codeRepository": f"{REPO_URL}/tree/main/{s['path']}", "license": "https://opensource.org/licenses/MIT",
+                  "version": s["version"], "isPartOf": {"@type": "Collection", "name": f"skilldrop {home} pack",
+                                                        "url": f"{SITE_URL}packs/{home}/"}}))
+    return shell(name, s["description"], url, 2, "\n".join(parts), current="catalogue/", extra_head=meta)
 
 
 def changelog_page():
@@ -361,7 +373,7 @@ def changelog_page():
     text = "\n".join(out)
     # The file's own intro is for maintainers (format rules); the page starts at the releases.
     text = text[text.index("\n## ") + 1:] if "\n## " in text else text
-    body = (f'<main class="inner pk cl"><h1 class="pk__title">What\'s new</h1>'
+    body = (f'<main class="inner pk cl" id="main"><h1 class="pk__title">What\'s new</h1>'
             f'{render_md(text, src="CHANGELOG.md", docs_base="../docs/")}</main>')
     return shell("What's new", "Every skilldrop release and what it lets you do.",
                  f"{SITE_URL}changelog/", 1, body, current="changelog/")
@@ -416,6 +428,26 @@ def search_index(skills, packs, loop_list):
     return out
 
 
+def not_found_page():
+    """GitHub Pages serves /404.html for any missing URL, at whatever depth it was asked for,
+    so every link here is absolute to the site root rather than relative."""
+    root = "/skilldrop/"
+    body = f"""<main class="inner pk" id="main">
+<h1 class="pk__title">That page isn't here.</h1>
+<p class="pk__lede">The link may be from before skills moved into packs (<code>skills/&lt;name&gt;/</code> is now <code>packs/&lt;pack&gt;/skills/&lt;name&gt;/</code> on GitHub), or the page never existed. Search, or start from one of these:</p>
+<ul class="pk__list">
+<li><a href="{root}packs/">Packs</a><p>Every pack, grouped by the job it does, with what to try first.</p></li>
+<li><a href="{root}catalogue/">All skills</a><p>Search and filter every skill by job, pack or tier.</p></li>
+<li><a href="{root}docs/">Docs</a><p>Install guides, tutorials, the loop reference and the skill catalogue.</p></li>
+<li><a href="{root}changelog/">What's new</a><p>Every release and what it lets you do.</p></li>
+</ul>
+<p><a class="js-search" href="{root}docs/">Search the site</a> (press <kbd>/</kbd>)</p>
+</main>"""
+    page = shell("Page not found", "This page doesn't exist. Find a pack, a skill or a guide instead.",
+                 f"{SITE_URL}404.html", 0, body, root=root)
+    return page.replace('<link rel="canonical"', '<meta name="robots" content="noindex">\n<link rel="canonical"', 1)
+
+
 def render():
     """Return {relative_path: html} for every generated inner page."""
     skills, _, _ = collect()
@@ -429,6 +461,7 @@ def render():
     home_of = {s["name"]: s["packs"][0] for s in skills if s["packs"]}
     loop_by_name = {l["name"]: l for l in loops()}
     out = {"packs/index.html": index_page(packs, outcomes, home_of),
+           "404.html": not_found_page(),
            "changelog/index.html": changelog_page(),
            "skills/index.html": '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=../catalogue/">'
                                 '<link rel="canonical" href="' + SITE_URL + 'catalogue/"><a href="../catalogue/">All skills</a>\n'}
@@ -451,7 +484,7 @@ def main():
         os.makedirs(os.path.dirname(p), exist_ok=True)
         with open(p, "w", encoding="utf-8") as f:
             f.write(body)
-    print(f"wrote {len(pages) - 1} pages (packs, skills, changelog) and search.json under {args.out}")
+    print(f"wrote {len(pages) - 1} pages (packs, skills, changelog, 404) and search.json under {args.out}")
 
 
 if __name__ == "__main__":
