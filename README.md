@@ -485,7 +485,7 @@ npx skilldrop-cli install --loop --pack sre-oncall      # every loop that pack d
 npx skilldrop-cli agents                                # the reviewer subagents
 npx skilldrop-cli install --agent devils-advocate       # -> ~/.claude/agents/ (RFC-0012)
 npx skilldrop-cli install --panel review                # the whole review fleet: 3 subagents + the pre-merge-review orchestrator (RFC-0020)
-npx skilldrop-cli outdated && npx skilldrop-cli update  # skills improve; cp -R never tells you
+npx skilldrop-cli outdated && npx skilldrop-cli update  # skills improve; files you edited are kept, new copy as <file>.upstream
 npx skilldrop-cli list | skilldrop info <skill> | skilldrop packs | skilldrop uninstall <skill>
 npx skilldrop-cli list --json                            # machine-readable: list/info/packs/agents/outdated (RFC-0021)
 ```
