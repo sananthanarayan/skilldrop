@@ -23,6 +23,7 @@
         "additionalProperties": false,
         "required": ["description", "skills"],
         "properties": {
+          "for": { "type": "string", "description": "Who this job belongs to, shown on the home page's outcome cards." },
           "description": { "type": "string", "description": "The chip's tooltip on the catalogue site." },
           "skills": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
         }

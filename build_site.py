@@ -25,6 +25,7 @@ the build refuses, for the same reason collect() refuses a half-row catalogue.
 import argparse
 import build_llms  # llms.txt is served at the site root too (RFC-0030)
 import catalog     # where skills, loops and packs live (RFC-0034)
+from build_docs import render_md, _slug  # the proof section renders a skill's worked example
 import html
 import json
 import os
@@ -59,11 +60,13 @@ PITCH = {
     "hero_h1": "Your agent can draft anything. What ships is still your call.",
     # Search results cut a description off around 160 characters; the hero lede runs twice that.
     "meta_description": "Portable AI-agent skills for ADRs, PRDs, runbooks, decks and reviews. Copy one folder into Claude Code, Cursor, Kiro or Codex, or install a whole role pack.",
+    # No counts in the pitch: a number tells a newcomer nothing about what they get back, and it
+    # goes stale. Counts stay where they help a choice (pack sizes, catalogue filters).
     "hero_lede": (
-        "skilldrop is six loops over 63 portable skills, and nothing leaves a loop until its gate "
-        "passes — a script, a review panel, or a person, chosen by how expensive the mistake is to "
-        "undo. Every skill is still a plain folder you copy into your agent. No runtime, no platform, "
-        "no transformation on the way in."
+        "Skills that produce the files your work actually ships — ADRs, PRDs, runbooks, decks, "
+        "reviews — each with a quality bar it is held to, and loops whose gates can say no: a "
+        "script, a review panel, or you, chosen by how expensive the mistake is to undo. Every skill "
+        "is a plain folder you copy into your agent."
     ),
     "tension_h2": "Generic agents are fluent about everything and opinionated about nothing.",
     "tension_body": (
@@ -104,6 +107,28 @@ PITCH = {
         "and keep it only if the output was worth keeping."
     ),
 }
+
+PROMISES = [
+    ("Copy, never transform", "What runs in your agent is what was reviewed here."),
+    ("A gate that can say no", "A script, a review panel or you decides when work moves on."),
+    ("Your edits survive updates", "New versions land beside the files you changed."),
+]
+
+# "Yours after it lands" and "Run it for your team": what agent-ready-repo's home page sells and
+# ours had the features for but never said.
+OWN = [
+    ("A folder you can read", "Installing copies plain <code>SKILL.md</code> folders into the directory your agent already reads. No runtime, no service, nothing to keep running.", "docs/how-to/install-per-ide.html"),
+    ("Edits that survive updates", "Change a skill to fit your codebase. <code>skilldrop update</code> replaces only files you didn't touch and leaves the new version beside yours as <code>.upstream</code>.", "docs/how-to/upgrade-skills.html"),
+    ("Only what you need", "One skill, one pack, one loop, or a whole profile, into Claude Code, Cursor, Kiro, Codex, Copilot or Antigravity.", "docs/how-to/install.html"),
+]
+TEAM = [
+    ("One setup for everyone", "A profile installs a team's packs, loops and reviewer agents in one command.", "skilldrop install --profile starter", "docs/how-to/profiles.html"),
+    ("Every machine, no per-session step", "Bootstrap writes the marketplace into Claude Code settings, so each session already sees the catalogue.", "skilldrop bootstrap", "docs/how-to/enterprise-distribution.html"),
+    ("Your own catalogue", "Publish your organisation's skills from any repo in the same shape, and install them through the same CLI.", "skilldrop install --pack <name> --from <your-repo>", "docs/how-to/publish-a-catalogue.html"),
+]
+
+# The home page's proof: one real worked example, input then output, from a skill's examples/.
+PROOF_SKILL = "launch-readiness"
 
 QUALITY = [
     ("Quality bar", "A checkable standard for the output — not adjectives. A skill without one is a description, not a generator."),
@@ -262,7 +287,7 @@ def collect():
             outcome_of.setdefault(sk, []).append(oname)
     for sk in skills:
         sk["outcomes"] = outcome_of.get(sk["name"], [])
-    outcome_meta = [{"name": k, "description": v["description"], "count": len(v["skills"])}
+    outcome_meta = [{"name": k, "description": v["description"], "count": len(v["skills"]), "for": v.get("for", "")}
                     for k, v in doc.get("outcomes", {}).items()]
 
     return skills, pack_meta, outcome_meta
@@ -632,6 +657,59 @@ def site_nav(root="", current=None):
 {SEARCH_JS}"""
 
 
+def guide_href(path_):
+    """A guides/<kind>/<slug>.md path as its page in the docs portal; anything else on GitHub."""
+    m = re.match(r"^guides/([^/]+)/([^/]+)\.md$", path_)
+    return f"docs/{m.group(1)}/{m.group(2)}.html" if m else f"{REPO_URL}/blob/main/{path_}"
+
+
+def example_parts(skill):
+    """(title, input_md or None, output_md, note_md, rel_path) from a skill's first
+    examples/*.md. The files come in three shapes, read in this order:
+      - '## Input given to the skill', then --- , the output, then --- and why it is good
+      - '## Input ...' and '## Output ...' headings, with an optional '## Why ...' after
+      - anything else: the whole file, as one pane (input None)."""
+    d = os.path.join(catalog.skill_dir(skill), "examples")
+    files = sorted(f for f in os.listdir(d) if f.endswith(".md")) if os.path.isdir(d) else []
+    if not files:
+        return None
+    rel = catalog.rel(os.path.join(d, files[0]))
+    text = open(os.path.join(ROOT, rel), encoding="utf-8").read()
+    m = re.search(r"^# (.+)$", text, re.M)
+    title = m.group(1) if m else files[0]
+    body = re.sub(r"^# .+$\n?", "", text, count=1, flags=re.M).strip()
+    if re.search(r"^## Input given to the skill\s*$", body, re.M):
+        chunks = re.split(r"^-{3,}\s*$", body, flags=re.M)
+        if len(chunks) > 1:
+            inp = re.sub(r"^## Input given to the skill\s*$", "", chunks[0], flags=re.M).strip()
+            return title, inp, chunks[1].strip(), "\n\n".join(c.strip() for c in chunks[2:]).strip(), rel
+    mi = re.search(r"^## Input\b.*$", body, re.M)
+    mo = re.search(r"^## Output\b.*$", body, re.M)
+    if mi and mo and mi.start() < mo.start():
+        mw = re.search(r"^## Why\b.*$", body[mo.end():], re.M)
+        out_end = mo.end() + mw.start() if mw else len(body)
+        inp = body[mi.end():mo.start()].strip().strip("-").strip()
+        out = body[mo.end():out_end].strip().strip("-").strip()
+        note = body[out_end:].strip() if mw else ""
+        return title, inp, out, note, rel
+    return title, None, body, "", rel
+
+
+def proof(skill):
+    """The home page's 'see it work' panes: a real input beside the output the skill returned."""
+    parts = example_parts(skill)
+    if not parts:
+        return ""
+    title, inp, out, note, rel = parts
+    return f"""<div class="proof">
+  <div class="proof__pane"><div class="proof__label">Input — what the team pasted</div>
+    <div class="proof__body">{render_md(inp, src=rel)}</div></div>
+  <div class="proof__pane"><div class="proof__label">Output — what <code>{esc(skill)}</code> returned</div>
+    <div class="proof__body">{render_md(out, src=rel)}</div></div>
+</div>
+<p class="proof__more"><a class="pack__cta" href="skills/{esc(skill)}/#example">Read the whole report on the skill page &rarr;</a></p>"""
+
+
 def card(s, root="", show_pack=True):
     """One compact row. The full description is one clamped line — the whole point of the
     redesign is that the page does not dump 49 paragraphs at a reader who hasn't chosen yet.
@@ -670,11 +748,9 @@ def render(skills, packs, outcomes, version, releases):
     tier_counts = {t: sum(1 for s in skills if s["tier"] == t) for t in tiers}
 
     loop_list = loops()
-    stats = [(str(len(skills)), "skills"), (str(len(loop_list)), "loops"),
-             (str(len(packs)), "packs"), ("0", "runtime deps")]
-    stats_html = "".join(
-        f'<div class="stat"><div class="stat__n">{esc(n)}</div><div class="stat__l">{esc(l)}</div></div>'
-        for n, l in stats)
+    promises_html = "".join(
+        f'<div class="promise"><div class="promise__t">{esc(t)}</div><div class="promise__l">{esc(l)}</div></div>'
+        for t, l in PROMISES)
 
     quality_html = "".join(
         f'<article class="qcard"><h3>{esc(t)}</h3><p>{b}</p></article>' for t, b in QUALITY)
@@ -705,13 +781,27 @@ def render(skills, packs, outcomes, version, releases):
             return _overrides[slug]
         return slug.replace("-", " ").capitalize()
 
+    def serving(o):
+        """The packs that hold this outcome's skills, most first — so a reader goes from the
+        job to the packs that do it, as agent-ready-repo's use cases do."""
+        tally = {}
+        for sk in skills:
+            if o["name"] in sk.get("outcomes", []) and sk["packs"]:
+                tally[sk["packs"][0]] = tally.get(sk["packs"][0], 0) + 1
+        return [p for p, _ in sorted(tally.items(), key=lambda kv: (-kv[1], kv[0]))][:3]
+
     outcome_cards = "".join(
         f"""<li class="pack">
       <div class="pack__head">
         <h3 class="pack__name">{esc(humanize_slug(o['name']))}</h3><span class="pack__n">{o['count']} skills</span>
       </div>
+      {f'<p class="pack__for">{esc(o["for"])}</p>' if o.get("for") else ''}
       <p class="pack__desc">{esc(o['description'])}</p>
-      <button class="pack__cta" data-filter="outcome" data-value="{esc(o['name'])}">Filter the catalogue &rarr;</button>
+      <p class="pack__packs">{" ".join(f'<a href="packs/{esc(p)}/">{esc(p)}</a>' for p in serving(o))}</p>
+      <div class="pack__ctas">
+        <a class="pack__cta" href="packs/{esc(serving(o)[0])}/">Open {esc(serving(o)[0])} &rarr;</a>
+        <button class="pack__cta pack__cta--sub" data-filter="outcome" data-value="{esc(o['name'])}">Filter the catalogue</button>
+      </div>
     </li>""" for o in outcomes)
 
     guides_html = "".join(
@@ -719,23 +809,36 @@ def render(skills, packs, outcomes, version, releases):
       <h3>{esc(kind)}</h3>
       <p class="guides-tagline">{esc(meta['tagline'])}</p>
       <ul>{"".join(
-        f'<li><a href="{REPO_URL}/blob/main/{esc(path_)}">{esc(title)}</a>'
+        f'<li><a href="{esc(guide_href(path_))}">{esc(title)}</a>'
         f'<span class="guides-desc">{esc(desc)}</span></li>'
         for title, path_, desc in meta['items']
       )}</ul>
     </div>"""
         for kind, meta in GUIDES.items())
 
+    # Plain language on the home page: who decides, at which step. Gate ids, caps and stage
+    # contracts live in the loop reference the card links to.
+    WHO = {"mechanical": "a script decides", "review": "a review panel decides", "human": "you decide"}
+    ref = open(os.path.join(ROOT, "guides", "reference", "loops.md"), encoding="utf-8").read()
+    anchors = {m.group(1): _slug(re.sub(r"[*`\[\]]", "", m.group(0)[3:]))
+               for m in re.finditer(r"^## `([a-z0-9-]+)`.*$", ref, re.M)}
     loop_cards = "".join(
         f"""<li class="pack">
       <div class="pack__head">
-        <h3 class="pack__name">{esc(lp['name'])}</h3><span class="pack__n">{esc(lp['kind'])} &middot; cap {lp['cap']}</span>
+        <h3 class="pack__name">{esc(lp['name'])}</h3><span class="pack__n">{'wrapper' if lp['kind'] == 'wrapper' else 'loop'}</span>
       </div>
-      <p class="pack__desc">{esc(lp['description'])}</p>
-      <p class="pack__desc"><code>{esc(' \u2192 '.join(st['id'] for st in lp['stages']))}</code></p>
-      <p class="pack__desc">Gates: {esc(', '.join(f"{st['gate']['id']} ({st['gate']['kind']})" for st in lp['stages'] if st['gate']) or 'none')}</p>
-      <p class="pack__install"><code>skilldrop install --loop {esc(lp['name'])}</code></p>
+      <p class="pack__desc">{esc(lp['description'].split(' Use when')[0].rstrip('.'))}.</p>
+      <ul class="pack__who">{"".join(f"<li><b>{esc(st['id'].capitalize())}</b>: {WHO.get(st['gate']['kind'], st['gate']['kind'])}</li>" for st in lp['stages'] if st['gate'])}</ul>
+      <a class="pack__cta" href="docs/reference/loops.html#{esc(anchors.get(lp['name'], ''))}">Every stage &rarr;</a>
     </li>""" for lp in loop_list)
+
+    own_cards = "".join(
+        f'<article class="qcard"><h3>{esc(t)}</h3><p>{b}</p><p><a href="{h}">How it works &rarr;</a></p></article>'
+        for t, b, h in OWN)
+    team_cards = "".join(
+        f'<article class="qcard"><h3>{esc(t)}</h3><p>{esc(b)}</p><p class="pack__install"><code>{esc(c)}</code></p>'
+        f'<p><a href="{h}">Read the guide &rarr;</a></p></article>' for t, b, c, h in TEAM)
+    proof_html = proof(PROOF_SKILL)
 
     agent_cards = "".join(
         f"""<li class="pack">
@@ -867,6 +970,27 @@ a {{ color:var(--accent-700); }}
 .cta--ghost {{ border-color:var(--w-20); color:var(--w-80); }}
 .cta--ghost:hover {{ background:var(--w-10); }}
 .stats {{ display:flex; flex-wrap:wrap; gap:2.6rem; border-top:1px solid var(--w-06); padding-top:1.9rem; }}
+.promises {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:1.6rem 2.4rem; border-top:1px solid var(--w-06); padding-top:1.9rem; }}
+.promise__t {{ font-size:1.02rem; font-weight:700; letter-spacing:-.01em; color:#fff; }}
+.promise__l {{ font-size:.86rem; color:var(--w-60); margin-top:.25rem; }}
+.pack__for {{ margin:-.2rem 0 .6rem; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--accent-700); }}
+.pack__packs {{ display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }}
+.pack__packs a {{ font:.76rem var(--mono); text-decoration:none; color:var(--fg); border:1px solid var(--border); border-radius:999px; padding:2px 9px; }}
+.pack__packs a:hover {{ border-color:var(--accent-700); color:var(--accent-700); }}
+.pack__who {{ list-style:none; margin:0 0 1rem; padding:0; font-size:.86rem; color:var(--fg-muted); flex:1; }}
+.pack__who li {{ margin:.2rem 0; }}
+.pack__who b {{ color:var(--fg); font-weight:600; }}
+.proof {{ display:grid; grid-template-columns:minmax(0,2fr) minmax(0,3fr); gap:1.2rem; margin-top:1.4rem; }}
+@media (max-width:860px) {{ .proof {{ grid-template-columns:1fr; }} }}
+.proof__pane {{ background:var(--card); border:1px solid var(--border); border-radius:var(--r); overflow:hidden; }}
+.proof__label {{ font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--fg-muted); padding:.7rem 1rem; border-bottom:1px solid var(--border); background:var(--surface-alt); }}
+.proof__body {{ padding:.4rem 1.1rem 1rem; font-size:.86rem; max-height:560px; overflow:auto; }}
+.proof__body table {{ border-collapse:collapse; width:100%; font-size:.8rem; margin:.6rem 0; }}
+.proof__body th, .proof__body td {{ border-bottom:1px solid var(--border); padding:.35rem .45rem; text-align:left; vertical-align:top; }}
+.proof__body h1 {{ font-size:1.05rem; margin:.8rem 0 .3rem; }}
+.proof__body h2 {{ font-size:.92rem; margin:1rem 0 .3rem; }}
+.proof__body code {{ font:.85em var(--mono); background:var(--accent-10); padding:0 3px; border-radius:3px; }}
+.proof__more {{ margin-top:1rem; }}
 .stat__n {{ font-size:1.85rem; font-weight:700; letter-spacing:-.02em; }}
 .stat__l {{ font-size:.78rem; color:var(--w-60); text-transform:uppercase; letter-spacing:.08em; }}
 
@@ -1105,10 +1229,10 @@ a {{ color:var(--accent-700); }}
     <h1>{esc(PITCH['hero_h1'])}</h1>
     <p class="lede">{esc(PITCH['hero_lede'])}</p>
     <div class="cta-row">
-      <a class="cta cta--primary" href="#catalogue">Browse {len(skills)} skills</a>
-      <a class="cta cta--ghost" href="{REPO_URL}">View on GitHub</a>
+      <a class="cta cta--primary" href="packs/">Find your pack &rarr;</a>
+      <a class="cta cta--ghost" href="#proof">See what a skill produces</a>
     </div>
-    <div class="stats">{stats_html}</div>
+    <div class="promises">{promises_html}</div>
   </div>
 </header>
 
@@ -1153,24 +1277,33 @@ a {{ color:var(--accent-700); }}
   </div></div>
 </section>
 
-<section class="section section--alt" id="loops">
+<section class="section section--alt" id="proof">
   <div class="inner">
-    <p class="eyebrow">Loops</p>
-    <h2>A way of operating, not just a bag of parts</h2>
-    <p class="lede">A loop is an ordered sequence of stages over these skills, with a gate between them &mdash; nothing leaves a loop until its gate passes. Five cover the lifecycle and are separated by how expensive the mistake is to unwind; one wraps any generator. A loop sequences skills and never contains one, so every skill still installs and runs on its own.</p>
-    <ul class="grid-3">{loop_cards}</ul>
-    <p class="pack__install" style="margin-top:1.5rem"><code>skilldrop install --loop build</code> &mdash; the loop plus every stage skill it sequences.</p>
+    <p class="eyebrow">See it work</p>
+    <h2>One real run: a launch that is not ready yet.</h2>
+    <p class="lede">The input is what a team would paste. The output is what <a href="skills/{PROOF_SKILL}/"><code>{PROOF_SKILL}</code></a> returns, unedited, from its worked example. Note what it refuses: the rollback is fine, so it does not block, but two failure modes nothing would detect send it back.</p>
+    {proof_html}
   </div>
 </section>
 
 <section class="section" id="outcomes">
   <div class="inner">
-    <p class="eyebrow">Outcomes</p>
-    <h2>Pick the job in front of you.</h2>
-    <p class="lede">Each outcome filters the catalogue to the skills that do that job. Pick the one that matches what you need today.</p>
+    <p class="eyebrow">Use cases</p>
+    <h2>Start with the job. Meet the packs second.</h2>
+    <p class="lede">Pick the outcome you need today. Each one names who it is for and the packs that do it; every role pack brings <code>core</code> with it.</p>
     <ul class="grid-3">{outcome_cards}</ul>
   </div>
 </section>
+
+<section class="section section--alt" id="loops">
+  <div class="inner">
+    <p class="eyebrow">Loops</p>
+    <h2>The agent does the work. The decisions you can't undo stay yours.</h2>
+    <p class="lede">A loop runs skills in order and stops at a gate before anything moves on. The cheaper the mistake, the more a script decides; the harder it is to undo, the more it waits for you. Each loop comes with its pack, and every skill still runs on its own.</p>
+    <ul class="grid-3">{loop_cards}</ul>
+  </div>
+</section>
+
 
 <section class="section" id="quality">
   <div class="inner">
@@ -1178,6 +1311,23 @@ a {{ color:var(--accent-700); }}
     <h2>{esc(PITCH['quality_h2'])}</h2>
     <p class="lede">{esc(PITCH['quality_lede'])}</p>
     <div class="grid-4">{quality_html}</div>
+  </div>
+</section>
+
+<section class="section section--alt" id="own">
+  <div class="inner">
+    <p class="eyebrow">Yours after it lands</p>
+    <h2>What lands is files you can read, diff and edit.</h2>
+    <div class="grid-4">{own_cards}</div>
+  </div>
+</section>
+
+<section class="section" id="team">
+  <div class="inner">
+    <p class="eyebrow">For teams</p>
+    <h2>Run it for your team.</h2>
+    <p class="lede">The same commands scale from one person to an organisation: a shared setup, every machine pointed at the catalogue, and your own skills alongside these.</p>
+    <div class="grid-4">{team_cards}</div>
   </div>
 </section>
 
@@ -1217,7 +1367,7 @@ a {{ color:var(--accent-700); }}
 {preview_cards}
       </ul>
       <p class="catalogue-cta-row">
-        <a class="cta cta--ghost catalogue-cta" href="catalogue/">Browse all {len(skills)} skills &rarr;</a>
+        <a class="cta cta--ghost catalogue-cta" href="catalogue/">Browse every skill &rarr;</a>
       </p>
     </div>
   </div>

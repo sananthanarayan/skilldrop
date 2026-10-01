@@ -4,6 +4,7 @@
   "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "ai-engineering", "claude-api"],
   "outcomes": {
     "decide-what-to-build": {
+      "for": "Product managers · founders · strategists",
       "description": "Turn a direction into a committed, measurable plan: press releases, strategy frameworks, OKRs, business cases, requirements, PRDs, and the metrics that will say whether it worked.",
       "skills": [
         "prfaq",
@@ -20,6 +21,7 @@
       ]
     },
     "design-the-system": {
+      "for": "Architects · tech leads",
       "description": "Commit the shape before the code: decision records, design docs, diagrams, contracts, schemas, migration and threat models, and the design of any agentic parts.",
       "skills": [
         "adr-generator",
@@ -40,6 +42,7 @@
       ]
     },
     "build-and-review-software": {
+      "for": "Software teams · coding agents",
       "description": "The loop around the code itself: supervised implementation, adversarial review panels, test plans, triage, accessibility and static-analysis passes, and the policy files agents read.",
       "skills": [
         "feature-implement-loop",
@@ -58,6 +61,7 @@
       ]
     },
     "build-on-the-claude-api": {
+      "for": "Teams building on the Anthropic API",
       "description": "Skills for teams building directly on the Anthropic API — prompt caching strategy, token budgeting, eval generation, and tool-use schema writing.",
       "skills": [
         "prompt-caching-advisor",
@@ -67,6 +71,7 @@
       ]
     },
     "run-and-recover-the-service": {
+      "for": "SRE · on-call · platform teams",
       "description": "Operate what shipped: runbooks, observability design, release notes, incident communication, and the postmortem that closes the loop.",
       "skills": [
         "runbook-generator",
@@ -78,6 +83,7 @@
       ]
     },
     "explain-it-to-decision-makers": {
+      "for": "Anyone presenting to leadership",
       "description": "Get a non-technical audience to a decision: audience profiling, deck outlines and real decks, exec summaries, decision logs, and how-to guides.",
       "skills": [
         "audience-profile",
@@ -89,6 +95,7 @@
       ]
     },
     "govern-ai-use": {
+      "for": "AI enablement · engineering leaders · risk owners",
       "description": "Adopt AI deliberately and prove what it is doing: readiness assessment, use-case triage, rollout plans, acceptable-use policy, adoption staging, and usage reporting.",
       "skills": [
         "ai-readiness-assessment",
@@ -100,6 +107,7 @@
       ]
     },
     "get-a-draft-ready-to-ship": {
+      "for": "Anyone shipping a document",
       "description": "The passes either side of a generator: collect a messy input into a structured brief, critique the argument, and strip the machine artifacts before it leaves the building.",
       "skills": [
         "brief-intake",
