@@ -5,7 +5,7 @@
     python3 build_site.py --out <dir>  # write somewhere else
     python3 build_site.py --check      # exit 1 if build/ differs from a fresh render
 
-Every skill fact on the page comes from skills/<name>/manifest.json, packs.json, or
+Every skill fact on the page comes from packs/<pack>/skills/<name>/manifest.json, catalogue.json, or
 model-routing.json. A description typed into this file would be a fourth copy of a
 string validate.py already keeps in sync across two (RFC-0011).
 
@@ -18,12 +18,13 @@ The page is one self-contained file: CSS and JS inline, no external requests, no
 paths. That is what makes it work unchanged under the /skilldrop/ project-pages base path.
 
 RFC-0026 added three sources, all read the same way — never retyped here: the `outcomes`
-block in packs.json (the second browse axis), CHANGELOG.md (the Recently shipped strip),
+block in catalogue.json (the second browse axis), CHANGELOG.md (the Recently shipped strip),
 and the version in package.json. The changelog's newest version must match package.json or
 the build refuses, for the same reason collect() refuses a half-row catalogue.
 """
 import argparse
 import build_llms  # llms.txt is served at the site root too (RFC-0030)
+import catalog     # where skills, loops and packs live (RFC-0034)
 import html
 import json
 import os
@@ -32,7 +33,6 @@ import shutil
 import sys
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-SKILLS = os.path.join(ROOT, "skills")
 ASSETS = os.path.join(ROOT, "assets")
 # Binary assets copied verbatim into the build (og.png is rendered once from assets/og.svg
 # with rsvg-convert and committed, so the build itself stays stdlib-only).
@@ -188,7 +188,7 @@ GUIDES = {
 INSTALL_TABS = [
     ("a role pack", "npx skilldrop-cli install --pack solution-architect", "16 skills a solution architect reaches for, in one command."),
     ("one skill", "npx skilldrop-cli install adr-generator --with-related", "--with-related also pulls the companions it hands off to."),
-    ("by hand", "cp -R skills/adr-generator ~/.claude/skills/", "No CLI required. The folder is the whole install."),
+    ("by hand", "cp -R packs/solution-architect/skills/adr-generator ~/.claude/skills/", "No CLI required. The folder is the whole install."),
     ("stay current", "npx skilldrop-cli outdated && npx skilldrop-cli update", "Skills improve; cp -R never tells you."),
 ]
 
@@ -200,7 +200,8 @@ def read_json(path):
 
 def collect():
     """Manifests + packs + tiers -> one list of skill records. Fails loudly."""
-    packs = read_json(os.path.join(ROOT, "packs.json"))["packs"]
+    packs = catalog.packs()
+    skill_dirs = catalog.skills()
     tiers = read_json(os.path.join(ROOT, "model-routing.json"))["skills"]
 
     pack_of = {}
@@ -209,18 +210,19 @@ def collect():
             pack_of.setdefault(s, []).append(pack_name)
 
     names = sorted(
-        d for d in os.listdir(SKILLS)
-        if os.path.isfile(os.path.join(SKILLS, d, "manifest.json"))
+        d for d in skill_dirs
+        if os.path.isfile(os.path.join(skill_dirs[d], "manifest.json"))
     )
     skills, problems = [], []
     for name in names:
-        m = read_json(os.path.join(SKILLS, name, "manifest.json"))
+        m = read_json(os.path.join(skill_dirs[name], "manifest.json"))
         if name not in pack_of:
-            problems.append(f"{name}: in no pack (packs.json)")
+            problems.append(f"{name}: in no pack")
         if name not in tiers:
             problems.append(f"{name}: no entry in model-routing.json")
         skills.append({
             "name": name,
+            "path": catalog.rel(skill_dirs[name]),
             "description": m["description"],
             "version": m["version"],
             "tier": m.get("model", {}).get("tier", ""),
@@ -247,7 +249,7 @@ def collect():
 
     # RFC-0026: outcomes are the second browse axis, read from the same file as packs.
     # validate.py guarantees every skill appears in one, so a chip can never be a dead end.
-    doc = read_json(os.path.join(ROOT, "packs.json"))
+    doc = {"outcomes": catalog.outcomes()}
     outcome_of = {}
     for oname, o in doc.get("outcomes", {}).items():
         for sk in o["skills"]:
@@ -333,7 +335,7 @@ def card(s):
    data-tier="{esc(tier)}" data-packs="{esc(' '.join(s['packs']))}"
    data-outcomes="{esc(' '.join(s.get('outcomes', [])))}"
    data-text="{esc((s['name'] + ' ' + s['description'] + ' ' + ' '.join(s['tags'])).lower())}">
-  <a class="skill__link" href="{REPO_URL}/blob/main/skills/{esc(s['name'])}/SKILL.md"
+  <a class="skill__link" href="{REPO_URL}/blob/main/{esc(s['path'])}/SKILL.md"
      title="{esc(s['description'])}">
     <span class="skill__name">{esc(s['name'])}</span>
     <span class="skill__desc">{esc(s['description'])}</span>
@@ -436,7 +438,7 @@ def render(skills, packs, outcomes, version, releases):
     pack_cards = "".join(
         f"""<li class="pack">
       <div class="pack__head">
-        <h3 class="pack__name">{esc(p['name'])}</h3><span class="pack__n">{p['count']} skills{''.join(' + ' + esc(r) for r in p['requires'])}</span>
+        <h3 class="pack__name"><a href="packs/{esc(p['name'])}/">{esc(p['name'])}</a></h3><span class="pack__n">{p['count']} skills{''.join(' + ' + esc(r) for r in p['requires'])}</span>
       </div>
       <p class="pack__desc">{esc(p['description'])}</p>
       <p class="pack__install"><code>skilldrop install --pack {esc(p['name'])}</code></p>
@@ -620,6 +622,8 @@ a {{ color:var(--accent-700); }}
 }}
 .pack__head {{ display:flex; align-items:baseline; gap:.6rem; margin-bottom:.55rem; }}
 .pack__name {{ margin:0; font-size:1rem; font-family:var(--mono); letter-spacing:-.01em; }}
+.pack__name a {{ color:inherit; text-decoration:none; }}
+.pack__name a:hover {{ color:var(--accent-700); text-decoration:underline; }}
 .pack__n {{
   margin-left:auto; font-size:.68rem; text-transform:uppercase; letter-spacing:.07em;
   color:var(--accent-700); background:var(--accent-10); border-radius:999px; padding:2px 9px; white-space:nowrap;
@@ -1197,22 +1201,18 @@ def ld_json(skills):
 
 
 def loops():
-    """The loops (RFC-0028). Read straight from loops/<name>/loop.json, so the site cannot
-    disagree with the contract validate.py enforces. A loop has no tier: it sequences skills
-    and makes no model call of its own."""
-    d = os.path.join(ROOT, "loops")
-    if not os.path.isdir(d):
-        return []
+    """The loops (RFC-0028). Read straight from packs/<pack>/loops/<name>/loop.json, so the
+    site cannot disagree with the contract validate.py enforces. A loop has no tier: it
+    sequences skills and makes no model call of its own."""
     out = []
-    for n in sorted(os.listdir(d)):
-        f = os.path.join(d, n, "loop.json")
-        if not os.path.exists(f):
-            continue
+    for n, ldir in catalog.loops().items():
+        f = os.path.join(ldir, "loop.json")
         with open(f, encoding="utf-8") as fh:
             spec = json.load(fh)
         stages = spec.get("stages", [])
         out.append({
             "name": spec["name"], "kind": spec.get("kind", "loop"), "cap": spec.get("cap", 3),
+            "path": catalog.rel(ldir),
             "description": spec.get("description", ""),
             "stages": [{"id": st["id"], "type": st["type"], "intent": st.get("intent", ""),
                         "skills": st.get("skills", []),
@@ -1253,7 +1253,9 @@ def outputs(skills, packs, outcomes, version, releases):
             f"  <url><loc>{SITE_URL}</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>\n"
             f"  <url><loc>{SITE_URL}catalogue/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>\n"
             f"  <url><loc>{SITE_URL}docs/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>\n"
-            "</urlset>\n"
+            f"  <url><loc>{SITE_URL}packs/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>\n"
+            + "".join(f"  <url><loc>{SITE_URL}packs/{p['name']}/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>\n" for p in packs)
+            + "</urlset>\n"
         ),
     }
 

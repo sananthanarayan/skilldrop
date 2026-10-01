@@ -1,0 +1,22 @@
+{
+  "description": "Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.",
+  "display_name": "Solution architect",
+  "keywords": ["architecture", "adr", "design-doc", "threat-model", "diagrams"],
+  "links": {
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/solution-architect/"
+  },
+  "maintainers": [
+    {
+      "name": "sananthanarayan"
+    }
+  ],
+  "first-value": {
+    "audience-posture": "technical",
+    "prerequisites": [],
+    "starter-task": "Record an architecture decision your team already made",
+    "starter-prompt": "Write an ADR: we're moving our session store from Redis to DynamoDB. We considered staying on Redis, DynamoDB, and Postgres; we chose DynamoDB for managed scaling and lower ops load.",
+    "verification": "adr-generator returns an ADR with context, the options considered with their trade-offs, the decision, and its consequences.",
+    "recovery": "If adr-generator does not activate, ask for it by name (\"use adr-generator\") and check that its folder exists in your skills folder (`~/.claude/skills/` by default)."
+  },
+  "requires": ["core"]
+}

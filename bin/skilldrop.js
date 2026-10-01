@@ -3,7 +3,8 @@
  * or any directory, from the bundled catalog or any third-party catalog
  * (--from <path | git-url[#ref]>). Zero dependencies; copy-only, never executes
  * catalog content at install time.
- * Reads two catalog shapes: skilldrop (flat skills/) and agentbundle (packs/<p>/.apm/skills).
+ * Reads three catalog shapes: skilldrop pack folders (packs/<p>/pack.json + packs/<p>/skills/),
+ * flat skilldrop (skills/ + packs.json), and agentbundle (packs/<p>/pack.toml + .apm/skills).
  * Design: skilldrop-cli-design/skilldrop-cli-design.md
  * Scope:  docs/rfcs/0002-skilldrop-cli.md, docs/rfcs/0003-third-party-catalogs.md,
  *         docs/rfcs/0014-agentbundle-interop.md (the agentbundle reader)
@@ -36,6 +37,7 @@ const HELP = `skilldrop — portable AI-agent skills for Claude Code, Cursor, Ki
 Usage:
   skilldrop list [--from <src>]           all skills in a catalog (name, version, tier)
   skilldrop info <skill> [--from <src>]   description, related, packs, deps
+  skilldrop info --pack <name>            a pack's skills, loops, and what to try first (RFC-0032)
   skilldrop packs [--from <src>]          role-based packs
   skilldrop agents [--from <src>]         reviewer subagents in a catalog
   skilldrop loops [--from <src>]          loops — sequenced stages over skills (RFC-0028)
@@ -65,8 +67,8 @@ Usage:
 
 Catalogs:
   (default)          the catalog bundled with this package
-  --from <dir|url>   a skilldrop catalog (skills/<name>/{SKILL.md,manifest.json}) OR an
-                     agentbundle one (packs/<pack>/.apm/skills/<name>/SKILL.md); a git URL
+  --from <dir|url>   a skilldrop catalog (packs/<pack>/skills/<name>/ or flat skills/<name>/) OR
+                     an agentbundle one (packs/<pack>/.apm/skills/<name>/SKILL.md); a git URL
                      works for either — append #<branch-or-tag> to pin
 
 Install/update/uninstall targets (pick one):
@@ -107,7 +109,7 @@ function parseArgs(argv) {
   const out = { _: [], flags: {} };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a === "--pack" || a === "--ide" || a === "--dest" || a === "--from" || a === "--panel") out.flags[a.slice(2)] = argv[++i];
+    if (a === "--pack" || a === "--ide" || a === "--dest" || a === "--from" || a === "--panel" || a === "--profile") out.flags[a.slice(2)] = argv[++i];
     else if (a.startsWith("--")) out.flags[a.slice(2)] = true;
     else out._.push(a);
   }
@@ -115,15 +117,18 @@ function parseArgs(argv) {
 }
 
 /* ---------- catalogs ----------
-   Two on-disk shapes are read (RFC-0003, RFC-0014):
-     "skilldrop" — flat skills/<name>/{SKILL.md,manifest.json} + optional packs.json
+   Three on-disk shapes are read (RFC-0003, RFC-0014, RFC-0034):
+     "packs"     — skilldrop's own layout since RFC-0034: packs/<pack>/{pack.json,
+                   skills/<name>/{SKILL.md,manifest.json}, loops/<name>/} + catalogue.json
+     "skilldrop" — flat skills/<name>/{SKILL.md,manifest.json} + optional packs.json; what
+                   skilldrop shipped before RFC-0034, and what most third-party catalogs use
      "apm"       — agentbundle (agent-ready-repo): packs/<pack>/{pack.toml,
                    .apm/skills/<name>/SKILL.md, .apm/agents/<name>.md}
    The apm reader normalizes into the same accessors the native path uses — skills keyed by
    folder name, a per-skill manifest synthesized from the SKILL.md frontmatter + the pack.toml
    version, each pack.toml's [pack] table a virtual pack — so `--from git+https://…/agent-ready-repo`
    installs his packs through this same CLI. Skill accessors: skillsIn / skillDir / skillExists /
-   manifestOf; never touch cat.skillsDir directly (it exists only on the skilldrop shape). */
+   manifestOf; never touch cat.skillsDir directly (it exists only on the flat skilldrop shape). */
 
 const catalogCache = {};
 function resolveCatalog(source) {
@@ -142,11 +147,36 @@ function resolveCatalog(source) {
     }
   }
   const src = source || BUNDLED;
+  const packsDir = path.join(dir, "packs");
+  if (fs.existsSync(packsDir) && fs.readdirSync(packsDir).some((p) => fs.existsSync(path.join(packsDir, p, "pack.json"))))
+    return (catalogCache[key] = readPacksCatalog(dir, src));
   if (fs.existsSync(path.join(dir, "skills")))
     return (catalogCache[key] = { dir, source: src, shape: "skilldrop", skillsDir: path.join(dir, "skills") });
   if (fs.existsSync(path.join(dir, "packs")))
     return (catalogCache[key] = readApmCatalog(dir, src));
-  die(`'${src}' is not a catalog — expected a skills/ (skilldrop) or packs/ (agentbundle) directory`);
+  die(`'${src}' is not a catalog — expected packs/<pack>/pack.json, a skills/ directory, or packs/<pack>/pack.toml (agentbundle)`);
+}
+
+/* RFC-0034: membership is the folder. A skill is in a pack because it sits at
+   packs/<pack>/skills/<name>/; catalogue.json only sets the order packs are listed in. */
+function readPacksCatalog(dir, source) {
+  const packsDir = path.join(dir, "packs");
+  const children = (d, marker) => fs.existsSync(d)
+    ? fs.readdirSync(d).filter((x) => fs.existsSync(path.join(d, x, marker))).sort() : [];
+  const onDisk = children(packsDir, "pack.json");
+  const idx = path.join(dir, "catalogue.json");
+  const listed = fs.existsSync(idx) ? (readJSON(idx).packs || []).filter((p) => onDisk.includes(p)) : [];
+  const order = [...listed, ...onDisk.filter((p) => !listed.includes(p))];
+  const skillIndex = {}, loopIndex = {}, packsData = {};
+  for (const pack of order) {
+    const pdir = path.join(packsDir, pack);
+    const skills = children(path.join(pdir, "skills"), "SKILL.md");
+    const loops = children(path.join(pdir, "loops"), "loop.json");
+    for (const s of skills) if (!skillIndex[s]) skillIndex[s] = { dir: path.join(pdir, "skills", s) };
+    for (const l of loops) if (!loopIndex[l]) loopIndex[l] = path.join(pdir, "loops", l);
+    packsData[pack] = Object.assign({}, readJSON(path.join(pdir, "pack.json")), { skills, loops });
+  }
+  return { dir, source, shape: "packs", skillIndex, loopIndex, packsData };
 }
 
 /* Minimal TOML read — the [pack] table's basic-string scalars (name, version, description).
@@ -208,11 +238,11 @@ function readApmCatalog(dir, source) {
 }
 
 function skillsIn(cat) {
-  if (cat.shape === "apm") return Object.keys(cat.skillIndex).sort();
+  if (cat.skillIndex) return Object.keys(cat.skillIndex).sort();
   return fs.readdirSync(cat.skillsDir).filter((d) => fs.statSync(path.join(cat.skillsDir, d)).isDirectory()).sort();
 }
 function skillDir(cat, s) {
-  if (cat.shape === "apm") return cat.skillIndex[s] && cat.skillIndex[s].dir;
+  if (cat.skillIndex) return cat.skillIndex[s] && cat.skillIndex[s].dir;
   return path.join(cat.skillsDir, s);
 }
 // Skill names reach RegExp when unwiring hooks. skillExists() proves a directory exists; it
@@ -231,7 +261,7 @@ function manifestOf(cat, s) {
     if (!cat.skillIndex[s]) throw new Error(`no such skill '${s}'`);
     return cat.skillIndex[s].manifest;
   }
-  return readJSON(path.join(cat.skillsDir, s, "manifest.json"));
+  return readJSON(path.join(skillDir(cat, s), "manifest.json"));
 }
 
 /* Agents (RFC-0012): single markdown files, frontmatter is already Claude Code's format.
@@ -263,7 +293,7 @@ function checkAgent(cat, a) {
   return problems;
 }
 function packsOf(cat) {
-  if (cat.shape === "apm") return Object.keys(cat.packsData).length ? cat.packsData : null;
+  if (cat.packsData) return Object.keys(cat.packsData).length ? cat.packsData : null;
   const p = path.join(cat.dir, "packs.json");
   return fs.existsSync(p) ? readJSON(p).packs : null;
 }
@@ -718,7 +748,7 @@ function expandNames(args, cat) {
   if (args.flags.all) return skillsIn(cat);
   if (args.flags.pack) {
     const ps = packsOf(cat);
-    if (!ps) die(`catalog '${cat.source}' has no packs.json — install skills by name`);
+    if (!ps) die(`catalog '${cat.source}' defines no packs — install skills by name`);
     const p = ps[args.flags.pack];
     if (!p) die(`unknown pack '${args.flags.pack}' in catalog '${cat.source}'`);
     return packMembers(ps, args.flags.pack, "skills");
@@ -920,6 +950,8 @@ function install(args) {
     console.log(`deps: ${s} needs Python packages — run: cd ${path.join(dest, s)} && python3 -m pip install -r requirements.txt`);
   if (suggestions.size)
     console.log(`related (not installed): ${[...suggestions].sort().join(", ")} — add --with-related or install by name.`);
+  const pk = args.flags.pack && (packsOf(cat) || {})[args.flags.pack];
+  if (pk && pk["first-value"]) console.log("\n" + firstValueLines(pk).join("\n"));
 }
 
 function installedRows(flags) {
@@ -1030,11 +1062,12 @@ function listAgents(args) {
    stages name, unless --no-skills. Optional in a catalog. */
 function loopsIn(cat) {
   if (cat.shape === "apm") return [];
+  if (cat.loopIndex) return Object.keys(cat.loopIndex).sort();
   const d = path.join(cat.dir, "loops");
   if (!fs.existsSync(d)) return [];
   return fs.readdirSync(d).filter((x) => fs.existsSync(path.join(d, x, "loop.json"))).sort();
 }
-function loopDir(cat, n) { return path.join(cat.dir, "loops", n); }
+function loopDir(cat, n) { return cat.loopIndex ? cat.loopIndex[n] : path.join(cat.dir, "loops", n); }
 function loopSpec(cat, n) { return readJSON(path.join(loopDir(cat, n), "loop.json")); }
 
 function loopSkills(cat, n) {
@@ -1088,7 +1121,7 @@ function installLoops(args) {
   let names = args._.slice();
   if (!names.length && args.flags.pack) {
     const ps = packsOf(cat);
-    if (!ps) die(`catalog '${cat.source}' has no packs.json`);
+    if (!ps) die(`catalog '${cat.source}' defines no packs`);
     const pk = ps[args.flags.pack];
     if (!pk) die(`unknown pack '${args.flags.pack}' in catalog '${cat.source}'`);
     names = packMembers(ps, args.flags.pack, "loops");
@@ -1221,9 +1254,37 @@ function list(args) {
   console.log(`\n${rows.length} skills in catalog '${cat.source}'. Details: skilldrop info <skill>`);
 }
 
-function info(args) {
+/* RFC-0032: what to try first after installing a pack, how to tell it worked, what to do
+   if it didn't — the same first-value block the pack's site page renders. */
+function firstValueLines(p) {
+  const fv = p["first-value"];
+  if (!fv) return [];
+  const out = [`Start here: ${fv["starter-task"]}`, "", `  ${fv["starter-prompt"]}`, ""];
+  for (const pre of fv.prerequisites || []) out.push(`  before you start: ${pre}`);
+  out.push(`  worked if: ${fv.verification}`, `  if nothing happens: ${fv.recovery}`);
+  return out;
+}
+
+function infoPack(args) {
   const cat = resolveCatalog(args.flags.from);
-  const s = args._[0] || die("pass a skill name");
+  const ps = packsOf(cat) || die(`catalog '${cat.source}' has no packs`);
+  const name = args.flags.pack;
+  const p = ps[name] || die(`unknown pack '${name}' — available: ${Object.keys(ps).join(", ")}`);
+  if (args.flags.json)
+    return emitJSON({ catalog: cat.source, name, ...p });
+  console.log(`${p.display_name || name}  (${name})\n\n${p.description}\n`);
+  console.log(`skills:   ${p.skills.join(", ")}`);
+  if ((p.requires || []).length) console.log(`requires: ${p.requires.join(", ")} (installed with it)`);
+  if ((p.loops || []).length) console.log(`loops:    ${p.loops.join(", ")}`);
+  if (p.links && p.links.documentation) console.log(`page:     ${p.links.documentation}`);
+  const fv = firstValueLines(p);
+  if (fv.length) console.log("\n" + fv.join("\n"));
+}
+
+function info(args) {
+  if (args.flags.pack) return infoPack(args);
+  const cat = resolveCatalog(args.flags.from);
+  const s = args._[0] || die("pass a skill name, or --pack <name>");
   if (!skillExists(cat, s)) die(`unknown skill '${s}' in catalog '${cat.source}'`);
   const m = manifestOf(cat, s);
   const ps = packsOf(cat) || {};
@@ -1283,7 +1344,7 @@ function validateCmd(args) {
   if (ps)
     for (const [n, p] of Object.entries(ps))
       for (const s of p.skills)
-        if (!names.includes(s)) { console.log(`FAIL packs.json: pack '${n}' lists unknown skill '${s}'`); bad++; }
+        if (!names.includes(s)) { console.log(`FAIL packs: pack '${n}' lists unknown skill '${s}'`); bad++; }
   if (bad) { console.log(`\n${bad} problem(s) in catalog '${cat.source}'.`); process.exit(1); }
   console.log(`OK: ${names.length} skills in catalog '${cat.source}' pass the structural check.`);
 }

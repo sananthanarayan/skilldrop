@@ -25,7 +25,7 @@ updates:
           - "*"
 
   - package-ecosystem: pip
-    directory: /skills/deck-builder
+    directory: /packs/stakeholder-comms/skills/deck-builder
     schedule:
       interval: monthly
     commit-message:
@@ -36,7 +36,7 @@ updates:
   # Watch only. A major bump here can raise the Python floor, which is a breaking change
   # for anyone on an older interpreter — review the release notes before merging.
   - package-ecosystem: pip
-    directory: /skills/figma-diagrams
+    directory: /packs/solution-architect/skills/figma-diagrams
     schedule:
       interval: monthly
     commit-message:

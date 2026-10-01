@@ -81,7 +81,7 @@ Running it a second time is safe — it detects the existing entry and exits cle
 
 ## CI drift guard
 
-The `pages.yml` workflow runs `python3 build_marketplace.py --check` before every Pages deploy. A PR that edits `packs.json` without regenerating `marketplace.json` fails at that step. To regenerate:
+The `pages.yml` workflow runs `python3 build_marketplace.py --check` before every Pages deploy. A PR that changes a pack without regenerating `marketplace.json` fails at that step. To regenerate:
 
 ```bash
 python3 build_marketplace.py

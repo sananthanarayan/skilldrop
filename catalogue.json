@@ -1,0 +1,111 @@
+{
+  "$comment": "RFC-0034. The catalogue index: pack display order and the outcome browse axis (RFC-0026). Pack metadata lives in packs/<pack>/pack.json; membership is the folders — a skill is in a pack because it sits at packs/<pack>/skills/<name>/.",
+  "version": "1.0.0",
+  "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "ai-engineering", "claude-api"],
+  "outcomes": {
+    "decide-what-to-build": {
+      "description": "Turn a direction into a committed, measurable plan: press releases, strategy frameworks, OKRs, business cases, requirements, PRDs, and the metrics that will say whether it worked.",
+      "skills": [
+        "prfaq",
+        "strategy-analysis",
+        "okr-cascade",
+        "business-case",
+        "capacity-cost-model",
+        "requirements-interview",
+        "prd-draft",
+        "nfr-spec",
+        "success-metrics",
+        "user-story-splitter",
+        "user-journey-map"
+      ]
+    },
+    "design-the-system": {
+      "description": "Commit the shape before the code: decision records, design docs, diagrams, contracts, schemas, migration and threat models, and the design of any agentic parts.",
+      "skills": [
+        "adr-generator",
+        "design-doc",
+        "architecture-diagrams",
+        "reverse-architecture",
+        "figma-diagrams",
+        "api-contract-draft",
+        "db-schema-design",
+        "data-contract",
+        "tech-comparison-matrix",
+        "threat-model",
+        "agent-threat-model",
+        "migration-plan",
+        "agent-loop-design",
+        "subagent-design",
+        "agent-budget"
+      ]
+    },
+    "build-and-review-software": {
+      "description": "The loop around the code itself: supervised implementation, adversarial review panels, test plans, triage, accessibility and static-analysis passes, and the policy files agents read.",
+      "skills": [
+        "feature-implement-loop",
+        "pre-merge-review",
+        "devils-advocate",
+        "council-review",
+        "accessibility-audit",
+        "sonar-onboard",
+        "sonar-review",
+        "test-plan-generator",
+        "bug-triage",
+        "agents-md-generator",
+        "llm-eval-harness",
+        "eval-harness-generator",
+        "contribution-wizard"
+      ]
+    },
+    "build-on-the-claude-api": {
+      "description": "Skills for teams building directly on the Anthropic API — prompt caching strategy, token budgeting, eval generation, and tool-use schema writing.",
+      "skills": [
+        "prompt-caching-advisor",
+        "token-budget-estimator",
+        "eval-harness-generator",
+        "tool-use-schema-writer"
+      ]
+    },
+    "run-and-recover-the-service": {
+      "description": "Operate what shipped: runbooks, observability design, release notes, incident communication, and the postmortem that closes the loop.",
+      "skills": [
+        "runbook-generator",
+        "observability-plan",
+        "release-notes",
+        "incident-comms",
+        "postmortem-generator",
+        "launch-readiness"
+      ]
+    },
+    "explain-it-to-decision-makers": {
+      "description": "Get a non-technical audience to a decision: audience profiling, deck outlines and real decks, exec summaries, decision logs, and how-to guides.",
+      "skills": [
+        "audience-profile",
+        "slide-outliner",
+        "deck-builder",
+        "exec-summary",
+        "decision-log",
+        "guide-builder"
+      ]
+    },
+    "govern-ai-use": {
+      "description": "Adopt AI deliberately and prove what it is doing: readiness assessment, use-case triage, rollout plans, acceptable-use policy, adoption staging, and usage reporting.",
+      "skills": [
+        "ai-readiness-assessment",
+        "ai-use-case-triage",
+        "ai-adoption-rollout",
+        "ai-usage-policy",
+        "agent-adoption-stage",
+        "ai-usage-report"
+      ]
+    },
+    "get-a-draft-ready-to-ship": {
+      "description": "The passes either side of a generator: collect a messy input into a structured brief, critique the argument, and strip the machine artifacts before it leaves the building.",
+      "skills": [
+        "brief-intake",
+        "doc-critique",
+        "output-hygiene"
+      ]
+    }
+  }
+}

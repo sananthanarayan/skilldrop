@@ -1,0 +1,11 @@
+{
+  "name": "eval-harness-generator",
+  "version": "1.0.1",
+  "description": "Takes a skill's SKILL.md and generates a set of eval cases — trigger queries, expected output shape, and pass/fail criteria — ready to drop into the skill's evals/ directory. Use when adding evals to a new or existing skill, verifying a skill behaves as documented, or building a regression gate before modifying a skill.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": ["llm-eval-harness", "contribution-wizard"],
+  "tags": ["claude-api", "evals", "testing", "quality", "skilldrop-meta"],
+  "model": { "tier": "standard", "rationale": "Reads a SKILL.md and synthesizes eval cases — requires understanding of the skill's intent but not heavy reasoning." }
+}
