@@ -13,6 +13,7 @@ const fs = require("fs");
 const path = require("path");
 const os = require("os");
 const { execFileSync } = require("child_process");
+const crypto = require("crypto");
 
 const ROOT = path.resolve(__dirname, "..");
 const LEDGER = ".skilldrop.json";
@@ -48,7 +49,9 @@ Usage:
                                           (--no-skills for the loop alone) (RFC-0028)
   skilldrop install --panel review        install the review panel — the 3 reviewer subagents +
                                           the pre-merge-review orchestrator that fires them (RFC-0020)
-  skilldrop update                        re-copy installed skills whose version changed
+  skilldrop update [--force]              re-copy installed skills whose version changed; files
+                                          you edited are kept and the new copy lands beside them
+                                          as <file>.upstream (--force overwrites) (RFC-0032)
   skilldrop outdated                      show installed vs current versions, change nothing
   skilldrop uninstall <skill...>          remove skills (and wiring files this tool wrote)
   skilldrop uninstall --agent <name...>   remove subagents
@@ -263,6 +266,15 @@ function packsOf(cat) {
   if (cat.shape === "apm") return Object.keys(cat.packsData).length ? cat.packsData : null;
   const p = path.join(cat.dir, "packs.json");
   return fs.existsSync(p) ? readJSON(p).packs : null;
+}
+/* RFC-0033: a pack installs together with the packs it `requires` (in practice, core), so
+   one --pack still delivers a role's whole toolkit now that shared skills have one home. */
+function packMembers(ps, name, key) {
+  const req = (ps[name].requires || []).filter((r) => ps[r]);
+  const out = [];
+  for (const n of [...req, name]) for (const x of ps[n][key] || []) if (!out.includes(x)) out.push(x);
+  if (req.length) console.log(`pack '${name}' includes ${req.join(", ")}`);
+  return out;
 }
 function profilesOf(cat) {
   const p = path.join(cat.dir, "profiles.json");
@@ -709,7 +721,7 @@ function expandNames(args, cat) {
     if (!ps) die(`catalog '${cat.source}' has no packs.json — install skills by name`);
     const p = ps[args.flags.pack];
     if (!p) die(`unknown pack '${args.flags.pack}' in catalog '${cat.source}'`);
-    return p.skills.slice();
+    return packMembers(ps, args.flags.pack, "skills");
   }
   if (!args._.length) die("nothing to install — pass skill names, --pack <name>, or --all");
   for (const s of args._) if (!skillExists(cat, s)) die(`unknown skill '${s}' in catalog '${cat.source}'`);
@@ -721,8 +733,62 @@ function copyOne(cat, s, dest, ide, l, notes) {
   fs.cpSync(skillDir(cat, s), path.join(dest, s), { recursive: true });
   const note = writeWiring(ide, dest, s, m.description);
   if (note && notes) notes.push(note);
-  l.data[s] = { version: m.version, source: cat.source };
+  l.data[s] = { version: m.version, source: cat.source, files: fileHashes(skillDir(cat, s)) };
   return m;
+}
+
+/* RFC-0032: per-file SHA-256 of a skill as the catalog shipped it, recorded in the ledger at
+   copy time. It is the baseline `update` compares against, so a file the user edited is never
+   overwritten. Paths are forward-slash relative; *.upstream files are this tool's output. */
+function sha256(buf) { return crypto.createHash("sha256").update(buf).digest("hex"); }
+function fileHashes(dir) {
+  const out = {};
+  (function walk(d, rel) {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const r = rel ? `${rel}/${e.name}` : e.name;
+      if (e.isDirectory()) walk(path.join(d, e.name), r);
+      else if (e.isFile() && !e.name.endsWith(".upstream")) out[r] = sha256(fs.readFileSync(path.join(d, e.name)));
+    }
+  })(dir, "");
+  return out;
+}
+
+/* Update one skill file by file against the ledger baseline (RFC-0032):
+     upstream unchanged            -> leave the local file alone, edited or not
+     local untouched, or new file  -> take the new version
+     local edited, upstream moved  -> keep the local file, write the new one as <file>.upstream
+   A file the catalog dropped is removed only if the user never touched it. The new baseline is
+   what the catalog ships now, so a kept edit stays "edited" until the user merges it. */
+function mergeOne(cat, s, dest, ide, l, notes) {
+  const m = manifestOf(cat, s);
+  const src = skillDir(cat, s), dst = path.join(dest, s);
+  const base = l.data[s].files, next = fileHashes(src);
+  const kept = [], orphaned = [];
+  const at = (root, rel) => path.join(root, ...rel.split("/"));
+  const localHash = (rel) => { try { return sha256(fs.readFileSync(at(dst, rel))); } catch (e) { return null; } };
+  for (const [rel, h] of Object.entries(next)) {
+    const mine = localHash(rel), to = at(dst, rel);
+    if (mine === h) { fs.rmSync(to + ".upstream", { force: true }); continue; }
+    if (h === base[rel]) continue;
+    fs.mkdirSync(path.dirname(to), { recursive: true });
+    if (mine === null ? !(rel in base) : mine === base[rel]) {
+      fs.copyFileSync(at(src, rel), to);
+      fs.rmSync(to + ".upstream", { force: true });
+    } else {
+      fs.copyFileSync(at(src, rel), to + ".upstream");
+      kept.push(rel);
+    }
+  }
+  for (const rel of Object.keys(base)) {
+    if (rel in next) continue;
+    const mine = localHash(rel);
+    if (mine === base[rel]) fs.rmSync(at(dst, rel), { force: true });
+    else if (mine !== null) orphaned.push(rel);
+  }
+  const note = writeWiring(ide, dest, s, m.description);
+  if (note && notes) notes.push(note);
+  l.data[s] = { version: m.version, source: cat.source, files: next };
+  return { m, kept, orphaned };
 }
 
 /* Install a whole review panel — the reviewer subagents + the orchestrator skill — in one
@@ -874,18 +940,30 @@ function installedRows(flags) {
 function update(args) {
   const { dest, ide, l, rows } = installedRows(args.flags);
   if (!rows.length) return console.log(`nothing installed at ${dest}`);
-  let n = 0;
+  let n = 0, conflicts = 0;
   for (const r of rows) {
     if (!r.current) { console.log(`skip ${r.s}: source '${r.src}' unreachable or skill gone from it`); continue; }
     if (r.current === r.installed) continue;
     const problems = checkSkill(r.cat, r.s);
     if (problems.length) { console.log(`skip ${r.s}: fails structural check in '${r.src}' (${problems[0]})`); continue; }
-    copyOne(r.cat, r.s, dest, ide, l);
-    console.log(`updated ${r.s} ${r.installed} -> ${r.current} (${r.src})`);
+    // No baseline (installed before RFC-0032) or --force: overwrite as before, and record one.
+    const entry = l.data[r.s];
+    if (args.flags.force || typeof entry !== "object" || !entry.files) {
+      copyOne(r.cat, r.s, dest, ide, l);
+      console.log(`updated ${r.s} ${r.installed} -> ${r.current} (${r.src})`);
+    } else {
+      const { kept, orphaned } = mergeOne(r.cat, r.s, dest, ide, l);
+      console.log(`updated ${r.s} ${r.installed} -> ${r.current} (${r.src})`);
+      for (const f of kept) console.log(`  kept your edits in ${f} — new version at ${f}.upstream`);
+      for (const f of orphaned) console.log(`  kept ${f} — dropped upstream, but you edited it`);
+      conflicts += kept.length;
+    }
     n++;
   }
   saveLedger(l);
   console.log(n ? `\n${n} skill(s) updated.` : "everything up to date.");
+  if (conflicts)
+    console.log(`${conflicts} file(s) kept your edits. Merge each <file>.upstream into its file, then delete it — or rerun with --force to take every new version.`);
 }
 
 function outdated(args) {
@@ -1013,7 +1091,7 @@ function installLoops(args) {
     if (!ps) die(`catalog '${cat.source}' has no packs.json`);
     const pk = ps[args.flags.pack];
     if (!pk) die(`unknown pack '${args.flags.pack}' in catalog '${cat.source}'`);
-    names = (pk.loops || []).slice();
+    names = packMembers(ps, args.flags.pack, "loops");
     if (!names.length) die(`pack '${args.flags.pack}' declares no loops`);
   }
   if (!names.length && args.flags.all) names = available.slice();
@@ -1182,13 +1260,13 @@ function listPacks(args) {
       catalog: cat.source,
       count: ps ? Object.keys(ps).length : 0,
       packs: Object.entries(ps || {}).map(([name, p]) => ({
-        name, description: p.description || null, skills: p.skills || [],
+        name, description: p.description || null, skills: p.skills || [], requires: p.requires || [],
       })),
     });
   if (!ps) return console.log(`catalog '${cat.source}' defines no packs.`);
   const w = Math.max(...Object.keys(ps).map((n) => n.length));
   for (const [n, p] of Object.entries(ps))
-    console.log(`${n.padEnd(w)}  (${p.skills.length} skills)  ${p.description}`);
+    console.log(`${n.padEnd(w)}  (${p.skills.length} skills${(p.requires || []).length ? ` + ${p.requires.join(", ")}` : ""})  ${p.description}`);
   console.log("\nInstall one: skilldrop install --pack <name>");
 }
 

@@ -8,8 +8,8 @@
 **63 portable AI-agent skills for the deliverables knowledge workers actually ship** — diagrams, design docs, ADRs, PRDs, runbooks, decks, decision logs, threat models, adversarial reviews — installable into **Claude Code**, **Cursor**, **Kiro**, **Codex**, **GitHub Copilot**, and any AI tool that accepts custom instructions, one skill or one role-based pack at a time:
 
 ```bash
-npx skilldrop-cli install --pack product-manager     # or: solution-architect, dev-team,
-npx skilldrop-cli list                               #     sre-oncall, stakeholder-comms, ai-engineering, claude-api
+npx skilldrop-cli install --pack product-manager     # or: solution-architect, dev-team, sre-oncall,
+npx skilldrop-cli list                               #     stakeholder-comms, ai-engineering, claude-api (each brings core)
 ```
 
 Originally scoped to solution architects, now broadly useful to PMs, founders, consultants, engineering leaders, exec assistants — anyone who turns ideas into stakeholder-ready artifacts.
@@ -425,17 +425,18 @@ Why not have an LLM pick the model live on every call? Because that pays tokens 
 
 ## Skill packs — install a role's toolkit in one command
 
-Categories (above) say what a skill *is*; packs say *who needs it*. [`packs.json`](packs.json) defines six role-based bundles — packs overlap where a skill serves several roles, and every skill belongs to at least one:
+Categories (above) say what a skill *is*; packs say *who needs it*. [`packs.json`](packs.json) gives every skill and every loop **exactly one home** ([RFC-0033](docs/rfcs/0033-core-pack-and-single-home-skills.md)). Skills every role uses live in **`core`**, and each role pack `requires` it, so installing a role pack installs `core` with it in the same command:
 
-| Pack | Skills | For |
-|---|---|---|
-| `solution-architect` | 17 | Design-phase artifacts: diagrams, ADRs, design docs, contracts, schemas, threat models, and the reviews that gate them |
-| `dev-team` | 14 | Build-and-ship loop: implementation with adversarial review, test plans, triage, migrations, release notes, quality gates, pre-ship hygiene |
-| `product-manager` | 13 | Direction to requirements: PR/FAQs, strategy frameworks, OKRs, PRDs, journey maps, story splitting, success measurement |
-| `ai-engineering` | 12 | Build and run AI systems: agent loop design, subagent orchestration, spend budgets, eval harnesses, usage reporting, data contracts |
-| `stakeholder-comms` | 9 | Non-technical audiences: audience profiling, deck outlines and real `.pptx` decks, exec summaries, decision logs, guides |
-| `sre-oncall` | 5 | Operate the service: runbooks, observability design, incident comms, postmortems, capacity/cost models |
-| `claude-api` | 4 | Build on the Anthropic API: prompt caching strategy, token budgeting, eval generation for skills, tool-use schema writing |
+| Pack | Skills | Loops | For |
+|---|---|---|---|
+| `core` | 4 | `ship-a-draft` | Every role: structured intake, document critique, the review council, output hygiene. Comes with every role pack |
+| `dev-team` | 14 + core | `build`, `release` | Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, migrations, launch readiness, release notes, quality gates |
+| `solution-architect` | 11 + core | `design` | Design-phase artifacts: diagrams, ADRs, design docs, contracts, schemas, threat models |
+| `ai-engineering` | 11 + core | — | Adopt and build AI systems: readiness, use-case triage, rollout and policy, agent loop design, subagents, spend budgets, agent threat models, evals, usage reporting |
+| `product-manager` | 8 + core | `discover` | Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, success measurement |
+| `stakeholder-comms` | 6 + core | — | Non-technical audiences: audience profiling, deck outlines and real `.pptx` decks, exec summaries, decision logs, guides |
+| `sre-oncall` | 5 + core | `operate` | Operate the service: runbooks, observability design, incident comms, postmortems, capacity/cost models |
+| `claude-api` | 4 | — | Build on the Anthropic API: prompt caching strategy, token budgeting, eval generation for skills, tool-use schema writing. A specialist add-on; it does not bring core |
 
 ```bash
 python3 pack.py                                  # list packs
@@ -445,7 +446,7 @@ python3 pack.py product-manager --install --project      # into .claude/skills/ 
 python3 pack.py product-manager --install --dest .cursor/skills   # any dir, for non-Claude IDEs
 ```
 
-For non-Claude IDEs, `--dest` drops the folders where your tool expects them; the per-IDE wiring steps below still apply. Packs are metadata only — skills stay in flat `skills/<name>` folders, so per-skill `cp -R` installs keep working unchanged ([RFC-0001](docs/rfcs/0001-skill-packs.md) records the design decision).
+For non-Claude IDEs, `--dest` drops the folders where your tool expects them; the per-IDE wiring steps below still apply. Packs are metadata only — skills stay in flat `skills/<name>` folders, so per-skill `cp -R` installs keep working unchanged ([RFC-0001](docs/rfcs/0001-skill-packs.md) records the original decision; [RFC-0033](docs/rfcs/0033-core-pack-and-single-home-skills.md) replaced its overlapping packs with `core` and one home per skill).
 
 ## Outcomes — browse by why you're here
 
@@ -485,7 +486,7 @@ npx skilldrop-cli install --loop --pack sre-oncall      # every loop that pack d
 npx skilldrop-cli agents                                # the reviewer subagents
 npx skilldrop-cli install --agent devils-advocate       # -> ~/.claude/agents/ (RFC-0012)
 npx skilldrop-cli install --panel review                # the whole review fleet: 3 subagents + the pre-merge-review orchestrator (RFC-0020)
-npx skilldrop-cli outdated && npx skilldrop-cli update  # skills improve; cp -R never tells you
+npx skilldrop-cli outdated && npx skilldrop-cli update  # skills improve; files you edited are kept, new copy as <file>.upstream
 npx skilldrop-cli list | skilldrop info <skill> | skilldrop packs | skilldrop uninstall <skill>
 npx skilldrop-cli list --json                            # machine-readable: list/info/packs/agents/outdated (RFC-0021)
 ```
@@ -504,17 +505,19 @@ Then take the whole catalogue, or just your role's pack:
 
 ```text
 /plugin install skilldrop@skilldrop             # all 63 skills + 3 reviewer subagents
-/plugin install solution-architect@skilldrop    # 17 skills
-/plugin install dev-team@skilldrop              # 14 skills + the 3 reviewer subagents
-/plugin install product-manager@skilldrop       # 13 skills
-/plugin install ai-engineering@skilldrop        # 12 skills
-/plugin install stakeholder-comms@skilldrop     # 9 skills
-/plugin install sre-oncall@skilldrop            # 5 skills
+/plugin install dev-team@skilldrop              # 18 skills (incl. core) + the 3 reviewer subagents
+/plugin install solution-architect@skilldrop    # 15 skills (incl. core)
+/plugin install ai-engineering@skilldrop        # 15 skills (incl. core)
+/plugin install product-manager@skilldrop       # 12 skills (incl. core)
+/plugin install stakeholder-comms@skilldrop     # 10 skills (incl. core)
+/plugin install sre-oncall@skilldrop            # 9 skills (incl. core)
+/plugin install claude-api@skilldrop            # 4 skills
+/plugin install core@skilldrop                  # 4 skills, on their own
 ```
 
 Every skill then invokes as `/<plugin>:<name>` (e.g. `/skilldrop:prfaq`). The whole-catalogue plugin ships the flat `skills/` and `agents/` trees at the repo root unchanged — same copy-install premise, expressed in Claude's own plugin format.
 
-The six **pack plugins** work differently, because a plugin's skills have to sit in a `skills/` folder inside the plugin. Rather than duplicate every skill into six directories on `main` — physical packs, which [RFC-0001](docs/rfcs/0001-skill-packs.md) rejected — the marketplace entries use Claude's `git-subdir` source to point at `packs/<name>/` on a generated [`plugins`](https://github.com/sananthanarayan/skilldrop/tree/plugins) branch, rebuilt by CI on every push to main. Nothing moves in the source tree, and you still only ever type the one `marketplace add`. A pack carries the reviewer subagents its own skills delegate to, so `dev-team` brings the review panel and `sre-oncall` does not.
+The eight **pack plugins** work differently, because a plugin's skills have to sit in a `skills/` folder inside the plugin. Rather than duplicate every skill into eight directories on `main` — physical packs, which [RFC-0001](docs/rfcs/0001-skill-packs.md) rejected — the marketplace entries use Claude's `git-subdir` source to point at `packs/<name>/` on a generated [`plugins`](https://github.com/sananthanarayan/skilldrop/tree/plugins) branch, rebuilt by CI on every push to main. Nothing moves in the source tree, and you still only ever type the one `marketplace add`. Each role pack's plugin also carries `core`'s skills and loops, since a plugin installs on its own. A pack carries the reviewer subagents its own skills delegate to, so `dev-team` brings the review panel and `sre-oncall` does not.
 
 `.claude-plugin/{marketplace,plugin}.json` are generated from `package.json` + `packs.json` by [`build_marketplace.py`](build_marketplace.py) (`--check` guards drift in CI; `--dist` renders the branch). Use the CLI above when you want per-skill granularity, another IDE, or hooks; use the marketplace when you're in Claude Code. Rationale: [RFC-0027](docs/rfcs/0027-retire-agentbundle-export.md).
 
