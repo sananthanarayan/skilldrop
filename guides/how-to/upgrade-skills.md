@@ -16,13 +16,23 @@ npx skilldrop-cli outdated
 
 Compares the version in your ledger (`.skilldrop.json` in the install directory) against the latest in the catalogue. Does not change anything.
 
+## See what would change first
+
+```bash
+npx skilldrop-cli update --dry-run      # every decision update would make, nothing written
+npx skilldrop-cli diff runbook-generator   # your copy against the catalogue's, file by file
+```
+
+`diff` marks each changed file as your edit, a catalogue change, or both, then shows the
+line-level diff when git is on your PATH (`--stat` for the file list only).
+
 ## Update all outdated skills
 
 ```bash
 npx skilldrop-cli update
 ```
 
-Re-copies every skill whose version differs. Skills whose source is unreachable are skipped with a warning rather than failing the run.
+Re-copies every skill whose version differs. Skills whose source is unreachable are skipped with a warning rather than failing the run. Skills from a third-party catalogue are run through the supply-chain scan again after they update.
 
 ## Project-scope installs
 
@@ -53,4 +63,16 @@ npx skilldrop-cli update --project
 npx skilldrop-cli update --force
 ```
 
-`--force` overwrites every file, including ones you edited. Skills installed before this feature have no recorded hashes. Their first update overwrites as `--force` does, then records hashes, so later updates keep your edits.
+`--force` overwrites every file, including ones you edited. At a terminal it lists the edited files first and asks before overwriting them; `--yes` skips the question, and scripts and CI are never asked. Skills installed before this feature have no recorded hashes. Their first update overwrites as `--force` does, then records hashes, so later updates keep your edits.
+
+## Check an install is healthy
+
+```bash
+npx skilldrop-cli doctor
+```
+
+Compares the install directory with its ledger and reports skills recorded but missing,
+skills on disk that nothing recorded, `.upstream` files waiting to be merged, and wiring or
+hooks left behind for skills that are gone. Each finding comes with the command that fixes it.
+`doctor` itself changes nothing.
+

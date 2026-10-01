@@ -38,13 +38,15 @@ Complements `threat-model`, which runs STRIDE on the system the agent lives in. 
 
 6. **Write residual risk with owners.** Anything not fixed is accepted, in writing, by a **named role** with the trigger that would force revisiting it. An unowned residual risk is an unrecorded decision.
 
-7. **Emit in one message**: capability inventory, the matrix, fixes per 🟥, the three sweeps, residual risk with owners, and a **pre-launch checklist** of what to verify before the agent faces real data. End with the revisit trigger — the model is stale the moment a tool, a content source, or a credential scope is added.
+7. **Tag every 🟥 and 🟧 path with its OWASP IDs** from the table in [`reference.md`](reference.md): LLM Top 10 2025 (`LLM01:2025` prompt injection, `LLM02:2025` disclosure, `LLM06:2025` excessive agency, …) and, where the agent loads skills or plugins, the Agentic Skills Top 10 (`AST01`–`AST10`). A security team files findings against a framework; the tag lets them, without changing how the path is ranked.
+
+8. **Emit in one message**: capability inventory, the matrix, fixes per 🟥, the three sweeps, residual risk with owners, and a **pre-launch checklist** of what to verify before the agent faces real data. End with the revisit trigger — the model is stale the moment a tool, a content source, or a credential scope is added.
 
 **Non-interactive runs:** unstated capabilities are tagged `[assumption]` and modeled at their worst plausible scope. If no tool list, data reach, or content source can be established at all, emit `BLOCKED: need the agent's tool/permission inventory` — with nothing to inventory there is no model, and a fabricated one is worse than none.
 
 ## Useful references in this skill
 
-- [`reference.md`](reference.md) — the egress catalog (the sweep for step 1), the trust test for content sources, the ranked mitigation menu, and the injection-vector bank per source type
+- [`reference.md`](reference.md) — the egress catalog (the sweep for step 1), the trust test for content sources, the ranked mitigation menu, the injection-vector bank per source type, and the OWASP ID mapping for step 7
 - [`templates/agent-threat-model.md`](templates/agent-threat-model.md) — output skeleton
 - [`examples/support-triage-agent.md`](examples/support-triage-agent.md) — worked example: a Zendesk triage agent, 4 paths, 2 🟥, one split that fixes both
 
@@ -56,6 +58,7 @@ Complements `threat-model`, which runs STRIDE on the system the agent lives in. 
 - **Egress is enumerated past the network tool.** A model that lists only `http_request` failed the sweep — rendered markdown, error text, logs, and file writes are all channels.
 - **Every 🟥 is broken or signed off** by a named role with a revisit trigger. No silent acceptance.
 - **Every fix has a verification step** a reviewer can actually run — a config assertion, a test, an observed denial.
+- **Every 🟥 and 🟧 carries its OWASP IDs,** taken from the mapping table, not guessed from a risk's title.
 - **"Read-only" is never a safety claim.** Reading is how data reaches the attacker; the question is only where it goes next.
 
 ## When to use this skill

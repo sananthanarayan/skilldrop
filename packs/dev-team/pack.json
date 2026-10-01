@@ -18,5 +18,39 @@
     "verification": "pre-merge-review runs the project's lint, typecheck and tests through its gate script, then the reviewer panel, and ends with READY or NOT READY.",
     "recovery": "If the gate script cannot find your lint or test commands, tell it what they are. If the panel is skipped, install the reviewer subagents with `skilldrop install --panel review`."
   },
-  "requires": ["core"]
+  "requires": ["core"],
+  "journey": {
+    "when": "You have an agreed requirement or a triaged bug and want it implemented, verified and ready to merge.",
+    "you_bring": [
+      "the epic, story or bug report",
+      "a repo with working lint, typecheck and test commands",
+      "who owns the merge"
+    ],
+    "steps": [
+      {
+        "skill": "user-story-splitter",
+        "you_do": "Paste the epic or feature request (use bug-triage instead for a defect).",
+        "you_get": "Independently shippable stories with Gherkin acceptance criteria and a recommended build order.",
+        "decide": "Pick the one slice to build now; criteria a test cannot assert send it back to be reshaped."
+      },
+      {
+        "skill": "feature-implement-loop",
+        "you_do": "Hand it the slice and its acceptance criteria.",
+        "you_get": "Code and tests, reviewed for edge cases, security and craft for up to three rounds, with a status (VERIFIED, VERIFIED WITH OPEN ITEMS or BLOCKED), a criteria-to-test table and a round log."
+      },
+      {
+        "skill": "pre-merge-review",
+        "you_do": "Ask whether the current diff is safe to merge.",
+        "you_get": "The gate script's lint, typecheck and test result, then findings from the correctness, security and code-quality reviewers, ending in one verdict.",
+        "decide": "Gate G2 is the script's exit code: READY moves on; NOT READY goes back to implementation, at most three times before BLOCKED."
+      },
+      {
+        "skill": "council-review",
+        "you_do": "Only if the review surfaced a design disagreement, put it to the panel.",
+        "you_get": "Independent positions, the named cruxes, and a Chair's verdict with dissent recorded.",
+        "decide": "Gate G2.1: a human merges. SPLIT and RECONSIDER leave the loop rather than revising in the diff."
+      }
+    ],
+    "you_end_with": "A shaped story, verified code and tests, a READY verdict with the review findings, and a human merge decision."
+  }
 }

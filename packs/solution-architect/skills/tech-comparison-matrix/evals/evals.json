@@ -1,0 +1,18 @@
+{
+  "skill_name": "tech-comparison-matrix",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Help us pick a message broker: Kafka (self-managed), Amazon Kinesis, or RabbitMQ. Use case: order-event streaming for a multi-tenant SaaS app at Acme, about 5k events/sec at peak, consumers need replay for up to 7 days, ordering per tenant matters. Hard constraints: we run on AWS, and the platform team is two people with no capacity to run self-hosted clusters on call.",
+      "assertions": [
+        "Uses 8 to 10 criteria spanning capability fit, operational, cost, and risk, and names any criteria deliberately excluded",
+        "Shows a 1-5 weight for every criterion with the weight tied in writing to the use case or constraints (e.g. operational burden weighted high because the platform team is two people)",
+        "Every score has a one-line justification, and every 5 and every 1 is explained",
+        "Totals are computed as sum(weight x score), and a gap under 5% between the top options is called out",
+        "Ties are allowed where options genuinely don't differ; scores are not uniformly 3/5",
+        "The recommendation is one sentence and says what would change the answer; if it isn't the top scorer, the override is explained",
+        "Numbers that are estimates are marked 'rough' or 'directional'; no benchmarks are invented beyond the figures in the prompt"
+      ]
+    }
+  ]
+}

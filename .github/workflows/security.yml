@@ -1,0 +1,49 @@
+# Security scans on every push and PR: secrets (gitleaks), workflow correctness
+# (actionlint) and workflow security (zizmor). Tools are pinned to exact versions and
+# downloads are checksum-verified, so a compromised release can't slip in silently.
+name: security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    env:
+      GITLEAKS_VERSION: 8.30.1
+      GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+      ACTIONLINT_VERSION: 1.7.12
+      ACTIONLINT_SHA256: 8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8
+      ZIZMOR_VERSION: 1.30.1
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0  # gitleaks scans the full history
+          persist-credentials: false
+
+      - name: Install pinned scanners
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          curl -fsSLo gitleaks.tgz "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  gitleaks.tgz" | sha256sum -c -
+          curl -fsSLo actionlint.tgz "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz"
+          echo "${ACTIONLINT_SHA256}  actionlint.tgz" | sha256sum -c -
+          tar -xzf gitleaks.tgz gitleaks
+          tar -xzf actionlint.tgz actionlint
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+          python3 -m pip install --quiet --user "zizmor==${ZIZMOR_VERSION}"  # zizmor: ignore[adhoc-packages] exact version pin
+
+      - name: Secrets (gitleaks)
+        run: gitleaks git --config .gitleaks.toml --redact --no-banner .
+
+      - name: Workflow lint (actionlint)
+        run: actionlint
+
+      - name: Workflow security (zizmor)
+        run: zizmor --offline --min-severity medium .github/workflows action.yml

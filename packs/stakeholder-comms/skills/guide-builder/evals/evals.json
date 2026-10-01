@@ -1,0 +1,18 @@
+{
+  "skill_name": "guide-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Turn these notes into a guide for new engineers getting our Acme billing service running locally:\n\n- need docker + node 20\n- clone acme/billing, cp .env.example .env, set STRIPE_KEY to a test key\n- docker compose up -d postgres\n- npm ci then npm run migrate\n- npm run dev, it listens on 4000\n- if migrate fails it's usually postgres not up yet",
+      "assertions": [
+        "States the detected style (setup guide) up front with a one-line why and an invitation to redirect",
+        "Prerequisites are listed before the first step, and placeholders like <YOUR_STRIPE_TEST_KEY> are unmistakable and listed once up front",
+        "Each numbered step contains one action — 'npm ci then npm run migrate' is split into separate steps",
+        "Every command block is complete, paste-able, and followed by an expected result or verification (e.g. the service answers on port 4000)",
+        "Leads with the outcome rather than backstory, and pushes troubleshooting (migrate failing because postgres isn't up) to the end",
+        "No forward references that break top-to-bottom reading",
+        "Missing facts (e.g. the repo URL host or how to get a Stripe test key) are flagged as NEEDS INPUT rather than invented"
+      ]
+    }
+  ]
+}

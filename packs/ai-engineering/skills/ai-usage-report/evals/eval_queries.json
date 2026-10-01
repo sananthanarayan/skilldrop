@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Build me a monthly AI adoption report from this usage-event CSV",
+    "should_trigger": true
+  },
+  {
+    "query": "Which teams are generating AI output but never shipping it? Here's the telemetry export",
+    "should_trigger": true
+  },
+  {
+    "query": "Turn this JSONL of MCP usage events into a team rollup I can show execs",
+    "should_trigger": true
+  },
+  {
+    "query": "I suspect some people are invoking Copilot just to hit a usage target — can the logs show that?",
+    "should_trigger": true
+  },
+  {
+    "query": "Design a golden set and regression gate for our support-bot prompt",
+    "should_trigger": false
+  },
+  {
+    "query": "Define the product success metrics for our new AI summarization feature",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the policy on which AI tools staff may use with customer data",
+    "should_trigger": false
+  }
+]

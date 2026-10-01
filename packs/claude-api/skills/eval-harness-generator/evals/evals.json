@@ -1,0 +1,19 @@
+{
+  "skill_name": "eval-harness-generator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's the full SKILL.md for our new skilldrop skill `vendor-risk-screen` (a gate skill that reads a vendor security questionnaire and emits PROCEED, REVISE, or BLOCKED; its quality bar says it must never pass a vendor that has no SOC 2 report or equivalent, and must never invent certifications not in the questionnaire). [SKILL.md pasted below] Generate the eval cases for its evals/ folder.",
+      "assertions": [
+        "Produces 8 to 12 cases, each with id, trigger, expected_shape, must_not_include, verdict_class, and notes",
+        "Every trigger is a realistic input a user would paste (e.g. a specific questionnaire excerpt), not 'run this skill'",
+        "Every expected_shape item is checkable — it names a specific section, field, or behavior, not 'output is good'",
+        "At least 2 cases test the quality bar's failure modes, including a vendor with no SOC 2 report that must not get PROCEED",
+        "Because the skill is a gate, verdict_class values come from contracts/terminals.json and at least one case expects revise or blocked",
+        "At least one must_not_include entry forbids certifications or facts not present in the input questionnaire",
+        "A 3 to 5 sentence eval strategy note follows the JSON, naming the most important case and what a regression on it would mean",
+        "Ends with the placement reminder for packs/<pack>/skills/vendor-risk-screen/evals/ and running python3 validate.py"
+      ]
+    }
+  ]
+}

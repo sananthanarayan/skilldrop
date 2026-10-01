@@ -55,6 +55,10 @@ Usage:
                                           you edited are kept and the new copy lands beside them
                                           as <file>.upstream (--force overwrites) (RFC-0032)
   skilldrop outdated                      show installed vs current versions, change nothing
+  skilldrop diff <skill> [--stat]         what differs between your installed copy and the catalog's —
+                                          your edits, upstream changes, or both
+  skilldrop doctor                        check a target against its ledger: missing folders, leftover
+                                          .upstream files, stale wiring and hooks. Changes nothing.
   skilldrop uninstall <skill...>          remove skills (and wiring files this tool wrote)
   skilldrop uninstall --agent <name...>   remove subagents
   skilldrop uninstall --loop <name...>    remove loops (stage skills are left in place)
@@ -62,6 +66,9 @@ Usage:
   skilldrop scan [<skill...>] [--from <src>]  supply-chain scan — flag network/exec/credential
                                           patterns in scripts and injection-shaped instructions
                                           in SKILL.md before you trust a catalog (RFC-0022)
+  skilldrop new-skill <name> --pack <p>   scaffold a skill in the catalog you're in (for catalog authors;
+                                          --tier light|standard|heavy, default standard)
+  skilldrop --version                     print the CLI version
   skilldrop bootstrap                     add the skilldrop marketplace to ~/.claude/settings.json
                                           (idempotent — safe to run in onboarding scripts)
 
@@ -76,10 +83,17 @@ Install/update/uninstall targets (pick one):
   --project          ./.claude/skills           Claude Code + GitHub Copilot CLI, project scope
   --ide cursor       ./.cursor/skills           + writes .cursor/rules/<skill>.mdc
   --ide kiro         ./.kiro/skills             Kiro IDE + Kiro CLI (discovered natively)
-  --dest <dir>       any directory              e.g. .agents/skills (Codex, Copilot CLI),
-                                                .github/skills (Copilot), Continue / Cline / Aider
+  --ide codex        ~/.codex/skills            Codex (--project: ./.agents/skills)
+  --ide antigravity  ~/.gemini/antigravity-cli/skills   Antigravity CLI (--project: ./.agents/skills)
+  --ide copilot      ~/.copilot/skills          GitHub Copilot (--project: ./.github/skills)
+  --dest <dir>       any directory              e.g. Continue / Cline / Aider
+  --local            project scope, hidden from git via .git/info/exclude — try skills in a
+                     repo you don't own without touching its tracked files or .gitignore
 
 Options:
+  --dry-run          install | update | uninstall | new-skill: print what would change, change nothing
+  --yes              skip the confirmation uninstall and update --force ask for at a terminal
+                     (scripts and CI are never asked)
   --agent            operate on subagents instead of skills. Targets:
                        (default)      ~/.claude/agents      Claude Code (--project for repo scope)
                        --ide kiro     ./.kiro/agents        generated JSON, tools mapped
@@ -88,7 +102,7 @@ Options:
                        --ide antigravity  ~/.gemini/config/agents  markdown, subagent: true
                        --dest <dir>   any directory         copied as-is
                      Cursor has no agent format — use a custom mode (agents/README.md).
-  --json             machine-readable output for list | info | packs | agents | outdated —
+  --json             machine-readable output for list | info | packs | agents | outdated | doctor —
                      one JSON object on stdout, nothing else (for agents, scripts, CI)
   --with-related     also install each skill's related companions (one level)
   --with-hooks       also wire any hooks a skill declares (RFC-0006) — git pre-commit
@@ -109,7 +123,7 @@ function parseArgs(argv) {
   const out = { _: [], flags: {} };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a === "--pack" || a === "--ide" || a === "--dest" || a === "--from" || a === "--panel" || a === "--profile") out.flags[a.slice(2)] = argv[++i];
+    if (a === "--pack" || a === "--ide" || a === "--dest" || a === "--from" || a === "--panel" || a === "--profile" || a === "--tier") out.flags[a.slice(2)] = argv[++i];
     else if (a.startsWith("--")) out.flags[a.slice(2)] = true;
     else out._.push(a);
   }
@@ -359,33 +373,36 @@ function gate(cat, names) {
 
    Two rule sets, deliberately different:
    - SCRIPT_RULES run over executable files (real code): network, exec, credential, obfuscation.
-   - PROSE_RULES run over SKILL.md and only match *instructions to misbehave* — not security
+   - PROSE_RULES run over every markdown file (SKILL.md, reference.md, templates, examples) and only match *instructions to misbehave* — not security
      vocabulary, so a skill that legitimately discusses injection (threat-model) isn't flagged. */
 
 const SCRIPT_EXT = new Set([".py", ".js", ".mjs", ".cjs", ".sh", ".bash", ".zsh", ".rb", ".pl", ".ps1"]);
 
 const SCRIPT_RULES = [
-  { id: "exec-remote", sev: "🟥", why: "downloads and executes remote content — the classic supply-chain payload",
+  { id: "exec-remote", sev: "🟥", owasp: ["AST01", "AST02"], why: "downloads and executes remote content — the classic supply-chain payload",
     re: /(curl|wget)[^\n|]*\|\s*(sudo\s+)?(ba|z|)sh|eval\s*\(\s*(requests|urllib|fetch)|base64\s+(-d|--decode)[^\n|]*\|\s*(ba|z|)sh/i },
-  { id: "shell-exec", sev: "🟧", why: "executes shell commands",
+  { id: "shell-exec", sev: "🟧", owasp: ["AST03", "LLM06"], why: "executes shell commands",
     re: /\b(os\.system|subprocess\.(run|call|Popen|check_output)|child_process|execSync|spawnSync|shell_exec|`[^`\n]*\$\()/ },
-  { id: "network", sev: "🟧", why: "makes outbound network calls",
+  { id: "network", sev: "🟧", owasp: ["AST03", "LLM02"], why: "makes outbound network calls",
     re: /\b(requests\.(get|post|put)|urllib\.request|httpx\.|axios\.|node-fetch|\bfetch\s*\(\s*["'`]https?:|curl\s+https?:|wget\s+https?:)/i },
-  { id: "credentials", sev: "🟧", why: "reads credentials or secret material",
+  { id: "credentials", sev: "🟧", owasp: ["AST01", "LLM02"], why: "reads credentials or secret material",
     re: /\b(os\.environ|process\.env)\b[^\n]{0,40}(TOKEN|KEY|SECRET|PASSWORD|CREDENTIAL)|~\/\.(aws|ssh|npmrc|netrc)|\.env\b|id_rsa/i },
-  { id: "broad-fs", sev: "🟨", why: "writes outside the skill's own directory",
+  { id: "broad-fs", sev: "🟨", owasp: ["AST03", "LLM06"], why: "writes outside the skill's own directory",
     re: /\b(shutil\.rmtree|rm\s+-rf\s+[~/]|open\s*\(\s*["'`]\/(etc|usr|bin)|fs\.(unlink|rmSync)\s*\([^)]*\.\.\/)/ },
 ];
 
 const PROSE_RULES = [
-  { id: "instruction-override", sev: "🟥", why: "tells the agent to ignore its prior instructions",
+  { id: "instruction-override", sev: "🟥", owasp: ["AST01", "LLM01"], why: "tells the agent to ignore its prior instructions",
     re: /ignore\s+(all\s+)?(previous|prior|earlier|above|preceding)\s+(instructions|prompts|rules)/i },
-  { id: "conceal-from-user", sev: "🟥", why: "tells the agent to hide actions from the user",
+  { id: "conceal-from-user", sev: "🟥", owasp: ["AST01", "LLM01"], why: "tells the agent to hide actions from the user",
     re: /(do\s*n[o']?t|never|without)\s+(tell|telling|inform|informing|notify|notifying|mention|mentioning)\s+(the\s+)?(user|human)/i },
-  { id: "memory-overwrite", sev: "🟥", why: "instructs the agent to rewrite its own persistent memory/identity",
+  { id: "memory-overwrite", sev: "🟥", owasp: ["AST01", "LLM01"], why: "instructs the agent to rewrite its own persistent memory/identity",
     re: /(update|overwrite|append\s+to|modify)\s+your\s+(own\s+)?(SOUL|MEMORY|CLAUDE|AGENTS)\.md/i },
-  { id: "prose-exfil", sev: "🟧", why: "instructs the agent to send data to an external endpoint",
+  { id: "prose-exfil", sev: "🟧", owasp: ["AST01", "LLM02"], why: "instructs the agent to send data to an external endpoint",
     re: /\b(POST|send|upload|transmit)\b[^\n.]{0,60}\bto\s+https?:\/\//i },
+  { id: "remote-instructions", sev: "🟧", owasp: ["AST05", "LLM01"],
+    why: "tells the agent to fetch instructions from a URL at run time — what it obeys can change after you reviewed it",
+    re: /\b(fetch|download|load|read|follow|pull)\b[^\n.]{0,40}\b(instructions|rules|prompt|system prompt|skill|directives)\b[^\n.]{0,30}\bfrom\s+(https?:\/\/|<?url)/i },
 ];
 
 function walkFiles(dir, out = []) {
@@ -406,7 +423,7 @@ function scanSkill(cat, s) {
     const rel = path.relative(dir, file);
     const ext = path.extname(file).toLowerCase();
     const isScript = SCRIPT_EXT.has(ext);
-    const isProse = path.basename(file) === "SKILL.md";
+    const isProse = ext === ".md";
     if (!isScript && !isProse) continue;
     let body = "";
     try { body = fs.readFileSync(file, "utf8"); } catch (e) { continue; }
@@ -415,7 +432,7 @@ function scanSkill(cat, s) {
       if (line.length > 400) return; // minified/data line — not reviewable prose or code
       for (const r of rules) {
         if (r.re.test(line))
-          findings.push({ sev: r.sev, id: r.id, why: r.why, file: rel, line: i + 1, text: line.trim().slice(0, 120) });
+          findings.push({ sev: r.sev, id: r.id, why: r.why, owasp: r.owasp, file: rel, line: i + 1, text: line.trim().slice(0, 120) });
       }
     });
   }
@@ -432,7 +449,7 @@ function printScan(cat, names, { compact = false } = {}) {
     if (!worst || f[0].sev === "🟥") worst = worst === "🟥" ? worst : f[0].sev;
     console.log(`\n${s}`);
     for (const x of (compact ? f.slice(0, 3) : f))
-      console.log(`  ${x.sev} ${x.id} — ${x.why}\n     ${x.file}:${x.line}  ${x.text}`);
+      console.log(`  ${x.sev} ${x.id} — ${x.why}  [${x.owasp.join(", ")}]\n     ${x.file}:${x.line}  ${x.text}`);
     if (compact && f.length > 3) console.log(`     … ${f.length - 3} more (skilldrop scan ${s} --from ${cat.source})`);
   }
   return { total, worst };
@@ -458,21 +475,34 @@ function scan(args) {
     console.log(`\n${total} flagged pattern(s). These are HEURISTICS, not verdicts — a match can be` +
                 ` entirely legitimate (a skill that is *about* security, or a script that genuinely needs the network).`);
     console.log("Read the cited lines before installing. Nothing here is executed by skilldrop; installs copy files only.");
+    console.log("Tags are OWASP Agentic Skills Top 10 (AST) and LLM Top 10 2025 (LLM) IDs — guides/reference/owasp-mapping.md.");
   }
 }
 
 /* ---------- install targets & ledger ---------- */
 
+/* Skill directories per tool: [project path, user path]. A null user path means the tool only
+   reads skills from the repo. Paths are the ones each tool's own docs name, recorded with sources
+   in docs/designs/ide-primitive-coverage.md. .agents/skills is shared: Codex, Antigravity and
+   Copilot CLI all read it, so one project install reaches all three. */
+const SKILL_DIRS = {
+  claude: [[".claude", "skills"], [".claude", "skills"]],
+  cursor: [[".cursor", "skills"], null],
+  kiro: [[".kiro", "skills"], null],
+  codex: [[".agents", "skills"], [".codex", "skills"]],
+  antigravity: [[".agents", "skills"], [".gemini", "antigravity-cli", "skills"]],
+  copilot: [[".github", "skills"], [".copilot", "skills"]],
+};
+
 function target(flags) {
   if (flags.dest) return { dest: path.resolve(flags.dest), ide: "generic" };
   const ide = flags.ide || "claude";
-  if (ide === "claude")
-    return flags.project
-      ? { dest: path.resolve(".claude", "skills"), ide }
-      : { dest: path.join(os.homedir(), ".claude", "skills"), ide };
-  if (ide === "cursor") return { dest: path.resolve(".cursor", "skills"), ide };
-  if (ide === "kiro") return { dest: path.resolve(".kiro", "skills"), ide };
-  die(`unknown --ide '${ide}' (claude | cursor | kiro; use --dest for anything else)`);
+  const dirs = SKILL_DIRS[ide];
+  if (!dirs) die(`unknown --ide '${ide}' (${Object.keys(SKILL_DIRS).join(" | ")}; use --dest for anything else)`);
+  const [proj, user] = dirs;
+  // --local is a project install the repo never sees (see localExclude), so it implies --project.
+  if (flags.project || flags.local || !user) return { dest: path.resolve(...proj), ide };
+  return { dest: path.join(os.homedir(), ...user), ide };
 }
 
 /* Claude Code tool name -> Kiro built-in tool name. Confirmed against
@@ -597,10 +627,100 @@ function ledger(dest) {
   const p = path.join(dest, LEDGER);
   return { path: p, data: fs.existsSync(p) ? readJSON(p) : {} };
 }
-function saveLedger(l) { fs.writeFileSync(l.path, JSON.stringify(l.data, null, 2) + "\n"); }
+// An empty ledger is removed rather than left behind, so uninstalling the last skill leaves no trace.
+function saveLedger(l) {
+  if (!Object.keys(l.data).length) return fs.rmSync(l.path, { force: true });
+  fs.writeFileSync(l.path, JSON.stringify(l.data, null, 2) + "\n");
+}
 /* Ledger values: {version, source}; legacy plain strings mean a bundled install. */
 function lver(v) { return typeof v === "string" ? v : v.version; }
 function lsrc(v) { return typeof v === "string" ? BUNDLED : v.source || BUNDLED; }
+
+/* Ask before a destructive step. Only a person at a terminal is asked: scripts, CI and pipes
+   (stdin not a TTY) proceed as they always did, and --yes skips the question. */
+function confirm(question, flags) {
+  if (flags.yes || flags["dry-run"] || !process.stdin.isTTY) return true;
+  process.stdout.write(`${question} [y/N] `);
+  const buf = Buffer.alloc(256);
+  let n = 0;
+  try { n = fs.readSync(0, buf, 0, buf.length, null); } catch (e) { return false; }
+  return /^y(es)?$/i.test(buf.toString("utf8", 0, n).trim());
+}
+
+/* Files in an installed skill that differ from the baseline the ledger recorded at copy time:
+   the user's edits. Empty when there is no baseline (installed before RFC-0032). */
+function editedFiles(dest, s, entry) {
+  if (!entry || typeof entry !== "object" || !entry.files) return [];
+  const out = [];
+  for (const [rel, h] of Object.entries(entry.files)) {
+    let mine = null;
+    try { mine = sha256(fs.readFileSync(path.join(dest, s, ...rel.split("/")))); } catch (e) { /* deleted */ }
+    if (mine !== null && mine !== h) out.push(rel);
+  }
+  return out;
+}
+
+/* --local: try skills in a repo you don't own. The install is a normal project install, and
+   every path it writes is listed in the repo's own exclude file (.git/info/exclude, which git
+   reads like .gitignore but never commits), so `git status` stays clean and nothing can be
+   committed by accident. The entries live in one marker-fenced block this tool owns. */
+const EXCLUDE_OPEN = "# >>> skilldrop --local >>>", EXCLUDE_CLOSE = "# <<< skilldrop --local <<<";
+function excludePath(root) {
+  try {
+    const out = execFileSync("git", ["rev-parse", "--git-path", "info/exclude"],
+      { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+    if (out) return path.resolve(root, out);
+  } catch (e) { /* no git binary */ }
+  return path.join(root, ".git", "info", "exclude");
+}
+function readExclude(root) {
+  const p = excludePath(root);
+  const body = readIfPresent(p);
+  const a = body.indexOf(EXCLUDE_OPEN), b = body.indexOf(EXCLUDE_CLOSE);
+  const entries = a >= 0 && b > a
+    ? body.slice(a + EXCLUDE_OPEN.length, b).split("\n").map((x) => x.trim()).filter(Boolean) : [];
+  const rest = a >= 0 && b > a ? body.slice(0, a) + body.slice(b + EXCLUDE_CLOSE.length) : body;
+  return { p, entries, rest: rest.replace(/\n{3,}/g, "\n\n") };
+}
+function writeExclude(root, entries) {
+  const { p, rest } = readExclude(root);
+  const sorted = [...new Set(entries)].sort();
+  let body = rest.replace(/\s+$/, "");
+  if (sorted.length) body += `${body ? "\n\n" : ""}${EXCLUDE_OPEN}\n${sorted.join("\n")}\n${EXCLUDE_CLOSE}`;
+  fs.mkdirSync(path.dirname(p), { recursive: true });
+  fs.writeFileSync(p, body ? body + "\n" : "");
+  return p;
+}
+// Exclude patterns are repo-root-relative and anchored with a leading slash.
+function excludeEntry(root, abs, dir) { return "/" + path.relative(root, abs).split(path.sep).join("/") + (dir ? "/" : ""); }
+function localPaths(root, dest, ide, s) {
+  const out = [excludeEntry(root, path.join(dest, s), true)];
+  const w = wiringPath(ide, dest, s);
+  if (w && ide === "cursor") out.push(excludeEntry(root, w, false));
+  return out;
+}
+function addLocal(dest, ide, names) {
+  const root = gitRoot(process.cwd());
+  const { entries } = readExclude(root);
+  const next = entries.concat(excludeEntry(root, path.join(dest, LEDGER), false));
+  for (const s of names) next.push(...localPaths(root, dest, ide, s));
+  return writeExclude(root, next);
+}
+/* Called on every uninstall, --local or not: dropping an entry that isn't there is a no-op, and
+   the ledger's own entry goes once no skill in that folder is excluded any more. */
+function removeLocal(dest, ide, names) {
+  const root = gitRoot(process.cwd());
+  if (!root) return null;
+  const { entries } = readExclude(root);
+  if (!entries.length) return null;
+  const drop = new Set(names.flatMap((s) => localPaths(root, dest, ide, s)));
+  let next = entries.filter((e) => !drop.has(e));
+  const destPrefix = excludeEntry(root, dest, true);
+  const ledgerEntry = excludeEntry(root, path.join(dest, LEDGER), false);
+  if (!next.some((e) => e !== ledgerEntry && e.startsWith(destPrefix))) next = next.filter((e) => e !== ledgerEntry);
+  if (next.length === entries.length) return null;
+  return writeExclude(root, next);
+}
 
 /* Wiring = the pointer file a target needs to *find* a skill.
    Cursor needs one: .cursor/skills/ is not a discovery path, so the .mdc rule is what
@@ -700,7 +820,11 @@ function writeClaudeSessionHook(settingsPath, skill, hook) {
 }
 
 // Wire one skill's declared hooks; returns human-readable status lines.
-function emitHooks(cat, skill, dest, ide) {
+/* Claude Code reads settings.local.json beside settings.json and never expects it committed, so a
+   --local install puts its session-start hook there instead of in the repo's shared settings. */
+function claudeSettings(dest, local) { return path.join(path.dirname(dest), local ? "settings.local.json" : "settings.json"); }
+
+function emitHooks(cat, skill, dest, ide, local) {
   let hooks = [];
   try { hooks = manifestOf(cat, skill).hooks || []; } catch (e) { return []; }
   const lines = [];
@@ -712,7 +836,7 @@ function emitHooks(cat, skill, dest, ide) {
       if (root) writeGitPreCommitHook(root, skill, h);
     } else if (h.event === "session-start") {
       if (ide === "claude") {
-        const sp = path.join(path.dirname(dest), "settings.json");
+        const sp = claudeSettings(dest, local);
         const written = writeClaudeSessionHook(sp, skill, h);
         lines.push(written ? `  ${skill}: session-start context -> ${sp}`
                            : `  ${skill}: session-start skipped — ${sp} is not valid JSON`);
@@ -738,8 +862,7 @@ function removeHooksFor(skill, dest, ide) {
       if (next !== body) fs.writeFileSync(p, next);
     }
   }
-  if (ide === "claude") {
-    const sp = path.join(path.dirname(dest), "settings.json");
+  if (ide === "claude") for (const sp of [claudeSettings(dest, false), claudeSettings(dest, true)]) {
     const raw = readIfPresent(sp, null);
     if (raw !== null) {
       try {
@@ -801,7 +924,7 @@ function fileHashes(dir) {
      local edited, upstream moved  -> keep the local file, write the new one as <file>.upstream
    A file the catalog dropped is removed only if the user never touched it. The new baseline is
    what the catalog ships now, so a kept edit stays "edited" until the user merges it. */
-function mergeOne(cat, s, dest, ide, l, notes) {
+function mergeOne(cat, s, dest, ide, l, notes, dry = false) {
   const m = manifestOf(cat, s);
   const src = skillDir(cat, s), dst = path.join(dest, s);
   const base = l.data[s].files, next = fileHashes(src);
@@ -810,23 +933,27 @@ function mergeOne(cat, s, dest, ide, l, notes) {
   const localHash = (rel) => { try { return sha256(fs.readFileSync(at(dst, rel))); } catch (e) { return null; } };
   for (const [rel, h] of Object.entries(next)) {
     const mine = localHash(rel), to = at(dst, rel);
-    if (mine === h) { fs.rmSync(to + ".upstream", { force: true }); continue; }
+    if (mine === h) { if (!dry) fs.rmSync(to + ".upstream", { force: true }); continue; }
     if (h === base[rel]) continue;
-    fs.mkdirSync(path.dirname(to), { recursive: true });
     if (mine === null ? !(rel in base) : mine === base[rel]) {
+      if (dry) continue;
+      fs.mkdirSync(path.dirname(to), { recursive: true });
       fs.copyFileSync(at(src, rel), to);
       fs.rmSync(to + ".upstream", { force: true });
     } else {
-      fs.copyFileSync(at(src, rel), to + ".upstream");
       kept.push(rel);
+      if (dry) continue;
+      fs.mkdirSync(path.dirname(to), { recursive: true });
+      fs.copyFileSync(at(src, rel), to + ".upstream");
     }
   }
   for (const rel of Object.keys(base)) {
     if (rel in next) continue;
     const mine = localHash(rel);
-    if (mine === base[rel]) fs.rmSync(at(dst, rel), { force: true });
+    if (mine === base[rel]) { if (!dry) fs.rmSync(at(dst, rel), { force: true }); }
     else if (mine !== null) orphaned.push(rel);
   }
+  if (dry) return { m, kept, orphaned };
   const note = writeWiring(ide, dest, s, m.description);
   if (note && notes) notes.push(note);
   l.data[s] = { version: m.version, source: cat.source, files: next };
@@ -837,14 +964,15 @@ function mergeOne(cat, s, dest, ide, l, notes) {
    command (RFC-0020). Needs a target with BOTH a subagent and a skill format, so it accepts
    the default (Claude Code), --project, --ide kiro, or --dest; other IDEs install the halves
    separately. Delegates to installAgents + install so every existing safety/craft gate applies. */
+const PANEL_IDES = ["kiro", "codex", "antigravity", "copilot"];
 function installPanel(args) {
   const name = args.flags.panel;
   const p = PANELS[name];
   if (!p) die(`unknown panel '${name}' — available: ${Object.keys(PANELS).join(", ")}`);
   const ide = args.flags.ide;
-  if (ide && ide !== "kiro" && !args.flags.dest)
+  if (ide && !PANEL_IDES.includes(ide) && !args.flags.dest)
     die(`--panel installs subagents + the orchestrator skill together, so it needs a target with both formats:\n` +
-        `       (default | --project) Claude Code, --ide kiro, or --dest <dir>.\n` +
+        `       (default | --project) Claude Code, --ide ${PANEL_IDES.join(" | ")}, or --dest <dir>.\n` +
         `       For ${ide}: install the agents (skilldrop install --agent ${p.agents.join(" ")} --ide ${ide}) ` +
         `and the skill (skilldrop install ${p.skill} --ide ${ide}) separately.`);
   const flags = Object.assign({}, args.flags);
@@ -907,6 +1035,13 @@ function installProfile(args) {
 }
 
 function install(args) {
+  if (args.flags["dry-run"] && (args.flags.panel || args.flags.profile || args.flags.loop || args.flags.agent))
+    die("--dry-run covers skill installs, update and uninstall. To preview a panel, profile, loop or agent,\n" +
+        "       read what it contains first: skilldrop profiles | loops | agents --json");
+  if (args.flags.local && !gitRoot(process.cwd()))
+    die("--local hides the install from git, so it needs a git repo — run it from inside one");
+  if (args.flags.local && (args.flags.panel || args.flags.profile || args.flags.agent))
+    die("--local covers skills and loops. Agents have their own folders; install them with --dest into a path you exclude yourself");
   if (args.flags.panel) return installPanel(args);
   if (args.flags.profile) return installProfile(args);
   if (args.flags.loop) return installLoops(args);
@@ -923,6 +1058,7 @@ function install(args) {
   }
   gate(cat, names);
   const { dest, ide } = target(args.flags);
+  if (args.flags["dry-run"]) return planInstall(cat, names, dest, ide, args.flags);
   fs.mkdirSync(dest, { recursive: true });
   const l = ledger(dest);
   const pipDeps = [], suggestions = new Set(), notes = [];
@@ -935,10 +1071,20 @@ function install(args) {
   saveLedger(l);
   console.log(`\n${names.length} skill(s) installed (${ide}).`);
   if (notes.length) console.log(`\nCleanup:\n${notes.join("\n")}`);
+  const local = !!args.flags.local;
+  if (local) {
+    const ex = addLocal(dest, ide, names);
+    console.log(`\n--local: listed in ${path.relative(process.cwd(), ex) || ex}, so git won't see these files.` +
+                `\n  Nothing in the repo's tracked files changed. Remove with: skilldrop uninstall <skill> --local`);
+  }
 
   const withHooks = names.filter((s) => { try { return (manifestOf(cat, s).hooks || []).length; } catch (e) { return false; } });
   if (withHooks.length && args.flags["with-hooks"]) {
-    const lines = withHooks.flatMap((s) => emitHooks(cat, s, dest, ide));
+    const lines = withHooks.flatMap((s) => emitHooks(cat, s, dest, ide, local));
+    if (local && ide === "claude") {
+      const root = gitRoot(process.cwd());
+      writeExclude(root, readExclude(root).entries.concat(excludeEntry(root, claudeSettings(dest, true), false)));
+    }
     console.log(`\nHooks wired (RFC-0006):\n${lines.join("\n")}`);
     if (cat.source !== BUNDLED)
       console.log(`  NOTE: these hooks run commands from third-party catalog '${cat.source}' — read them before trusting them.`);
@@ -957,13 +1103,38 @@ function install(args) {
       : "\nSupply-chain scan: no flagged patterns.");
   }
   if (ide === "generic")
-    console.log("wiring: attach each skill's SKILL.md to your agent (Continue/Cline: @file, Aider: /add, Codex: reference it from AGENTS.md) — see the repo README's per-IDE steps.");
+    console.log("wiring: attach each skill's SKILL.md to your agent (Continue/Cline: @file, Aider: /add) — see the repo README's per-IDE steps.");
   for (const s of pipDeps)
     console.log(`deps: ${s} needs Python packages — run: cd ${path.join(dest, s)} && python3 -m pip install -r requirements.txt`);
   if (suggestions.size)
     console.log(`related (not installed): ${[...suggestions].sort().join(", ")} — add --with-related or install by name.`);
   const pk = args.flags.pack && (packsOf(cat) || {})[args.flags.pack];
   if (pk && pk["first-value"]) console.log("\n" + firstValueLines(pk).join("\n"));
+}
+
+/* install --dry-run: everything install would write, and nothing written. */
+function planInstall(cat, names, dest, ide, flags) {
+  const l = ledger(dest);
+  console.log(`dry run — nothing will be written. Target: ${dest} (${ide})\n`);
+  for (const s of names) {
+    const m = manifestOf(cat, s);
+    const have = l.data[s];
+    const verb = !have ? "install" : lver(have) === m.version ? "reinstall" : `replace ${lver(have)} with`;
+    const edits = editedFiles(dest, s, have);
+    console.log(`would ${verb} ${s}@${m.version} -> ${path.join(dest, s)}`);
+    if (edits.length) console.log(`  overwrites your edits in: ${edits.join(", ")} (update keeps them; install does not)`);
+    const w = wiringPath(ide, dest, s);
+    if (w && ide === "cursor") console.log(`  and write ${path.relative(process.cwd(), w)}`);
+  }
+  if (flags.local) {
+    const root = gitRoot(process.cwd());
+    console.log(`\n--local: would list ${names.length} folder(s) and the ledger in ${path.relative(process.cwd(), excludePath(root))}`);
+  }
+  if (flags["with-hooks"]) {
+    const hooked = names.filter((s) => { try { return (manifestOf(cat, s).hooks || []).length; } catch (e) { return false; } });
+    if (hooked.length) console.log(`\nwould wire hooks for: ${hooked.join(", ")}`);
+  }
+  console.log(`\n${names.length} skill(s). Rerun without --dry-run to install.`);
 }
 
 function installedRows(flags) {
@@ -984,6 +1155,16 @@ function installedRows(flags) {
 function update(args) {
   const { dest, ide, l, rows } = installedRows(args.flags);
   if (!rows.length) return console.log(`nothing installed at ${dest}`);
+  const dry = !!args.flags["dry-run"];
+  const due = rows.filter((r) => r.current && r.current !== r.installed);
+  if (args.flags.force && !dry) {
+    const lost = due.flatMap((r) => editedFiles(dest, r.s, l.data[r.s]).map((f) => `${r.s}/${f}`));
+    if (lost.length) {
+      console.log(`--force overwrites ${lost.length} file(s) you edited:\n  ${lost.join("\n  ")}`);
+      if (!confirm("Overwrite them?", args.flags)) return console.log("cancelled — nothing changed. Drop --force to keep your edits as <file>.upstream.");
+    }
+  }
+  if (dry) return planUpdate(dest, ide, l, rows, args.flags);
   let n = 0, conflicts = 0;
   for (const r of rows) {
     if (!r.current) { console.log(`skip ${r.s}: source '${r.src}' unreachable or skill gone from it`); continue; }
@@ -1006,8 +1187,40 @@ function update(args) {
   }
   saveLedger(l);
   console.log(n ? `\n${n} skill(s) updated.` : "everything up to date.");
+  // An update is a fresh act of trust in a third-party catalog (OWASP AST07): scan what changed.
+  const thirdParty = {};
+  for (const r of rows) if (r.current && r.current !== r.installed && r.src !== BUNDLED) (thirdParty[r.src] = thirdParty[r.src] || { cat: r.cat, names: [] }).names.push(r.s);
+  for (const { cat, names } of Object.values(thirdParty)) {
+    const { total } = printScan(cat, names, { compact: true });
+    console.log(total ? `\n${total} pattern(s) in the updated skills from '${cat.source}' worth reading. Full detail: skilldrop scan --from ${cat.source}`
+                      : `\nSupply-chain scan of the updated skills from '${cat.source}': no flagged patterns.`);
+  }
   if (conflicts)
     console.log(`${conflicts} file(s) kept your edits. Merge each <file>.upstream into its file, then delete it — or rerun with --force to take every new version.`);
+}
+
+/* update --dry-run: the same per-skill, per-file decisions update makes, reported, not applied. */
+function planUpdate(dest, ide, l, rows, flags) {
+  console.log(`dry run — nothing will be written. Target: ${dest} (${ide})\n`);
+  let n = 0;
+  for (const r of rows) {
+    if (!r.current) { console.log(`would skip ${r.s}: source '${r.src}' unreachable or skill gone from it`); continue; }
+    if (r.current === r.installed) continue;
+    const problems = checkSkill(r.cat, r.s);
+    if (problems.length) { console.log(`would skip ${r.s}: fails structural check (${problems[0]})`); continue; }
+    n++;
+    const entry = l.data[r.s];
+    console.log(`would update ${r.s} ${r.installed} -> ${r.current} (${r.src})`);
+    if (flags.force || typeof entry !== "object" || !entry.files) {
+      const lost = editedFiles(dest, r.s, entry);
+      if (lost.length) console.log(`  --force overwrites your edits in: ${lost.join(", ")}`);
+      continue;
+    }
+    const { kept, orphaned } = mergeOne(r.cat, r.s, dest, ide, l, null, true);
+    for (const f of kept) console.log(`  would keep your edits in ${f} and write the new version to ${f}.upstream`);
+    for (const f of orphaned) console.log(`  would keep ${f} — dropped upstream, but you edited it`);
+  }
+  console.log(n ? `\n${n} skill(s) would update. Rerun without --dry-run to apply.` : "everything up to date.");
 }
 
 function outdated(args) {
@@ -1034,7 +1247,25 @@ function uninstall(args) {
   if (!args._.length) die("pass skill names to uninstall");
   const { dest, ide } = target(args.flags);
   const l = ledger(dest);
-  for (const s of args._) {
+  const present = args._.filter((s) => l.data[s] || fs.existsSync(path.join(dest, s)));
+  const missing = args._.filter((s) => !present.includes(s));
+  for (const s of missing) console.log(`${s} is not installed at ${dest}`);
+  if (!present.length) return;
+  const edits = present.flatMap((s) => editedFiles(dest, s, l.data[s]).map((f) => `${s}/${f}`));
+  if (args.flags["dry-run"]) {
+    console.log(`dry run — nothing will be removed. Target: ${dest} (${ide})\n`);
+    for (const s of present) {
+      console.log(`would remove ${path.join(dest, s)}`);
+      const w = wiringPath(ide, dest, s);
+      if (w && fs.existsSync(w)) console.log(`  and ${path.relative(process.cwd(), w)}`);
+    }
+    if (edits.length) console.log(`\nincluding ${edits.length} file(s) you edited: ${edits.join(", ")}`);
+    return;
+  }
+  const what = `Remove ${present.length} skill(s) from ${dest}: ${present.join(", ")}` +
+               (edits.length ? `\n  (${edits.length} of the files have your edits: ${edits.join(", ")})` : "") + "?";
+  if (!confirm(what, args.flags)) return console.log("cancelled — nothing removed.");
+  for (const s of present) {
     fs.rmSync(path.join(dest, s), { recursive: true, force: true });
     const w = wiringPath(ide, dest, s);
     if (w) fs.rmSync(w, { force: true });
@@ -1043,6 +1274,176 @@ function uninstall(args) {
     console.log(`removed ${s} from ${dest}`);
   }
   saveLedger(l);
+  const ex = removeLocal(dest, ide, present);
+  if (ex) console.log(`dropped the --local entries from ${path.relative(process.cwd(), ex) || ex}`);
+}
+
+/* diff <skill>: what differs between the installed copy and the catalog's current one — your
+   edits, an upstream change, or both. File-level always; line-level through git when it is on
+   the PATH (git diff --no-index works outside any repo). */
+function diff(args) {
+  const s = args._[0] || die("pass an installed skill name: skilldrop diff <skill>");
+  const { dest } = target(args.flags);
+  const l = ledger(dest);
+  const entry = l.data[s];
+  if (!entry && !fs.existsSync(path.join(dest, s))) die(`'${s}' is not installed at ${dest}`);
+  if (entry && entry.loop) die(`'${s}' is a loop — diff compares skills`);
+  const src = args.flags.from || (entry ? lsrc(entry) : BUNDLED);
+  const cat = resolveCatalog(src === BUNDLED ? undefined : src);
+  if (!skillExists(cat, s)) die(`'${s}' is no longer in catalog '${cat.source}'`);
+  const theirs = fileHashes(skillDir(cat, s)), mine = fileHashes(path.join(dest, s));
+  const base = (entry && entry.files) || {};
+  const changed = Object.keys(theirs).filter((f) => f in mine && mine[f] !== theirs[f]).sort();
+  const onlyUp = Object.keys(theirs).filter((f) => !(f in mine)).sort();
+  const onlyMine = Object.keys(mine).filter((f) => !(f in theirs)).sort();
+  const why = (f) => !base[f] ? "" : mine[f] !== base[f] && theirs[f] !== base[f] ? "  (you edited it, and so did the catalog)"
+    : mine[f] !== base[f] ? "  (your edit)" : "  (catalog changed it)";
+  const iv = entry ? lver(entry) : "?", cv = manifestOf(cat, s).version;
+  console.log(`${s}: installed ${iv} at ${path.join(dest, s)}  vs  catalog '${cat.source}' ${cv}`);
+  if (!changed.length && !onlyUp.length && !onlyMine.length) return console.log("identical.");
+  for (const f of changed) console.log(`  M ${f}${why(f)}`);
+  for (const f of onlyUp) console.log(`  + ${f}  (in the catalog, not installed)`);
+  for (const f of onlyMine) console.log(`  - ${f}  (installed only)`);
+  if (args.flags.stat) return;
+  let git = true;
+  for (const f of changed) {
+    const a = path.join(skillDir(cat, s), ...f.split("/")), b = path.join(dest, s, ...f.split("/"));
+    try {
+      execFileSync("git", ["--no-pager", "diff", "--no-index", "--color=auto", "--src-prefix=catalog/", "--dst-prefix=installed/", a, b],
+        { stdio: ["ignore", "inherit", "inherit"] });
+    } catch (e) {
+      if (e.code === "ENOENT") { git = false; break; } // no git binary
+      // exit status 1 is git diff's "files differ" — the expected case
+    }
+  }
+  if (!git) console.log("\n(git not found — line-level diff needs git on the PATH; file list above)");
+  if (changed.length) console.log(`\nTake the catalog's version: skilldrop update --force, or install ${s} again.`);
+}
+
+/* doctor: check an install target against its ledger and report what's out of step — skills
+   recorded but gone, skills on disk nobody recorded, leftover .upstream files, wiring and hooks
+   for skills no longer installed. Report-only: it changes nothing, and each finding says the fix. */
+function doctor(args) {
+  const { dest, ide } = target(args.flags);
+  const findings = [];
+  const add = (level, msg, fix) => findings.push({ level, msg, fix });
+  const lp = path.join(dest, LEDGER);
+  let data = {};
+  const raw = readIfPresent(lp, null);
+  if (raw === null) add("info", `no ledger at ${lp}`, "nothing installed here by skilldrop — or a different target; try --project or --ide");
+  else try { data = JSON.parse(raw); } catch (e) { add("error", `${lp} is not valid JSON`, "fix or delete it; skilldrop can't track updates until then"); }
+  const names = Object.keys(data);
+  for (const n of names) {
+    if (!fs.existsSync(path.join(dest, n))) add("error", `${n} is in the ledger but its folder is gone`, `skilldrop install ${n} (or uninstall ${n} to drop the record)`);
+    else if (!data[n].loop && !data[n].file) {
+      const e = editedFiles(dest, n, data[n]);
+      if (e.length) add("info", `${n}: you edited ${e.join(", ")}`, `skilldrop diff ${n}`);
+      if (typeof data[n] === "string" || !data[n].files) add("warn", `${n} has no file baseline (installed before 0.13)`, `skilldrop install ${n} once; update will keep your edits after that`);
+    }
+  }
+  if (fs.existsSync(dest)) {
+    for (const d of fs.readdirSync(dest, { withFileTypes: true })) {
+      if (!d.isDirectory()) continue;
+      const dir = path.join(dest, d.name);
+      if (fs.existsSync(path.join(dir, "SKILL.md")) && !data[d.name])
+        add("info", `${d.name} is on disk but not in the ledger`, "installed by hand or another tool — skilldrop won't update it");
+      for (const f of walkFiles(dir)) if (f.endsWith(".upstream"))
+        add("warn", `${path.relative(dest, f)} is waiting to be merged`, `merge it into ${path.relative(dest, f.slice(0, -9))}, then delete it`);
+    }
+  }
+  if (ide === "cursor") {
+    const rules = path.join(path.dirname(dest), "rules");
+    for (const f of fs.existsSync(rules) ? fs.readdirSync(rules) : []) {
+      const body = readIfPresent(path.join(rules, f));
+      const m = body.match(/\.cursor\/skills\/([^/\s]+)\/SKILL\.md/);
+      if (m && !fs.existsSync(path.join(dest, m[1]))) add("warn", `.cursor/rules/${f} points at ${m[1]}, which isn't installed`, `delete .cursor/rules/${f}`);
+    }
+  }
+  if (ide === "kiro") for (const n of names) {
+    const w = wiringPath("kiro", dest, n);
+    if (readIfPresent(w).startsWith(KIRO_SHIM_PREFIX)) add("warn", `stale steering shim ${path.relative(process.cwd(), w)}`, `skilldrop install ${n} --ide kiro removes it`);
+  }
+  const root = gitRoot(process.cwd());
+  if (root) {
+    const hook = readIfPresent(preCommitPath(root));
+    for (const m of hook.matchAll(/# >>> skilldrop-hook:([^:\n]+):/g))
+      if (!fs.existsSync(path.join(dest, m[1])) && !data[m[1]]) add("warn", `pre-commit reminder for ${m[1]}, which isn't installed here`, `skilldrop uninstall ${m[1]} removes it (or it belongs to another target)`);
+    for (const e of readExclude(root).entries)
+      if (!fs.existsSync(path.join(root, e.replace(/^\//, "")))) add("info", `--local entry ${e} matches nothing`, "harmless; skilldrop uninstall --local tidies it");
+  }
+  if (ide === "claude") for (const local of [false, true]) {
+    const sp = claudeSettings(dest, local);
+    const body = readIfPresent(sp, null);
+    if (body === null) continue;
+    for (const m of body.matchAll(/skilldrop-hook:([^:"\s]+):session-start/g))
+      if (!fs.existsSync(path.join(dest, m[1]))) add("warn", `${path.basename(sp)} has a session-start hook for ${m[1]}, which isn't installed`, `skilldrop uninstall ${m[1]} removes it`);
+  }
+  if (args.flags.json) return emitJSON({ dest, ide, installed: names.length, findings });
+  console.log(`skilldrop doctor — ${dest} (${ide}), ${names.length} recorded\n`);
+  const icon = { error: "✗", warn: "!", info: "·" };
+  for (const f of findings) console.log(`${icon[f.level]} ${f.msg}\n    fix: ${f.fix}`);
+  const bad = findings.filter((f) => f.level !== "info").length;
+  console.log(findings.length ? `\n${bad} to fix, ${findings.length - bad} for information. Nothing was changed.` : "all good.");
+}
+
+/* new-skill <name> --pack <pack>: scaffold a skill in the catalog you're standing in, with every
+   file validate.py checks for, so the first run fails only on the parts that need a human. */
+function newSkill(args) {
+  const name = args._[0] || die("usage: skilldrop new-skill <name> --pack <pack> [--tier light|standard|heavy]");
+  if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(name)) die(`'${name}' isn't kebab-case — use lowercase words joined by hyphens`);
+  const pack = args.flags.pack || die("pass --pack <pack> — the one pack it belongs in (core only if every role needs it)");
+  const tier = args.flags.tier || "standard";
+  if (!["light", "standard", "heavy"].includes(tier)) die("--tier is light, standard or heavy");
+  const root = process.cwd();
+  const pdir = path.join(root, "packs", pack);
+  if (!fs.existsSync(path.join(pdir, "pack.json")))
+    die(`no packs/${pack}/pack.json here — run new-skill from the root of a skilldrop catalog`);
+  for (const p of fs.readdirSync(path.join(root, "packs")))
+    if (fs.existsSync(path.join(root, "packs", p, "skills", name))) die(`packs/${p}/skills/${name} already exists`);
+  const dir = path.join(pdir, "skills", name);
+  const desc = `TODO: one sentence, use-case-first — what it produces. Use when the user asks for …`;
+  const files = {
+    "SKILL.md": `---\nname: ${name}\ndescription: ${desc}\n---\n\n# ${name}\n\nTODO: one paragraph — what you produce and for whom.\n\n` +
+      `## How to respond\n\n1. **Ask for what's missing in one message.** TODO: the inputs, with defaults.\n2. TODO: the steps.\n3. TODO: the output, and how the user checks it.\n\n` +
+      `**Non-interactive runs** (subagent, CI, headless): TODO — what to assume, and when to emit \`BLOCKED: <what is missing>\`.\n\n` +
+      `## Quality bar\n\n- TODO: a checkable property of a good output\n\n## When to use this skill\n\n- ✅ TODO\n\n` +
+      `## When NOT to use this skill\n\n- ❌ TODO; use \`<sibling-skill>\`\n\n## Anti-patterns to avoid\n\n- ❌ **TODO** — and why it fails\n`,
+    "manifest.json": JSON.stringify({
+      name, version: "0.1.0", description: desc, entrypoint: "SKILL.md",
+      deps: { npm: [], pip: [] }, env: { required: [], optional: [] }, related: [], tags: ["todo"],
+      model: { tier, rationale: "TODO: why this tier — how much reasoning the task needs" },
+    }, null, 2) + "\n",
+    "evals/evals.json": JSON.stringify({ skill_name: name, evals: [{ id: 1,
+      prompt: "TODO: a realistic request with concrete details",
+      assertions: ["TODO: a property the output must have, checkable by reading it"] }] }, null, 2) + "\n",
+    "evals/eval_queries.json": "[\n" + [
+      { query: "TODO: a phrasing that should trigger this skill", should_trigger: true },
+      { query: "TODO: a near-miss that belongs to a sibling skill", should_trigger: false },
+    ].map((r) => "  " + JSON.stringify(r)).join(",\n") + "\n]\n",
+  };
+  if (args.flags["dry-run"]) {
+    for (const f of Object.keys(files)) console.log(`would write ${path.relative(root, path.join(dir, f))}`);
+    return console.log(`would add ${name} (tier ${tier}) to model-routing.json`);
+  }
+  for (const [f, body] of Object.entries(files)) {
+    fs.mkdirSync(path.dirname(path.join(dir, f)), { recursive: true });
+    fs.writeFileSync(path.join(dir, f), body);
+    console.log(`wrote ${path.relative(root, path.join(dir, f))}`);
+  }
+  const rp = path.join(root, "model-routing.json");
+  const routingRaw = readIfPresent(rp, null);  // read-and-handle, not check-then-read
+  if (routingRaw !== null) {
+    const routing = JSON.parse(routingRaw);
+    routing.skills = routing.skills || {};
+    routing.skills[name] = { tier, rationale: "TODO: why this tier" };
+    routing.skills = Object.fromEntries(Object.entries(routing.skills).sort(([a], [b]) => a.localeCompare(b)));
+    fs.writeFileSync(rp, JSON.stringify(routing, null, 2) + "\n");
+    console.log(`added ${name} to model-routing.json (tier ${tier})`);
+  }
+  console.log(`\nNext:\n  1. Replace every TODO — the description in SKILL.md and manifest.json must match.` +
+              `\n  2. Add ${name} to an outcome in catalogue.json, and a row in guides/reference/skill-catalogue.md.` +
+              `\n  3. python3 build_marketplace.py && python3 build_llms.py, then python3 validate.py — it lists what's left.` +
+              `\n  4. Try it from another repo: skilldrop install ${name} --from ${root} --local`);
 }
 
 function listAgents(args) {
@@ -1167,6 +1568,7 @@ function installLoops(args) {
     console.log(`installed loop ${n} -> ${out}`);
   }
   saveLedger(l);
+  if (args.flags.local) addLocal(dest, ide, names);
 
   const wanted = [];
   for (const n of names) for (const sk of loopSkills(cat, n)) if (!wanted.includes(sk)) wanted.push(sk);
@@ -1187,6 +1589,11 @@ function uninstallLoops(args) {
   if (!args._.length) die("pass loop names to uninstall");
   const { dest, ide } = target(args.flags);
   const l = ledger(dest);
+  if (args.flags["dry-run"]) {
+    for (const n of args._) console.log(`would remove loop ${path.join(dest, n)} (stage skills left in place)`);
+    return;
+  }
+  if (!confirm(`Remove ${args._.length} loop(s) from ${dest}: ${args._.join(", ")}?`, args.flags)) return console.log("cancelled — nothing removed.");
   for (const n of args._) {
     fs.rmSync(path.join(dest, n), { recursive: true, force: true });
     const w = wiringPath(ide, dest, n);
@@ -1195,6 +1602,7 @@ function uninstallLoops(args) {
     console.log(`removed loop ${n} from ${dest} (stage skills left in place)`);
   }
   saveLedger(l);
+  removeLocal(dest, ide, args._);
 }
 
 function installAgents(args) {
@@ -1239,6 +1647,11 @@ function uninstallAgents(args) {
   if (!args._.length) die("pass agent names to uninstall");
   const { dest } = agentTarget(args.flags);
   const l = ledger(dest);
+  if (args.flags["dry-run"]) {
+    for (const a of args._) console.log(`would remove agent ${a} from ${dest}`);
+    return;
+  }
+  if (!confirm(`Remove ${args._.length} agent(s) from ${dest}: ${args._.join(", ")}?`, args.flags)) return console.log("cancelled — nothing removed.");
   for (const a of args._) {
     const rec = l.data[a];
     for (const f of new Set([rec && rec.file, `${a}.md`, `${a}.json`, `${a}.agent.md`, `${a}.toml`].filter(Boolean)))
@@ -1398,7 +1811,8 @@ function bootstrap() {
 
 const args = parseArgs(process.argv.slice(2));
 const cmd = args._.shift();
-const commands = { list, info, packs: listPacks, profiles: listProfiles, agents: listAgents, loops: listLoops, install, update, outdated, uninstall, validate: validateCmd, scan, bootstrap };
-if (!cmd || cmd === "help" || args.flags.help) console.log(HELP);
+const commands = { list, info, packs: listPacks, profiles: listProfiles, agents: listAgents, loops: listLoops, install, update, outdated, uninstall, diff, doctor, "new-skill": newSkill, validate: validateCmd, scan, bootstrap };
+if (args.flags.version || cmd === "version") console.log(readJSON(path.join(ROOT, "package.json")).version);
+else if (!cmd || cmd === "help" || args.flags.help) console.log(HELP);
 else if (commands[cmd]) commands[cmd](args);
 else die(`unknown command '${cmd}' — run: skilldrop help`);
