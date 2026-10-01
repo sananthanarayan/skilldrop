@@ -1,7 +1,7 @@
 ---
 rfc: 0031
 title: Release loop
-status: accepted
+status: implemented
 date: 2026-10-01
 author: sanjay-ananth
 ---
@@ -102,4 +102,5 @@ Add `loops/release/` (`LOOP.md` + `loop.json`). It has `kind: loop` and `cap: 3`
 ## Decision
 
 Accepted 2026-10-01. `release` ships as the fifth lifecycle loop with one new skill,
-`launch-readiness`, in the same PR as this RFC.
+`launch-readiness`, in the same PR as this RFC
+([#25](https://github.com/sananthanarayan/skilldrop/pull/25)).

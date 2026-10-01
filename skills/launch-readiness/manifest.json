@@ -1,0 +1,24 @@
+{
+  "name": "launch-readiness",
+  "version": "0.1.0",
+  "description": "Produce a go/no-go launch readiness report for a merged change before it goes live — one row per check (rollback path, alert and runbook per new failure mode, NFR targets measured, comms drafted, data/privacy sign-off), each with an owner, evidence link, and met / not met / n/a-because status, ending in a PROCEED / PROCEED WITH CONDITIONS / REVISE / BLOCKED verdict. Use when the user asks \"are we ready to launch\", \"go/no-go\", \"production readiness review\", \"launch checklist\", or \"can we ship this to users\".",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": [
+    "migration-plan",
+    "observability-plan",
+    "runbook-generator",
+    "nfr-spec",
+    "release-notes",
+    "council-review",
+    "pre-merge-review"
+  ],
+  "handoff": [
+    { "to": "migration-plan", "when": "the change has no tested rollback path", "purpose": "Plan the phases and the rollback, and name the point of no return, before readiness is judged again.", "fallback": "If migration-plan is absent, write the rollback as numbered steps with its data story inline, and mark the row not met until someone has rehearsed it." },
+    { "to": "observability-plan", "when": "a new failure mode has no alert", "purpose": "Define the SLI and the burn-rate alert that would detect it.", "fallback": "If observability-plan is absent, name the symptom, the metric that shows it, and a threshold inline, tagged [assumption] for the owner to confirm." },
+    { "to": "runbook-generator", "when": "an alert exists but has no runbook entry", "purpose": "Write the procedure the on-call follows when that alert fires.", "fallback": "If runbook-generator is absent, write recognise / mitigate / escalate as three lines under the row, and keep the row not met until the on-call owner has reviewed them." }
+  ],
+  "tags": ["launch", "release", "readiness", "go-no-go", "production-readiness"],
+  "model": { "tier": "standard", "rationale": "Checks evidence against a fixed checklist. Bounded synthesis, not adversarial review." }
+}

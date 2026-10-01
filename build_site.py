@@ -52,7 +52,7 @@ SITE_URL = "https://sananthanarayan.github.io/skilldrop/"
 PITCH = {
     "hero_h1": "Your agent can draft anything. What ships is still your call.",
     "hero_lede": (
-        "skilldrop is five loops over 57 portable skills, and nothing leaves a loop until its gate "
+        "skilldrop is six loops over 63 portable skills, and nothing leaves a loop until its gate "
         "passes — a script, a review panel, or a person, chosen by how expensive the mistake is to "
         "undo. Every skill is still a plain folder you copy into your agent. No runtime, no platform, "
         "no transformation on the way in."
