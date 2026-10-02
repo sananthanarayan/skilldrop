@@ -8,6 +8,12 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.5 — 2026-10-02
+
+- **skilldrop-cli is published on npm only.** The PyPI package added in 0.16.4 is withdrawn: it was the same Node CLI behind a Python launcher, so it reached nobody `npx skilldrop-cli` didn't already reach.
+- **New guide: [Benchmark skills against the agent without them](guides/how-to/benchmark-skills.md).** How to run `run_bench.py` on this catalogue or your own, what each number means, and how to improve a skill against it.
+- **The site's home page shows the benchmark result**, and the `grc` and `dev-team` pack pages cover the three skills added in 0.16.4.
+
 ## 0.16.4 — 2026-10-02
 
 - **New skill: `pr-description-writer`** (`dev-team`). Writes a pull request title and description from the diff: why, what changed, the checks that were really run, where a reviewer should look first, and risk and rollback. It also reports what the diff contains that the commits don't mention, such as a dependency bump, a deleted test or a migration.

@@ -44,7 +44,7 @@
     },
     "build-and-review-software": {
       "for": "Software teams · coding agents",
-      "description": "The loop around the code itself: supervised implementation, adversarial review panels, test plans, triage, accessibility and static-analysis passes, and the policy files agents read.",
+      "description": "The loop around the code itself: supervised implementation, adversarial review panels, test plans, triage, pull request descriptions, a ranked technical-debt register, accessibility and static-analysis passes, and the policy files agents read.",
       "skills": [
         "feature-implement-loop",
         "pre-merge-review",
@@ -170,7 +170,7 @@
     },
     "manage-risk-and-compliance": {
       "for": "Compliance, privacy and risk leads",
-      "description": "Prepare the material compliance asks for: a data protection impact assessment, a SOC 2 evidence map, and a risk register with owners and review dates.",
+      "description": "Prepare the material compliance asks for: a data protection impact assessment, a SOC 2 evidence map, a risk register with owners and review dates, and answers to a customer's security questionnaire with the evidence behind each.",
       "skills": [
         "dpia",
         "risk-register",

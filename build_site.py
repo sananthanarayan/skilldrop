@@ -685,6 +685,29 @@ def terminal(lines):
 </div><div class="term__body">{body}</div></div>"""
 
 
+def measured_section():
+    """The published benchmark summary (RFC-0040) as a short band under the problem statement.
+    Generated from docs/benchmarks/latest.json, so the numbers cannot drift from the evals page."""
+    path = os.path.join(ROOT, "docs", "benchmarks", "latest.json")
+    if not os.path.exists(path):
+        return ""
+    b = read_json(path)
+    d = next(iter(b["models"].values()))
+    pc = lambda x: f"{100 * x:.0f}%"
+    judges = f"{pc(d['win'])} of pairs" + (f", and a second judge in {pc(d['win2'])}" if d.get("win2") is not None else "")
+    lows = [c[0] for c in (d.get("win_ci"), d.get("win2_ci")) if c]
+    verdict = ("Both ranges sit above even." if lows and min(lows) > 0.5 else
+               "That is better than even and not yet a clear preference, and closing it is the current work.")
+    return f"""<section class="section" id="measured">
+  <div class="inner"><div class="narrow">
+    <p class="eyebrow">Measured</p>
+    <h2>Every skill is run against the agent without it.</h2>
+    <p class="lede" style="margin-bottom:0">Each acceptance eval runs twice as a real agent session, once with the skill and once without. With a skill the agent meets {pc(d['skill'])} of that skill's checks; without, {pc(d['baseline'])}. A blind judge that sees only the request and the two results preferred the skill's in {judges}. {verdict} <a href="evals/">See every skill's numbers and how they were measured &rarr;</a></p>
+  </div></div>
+</section>
+"""
+
+
 def render(skills, packs, outcomes, version, releases):
 
     loop_list = loops()
@@ -1138,6 +1161,7 @@ a {{ color:var(--accent-700); }}
   </div></div>
 </section>
 
+{measured_section()}
 <section class="section section--alt" id="proof">
   <div class="inner">
     <p class="eyebrow">See it work</p>

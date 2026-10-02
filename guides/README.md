@@ -31,6 +31,7 @@ its directory, so the tree stays shallow.
 - [Wire a skill to an event](how-to/wire-a-hook.md) — opt-in hooks, projected per target
 - [Publish your own catalogue](how-to/publish-a-catalogue.md) — make `skilldrop --from <you>` work
 - [Upgrade installed skills](how-to/upgrade-skills.md) — keep what you have installed current; files you edited are kept and the new version lands beside them as `.upstream`
+- [Benchmark skills against the agent without them](how-to/benchmark-skills.md) — each eval run with the skill and without it: the lift, a blind preference from two judges, and the cost
 - [Measure your loops](how-to/measure-your-loops.md) — the opt-in, local-only run log, and which gates pass first time
 - [Run a skill in CI](how-to/run-a-skill-in-ci.md) — the GitHub Action: a skill on every pull request, results in the job summary, optional fail on a verdict
 - [Roll out across your org](how-to/enterprise-distribution.md) — bootstrap the hosted marketplace for every machine in one command

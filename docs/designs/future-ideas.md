@@ -6,14 +6,12 @@ is what's next. Each item says why it matters, roughly how big it is, and what i
 so you can pick one up without re-deriving the context. Sizes are rough: **S** is an hour or
 two, **M** a day, **L** several days.
 
-Last reviewed 2026-10-01, after 0.16.0.
+Last reviewed 2026-10-02, after 0.16.4.
 
 ## Distribution
 
 | Idea | Why | Size | Depends on |
 |---|---|---|---|
-| **PyPI release** | `pipx install skilldrop-cli` for Python-first teams. The wheel builder exists and was tested locally. | S | A PyPI account and project |
-| **Turn on PyPI publishing from CI** | The `pypi` job in `release.yml` is written and waiting. It needs the project to exist, a trusted publisher registered on pypi.org, and the `PYPI_PUBLISH` variable set to `true`. | S | The item above |
 | **`skilldrop install <skill>@<version>`** | Install a specific skill version from the catalogue's history, not just the latest or a commit pin. | M | Version-to-commit lookup, from git tags |
 | **IDE auto-detection and `--ide all`** | Install into every tool found in the repo (`.cursor/`, `.kiro/`, `.github/`, `.agents/`) in one command. Listed as design-only in the CLI design doc. | M | — |
 | **`skilldrop search <words>`** | Search descriptions from the terminal. The site has search; the CLI doesn't. Also design-only. | S | — |

@@ -51,8 +51,6 @@ renders/
 # agent tooling scratch (attachments, session state) — never repo content
 .context/
 
-# PyPI wheel and sdist from packaging/pypi/build_wheel.py
-/dist/
 
 # run_bench.py: cached model responses and the result of a local run (RFC-0040)
 /.bench-cache/

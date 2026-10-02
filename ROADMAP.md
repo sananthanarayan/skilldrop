@@ -4,7 +4,9 @@ What is being worked on next. Not a commitment — a direction. Shipped work mov
 
 ## Upcoming
 
-- **PyPI release from CI** — publishing to PyPI with each npm release. The wheel builder and the CI job exist; see [`packaging/`](packaging/README.md). Waits on the first manual upload and a trusted publisher on pypi.org.
+- **Skills a blind judge prefers** — the catalogue-wide benchmark shows skills meeting far more of their own checks than the agent alone, and only a slight blind preference for their results. Next: make skills deliver from what they were given instead of stopping, and remove hand-off lines from inside the artifact, measured with two trials and two judges.
+- **Three or more evals per skill** — most skills have one acceptance eval, so a per-skill number is an anecdote. The three skills added in 0.16.4 set the pattern.
+- **The light and heavy tiers** — the benchmark has run on the standard tier only. Running all three shows where a cheaper model is enough.
 
 ## Considering
 
