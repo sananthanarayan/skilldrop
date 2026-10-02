@@ -24,5 +24,14 @@ python3 packaging/pypi/build_wheel.py            # dist/skilldrop_cli-<version>-
 python3 -m twine upload dist/*
 ```
 
-Publishing from CI with PyPI trusted publishing (OIDC, no stored token) is the better end
-state, matching npm. It needs the project to exist on PyPI first, so it's a follow-up.
+Publishing from CI is set up and waiting. The `pypi` job in
+[`release.yml`](../.github/workflows/release.yml) builds the wheel and uploads it with PyPI
+trusted publishing (OIDC, no stored token) whenever `package.json`'s version is not yet on PyPI.
+It stays off until two things are done, after the first manual upload has created the project:
+
+1. On pypi.org, open the `skilldrop-cli` project, then Publishing, and add a GitHub publisher:
+   owner `sananthanarayan`, repository `skilldrop`, workflow `release.yml`, environment blank.
+2. In the GitHub repository, set the Actions variable `PYPI_PUBLISH` to `true`.
+
+From then on a version bump publishes to npm and PyPI, and the manual steps above are only a
+fallback.

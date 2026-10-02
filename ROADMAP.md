@@ -4,7 +4,7 @@ What is being worked on next. Not a commitment — a direction. Shipped work mov
 
 ## Upcoming
 
-- **PyPI release from CI** — publishing to PyPI with each npm release; the wheel builder is in [`packaging/`](packaging/README.md). Waits on a PyPI account.
+- **PyPI release from CI** — publishing to PyPI with each npm release. The wheel builder and the CI job exist; see [`packaging/`](packaging/README.md). Waits on the first manual upload and a trusted publisher on pypi.org.
 
 ## Considering
 

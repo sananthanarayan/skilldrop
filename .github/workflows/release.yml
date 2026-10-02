@@ -1,4 +1,5 @@
-# Lint on every push/PR; publish to npm when the package.json version is new.
+# Lint on every push/PR; publish to npm when the package.json version is new, and to PyPI
+# as well once the repository variable PYPI_PUBLISH is "true" (see the pypi job).
 # Auth: npm OIDC trusted publishing (no token) — one-time setup on npmjs.com:
 # package skilldrop-cli -> Settings -> Trusted Publisher -> GitHub Actions,
 # repository sananthanarayan/skilldrop, workflow release.yml. See RFC-0004.
@@ -105,3 +106,41 @@ jobs:
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # The same files as a PyPI wheel, so `pipx install skilldrop-cli` works. Auth is PyPI trusted
+  # publishing (OIDC, no token), set up once on pypi.org: project skilldrop-cli -> Publishing ->
+  # add a GitHub publisher with owner sananthanarayan, repository skilldrop, workflow release.yml,
+  # and no environment. Until that exists an upload would fail, so the job waits on the repository
+  # variable PYPI_PUBLISH: set it to "true" (Settings -> Secrets and variables -> Actions ->
+  # Variables) once the publisher is registered. See packaging/README.md.
+  pypi:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.PYPI_PUBLISH == 'true'
+    needs: lint
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # OIDC trusted publishing
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Is this version new on PyPI?
+        id: check
+        run: |
+          VERSION=$(python3 -c "import json; print(json.load(open('package.json'))['version'])")
+          CODE=$(curl -s -o /dev/null -w '%{http_code}' "https://pypi.org/pypi/skilldrop-cli/$VERSION/json")
+          if [ "$CODE" = "200" ]; then
+            echo "skilldrop-cli $VERSION is already on PyPI — nothing to publish"
+            echo "new=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "publishing skilldrop-cli $VERSION to PyPI (lookup returned $CODE)"
+            echo "new=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Build the wheel and sdist
+        if: steps.check.outputs.new == 'true'
+        run: |
+          python3 -m pip install --quiet --user "build==1.6.1"  # zizmor: ignore[adhoc-packages] exact version pin
+          python3 packaging/pypi/build_wheel.py
+      - name: Publish to PyPI
+        if: steps.check.outputs.new == 'true'
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
