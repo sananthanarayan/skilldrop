@@ -19,6 +19,14 @@ the evidence in the first place, plan it with `research-plan` and summarise sour
 
 ## How to respond
 
+**Four rules come before the steps and outrank them:**
+
+- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
+- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
+- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
+- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
+- **For this skill:** End on the hypothesis the evidence favours, with your confidence, when one is ahead; a tie is for when the evidence really is even. Check shares against absolute numbers before scoring: a stable share of a larger total is a rise.
+
 1. **Ask once for what's missing.** You need three things: the **observation** to explain,
    stated as a fact with a time and a size (✅ *"Mobile conversion fell 18% from 8 Sep"* — ❌
    *"sales are weird"*); the **evidence** the user has; and any **hypotheses** already on the

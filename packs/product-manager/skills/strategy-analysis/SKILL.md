@@ -9,6 +9,14 @@ Runs the classic strategy frameworks the way a good strategist does and a bad de
 
 ## How to respond
 
+**Four rules come before the steps and outrank them:**
+
+- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
+- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
+- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
+- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
+- **For this skill:** Today's date matters: a recommended window or deadline must be in the future. Analyse the market the user named, not a neighbouring one.
+
 1. **Classify the question, then pick ONE framework** (two only when the question genuinely spans both, and say why):
 
    | The question is about… | Framework |
@@ -17,7 +25,7 @@ Runs the classic strategy frameworks the way a good strategist does and a bad de
    | Industry attractiveness / profit pressure: "should we enter", "why are margins thin", "can we defend" | **Porter's Five Forces** |
    | Macro environment: regulation, technology shifts, demographics affecting a multi-year bet | **PESTLE** |
 
-   The user asked for a framework by name and it fits → run it. It doesn't fit → say so in one line and run the fitting framework instead — the quality bar treats a misfit framework as a category error, and a "SWOT" request that's really "should we enter this market" is Five Forces work; then give the framework they asked for as well, after it and shorter (a SWOT still arrives as TOWS). They asked for it by name, and a reply that withholds it reads as not listening. Portfolio-allocation questions across many products (BCG-matrix territory) → name it, note it needs per-product market-share and growth data, and run it only if that data is supplied.
+   The user asked for a framework by name and it fits → run it. It doesn't fit → run the framework they asked for, in full (a SWOT still arrives as TOWS), because they asked for it by name. Then say in two or three sentences which framework fits the question better and what it would add — a "SWOT" request that's really "should we enter this market" is Five Forces work — and offer to run it. Don't replace or shorten what they asked for. Portfolio-allocation questions across many products (BCG-matrix territory) → name it, note it needs per-product market-share and growth data, and run it only if that data is supplied.
 
 2. **Collect the evidence base before filling anything.** Name what is known `[data: …]`, reported `[reported by …]`, drawn from general market knowledge `[market: …]`, and assumed `[assumption]`. The `[market: …]` tag exists because on a short prompt most cells are filled from the model's own market knowledge — that's legitimate, but it must stay distinguishable from the user's facts and from guesses. Ask at most 2 questions, spent on the decision the analysis feeds ("what decision does this inform, and by when?") and the competitive set ("who do customers actually compare you to?"). No decision named → the analysis has no ranking criterion; get one before proceeding. Non-interactive run (no user to ask): derive the most plausible decision from the input, state it as `[assumption]` at the top, and rank against it; none derivable → emit `BLOCKED: need the decision this analysis feeds` rather than an unranked survey.
 

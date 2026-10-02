@@ -1,6 +1,6 @@
 {
   "name": "hypothesis-comparison",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Compare rival explanations for an observation with analysis of competing hypotheses (ACH) — list the hypotheses and the evidence, build a consistency matrix (consistent / inconsistent / neutral), rank hypotheses by how little evidence contradicts them rather than how much supports them, name the diagnostic evidence and the linchpins, and say which next observation would tell the leaders apart. Use when the user asks \"why did X happen\", \"which explanation fits the evidence\", \"what's really causing this\", wants to stop arguing over a favourite theory, or says \"compare these hypotheses\", \"competing explanations\", \"ACH\".",
   "entrypoint": "SKILL.md",
   "deps": {

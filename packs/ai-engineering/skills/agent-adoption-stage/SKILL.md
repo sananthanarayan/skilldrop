@@ -23,6 +23,14 @@ The load-bearing idea: **the bottleneck moves.** Each stage is limited by someth
 
 ## How to respond
 
+**Four rules come before the steps and outrank them:**
+
+- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
+- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
+- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
+- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
+- **For this skill:** Say what a stage means in a plain sentence the first time you use it. Don't describe as the team's stated pain something they didn't say, and don't put target dates or head-counts on the plan unless they gave them.
+
 1. **Place the team on exactly one stage, from observables.** Ask for (or extract) three things: how many agents a typical engineer has in flight, who writes most of the code now, and what gets reviewed — every diff, final diffs, or exceptions. Quote the evidence. **A range is a refusal** — pick the stage the team is *operating at*, not the best day it ever had. Cap clarifying questions at 2.
 
 2. **Discount aspiration.** A team that bought licences for 200 people and has three power users is at stage 1 with an outlier, not stage 2. Place on the median engineer, and say so when the distribution is lopsided — the spread is itself a finding.

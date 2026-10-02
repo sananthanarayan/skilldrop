@@ -1,6 +1,6 @@
 {
   "name": "ai-usage-policy",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Draft an organisation's AI acceptable-use policy — three data-sensitivity tiers with what may be put into a tool at each, permitted and prohibited uses stated as behaviours, a human-review matrix keyed to consequence, an approved-tool list with an exception route, and a named owner per rule. Use when a team needs rules for what people may put into AI tools, or asks for an AI acceptable-use or governance policy. Do NOT use to write a repo's agent-tooling policy (that's agents-md-generator) or to analyse one agent's capability surface (that's agent-threat-model).",
   "entrypoint": "SKILL.md",
   "deps": {

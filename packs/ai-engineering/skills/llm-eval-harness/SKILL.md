@@ -9,6 +9,14 @@ Builds the measurement that turns "the new prompt feels better" into "the new pr
 
 ## How to respond
 
+**Four rules come before the steps and outrank them:**
+
+- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
+- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
+- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
+- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
+- **For this skill:** Use all the data the user already has, such as logged questions, before proposing to label new data. Don't call a check deterministic when it reads free text.
+
 1. **Pin the task and the unit of judgment.** What does the feature do (classify / extract / summarize / answer-with-RAG / agentic-multi-step), and **what does one gradeable output look like**? Ask at most 2 questions, spent on the failure that hurts most ("what's a wrong answer that would actually cause a problem?") and whether ground truth exists. The answer-that-hurts shapes the adversarial cases and the critical subset.
 
 2. **Build the golden set with three deliberate buckets** (case format in [`templates/`](templates/)):

@@ -78,7 +78,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/sre-oncall/skills/cloud
 
 Produce a delivery metrics report for one service from deployment, incident and pull-request exports — the DORA metrics (deployment frequency, change lead time, change fail rate, failed deployment recovery time) plus flow metrics (WIP, cycle time p50/p85, throughput), computed by a script with per-week trends and explicit data gaps, then interpreted for what changed and why.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/sre-oncall/skills/delivery-metrics-report/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/delivery-metrics-report/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/sre-oncall/skills/delivery-metrics-report/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/delivery-metrics-report/)
 
 **Use it when** the user wants DORA metrics, says "how are we doing on the four keys", "what's our change failure rate", "compute lead time and deploy frequency from this CSV", or "build our delivery metrics report".
 
@@ -161,7 +161,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/sre-oncall/skills/obser
 
 Generate a blameless incident postmortem from raw material (Slack thread, pager timeline, notes) — quantified impact, UTC timeline with detection/mitigation gaps, contributing factors instead of a single root cause, and ≤8 verifiable action items. Use after an incident or outage when the user needs a postmortem, RCA, incident review, or "lessons learned" doc.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/sre-oncall/skills/postmortem-generator/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/postmortem-generator/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/sre-oncall/skills/postmortem-generator/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/postmortem-generator/)
 
 **A good result:**
 

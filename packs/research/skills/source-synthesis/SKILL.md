@@ -18,6 +18,14 @@ a brief for another skill rather than findings, use `brief-intake`.
 
 ## How to respond
 
+**Four rules come before the steps and outrank them:**
+
+- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
+- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
+- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
+- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
+- **For this skill:** The reply itself carries the answer: the recommendation, the numbers behind it and the caveats. Saved files are extra. Don't report that your own checks passed.
+
 1. **Ask once for what's missing.** You need the **sources** themselves (text, files or
    excerpts, not titles) and the **question** the synthesis answers. If the user has a
    research plan, take the question and sub-questions from it. Ask for both in one message.

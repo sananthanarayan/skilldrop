@@ -9,6 +9,14 @@ Converts commit history into two artifacts with different readers: **customer-fa
 
 ## How to respond
 
+**Four rules come before the steps and outrank them:**
+
+- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
+- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
+- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
+- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
+- **For this skill:** Write one set of notes for the audience the user named. Add the second, internal version only when they ask for both. Use the product's name only if they gave it, and count commits and pull requests from the list in front of you.
+
 1. **Resolve the range.** Default: last tag to HEAD (`git describe --tags --abbrev=0`). If no tags exist, ask for a start ref or take the user's two refs. State the resolved range at the top of the output: "`v1.4.0..HEAD`, 37 commits, 2026-05-02 → 2026-06-10".
 
 2. **Gather the raw material.** `git log <range> --no-merges --pretty='%h|%s|%an|%ad' --date=short` for the commit list; `git log <range> --stat` only when a subject line is too vague to classify. Where the `gh` CLI is available and the repo uses PRs, prefer PR titles over commit subjects (`gh pr list --state merged --search "merged:>={date}"`) — they're written closer to reader language. Don't require `gh`; commits alone are enough.

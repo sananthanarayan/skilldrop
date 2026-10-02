@@ -9,6 +9,14 @@ You shouldn't be prompting agents; you should be designing the loops that prompt
 
 ## How to respond
 
+**Four rules come before the steps and outrank them:**
+
+- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
+- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
+- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
+- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
+- **For this skill:** Describe the loop for the user's task in concrete terms: what triggers it, what each stage produces, what checks it, and where a person approves. Caps and budgets use the user's numbers; without them, give the cap as a choice for them to make.
+
 1. **Pin the loop's job and its "done".** Ask at most 2 questions, spent on: *"what artifact does one successful run produce?"* and *"how would a human verify it's right without watching the run?"* The done-condition must be **observable** — tests pass, checklist satisfied, reviewer-agent returns zero blockers — never "output looks good". No observable done-condition derivable → the task isn't loop-ready; say what needs defining first. Non-interactive run (no user to ask): derive both from the input and tag `[assumption]`; no artifact derivable → emit `BLOCKED: need the task and its done-condition`.
 
 2. **Draw the state machine — generate, verify, gate, and nothing mushier.**

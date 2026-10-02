@@ -98,7 +98,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/product-manager/skills/
 
 Write an Amazon-style PR/FAQ — the launch press release for a product that doesn't exist yet, plus the customer FAQ and internal FAQ that force the hard questions before engineering starts.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/product-manager/skills/prfaq/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/prfaq/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/product-manager/skills/prfaq/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/prfaq/)
 
 **Use it when** the user wants a PRFAQ, a working-backwards document, a "write the press release first" exercise, or needs to align stakeholders on what a product must be before committing a team to build it.
 
@@ -149,7 +149,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/product-manager/skills/
 
 Run a strategy framework — SWOT/TOWS, Porter's Five Forces, or PESTLE — on a product, company, or market question, choosing the right framework for the question and forcing every cell to carry evidence and a so-what.
 
-Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/product-manager/skills/strategy-analysis/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/strategy-analysis/)
+Tier **heavy** · v0.1.2 · [SKILL.md](../../../packs/product-manager/skills/strategy-analysis/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/strategy-analysis/)
 
 **Use it when** the user asks for a SWOT, a competitive/market analysis, "should we enter this market", "what's our position against X", or a macro-environment scan.
 
@@ -199,7 +199,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/product-manager/skills/
 
 Map a customer's end-to-end journey toward an outcome — 3–6 stages, each with actions, emotions, pains, and opportunities, plus a rendered Mermaid emotion arc and the ranked pain points design should attack first.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/product-manager/skills/user-journey-map/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/user-journey-map/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/product-manager/skills/user-journey-map/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/user-journey-map/)
 
 **Use it when** the user wants a journey map, customer experience map, "map the user's path through onboarding", touchpoint analysis, or "where do users feel friction".
 

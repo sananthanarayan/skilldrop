@@ -94,7 +94,7 @@ Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/core/skills/doc-critique/S
 
 Review agent-written text before it ships and strip the machine artifacts it carries — invisible Unicode, non-breaking spaces, homoglyphs, harness-added provenance trailers, trailing chat closers — then flag the prose tells a script cannot catch, each quoted with a rewrite.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/core/skills/output-hygiene/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/output-hygiene/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/core/skills/output-hygiene/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/output-hygiene/)
 
 **Use it when** the user wants to clean up AI-generated output, asks to remove a Claude watermark, attribution footer, or "Generated with" line, wants a draft that does not read as machine-written, or needs a pre-ship hygiene pass on a document, commit message, or pasted chat answer.
 

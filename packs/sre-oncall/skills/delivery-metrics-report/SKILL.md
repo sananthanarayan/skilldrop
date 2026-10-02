@@ -11,6 +11,14 @@ It uses the metric names DORA currently publishes on [dora.dev](https://dora.dev
 
 ## How to respond
 
+**Four rules come before the steps and outrank them:**
+
+- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
+- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
+- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
+- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
+- **For this skill:** Put the metric values in the reply itself, with the period they cover; files are extra. When you won't do something the user asked for, give the reason in two sentences and do the nearest useful thing.
+
 1. **Ask once for what is missing, then proceed.** Ask at most 2 questions. Spend them on the things that change the numbers:
    - **Which service and which window.** One service per report. Default to the last 8 full ISO weeks (Monday to Sunday) when no window is given.
    - **What counts as a failed deployment here.** The script counts `status` failed, rolled_back or hotfixed, or any deployment named in an incident's `caused_by_deploy`. If the team also counts something else, such as a feature-flag kill, add it to the export before running.

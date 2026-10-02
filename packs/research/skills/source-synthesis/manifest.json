@@ -1,6 +1,6 @@
 {
   "name": "source-synthesis",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Synthesise a set of supplied sources — papers, articles, reports, interview transcripts — into findings where every claim is cited to a source and a location ([S1:p4]), agreement and disagreement across sources are explicit, each finding carries an evidence-strength rating with the criteria used, and the gaps and what the sources do not say are listed. Never adds outside facts unless tagged as such, and ships a citation checker. Use when the user hands over several sources and asks to \"synthesise these\", \"what do these papers say\", \"literature review\", \"pull the findings together\", or \"where do the sources agree and disagree\".",
   "entrypoint": "SKILL.md",
   "deps": {

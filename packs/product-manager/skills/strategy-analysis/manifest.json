@@ -1,6 +1,6 @@
 {
   "name": "strategy-analysis",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Run a strategy framework — SWOT/TOWS, Porter's Five Forces, or PESTLE — on a product, company, or market question, choosing the right framework for the question and forcing every cell to carry evidence and a so-what. Use when the user asks for a SWOT, a competitive/market analysis, \"should we enter this market\", \"what's our position against X\", or a macro-environment scan.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },

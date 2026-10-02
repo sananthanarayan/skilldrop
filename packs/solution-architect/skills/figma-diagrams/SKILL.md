@@ -36,6 +36,14 @@ If `FIGMA_TOKEN` is not set, tell the user how to set it before running the scri
 
 ## How to respond
 
+**Four rules come before the steps and outrank them:**
+
+- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
+- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
+- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
+- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
+- **For this skill:** Before anything else, say what access is needed (the file link and a token or connected tool) and whether you have it. Don't refer to helper scripts the user can't see.
+
 1. **Detect the URL.** Figma URLs look like `https://www.figma.com/file/<FILE_KEY>/<name>` or `https://www.figma.com/design/<FILE_KEY>/<name>`. Extract `<FILE_KEY>` — that's what the API takes.
 
 2. **Pick the right script.** Helper scripts live in `scripts/` next to this `SKILL.md`:

@@ -11,6 +11,14 @@ There is no cryptographic watermark in Claude's text output, and this skill does
 
 ## How to respond
 
+**Four rules come before the steps and outrank them:**
+
+- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
+- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
+- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
+- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
+- **For this skill:** With no text and no path, ask for the text in one sentence. When a rule holds one class of cleaning back, state the rule in one sentence, do every other cleaning the user asked for, and don't comment on their intentions.
+
 1. **Name the target medium before reading a word of the text.** Markdown document, plain text, commit message, code comment, web form, CSV. The medium decides whether a class is a defect at all: a curly apostrophe is correct in Markdown prose and a bug in a commit message; an em dash is punctuation in an essay and a tell at four per paragraph. State the medium in the first line of the report.
 
 2. **Run the script first, and read its output before reading the draft.** It localizes every mechanical finding, so the model pass only has to look at prose.
