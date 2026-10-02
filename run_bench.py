@@ -92,6 +92,7 @@ PAIR_SYSTEM = ("You compare two responses to the same request. Pick the one that
 
 
 BACKEND = "api"  # or "claude-cli"; set from --backend
+SECOND_JUDGE = None  # a second pairwise judge, set from --second-judge
 
 
 CLI_BASE = ["--disable-slash-commands", "--strict-mcp-config", "--no-session-persistence",
@@ -335,6 +336,10 @@ def run_unit(unit, judge_model, budget):
         row["pairwise"] = pair(judge_model, e["prompt"], row["arms"]["skill"]["output"],
                                row["arms"]["baseline"]["output"], f"{s}/{e.get('id')}/{model}/{trial}",
                                trial, budget)
+        if SECOND_JUDGE:  # same request, same outputs, same A/B order, a different model
+            row["pairwise2"] = pair(SECOND_JUDGE, e["prompt"], row["arms"]["skill"]["output"],
+                                    row["arms"]["baseline"]["output"], f"{s}/{e.get('id')}/{model}/{trial}",
+                                    trial, budget)
     except BudgetExceeded:
         row["skipped"] = "budget"
     except (APIError, json.JSONDecodeError) as err:
@@ -381,6 +386,18 @@ def by_eval(rows, model, value):
     return {k: mean(v) for k, v in acc.items()}
 
 
+def second_judge(rows, m, done):
+    """The second judge's preference, and how often the two judges picked the same side."""
+    two = [r for r in done if "pairwise2" in r]
+    if not two:
+        return {}
+    win2 = list(by_eval(two, m, lambda r: {"skill": 1.0, "tie": 0.5, "baseline": 0.0}[r["pairwise2"]["winner"]]).values())
+    decided = [r for r in two if "tie" not in (r["pairwise"]["winner"], r["pairwise2"]["winner"])]
+    return {"second_judge": SECOND_JUDGE, "win2": mean(win2), "win2_ci": boot(win2),
+            "judges_agree": sum(r["pairwise"]["winner"] == r["pairwise2"]["winner"] for r in decided),
+            "judges_decided": len(decided)}
+
+
 def summarize(rows, floor, models, labels, tolerance):
     out = {"models": {}, "routing": []}
     floor_ok = [f for f in floor if "grades" in f]
@@ -399,6 +416,7 @@ def summarize(rows, floor, models, labels, tolerance):
             "skill": mean(list(sk.values())), "baseline": mean(list(ba.values())),
             "lift": mean(lifts), "lift_ci": boot(lifts),
             "win": mean(list(win.values())), "win_ci": boot(list(win.values())),
+            **second_judge(rows, m, done),
             "cost_skill": mean([r["arms"]["skill"]["cost"] for r in done]),
             "cost_baseline": mean([r["arms"]["baseline"]["cost"] for r in done]),
             "out_tokens_skill": mean([r["arms"]["skill"]["usage"].get("output_tokens", 0) for r in done]),
@@ -474,6 +492,11 @@ def report(summary, judge_model, trials, spent, scripted):
               "the skill picked the skill's output (a tie counts half). 50% means no preference.",
               "- Intervals resample evals, not trials. An interval that spans 0 (lift) or 50% (preference) "
               "is not a result."]
+    for m, d in summary["models"].items():
+        if d.get("second_judge"):
+            lines += ["", f"**Second judge** `{d['second_judge']}` on `{m}`: preferred the skill's result in "
+                      f"{pct(d['win2'])}{ci(d['win2_ci'])} of pairs, and picked the same side as the first judge in "
+                      f"{d['judges_agree']} of {d['judges_decided']} pairs where both chose one."]
     notes = []
     for m, d in summary["models"].items():
         bits = []
@@ -554,6 +577,8 @@ def main():
     ap.add_argument("--backend", choices=("api", "claude-cli"), default="api",
                     help="api needs ANTHROPIC_API_KEY; claude-cli runs each call through a signed-in `claude -p`")
     ap.add_argument("--judge-model", default=JUDGE_MODEL)
+    ap.add_argument("--second-judge", metavar="MODEL",
+                    help="also run the blind pairwise comparison with this model, and report how often the two judges agree")
     ap.add_argument("--trials", type=int, default=1, help="runs per eval per arm (default 1)")
     ap.add_argument("--budget", type=float, default=5.0, help="hard stop in USD for this run (default 5)")
     ap.add_argument("--tolerance", type=float, default=0.05,
@@ -566,8 +591,10 @@ def main():
                     help="also write the summary (no outputs) to FILE; docs/benchmarks/latest.json is what the site reads")
     a = ap.parse_args()
 
-    global BACKEND
-    BACKEND = a.backend
+    global BACKEND, SECOND_JUDGE
+    BACKEND, SECOND_JUDGE = a.backend, a.second_judge
+    if SECOND_JUDGE and price(SECOND_JUDGE) is None:
+        sys.exit(f"no price for second judge {SECOND_JUDGE!r}: add it to PRICES in run_bench.py")
     all_skills = catalog.skills()
     skills = [s.strip() for s in a.skills.split(",")] if a.skills else all_skills
     unknown = [s for s in skills if s not in all_skills]
