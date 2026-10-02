@@ -1,7 +1,6 @@
 # skilldrop
 
 [![npm](https://img.shields.io/npm/v/skilldrop-cli)](https://www.npmjs.com/package/skilldrop-cli)
-[![PyPI](https://img.shields.io/pypi/v/skilldrop-cli)](https://pypi.org/project/skilldrop-cli/)
 [![license](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](LICENSE)
 
 **Portable AI-agent skills, measured against the agent without them.** They cover the deliverables knowledge workers actually ship: ADRs, design docs, PRDs, runbooks, threat models, decks, postmortems and adversarial reviews. Each one is a folder you copy into Claude Code, Cursor, Kiro, Codex, Antigravity or Copilot.
@@ -20,7 +19,7 @@ Install one pack. Every role pack also brings `core` (intake, critique, review c
 
 - **Product managers:** `product-manager` — PR/FAQs, strategy, OKRs, business cases, PRDs, success metrics. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/product-manager/)
 - **Architects:** `solution-architect` — diagrams, ADRs, design docs, API and data contracts, threat models. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/solution-architect/)
-- **Software teams:** `dev-team` — story splitting, implementation with adversarial review, merge gates, launch readiness, release notes. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/dev-team/)
+- **Software teams:** `dev-team` — story splitting, implementation with adversarial review, merge gates, PR descriptions, a tech-debt register, launch readiness, release notes. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/dev-team/)
 - **SRE and on-call:** `sre-oncall` — observability, runbooks, incident comms, postmortems, capacity. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/sre-oncall/)
 - **Explaining things to decision-makers:** `stakeholder-comms` — audience profiles, exec summaries, decision logs, guides. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/stakeholder-comms/)
 - **On-brand decks and flyers:** `design` — capture your brand once, then build `.pptx` decks and print-ready flyers with your logo, colours and fonts. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/design/)
@@ -31,7 +30,7 @@ Install one pack. Every role pack also brings `core` (intake, critique, review c
 - **Researching a question:** `research` — research plans, cited source synthesis, competing hypotheses. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/research/)
 - **Keeping the tracker straight:** `trackers` — backlog triage, weekly status from tracker data, briefs turned into issues. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/trackers/)
 - **Data and analytics:** `data-analytics` — metric definitions, SQL review, dashboard specs. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/data-analytics/)
-- **Governance, risk and compliance:** `grc` — DPIAs, SOC 2 evidence maps, risk registers. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/grc/)
+- **Governance, risk and compliance:** `grc` — DPIAs, SOC 2 evidence maps, risk registers, security questionnaire answers. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/grc/)
 - **Infrastructure as code:** `infra-as-code` — Terraform modules with secure defaults, and plan reviews before apply. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/infra-as-code/)
 - **Writing agent skills:** `skill-engineering` — author a portable skill with evals, and review one before it ships. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/skill-engineering/)
 - **Everyone:** `core` on its own. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/core/)
@@ -40,13 +39,6 @@ Install one pack. Every role pack also brings `core` (intake, critique, review c
 
 ```bash
 npx skilldrop-cli install --pack dev-team
-```
-
-Prefer Python tooling? The same CLI is on PyPI. It still runs on Node, so Node 16.7 or newer has to be on your `PATH`:
-
-```bash
-pipx install skilldrop-cli        # or: pip install skilldrop-cli
-skilldrop install --pack dev-team
 ```
 
 The install prints a starter prompt for the pack. For `dev-team`, ask your agent:
@@ -70,7 +62,7 @@ In Claude Code you can use the plugin marketplace instead: run `/plugin marketpl
 ## Go deeper
 
 - **Use it:** [docs portal](https://sananthanarayan.github.io/skilldrop/docs/) · [a guide for every pack](guides/README.md#per-pack) · [install in any IDE](guides/how-to/install-per-ide.md) · [try skills in a repo you don't own](guides/how-to/install-per-ide.md#trying-skills-in-a-repo-you-dont-own) · [profiles](guides/how-to/profiles.md) · [hooks](guides/how-to/wire-a-hook.md)
-- **Run it in CI:** [a skill on every pull request](guides/how-to/run-a-skill-in-ci.md) · [how skills are checked](https://sananthanarayan.github.io/skilldrop/evals/) · [measure your loops](guides/how-to/measure-your-loops.md)
+- **Run it in CI:** [a skill on every pull request](guides/how-to/run-a-skill-in-ci.md) · [how skills are checked](https://sananthanarayan.github.io/skilldrop/evals/) · [benchmark skills yourself](guides/how-to/benchmark-skills.md) · [measure your loops](guides/how-to/measure-your-loops.md)
 - **Roll it out:** [across your org, including an internal mirror](guides/how-to/enterprise-distribution.md) · [publish your own catalogue](guides/how-to/publish-a-catalogue.md) · [security and the OWASP Top 10s](guides/reference/owasp-mapping.md)
 - **Reviewers:** three subagents that push back on generated work: `devils-advocate`, `security-reviewer` and `code-quality`. See [`agents/`](agents/README.md).
 - **Cost:** each skill declares a provider-neutral model tier (`light`, `standard` or `heavy`). See [MODEL-ROUTING.md](MODEL-ROUTING.md).

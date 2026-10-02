@@ -454,9 +454,9 @@ def evals_page(skills):
 <div><dt>Skills with both files</dt><dd>{covered} of {len(skills)}</dd></div>
 <div><dt>Acceptance evals</dt><dd>{tot_e}, with {tot_a} assertions</dd></div>
 <div><dt>Trigger queries</dt><dd>{tot_q}</dd></div>
-<div><dt>Run</dt><dd>Weekly against a live model, <a href="{REPO_URL}/actions/workflows/evals.yml">report-only</a></dd></div>
+<div><dt>Run</dt><dd>{("Benchmarked " + esc(bench["date"]) + ", by hand") if bench else "By hand"}</dd></div>
 </dl>
-<p><code>validate.py</code> fails any skill without both files, on every pull request. The weekly run asks a model which skill it would load for each trigger query and reports the misses; assertion runs are started by hand. A miss is a prompt to look at the description, not a gate. Run them yourself with <code>python3 run_evals.py</code> and an <code>ANTHROPIC_API_KEY</code>.</p>
+<p><code>validate.py</code> fails any skill without both files, on every pull request. The acceptance evals are run by hand with <code>run_bench.py</code>, as agent sessions with and without each skill; the latest result is below. A <a href="{REPO_URL}/actions/workflows/evals.yml">weekly workflow</a> for the trigger queries asks a model which skill it would load and reports the misses; it is switched off until the repository has an API key. A miss is a prompt to look at the description, not a gate. Run them yourself with <code>python3 run_evals.py</code> and an <code>ANTHROPIC_API_KEY</code>.</p>
 {bench_section(bench) if bench else ""}
 <h2 id="every-skill">Every skill</h2>
 <div class="tbl"><table>

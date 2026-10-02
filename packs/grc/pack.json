@@ -1,5 +1,5 @@
 {
-  "description": "Governance, risk and compliance drafts for compliance leads, DPOs and risk owners: a risk register with a checked heat map, a GDPR data protection impact assessment, and a SOC 2 control-to-evidence map, each prepared for a qualified person to review.",
+  "description": "Governance, risk and compliance drafts for compliance leads, DPOs and risk owners: a risk register with a checked heat map, a GDPR data protection impact assessment, a SOC 2 control-to-evidence map, and answers to a customer security questionnaire drawn from your own evidence, each prepared for a qualified person to review.",
   "display_name": "Governance, risk and compliance",
   "keywords": ["grc", "risk register", "dpia", "gdpr", "soc 2", "compliance", "audit evidence", "privacy"],
   "links": {
@@ -44,6 +44,12 @@
         "skill": "soc2-evidence-map",
         "you_do": "Name the criteria in scope, Type I or Type II, the audit period, and your controls and systems.",
         "you_get": "A control-to-criteria map with the evidence an auditor will ask for, where it lives, who owns it, how often it is produced, and the gaps, as a table and a CSV."
+      },
+      {
+        "skill": "security-questionnaire-response",
+        "you_do": "When a customer sends a security questionnaire, give it the form and your policies, audit report and earlier answers.",
+        "you_get": "The customer's form filled in, with the document behind each answer, the questions your evidence doesn't cover marked as needing input, and conflicts and stale evidence flagged.",
+        "decide": "What the security owner confirms, corrects or declines to answer before it is sent."
       },
       {
         "skill": "doc-critique",
