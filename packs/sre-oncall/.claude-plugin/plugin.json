@@ -1,0 +1,19 @@
+{
+  "name": "sre-oncall",
+  "version": "0.16.6",
+  "description": "Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models. (11 skills, 2 loops)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/sre-oncall/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "runbook",
+    "incident",
+    "postmortem",
+    "observability",
+    "slo"
+  ]
+}

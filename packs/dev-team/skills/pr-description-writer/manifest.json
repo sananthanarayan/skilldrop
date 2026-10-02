@@ -1,0 +1,30 @@
+{
+  "name": "pr-description-writer",
+  "version": "0.1.0",
+  "description": "Write the pull request title and description for one change, from the actual diff and commits: what changed and why, how it was tested with only the checks that were really run, what a reviewer should look at first, and the risk and rollback. It also reports what the diff contains that the commits don't mention, such as a dependency bump, a deleted test or a schema change. Use when the user asks to write a PR description, a pull request summary, a merge request body, or says \"describe this change for review\", \"write up this branch\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "pre-merge-review",
+    "release-notes",
+    "test-plan-generator"
+  ],
+  "tags": [
+    "pull-request",
+    "code-review",
+    "git",
+    "description",
+    "merge-request"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Reads a diff and rewrites it for a reviewer. Bounded by the diff; the judgment is in picking what a reviewer needs first."
+  }
+}

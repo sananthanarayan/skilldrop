@@ -1,0 +1,28 @@
+{
+  "skill_name": "agent-loop-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Design an agent loop that keeps our API reference docs in sync with the codebase: when endpoints change, the agent should update the docs, and we want to review before anything is published to the public docs site.",
+      "assertions": [
+        "One run's artifact and an observable done-condition are named (not 'docs look correct')",
+        "The state machine has exactly generate/verify/gate(/escalate) states, rendered as valid Mermaid stateDiagram-v2",
+        "The verifier is structurally different from the generator, with the independence stated",
+        "Both caps are numbers: a revision cap and a per-run budget line",
+        "Publishing to the public docs site sits behind a human gate with a decision-shaped digest format described",
+        "Findings from a failed verify flow into the next generate round explicitly",
+        "All three failure routes are specified: cap-hit escalation with digest, can't-judge BLOCKED route, systemic early-stop",
+        "A telemetry row logs rounds/spend/verdict per run with a review cadence",
+        "Hand-offs point to subagent-design for fan-out and agent-budget for the spend model"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "[Non-interactive run — no user available to answer questions] Design an agent loop.",
+      "assertions": [
+        "No loop is designed — the output is BLOCKED: need the task and its done-condition",
+        "No state machine or caps are fabricated"
+      ]
+    }
+  ]
+}

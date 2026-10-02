@@ -1,0 +1,31 @@
+{
+  "skill_name": "tracker-brief-sync",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Turn examples/prd-guest-checkout.md into Jira epics and stories we can import. Link each one back to the PRD; the wiki copy is https://wiki.northwind.example/checkout/prd-guest-checkout.",
+      "assertions": [
+        "Shows the mapping from doc sections to epics and stories before or alongside the spec",
+        "Creates one epic per goal and one story per M/S/C requirement",
+        "Creates no issue for R7 (Won't have) or the non-goals, and lists them as not created",
+        "Every story has Given/When/Then acceptance criteria that restate the requirement without adding behaviour",
+        "Every item's description ends with a Source line linking to the wiki URL and the section ID",
+        "Runs the export with --doc so the spec is checked, and hands over a Jira CSV with import steps",
+        "Reports the PRD's open question as unresolved rather than turning it into a ticket with a guessed answer",
+        "Does not invent requirements, numbers or reasons not in the PRD"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Here's our Jira export for guest checkout (examples/tracker-after-two-weeks.csv). Does the tracker still match the PRD (examples/prd-guest-checkout.md)?",
+      "assertions": [
+        "Reports R3 as a doc section with no live issue, noting CHK-205 was cancelled",
+        "Reports CHK-209 as an issue for a Won't-have requirement (R7)",
+        "Reports CHK-211 as pointing at R8, which the PRD does not have",
+        "Reports CHK-210 as an issue with no doc section",
+        "For each item gives both resolutions (change the tracker or change the doc) rather than assuming the tracker is wrong",
+        "Flags CHK-207 as linked only by mention and asks for its Source line to be restored"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "doc-critique",
+  "version": "0.1.0",
+  "description": "Review an existing document — ADR, design doc, runbook, exec summary, tech-comparison matrix, deck outline, decision log — and produce a structured critique against the same quality bars the skilldrop generators enforce. Categorizes findings by severity (blocker / major / minor / nit), points to the exact section/line, and suggests a concrete fix for each. Use when the user wants a second-pair-of-eyes review before sharing a doc, or has been handed someone else's artifact and wants to know what to push back on.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": ["decision-log", "tech-comparison-matrix"],
+  "tags": ["review", "critique", "quality", "rubric", "feedback"],
+  "model": { "tier": "heavy", "rationale": "Adversarial doc review against rubrics. The value is catching what a fast pass misses. Never downgrade." }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "dev-team",
+  "version": "0.16.6",
+  "description": "Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, pull request descriptions, a ranked technical-debt register, migrations, launch readiness, release notes, agent-policy files, and code-quality gates. (20 skills, 3 loops)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/dev-team/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "review",
+    "merge",
+    "testing",
+    "release",
+    "code-quality"
+  ]
+}

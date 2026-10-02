@@ -1,0 +1,16 @@
+{
+  "skill_name": "reverse-architecture",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Reverse-engineer the architecture of this repo — it has Terraform, Kubernetes manifests, and an OpenAPI spec.",
+      "assertions": [
+        "Every node carries a source-of-truth file path as evidence; nothing appears in the diagram without a reference",
+        "Inferred components are marked as inferred rather than asserted as fact",
+        "Edges carry direction and, where the source reveals it, protocol",
+        "Nodes are grouped by deployment boundary as the artifacts reveal it",
+        "The output is derived from the supplied artifacts, not from a written description of intent"
+      ]
+    }
+  ]
+}

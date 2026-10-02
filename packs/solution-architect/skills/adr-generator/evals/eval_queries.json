@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Write an ADR for this decision",
+    "should_trigger": true
+  },
+  {
+    "query": "Document the 'we decided X because Y' moment as an architecture decision record",
+    "should_trigger": true
+  },
+  {
+    "query": "Capture this architectural decision in MADR format",
+    "should_trigger": true
+  },
+  {
+    "query": "We picked Postgres over Dynamo — record the decision properly",
+    "should_trigger": true
+  },
+  {
+    "query": "Extract the decisions and owners from these meeting notes",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a full engineering design doc for this feature",
+    "should_trigger": false
+  },
+  {
+    "query": "Critique the ADR I already wrote",
+    "should_trigger": false
+  },
+  {
+    "query": "Convene a council to decide which database we should use",
+    "should_trigger": false
+  }
+]

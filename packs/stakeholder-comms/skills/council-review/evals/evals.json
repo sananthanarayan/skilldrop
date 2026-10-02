@@ -1,0 +1,18 @@
+{
+  "skill_name": "council-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're considering moving our monolith's checkout flow onto a separate service before Black Friday. Convene the council and give me a verdict.",
+      "assertions": [
+        "Each of the five standing seats takes an independent stance (support / conditions / oppose / abstain) before any cross-talk",
+        "Every seat point is concrete and attached to evidence — file:line for code, or the named assumption for a decision",
+        "Genuine disagreements are surfaced as named cruxes; agreement is reported honestly as unanimous rather than manufactured into conflict",
+        "A Chair issues a single reconciled verdict (PROCEED / WITH CONDITIONS / REVISE / RECONSIDER / SPLIT)",
+        "The verdict names the tradeoff chosen, records dissent, and states what would change the decision",
+        "Bench seats are added only when the change warrants them, and benching is stated explicitly",
+        "No persona cosplay — the persona is used as a lens, not costume prose"
+      ]
+    }
+  ]
+}

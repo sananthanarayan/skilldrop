@@ -1,0 +1,22 @@
+{
+  "name": "grc",
+  "version": "0.16.6",
+  "description": "Governance, risk and compliance drafts for compliance leads, DPOs and risk owners: a risk register with a checked heat map, a GDPR data protection impact assessment, a SOC 2 control-to-evidence map, and answers to a customer security questionnaire drawn from your own evidence, each prepared for a qualified person to review. (8 skills, 1 loop)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/grc/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "grc",
+    "risk register",
+    "dpia",
+    "gdpr",
+    "soc 2",
+    "compliance",
+    "audit evidence",
+    "privacy"
+  ]
+}

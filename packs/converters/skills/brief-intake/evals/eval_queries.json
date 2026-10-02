@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Turn this Slack thread into a structured brief",
+    "should_trigger": true
+  },
+  {
+    "query": "I have a messy transcript — get it into shape for the design-doc skill",
+    "should_trigger": true
+  },
+  {
+    "query": "Structure this raw context into a brief before I run the next skill",
+    "should_trigger": true
+  },
+  {
+    "query": "Take this half-written Notion page and extract a clean brief",
+    "should_trigger": true
+  },
+  {
+    "query": "Extract the decisions, owners, and due dates from this discussion",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the ADR itself from this context",
+    "should_trigger": false
+  },
+  {
+    "query": "Critique this brief's quality",
+    "should_trigger": false
+  },
+  {
+    "query": "Summarize this thread for the executive team",
+    "should_trigger": false
+  }
+]

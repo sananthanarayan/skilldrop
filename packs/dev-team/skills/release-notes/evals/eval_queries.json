@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Write release notes for everything since the last tag",
+    "should_trigger": true
+  },
+  {
+    "query": "Update CHANGELOG.md for v3.1 from the git history",
+    "should_trigger": true
+  },
+  {
+    "query": "What's in this release? Turn v1.8.0..v1.9.0 into customer-facing notes",
+    "should_trigger": true
+  },
+  {
+    "query": "Draft a deploy announcement for internal stakeholders from these merged PRs",
+    "should_trigger": true
+  },
+  {
+    "query": "Review the changes in this release for risk before we ship",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a one-page summary for the board on why this release matters strategically",
+    "should_trigger": false
+  },
+  {
+    "query": "Run a Sonar quality review on the code merged this sprint",
+    "should_trigger": false
+  }
+]

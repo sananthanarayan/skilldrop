@@ -1,0 +1,18 @@
+{
+  "skill_name": "token-budget-estimator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're planning a Claude agent that triages inbound support tickets for Northwind. System prompt is about 6,000 characters of instructions plus 4 few-shot examples of about 1,500 characters each. Each session averages 8 tool calls: 3 calls to search_kb return about 3 KB of JSON each, and 5 calls to get_ticket_history return about 10 KB of JSON each. We keep the full conversation history. Final output is a 200-word triage note. We'll run around 5,000 sessions a day. Estimate the token budget.",
+      "assertions": [
+        "Produces a component table (system prompt, few-shot examples, tool definitions, tool results, context accumulation, output, total per session), not a single total",
+        "Estimates from the description are ranges, not falsely precise single numbers like '3,142 tokens'",
+        "Uses ~4 chars/token for prose and ~3 chars/token for the JSON tool results",
+        "Names the single dominant cost driver (likely accumulated tool results / context re-sent across turns) and explains why it dominates",
+        "Gives exactly three concrete controls ranked by expected savings, with specific API parameters (max_tokens, cache_control, truncating or paginating tool results)",
+        "The rough cost estimate states its pricing-tier assumption rather than guessing silently",
+        "Does not invent workflow components, session counts, or payload sizes not in the prompt"
+      ]
+    }
+  ]
+}

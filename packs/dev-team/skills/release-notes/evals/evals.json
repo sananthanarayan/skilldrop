@@ -1,0 +1,19 @@
+{
+  "skill_name": "release-notes",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write release notes for v2.4.0 from this log (range v2.3.0..HEAD, 2026-08-12 to 2026-09-28):\n\na1b2c3d|feat: bulk CSV import for contacts (#412)\ne4f5a6b|fix: NPE in ReportExporter.flush() when >10k rows (#418)\nc7d8e9f|feat!: remove legacy /v1/contacts endpoint (#420)\n0a1b2c3|chore(deps): bump lodash 4.17.20 -> 4.17.21\n4d5e6f7|refactor: extract ExportService\n8a9b0c1|fix stuff\n2d3e4f5|perf: cache tenant settings, report export ~3x faster (#425)",
+      "assertions": [
+        "States the range, commit count (7), and date span at the top",
+        "The removal of /v1/contacts is hoisted to the top of both artifacts with an 'Action required' line and names the !: marker that flagged it",
+        "Customer notes contain no commit-speak — no ReportExporter.flush(), class names, ticket numbers, or author names",
+        "The lodash bump and the ExportService refactor appear only in the internal changelog, never in customer notes, not even as 'various improvements'",
+        "Every internal changelog line ends with its short hash, plus PR number where present",
+        "The vague 'fix stuff' commit (8a9b0c1) goes in the Needs review list with its hash, not guessed into customer notes",
+        "No marketing adjectives; the performance line states the measured change (~3x faster export) rather than 'blazing fast'",
+        "Does not invent features or fixes not present in the log"
+      ]
+    }
+  ]
+}

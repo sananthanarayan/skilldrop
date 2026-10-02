@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Triage our Jira backlog export and find the duplicates",
+    "should_trigger": true
+  },
+  {
+    "query": "We have 200 tickets in Linear, half of them stale. Which should we close and what should we pull next?",
+    "should_trigger": true
+  },
+  {
+    "query": "Groom this backlog CSV before sprint planning: missing owners, missing acceptance criteria, things too big to schedule",
+    "should_trigger": true
+  },
+  {
+    "query": "Find near-duplicate issues in our GitHub project and propose a priority order",
+    "should_trigger": true
+  },
+  {
+    "query": "A customer says checkout is broken on mobile sometimes. Turn this into a proper bug ticket",
+    "should_trigger": false
+  },
+  {
+    "query": "Break this guest-checkout epic into user stories with acceptance criteria",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the weekly status report for the checkout team from this Jira export",
+    "should_trigger": false
+  },
+  {
+    "query": "Draft a PRD for guest checkout from this brief",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,43 @@
+{
+  "skill_name": "security-questionnaire-response",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Acme sent us their vendor security questionnaire (questionnaire.csv). Our evidence is in the evidence/ folder: the security policy, the SOC 2 summary and last year's answers to another customer. Draft the answers.",
+      "assertions": [
+        "Q4 (ISO 27001 certified?) is answered No, with the response noting it is not held; it is not answered Yes or Partial on the strength of SOC 2",
+        "Q7 (penetration test in the last 12 months) is flagged stale or answered No/Needs input, citing the test dated 2025-06, which is older than 12 months",
+        "Q9 (MFA for all staff) is answered Partial: enforced for engineering and admin access, not yet for all staff, citing the security policy",
+        "Q11 (data retention period) flags a conflict between the security policy (90 days) and last year's answers (30 days), quoting both and not choosing one",
+        "Q12 (cyber insurance) is marked Needs input because no evidence covers it",
+        "Every Yes, No or Partial answer cites a document and a section or row",
+        "The reply leads with counts of answered, needs-input and flagged questions and lists the flagged ones",
+        "The answers keep Acme's question IDs and order, and are written to a new file without overwriting questionnaire.csv"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "A prospect asked these five questions. Can you answer them for us?\n1. Do you encrypt customer data at rest?\n2. Do you have a SOC 2 Type II report?\n3. How often do you run penetration tests?\n4. Where is customer data hosted?\n5. Do you have a documented incident response plan?",
+      "assertions": [
+        "All five questions are returned as Needs input (or the equivalent), because no evidence was supplied",
+        "It does not answer Yes, give a hosting region, a test frequency or a certification from general knowledge",
+        "It says what document would answer each question (for example the encryption standard, the SOC 2 report, the pen-test report, the architecture or hosting record, the incident response plan)",
+        "It keeps the prospect's numbering and wording",
+        "The reply is short and asks for the evidence in plain words"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Fill in the security section of this RFP (rfp-security.md) using evidence/security-policy.md. They want Yes/No with a short explanation.",
+      "assertions": [
+        "The question on encryption in transit is answered Yes citing the policy's TLS 1.2+ requirement, and the answer does not also claim encryption at rest unless the policy states it",
+        "The question on backups being tested is answered from the policy's quarterly restore test, with the frequency copied exactly",
+        "The question on a 24/7 security operations centre is answered No or Needs input, since the policy describes business-hours on-call only",
+        "The question whose honest answer is 'planned' (SSO for the customer portal, planned for Q1 2027) is flagged as a commitment",
+        "Each answer is one to three sentences",
+        "It does not invent certifications, tools, vendors or dates that are not in the policy",
+        "The reply states the draft needs the security owner's review before it is sent"
+      ]
+    }
+  ]
+}

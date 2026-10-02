@@ -1,0 +1,42 @@
+{
+  "name": "skill-author",
+  "version": "0.1.0",
+  "description": "Write a new portable Agent Skill (a SKILL.md folder) from a described task, for Claude Code, Codex, Copilot, Cursor, Kiro or Antigravity in any repo — a description that leads with the artifact and ends with trigger phrases, decisive steps, a quality bar, when and when-not sections naming near-miss siblings, anti-patterns, a non-interactive rule, reference files and scripts that work in every tool, acceptance evals and trigger queries, and the install path for each tool. Use when the user says \"turn this into a skill\", \"write a SKILL.md for…\", \"make an agent skill that…\", or wants a repeatable task packaged so their coding agent does it the same way every time.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "agents-md-generator",
+    "contribution-wizard",
+    "eval-harness-generator",
+    "skill-review"
+  ],
+  "handoff": [
+    {
+      "to": "skill-review",
+      "when": "the skill folder is written",
+      "purpose": "Audit routing, portability, safety, structure and evals before the skill is shared.",
+      "fallback": "If skill-review is absent, check inline: name equals folder, description leads with the artifact and ends with triggers, every linked path exists, every script appears with a plain relative path, and the evals parse."
+    }
+  ],
+  "tags": [
+    "agent-skills",
+    "skill-md",
+    "authoring",
+    "portability",
+    "evals",
+    "claude-code",
+    "codex",
+    "copilot"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Structured authoring against a fixed anatomy. The judgment is in the description and sibling boundaries, which the interview anchors; skill-review is the adversarial pass."
+  }
+}

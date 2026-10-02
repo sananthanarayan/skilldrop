@@ -1,0 +1,42 @@
+{
+  "name": "source-synthesis",
+  "version": "0.1.1",
+  "description": "Synthesise a set of supplied sources — papers, articles, reports, interview transcripts — into findings where every claim is cited to a source and a location ([S1:p4]), agreement and disagreement across sources are explicit, each finding carries an evidence-strength rating with the criteria used, and the gaps and what the sources do not say are listed. Never adds outside facts unless tagged as such, and ships a citation checker. Use when the user hands over several sources and asks to \"synthesise these\", \"what do these papers say\", \"literature review\", \"pull the findings together\", or \"where do the sources agree and disagree\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "brief-intake",
+    "decision-log",
+    "doc-critique",
+    "hypothesis-comparison",
+    "research-plan",
+    "strategy-analysis"
+  ],
+  "handoff": [
+    {
+      "to": "hypothesis-comparison",
+      "when": "the findings point to several rival explanations for the same observation",
+      "purpose": "Rank the explanations by how much of the cited evidence contradicts each.",
+      "fallback": "If hypothesis-comparison is absent, list the rival explanations under the findings with the citations for and against each, and say which has the least evidence against it."
+    }
+  ],
+  "tags": [
+    "research",
+    "synthesis",
+    "literature-review",
+    "citations",
+    "evidence"
+  ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths"},
+  "model": {
+    "tier": "standard",
+    "rationale": "Bounded synthesis over supplied text with a fixed citation format and strength criteria; the citation checker catches the mechanical failures, so mid-tier judgment is enough."
+  }
+}

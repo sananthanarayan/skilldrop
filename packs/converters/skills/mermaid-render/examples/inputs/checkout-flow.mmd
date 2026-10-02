@@ -1,0 +1,9 @@
+flowchart TD
+    Cart([Shopper cart]) --> Pay{"Payment OK? (3-D Secure)"}
+    Pay -->|yes| Confirm[Order confirmed]
+    Pay -->|no| Retry[Ask for another card]
+    Retry -.-> Pay
+    Confirm --> Done([End])
+    subgraph Ops["Back office"]
+        Confirm --> Pick[Pick and pack] & Mail[Send receipt]
+    end

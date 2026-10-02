@@ -1,0 +1,33 @@
+{
+  "name": "team-status-report",
+  "version": "0.1.1",
+  "description": "Write a weekly team status report from tracker data (Jira, Linear or GitHub Projects, via CSV, JSON or an MCP tool) — shipped, in progress, blocked with the blocker and owner, slipped against plan, risks and asks — with every number computed from the data by a stdlib script, never estimated, and a RAG status that states the rule that set it. Use when the user wants a weekly status update, sprint report or stakeholder update from the tracker, or says \"write this week's status report\", \"are we on track?\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "backlog-triage",
+    "decision-log",
+    "exec-summary"
+  ],
+  "tags": [
+    "status-report",
+    "weekly-update",
+    "jira",
+    "linear",
+    "github-projects",
+    "rag",
+    "stakeholder-update"
+  ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths"},
+  "model": {
+    "tier": "standard",
+    "rationale": "A script computes every count and the suggested RAG; the model writes plain-language summaries, attributes outside facts and frames risks and asks. Bounded writing over computed numbers."
+  }
+}

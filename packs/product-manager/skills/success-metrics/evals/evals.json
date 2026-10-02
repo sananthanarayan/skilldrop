@@ -1,0 +1,27 @@
+{
+  "skill_name": "success-metrics",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Define success metrics for this feature: a unified customer view for our support agents, merging tickets, orders, and chat history into one screen. Goal from the PRD: cut median ticket handle time. Current handle time lives in our Zendesk dashboard.",
+      "assertions": [
+        "Exactly one primary metric, and it is an outcome (handle time), not an output or vanity count — with the runner-up named and the choice justified",
+        "The primary has baseline (with source), target, and timeframe including a patience window — or measuring the baseline is explicitly milestone 1",
+        "2-3 leading indicators, each with a causal sentence",
+        "2-4 guardrails with current values and alert thresholds (or a week-1 baseline plan for brand-new surfaces)",
+        "A counter-metric names the specific gaming path (e.g. premature ticket closure → reopen rate)",
+        "Every metric maps to a named event marked exists/must-build, and must-build events are launch blockers",
+        "A pre-committed, action-shaped decision rule names who does what at which threshold"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "[Non-interactive run — no user available to answer questions] Define success metrics.",
+      "assertions": [
+        "No metrics are invented — with no goal stated, the output is BLOCKED: need the feature's goal",
+        "The BLOCKED output routes to prd-draft (or names the goal as what to rerun with)",
+        "No primary metric, instrumentation table, or decision rule appears"
+      ]
+    }
+  ]
+}

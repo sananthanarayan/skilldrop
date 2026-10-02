@@ -1,0 +1,42 @@
+{
+  "name": "backlog-triage",
+  "version": "0.1.1",
+  "description": "Triage a whole backlog export from Jira, Linear or GitHub Projects (CSV, JSON or an MCP tool) — duplicate and near-duplicate pairs with the reason, items missing acceptance criteria or an owner, stale items, oversized items to split, priority conflicts, and a proposed ordering with a reason per item — ending in a change list the user can apply. A stdlib script computes the mechanical checks. Use when the user wants to clean up, groom or refine a backlog, find duplicate tickets, or says \"triage our backlog\", \"what should we pull next?\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "bug-triage",
+    "team-status-report",
+    "tracker-brief-sync",
+    "user-story-splitter"
+  ],
+  "handoff": [
+    {
+      "to": "user-story-splitter",
+      "when": "an item is over the size limit or too vague to estimate",
+      "purpose": "Split it into independently shippable stories with acceptance criteria before it is scheduled.",
+      "fallback": "If user-story-splitter is absent, list the item as 'split before scheduling' in the change list with the estimate that triggered it."
+    }
+  ],
+  "tags": [
+    "backlog",
+    "triage",
+    "jira",
+    "linear",
+    "github-projects",
+    "refinement",
+    "duplicates"
+  ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths"},
+  "model": {
+    "tier": "standard",
+    "rationale": "A script does the counting; the model confirms duplicates by reading, judges readiness and writes a reasoned ordering. Bounded judgment over structured data."
+  }
+}

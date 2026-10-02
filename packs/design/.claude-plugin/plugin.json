@@ -1,0 +1,20 @@
+{
+  "name": "design",
+  "version": "0.16.6",
+  "description": "On-brand visual work: capture a brand once, then build real PowerPoint decks and print-ready marketing flyers in that brand, with logo, colours and fonts applied. (8 skills, 1 loop)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/design/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "brand",
+    "deck",
+    "pptx",
+    "flyer",
+    "marketing",
+    "logo"
+  ]
+}

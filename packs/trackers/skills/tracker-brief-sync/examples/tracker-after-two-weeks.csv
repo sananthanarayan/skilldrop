@@ -1,0 +1,30 @@
+Issue key,Issue Type,Summary,Status,Assignee,Labels,Labels,Description
+CHK-201,Epic,Checkout without an account,In Progress,Priya Nair,guest-checkout,,"Let first-time shoppers pay without creating an account.
+
+Source: https://wiki.northwind.example/checkout/prd-guest-checkout#goals (G1)"
+CHK-202,Epic,Support and safety for guest orders,To Do,Priya Nair,guest-checkout,,"Guest orders can be found, screened and returned like account orders.
+
+Source: https://wiki.northwind.example/checkout/prd-guest-checkout#goals (G2)"
+CHK-203,Story,Pay as a guest with email and delivery details,In Progress,Tom Okafor,guest-checkout,checkout,"As a first-time shopper, I can pay without creating an account.
+
+Source: https://wiki.northwind.example/checkout/prd-guest-checkout#requirements (R1)"
+CHK-204,Story,Order confirmation email for guest orders,To Do,Lena Fischer,guest-checkout,notifications,"As a guest shopper, I get a confirmation email with a tracking link.
+
+Source: https://wiki.northwind.example/checkout/prd-guest-checkout#requirements (R2)"
+CHK-205,Story,Offer an account after a guest order,Canceled,,guest-checkout,growth,"Cancelled in planning: growth team will run this as an experiment later.
+
+Source: https://wiki.northwind.example/checkout/prd-guest-checkout#requirements (R3)"
+CHK-206,Story,Find guest orders by email in the admin tool,To Do,Aisha Bello,guest-checkout,ops,"As a support agent, I can find a guest order from the shopper's email address.
+
+Source: https://wiki.northwind.example/checkout/prd-guest-checkout#requirements (R4)"
+CHK-207,Story,Fraud score on guest orders,To Do,Tom Okafor,guest-checkout,payments,"Reuse the CHK-113 scoring for guest orders, per R5 in the PRD."
+CHK-208,Story,Guest returns with order number and email,To Do,,guest-checkout,returns,"As a guest shopper, I can start a return with my order number and email.
+
+Source: https://wiki.northwind.example/checkout/prd-guest-checkout#requirements (R6)"
+CHK-209,Story,Save card for guest shoppers,To Do,Tom Okafor,guest-checkout,payments,"Sales asked for this for repeat guests.
+
+Source: https://wiki.northwind.example/checkout/prd-guest-checkout#requirements (R7)"
+CHK-210,Story,Klarna for guest orders,Backlog,,guest-checkout,payments,"Make sure Klarna shows on the guest flow too."
+CHK-211,Task,3-D Secure exemption handling for guest payments,In Progress,Tom Okafor,guest-checkout,payments,"Answer from the PSP: guest payments need the exemption flag.
+
+Source: https://wiki.northwind.example/checkout/prd-guest-checkout#requirements (R8)"

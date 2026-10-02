@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Write the PR description for this branch",
+    "should_trigger": true
+  },
+  {
+    "query": "I need a pull request summary for these commits before I ask for review",
+    "should_trigger": true
+  },
+  {
+    "query": "Here's my diff, write the merge request body",
+    "should_trigger": true
+  },
+  {
+    "query": "My PR description just says 'fixes stuff'. Rewrite it properly from the diff.",
+    "should_trigger": true
+  },
+  {
+    "query": "Write the release notes for everything merged since v2.3.0",
+    "should_trigger": false
+  },
+  {
+    "query": "Is this branch safe to merge? Run the full review.",
+    "should_trigger": false
+  },
+  {
+    "query": "What tests should we write for the new refund flow?",
+    "should_trigger": false
+  }
+]

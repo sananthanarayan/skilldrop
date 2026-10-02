@@ -1,0 +1,18 @@
+{
+  "skill_name": "brand-kit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Set up our brand kit. Logo is ./brand/northwind-logo.png and there's a white version ./brand/northwind-logo-white.png. Our colours are #0E5A46 and #F2A541. We use Georgia for headings. Website is northwindhealth.example.",
+      "assertions": [
+        "Writes brand.json next to the logo files, with logo.primary and logo.on_dark set to the two supplied paths",
+        "colors.primary is #0E5A46 and colors.accent is #F2A541; secondary, background and text are filled and listed as derived",
+        "fonts.heading.family is Georgia; the body font is either asked for or marked as a default, not presented as the brand's",
+        "Every value has a source, with derived values tagged [inferred]",
+        "Runs check_brand.py and reports its contrast figures",
+        "Writes a one-page BRAND.md with a colour table (role, hex, use)",
+        "Invents no tagline, phone number, address or legal footer"
+      ]
+    }
+  ]
+}

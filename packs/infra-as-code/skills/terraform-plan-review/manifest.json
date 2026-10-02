@@ -1,0 +1,48 @@
+{
+  "name": "terraform-plan-review",
+  "version": "0.1.0",
+  "description": "Review a terraform plan before apply, from the plan text or terraform show -json output. Flags every destroy and replace with the attribute forcing it, changes to stateful resources such as databases, buckets and volumes, IAM and security-group widening, drift nobody made in code, and changes outside the intended scope, then gives a SAFE TO APPLY, APPLY WITH CARE or DO NOT APPLY verdict with reasons. Use when the user pastes a plan, says \"review this terraform plan\", \"is this plan safe to apply\", \"why is terraform replacing my database\", or \"check the plan before I apply\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "capacity-cost-model",
+    "migration-plan",
+    "pre-merge-review",
+    "runbook-generator",
+    "terraform-module"
+  ],
+  "handoff": [
+    {
+      "to": "migration-plan",
+      "when": "a stateful resource must be replaced and its data moved",
+      "purpose": "Plan the snapshot, copy, restore and cutover instead of letting apply destroy the data.",
+      "fallback": "If migration-plan is absent, list the backup, restore, cutover and rollback steps inline and keep the verdict at DO NOT APPLY until they exist."
+    },
+    {
+      "to": "runbook-generator",
+      "when": "the plan is approved and the apply needs a step-by-step procedure",
+      "purpose": "Write the apply, verify and rollback steps the operator follows.",
+      "fallback": "If runbook-generator is absent, add a numbered apply, verify and rollback list to the review."
+    }
+  ],
+  "tags": [
+    "terraform",
+    "infrastructure-as-code",
+    "plan-review",
+    "change-safety",
+    "iam",
+    "drift"
+  ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths", "notes": "Reads a plan JSON, which can hold secrets in clear text; the script never prints attribute values."},
+  "model": {
+    "tier": "heavy",
+    "rationale": "Adversarial review of a destructive change: judging which replacements lose data, which access changes widen exposure, and what is out of scope needs careful reasoning; a missed destroy costs far more than the model."
+  }
+}

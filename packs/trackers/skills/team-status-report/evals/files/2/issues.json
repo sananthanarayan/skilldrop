@@ -1,0 +1,1212 @@
+[
+ {
+  "number": 1001,
+  "title": "CI cache misses on every build",
+  "body": "Cache key includes the commit sha so nothing is ever reused.",
+  "state": "CLOSED",
+  "assignees": [
+   {
+    "login": "carla"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p3"
+   },
+   {
+    "name": "chore"
+   }
+  ],
+  "updatedAt": "2026-09-27T15:00:00Z",
+  "createdAt": "2026-08-15T15:00:00Z",
+  "closedAt": "2026-09-27T15:00:00Z"
+ },
+ {
+  "number": 1002,
+  "title": "Cost dashboard times out",
+  "body": "",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "ben"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "feature"
+   }
+  ],
+  "updatedAt": "2026-09-29T02:00:00Z",
+  "createdAt": "2026-08-23T02:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1003,
+  "title": "Secrets rotation has no alert",
+  "body": "The secrets rotation has no alert. Seen on all clusters.",
+  "state": "CLOSED",
+  "assignees": [],
+  "labels": [
+   {
+    "name": "p3"
+   },
+   {
+    "name": "chore"
+   }
+  ],
+  "updatedAt": "2026-05-08T18:00:00Z",
+  "createdAt": "2026-04-17T18:00:00Z",
+  "closedAt": "2026-05-08T18:00:00Z"
+ },
+ {
+  "number": 1004,
+  "title": "Runner autoscaling should be upgraded",
+  "body": "",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "carla"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p1"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-05-08T22:00:00Z",
+  "createdAt": "2026-03-21T22:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1005,
+  "title": "Service mesh leaks memory",
+  "body": "The service mesh leaks memory. Seen on prod-eu.",
+  "state": "CLOSED",
+  "assignees": [
+   {
+    "login": "ben"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-07-03T10:00:00Z",
+  "createdAt": "2026-05-22T10:00:00Z",
+  "closedAt": "2026-07-03T10:00:00Z"
+ },
+ {
+  "number": 1006,
+  "title": "Runner autoscaling fails intermittently",
+  "body": "",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "farid"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p3"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-03-14T02:00:00Z",
+  "createdAt": "2026-02-22T02:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1007,
+  "title": "Staging database needs an owner",
+  "body": "The staging database needs an owner. Seen on staging.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "asha"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p1"
+   }
+  ],
+  "updatedAt": "2026-09-28T22:00:00Z",
+  "createdAt": "2026-09-27T22:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1008,
+  "title": "Builds never hit the CI cache",
+  "body": "The cache key has the commit sha in it; every build is a miss.",
+  "state": "CLOSED",
+  "assignees": [
+   {
+    "login": "farid"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "feature"
+   }
+  ],
+  "updatedAt": "2026-05-09T02:00:00Z",
+  "createdAt": "2026-03-27T02:00:00Z",
+  "closedAt": "2026-05-09T02:00:00Z"
+ },
+ {
+  "number": 1009,
+  "title": "Ci cache should be upgraded",
+  "body": "The CI cache should be upgraded. Seen on staging.",
+  "state": "CLOSED",
+  "assignees": [
+   {
+    "login": "ben"
+   }
+  ],
+  "labels": [
+   {
+    "name": "feature"
+   }
+  ],
+  "updatedAt": "2026-09-16T19:00:00Z",
+  "createdAt": "2026-09-11T19:00:00Z",
+  "closedAt": "2026-09-16T19:00:00Z"
+ },
+ {
+  "number": 1010,
+  "title": "Service mesh should be upgraded",
+  "body": "The service mesh should be upgraded. Seen on prod-eu.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "eve"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p1"
+   },
+   {
+    "name": "chore"
+   },
+   {
+    "name": "blocked"
+   }
+  ],
+  "updatedAt": "2026-09-29T11:00:00Z",
+  "createdAt": "2026-09-06T11:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1011,
+  "title": "Runner autoscaling times out",
+  "body": "The runner autoscaling times out. Seen on all clusters.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "carla"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p1"
+   }
+  ],
+  "updatedAt": "2026-09-28T03:00:00Z",
+  "createdAt": "2026-09-18T03:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1012,
+  "title": "Ci cache fails intermittently",
+  "body": "The CI cache fails intermittently. Seen on all clusters.",
+  "state": "OPEN",
+  "assignees": [],
+  "labels": [
+   {
+    "name": "chore"
+   }
+  ],
+  "updatedAt": "2026-09-09T07:00:00Z",
+  "createdAt": "2026-08-17T07:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1013,
+  "title": "Staging database is undocumented",
+  "body": "The staging database is undocumented. Seen on staging.",
+  "state": "OPEN",
+  "assignees": [],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "feature"
+   }
+  ],
+  "updatedAt": "2026-08-27T03:00:00Z",
+  "createdAt": "2026-07-15T03:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1014,
+  "title": "Log shipping needs an owner",
+  "body": "The log shipping needs an owner. Seen on all clusters.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "eve"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p1"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-03-14T02:00:00Z",
+  "createdAt": "2026-02-20T02:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1015,
+  "title": "Staging database times out",
+  "body": "The staging database times out. Seen on prod-eu.",
+  "state": "CLOSED",
+  "assignees": [
+   {
+    "login": "asha"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p3"
+   },
+   {
+    "name": "chore"
+   }
+  ],
+  "updatedAt": "2026-09-28T20:00:00Z",
+  "createdAt": "2026-08-09T20:00:00Z",
+  "closedAt": "2026-09-28T20:00:00Z"
+ },
+ {
+  "number": 1016,
+  "title": "Deploy pipeline should be upgraded",
+  "body": "The deploy pipeline should be upgraded. Seen on prod-eu.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "eve"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-07-03T12:00:00Z",
+  "createdAt": "2026-05-17T12:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1017,
+  "title": "Build images is undocumented",
+  "body": "The build images is undocumented. Seen on staging.",
+  "state": "OPEN",
+  "assignees": [],
+  "labels": [
+   {
+    "name": "p3"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-09-25T07:00:00Z",
+  "createdAt": "2026-07-30T07:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1018,
+  "title": "Build images is undocumented",
+  "body": "The build images is undocumented. Seen on prod-us.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "farid"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p1"
+   }
+  ],
+  "updatedAt": "2026-08-05T19:00:00Z",
+  "createdAt": "2026-06-12T19:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1019,
+  "title": "Alert routing has no alert",
+  "body": "The alert routing has no alert. Seen on prod-us.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "asha"
+   }
+  ],
+  "labels": [
+   {
+    "name": "feature"
+   }
+  ],
+  "updatedAt": "2026-09-17T10:00:00Z",
+  "createdAt": "2026-07-31T10:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1020,
+  "title": "Staging database needs an owner",
+  "body": "",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "ben"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "feature"
+   }
+  ],
+  "updatedAt": "2026-07-03T08:00:00Z",
+  "createdAt": "2026-06-11T08:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1021,
+  "title": "Build images times out",
+  "body": "The build images times out. Seen on prod-eu.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "asha"
+   }
+  ],
+  "labels": [
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-07-03T04:00:00Z",
+  "createdAt": "2026-06-03T04:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1022,
+  "title": "Cost dashboard blocks releases",
+  "body": "The cost dashboard blocks releases. Seen on prod-eu.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "dmitri"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "feature"
+   }
+  ],
+  "updatedAt": "2026-09-27T02:00:00Z",
+  "createdAt": "2026-08-19T02:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1023,
+  "title": "Secrets rotation blocks releases",
+  "body": "The secrets rotation blocks releases. Seen on all clusters.",
+  "state": "OPEN",
+  "assignees": [],
+  "labels": [
+   {
+    "name": "feature"
+   }
+  ],
+  "updatedAt": "2026-09-08T22:00:00Z",
+  "createdAt": "2026-08-24T22:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1024,
+  "title": "Build images times out",
+  "body": "The build images times out. Seen on all clusters.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "ben"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p1"
+   },
+   {
+    "name": "chore"
+   }
+  ],
+  "updatedAt": "2026-05-08T13:00:00Z",
+  "createdAt": "2026-04-04T13:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1025,
+  "title": "Cost dashboard blocks releases",
+  "body": "The cost dashboard blocks releases. Seen on prod-us.",
+  "state": "CLOSED",
+  "assignees": [
+   {
+    "login": "asha"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p3"
+   },
+   {
+    "name": "feature"
+   }
+  ],
+  "updatedAt": "2026-09-29T10:00:00Z",
+  "createdAt": "2026-09-24T10:00:00Z",
+  "closedAt": "2026-09-29T10:00:00Z"
+ },
+ {
+  "number": 1026,
+  "title": "Secrets rotation should be upgraded",
+  "body": "The secrets rotation should be upgraded. Seen on prod-us.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "asha"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p2"
+   }
+  ],
+  "updatedAt": "2026-09-27T02:00:00Z",
+  "createdAt": "2026-09-10T02:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1027,
+  "title": "Cost dashboard times out",
+  "body": "",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "asha"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p1"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-08-06T00:00:00Z",
+  "createdAt": "2026-07-22T00:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1028,
+  "title": "Alert routing has no alert",
+  "body": "The alert routing has no alert. Seen on all clusters.",
+  "state": "CLOSED",
+  "assignees": [
+   {
+    "login": "dmitri"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p3"
+   }
+  ],
+  "updatedAt": "2026-09-17T04:00:00Z",
+  "createdAt": "2026-08-08T04:00:00Z",
+  "closedAt": "2026-09-17T04:00:00Z"
+ },
+ {
+  "number": 1029,
+  "title": "Log shipping fails intermittently",
+  "body": "The log shipping fails intermittently. Seen on prod-eu.",
+  "state": "OPEN",
+  "assignees": [],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "feature"
+   }
+  ],
+  "updatedAt": "2026-08-26T15:00:00Z",
+  "createdAt": "2026-08-02T15:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1030,
+  "title": "Ci cache blocks releases",
+  "body": "The CI cache blocks releases. Seen on prod-eu.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "dmitri"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p2"
+   }
+  ],
+  "updatedAt": "2026-09-08T19:00:00Z",
+  "createdAt": "2026-07-24T19:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1031,
+  "title": "Build images times out",
+  "body": "The build images times out. Seen on prod-eu.",
+  "state": "OPEN",
+  "assignees": [],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "chore"
+   }
+  ],
+  "updatedAt": "2026-05-08T16:00:00Z",
+  "createdAt": "2026-03-26T16:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1032,
+  "title": "Log shipping has no alert",
+  "body": "The log shipping has no alert. Seen on prod-us.",
+  "state": "OPEN",
+  "assignees": [],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "chore"
+   }
+  ],
+  "updatedAt": "2026-07-02T18:00:00Z",
+  "createdAt": "2026-06-19T18:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1033,
+  "title": "Build images is undocumented",
+  "body": "The build images is undocumented. Seen on all clusters.",
+  "state": "OPEN",
+  "assignees": [],
+  "labels": [],
+  "updatedAt": "2026-09-27T00:00:00Z",
+  "createdAt": "2026-08-29T00:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1034,
+  "title": "Alert routing leaks memory",
+  "body": "The alert routing leaks memory. Seen on staging.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "carla"
+   }
+  ],
+  "labels": [
+   {
+    "name": "feature"
+   }
+  ],
+  "updatedAt": "2026-09-08T16:00:00Z",
+  "createdAt": "2026-07-30T16:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1035,
+  "title": "Deploy pipeline leaks memory",
+  "body": "",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "dmitri"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p1"
+   },
+   {
+    "name": "feature"
+   }
+  ],
+  "updatedAt": "2026-09-28T19:00:00Z",
+  "createdAt": "2026-08-22T19:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1036,
+  "title": "Cost dashboard needs an owner",
+  "body": "The cost dashboard needs an owner. Seen on staging.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "carla"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "feature"
+   }
+  ],
+  "updatedAt": "2026-09-17T06:00:00Z",
+  "createdAt": "2026-08-23T06:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1037,
+  "title": "Log shipping should be upgraded",
+  "body": "The log shipping should be upgraded. Seen on prod-us.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "dmitri"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "chore"
+   }
+  ],
+  "updatedAt": "2026-09-29T02:00:00Z",
+  "createdAt": "2026-08-03T02:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1038,
+  "title": "Staging database needs an owner",
+  "body": "The staging database needs an owner. Seen on all clusters.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "dmitri"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "chore"
+   }
+  ],
+  "updatedAt": "2026-08-06T10:00:00Z",
+  "createdAt": "2026-08-03T10:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1039,
+  "title": "Staging database fails intermittently",
+  "body": "The staging database fails intermittently. Seen on all clusters.",
+  "state": "OPEN",
+  "assignees": [],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "bug"
+   },
+   {
+    "name": "blocked"
+   }
+  ],
+  "updatedAt": "2026-05-09T06:00:00Z",
+  "createdAt": "2026-03-30T06:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1040,
+  "title": "Ci cache has no alert",
+  "body": "The CI cache has no alert. Seen on prod-us.",
+  "state": "CLOSED",
+  "assignees": [],
+  "labels": [
+   {
+    "name": "feature"
+   }
+  ],
+  "updatedAt": "2026-09-30T02:00:00Z",
+  "createdAt": "2026-08-18T02:00:00Z",
+  "closedAt": "2026-09-30T02:00:00Z"
+ },
+ {
+  "number": 1041,
+  "title": "Cost dashboard times out",
+  "body": "The cost dashboard times out. Seen on all clusters.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "asha"
+   }
+  ],
+  "labels": [
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-09-08T17:00:00Z",
+  "createdAt": "2026-08-19T17:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1042,
+  "title": "Secrets rotation leaks memory",
+  "body": "The secrets rotation leaks memory. Seen on prod-eu.",
+  "state": "CLOSED",
+  "assignees": [
+   {
+    "login": "asha"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p1"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-09-29T06:00:00Z",
+  "createdAt": "2026-08-06T06:00:00Z",
+  "closedAt": "2026-09-29T06:00:00Z"
+ },
+ {
+  "number": 1043,
+  "title": "Deploy pipeline has no alert",
+  "body": "The deploy pipeline has no alert. Seen on prod-us.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "dmitri"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p1"
+   }
+  ],
+  "updatedAt": "2026-09-08T19:00:00Z",
+  "createdAt": "2026-08-19T19:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1044,
+  "title": "Cost dashboard times out",
+  "body": "The cost dashboard times out. Seen on staging.",
+  "state": "CLOSED",
+  "assignees": [
+   {
+    "login": "asha"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p3"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-03-14T05:00:00Z",
+  "createdAt": "2026-03-04T05:00:00Z",
+  "closedAt": "2026-03-14T05:00:00Z"
+ },
+ {
+  "number": 1045,
+  "title": "Runner autoscaling fails intermittently",
+  "body": "The runner autoscaling fails intermittently. Seen on prod-us.",
+  "state": "CLOSED",
+  "assignees": [
+   {
+    "login": "ben"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-09-25T02:00:00Z",
+  "createdAt": "2026-09-23T02:00:00Z",
+  "closedAt": "2026-09-25T02:00:00Z"
+ },
+ {
+  "number": 1046,
+  "title": "Ci cache is undocumented",
+  "body": "",
+  "state": "OPEN",
+  "assignees": [],
+  "labels": [
+   {
+    "name": "feature"
+   }
+  ],
+  "updatedAt": "2026-09-16T14:00:00Z",
+  "createdAt": "2026-09-11T14:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1047,
+  "title": "Deploy pipeline blocks releases",
+  "body": "The deploy pipeline blocks releases. Seen on staging.",
+  "state": "CLOSED",
+  "assignees": [
+   {
+    "login": "asha"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p3"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-09-30T06:00:00Z",
+  "createdAt": "2026-09-21T06:00:00Z",
+  "closedAt": "2026-09-30T06:00:00Z"
+ },
+ {
+  "number": 1048,
+  "title": "Ci cache is undocumented",
+  "body": "The CI cache is undocumented. Seen on staging.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "asha"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-07-02T20:00:00Z",
+  "createdAt": "2026-05-09T20:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1049,
+  "title": "Build images blocks releases",
+  "body": "The build images blocks releases. Seen on prod-us.",
+  "state": "CLOSED",
+  "assignees": [
+   {
+    "login": "farid"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p3"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-09-09T11:00:00Z",
+  "createdAt": "2026-08-11T11:00:00Z",
+  "closedAt": "2026-09-09T11:00:00Z"
+ },
+ {
+  "number": 1050,
+  "title": "Staging database needs an owner",
+  "body": "The staging database needs an owner. Seen on prod-eu.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "carla"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p1"
+   },
+   {
+    "name": "feature"
+   }
+  ],
+  "updatedAt": "2026-08-05T15:00:00Z",
+  "createdAt": "2026-07-28T15:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1051,
+  "title": "Runner autoscaling fails intermittently",
+  "body": "",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "farid"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-09-17T05:00:00Z",
+  "createdAt": "2026-08-05T05:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1052,
+  "title": "Runner autoscaling fails intermittently",
+  "body": "The runner autoscaling fails intermittently. Seen on staging.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "ben"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p1"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-09-17T07:00:00Z",
+  "createdAt": "2026-07-31T07:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1053,
+  "title": "Secrets rotation is undocumented",
+  "body": "The secrets rotation is undocumented. Seen on prod-eu.",
+  "state": "CLOSED",
+  "assignees": [
+   {
+    "login": "ben"
+   }
+  ],
+  "labels": [
+   {
+    "name": "chore"
+   }
+  ],
+  "updatedAt": "2026-09-17T10:00:00Z",
+  "createdAt": "2026-08-29T10:00:00Z",
+  "closedAt": "2026-09-17T10:00:00Z"
+ },
+ {
+  "number": 1054,
+  "title": "Alert routing needs an owner",
+  "body": "The alert routing needs an owner. Seen on all clusters.",
+  "state": "CLOSED",
+  "assignees": [
+   {
+    "login": "ben"
+   }
+  ],
+  "labels": [
+   {
+    "name": "chore"
+   }
+  ],
+  "updatedAt": "2026-07-02T23:00:00Z",
+  "createdAt": "2026-05-21T23:00:00Z",
+  "closedAt": "2026-07-02T23:00:00Z"
+ },
+ {
+  "number": 1055,
+  "title": "Runner autoscaling has no alert",
+  "body": "The runner autoscaling has no alert. Seen on staging.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "dmitri"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "chore"
+   }
+  ],
+  "updatedAt": "2026-09-09T06:00:00Z",
+  "createdAt": "2026-08-01T06:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1056,
+  "title": "Service mesh times out",
+  "body": "",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "dmitri"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-09-27T09:00:00Z",
+  "createdAt": "2026-08-12T09:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1057,
+  "title": "Service mesh needs an owner",
+  "body": "The service mesh needs an owner. Seen on staging.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "ben"
+   }
+  ],
+  "labels": [
+   {
+    "name": "chore"
+   }
+  ],
+  "updatedAt": "2026-09-29T08:00:00Z",
+  "createdAt": "2026-09-18T08:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1058,
+  "title": "Cost dashboard has no alert",
+  "body": "The cost dashboard has no alert. Seen on prod-us.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "farid"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p1"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-09-28T01:00:00Z",
+  "createdAt": "2026-09-01T01:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1059,
+  "title": "Runner autoscaling fails intermittently",
+  "body": "The runner autoscaling fails intermittently. Seen on all clusters.",
+  "state": "OPEN",
+  "assignees": [
+   {
+    "login": "ben"
+   }
+  ],
+  "labels": [
+   {
+    "name": "p3"
+   },
+   {
+    "name": "bug"
+   }
+  ],
+  "updatedAt": "2026-09-25T02:00:00Z",
+  "createdAt": "2026-07-28T02:00:00Z",
+  "closedAt": null
+ },
+ {
+  "number": 1060,
+  "title": "Deploy pipeline blocks releases",
+  "body": "The deploy pipeline blocks releases. Seen on staging.",
+  "state": "OPEN",
+  "assignees": [],
+  "labels": [
+   {
+    "name": "p2"
+   },
+   {
+    "name": "feature"
+   }
+  ],
+  "updatedAt": "2026-03-13T23:00:00Z",
+  "createdAt": "2026-01-31T23:00:00Z",
+  "closedAt": null
+ }
+]

@@ -1,0 +1,22 @@
+{
+  "name": "infra-as-code",
+  "version": "0.16.6",
+  "description": "Terraform you can hand to another team and plans you can trust before apply: reusable modules with secure defaults, and a plan review that catches destroys, data loss, access widening and drift. (6 skills, 1 loop)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/infra-as-code/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "terraform",
+    "infrastructure-as-code",
+    "iac",
+    "module",
+    "plan",
+    "aws",
+    "gcp",
+    "azure"
+  ]
+}
