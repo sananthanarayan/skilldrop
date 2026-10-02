@@ -400,9 +400,16 @@ def bench_section(b):
 <div><dt>Without it</dt><dd>{pc(d['baseline'])}</dd></div>
 <div><dt>Lift, points</dt><dd>{100 * d['lift']:+.0f}{rng(d['lift_ci'], True)}</dd></div>
 <div><dt>Preferred by a blind judge</dt><dd>{pc(d['win'])}{rng(d['win_ci'])}</dd></div>
+{f"""<div><dt>Second judge</dt><dd>{pc(d['win2'])}{rng(d['win2_ci'])}, same side as the first in {d['judges_agree']} of {d['judges_decided']}</dd></div>""" if d.get('second_judge') else ""}
 <div><dt>Cost per run</dt><dd>${d['cost_skill']:.2f} with, ${d['cost_baseline']:.2f} without</dd></div>
 <div><dt>Model</dt><dd><code>{esc(model)}</code>, {d['evals']} evals</dd></div>
 </dl>""")
+    sj = next((d for d in b["models"].values() if d.get("second_judge")), None)
+    second = "" if not sj else (
+        f"<li><b>Second judge.</b> A different model, <code>{esc(sj['second_judge'])}</code>, judged the same pairs in the same order. "
+        f"The two picked the same side in {sj['judges_agree']} of {sj['judges_decided']} pairs where both chose one, so a single pair's verdict "
+        "is weak evidence and the percentage across all pairs is the result. Both judges are models from one family and can share blind spots; "
+        "no human has checked them.</li>\n")
     how = ("a Claude Code agent session with file and shell tools, sandboxed in an empty directory"
            if b.get("backend") == "claude-cli" else "one model call with no tools")
     return f"""<section aria-labelledby="measured"><h2 id="measured">Measured: with the skill and without it</h2>
@@ -411,7 +418,7 @@ def bench_section(b):
 <ul class="pk__bar">
 <li><b>Assertions met</b> is graded by a judge that doesn't know which run it is reading. The skill's author wrote the assertions, so the run without the skill is graded on a rubric it never saw. A non-answer meets {pc(b.get('floor'))} of them.</li>
 <li><b>Preferred by a blind judge</b> is the share of pairs where a judge that saw only the request and both results, in shuffled order, picked the skill's. 50% means no preference.</li>
-<li>Ranges are 95% intervals over evals. A lift range that includes 0, or a preference range that includes 50%, is not a result.</li>
+{second}<li>Ranges are 95% intervals over evals. A lift range that includes 0, or a preference range that includes 50%, is not a result.</li>
 <li>Most skills have one eval, so a single row below is an anecdote. The judge is a model. Cost is list price for the tokens used.</li>
 </ul>
 <p>Reproduce it with <code>python3 run_bench.py</code> (<a href="{REPO_URL}/blob/main/docs/rfcs/0040-skill-benchmark.md">RFC-0040</a>).</p>
