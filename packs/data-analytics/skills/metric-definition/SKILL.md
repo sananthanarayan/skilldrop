@@ -9,6 +9,14 @@ Turns a metric name that people already argue about ("active customers", "net re
 
 ## How to respond
 
+**Four rules come before the steps and outrank them:**
+
+- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
+- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
+- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
+- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
+- **For this skill:** Give one definition. Check the SQL against the warehouse the user named: each function against the column's type, and a calendar period against a rolling one. A parameter the user has to fill in is listed under "To confirm", not left in the query.
+
 1. **Pin the question and the sources, asking once.** Ask at most 2 questions in one message: *"What decision does this number inform, and who reads it?"* and *"Which tables or models hold the data, and is there SQL or a dashboard already computing something under this name?"* Existing SQL is the best input you can get: it shows the definition people actually use today, including its bugs. If the user gave both, don't ask.
 
 **Non-interactive runs** (subagent, CI, headless): derive the business question and sources from the input and tag each `[assumption]`. Choices the input doesn't settle (timezone, exclusions, late-data policy) get a stated default tagged `[assumption]` and are listed under open decisions. No metric name and no business question in the input → emit `BLOCKED: need the metric name and the question it answers`.

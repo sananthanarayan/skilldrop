@@ -1,6 +1,6 @@
 {
   "name": "tech-comparison-matrix",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Produce a weighted comparison matrix for a technology selection question (e.g., \"Postgres vs DynamoDB\", \"Kafka vs Kinesis vs RabbitMQ\", \"Snowflake vs Databricks\"). Surfaces criteria, weights, per-option scores, totals, and a recommended pick. Use when the user is choosing between technologies, vendors, frameworks, or architectural approaches.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },

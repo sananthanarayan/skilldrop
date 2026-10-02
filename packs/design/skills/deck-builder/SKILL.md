@@ -18,6 +18,14 @@ For a single fast pipeline, run all three in order: profile → outline → buil
 
 ## How to respond
 
+**Four rules come before the steps and outrank them:**
+
+- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
+- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
+- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
+- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
+- **For this skill:** Read "the deck" as an existing file: look for it, and if it isn't there, ask for it along with any content that is missing. Don't announce audience, format or palette choices before there is content to put on slides.
+
 ### 1. Run the setup block — once
 
 Ask everything in **one** message, with defaults already chosen, so the user can answer with a

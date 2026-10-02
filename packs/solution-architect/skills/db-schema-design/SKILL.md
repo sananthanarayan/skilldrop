@@ -9,6 +9,14 @@ Designs the storage layer **from the queries backward** — because a schema is 
 
 ## How to respond
 
+**Four rules come before the steps and outrank them:**
+
+- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
+- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
+- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
+- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
+- **For this skill:** Give DDL that runs, and the query for each access pattern the user named. Leave out multitenancy, partitioning, rollups and reconciliation unless they asked or a named query needs them.
+
 1. **Collect the access patterns before drawing a single table.** The deliverable starts as a list: each read and write the feature needs, with **frequency**, **latency sensitivity**, **selectivity** (one row / a range / a scan), and **consistency need** (read-your-writes? eventual ok?). Ask at most 2 questions, spent on the highest-frequency query and the largest-growth entity. A schema designed from the entity diagram instead of the queries is how you get a clean model that can't serve its hottest path.
 
 2. **Choose the paradigm deliberately, with a reason** (selection matrix in [`reference.md`](reference.md)). Relational is the correct default for most transactional features and needs no defense; reaching *past* it does. ✅ *"Document store — the entity is read and written whole, no cross-entity queries, and the shape varies per type"* — ❌ *"NoSQL because scale"* (scale is a property of access patterns and data size, not a vibe). For NoSQL especially, the access patterns *are* the schema — you cannot add a query later for free the way SQL lets you.

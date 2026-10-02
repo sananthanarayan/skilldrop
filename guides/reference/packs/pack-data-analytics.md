@@ -52,7 +52,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/data-analytics/skills/d
 
 Write a metric spec precise enough for a semantic layer or dbt metric to implement and for two analysts to get the same number — name, business question, exact numerator and denominator, grain, time window and timezone, filters and exclusions (test accounts, refunds), allowed dimensions, edge cases (NULLs, late data, currency), owner, reference SQL, and the sanity checks that catch it going wrong.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/data-analytics/skills/metric-definition/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/metric-definition/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/data-analytics/skills/metric-definition/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/metric-definition/)
 
 **Use it when** the user says "define this metric", "how exactly do we calculate X", "finance and product get different numbers for X", "write the metric spec for our semantic layer", or "what counts as an active user".
 

@@ -23,7 +23,7 @@ Skills for teams building on the Anthropic API — prompt caching, token budgeti
 
 Takes a skill's SKILL.md and generates a set of eval cases — trigger queries, expected output shape, and pass/fail criteria — ready to drop into the skill's evals/ directory.
 
-Tier **standard** · v1.0.1 · [SKILL.md](../../../packs/api-builder/skills/eval-harness-generator/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/eval-harness-generator/)
+Tier **standard** · v1.0.2 · [SKILL.md](../../../packs/api-builder/skills/eval-harness-generator/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/eval-harness-generator/)
 
 **Use it when** adding evals to a new or existing skill, verifying a skill behaves as documented, or building a regression gate before modifying a skill.
 
@@ -66,7 +66,7 @@ Tier **standard** · v1.0.0 · [SKILL.md](../../../packs/api-builder/skills/toke
 
 Takes a function description (name, purpose, parameters) and writes a valid Anthropic tool_use JSON schema, with type annotations, required fields, and a description for each parameter. Produces a Python usage snippet for client.messages.create(tools=[...]).
 
-Tier **standard** · v1.0.0 · [SKILL.md](../../../packs/api-builder/skills/tool-use-schema-writer/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/tool-use-schema-writer/)
+Tier **standard** · v1.0.1 · [SKILL.md](../../../packs/api-builder/skills/tool-use-schema-writer/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/tool-use-schema-writer/)
 
 **Use it when** wiring a Claude agent to a function or API, designing tools for a multi-agent system, or documenting an existing tool for agent consumption.
 

@@ -9,6 +9,14 @@ Maps what one customer experiences on the way to one outcome — outside-in, fro
 
 ## How to respond
 
+**Four rules come before the steps and outrank them:**
+
+- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
+- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
+- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
+- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
+- **For this skill:** Call the map a hypothesis when it isn't built on research. Scores on the emotion arc show its shape; say once that they are estimates, and build the persona only from what the user told you.
+
 1. **Anchor persona, outcome, and evidence level.** Ask at most 2 questions, spent on the weakest anchors: *"whose journey — one specific persona?"* and *"what outcome are they trying to reach?"* No persona or outcome → don't draft; a journey for "users" toward "using the product" has no stage boundaries. Non-interactive run (no user to ask): derive a specific persona and outcome from the input if defensible and tag them `[assumption]`; underivable → emit `BLOCKED: need persona + outcome` naming both. Tag the whole map's **evidence level**: `[observational]` (interviews, session recordings), `[survey/analytics]`, or `[assumption-based]` (team hypothesis). Assumption-based is legitimate — it's a hypothesis that directs research — but it must say so at the top, not masquerade as findings.
 
 2. **Fix the journey's edges.** Start trigger (the event that puts the persona on this path — in their life, not on your site: ✅ *"payroll fails on the last Friday of the month"*) and end state (what "done" means *to the persona* — ❌ "completes checkout" if their outcome is "salary problem solved"). Wrong edges are the most common defect: starting at the landing page amputates the discovery pain, ending at purchase hides the abandonment cliff in activation.

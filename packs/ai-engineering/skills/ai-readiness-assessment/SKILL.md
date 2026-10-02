@@ -11,6 +11,14 @@ Readiness assessments fail in one of two ways: a number with no evidence behind 
 
 ## How to respond
 
+**Four rules come before the steps and outrank them:**
+
+- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
+- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
+- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
+- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
+- **For this skill:** Open with the verdict (ready, not yet, or not ready) and the two or three things to do first. The scorecard follows. Leave a dimension unscored when there is no evidence for it, and name no owner the user didn't name.
+
 1. **Establish scope and the decision it feeds.** Whose readiness — one team, a function, the whole company? And what happens with the answer (a go/no-go, a budget request, a sequencing decision)? Scope changes what counts as evidence. Cap clarifying questions at 2.
 
 2. **Score the six dimensions.** These are fixed — do not invent new ones for a single engagement, and do not drop one because it's awkward to assess. Score each **0–4** (0 absent · 1 ad hoc · 2 repeatable · 3 managed · 4 optimised):

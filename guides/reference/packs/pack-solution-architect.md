@@ -105,7 +105,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skil
 
 Design a database schema from access patterns — paradigm chosen deliberately (relational/document/key-value/wide-column/graph), keys and partitioning driven by the actual queries, indexes mapped to predicates, money/time types right, and every read path verified to have a supporting access path.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skills/db-schema-design/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/db-schema-design/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/solution-architect/skills/db-schema-design/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/db-schema-design/)
 
 **Use it when** the user is designing a data model, schema, or tables for a feature, choosing a database, or asks how to structure/store data.
 
@@ -130,7 +130,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skil
 
 Generate a Google-style engineering design doc (problem, goals/non-goals, options considered, recommended approach, risks, rollout) from a feature brief or short description.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skills/design-doc/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/design-doc/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/solution-architect/skills/design-doc/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/design-doc/)
 
 **Use it when** the user wants to draft a design doc, technical proposal, or one-pager for an engineering review.
 
@@ -147,7 +147,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skil
 
 Work with Figma and FigJam files via the Figma REST API — read existing file structure, list frames/pages, post comments, and produce FigJam-importable diagram specs.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/solution-architect/skills/figma-diagrams/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/figma-diagrams/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/solution-architect/skills/figma-diagrams/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/figma-diagrams/)
 
 **Use it when** the user mentions a Figma URL, asks to inspect/audit a Figma file, wants to comment on a design programmatically, or wants their architecture diagram in Figma.
 
@@ -212,7 +212,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skil
 
 Produce a weighted comparison matrix for a technology selection question (e.g., "Postgres vs DynamoDB", "Kafka vs Kinesis vs RabbitMQ", "Snowflake vs Databricks"). Surfaces criteria, weights, per-option scores, totals, and a recommended pick.
 
-Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skills/tech-comparison-matrix/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/tech-comparison-matrix/)
+Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/solution-architect/skills/tech-comparison-matrix/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/tech-comparison-matrix/)
 
 **Use it when** the user is choosing between technologies, vendors, frameworks, or architectural approaches.
 

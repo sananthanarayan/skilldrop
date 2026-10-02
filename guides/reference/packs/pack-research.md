@@ -23,7 +23,7 @@ Take a question from vague to answered: plan the research around the decision it
 
 Compare rival explanations for an observation with analysis of competing hypotheses (ACH) — list the hypotheses and the evidence, build a consistency matrix (consistent / inconsistent / neutral), rank hypotheses by how little evidence contradicts them rather than how much supports them, name the diagnostic evidence and the linchpins, and say which next observation would tell the leaders apart.
 
-Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/research/skills/hypothesis-comparison/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/hypothesis-comparison/)
+Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/research/skills/hypothesis-comparison/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/hypothesis-comparison/)
 
 **Use it when** the user asks "why did X happen", "which explanation fits the evidence", "what's really causing this", wants to stop arguing over a favourite theory, or says "compare these hypotheses", "competing explanations", "ACH".
 
@@ -84,7 +84,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/research/skills/researc
 
 Synthesise a set of supplied sources — papers, articles, reports, interview transcripts — into findings where every claim is cited to a source and a location ([S1:p4]), agreement and disagreement across sources are explicit, each finding carries an evidence-strength rating with the criteria used, and the gaps and what the sources do not say are listed. Never adds outside facts unless tagged as such, and ships a citation checker.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/research/skills/source-synthesis/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/source-synthesis/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/research/skills/source-synthesis/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/source-synthesis/)
 
 **Use it when** the user hands over several sources and asks to "synthesise these", "what do these papers say", "literature review", "pull the findings together", or "where do the sources agree and disagree".
 

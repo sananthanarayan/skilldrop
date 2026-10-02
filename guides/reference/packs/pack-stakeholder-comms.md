@@ -73,7 +73,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/stakeholder-comms/skill
 
 Turn raw notes, specs, or design material into an easy-to-follow guide, auto-styled to the content — a setup/quickstart, a design walkthrough, or an API/event-schema reference.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/stakeholder-comms/skills/guide-builder/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/guide-builder/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/stakeholder-comms/skills/guide-builder/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/guide-builder/)
 
 **Use it when** the user wants setup or getting-started instructions, an onboarding walkthrough of how a system works, or developer reference docs for an API or event schema — and it is NOT an SRE operational runbook (use runbook-generator) or a design proposal for review (use design-doc).
 

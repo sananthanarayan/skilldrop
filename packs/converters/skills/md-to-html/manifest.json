@@ -1,6 +1,6 @@
 {
   "name": "md-to-html",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Turn a Markdown draft into one self-contained, print-friendly HTML file that survives being emailed or attached, with headings that have anchor links, tables, code, quotes, an optional table of contents, local images embedded, brand colours and fonts from a brand.json, Mermaid diagrams kept as text or drawn from a pinned CDN, and raw HTML escaped so nothing in the source runs. Use when the user wants Markdown \"as a web page\", \"as an HTML file I can send\", \"something people can open in a browser and print\", or says \"convert this to HTML\".",
   "entrypoint": "SKILL.md",
   "deps": {

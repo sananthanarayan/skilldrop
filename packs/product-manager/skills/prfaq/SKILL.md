@@ -9,6 +9,14 @@ The working-backwards forcing function: write the launch press release *before* 
 
 ## How to respond
 
+**Four rules come before the steps and outrank them:**
+
+- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
+- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
+- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
+- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
+- **For this skill:** Put the full PR/FAQ in the reply. A quote is attributed to a role ("an operations lead at a mid-size clinic"), never to an invented name, and the author line uses only what the user gave.
+
 1. **Pin the three anchors** — customer, problem, differentiator. Ask at most 2 questions, spent on the weakest anchors: *"Who exactly is the customer, and what do they do today instead?"* and *"What does this do that the thing they use today doesn't?"* A PRFAQ for "everyone" with a problem stated in industry jargon produces a marketing document, not a forcing function — don't start drafting until all three anchors are concrete. Non-interactive run (no user to ask): derive missing anchors from the input where defensible and tag them `[assumption]` at the top; an anchor with no defensible derivation → emit `BLOCKED: need <anchor>` naming what to rerun with, instead of fabricating a customer.
 
 2. **Write the press release** — one page, datelined with a city and a realistic launch date; no product name exists yet → invent a plausible working name and mark it as a placeholder. The blocks:

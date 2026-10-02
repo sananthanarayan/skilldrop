@@ -11,6 +11,14 @@ A policy that prohibits without offering a permitted path doesn't reduce risk; i
 
 ## How to respond
 
+**Four rules come before the steps and outrank them:**
+
+- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
+- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
+- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
+- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
+- **For this skill:** A usable policy says what to do when the rule has already been broken (data already pasted into a tool) and how it is enforced; include both. Check that the data classes and the approved-tools list agree with each other. Make no claim about where a tool sends data unless the user told you.
+
 1. **Establish scope and the regulatory floor.** Which population, which tools, and any regime already binding (sector rules, customer contracts, an existing data-classification scheme). If the organisation already classifies data, **reuse those tier names** rather than inventing a parallel scheme — two classification systems means neither is followed. Cap clarifying questions at 2.
 
 2. **Define three data tiers and what may enter a tool at each.** Three, because five is not memorable and one is not a policy:

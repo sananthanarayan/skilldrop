@@ -112,7 +112,10 @@ def cli_run(cmd, user, cwd, timeout, env=None):
             p = subprocess.run(["claude", "-p"] + cmd + CLI_BASE, input=user, capture_output=True, text=True,
                                cwd=cwd, timeout=timeout, env=env)
             r = json.loads(p.stdout)
-        except (subprocess.TimeoutExpired, ValueError, OSError) as err:
+        except subprocess.TimeoutExpired:
+            # a session that hangs once will hang again; retrying it three times stalls the whole run
+            raise APIError("claude -p timed out after %d seconds" % timeout)
+        except (ValueError, OSError) as err:
             r = {"is_error": True, "result": str(err)[:300]}
         if not r.get("is_error"):
             used = r.get("modelUsage", {})
@@ -207,7 +210,7 @@ def cli_agent(model, system, user, skill=None, files=None):
         open(sysfile, "w").write(system)
         text, resp = cli_run(["--model", model, "--append-system-prompt-file", sysfile, "--restricted",
                               "--tools", "Read,Write,Edit,Glob,Grep,Bash", "--permission-mode", "acceptEdits",
-                              "--settings", CLI_SANDBOX, "--max-budget-usd", "3"], user, ws, 1200, env)
+                              "--settings", CLI_SANDBOX, "--max-budget-usd", "3"], user, ws, 900, env)
         left = workspace_files(ws, files)
         return text + ("\n\n<files_in_workspace>\n%s\n</files_in_workspace>" % left if left else ""), resp
 

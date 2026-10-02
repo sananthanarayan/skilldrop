@@ -1,6 +1,6 @@
 {
   "name": "db-schema-design",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Design a database schema from access patterns — paradigm chosen deliberately (relational/document/key-value/wide-column/graph), keys and partitioning driven by the actual queries, indexes mapped to predicates, money/time types right, and every read path verified to have a supporting access path. Use when the user is designing a data model, schema, or tables for a feature, choosing a database, or asks how to structure/store data.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
