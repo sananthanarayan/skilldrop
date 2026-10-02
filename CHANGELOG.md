@@ -8,6 +8,16 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.2 — 2026-10-02
+
+- **29 skills stop showing their machinery.** Replies and artifacts no longer mention the skill, its files, caps or internal terms, or that a run is non-interactive, and they name another skill once, at the end, as a next step. This came from the first benchmark run, where a blind judge marked those replies down.
+- **A `BLOCKED` reply now tells you something.** In 13 skills the `BLOCKED: need <X>` line is followed by what is missing in plain words, what you'll get once it's supplied, and anything the request already allows.
+- **`adr-generator` records a decision you've already made as `Accepted`.** "We decided" used to produce `Proposed`. Deciders, dates and drivers you didn't give are left out or marked, not guessed.
+- **`delivery-metrics-report` no longer stops an unattended run on timestamps with no time zone.** It assumes UTC, says so at the top with the number of rows affected, and says what moves if that's wrong.
+- **`strategy-analysis` gives you the framework you asked for.** When another one fits the question better it still says so and runs that one, and now adds yours after it.
+- **`agents-md-generator` writes a missing command as a plain "none defined" line** in the file. The `[missing]` marker stays in the provenance table only.
+- **Every skill is now measured against plain Claude Code**, with the results on the [How skills are checked](https://sananthanarayan.github.io/skilldrop/evals/) page. 22 evals gained the input files their prompts name, under `evals/files/`.
+
 ## 0.16.1 — 2026-10-01
 
 - **`md-to-xlsx` no longer writes a workbook Excel can't open** when a cell holds a number too big to store, such as `1e999`. It is kept as text. A JSON integer longer than 15 digits is kept as text too, so an ID isn't rounded.
