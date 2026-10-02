@@ -8,6 +8,12 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.6 — 2026-10-02
+
+- **31 skills answer first and stick to what you gave them.** Each now opens with the answer or the artifact, leaves out facts, names and numbers you didn't supply and lists what's missing once under "To confirm", works from what it has instead of stopping to ask, and keeps its own vocabulary out of the reply. Each also carries one rule of its own; for example, `release-notes` writes one set of notes and doesn't invent a product name, and `tech-comparison-matrix` leads with the recommendation.
+- **`strategy-analysis` runs the framework you asked for in full**, then says in a few sentences which one fits the question better and offers to run it.
+- **The benchmark now shows a preference for skills.** Across all 131 evals, two blind judges preferred the skill's result to plain Claude Code's in 61% and 63% of pairs, with both ranges above even, up from 56% and 57%. The 31 revised skills went from 17% and 20% to 35% and 37%; part of that is fitted to the evals they were revised against, and they meet slightly fewer of their own checks (60%, from 65%). Numbers and method are on the [How skills are checked](https://sananthanarayan.github.io/skilldrop/evals/) page.
+
 ## 0.16.5 — 2026-10-02
 
 - **New guide: [Benchmark skills against the agent without them](guides/how-to/benchmark-skills.md).** How to run `run_bench.py` on this catalogue or your own, what each number means, and how to improve a skill against it.

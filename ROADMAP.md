@@ -4,7 +4,7 @@ What is being worked on next. Not a commitment — a direction. Shipped work mov
 
 ## Upcoming
 
-- **Skills a blind judge prefers** — the catalogue-wide benchmark shows skills meeting far more of their own checks than the agent alone, and only a slight blind preference for their results. Next: make skills deliver from what they were given instead of stopping, and remove hand-off lines from inside the artifact, measured with two trials and two judges.
+- **Skills a blind judge prefers** — after 0.16.6 two blind judges prefer skills' results in about three pairs in five. Next: the skills still below even, starting with the three that got worse in the last round (`deck-builder`, `file-to-markdown`, `delivery-metrics-report`), and evals the skills have not been revised against.
 - **Three or more evals per skill** — most skills have one acceptance eval, so a per-skill number is an anecdote. The three skills added in 0.16.4 set the pattern.
 - **The light and heavy tiers** — the benchmark has run on the standard tier only. Running all three shows where a cheaper model is enough.
 
