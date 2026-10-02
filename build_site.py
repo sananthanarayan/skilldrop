@@ -55,14 +55,15 @@ def _pack_total(name):
 PITCH = {
     "hero_h1": "Your agent can draft anything. What ships is still your call.",
     # Search results cut a description off around 160 characters; the hero lede runs twice that.
-    "meta_description": "Portable AI-agent skills for ADRs, PRDs, runbooks, decks and reviews. Copy one folder into Claude Code, Cursor, Kiro or Codex, or install a whole role pack.",
+    "meta_description": "Portable AI-agent skills for ADRs, PRDs, runbooks, decks and reviews, measured against the agent without them. Copy one folder into Claude Code, Cursor or Kiro.",
     # No counts in the pitch: a number tells a newcomer nothing about what they get back, and it
     # goes stale. Counts stay where they help a choice (pack sizes, catalogue filters).
     "hero_lede": (
         "Skills that produce the files your work actually ships — ADRs, PRDs, runbooks, decks, "
         "reviews — each with a quality bar it is held to, and loops whose gates can say no: a "
         "script, a review panel, or you, chosen by how expensive the mistake is to undo. Every skill "
-        "is a plain folder you copy into your agent."
+        "is a plain folder you copy into your agent, and every skill is measured against the agent "
+        "without it."
     ),
     "tension_h2": "Generic agents are fluent about everything and opinionated about nothing.",
     "tension_body": (
@@ -97,7 +98,7 @@ PITCH = {
         "fires them in parallel wherever your tool has native subagents."
     ),
     "closing_h2": "Copy a folder. Keep the artifact.",
-    "footer_tagline": "Portable skills for the deliverables knowledge work actually ships.",
+    "footer_tagline": "Portable skills, measured against the agent without them.",
     "closing_body": (
         "Nothing here needs an account, a runtime, or a migration. Install one skill, run it once, "
         "and keep it only if the output was worth keeping."

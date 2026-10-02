@@ -8,6 +8,11 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.3 — 2026-10-02
+
+- **The package, the plugin and the site now say what sets skilldrop apart:** portable skills, measured against the agent without them. The numbers behind that are on the [How skills are checked](https://sananthanarayan.github.io/skilldrop/evals/) page.
+- **`run_bench.py --second-judge MODEL`** runs the blind comparison with a second model and reports how often the two judges agree. The published run now includes it.
+
 ## 0.16.2 — 2026-10-02
 
 - **29 skills stop showing their machinery.** Replies and artifacts no longer mention the skill, its files, caps or internal terms, or that a run is non-interactive, and they name another skill once, at the end, as a next step. This came from the first benchmark run, where a blind judge marked those replies down.
