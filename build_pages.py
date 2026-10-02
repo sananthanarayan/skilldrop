@@ -420,6 +420,7 @@ def bench_section(b):
 <li><b>Preferred by a blind judge</b> is the share of pairs where a judge that saw only the request and both results, in shuffled order, picked the skill's. 50% means no preference.</li>
 {second}<li>Ranges are 95% intervals over evals. A lift range that includes 0, or a preference range that includes 50%, is not a result.</li>
 <li>Most skills have one eval, so a single row below is an anecdote. The judge is a model. Cost is list price for the tokens used.</li>
+<li>Skills that lost were revised after reading the judges' reasons and run again on the same evals, so part of the preference is fitted to them. Evals the skills have not seen would settle how much.</li>
 </ul>
 <p>Reproduce it with <code>python3 run_bench.py</code> (<a href="{REPO_URL}/blob/main/docs/rfcs/0040-skill-benchmark.md">RFC-0040</a>).</p>
 </section>"""

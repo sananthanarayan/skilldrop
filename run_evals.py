@@ -91,7 +91,12 @@ def grade(judge_model, output, asserts, send=None):
                                        f"<output>\n{output}\n</output>\n\n<assertions>\n{numbered}\n</assertions>",
                                        max_tokens=2000)
     start = verdict.find("[")  # the first JSON array; a judge may add prose after it
-    grades = json.JSONDecoder().raw_decode(verdict[start:])[0] if start >= 0 else []
+    try:
+        grades = json.JSONDecoder().raw_decode(verdict[start:])[0] if start >= 0 else []
+    except json.JSONDecodeError:
+        # an unescaped quote inside a "why" breaks the array; the verdicts themselves are still readable
+        grades = [{"n": int(n), "pass": p == "true", "why": "judge reply was not valid JSON"}
+                  for n, p in re.findall(r'"n"\s*:\s*(\d+)\s*,\s*"pass"\s*:\s*(true|false)', verdict)]
     by_n = {g.get("n"): g for g in grades if isinstance(g, dict)}
     return [{"assertion": a, "pass": bool(by_n.get(i, {}).get("pass")), "why": by_n.get(i, {}).get("why", "not graded")}
             for i, a in enumerate(asserts, 1)], meta

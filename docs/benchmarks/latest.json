@@ -34,29 +34,29 @@
    "label": "standard",
    "evals": 131,
    "runs": 131,
-   "skill": 0.7050527081061433,
+   "skill": 0.6879619532291288,
    "baseline": 0.25663395129043987,
-   "lift": 0.44841875681570337,
+   "lift": 0.431328001938689,
    "lift_ci": [
-    0.39770992366412217,
-    0.4993275172664486
+    0.3805252635405307,
+    0.48154004604386286
    ],
-   "win": 0.5648854961832062,
+   "win": 0.6106870229007634,
    "win_ci": [
-    0.48091603053435117,
-    0.6526717557251909
+    0.5267175572519084,
+    0.6946564885496184
    ],
    "second_judge": "claude-opus-5-5",
-   "win2": 0.5687022900763359,
+   "win2": 0.6259541984732825,
    "win2_ci": [
-    0.48854961832061067,
-    0.648854961832061
+    0.5458015267175572,
+    0.7022900763358778
    ],
-   "judges_agree": 94,
-   "judges_decided": 122,
-   "cost_skill": 0.1170335465648855,
+   "judges_agree": 84,
+   "judges_decided": 119,
+   "cost_skill": 0.11540177099236641,
    "cost_baseline": 0.09747508244274809,
-   "out_tokens_skill": 4742.312977099236,
+   "out_tokens_skill": 4686.053435114503,
    "out_tokens_baseline": 3621.908396946565,
    "truncated": 0,
    "refused": 0,
@@ -92,10 +92,10 @@
    "skill": "agent-adoption-stage",
    "model": "claude-sonnet-5",
    "evals": 1,
-   "skill_met": 0.625,
+   "skill_met": 0.875,
    "baseline_met": 0.0,
-   "preferred": 0.0,
-   "cost_skill": 0.10216599999999999,
+   "preferred": 1.0,
+   "cost_skill": 0.0522912,
    "cost_baseline": 0.025175200000000002
   },
   {
@@ -115,7 +115,7 @@
    "skill_met": 0.8888888888888888,
    "baseline_met": 0.0,
    "preferred": 0.0,
-   "cost_skill": 0.0538948,
+   "cost_skill": 0.0482847,
    "cost_baseline": 0.0562636
   },
   {
@@ -132,10 +132,10 @@
    "skill": "agents-md-generator",
    "model": "claude-sonnet-5",
    "evals": 4,
-   "skill_met": 0.6354166666666666,
+   "skill_met": 0.59375,
    "baseline_met": 0.23958333333333331,
-   "preferred": 0.25,
-   "cost_skill": 0.0519744,
+   "preferred": 0.5,
+   "cost_skill": 0.046230150000000005,
    "cost_baseline": 0.043002
   },
   {
@@ -152,10 +152,10 @@
    "skill": "ai-readiness-assessment",
    "model": "claude-sonnet-5",
    "evals": 1,
-   "skill_met": 0.8333333333333334,
+   "skill_met": 0.5,
    "baseline_met": 0.0,
    "preferred": 0.0,
-   "cost_skill": 0.08671319999999999,
+   "cost_skill": 0.0682932,
    "cost_baseline": 0.0257752
   },
   {
@@ -164,8 +164,8 @@
    "evals": 1,
    "skill_met": 0.875,
    "baseline_met": 0.125,
-   "preferred": 0.0,
-   "cost_skill": 0.06678919999999999,
+   "preferred": 1.0,
+   "cost_skill": 0.0757312,
    "cost_baseline": 0.0413492
   },
   {
@@ -302,10 +302,10 @@
    "skill": "contribution-wizard",
    "model": "claude-sonnet-5",
    "evals": 1,
-   "skill_met": 1.0,
+   "skill_met": 0.75,
    "baseline_met": 0.5,
    "preferred": 0.0,
-   "cost_skill": 0.0915994,
+   "cost_skill": 0.12811460000000002,
    "cost_baseline": 2.4396142000000007
   },
   {
@@ -342,10 +342,10 @@
    "skill": "db-schema-design",
    "model": "claude-sonnet-5",
    "evals": 1,
-   "skill_met": 1.0,
+   "skill_met": 0.8,
    "baseline_met": 0.0,
    "preferred": 0.0,
-   "cost_skill": 0.1117194,
+   "cost_skill": 0.1521808,
    "cost_baseline": 0.041455000000000006
   },
   {
@@ -362,30 +362,30 @@
    "skill": "deck-builder",
    "model": "claude-sonnet-5",
    "evals": 3,
-   "skill_met": 0.24761904761904763,
+   "skill_met": 0.18095238095238098,
    "baseline_met": 0.06666666666666667,
-   "preferred": 0.6666666666666666,
-   "cost_skill": 0.0391264,
+   "preferred": 0.3333333333333333,
+   "cost_skill": 0.039362,
    "cost_baseline": 0.028808466666666668
   },
   {
    "skill": "delivery-metrics-report",
    "model": "claude-sonnet-5",
    "evals": 2,
-   "skill_met": 0.6607142857142857,
+   "skill_met": 1.0,
    "baseline_met": 0.19642857142857142,
    "preferred": 0.0,
-   "cost_skill": 0.1307899,
+   "cost_skill": 0.1157491,
    "cost_baseline": 0.19213710000000003
   },
   {
    "skill": "design-doc",
    "model": "claude-sonnet-5",
    "evals": 1,
-   "skill_met": 0.5,
+   "skill_met": 0.6666666666666666,
    "baseline_met": 0.16666666666666666,
-   "preferred": 0.0,
-   "cost_skill": 0.1007456,
+   "preferred": 1.0,
+   "cost_skill": 0.0845654,
    "cost_baseline": 0.08280080000000001
   },
   {
@@ -402,10 +402,10 @@
    "skill": "devils-advocate",
    "model": "claude-sonnet-5",
    "evals": 1,
-   "skill_met": 0.125,
+   "skill_met": 0.0,
    "baseline_met": 0.125,
    "preferred": 0.0,
-   "cost_skill": 0.048186400000000004,
+   "cost_skill": 0.051401800000000004,
    "cost_baseline": 0.0267084
   },
   {
@@ -432,10 +432,10 @@
    "skill": "eval-harness-generator",
    "model": "claude-sonnet-5",
    "evals": 1,
-   "skill_met": 0.875,
+   "skill_met": 0.5,
    "baseline_met": 0.125,
    "preferred": 0.0,
-   "cost_skill": 0.0988254,
+   "cost_skill": 0.11772419999999997,
    "cost_baseline": 0.23911580000000002
   },
   {
@@ -462,10 +462,10 @@
    "skill": "figma-diagrams",
    "model": "claude-sonnet-5",
    "evals": 1,
-   "skill_met": 0.0,
+   "skill_met": 0.25,
    "baseline_met": 0.0,
    "preferred": 0.0,
-   "cost_skill": 0.041598,
+   "cost_skill": 0.035827200000000003,
    "cost_baseline": 0.0201012
   },
   {
@@ -475,7 +475,7 @@
    "skill_met": 0.7083333333333333,
    "baseline_met": 0.08333333333333333,
    "preferred": 0.5,
-   "cost_skill": 0.051833199999999996,
+   "cost_skill": 0.046037600000000005,
    "cost_baseline": 0.10252750000000001
   },
   {
@@ -485,17 +485,17 @@
    "skill_met": 0.5714285714285714,
    "baseline_met": 0.2857142857142857,
    "preferred": 0.0,
-   "cost_skill": 0.0690282,
+   "cost_skill": 0.076824,
    "cost_baseline": 0.0309856
   },
   {
    "skill": "hypothesis-comparison",
    "model": "claude-sonnet-5",
    "evals": 1,
-   "skill_met": 1.0,
+   "skill_met": 0.625,
    "baseline_met": 0.0,
    "preferred": 0.0,
-   "cost_skill": 0.1885256,
+   "cost_skill": 0.1583622,
    "cost_baseline": 0.05029120000000001
   },
   {
@@ -532,10 +532,10 @@
    "skill": "llm-eval-harness",
    "model": "claude-sonnet-5",
    "evals": 1,
-   "skill_met": 0.75,
+   "skill_met": 0.625,
    "baseline_met": 0.0,
    "preferred": 0.0,
-   "cost_skill": 0.1103404,
+   "cost_skill": 0.11296139999999999,
    "cost_baseline": 0.05037119999999999
   },
   {
@@ -562,10 +562,10 @@
    "skill": "md-to-html",
    "model": "claude-sonnet-5",
    "evals": 1,
-   "skill_met": 0.42857142857142855,
+   "skill_met": 0.5714285714285714,
    "baseline_met": 0.42857142857142855,
    "preferred": 0.0,
-   "cost_skill": 0.062120800000000004,
+   "cost_skill": 0.0790454,
    "cost_baseline": 0.3643262
   },
   {
@@ -585,17 +585,17 @@
    "skill_met": 0.5,
    "baseline_met": 0.3333333333333333,
    "preferred": 0.0,
-   "cost_skill": 0.1922132,
+   "cost_skill": 0.16753440000000003,
    "cost_baseline": 0.14732199999999998
   },
   {
    "skill": "metric-definition",
    "model": "claude-sonnet-5",
    "evals": 1,
-   "skill_met": 0.875,
+   "skill_met": 0.75,
    "baseline_met": 0.5,
-   "preferred": 0.0,
-   "cost_skill": 0.1239348,
+   "preferred": 1.0,
+   "cost_skill": 0.1248052,
    "cost_baseline": 0.0652452
   },
   {
@@ -642,10 +642,10 @@
    "skill": "output-hygiene",
    "model": "claude-sonnet-5",
    "evals": 2,
-   "skill_met": 0.125,
+   "skill_met": 0.18055555555555555,
    "baseline_met": 0.0,
    "preferred": 0.5,
-   "cost_skill": 0.036829600000000004,
+   "cost_skill": 0.0334813,
    "cost_baseline": 0.0248472
   },
   {
@@ -655,7 +655,7 @@
    "skill_met": 0.0,
    "baseline_met": 0.0,
    "preferred": 0.0,
-   "cost_skill": 0.0383912,
+   "cost_skill": 0.0355592,
    "cost_baseline": 0.0196592
   },
   {
@@ -682,20 +682,20 @@
    "skill": "pre-merge-review",
    "model": "claude-sonnet-5",
    "evals": 2,
-   "skill_met": 0.41666666666666663,
+   "skill_met": 0.16666666666666666,
    "baseline_met": 0.08333333333333333,
    "preferred": 0.0,
-   "cost_skill": 0.042087,
+   "cost_skill": 0.036008000000000005,
    "cost_baseline": 0.0242242
   },
   {
    "skill": "prfaq",
    "model": "claude-sonnet-5",
    "evals": 2,
-   "skill_met": 1.0,
+   "skill_met": 0.9166666666666667,
    "baseline_met": 0.41666666666666663,
    "preferred": 0.5,
-   "cost_skill": 0.0584938,
+   "cost_skill": 0.0606149,
    "cost_baseline": 0.039124599999999995
   },
   {
@@ -712,10 +712,10 @@
    "skill": "release-notes",
    "model": "claude-sonnet-5",
    "evals": 1,
-   "skill_met": 0.875,
+   "skill_met": 0.75,
    "baseline_met": 0.25,
    "preferred": 0.0,
-   "cost_skill": 0.0531088,
+   "cost_skill": 0.0761534,
    "cost_baseline": 0.0249892
   },
   {
@@ -855,7 +855,7 @@
    "skill_met": 1.0,
    "baseline_met": 0.5,
    "preferred": 0.0,
-   "cost_skill": 0.29686959999999996,
+   "cost_skill": 0.2155524,
    "cost_baseline": 0.041213200000000005
   },
   {
@@ -872,20 +872,20 @@
    "skill": "strategy-analysis",
    "model": "claude-sonnet-5",
    "evals": 3,
-   "skill_met": 0.6825396825396824,
+   "skill_met": 0.6349206349206349,
    "baseline_met": 0.1111111111111111,
-   "preferred": 0.3333333333333333,
-   "cost_skill": 0.07821013333333333,
+   "preferred": 1.0,
+   "cost_skill": 0.07518333333333334,
    "cost_baseline": 0.030127866666666666
   },
   {
    "skill": "subagent-design",
    "model": "claude-sonnet-5",
    "evals": 2,
-   "skill_met": 0.9,
+   "skill_met": 0.95,
    "baseline_met": 0.25,
    "preferred": 0.0,
-   "cost_skill": 0.0625059,
+   "cost_skill": 0.069842,
    "cost_baseline": 0.03365220000000001
   },
   {
@@ -912,10 +912,10 @@
    "skill": "tech-comparison-matrix",
    "model": "claude-sonnet-5",
    "evals": 1,
-   "skill_met": 0.42857142857142855,
+   "skill_met": 0.14285714285714285,
    "baseline_met": 0.0,
    "preferred": 0.0,
-   "cost_skill": 0.0962912,
+   "cost_skill": 0.059519199999999994,
    "cost_baseline": 0.0457652
   },
   {
@@ -982,10 +982,10 @@
    "skill": "tool-use-schema-writer",
    "model": "claude-sonnet-5",
    "evals": 1,
-   "skill_met": 0.7142857142857143,
+   "skill_met": 0.5714285714285714,
    "baseline_met": 0.7142857142857143,
    "preferred": 0.0,
-   "cost_skill": 0.0473292,
+   "cost_skill": 0.0397032,
    "cost_baseline": 0.0261592
   },
   {
@@ -1002,10 +1002,10 @@
    "skill": "user-journey-map",
    "model": "claude-sonnet-5",
    "evals": 2,
-   "skill_met": 1.0,
+   "skill_met": 0.85,
    "baseline_met": 0.3333333333333333,
    "preferred": 0.5,
-   "cost_skill": 0.0667346,
+   "cost_skill": 0.0591182,
    "cost_baseline": 0.0315031
   },
   {
