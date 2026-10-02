@@ -1,12 +1,12 @@
 # skilldrop
 
-> 93 portable skills for the artifacts knowledge work ships (ADRs, design docs,
+> 96 portable skills for the artifacts knowledge work ships (ADRs, design docs,
 > PRDs, runbooks, threat models, decks, postmortems), plus 6 loops that sequence them
 > behind gates. A loop orders skills; a skill never calls a skill, so every one of the
-> 93 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
+> 96 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.16.3.
+> Version 0.16.4.
 
 ## Start here
 
@@ -117,7 +117,7 @@ except `api-builder` requires `core`, which installs with it.
 - **core** (4 skills, loops: ship-a-draft): The cross-role toolkit every pack builds on: structured intake, document critique, the review council, and output hygiene, plus the ship-a-draft wrapper. Installed automatically with every role pack.
 - **solution-architect** (11 skills, loops: design, requires core): Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.
 - **product-manager** (8 skills, loops: discover, requires core): Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, and success measurement.
-- **dev-team** (14 skills, loops: build, release, requires core): Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, migrations, launch readiness, release notes, agent-policy files, and code-quality gates.
+- **dev-team** (16 skills, loops: build, release, requires core): Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, migrations, launch readiness, release notes, agent-policy files, and code-quality gates.
 - **sre-oncall** (7 skills, loops: operate, requires core): Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.
 - **stakeholder-comms** (4 skills, requires core): Non-technical audiences: audience profiling, exec summaries, decision logs, and guides. Decks live in the design pack.
 - **design** (4 skills, requires core): On-brand visual work: capture a brand once, then build real PowerPoint decks and print-ready marketing flyers in that brand, with logo, colours and fonts applied.
@@ -128,7 +128,7 @@ except `api-builder` requires `core`, which installs with it.
 - **research** (3 skills, requires core): Take a question from vague to answered: plan the research around the decision it serves, synthesise the sources with every claim cited, and rank rival explanations by the evidence against them.
 - **trackers** (3 skills, requires core): For leads and PMs who run work in Jira, Linear or GitHub Projects: load a PRD into the tracker, triage the backlog, write the weekly status report, and check the tracker still matches the doc, all from an export or an MCP tool, with the numbers computed rather than estimated.
 - **data-analytics** (3 skills, requires core): For analysts and the people who rely on their numbers: define a metric once so everyone gets the same figure, review SQL for the bugs that quietly inflate it, and spec dashboards around a decision instead of every chart that was easy to make.
-- **grc** (3 skills, requires core): Governance, risk and compliance drafts for compliance leads, DPOs and risk owners: a risk register with a checked heat map, a GDPR data protection impact assessment, and a SOC 2 control-to-evidence map, each prepared for a qualified person to review.
+- **grc** (4 skills, requires core): Governance, risk and compliance drafts for compliance leads, DPOs and risk owners: a risk register with a checked heat map, a GDPR data protection impact assessment, and a SOC 2 control-to-evidence map, each prepared for a qualified person to review.
 - **infra-as-code** (2 skills, requires core): Terraform you can hand to another team and plans you can trust before apply: reusable modules with secure defaults, and a plan review that catches destroys, data loss, access widening and drift.
 - **skill-engineering** (2 skills, requires core): For people writing Agent Skills in their own repos: write a portable SKILL.md folder from a described task, then audit any skill for routing, portability, safety, structure and evals before you share it.
 
@@ -136,7 +136,7 @@ except `api-builder` requires `core`, which installs with it.
 
 - **decide-what-to-build** (11 skills): Turn a direction into a committed, measurable plan: press releases, strategy frameworks, OKRs, business cases, requirements, PRDs, and the metrics that will say whether it worked.
 - **design-the-system** (16 skills): Commit the shape before the code: decision records, design docs, diagrams, contracts, schemas, migration and threat models, and the design of any agentic parts.
-- **build-and-review-software** (15 skills): The loop around the code itself: supervised implementation, adversarial review panels, test plans, triage, accessibility and static-analysis passes, and the policy files agents read.
+- **build-and-review-software** (17 skills): The loop around the code itself: supervised implementation, adversarial review panels, test plans, triage, accessibility and static-analysis passes, and the policy files agents read.
 - **build-on-the-claude-api** (4 skills): Skills for teams building directly on the Anthropic API — prompt caching strategy, token budgeting, eval generation, and tool-use schema writing.
 - **run-and-recover-the-service** (9 skills): Operate what shipped: runbooks, observability design, release notes, incident communication, and the postmortem that closes the loop.
 - **explain-it-to-decision-makers** (7 skills): Get a non-technical audience to a decision: audience profiling, deck outlines and real decks, exec summaries, decision logs, and how-to guides.
@@ -146,7 +146,7 @@ except `api-builder` requires `core`, which installs with it.
 - **design-the-experience** (5 skills): Shape what people see and read before it's built: information architecture, interface copy, content specs, component specs and service blueprints.
 - **research-a-question** (3 skills): Take a question to a sourced answer: a research plan with a stopping rule, a cited synthesis of the sources, and competing explanations weighed against the evidence.
 - **define-and-trust-the-numbers** (3 skills): Make the numbers a business runs on mean one thing: metric definitions a semantic layer can implement, SQL reviewed for wrong answers, and dashboards specced before they're built.
-- **manage-risk-and-compliance** (3 skills): Prepare the material compliance asks for: a data protection impact assessment, a SOC 2 evidence map, and a risk register with owners and review dates.
+- **manage-risk-and-compliance** (4 skills): Prepare the material compliance asks for: a data protection impact assessment, a SOC 2 evidence map, and a risk register with owners and review dates.
 - **build-agent-skills** (2 skills): Write and review Agent Skills for any tool: a portable SKILL.md with evals, and an audit of an existing skill before it ships.
 
 ## Reviewer subagents
@@ -160,10 +160,10 @@ except `api-builder` requires `core`, which installs with it.
 - [catalogue.json](https://sananthanarayan.github.io/skilldrop/catalogue.json): every skill, loop, pack and outcome as machine-readable JSON — name, description, tier, tags, related. Prefer this over scraping the site.
 - [model-routing.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/model-routing.json): the abstract tier per skill (light/standard/heavy) and the provider map that resolves a tier to a concrete model.
 - [catalogue.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/catalogue.json): pack display order and outcome membership; each pack's metadata is in `packs/<pack>/pack.json`.
-- All 93 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
+- All 96 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
 
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 40 accepted RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 41 accepted RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.

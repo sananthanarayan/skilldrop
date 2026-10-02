@@ -32,32 +32,32 @@
  "models": {
   "claude-sonnet-5": {
    "label": "standard",
-   "evals": 122,
-   "runs": 122,
-   "skill": 0.6896662763466043,
-   "baseline": 0.23709016393442622,
-   "lift": 0.452576112412178,
+   "evals": 131,
+   "runs": 131,
+   "skill": 0.7050527081061433,
+   "baseline": 0.25663395129043987,
+   "lift": 0.44841875681570337,
    "lift_ci": [
-    0.3959894613583138,
-    0.508284543325527
+    0.39770992366412217,
+    0.4993275172664486
    ],
-   "win": 0.5573770491803278,
+   "win": 0.5648854961832062,
    "win_ci": [
-    0.4672131147540984,
-    0.6475409836065574
+    0.48091603053435117,
+    0.6526717557251909
    ],
    "second_judge": "claude-opus-5-5",
-   "win2": 0.5532786885245902,
+   "win2": 0.5687022900763359,
    "win2_ci": [
-    0.4672131147540984,
-    0.6352459016393442
+    0.48854961832061067,
+    0.648854961832061
    ],
-   "judges_agree": 84,
-   "judges_decided": 113,
-   "cost_skill": 0.11921908032786886,
-   "cost_baseline": 0.10070585081967214,
-   "out_tokens_skill": 4834.0901639344265,
-   "out_tokens_baseline": 3763.1967213114754,
+   "judges_agree": 94,
+   "judges_decided": 122,
+   "cost_skill": 0.1170335465648855,
+   "cost_baseline": 0.09747508244274809,
+   "out_tokens_skill": 4742.312977099236,
+   "out_tokens_baseline": 3621.908396946565,
    "truncated": 0,
    "refused": 0,
    "trial_range": 0.0,
@@ -66,7 +66,7 @@
   }
  },
  "routing": [],
- "floor": 0.08871975019516004,
+ "floor": 0.09401126862958924,
  "skills": [
   {
    "skill": "accessibility-audit",
@@ -659,6 +659,16 @@
    "cost_baseline": 0.0196592
   },
   {
+   "skill": "pr-description-writer",
+   "model": "claude-sonnet-5",
+   "evals": 3,
+   "skill_met": 0.8492063492063492,
+   "baseline_met": 0.42063492063492064,
+   "preferred": 0.6666666666666666,
+   "cost_skill": 0.07225566666666666,
+   "cost_baseline": 0.042157866666666675
+  },
+  {
    "skill": "prd-draft",
    "model": "claude-sonnet-5",
    "evals": 1,
@@ -702,10 +712,10 @@
    "skill": "release-notes",
    "model": "claude-sonnet-5",
    "evals": 1,
-   "skill_met": 0.625,
+   "skill_met": 0.875,
    "baseline_met": 0.25,
-   "preferred": 1.0,
-   "cost_skill": 0.06049260000000001,
+   "preferred": 0.0,
+   "cost_skill": 0.0531088,
    "cost_baseline": 0.0249892
   },
   {
@@ -757,6 +767,16 @@
    "preferred": 0.0,
    "cost_skill": 0.1094134,
    "cost_baseline": 0.0702412
+  },
+  {
+   "skill": "security-questionnaire-response",
+   "model": "claude-sonnet-5",
+   "evals": 3,
+   "skill_met": 0.85,
+   "baseline_met": 0.5547619047619048,
+   "preferred": 0.6666666666666666,
+   "cost_skill": 0.08867599999999999,
+   "cost_baseline": 0.059576
   },
   {
    "skill": "service-blueprint",
@@ -897,6 +917,16 @@
    "preferred": 0.0,
    "cost_skill": 0.0962912,
    "cost_baseline": 0.0457652
+  },
+  {
+   "skill": "tech-debt-register",
+   "model": "claude-sonnet-5",
+   "evals": 3,
+   "skill_met": 0.9583333333333334,
+   "baseline_met": 0.5892857142857143,
+   "preferred": 1.0,
+   "cost_skill": 0.10375186666666668,
+   "cost_baseline": 0.059306800000000014
   },
   {
    "skill": "terraform-module",

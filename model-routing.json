@@ -170,6 +170,18 @@
       "tier": "standard",
       "rationale": "Structured planning against a fixed shape (decision, sub-questions, methods, criteria, stopping rule); needs judgment to cut scope but no adversarial reasoning."
     },
+    "pr-description-writer": {
+      "tier": "standard",
+      "rationale": "Reads a diff and rewrites it for a reviewer. Bounded by the diff; the judgment is in picking what a reviewer needs first."
+    },
+    "tech-debt-register": {
+      "tier": "standard",
+      "rationale": "Structures and ranks items against stated evidence. Judgment is bounded: a cost with no evidence is recorded as unknown, not estimated."
+    },
+    "security-questionnaire-response": {
+      "tier": "standard",
+      "rationale": "Matches questions to evidence and writes short answers. The hard rule is mechanical: no evidence, no answer."
+    },
     "risk-register": {
       "tier": "standard",
       "rationale": "Structured writing against a fixed format and scale, with a script doing the checks and counts. Scoring needs some judgment but is bounded by the written scale."

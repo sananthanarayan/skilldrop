@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Answer this vendor security questionnaire from our policies",
+    "should_trigger": true
+  },
+  {
+    "query": "A customer sent us a SIG Lite to fill in. The evidence is in this folder.",
+    "should_trigger": true
+  },
+  {
+    "query": "Fill in the security section of this RFP using our SOC 2 summary",
+    "should_trigger": true
+  },
+  {
+    "query": "Check whether last year's due-diligence answers still match our current policies",
+    "should_trigger": true
+  },
+  {
+    "query": "Map our controls to the SOC 2 criteria and list the evidence the auditor will ask for",
+    "should_trigger": false
+  },
+  {
+    "query": "We're adding biometric clock-in. Do we need a DPIA and can you draft it?",
+    "should_trigger": false
+  },
+  {
+    "query": "Threat model this new file-upload service",
+    "should_trigger": false
+  },
+  {
+    "query": "Score these risks for the board heat map",
+    "should_trigger": false
+  }
+]

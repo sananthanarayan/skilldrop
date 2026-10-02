@@ -55,6 +55,8 @@
         "sonar-review",
         "test-plan-generator",
         "bug-triage",
+        "pr-description-writer",
+        "tech-debt-register",
         "agents-md-generator",
         "llm-eval-harness",
         "eval-harness-generator",
@@ -172,7 +174,8 @@
       "skills": [
         "dpia",
         "risk-register",
-        "soc2-evidence-map"
+        "soc2-evidence-map",
+        "security-questionnaire-response"
       ]
     },
     "build-agent-skills": {

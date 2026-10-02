@@ -1,0 +1,45 @@
+{
+  "skill_name": "tech-debt-register",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We have planning next week and I want to argue for debt time. My notes are in debt-notes.md. Turn them into a register and tell me what to pay down this quarter.",
+      "assertions": [
+        "The two notes about the order export (CSV string concatenation and the comma bug) are merged into one item, and the merge is stated",
+        "The export item cites its evidence from the notes (three incidents in Q3, INC-311, INC-318 and INC-327) and is among the items to pay down this quarter",
+        "The 22-minute CI build is recorded with its evidence (the measured time and the 14 engineers waiting on it)",
+        "The 'rewrite the frontend in TypeScript' note is recorded as having no evidence of cost and is not ranked as pay-now",
+        "Every item has a decision (pay now, schedule, accept or watch) and a trigger",
+        "Owners are filled only where the notes name one (Priya for the export); others are unassigned",
+        "It does not invent hours lost, incident counts, money or percentages that are not in the notes",
+        "The lead-in names three or fewer items for this quarter, above the table"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Here's a TODO/FIXME grep of the payments service (todos.txt) and last quarter's incident list (incidents.md). Build a tech debt register.",
+      "assertions": [
+        "The retry-without-idempotency-key TODO in payments/charge.py is linked to the duplicate-charge incidents in incidents.md and ranked at or near the top",
+        "TODOs with no matching incident or stated cost are marked as having no evidence of cost, with decision watch or accept",
+        "Each item names a file or module from todos.txt",
+        "Duplicate or near-duplicate TODOs (the two about hard-coded currency) are merged",
+        "Fix sizes are given as S, M or L, without invented day counts beyond the scale",
+        "It does not invent incidents, dates or customer impact beyond what incidents.md states",
+        "Every item has a trigger that is an event, not only a date"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We have a lot of tech debt: the monolith's deploy takes ages, nobody understands the billing module, tests are flaky, and we're still on Python 3.8. Make me a register.",
+      "assertions": [
+        "It produces a register with the four items rather than refusing or asking a list of questions first",
+        "Each item's cost is marked as not evidenced or unknown, because the prompt gives no numbers",
+        "It does not invent deploy times, flake rates, hours lost or incident counts",
+        "The Python 3.8 item notes that 3.8 is past end of life as a known fact, or asks to confirm, without inventing a specific vulnerability or deadline",
+        "It states what evidence would firm up the ranking (for example deploy duration, flaky-test rate, incidents traced to billing)",
+        "It adds no debt items beyond the four the user listed",
+        "Owners are unassigned"
+      ]
+    }
+  ]
+}

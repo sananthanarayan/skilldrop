@@ -13,7 +13,7 @@ Governance, risk and compliance drafts for compliance leads, DPOs and risk owner
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack grc` |
-| Skills | 3 plus 4 from core |
+| Skills | 4 plus 4 from core |
 | Loops | none |
 | How-to | [Use the Governance, risk and compliance pack](../../how-to/packs/use-the-grc-pack.md) |
 
@@ -77,6 +77,29 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/grc/skills/risk-registe
 - Mapping controls to SOC 2 criteria and audit evidence: use `soc2-evidence-map`
 - Recording a decision once it has been made: use `decision-log`
 - Setting quality targets such as availability or latency: use `nfr-spec`
+
+### `security-questionnaire-response`
+
+Answer a customer's security questionnaire from your own evidence: each question gets a direct answer (Yes, No, Partial or Not applicable), a short narrative, and the document and section it rests on. Questions the evidence doesn't cover are marked as needing input instead of being answered, and conflicts between sources, stale evidence and answers that would commit you to future work are flagged for the security owner.
+
+Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/grc/skills/security-questionnaire-response/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/security-questionnaire-response/)
+
+**Use it when** the user has a vendor security questionnaire, a SIG or CAIQ, a due-diligence spreadsheet or the security section of an RFP to fill in, or says "answer this security questionnaire", "fill in this vendor assessment".
+
+**A good result:**
+
+- **Every Yes, No and Partial cites a document and a place in it.**
+- **Nothing is claimed that the evidence does not show**: no certification, test, number or control is invented or upgraded.
+- **Gaps are visible.** Needs-input and flagged questions are counted and listed first.
+- **Conflicts are shown, not resolved.**
+- **The customer's IDs, order and wording of questions are preserved.**
+
+**Not for:**
+
+- Mapping your controls to SOC 2 criteria and the evidence an auditor wants. Use `soc2-evidence-map`.
+- Assessing a processing activity's risk to individuals under GDPR. Use `dpia`.
+- Finding the threats in a system design. Use `threat-model`.
+- Listing and scoring business risks. Use `risk-register`.
 
 ### `soc2-evidence-map`
 
