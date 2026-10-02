@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Build a tech debt register from these notes",
+    "should_trigger": true
+  },
+  {
+    "query": "Which of our technical debt should we pay down this quarter?",
+    "should_trigger": true
+  },
+  {
+    "query": "I need to make the case to my director for refactoring time. Here's what's wrong with the codebase.",
+    "should_trigger": true
+  },
+  {
+    "query": "Turn this TODO/FIXME grep into a prioritised debt backlog",
+    "should_trigger": true
+  },
+  {
+    "query": "Plan the migration from our monolith's Postgres 12 to 16 with a rollback",
+    "should_trigger": false
+  },
+  {
+    "query": "Triage these 40 incoming bug reports by severity",
+    "should_trigger": false
+  },
+  {
+    "query": "Clean up our Jira backlog: find duplicates and stale tickets",
+    "should_trigger": false
+  },
+  {
+    "query": "Build a risk register for the office relocation project",
+    "should_trigger": false
+  }
+]

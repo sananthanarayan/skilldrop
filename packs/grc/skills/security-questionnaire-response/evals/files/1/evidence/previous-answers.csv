@@ -1,0 +1,5 @@
+Customer,Date,Question,Answer
+Adatum,2025-09-02,Do you have an information security policy?,Yes. Version 4.1 approved by the CTO.
+Adatum,2025-09-02,What is your data retention period after termination?,Customer data is deleted 30 days after contract termination.
+Adatum,2025-09-02,Do you perform penetration tests?,Yes. Annual independent penetration test; last completed June 2025.
+Adatum,2025-09-02,Is MFA enforced?,Yes for engineering and production administrators.

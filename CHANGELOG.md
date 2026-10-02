@@ -8,6 +8,14 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.4 — 2026-10-02
+
+- **New skill: `pr-description-writer`** (`dev-team`). Writes a pull request title and description from the diff: why, what changed, the checks that were really run, where a reviewer should look first, and risk and rollback. It also reports what the diff contains that the commits don't mention, such as a dependency bump, a deleted test or a migration.
+- **New skill: `tech-debt-register`** (`dev-team`). Turns notes, TODOs and incident write-ups into a ranked register: where each item lives, what it costs today with the evidence, the fix size, a decision and the trigger that reopens it. A cost nobody measured is marked as reported, never estimated.
+- **New skill: `security-questionnaire-response`** (`grc`). Drafts answers to a customer's security questionnaire from your own policies and reports, in the customer's form, with the document behind each answer. Questions the evidence doesn't cover are marked as needing input, and conflicts and stale evidence are flagged for the security owner.
+- **These three were admitted on a benchmark result** (RFC-0041): three evals each, two trials, two blind judges. Both judges preferred their results to plain Claude Code in 15 and 16 of 18 pairs after one revision. The RFC records the first round too, where they did not clearly win.
+- **Install from PyPI as well as npm:** `pipx install skilldrop-cli`, then `skilldrop install --pack <name>`. It still needs Node 16.7 or newer.
+
 ## 0.16.3 — 2026-10-02
 
 - **The package, the plugin and the site now say what sets skilldrop apart:** portable skills, measured against the agent without them. The numbers behind that are on the [How skills are checked](https://sananthanarayan.github.io/skilldrop/evals/) page.

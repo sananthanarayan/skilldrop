@@ -46,7 +46,7 @@ Converts commit history into two artifacts with different readers: **customer-fa
 
 ## When NOT to use this skill
 
-- ❌ A single PR description — that's one change, just write it
+- ❌ A single PR description — that's one change; use `pr-description-writer`
 - ❌ Reviewing the changes for quality or risk — that's `devils-advocate` / `sonar-review`
 - ❌ Stakeholder narrative about *why* the release matters strategically — feed the notes to `exec-summary`
 - ❌ Generating commit messages going forward — this skill reads history, it doesn't write it

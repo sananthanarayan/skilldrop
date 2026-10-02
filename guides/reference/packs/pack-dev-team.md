@@ -13,7 +13,7 @@ Build-and-ship: story splitting, implementation with adversarial review, test pl
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack dev-team` |
-| Skills | 14 plus 4 from core |
+| Skills | 16 plus 4 from core |
 | Loops | build, release |
 | How-to | [Use the Dev team pack](../../how-to/packs/use-the-dev-team-pack.md) |
 
@@ -201,6 +201,29 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/migrati
 - The test depth itself — emit gates here, hand verification design to `test-plan-generator`
 - Organizational/process migrations with no system state — different problem
 
+### `pr-description-writer`
+
+Write the pull request title and description for one change, from the actual diff and commits: what changed and why, how it was tested with only the checks that were really run, what a reviewer should look at first, and the risk and rollback. It also reports what the diff contains that the commits don't mention, such as a dependency bump, a deleted test or a schema change.
+
+Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/pr-description-writer/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/pr-description-writer/)
+
+**Use it when** the user asks to write a PR description, a pull request summary, a merge request body, or says "describe this change for review", "write up this branch".
+
+**A good result:**
+
+- **Everything traces to the diff, the commits or the user.** No invented issue numbers, metrics, reviewers or test results.
+- **The test section is honest.** A check that wasn't run is listed as not run.
+- **A reviewer learns where to look.** The body names the riskiest part of the diff.
+- **Surprises are surfaced.** A dependency bump, deleted test, migration or API change that the commits skip appears under Reviewer notes.
+- **Claims about the code are checked.** Before saying a test does or doesn't cover a change, or that two changes are independent, work it through against the diff (run the arithmetic, trace the call). If you can't confirm it, leave the claim out.
+- **Short.** The body fits on one screen. A long PR gets a tighter summary, not a longer one.
+
+**Not for:**
+
+- Notes for a whole release or a changelog entry across many changes. Use `release-notes`.
+- Deciding whether the change is safe to merge. Use `pre-merge-review`.
+- Designing the tests the change needs. Use `test-plan-generator`.
+
 ### `pre-merge-review`
 
 Gate an existing change for merge — run one skill that fires the whole production-readiness pass. First a deterministic mechanical gate (lint + typecheck + tests, via a script whose exit code decides), then the three-reviewer panel dispatched in parallel — devils-advocate (correctness), security-reviewer (exploitability), code-quality (craft) — then a single READY / NOT READY verdict. Use before opening a PR or merging, when you want the full review fleet run on a diff you already have. Do NOT use to implement a feature from a spec (that's feature-implement-loop) or to review a document (that's doc-critique).
@@ -229,7 +252,7 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/dev-team/skills/pre-mer
 
 Turn git history between two refs into release notes — a customer-facing version written in reader benefits and an internal Keep-a-Changelog version with commit traceability, breaking changes always first.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/release-notes/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/release-notes/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/dev-team/skills/release-notes/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/release-notes/)
 
 **Use it when** the user wants release notes, a changelog, "what's in this release", a deploy announcement, or to summarize changes since the last tag.
 
@@ -244,7 +267,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/release
 
 **Not for:**
 
-- A single PR description — that's one change, just write it
+- A single PR description — that's one change; use `pr-description-writer`
 - Reviewing the changes for quality or risk — that's `devils-advocate` / `sonar-review`
 - Stakeholder narrative about *why* the release matters strategically — feed the notes to `exec-summary`
 - Generating commit messages going forward — this skill reads history, it doesn't write it
@@ -298,6 +321,29 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/sonar-r
 - User wants to fix the *whole codebase*'s Sonar debt. This skill is per-change; for a debt-paydown plan, query the Sonar UI directly.
 - Repo only has linters (ESLint, Pylint, golangci-lint) and no Sonar. Different tool, different catalog — running this skill would produce nothing.
 - Repo isn't wired to *either* SonarQube server or SonarCloud — no `sonar-project.properties` means there's nothing to scan against. Run `sonar-onboard` first.
+
+### `tech-debt-register`
+
+Turn a pile of technical-debt complaints, TODOs and incident notes into a ranked register: each item with where it lives, the cost it imposes today backed by evidence, the size of the fix, a decision (pay now, schedule, accept or watch) with the trigger that reopens it, and an owner if one was given. It ends with the few items worth paying down this quarter and why.
+
+Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/tech-debt-register/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/tech-debt-register/)
+
+**Use it when** the user asks for a tech debt register, a debt inventory or backlog, "what debt should we pay down", "prioritise our tech debt", or wants to make the case for refactoring time.
+
+**A good result:**
+
+- **Every cost has evidence or says it has none.** No invented hours, incident counts, percentages or money.
+- **Every item has a place** or is listed as unlocated.
+- **Every item has a decision and a trigger.**
+- **The top of the list is defensible**: evidenced cost, fix the team can finish.
+- **It fits a planning meeting.** One table, one short lead-in.
+
+**Not for:**
+
+- Planning how to carry out one large change. Use `migration-plan`.
+- Sorting incoming bug reports. Use `bug-triage`.
+- Cleaning up a tracker backlog of mixed work. Use `backlog-triage`.
+- Business or delivery risks that are not about the code. Use `risk-register`.
 
 ### `test-plan-generator`
 
