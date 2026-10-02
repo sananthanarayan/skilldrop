@@ -3,11 +3,13 @@
 [![npm](https://img.shields.io/npm/v/skilldrop-cli)](https://www.npmjs.com/package/skilldrop-cli)
 [![license](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](LICENSE)
 
-**Portable AI-agent skills for the deliverables knowledge workers actually ship:** ADRs, design docs, PRDs, runbooks, threat models, decks, postmortems and adversarial reviews. Each one is a folder you copy into Claude Code, Cursor, Kiro, Codex, Antigravity or Copilot.
+**Portable AI-agent skills, measured against the agent without them.** They cover the deliverables knowledge workers actually ship: ADRs, design docs, PRDs, runbooks, threat models, decks, postmortems and adversarial reviews. Each one is a folder you copy into Claude Code, Cursor, Kiro, Codex, Antigravity or Copilot.
 
 ```text
 messy input → a skill with a quality bar → a gate that can say no → your decision
 ```
+
+Every skill is run as a real agent session twice, once with the skill and once without. With a skill the agent meets 69% of that skill's acceptance checks; without, 24%. Two blind judges preferred the skill's result in 56% and 55% of pairs, which is not yet a clear preference. Closing that gap is the current work. [See the numbers and how they were measured](https://sananthanarayan.github.io/skilldrop/evals/).
 
 [Browse the packs](https://sananthanarayan.github.io/skilldrop/packs/) · [Search all skills](https://sananthanarayan.github.io/skilldrop/catalogue/) · [Docs](https://sananthanarayan.github.io/skilldrop/docs/) · [Install options](guides/how-to/install.md) · [Contribute](CONTRIBUTING.md)
 
@@ -53,6 +55,7 @@ In Claude Code you can use the plugin marketplace instead: run `/plugin marketpl
 
 - **A skill produces one file you own.** Each ships a quality bar, named anti-patterns and acceptance evals, so the output is an artifact, not a conversation. See [every skill, by category](guides/reference/skill-catalogue.md).
 - **Loops order skills, and a gate decides when work moves on.** Five loops cover the lifecycle (`discover`, `design`, `build`, `release`, `operate`), plus the `ship-a-draft` wrapper for any document. Each gate is a script, a review panel or a person, chosen by how expensive the mistake is to undo. See [the loops, stage by stage](guides/reference/loops.md) and [why loops](guides/explanation/loops.md).
+- **Measured, not asserted.** `run_bench.py` runs each acceptance eval with the skill and without it, in a sandbox, and reports the lift, a blind preference from two judges, and the cost per run. The results are published whether or not they flatter the skills. See [how skills are checked](https://sananthanarayan.github.io/skilldrop/evals/) and [RFC-0040](docs/rfcs/0040-skill-benchmark.md).
 - **Copy, never transform.** A skill is a plain `SKILL.md` folder in the [Agent Skills](https://agentskills.io) format, at `packs/<pack>/skills/<name>/`. What runs in your agent is byte-identical to what is reviewed here. There is no runtime, and the tooling has zero dependencies.
 - **Updates keep your edits.** `npx skilldrop-cli update` replaces files you haven't touched. For any file you changed, it leaves the new version beside it as `<file>.upstream`. See [upgrade installed skills](guides/how-to/upgrade-skills.md).
 
