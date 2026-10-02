@@ -12,9 +12,8 @@ Last reviewed 2026-10-01, after 0.16.0.
 
 | Idea | Why | Size | Depends on |
 |---|---|---|---|
-| **Homebrew tap** | `brew install` for teams that don't use npm. The formula and its updater already exist in [`packaging/`](../../packaging/README.md). | S | You creating the `homebrew-skilldrop` repo |
 | **PyPI release** | `pipx install skilldrop-cli` for Python-first teams. The wheel builder exists and was tested locally. | S | A PyPI account and project |
-| **Publish both from CI** | Publish Homebrew and PyPI with each npm release, via PyPI trusted publishing (OIDC, no stored token), and a workflow that bumps the tap. | M | The two items above |
+| **Publish to PyPI from CI** | Publish to PyPI with each npm release, via PyPI trusted publishing (OIDC, no stored token). | M | The item above |
 | **`skilldrop install <skill>@<version>`** | Install a specific skill version from the catalogue's history, not just the latest or a commit pin. | M | Version-to-commit lookup, from git tags |
 | **IDE auto-detection and `--ide all`** | Install into every tool found in the repo (`.cursor/`, `.kiro/`, `.github/`, `.agents/`) in one command. Listed as design-only in the CLI design doc. | M | — |
 | **`skilldrop search <words>`** | Search descriptions from the terminal. The site has search; the CLI doesn't. Also design-only. | S | — |

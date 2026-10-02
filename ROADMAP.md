@@ -4,7 +4,7 @@ What is being worked on next. Not a commitment — a direction. Shipped work mov
 
 ## Upcoming
 
-- **Homebrew tap and PyPI release from CI** — publishing both channels with the npm release; the formula and wheel builder are in [`packaging/`](packaging/README.md). Waits on the tap repository and a PyPI account.
+- **PyPI release from CI** — publishing to PyPI with each npm release; the wheel builder is in [`packaging/`](packaging/README.md). Waits on a PyPI account.
 
 ## Considering
 
