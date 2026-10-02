@@ -1,6 +1,7 @@
 # skilldrop
 
 [![npm](https://img.shields.io/npm/v/skilldrop-cli)](https://www.npmjs.com/package/skilldrop-cli)
+[![PyPI](https://img.shields.io/pypi/v/skilldrop-cli)](https://pypi.org/project/skilldrop-cli/)
 [![license](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](LICENSE)
 
 **Portable AI-agent skills, measured against the agent without them.** They cover the deliverables knowledge workers actually ship: ADRs, design docs, PRDs, runbooks, threat models, decks, postmortems and adversarial reviews. Each one is a folder you copy into Claude Code, Cursor, Kiro, Codex, Antigravity or Copilot.
@@ -39,6 +40,13 @@ Install one pack. Every role pack also brings `core` (intake, critique, review c
 
 ```bash
 npx skilldrop-cli install --pack dev-team
+```
+
+Prefer Python tooling? The same CLI is on PyPI. It still runs on Node, so Node 16.7 or newer has to be on your `PATH`:
+
+```bash
+pipx install skilldrop-cli        # or: pip install skilldrop-cli
+skilldrop install --pack dev-team
 ```
 
 The install prints a starter prompt for the pack. For `dev-team`, ask your agent:
