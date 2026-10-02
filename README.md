@@ -9,7 +9,7 @@
 messy input → a skill with a quality bar → a gate that can say no → your decision
 ```
 
-Every skill is run as a real agent session twice, once with the skill and once without. With a skill the agent meets 69% of that skill's acceptance checks; without, 24%. Two blind judges preferred the skill's result in 56% and 55% of pairs, which is not yet a clear preference. Closing that gap is the current work. [See the numbers and how they were measured](https://sananthanarayan.github.io/skilldrop/evals/).
+Every skill is run as a real agent session twice, once with the skill and once without, and the results are published either way. [See the numbers and how they were measured](https://sananthanarayan.github.io/skilldrop/evals/).
 
 [Browse the packs](https://sananthanarayan.github.io/skilldrop/packs/) · [Search all skills](https://sananthanarayan.github.io/skilldrop/catalogue/) · [Docs](https://sananthanarayan.github.io/skilldrop/docs/) · [Install options](guides/how-to/install.md) · [Contribute](CONTRIBUTING.md)
 
