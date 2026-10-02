@@ -1,11 +1,11 @@
 # Homebrew formula for skilldrop-cli. Lives in the tap repository (sananthanarayan/homebrew-skilldrop)
 # as Formula/skilldrop.rb; this copy is the source. Bump with packaging/homebrew/update_formula.py.
 class Skilldrop < Formula
-  desc "Portable AI-agent skills for Claude Code, Cursor, Kiro, Codex, Copilot and more"
+  desc "Portable AI-agent skills, measured against the agent without them"
   homepage "https://sananthanarayan.github.io/skilldrop/"
-  url "https://registry.npmjs.org/skilldrop-cli/-/skilldrop-cli-0.13.7.tgz"
-  sha256 "ad474eeb57380055877037e514b75d7cab121dd08ff59a3133441bb916eb8b39"
-  license "MIT"
+  url "https://registry.npmjs.org/skilldrop-cli/-/skilldrop-cli-0.16.3.tgz"
+  sha256 "b070cfb18b8dd19bad91adf6eb049d3c31fc9180cf0fdf542d42b5b016f7db1d"
+  license any_of: ["MIT", "Apache-2.0"]
 
   depends_on "node"
 
