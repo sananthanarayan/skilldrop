@@ -30,7 +30,9 @@ trusted publishing (OIDC, no stored token) whenever `package.json`'s version is 
 It stays off until two things are done, after the first manual upload has created the project:
 
 1. On pypi.org, open the `skilldrop-cli` project, then Publishing, and add a GitHub publisher:
-   owner `sananthanarayan`, repository `skilldrop`, workflow `release.yml`, environment blank.
+   owner `sananthanarayan`, repository `skilldrop`, workflow `release.yml`, environment `release`.
+   The environment exists in the GitHub repository and only `main` may use it, so a copy of the
+   workflow on another branch can't publish.
 2. In the GitHub repository, set the Actions variable `PYPI_PUBLISH` to `true`.
 
 From then on a version bump publishes to npm and PyPI, and the manual steps above are only a
