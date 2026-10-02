@@ -10,7 +10,6 @@
 |---|---|---|
 | **npm** | ✅ Recommended | Universally installed on dev machines; `npx` gives zero-install UX; skills are text + small scripts, which npm packages perfectly |
 | Maven | ❌ | JVM-ecosystem; devs in Cursor/Kiro/Codex won't have it. Wrong audience. |
-| PyPI | ⚠️ Possible alternative | Reasonable — Python is also broadly installed, and several skills already have `pip` deps. But `npx` UX beats `pipx run` for one-shot install. |
 | Artifactory | ❌ (as primary) | Hosting, not a distribution format. Could *mirror* the npm package internally for orgs that need it, but the public-facing channel should be npm. |
 | Claude Code plugin marketplace | ✅ (in parallel) | Native path for Claude Code users. Already wired via `.claude-plugin/plugin.json`. The npm CLI is the multi-IDE complement, not a replacement. |
 

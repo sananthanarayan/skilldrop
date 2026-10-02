@@ -93,8 +93,8 @@ vice versa. Two findings unblock this:
   form of "no coupling." The skill layer is already identical (both use the agentskills.io `SKILL.md`
   spec: `name` + `description`). Manifest floors are tiny (`pack.toml` needs `[pack]` name/version/
   description + `[pack.install] default-scope`; `plugin.json` needs name/version/description).
-- **PyPI is a non-issue.** A catalogue is a *git repo*, read from a `git+https://` URL; agentbundle
-  (the tool) is on PyPI, the catalogue is not. skilldrop-cli stays on npm; nothing publishes to PyPI.
+- **Distribution is a non-issue.** A catalogue is a *git repo*, read from a `git+https://` URL, so
+  reading his catalogue needs nothing published on either side. skilldrop-cli stays on npm.
 
 The only real gap is on-disk layout (his physical `packs/<name>/.apm/skills/…` vs skilldrop's flat
 `skills/` with multi-pack membership), which a generator resolves by duplicating a shared skill into
