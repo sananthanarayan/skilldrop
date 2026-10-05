@@ -1,0 +1,7 @@
+{
+  "name": "flag-overdue-holds",
+  "summary": "Lists hold-shelf items uncollected for more than 7 days so the desk can release them.",
+  "category": "circulation",
+  "maintainer": "circdesk@harrowgate.example",
+  "version": "1.2.0"
+}

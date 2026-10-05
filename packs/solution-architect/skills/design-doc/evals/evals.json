@@ -41,6 +41,35 @@
         "It says how a migrated job is checked before its old cron entry is removed, and how to go back if it misbehaves",
         "It is about one page: roughly 700 words or fewer"
       ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "Can you write the design doc for automating customer erasure requests? Ottilie's ask is in request.md, and my notes on the systems and what we discussed are in systems.md. It's going to architecture review next Wednesday. Include the support-hours saving she asked for.",
+      "assertions": [
+        "It flags that the inventory lists 7 systems holding customer data while the request says 6, and the design covers all seven (or names the fraud scoring store as the one the request missed)",
+        "The fraud scoring store is shown as having no owner since the June reorg and an unknown deletion capability, raised as a blocker or open question needing an owner",
+        "It surfaces that the immutable database backups are kept 35 days and single rows cannot be removed, so 'including backups within 30 days' cannot be met as written, and proposes a way to handle it or raises it as a decision for the privacy lead",
+        "It does not promise to delete invoices: it states the 10-year tax retention for invoices (with name and billing address) conflicts with 'all data removed', and limits erasure in the Orders DB to non-invoice fields or raises it as a decision",
+        "The support-hours saving is stated as not calculable because time spent per request has never been measured; no hours figure is invented",
+        "At least two of the three approaches from the notes (central orchestrator, event-based with an acknowledgement ledger, manual with SLA timers) are described with the reason for choosing or rejecting each, and one is recommended",
+        "Seller (business) accounts are stated as out of scope",
+        "The size of the problem is given from the request's figures (412 requests in Q3 2026, 38 late, longest 71 days), and no other volumes, costs or team sizes are presented as facts"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "need a short design doc for rate limiting our public API, a page or so, for Friday's eng sync. we're a 12 person startup, weather data API. one customer hammered us last week and it took everyone down for like 20 min. right now there are no limits at all. we have free and paid tiers. the API sits behind nginx, then a python app, and redis is already there for caching. Dana thinks we should just do it in nginx, I think in the app so we can have different limits per plan. we don't know what the limits should be yet",
+      "assertions": [
+        "It delivers a design doc in the reply rather than only asking questions",
+        "The actual limit values are recorded as not yet decided, with a way to set them (for example from observed traffic), or any numbers shown are clearly labelled as placeholders; none is presented as decided",
+        "Both doing it in nginx and doing it in the app are described, with the trade-off tied to per-plan limits, and it either picks one or says what would decide it",
+        "The incident is described only as given (one customer's traffic took the API down for everyone for about 20 minutes last week); no request rates, customer name or revenue impact are invented",
+        "It says what a client sees when it is limited (for example an HTTP 429 with when to retry)",
+        "The rollout includes a step that observes or logs would-be limiting before requests are actually blocked, or a stated way to switch enforcement off quickly",
+        "It is about one page: roughly 700 words or fewer"
+      ]
     }
   ]
 }

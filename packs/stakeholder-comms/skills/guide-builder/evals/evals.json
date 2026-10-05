@@ -42,6 +42,36 @@
         "The finance pickup is given as around 6, not as an exact confirmed time",
         "It includes no commands for running, restarting or debugging the export, since none were supplied"
       ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "Laleh starts on Monday the 12th and I need a laptop setup guide she can follow on her own, she's an architect not an IT person. Bram's setup notes are in it-notes.txt and there's some later email in handover-thread.txt. Can you also include how to set up the big plotter, she'll need it in her first week.",
+      "assertions": [
+        "The P: drive is mapped to \\\\fo-nas02\\projects, and \\\\studio-nas\\projects is not given as the address to use",
+        "Setting up Keyhaven comes before the step to join the Fenwick-Staff Wi-Fi, since the Wi-Fi password is stored in Keyhaven",
+        "It does not tell Laleh that Odile will send the Keyhaven invite; it says Odile has left and who sends the invite is not confirmed, without naming Tomasz or Bram as the confirmed sender",
+        "It says the material has nothing on the plotter, and does not invent a plotter model, driver, address or setup steps",
+        "The DraftForge step gives the licence server as 27000@fo-lic01 and says that a \"no licence available\" message means a colleague has to close DraftForge to free a seat",
+        "It tells her the Keyhaven master password cannot be reset if lost",
+        "It tells her Desktop and Documents are not backed up and project files belong on P:",
+        "Working from home is covered: connect Tailgate VPN first, then P: and DraftForge work as in the office"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "can you write a short reference for the event our door sensors send? here's one off the queue:\n\n{\"dev\":\"ds-0417\",\"st\":1,\"bat\":83,\"ts\":1791188400123,\"rssi\":-71,\"fw\":\"2.4.1\"}\n\nst is 0 closed 1 open, there might be a 2 but i've never seen one. bat is percent i think. ts is epoch something. it's going in the README for the two contractors building the dashboard so keep it short",
+      "assertions": [
+        "It delivers the reference, and does not stop at questions",
+        "All six fields in the sample are listed: dev, st, bat, ts, rssi and fw",
+        "st is documented as 0 for closed and 1 for open, and a value of 2 is mentioned as possible with its meaning unknown, not given a made-up meaning",
+        "It says ts looks like epoch milliseconds going by its 13 digits, and marks that as read from the sample, not confirmed",
+        "bat is described as probably a percentage and marked as unconfirmed",
+        "The meanings given for rssi and fw are marked as inferred from the sample, since the user did not explain them",
+        "It does not invent a queue or topic name, how often events are sent, delivery guarantees, value ranges stated as fact, or fields that are not in the sample",
+        "The reference is about a page or less, with no sections on things that were not supplied such as authentication, retries or versioning"
+      ]
     }
   ]
 }

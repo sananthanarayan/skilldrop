@@ -1,0 +1,63 @@
+# Excerpt from payments-api/openapi.yaml, Lanternfold Events
+# Changelog
+#   2026-06-02  reason: "goodwill" deprecated, send "customer_request" instead.
+#               Still accepted until the end of the year.
+#   2026-02-17  v2: amounts moved from decimal strings to integer minor units.
+paths:
+  /v2/refunds:
+    post:
+      operationId: createRefund
+      summary: Refund all or part of a paid order
+      description: >
+        Creates a refund against a paid order. The money goes back to the
+        original payment method. An order can be refunded more than once, until
+        the refunded total reaches the amount paid. Returns 409 event_passed if
+        the event has already taken place, and 422 over_limit if the amount is
+        more than the remaining refundable amount.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [order_id, amount_minor, reason]
+              properties:
+                order_id:
+                  type: string
+                  pattern: '^LF-[0-9]{8}$'
+                  description: Order reference from the confirmation email, e.g. LF-00482913.
+                amount_minor:
+                  type: integer
+                  minimum: 1
+                  maximum: 25000
+                  description: >
+                    Amount to refund, in minor units of the order's currency
+                    (pence for GBP). Omit to refund the full remaining amount.
+                reason:
+                  type: string
+                  enum: [event_cancelled, event_rescheduled, duplicate_purchase, customer_request, goodwill, other]
+                  description: Why the refund is being made. Shown on the finance report.
+                reason_note:
+                  type: string
+                  maxLength: 280
+                  description: Free-text explanation. Required when reason is "other".
+                ticket_ids:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: string
+                  description: >
+                    Tickets to cancel as part of this refund. Omit to leave the
+                    order's tickets valid.
+                notify_customer:
+                  type: boolean
+                  default: true
+                  description: Send the customer the refund confirmation email.
+      responses:
+        '201':
+          description: Refund created.
+        '409':
+          description: event_passed
+        '422':
+          description: over_limit or validation error

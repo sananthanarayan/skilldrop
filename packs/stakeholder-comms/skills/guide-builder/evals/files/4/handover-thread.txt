@@ -1,0 +1,39 @@
+From: Bram Kessel
+To: Ines Oduya
+Date: Tue 18 Aug 2026
+Subject: NAS swap done
+
+Ines - the old NAS was retired last night. Everything is on the new one, fo-nas02.
+The project share is \\fo-nas02\projects now. I've remapped P: on all nine laptops.
+The old name (studio-nas) doesn't resolve any more, so anything still pointing at it
+will just fail. Haven't updated my setup notes yet, sorry.
+Backups unchanged, still nightly.
+
+Bram
+
+----------------------------------------------------------------
+
+From: Ines Oduya
+To: Bram Kessel; Tomasz Fenwick
+Date: Fri 25 Sep 2026
+Subject: Odile's last day + new starter
+
+Both - today was Odile's last day. As far as I know she was the only Keyhaven admin,
+so somebody else needs to be able to send invites before Laleh starts on 12 Oct.
+Tomasz, can you or Bram pick that up?
+
+Laleh gets the desk by the model shop. It has a dock with a network cable, so she'll
+be online as soon as she plugs the laptop in.
+
+Ines
+
+----------------------------------------------------------------
+
+From: Tomasz Fenwick
+To: Ines Oduya; Bram Kessel
+Date: Mon 28 Sep 2026
+Subject: Re: Odile's last day + new starter
+
+Will get it sorted this week.
+
+T

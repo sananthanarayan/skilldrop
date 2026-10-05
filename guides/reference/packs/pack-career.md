@@ -69,7 +69,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/career/skills/cover-let
 
 Compare a job posting with a resume and say honestly whether to apply: each requirement marked met, partly met, not shown or not met, with the resume line it rests on; the requirements an employer screens on listed first; and the questions whose answers would change the picture. Works for any occupation and level.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/career/skills/job-fit-analysis/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/job-fit-analysis/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/career/skills/job-fit-analysis/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/job-fit-analysis/)
 
 **Use it when** the user asks "am I a good fit for this job", "should I apply for this", "how does my resume match this posting", or wants the gaps between a job description and their CV before applying.
 

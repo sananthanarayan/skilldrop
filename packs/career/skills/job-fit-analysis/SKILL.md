@@ -51,9 +51,15 @@ These four rules outrank the steps below.
    - **Met**: the resume shows it. Quote the line.
    - **Partly**: the resume shows something close, smaller or older. Say what it shows and
      what is short: "team of 12; the posting asks for 20 or more".
-   - **Not shown**: the resume is silent. The person may well have it.
+   - **Not shown**: the resume is silent on a specific thing. The person may well have it.
    - **Not met**: the resume shows otherwise, such as a diploma where a degree is required
      or two years where five are asked for.
+
+   A requirement for a general ability, such as dealing with the public, organising work
+   or communicating clearly, is `Met` by any job that plainly involves it: four years
+   serving customers meets "friendly first point of contact". Keep `Not shown` and `Partly`
+   for specific things: a tool, a qualification, a setting, a scale, a number of years. Do
+   not mark half the table `Partly` to be safe.
 
    A similar tool is not the named tool. Cerner is not Epic, an in-house warehouse system is
    not SAP: when the posting requires the named one, mark it `Not met` and give the similar
@@ -76,9 +82,11 @@ These four rules outrank the steps below.
      true for it to be worth the time, and whether you would still send it.
    - **Not a match**: a requirement that cannot be worked around is unmet, such as a licence.
 
-   Write the table first and take the count from it. The opening sentence counts every
-   required item that is `Not met` or `Partly`, not only the worst one: "four of the six required items aren't met: the degree, the team size,
-   advanced Excel and SAP". It must agree with the table below it. Give the verdict on what
+   Write the table first, then write the opening from it. The opening names every required
+   item that is `Not met` or `Partly`, copied from those rows: "the degree, the team size,
+   advanced Excel and SAP aren't met". Name them; do not count them, and do not sum them up
+   in a number or a fraction anywhere in the reply. When two figures differ, give both and
+   leave the comparison there: "12 against 20 or more", not "less than half". Give the verdict on what
    you know now; say what answer would raise it, but do not make the verdict wait on the
    answer. Do not soften a long shot into encouragement, do not harden a workable gap into a
    refusal, and do not give a percentage.
@@ -93,14 +101,17 @@ These four rules outrank the steps below.
    required item is not shown, ask once whether anything outside the resume covers it: a
    side project, a repository, a portfolio, a volunteer role. People leave their best
    evidence off the page. Anything you credited from another file goes here too, as a line
-   to add to the resume. Never tell
-   them to add a keyword they have not said is true, and do not end on a list of questions
-   with no advice.
+   to add to the resume. Never ask
+   something the resume already answers. Never tell them to add a keyword they have not said
+   is true, or to reword a `Partly` so it reads as `Met`: "supported renewals" stays
+   supported, and the advice is how to present it honestly. Do not end on a list of
+   questions with no advice.
 
 8. **Lay the reply out in this order:** the answer and verdict; what could get it rejected;
    one table covering every requirement (requirement, required or preferred, status,
    evidence); what to bring forward; what to do next. Each requirement appears in the table
-   once and nothing is repeated in a second table or restated section by section.
+   once and nothing is repeated in a second table or restated section by section. A gap is
+   described where it first appears and only named after that.
 
    Match the length to what you were given. A short posting and a few lines about the person
    gets a short answer: the verdict, one line per requirement, and what to do, in under 250
@@ -140,6 +151,9 @@ posting**, ask for the posting in one line: there is nothing to compare against.
   person's evening.
 - ❌ **Crediting the usual.** "As a nurse you will have used Epic" is an invention.
 - ❌ **Treating a similar tool as the named one.**
+- ❌ **A count that disagrees with the table.** Name the gaps; a number invites the error.
+- ❌ **Hedging everything.** A table of `Partly` tells the person nothing.
+- ❌ **Coaching the wording past the facts.** Advising that "supported" be written as "owned".
 - ❌ **Advising them to add keywords** so the resume passes a filter. If it isn't true it
   doesn't go in.
 - ❌ **Judging the person.** No remarks on age, gaps, family, health or anything a recruiter

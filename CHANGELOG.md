@@ -8,6 +8,12 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.9 — 2026-10-05
+
+- **`job-fit-analysis` gives a verdict that matches its own table.** It names the requirements you don't meet in its first line instead of counting them, credits a general ability such as dealing with the public from any job that plainly involves it, and no longer suggests rewording a partly met requirement so it reads as met. Two blind judges now prefer it in 13 and 11 of 15 pairs, up from 8 and 5 of 10.
+- **24 more evals for 12 older skills**, written from each skill's description alone, so their numbers rest on five evals each and not three.
+- **A second revision of those 12 skills was measured and not released.** Tested before and after on evals it had never seen, it moved the blind preference from 21 and 15 of 48 pairs to 24 and 17, which is no real change, and made each run cost more. [What the benchmark showed](guides/explanation/what-the-benchmark-showed.md) has the account. The published numbers now cover 209 evals: skills preferred in 61% of pairs by both judges.
+
 ## 0.16.8 — 2026-10-05
 
 - **New skill: `application-form-answers`** (`career`). Give it a job application form and your resume. It drafts the answers your resume settles and the short written ones inside their word limits, fills in the form file when you ask it to, names the honest answers that could screen you out, and hands back the declarations that are yours alone (right to work, salary, start date, conflicts, monitoring questions) with what on your resume bears on each.
