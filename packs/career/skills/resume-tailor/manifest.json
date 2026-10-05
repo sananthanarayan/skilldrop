@@ -1,6 +1,6 @@
 {
   "name": "resume-tailor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tailor a resume or CV to one job posting without adding anything that isn't true: reorder, cut and reword what the person has already done so the posting's needs are answered first, keep every employer, title, date and number as it was, and report what the posting asks for that the resume cannot claim. A script lists every figure and name in the draft that the original doesn't contain. Works for any occupation and level. Use when the user says \"tailor my resume for this job\", \"adapt my CV to this posting\", \"rewrite my resume for this role\", or pastes a job description next to their resume.",
   "entrypoint": "SKILL.md",
   "deps": {

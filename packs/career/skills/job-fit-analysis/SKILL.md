@@ -25,18 +25,29 @@ These four rules outrank the steps below.
   "the candidate". Plain words, no scoring jargon, no mention of this skill. When they gave
   you a few lines and no resume, say "what you told me", never "your resume".
 
-1. **Read the posting and list its requirements.** Keep the employer's own wording. Sort
+1. **Read everything the person gave you.** The resume is the main evidence, and so is
+   any other file of theirs they point to or that sits beside it: a LinkedIn summary, a
+   portfolio page, a project's README. Evidence from one of those counts in full: mark the
+   requirement `Met` or `Partly` on the strength of it, say where it came from, and say it
+   is not on the resume yet, because the employer will only see the resume.
+
+   When the posting is a link, read the full text. If you cannot open it, say so in one line
+   and ask for the text pasted in. Give no verdict and list no requirements for a posting you
+   have not read, and never rebuild one from what you remember of the employer. Do not guess
+   at why the link would not open.
+
+2. **List the posting's requirements.** Keep the employer's own wording. Sort
    them into what the posting calls required and what it calls preferred. When the posting
    doesn't say, treat what it lists first or repeats as required, and say you inferred it.
 
-2. **Find what could get the application rejected.** Two kinds of requirement do it: the
+3. **Find what could get the application rejected.** Two kinds of requirement do it: the
    ones a recruiter or an application form checks before anyone reads the rest (a licence or
    registration, a degree, a certification, a minimum number of years, the right to work,
    location or shift, a clearance, a language), and any other required item the resume does
    not meet, such as a named system the posting lists under "must have". These go first,
    because one of them outweighs five met skills.
 
-3. **Mark each requirement against the resume** with one of four words:
+4. **Mark each requirement against the evidence** with one of four words:
    - **Met**: the resume shows it. Quote the line.
    - **Partly**: the resume shows something close, smaller or older. Say what it shows and
      what is short: "team of 12; the posting asks for 20 or more".
@@ -54,7 +65,7 @@ These four rules outrank the steps below.
    date, mark it `Partly`, say the resume doesn't show how long, and ask. Never state a
    duration you worked out from a neighbouring date.
 
-4. **Give a verdict the person can act on.** Open with a plain sentence that says whether
+5. **Give a verdict the person can act on.** Open with a plain sentence that says whether
    to apply, in the terms they asked ("Yes, apply", "Apply, but expect the degree to be a
    problem", "Probably not worth your weekend unless..."), then one of four labels and the
    reason:
@@ -65,24 +76,28 @@ These four rules outrank the steps below.
      true for it to be worth the time, and whether you would still send it.
    - **Not a match**: a requirement that cannot be worked around is unmet, such as a licence.
 
-   The opening sentence counts every required item that is `Not met` or `Partly`, not only
-   the worst one: "four of the six required items aren't met: the degree, the team size,
+   Write the table first and take the count from it. The opening sentence counts every
+   required item that is `Not met` or `Partly`, not only the worst one: "four of the six required items aren't met: the degree, the team size,
    advanced Excel and SAP". It must agree with the table below it. Give the verdict on what
    you know now; say what answer would raise it, but do not make the verdict wait on the
    answer. Do not soften a long shot into encouragement, do not harden a workable gap into a
    refusal, and do not give a percentage.
 
-5. **Say what to bring forward.** List the two to four things already in the resume that
+6. **Say what to bring forward.** List the two to four things already in the resume that
    answer the posting best and are buried, understated or worded differently from the
    posting. Give the resume's wording and the posting's wording side by side.
 
-6. **Close with what to do next**, in two to four lines: what to lead the application with,
+7. **Close with what to do next**, in two to four lines: what to lead the application with,
    what to say about the main gap, and the one or two questions whose answers would change
-   the verdict ("Have you used Epic anywhere? If so, where and for how long?"). Never tell
+   the verdict ("Have you used Epic anywhere? If so, where and for how long?"). When a
+   required item is not shown, ask once whether anything outside the resume covers it: a
+   side project, a repository, a portfolio, a volunteer role. People leave their best
+   evidence off the page. Anything you credited from another file goes here too, as a line
+   to add to the resume. Never tell
    them to add a keyword they have not said is true, and do not end on a list of questions
    with no advice.
 
-7. **Lay the reply out in this order:** the answer and verdict; what could get it rejected;
+8. **Lay the reply out in this order:** the answer and verdict; what could get it rejected;
    one table covering every requirement (requirement, required or preferred, status,
    evidence); what to bring forward; what to do next. Each requirement appears in the table
    once and nothing is repeated in a second table or restated section by section.
@@ -129,6 +144,7 @@ posting**, ask for the posting in one line: there is nothing to compare against.
   doesn't go in.
 - ❌ **Judging the person.** No remarks on age, gaps, family, health or anything a recruiter
   may not lawfully weigh.
+- ❌ **Inventing the posting.** A link you could not open is not a posting you have read.
 - ❌ **Answering in a file.** They asked a question; the answer belongs in the reply.
 - ❌ **A verdict with no advice.** "Long shot" followed by questions leaves them where they
   started.

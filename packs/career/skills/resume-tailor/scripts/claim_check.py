@@ -30,7 +30,7 @@ import sys
 MULT = {"k": 1e3, "thousand": 1e3, "m": 1e6, "mm": 1e6, "million": 1e6,
         "bn": 1e9, "b": 1e9, "billion": 1e9}
 NUMBER = re.compile(r"(?<![\w.])(\d[\d,]*(?:\.\d+)?)(?:(k|mm|m|bn|b)\b|\s?(thousand|million|billion)\b)?"
-                    r"(\s?%|\s?percent\b|\s?per cent\b)?(?!(?:em|mm|pt|cm|px|fr)\b)", re.I)
+                    r"(\s?%|\s?percent\b|\s?per cent\b)?", re.I)
 WORD = re.compile(r"(?<![A-Za-z0-9])\.?[A-Za-z][A-Za-z0-9+#']*(?:\.[A-Za-z0-9]+)*")
 LIST_MARK = re.compile(r"^\s*(?:[-*•–>]+|\d+[.)]|#+|\|)\s*")
 LINK = re.compile(r"\[([^\]]*)\]\([^)]*\)")
@@ -77,6 +77,7 @@ def clean(line):
     Typst or LaTeX source escape `$`, `&`, `%` and `#`; the escapes are dropped too."""
     line = LINK.sub(r"\1", line)
     line = re.sub(r"\\([$&%#_])", r"\1", line)
+    line = re.sub(r"(?<![$£€\w.,])\d+(?:\.\d+)?(?:em|mm|pt|cm|px|fr)\b", " ", line)  # layout lengths
     line = line.replace("’", "'").replace("‘", "'").replace("–", " - ").replace("—", " - ")
     return re.sub(r"[*_`~]", "", line)
 

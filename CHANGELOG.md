@@ -8,6 +8,15 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.8 — 2026-10-05
+
+- **New skill: `application-form-answers`** (`career`). Give it a job application form and your resume. It drafts the answers your resume settles and the short written ones inside their word limits, fills in the form file when you ask it to, names the honest answers that could screen you out, and hands back the declarations that are yours alone (right to work, salary, start date, conflicts, monitoring questions) with what on your resume bears on each.
+- **`resume-tailor` works in your resume's own format.** A resume kept as Typst, LaTeX or Word source is edited as a copy of that source and built when the tool is there, not handed back as Markdown. It treats the page count as a budget, lists every line it cut and every fact it added from outside the resume, and uses other material you point it to, such as a LinkedIn summary.
+- **`job-fit-analysis` looks beyond the resume.** Evidence in another file of yours counts and is marked as not yet on the resume, and it asks once whether a side project, portfolio or volunteer role covers a gap. Given a posting link it cannot open, it says so and gives no verdict.
+- **The `apply` loop gained a `form` stage**, and its last step now shows you four lists before you send anything: what is not claimed, what was added from outside the resume, what was cut, and the form questions only you can answer.
+- **`claim_check.py` reads resumes kept as Typst or LaTeX source** and no longer lists names containing an ampersand as new.
+- **These changes came from an end-to-end trial of the pack on realistic input** (RFC-0043): a resume kept as Typst source, a posting given as a link, and an online form. The new skill lost on its first held-out evals and was revised once; on two fresh ones it won 4 and 3 of 4 pairs with the two judges. Across the pack, the skills won 14 and 14 of 16 pairs on evals they were never revised against. The published numbers now cover 185 evals: skills preferred in 62% and 64% of pairs.
+
 ## 0.16.7 — 2026-10-05
 
 - **New pack: `career`, for anyone applying for a job in any field.** `job-fit-analysis` compares a posting with your resume and says whether to apply, with what could get the application rejected listed first. `resume-tailor` reworks your resume for the posting and keeps every employer, title, date and number as you had them. `cover-letter` writes a letter under a page that says nothing about you or the employer that you or the posting didn't supply. Install it with `npx skilldrop-cli install --pack career`.

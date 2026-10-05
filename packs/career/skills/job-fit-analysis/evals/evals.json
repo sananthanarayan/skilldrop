@@ -71,6 +71,32 @@
         "The reply gives a clear answer on whether it is realistic",
         "It does not credit him with a qualification, a cover count, a team size or a system that is not in the CV"
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "Am I a fit for this? CV is resume.md, job is posting.md. My LinkedIn about text is in linkedin-about.txt too.",
+      "assertions": [
+        "The onboarding or training requirement is credited from the monthly onboarding webinar described in the LinkedIn text",
+        "The reply says that evidence is not on the CV and should be added to it",
+        "Owning renewals is marked partly or not met: she supported renewals alongside the account managers and did not own them",
+        "The 3+ years in customer success or account management is marked not met or partly: her roles are in support",
+        "Gainsight is marked not shown or not met, and Salesforce is credited from the CV",
+        "Leading a small team is marked met from leading 6 support agents",
+        "Working with a product team on feedback is credited from the Customer Advisory Board or the ticket-trends report",
+        "The reply opens with a clear answer on whether to apply"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Would I be a fit for this one? https://careers.brightloop.example/jobs/4471 - my CV is resume.md",
+      "assertions": [
+        "The reply says it could not open or read the link",
+        "It asks for the posting's text to be pasted in or saved as a file",
+        "It does not list the job's requirements or mark any as met or not met, as though it had read the posting",
+        "It gives no verdict on fit",
+        "It does not state what Brightloop does or what the role involves",
+        "The reply is short, about 120 words or fewer"
+      ]
     }
   ]
 }

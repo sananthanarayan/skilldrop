@@ -1,7 +1,16 @@
 {
-  "description": "One job application, for any occupation: an honest check of your resume against the posting, a tailored resume and a cover letter that say nothing you didn't, and a script that lists every figure and name in a draft that your own resume doesn't contain.",
+  "description": "One job application, for any occupation: an honest check of your resume against the posting, a tailored resume and a cover letter that say nothing you didn't, the application form's answers drafted from your resume, and a script that lists every figure and name in a draft that your own resume doesn't contain.",
   "display_name": "Job applications",
-  "keywords": ["resume", "cv", "cover letter", "job application", "job search", "career change", "job posting"],
+  "keywords": [
+    "resume",
+    "cv",
+    "cover letter",
+    "job application",
+    "job search",
+    "career change",
+    "job posting",
+    "application form"
+  ],
   "links": {
     "documentation": "https://sananthanarayan.github.io/skilldrop/packs/career/"
   },
@@ -12,13 +21,18 @@
   ],
   "first-value": {
     "audience-posture": "non-technical",
-    "prerequisites": ["Your resume or CV as text, Markdown or a file your agent can read", "The job posting, pasted or saved as a file"],
+    "prerequisites": [
+      "Your resume or CV as text, Markdown or a file your agent can read",
+      "The job posting, pasted or saved as a file"
+    ],
     "starter-task": "Find out where you stand against a posting before you write the application",
     "starter-prompt": "My resume is in resume.md and the job I'm looking at is in posting.md. Am I a good fit? Be honest about what's missing.",
     "verification": "job-fit-analysis opens with a verdict (strong match, worth applying, long shot or not a match), lists the requirements an employer screens on first, marks every requirement met, partly, not shown or not met with the resume line behind it, and ends with questions about what your resume doesn't show.",
     "recovery": "If it credits you with something that isn't in your resume, say so and run it again. If job-fit-analysis does not activate, ask for it by name (\"use job-fit-analysis\")."
   },
-  "requires": ["core"],
+  "requires": [
+    "core"
+  ],
   "journey": {
     "when": "You've found a job you might apply for and want an application that is tailored to it and true.",
     "you_bring": [
@@ -31,19 +45,25 @@
     "steps": [
       {
         "skill": "job-fit-analysis",
-        "you_do": "Give it the posting and your resume.",
+        "you_do": "Give it the posting, your resume and anything else of yours that bears on the job, such as a LinkedIn summary or a project.",
         "you_get": "A verdict, the screening requirements first, every requirement marked against your resume with the line it rests on, and questions about what your resume doesn't show.",
         "decide": "Whether to apply, and your answers to its questions."
       },
       {
         "skill": "resume-tailor",
         "you_do": "Give it the resume, the posting and your answers.",
-        "you_get": "A tailored resume in a new file with every employer, title, date and number as you had them, what changed, and what the posting asks for that your resume cannot claim."
+        "you_get": "A tailored resume in your resume's own format, as a new file, with every employer, title, date and number as you had them, plus what changed, what was cut, what was added from outside the resume, and what the posting asks for that it cannot claim."
       },
       {
         "skill": "cover-letter",
         "you_do": "Give it the tailored resume, the posting and your reason for wanting the job.",
         "you_get": "A letter under a page that opens on your strongest evidence and says nothing about you or the employer that you or the posting didn't supply."
+      },
+      {
+        "skill": "application-form-answers",
+        "you_do": "If the application has a form, give it the form's questions and the tailored resume.",
+        "you_get": "An answer sheet in the form's order: answers drafted from your resume inside each word limit, the questions that could screen you out named first, and the declarations that are yours alone handed back with what on your resume bears on them.",
+        "decide": "Your answers on right to work, salary, start date and the other declarations."
       },
       {
         "skill": "output-hygiene",
@@ -52,6 +72,6 @@
         "decide": "Read both documents once more: you sign them, so every line has to be true."
       }
     ],
-    "you_end_with": "A resume and a cover letter for one posting that you can defend line by line at interview, and a list of what the employer will notice is missing."
+    "you_end_with": "A resume, a cover letter and a form's answers for one posting that you can defend line by line at interview, and a list of what the employer will notice is missing."
   }
 }

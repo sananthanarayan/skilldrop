@@ -210,8 +210,9 @@ Capture a brand once, then build decks and flyers that use it. `brand-kit` write
 | Skill | What it does |
 |---|---|
 | [`job-fit-analysis`](../../packs/career/skills/job-fit-analysis/SKILL.md) | A posting compared with a resume: a verdict, the screening requirements first, each requirement marked met, partly, not shown or not met with the resume line behind it, and questions about what the resume doesn't show. |
-| [`resume-tailor`](../../packs/career/skills/resume-tailor/SKILL.md) | A resume reworked for one posting with every employer, title, date and number unchanged, a list of what the posting asks for that it cannot claim, and a script that lists figures and names the original doesn't contain. |
+| [`resume-tailor`](../../packs/career/skills/resume-tailor/SKILL.md) | A resume reworked for one posting in its own format (Markdown, Typst, LaTeX, Word) with every employer, title, date and number unchanged, lists of what was cut, what was added from outside the resume and what it cannot claim, and a script that lists figures and names the original doesn't contain. |
 | [`cover-letter`](../../packs/career/skills/cover-letter/SKILL.md) | A cover letter under a page from the resume and the posting, with no enthusiasm, company facts or experience the person didn't supply, checked by the same script. |
+| [`application-form-answers`](../../packs/career/skills/application-form-answers/SKILL.md) | An answer sheet for a job application form in the form's own order: answers drafted from the resume inside each word limit, the questions that could screen the application out named first, and declarations (right to work, salary, conflicts, monitoring) handed back unanswered with what on the resume bears on them. |
 
 ## What's in a skill
 

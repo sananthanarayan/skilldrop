@@ -1,6 +1,6 @@
 ---
 name: apply
-description: Take one job posting and one resume to an application ready to send — an honest fit check, a tailored resume and a cover letter — with the candidate deciding whether to apply before any writing, and confirming every claim is true before anything is sent. Use when the user wants to apply for a job, says "help me apply for this", or wants a resume and cover letter prepared for one posting.
+description: Take one job posting and one resume to an application ready to send — an honest fit check, a tailored resume, a cover letter and the answers to the application form — with the candidate deciding whether to apply before any writing, and confirming every claim is true before anything is sent. Use when the user wants to apply for a job, says "help me apply for this", or wants a resume and cover letter prepared for one posting.
 ---
 
 # apply
@@ -17,26 +17,34 @@ can say what the resume shows, but only the candidate knows what is true and wha
 | 1 | `fit` | gate | [`job-fit-analysis`](../../skills/job-fit-analysis/SKILL.md) | **G5** human |
 | 2 | `tailor` | generate | [`resume-tailor`](../../skills/resume-tailor/SKILL.md) | — |
 | 3 | `letter` | generate | [`cover-letter`](../../skills/cover-letter/SKILL.md) | — |
-| 4 | `confirm` | verify | [`output-hygiene`](../../../core/skills/output-hygiene/SKILL.md) | **G6** human |
+| 4 | `form` | generate | [`application-form-answers`](../../skills/application-form-answers/SKILL.md) | — |
+| 5 | `confirm` | verify | [`output-hygiene`](../../../core/skills/output-hygiene/SKILL.md) | **G6** human |
 
 ## How to run this loop
 
-1. **Check the fit and stop.** Run `job-fit-analysis` on the posting and the resume. Put its
-   verdict, the screening requirements and its questions to the candidate, then wait at G5.
+1. **Check the fit and stop.** Run `job-fit-analysis` on the posting, the resume and any
+   other material of the candidate's: a LinkedIn summary, a portfolio, a project. Put its
+   verdict, what could get the application rejected and its questions to the candidate,
+   including whether anything outside the resume covers a gap, then wait at G5.
    - `PROCEED`: they are applying. Go on.
    - `PROCEED WITH CONDITIONS`: they are applying and have answered the questions. Save
      their answers to `notes.md`; from here on those answers are source material alongside
      the resume.
    - `RECONSIDER`: they are not applying. The loop ends here, and that is a good outcome.
 2. **Tailor the resume.** Run `resume-tailor` with the resume, the posting and `notes.md`
-   if it exists. Carry its "Not claimed" list forward.
+   if it exists. It works in the resume's own format, on a copy. Carry forward its three
+   lists: "Not claimed", "Cut" and "Added from outside the resume".
 3. **Write the letter.** Run `cover-letter` with the tailored resume, the posting, `notes.md`
    and the candidate's reason for wanting the job if they gave one. Skip this stage when the
    posting says not to send a letter.
-4. **Clean both documents.** Run `output-hygiene` on the resume and the letter.
-5. **Confirm at G6.** Show the candidate both documents with two short lists: what the
-   posting asks for that neither document claims, and anything the claim check still lists.
-   Ask them to confirm every line is true. `NOT READY` returns to `tailor` with their
+4. **Answer the form.** When the application has a form with questions beyond uploading
+   the documents, run `application-form-answers` with those questions and the tailored
+   resume. Skip this stage when there is no form.
+5. **Clean the documents.** Run `output-hygiene` on the resume and the letter.
+6. **Confirm at G6.** Show the candidate the documents with four short lists: what the
+   posting asks for that the documents do not claim; every fact added from outside the
+   resume and where it came from; every line cut from the resume; and the form questions
+   that are theirs alone to answer. Ask them to confirm every line is true. `NOT READY` returns to `tailor` with their
    corrections added to `notes.md`. The candidate sends the application; the loop never does.
 
 ## Verdicts
@@ -76,7 +84,7 @@ The log holds verdicts only: never the posting, the resume or the candidate's na
 
 - **The candidate decides to apply before anything is written.** A tailored resume for a job they would have skipped is wasted work.
 - **Every claim in both documents traces to the resume or to something the candidate said.** Answers given at G5 are written to `notes.md`, so the trace exists.
-- **The resume and the letter agree.** Same titles, dates and numbers in both.
+- **The resume, the letter and the form agree.** Same titles, dates and numbers in all three.
 - **The candidate confirms and sends.** G6 is their signature; the loop never submits an application.
 
 ## Anti-patterns to avoid
@@ -84,5 +92,6 @@ The log holds verdicts only: never the posting, the resume or the candidate's na
 - ❌ **Skipping `fit` because the candidate is keen.** The screening requirements are what they most need to see before investing the time.
 - ❌ **Treating a `Not shown` item as true** because the candidate proceeded. Only what they answered goes in.
 - ❌ **Writing the letter from the original resume.** The letter follows the tailored one, or the two will disagree.
+- ❌ **Answering a declaration on the form** for the candidate, or leaving out the list of what was added and cut.
 - ❌ **Self-confirming at G6.** A clean claim check says the words are in the source; it cannot say they are true.
 - ❌ **Submitting the application.** Sending is the candidate's act.

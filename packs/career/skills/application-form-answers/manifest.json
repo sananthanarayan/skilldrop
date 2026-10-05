@@ -1,0 +1,31 @@
+{
+  "name": "application-form-answers",
+  "version": "0.1.0",
+  "description": "Prepare the answers to a job application form from the person's resume: each question in the form's own order with either a drafted answer and the resume line behind it, or a note that it is theirs alone to answer (right to work, sponsorship, salary, declarations, monitoring questions), plus the questions that could screen the application out and the ones their resume already bears on. Works for any occupation. Use when the user says \"help me fill in this application form\", \"answer these application questions\", \"what do I put for these screening questions\", or pastes the questions from an online job application.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "cover-letter",
+    "job-fit-analysis",
+    "resume-tailor"
+  ],
+  "tags": [
+    "job-application",
+    "application-form",
+    "screening-questions",
+    "resume",
+    "career",
+    "job-search"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Sorts questions into three kinds and drafts short answers from the resume. The hard rule is mechanical: a declaration is never answered for the person."
+  }
+}

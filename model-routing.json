@@ -493,6 +493,10 @@
     "cover-letter": {
       "tier": "standard",
       "rationale": "A short letter from supplied facts, with a script listing every figure and name the person's material doesn't contain."
+    },
+    "application-form-answers": {
+      "tier": "standard",
+      "rationale": "Sorts questions into three kinds and drafts short answers from the resume. The hard rule is mechanical: a declaration is never answered for the person."
     }
   }
 }

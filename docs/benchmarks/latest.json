@@ -34,32 +34,32 @@
  "models": {
   "claude-sonnet-5": {
    "label": "standard",
-   "evals": 174,
-   "runs": 174,
-   "skill": 0.7372628170041963,
-   "baseline": 0.38697318007662834,
-   "lift": 0.3502896369275679,
+   "evals": 185,
+   "runs": 185,
+   "skill": 0.7516302016302016,
+   "baseline": 0.4045045045045045,
+   "lift": 0.3471256971256972,
    "lift_ci": [
-    0.3046068235723408,
-    0.39650155081189564
+    0.30445087945087945,
+    0.3928056628056628
    ],
-   "win": 0.5977011494252874,
+   "win": 0.6216216216216216,
    "win_ci": [
-    0.5258620689655172,
-    0.6666666666666666
+    0.5540540540540541,
+    0.6918918918918919
    ],
    "second_judge": "claude-opus-5-5",
-   "win2": 0.6149425287356322,
+   "win2": 0.6378378378378379,
    "win2_ci": [
-    0.5488505747126436,
-    0.6839080459770115
+    0.5702702702702702,
+    0.7027027027027027
    ],
-   "judges_agree": 118,
-   "judges_decided": 162,
-   "cost_skill": 0.12145879770114944,
-   "cost_baseline": 0.0933753908045977,
-   "out_tokens_skill": 5134.252873563219,
-   "out_tokens_baseline": 3573.8563218390805,
+   "judges_agree": 127,
+   "judges_decided": 173,
+   "cost_skill": 0.12094450486486487,
+   "cost_baseline": 0.09157848108108109,
+   "out_tokens_skill": 5150.816216216216,
+   "out_tokens_baseline": 3515.2486486486487,
    "truncated": 0,
    "refused": 0,
    "trial_range": 0.0,
@@ -68,7 +68,7 @@
   }
  },
  "routing": [],
- "floor": 0.11377941981390258,
+ "floor": 0.11287001287001286,
  "skills": [
   {
    "skill": "accessibility-audit",
@@ -199,6 +199,16 @@
    "preferred": 1.0,
    "cost_skill": 0.143602,
    "cost_baseline": 0.0857964
+  },
+  {
+   "skill": "application-form-answers",
+   "model": "claude-sonnet-5",
+   "evals": 7,
+   "skill_met": 0.9464285714285714,
+   "baseline_met": 0.630952380952381,
+   "preferred": 1.0,
+   "cost_skill": 0.08936408571428571,
+   "cost_baseline": 0.06419674285714286
   },
   {
    "skill": "architecture-diagrams",
@@ -533,12 +543,12 @@
   {
    "skill": "job-fit-analysis",
    "model": "claude-sonnet-5",
-   "evals": 5,
-   "skill_met": 0.9214285714285714,
-   "baseline_met": 0.7892857142857143,
-   "preferred": 0.8,
-   "cost_skill": 0.06678244,
-   "cost_baseline": 0.03506836
+   "evals": 7,
+   "skill_met": 0.9642857142857143,
+   "baseline_met": 0.7899659863945578,
+   "preferred": 0.8571428571428571,
+   "cost_skill": 0.06478597142857143,
+   "cost_baseline": 0.03763545714285715
   },
   {
    "skill": "launch-readiness",
@@ -763,12 +773,12 @@
   {
    "skill": "resume-tailor",
    "model": "claude-sonnet-5",
-   "evals": 7,
-   "skill_met": 0.9464285714285714,
-   "baseline_met": 0.8928571428571429,
+   "evals": 9,
+   "skill_met": 0.9583333333333334,
+   "baseline_met": 0.8611111111111112,
    "preferred": 1.0,
-   "cost_skill": 0.12259011428571429,
-   "cost_baseline": 0.07524014285714285
+   "cost_skill": 0.1504328,
+   "cost_baseline": 0.0759887111111111
   },
   {
    "skill": "reverse-architecture",

@@ -1,8 +1,8 @@
 {
   "$comment": "RFC-0042. One job application, start to send. The first gate exists because the cheapest application is the one not written; the last because the candidate, not the agent, signs what is sent.",
   "name": "apply",
-  "version": "0.1.0",
-  "description": "Take one job posting and one resume to an application ready to send — an honest fit check, a tailored resume and a cover letter — with the candidate deciding whether to apply before any writing, and confirming every claim is true before anything is sent. Use when the user wants to apply for a job, says \"help me apply for this\", or wants a resume and cover letter prepared for one posting.",
+  "version": "0.2.0",
+  "description": "Take one job posting and one resume to an application ready to send — an honest fit check, a tailored resume, a cover letter and the answers to the application form — with the candidate deciding whether to apply before any writing, and confirming every claim is true before anything is sent. Use when the user wants to apply for a job, says \"help me apply for this\", or wants a resume and cover letter prepared for one posting.",
   "entrypoint": "LOOP.md",
   "kind": "loop",
   "cap": 3,
@@ -31,9 +31,15 @@
       "skills": ["cover-letter"]
     },
     {
+      "id": "form",
+      "type": "generate",
+      "intent": "Draft the application form's answers from the tailored resume, and hand back the declarations that are the candidate's alone.",
+      "skills": ["application-form-answers"]
+    },
+    {
       "id": "confirm",
       "type": "verify",
-      "intent": "Strip what the machine left behind, then have the candidate confirm that every line in both documents is true and theirs.",
+      "intent": "Strip what the machine left behind, then have the candidate confirm that every line in the documents is true and theirs, and that anything added from outside the resume is right.",
       "skills": ["output-hygiene"],
       "gate": {
         "id": "G6",
