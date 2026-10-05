@@ -1,0 +1,11 @@
+name: detention-claim-letter
+summary: Drafts a detention claim letter to a shipper or receiver from the gate timestamps and the free-time terms.
+owner: claims
+category: claims
+inputs:
+  - arrival and departure timestamps at the facility
+  - the free time and hourly detention rate that apply
+  - who the letter is addressed to
+related:
+  - rate-con-extractor
+network: false

@@ -14,6 +14,35 @@
         "No marketing adjectives; the performance line states the measured change (~3x faster export) rather than 'blazing fast'",
         "Does not invent features or fixes not present in the log"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "We're cutting 3.2.0 of Tidewater Booking tomorrow. The log since 3.1.0 is in commits.txt. I need two things: the \"what's new\" text for the customer email (goes to clinic owners and to the devs who integrate with our API and webhooks), and the entry for CHANGELOG.md in the repo. Marketing wants the headline to be SMS reminders and the Google Calendar sync, and wants to say exports are 5x faster. We're a hosted service, nobody runs our code themselves.",
+      "assertions": [
+        "Google Calendar sync is not announced as shipping in 3.2.0; the output says it was reverted (commit a4e8b60 / #225) and is not in this release",
+        "The export speed-up is given as 41s to 14s for 50k bookings, or roughly 3x, and the requested '5x faster' claim is not used or is called out as unsupported by the log",
+        "The webhook field rename (start/end to starts_at/ends_at in booking payloads) is called out as a breaking change that integrators must act on, even though its commit is labelled refactor",
+        "The removal of X-Tidewater-Key header auth is called out as breaking with the instruction to switch to Bearer tokens, and breaking changes appear before the new features",
+        "The 'wip' (3b7c5e2) and 'more fixes' (71f9d3b) commits are flagged as unclear and needing someone to check, not described as specific features or fixes",
+        "The duplicate-calendar-events fix (#218) is not listed as a fix customers receive, because it was reverted along with the sync",
+        "The customer email text does not mention the twilio or vite bumps, the BookingRepo rename, CI changes or the Node 20 server requirement",
+        "Each line of the CHANGELOG entry carries a commit hash or PR number from the log"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "need release notes for pressroom (our static site CLI, the people using it are our clients' developers), going out as 0.9.0 today. this is what's gone in since 0.8.2, half from git log --oneline and half from memory, sorry:\n\nd41c0aa add --watch flag\n77e2b19 fix crash on empty frontmatter\nbump deps\n3a9f6c1 config: `output_dir` now `outDir` (old key ignored)\nc08e512 misc cleanup\n9b1d7e4 faster builds\n\nalso Priya fixed something with image paths on windows, I don't have the commit",
+      "assertions": [
+        "The output_dir to outDir config change is flagged as breaking, with the action to rename the key in existing config files because the old key is now ignored",
+        "'Faster builds' is reported without any invented figure or percentage, and the output says the size of the speed-up is not known",
+        "The Windows image-path fix is included only as far as described and marked as unconfirmed or missing its commit; no specific bug behaviour is invented for it",
+        "'misc cleanup' (c08e512) and 'bump deps' are not turned into user-facing claims",
+        "The --watch flag and the empty-frontmatter crash fix both appear as user-facing items",
+        "It does not invent dates, PR numbers, a commit count for commits it was not shown, or features not in the pasted list",
+        "It delivers usable release notes in the reply rather than only asking questions, and lists the items that need confirming before sending"
+      ]
     }
   ]
 }

@@ -1,0 +1,32 @@
+- name: flat-linehaul-percent-fuel
+  input: |
+    RATE CONFIRMATION  Load LF-208841  Carrier: Brightwater Haulage
+    Pickup 03/04  Delivery 03/06
+    Linehaul: $1,850.00 flat   Fuel surcharge: 18% of linehaul
+    Detention: $60/hr after 2 hrs free, max $480
+  expect:
+    - the table has linehaul 1850.00 marked flat
+    - fuel surcharge is recorded as 18% of linehaul, not as a dollar amount
+    - detention is listed with 60 per hour, 2 hours free and the 480 cap
+- name: per-mile-linehaul
+  input: |
+    Load LF-209112  Carrier: Copperline Transport
+    Linehaul $2.35/mi x 612 mi   FSC $0.48/mi
+  expect:
+    - linehaul is recorded as 2.35 per mile with 612 miles
+    - no total is calculated
+- name: no-fuel-surcharge-stated
+  input: |
+    Load LF-209377  Carrier: Ashgrove Carriers  Linehaul $940 flat  Lumper: reimbursed with receipt
+  expect:
+    - fuel surcharge appears under Not stated
+    - no fuel surcharge figure is given
+- name: two-documents-pasted
+  input: two rate confirmations pasted one after the other, loads LF-209400 and LF-209401
+  expect:
+    - the output is two separate tables or a request to send one at a time
+- name: nothing-supplied
+  input: Extract the rate con for load LF-209500.
+  expect:
+    - the reply says the rate confirmation text is missing
+    - no rates are given

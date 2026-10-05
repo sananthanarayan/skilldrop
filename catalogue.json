@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0034. The catalogue index: pack display order and the outcome browse axis (RFC-0026). Pack metadata lives in packs/<pack>/pack.json; membership is the folders — a skill is in a pack because it sits at packs/<pack>/skills/<name>/.",
   "version": "1.0.0",
-  "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "api-builder", "converters", "experience-design", "research", "trackers", "data-analytics", "grc", "infra-as-code", "skill-engineering"],
+  "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "api-builder", "converters", "experience-design", "research", "trackers", "data-analytics", "grc", "infra-as-code", "skill-engineering", "career"],
   "outcomes": {
     "decide-what-to-build": {
       "for": "Product managers · founders · strategists",
@@ -184,6 +184,15 @@
       "skills": [
         "skill-author",
         "skill-review"
+      ]
+    },
+    "apply-for-a-job": {
+      "for": "Anyone applying for a job, in any field",
+      "description": "Prepare one application that is tailored and true: an honest fit check against the posting, a resume reworked without adding a claim, and a cover letter built only from what you supplied.",
+      "skills": [
+        "job-fit-analysis",
+        "resume-tailor",
+        "cover-letter"
       ]
     }
   }

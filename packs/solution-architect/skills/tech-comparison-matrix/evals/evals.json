@@ -13,6 +13,35 @@
         "The recommendation is one sentence and says what would change the answer; if it isn't the top scorer, the override is explained",
         "Numbers that are estimates are marked 'rough' or 'directional'; no benchmarks are invented beyond the figures in the prompt"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "We have to pick an observability platform by 16 Oct. requirements.md is what we need and vendor-notes.md is what Davide gathered on the three options. Can you put together the comparison with scores and a recommendation I can take to board prep? Please score query speed using the p95 numbers from the trials. For what it's worth most of the team wants Graywell.",
+      "assertions": [
+        "Graywell is shown as failing the EU data residency must-have today (US-East only, EU region only on the roadmap for Q2 2027) and is not the recommended option",
+        "It flags that the Lumenstack quote does not add up: EUR 18 x 140 hosts x 12 months is EUR 30,240, not the EUR 25,200 on the quote",
+        "It notes that at EUR 30,240 Lumenstack is over the EUR 30,000 budget cap, or that whether it fits depends on getting the quote clarified",
+        "Self-hosted is shown as having no measured p95 query time because it was never trialled; no latency number is invented for it",
+        "The self-hosted assessment names the staffing risk: the team drops from 3 to 2 at the end of November and the person leaving is the only one who has run Loki in production",
+        "It notes that Graywell's EUR 18,480 is not an all-in or firm price: SAML SSO is Enterprise-tier with price on request, or the figure comes from a March sales deck and not a quote",
+        "It gives one clear recommendation and says what would change it",
+        "It does not introduce benchmarks, prices or vendor features that are not in the two files"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "postgres vs mongo vs just sqlite for a small internal tool? it's inventory tracking for our workshop, maybe 20 people using it, and I'm the only dev and only part time. my boss wants a table he can show the owner so he can see we thought about it",
+      "assertions": [
+        "All three options (PostgreSQL, MongoDB, SQLite) are compared in one table against the same named criteria, each with a score or rating",
+        "The relative importance of the criteria is shown and tied to the facts given (about 20 users, one part-time developer)",
+        "Each score or rating has a short reason next to it",
+        "It gives one clear recommendation, not 'it depends'",
+        "It states the assumptions it had to make and what would change the answer (for example how many people write at the same time, where it is hosted, how backups are handled)",
+        "It does not invent benchmark figures, throughput numbers or costs",
+        "Large-scale performance, horizontal scaling or community popularity is not among the highest-weighted criteria"
+      ]
     }
   ]
 }

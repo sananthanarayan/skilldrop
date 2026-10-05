@@ -14,6 +14,36 @@
         "The disclosure rule states whether and where AI assistance must be declared",
         "No regulation is asserted beyond what the prompt names; unclear applicability is marked [confirm with counsel]"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "I'm the office manager at a 40-person recruitment agency and the MD has asked me to write our AI policy. Her email is in md-email.md, what our IT provider told me is in it-notes.md, and our existing data labels are in data-handling-sheet.md. Can you draft the policy so I can send it to her?",
+      "assertions": [
+        "It says candidate CVs, salary details and other Confidential data must not go into personal or free chatbot accounts, and tells staff what to do instead for the same task",
+        "It separates the 8-seat ChatGPT Team workspace from personal ChatGPT accounts, and notes that about 30 people have no Team seat",
+        "Copilot is not listed as an approved or available tool: the trial ended on 30 June 2026 and was not renewed",
+        "It does not state that the tools never train on the firm's data or that data stays in the UK; it says this is unconfirmed until someone checks the contract terms",
+        "It does not simply make Brightwell IT the policy owner: it notes Brightwell declined to make policy decisions and the operations manager post is vacant, and proposes an interim owner or flags ownership for the MD to decide",
+        "It says candidate data for Aldercroft Group roles must not go into any AI tool without Aldercroft's written consent",
+        "It says what to do about the 14 CVs pasted on 16 September and tells staff who to report it to if they have already pasted Confidential data",
+        "It names no law or regulation other than GDPR, which the MD mentioned, and NoteQuill is treated as unapproved or pending review, not as cleared"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "we're a small charity, 12 staff plus volunteers. the trustees want an 'AI policy' by the next board meeting. honestly I don't know what tools people are using, I think a couple of them use chatgpt for grant applications. we hold case notes on the people we support. can you write something short I can take to the board",
+      "assertions": [
+        "It delivers a draft policy in the reply and does not stop at a list of questions",
+        "It says case notes and anything that identifies a person the charity supports must not be put into AI chatbots, and says what to do instead",
+        "Drafting grant applications with AI is allowed, with a person checking the facts and figures before the application is submitted",
+        "It says whether the policy covers volunteers as well as the 12 staff",
+        "It says which tools are in use is not known, and proposes finding out or leaves the approved-tool list to be filled in; it does not present a list of approved tools as already agreed",
+        "It names no individual and no charity name; responsibilities are given to roles (for example a named trustee role or the director) or flagged for the board to assign",
+        "It does not state that a specific law, regulator or sector code applies as fact; any mention is marked as something to confirm",
+        "The policy itself is short: about two pages or less (roughly 800 words)"
+      ]
     }
   ]
 }

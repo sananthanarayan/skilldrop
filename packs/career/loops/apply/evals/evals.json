@@ -1,0 +1,27 @@
+{
+  "loop_name": "apply",
+  "evals": [
+    {
+      "id": "stops-at-the-fit-gate",
+      "prompt": "Run the apply loop. My resume is in resume.md and the job is in posting.md. [a warehouse supervisor's resume with a high school diploma; a posting that requires a bachelor's degree]",
+      "assertions": [
+        "Starts with job-fit-analysis and delivers its verdict before any resume or letter is written",
+        "Names the unmet bachelor's degree as a screening requirement",
+        "Stops at G5 and asks the candidate whether to apply; does not tailor the resume in the same turn",
+        "Does not advise claiming the degree or adding any keyword the resume does not support"
+      ]
+    },
+    {
+      "id": "answers-become-source-material",
+      "prompt": "Continuing the apply loop: yes I want to apply. To your questions: I do speak Spanish, and no, I've never used SAP. [same resume and posting]",
+      "assertions": [
+        "Records the gate verdict as PROCEED WITH CONDITIONS and saves the answers to notes.md",
+        "The tailored resume includes Spanish and does not claim SAP",
+        "The cover letter is written after the tailored resume and uses the same titles, dates and numbers",
+        "Runs output-hygiene on both documents before the final gate",
+        "Stops at G6 and asks the candidate to confirm every line is true; does not submit or send anything",
+        "Lists what the posting asks for that neither document claims"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+[
+  {"query": "help me apply for this job", "should_trigger": true},
+  {"query": "run the apply loop on this posting and my resume", "should_trigger": true},
+  {"query": "I want a tailored resume and cover letter for this role", "should_trigger": true},
+  {"query": "get my application for this job ready to send", "should_trigger": true},
+  {"query": "is this job a good fit for me?", "should_trigger": false},
+  {"query": "just write a cover letter for this", "should_trigger": false},
+  {"query": "turn these notes into a finished document", "should_trigger": false}
+]

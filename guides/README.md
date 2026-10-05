@@ -74,12 +74,15 @@ A how-to and a reference page for every pack, generated from the pack's own file
 | Governance, risk and compliance | [Use the Governance, risk and compliance pack](how-to/packs/use-the-grc-pack.md) | [Governance, risk and compliance pack reference](reference/packs/pack-grc.md) |
 | Infrastructure as code | [Use the Infrastructure as code pack](how-to/packs/use-the-infra-as-code-pack.md) | [Infrastructure as code pack reference](reference/packs/pack-infra-as-code.md) |
 | Skill engineering | [Use the Skill engineering pack](how-to/packs/use-the-skill-engineering-pack.md) | [Skill engineering pack reference](reference/packs/pack-skill-engineering.md) |
+| Job applications | [Use the Job applications pack](how-to/packs/use-the-career-pack.md) | [Job applications pack reference](reference/packs/pack-career.md) |
 <!-- pack-guides:end -->
 
 ## explanation
 
 - [Why loops](explanation/loops.md) — why sequencing is its own primitive, and why five loops
 - [Cost-aware model routing](../MODEL-ROUTING.md) — abstract tiers and the provider map
+- [What the benchmark showed](explanation/what-the-benchmark-showed.md) — the gain on skills' own checks, the blind preference, the held-out test that the revised skills failed, and what the winners share
+- [Does the agent invent your resume?](explanation/resume-fabrication-comparison.md) — 14 resume and cover-letter requests with the career skills and without: what each added that the person never said
 
 Architecture and the enforcement model: [ARCHITECTURE.md](../ARCHITECTURE.md).
 Contributor rules and the pre-commit checklist: [AGENTS.md](../AGENTS.md).

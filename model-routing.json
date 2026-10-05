@@ -481,6 +481,18 @@
     "ux-writing": {
       "tier": "standard",
       "rationale": "Short-form writing to fixed slot rules and character budgets, plus a terminology consistency pass. Bounded generation with clear checks."
+    },
+    "job-fit-analysis": {
+      "tier": "standard",
+      "rationale": "Matches a posting's requirements to resume lines and reports the gaps. The rule is mechanical: no line in the resume, no credit."
+    },
+    "resume-tailor": {
+      "tier": "standard",
+      "rationale": "Reorders and rewords existing content against a posting, with a script listing every figure and name the original doesn't contain."
+    },
+    "cover-letter": {
+      "tier": "standard",
+      "rationale": "A short letter from supplied facts, with a script listing every figure and name the person's material doesn't contain."
     }
   }
 }

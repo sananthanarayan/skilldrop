@@ -1,0 +1,57 @@
+{
+  "description": "One job application, for any occupation: an honest check of your resume against the posting, a tailored resume and a cover letter that say nothing you didn't, and a script that lists every figure and name in a draft that your own resume doesn't contain.",
+  "display_name": "Job applications",
+  "keywords": ["resume", "cv", "cover letter", "job application", "job search", "career change", "job posting"],
+  "links": {
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/career/"
+  },
+  "maintainers": [
+    {
+      "name": "sananthanarayan"
+    }
+  ],
+  "first-value": {
+    "audience-posture": "non-technical",
+    "prerequisites": ["Your resume or CV as text, Markdown or a file your agent can read", "The job posting, pasted or saved as a file"],
+    "starter-task": "Find out where you stand against a posting before you write the application",
+    "starter-prompt": "My resume is in resume.md and the job I'm looking at is in posting.md. Am I a good fit? Be honest about what's missing.",
+    "verification": "job-fit-analysis opens with a verdict (strong match, worth applying, long shot or not a match), lists the requirements an employer screens on first, marks every requirement met, partly, not shown or not met with the resume line behind it, and ends with questions about what your resume doesn't show.",
+    "recovery": "If it credits you with something that isn't in your resume, say so and run it again. If job-fit-analysis does not activate, ask for it by name (\"use job-fit-analysis\")."
+  },
+  "requires": ["core"],
+  "journey": {
+    "when": "You've found a job you might apply for and want an application that is tailored to it and true.",
+    "you_bring": [
+      "your current resume or CV",
+      "the job posting",
+      "anything relevant that isn't on your resume: a tool you've used, a language you speak, a number you know",
+      "your reason for wanting the job, if you have one"
+    ],
+    "time": "About half an hour for one application",
+    "steps": [
+      {
+        "skill": "job-fit-analysis",
+        "you_do": "Give it the posting and your resume.",
+        "you_get": "A verdict, the screening requirements first, every requirement marked against your resume with the line it rests on, and questions about what your resume doesn't show.",
+        "decide": "Whether to apply, and your answers to its questions."
+      },
+      {
+        "skill": "resume-tailor",
+        "you_do": "Give it the resume, the posting and your answers.",
+        "you_get": "A tailored resume in a new file with every employer, title, date and number as you had them, what changed, and what the posting asks for that your resume cannot claim."
+      },
+      {
+        "skill": "cover-letter",
+        "you_do": "Give it the tailored resume, the posting and your reason for wanting the job.",
+        "you_get": "A letter under a page that opens on your strongest evidence and says nothing about you or the employer that you or the posting didn't supply."
+      },
+      {
+        "skill": "output-hygiene",
+        "you_do": "Run it on the resume and the letter before you send them.",
+        "you_get": "Both documents with invisible characters and machine residue removed, and any stock phrases quoted with a rewrite.",
+        "decide": "Read both documents once more: you sign them, so every line has to be true."
+      }
+    ],
+    "you_end_with": "A resume and a cover letter for one posting that you can defend line by line at interview, and a list of what the employer will notice is missing."
+  }
+}

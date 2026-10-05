@@ -16,9 +16,9 @@
     },
     "full": {
       "description": "The complete catalogue: every pack, every reviewer agent, every loop.",
-      "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "api-builder", "converters", "experience-design", "research", "trackers", "data-analytics", "grc", "infra-as-code", "skill-engineering"],
+      "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "api-builder", "converters", "experience-design", "research", "trackers", "data-analytics", "grc", "infra-as-code", "skill-engineering", "career"],
       "agents": ["devils-advocate", "security-reviewer", "code-quality"],
-      "loops": ["discover", "design", "build", "release", "operate", "ship-a-draft"]
+      "loops": ["discover", "design", "build", "release", "operate", "ship-a-draft", "apply"]
     }
   }
 }

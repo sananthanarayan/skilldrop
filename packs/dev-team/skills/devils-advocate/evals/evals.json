@@ -14,6 +14,35 @@
         "Output ends with a 'what's solid' section so the author knows what not to touch",
         "The review scopes to the change under review, never sweeping the whole codebase"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "Just finished the volunteer shift sign-up feature for the food bank's scheduling app (signups.py, tests in test_signups.py). Volunteers sign up until the shift's full, after that they go on a waitlist, and when someone cancels the first person on the waitlist gets the spot. No cancelling inside 24 hours of the shift. Tests all pass. Anything I've missed before I merge?",
+      "assertions": [
+        "It flags that sign_up compares the confirmed count with > instead of >=, so a shift with capacity N confirms N+1 volunteers",
+        "It flags that cancel picks the waitlisted row with ORDER BY created_at DESC, so the most recent person on the waitlist is promoted, not the first",
+        "It flags that the same volunteer can sign up twice for one shift because nothing checks for an existing sign-up",
+        "It flags that the 24-hour cutoff subtracts local-time datetime.now() from a start time stored in UTC, so the window is off by the server's UTC offset",
+        "It points out that test_waitlist_when_full puts three volunteers into a capacity-2 shift before asserting, so it passes because of the capacity bug",
+        "It points out that test_no_waitlist_raises passes even when ShiftFull is never raised",
+        "It does not report SQL injection, since every query is parameterised",
+        "It says plainly that the change is not ready to merge as it stands"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "wrote this quick script to dedupe our newsletter subscriber export before we import it into the new mail tool. worked fine on the 50-row sample i tried. good to run on the real file? it's about 40k rows, email is the third column\n\n```python\nimport sys\n\nrows = open(sys.argv[1]).read().split(\"\\n\")\nseen = {}\nfor r in rows[1:]:\n    if not r.strip():\n        continue\n    cols = r.split(\",\")\n    seen[cols[2]] = r\n\nout = open(sys.argv[1], \"w\")\nout.write(rows[0] + \"\\n\")\nfor r in seen.values():\n    out.write(r + \"\\n\")\n```",
+      "assertions": [
+        "It answers the question near the top: not as it stands, or only on a copy of the file",
+        "It flags that emails are compared exactly, so addresses differing only in letter case or surrounding spaces are kept as separate subscribers",
+        "It flags that split(\",\") breaks on a quoted field containing a comma, which shifts the column treated as the email",
+        "It flags that the script overwrites the input file in place with no backup, and recommends writing to a new file or keeping a copy",
+        "It notes that when rows share an email the last one wins, and that whether that is the right row to keep is something to confirm",
+        "It gives a concrete fix, such as reading with the csv module and normalising the email with strip and lower",
+        "It does not state as fact what the other columns hold or what the real file contains beyond what was given"
+      ]
     }
   ]
 }

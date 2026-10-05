@@ -8,6 +8,14 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.7 — 2026-10-05
+
+- **New pack: `career`, for anyone applying for a job in any field.** `job-fit-analysis` compares a posting with your resume and says whether to apply, with what could get the application rejected listed first. `resume-tailor` reworks your resume for the posting and keeps every employer, title, date and number as you had them. `cover-letter` writes a letter under a page that says nothing about you or the employer that you or the posting didn't supply. Install it with `npx skilldrop-cli install --pack career`.
+- **New loop: `apply`.** Fit check, tailored resume, cover letter, then a clean-up pass. You decide whether to apply before anything is written, and you confirm every line is true before anything is sent. The loop never submits an application.
+- **A script that lists what a draft says that your resume doesn't.** `claim_check.py` ships with `resume-tailor` and `cover-letter`: give it a draft, your resume and the posting, and it prints every figure and named thing the draft contains that your own material does not.
+- **The pack was admitted on a measured result** (RFC-0042). On 14 resume and letter requests, plain Claude Code added something the person never said in 11 of 28 documents, and the skills in 1. Two blind judges preferred the skills' result in 10 and 11 of 12 pairs on evals the skills had never seen. See [Does the agent invent your resume?](guides/explanation/resume-fabrication-comparison.md).
+- **Twelve older skills were tested on evals they had never seen, and lost.** Both judges preferred plain Claude Code in about 7 pairs of 10. [What the benchmark showed](guides/explanation/what-the-benchmark-showed.md) gives the full account, and the published numbers now cover all 174 evals: skills preferred in 60% and 61% of pairs.
+
 ## 0.16.6 — 2026-10-02
 
 - **31 skills answer first and stick to what you gave them.** Each now opens with the answer or the artifact, leaves out facts, names and numbers you didn't supply and lists what's missing once under "To confirm", works from what it has instead of stopping to ask, and keeps its own vocabulary out of the reply. Each also carries one rule of its own; for example, `release-notes` writes one set of notes and doesn't invent a product name, and `tech-comparison-matrix` leads with the recommendation.

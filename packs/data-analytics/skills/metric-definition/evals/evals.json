@@ -14,6 +14,36 @@
         "Includes at least three runnable sanity checks, including a known-answer fixture or a reconciliation with billing",
         "Does not invent tables, columns or an owner not given in the prompt; anything assumed is tagged [assumption] and listed under open decisions"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "Finance and CX keep turning up to the Monday meeting with different refund rates and it's getting silly. I've pasted the Slack thread into thread.md and the table descriptions into tables.md. Can you write down one proper definition of refund rate that we can all use, with the SQL? We're on Postgres.",
+      "assertions": [
+        "It separates the share of orders refunded from the share of revenue refunded as two differently named measures, or picks one as 'refund rate' and names the other as a separate measure; it does not blend them into one formula",
+        "It points out that 312 refunded orders out of 7,480 is about 4.2%, not the 4.6% quoted in the thread",
+        "The order-based SQL counts each refunded order once (COUNT DISTINCT on order_id, EXISTS, or refunds aggregated per order before joining), so orders with several refund rows are not double-counted",
+        "It states one rule for which month a refund belongs to (the order's month or the refund's month) and says what happens to a February order refunded in March",
+        "It says a single money-based rate across both stores cannot be computed from these tables as they stand because there is no exchange-rate data, and it does not invent an exchange rate or an exchange-rate table",
+        "Test orders are excluded with a condition on orders.is_test, and staff orders are flagged as not identifiable from the listed columns; it does not use a staff flag column that does not exist",
+        "Month boundaries are set in UK time (Europe/London) against timestamps stored in UTC",
+        "It lists whether cancelled orders count in the denominator and who owns the metric as open decisions, without naming an owner the thread did not name"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "need a proper definition of 'time to first response' for our support team. we use a helpdesk tool and I can export tickets to a spreadsheet. my boss wants it on the weekly report. there's 8 agents. not sure if weekends should count, we don't work them",
+      "assertions": [
+        "It delivers a written definition in the reply and does not stop at a list of questions",
+        "It defines the start and the end of the clock (ticket created to the first reply from a human agent) and says automatic acknowledgement emails do not count as the first response, or flags that as a decision",
+        "Whether weekends and out-of-hours time count is given as an open decision with a recommended default or with both versions described; it is not decided silently",
+        "It says which statistic goes on the report (median, mean or a percentile), not just 'average' left undefined",
+        "It says how tickets that have had no reply yet when the report is run are treated",
+        "It says which week a ticket is counted in (the week it was created or the week it was answered)",
+        "Any export column names it uses are marked as assumed, since no export layout was given",
+        "It does not state a response-time target or SLA figure as the team's own, since none was given"
+      ]
     }
   ]
 }
