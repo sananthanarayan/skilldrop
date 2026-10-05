@@ -1,0 +1,22 @@
+PagerTree export. Service: labelgen-prod. Incident INC-2291.
+All timestamps UTC. Exported 2026-09-18 09:02 UTC.
+
+2026-09-17 07:31:04  TRIGGERED     alert "labelgen 5xx ratio > 25% for 15m" (source: metrics)
+2026-09-17 07:31:05  NOTIFIED      primary on-call (push + SMS)
+2026-09-17 07:36:05  NOTIFIED      primary on-call (phone call, 2nd attempt)
+2026-09-17 07:38:41  ACKNOWLEDGED  by primary on-call
+2026-09-17 07:44:10  NOTE          "suspect 06:55 deploy of labelgen v412, rolling back"
+2026-09-17 07:52:27  NOTE          "rollback to v411 complete. error rate unchanged."
+2026-09-17 08:03:50  ESCALATED     to secondary on-call (platform)
+2026-09-17 08:05:12  ACKNOWLEDGED  by secondary on-call
+2026-09-17 08:21:33  NOTE          "rates-gateway returning TLS handshake failure. cert expired 2026-09-17 07:11:58Z"
+2026-09-17 08:40:15  NOTE          "cert reissued manually, rates-gateway pods restarting"
+2026-09-17 08:46:02  NOTE          "5xx back under 1%. monitoring."
+2026-09-17 09:20:00  RESOLVED
+
+Metrics snapshot attached to the incident (dashboard "labelgen overview"):
+  first minute with 5xx ratio > 5%:      07:12
+  last minute with 5xx ratio > 5%:       08:46
+  label requests received 07:12-08:46:   21,900
+  label requests failed (5xx):           18,430
+  merchant accounts with >= 1 failure:   212

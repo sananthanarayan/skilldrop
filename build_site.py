@@ -696,7 +696,7 @@ def measured_section():
     pc = lambda x: f"{100 * x:.0f}%"
     judges = f"{pc(d['win'])} of pairs" + (f", and a second judge in {pc(d['win2'])}" if d.get("win2") is not None else "")
     lows = [c[0] for c in (d.get("win_ci"), d.get("win2_ci")) if c]
-    verdict = ("Both ranges sit above even. The skills were revised against these same evals, so read it as progress, not proof." if lows and min(lows) > 0.5 else
+    verdict = ("Both ranges sit above even. Many skills were revised against these same evals, and a sample of them lost on evals they had not seen, so read it as progress, not proof." if lows and min(lows) > 0.5 else
                "That is better than even and not yet a clear preference, and closing it is the current work.")
     return f"""<section class="section" id="measured">
   <div class="inner"><div class="narrow">

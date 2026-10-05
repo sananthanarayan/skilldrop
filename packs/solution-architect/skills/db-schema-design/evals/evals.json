@@ -11,6 +11,35 @@
         "Every index maps to a real predicate from the listed queries rather than being speculative",
         "Denormalization, where proposed, names the read it serves and the write cost it adds"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "We're rebuilding the booking system for our vet clinics and I need the database tables designed properly this time. My notes on what it has to do are in notes.md and the tables we have today are in current_tables.sql. Can you give me the new schema, with the SQL to create it and the queries for the screens and the report?",
+      "assertions": [
+        "It includes CREATE TABLE statements for the new schema, with owners and pets as their own tables instead of the owner_name, owner_phone and pet_name columns repeated on each appointment",
+        "Double-booking a vet is prevented by a database constraint that handles appointments of different lengths (for example an exclusion constraint on a time range, or one row per time slot with a unique key), not only by an application check or by a unique key on vet and start time alone",
+        "Cancelled appointments are excluded from that constraint, so a cancelled time can be booked again",
+        "It points out that the notes say Postgres 15 while the contractor says the current app runs on MySQL 8, and states which one the SQL is written for",
+        "Prices are stored as an exact type (integer cents or a decimal/numeric), not FLOAT, and the price is modelled per appointment type per clinic",
+        "Appointment times are stored with a time zone or in UTC with each clinic's time zone recorded, and it notes that storing Sydney local time is wrong for the Brisbane clinics",
+        "It says the no-show report cannot be produced from the current statuses (booked, cancelled, completed) and adds a no-show status or an equivalent field",
+        "It gives a query or a named index for the vet's-day screen that leads on the vet and the appointment start time, and does not add tables for invoicing, payments, stock or clinical records"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "need somewhere to store sensor readings from our greenhouses. about 200 sensors, each does temperature + humidity, a reading every minute or so I think. I want to chart the last 24h for any one sensor and get an alert when something goes out of range. haven't picked a database yet. what tables do I need?",
+      "assertions": [
+        "It gives concrete table definitions (SQL or an equivalent column-by-column layout) in the reply, and does not stop to ask questions before delivering them",
+        "The readings table has a key or index on the sensor and the reading time together, and the reply ties it to the last-24-hours chart for one sensor",
+        "It works out the volume from the numbers given: about 288,000 readings a day (roughly 105 million a year) at one reading per sensor per minute, or an equivalent calculation",
+        "It names a database to use, or says which one it assumed, with a reason linked to the chart and alert queries",
+        "It says how long readings should be kept is not known and lists it as something to decide, without stating a retention period as if it had been given",
+        "It stores the allowed range somewhere (per sensor, per greenhouse or per sensor type) and says the actual range values were not given; any numbers shown are labelled as examples",
+        "Reading times are stored with a time zone or in UTC"
+      ]
     }
   ]
 }

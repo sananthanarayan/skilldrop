@@ -13,6 +13,35 @@
         "No forward references that break top-to-bottom reading",
         "Missing facts (e.g. the repo URL host or how to get a Stripe test key) are flagged as NEEDS INPUT rather than invented"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "Mirela dumped her notes on our partner API in api-notes.md and there's a sample response in sample-booking.json. Can you turn that into proper reference docs we can send to the partner devs who are integrating with us? Make sure the cancellation webhook is covered too, a couple of partners have asked about it.",
+      "assertions": [
+        "The rate limit is given as 60 requests per minute per key, following the changelog entry, and 120 is not presented as the current limit",
+        "It flags that the notes say money is integer cents in fields ending _cents while the sample response has decimal strings in unit_price and total, and does not silently document only one of them",
+        "It does not name the API key header (for example X-API-Key or Authorization: Bearer) as fact, and says the header name is not in the notes",
+        "It says the notes describe no cancellation webhook, only booking.confirmed, and does not document a cancellation event or payload",
+        "POST /bookings documents the required Idempotency-Key header and that reusing a key within 24 hours returns the original booking",
+        "The error responses in the notes are documented with their bodies: 409 slot_full with available, 422 validation_error, 429 with Retry-After, and 409 cancellation_window_closed",
+        "The POST /bookings body lists each field as required or optional, including quantity 1 to 8 and partner_ref up to 64 characters",
+        "The webhook section states the HMAC-SHA256 signature over the raw body in X-Tidewater-Signature and the 5 retries over about an hour"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "can you write up how our nightly export works for the new analyst starting monday? roughly: cron on the reporting box kicks off export.py at 2am, it pulls yesterday's orders from the replica, writes a csv to the sftp drop, and finance's tool picks it up at like 6. if it fails Theo gets an email. there's a retry thing in there somewhere but i honestly don't remember how it works",
+      "assertions": [
+        "It delivers a written explanation of the export for the analyst, and does not stop at questions",
+        "It describes the flow in order: cron at 2am runs export.py, which reads yesterday's orders from the replica, writes a CSV to the SFTP drop, and finance's tool collects it",
+        "It says how the retry works is not known and needs confirming, and does not state a retry count, delay or backoff",
+        "It does not invent hostnames, file paths, an SFTP directory, table names, CSV columns or a CSV filename",
+        "It says Theo is emailed when the export fails, and does not add an email address, a surname or other contacts",
+        "The finance pickup is given as around 6, not as an exact confirmed time",
+        "It includes no commands for running, restarting or debugging the export, since none were supplied"
+      ]
     }
   ]
 }

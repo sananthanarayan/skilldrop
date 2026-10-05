@@ -1,0 +1,25 @@
+- name: three-hours-over
+  input: Arrived 07:10, departed 12:10 at Halvorsen Cold Storage. 2 hours free, $60/hr. Load LF-207733. Address it to Halvorsen's receiving manager.
+  expect:
+    - time on site is 5 hours and billable time is 3 hours
+    - the amount claimed is 180.00
+    - the reply-by date is 14 days after the letter date
+- name: inside-free-time
+  input: Arrived 09:00, departed 10:45. 2 hours free, $75/hr. Load LF-207801, to Pellham Distribution.
+  expect:
+    - the reply says no detention is owed
+    - no letter is drafted
+- name: cap-applies
+  input: Arrived 06:00, departed 17:30 at Norcastle Foods. 2 hours free, $60/hr, max $480. Load LF-207950.
+  expect:
+    - the uncapped figure 570.00 is shown and the claim is 480.00
+- name: partial-increment
+  input: Arrived 13:05, departed 16:25. 2 hours free, $60/hr. Load LF-208010, to Wexcombe Mills.
+  expect:
+    - billable time is 1 hour 15 minutes, not 1 hour 20 minutes
+    - the amount claimed is 75.00
+- name: no-rate-given
+  input: Driver sat at Halvorsen for six hours yesterday on LF-208122, write the detention letter.
+  expect:
+    - the reply says the timestamps, the free time and the hourly rate are missing
+    - no amount is claimed

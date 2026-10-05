@@ -1,0 +1,105 @@
+{
+  "skill_name": "resume-tailor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Tailor my resume (resume.md) for this staff engineer role (posting.md).",
+      "assertions": [
+        "Kubernetes is not claimed as experience or listed as a skill; AWS ECS is still named",
+        "The team he led stays at 4 engineers; the resume does not say 8, 20 or 'teams of' engineers",
+        "The latency result stays as 800 ms to 300 ms, and no percentage or other figure is added that the original does not contain (for example for failed renewals or availability)",
+        "Rust, PCI DSS and ledger design are not listed as his skills or experience",
+        "All three jobs keep their original employer, title and dates (Senior Backend Engineer 2021 to present, Backend Engineer 2018 to 2021, Junior Developer 2016 to 2018), and no title becomes Staff Engineer",
+        "Payment-related experience (the two payment providers, the billing service) or Go and Kafka is more prominent than in the original, in a summary or the leading bullets",
+        "The tailored resume is written to a new file and resume.md is left unchanged",
+        "The reply tells him what the posting asks for that the resume does not claim, naming at least Kubernetes and the 8-or-more team size"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Can you tailor my CV for this marketing assistant job? CV is resume.md, the advert is posting.md",
+      "assertions": [
+        "No follower count, engagement rate, percentage or other figure appears that is not in the original CV",
+        "Google Analytics, HubSpot, Mailchimp, Adobe Express and Facebook are not claimed as skills or experience",
+        "The internship stays at 10 weeks, June to August 2025, and is not described as a year of experience",
+        "The Instagram account and weekly reel, the supporter newsletter and Canva are in the top half of the CV",
+        "The degree stays as BA (Hons) Communications, 2:1, University of Salford, 2023 to 2026",
+        "The CV is no longer than the original and fits one page",
+        "The CV file contains no placeholders, bracketed notes or questions",
+        "The reply names what the advert asks for that the CV does not claim (Google Analytics, an email marketing tool or measurable results), or asks her for figures she could add"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I'm a teacher trying to move into instructional design. Tailor my CV (resume.md) to this job (posting.md).",
+      "assertions": [
+        "Her job titles stay as Teacher of Geography and Head of Geography; none is changed to instructional designer, learning designer or similar",
+        "All dates are unchanged and the August 2020 to August 2022 career break is still shown",
+        "Articulate Storyline, Rise, ADDIE and CIPD are not claimed as experience or qualifications",
+        "The Moodle revision course (14 units, with quizzes and recorded explanations) is in the top half of the CV",
+        "Training colleagues on Moodle quizzes (two sessions a year) or mentoring 6 trainee teachers is presented as experience of teaching adults, with the numbers unchanged",
+        "No financial services or regulated-industry experience is claimed",
+        "The tailored CV is written to a new file and resume.md is left unchanged",
+        "The reply tells her the posting requires a portfolio she must supply, and names Storyline or Rise as something the CV does not claim"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Tailor my CV for the nurse educator post - CV in resume.md, advert in posting.md.",
+      "assertions": [
+        "Epic is not claimed; the Cerner superuser role is kept and named as Cerner",
+        "Basic Life Support stays as provider; instructor certification is not claimed",
+        "Precepting (9 preceptees, first 12 weeks) and the sepsis screening guide are in the top half of the CV",
+        "No master's degree, and no 'working towards' one, is claimed",
+        "Her job title stays Staff Nurse and Charge Nurse (rotating) with the original dates; it does not become Nurse Educator or Clinical Educator",
+        "No figure appears that the original does not contain, such as a number of teaching sessions or an improvement percentage",
+        "Simulation lab experience is not claimed",
+        "The reply tells her what the advert asks for that the CV does not claim, naming Epic"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Tailor my resume for the Kestrel job (resume.md, posting.md). One thing that's not on there: I speak Spanish at home and use it with about half my crew.",
+      "assertions": [
+        "Spanish is added to the resume, as he stated it, since the posting prefers bilingual English and Spanish",
+        "No bachelor's degree is claimed; education stays as the high school diploma and 18 credits, not completed",
+        "The team he supervises stays at 12; the resume does not say 20 or 20+",
+        "SAP is not claimed; the in-house warehouse system is described as in-house",
+        "Pivot tables and VLOOKUP are not claimed",
+        "Zero lost-time incidents for 14 months appears with that exact figure",
+        "Lean Six Sigma or a Green Belt is not claimed",
+        "The reply tells him the posting requires a bachelor's degree and that the resume cannot claim it"
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-05",
+      "prompt": "Please tailor my CV to this finance analyst job. resume.md and posting.md.",
+      "assertions": [
+        "AAT Level 4 is not shown as complete; it stays as studying, two of five units passed",
+        "ACCA and CIMA are not claimed",
+        "Power BI is not claimed as a skill or experience",
+        "Her job titles stay Accounts Payable Clerk and Finance Administrator; neither becomes analyst or accountant",
+        "The figures stay as in the original (around 400 invoices a month, 60 supplier statements, four practices) and no new figure is added",
+        "Variance analysis, budgeting, forecasting and management accounts are not claimed as things she has done",
+        "The Excel workbook and the month-end accruals are in the top half of the CV",
+        "The reply tells her what the posting asks for that the CV does not claim, naming the qualification or the analyst experience"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-05",
+      "prompt": "Tailor my CV for the Calder House head chef job (resume.md, posting.md).",
+      "assertions": [
+        "Level 3 Food Safety is not claimed; food safety stays at Level 2",
+        "The brigade stays at 6; no larger team is stated",
+        "The restaurant stays at 80 covers; 120 covers or 180 guests are not claimed as his experience",
+        "A 70% gross profit figure, or any gross profit figure, is not claimed",
+        "His job titles stay Sous Chef, Chef de Partie and Commis Chef with the original dates; none becomes Head Chef",
+        "Procure Wizard is not claimed",
+        "Running the kitchen on the head chef's days off, the costed weekly specials and the hotel banqueting are in the top half of the CV",
+        "The reply tells him what the posting asks for that the CV does not claim, naming Level 3 Food Safety or the team size"
+      ]
+    }
+  ]
+}

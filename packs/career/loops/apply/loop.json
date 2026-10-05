@@ -1,0 +1,46 @@
+{
+  "$comment": "RFC-0042. One job application, start to send. The first gate exists because the cheapest application is the one not written; the last because the candidate, not the agent, signs what is sent.",
+  "name": "apply",
+  "version": "0.1.0",
+  "description": "Take one job posting and one resume to an application ready to send — an honest fit check, a tailored resume and a cover letter — with the candidate deciding whether to apply before any writing, and confirming every claim is true before anything is sent. Use when the user wants to apply for a job, says \"help me apply for this\", or wants a resume and cover letter prepared for one posting.",
+  "entrypoint": "LOOP.md",
+  "kind": "loop",
+  "cap": 3,
+  "stages": [
+    {
+      "id": "fit",
+      "type": "gate",
+      "intent": "Say honestly where the candidate stands against the posting, then let them decide whether this application is worth writing.",
+      "skills": ["job-fit-analysis"],
+      "gate": {
+        "id": "G5",
+        "kind": "human",
+        "verdicts": ["PROCEED", "PROCEED WITH CONDITIONS", "RECONSIDER", "BLOCKED"]
+      }
+    },
+    {
+      "id": "tailor",
+      "type": "generate",
+      "intent": "Rewrite the resume for this posting from what the candidate has done and nothing else.",
+      "skills": ["resume-tailor"]
+    },
+    {
+      "id": "letter",
+      "type": "generate",
+      "intent": "Write the letter from the tailored resume, the posting and the candidate's own reason for wanting the job.",
+      "skills": ["cover-letter"]
+    },
+    {
+      "id": "confirm",
+      "type": "verify",
+      "intent": "Strip what the machine left behind, then have the candidate confirm that every line in both documents is true and theirs.",
+      "skills": ["output-hygiene"],
+      "gate": {
+        "id": "G6",
+        "kind": "human",
+        "verdicts": ["READY", "NOT READY", "BLOCKED"],
+        "revise_to": "tailor"
+      }
+    }
+  ]
+}

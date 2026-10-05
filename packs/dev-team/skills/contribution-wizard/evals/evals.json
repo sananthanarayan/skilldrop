@@ -14,6 +14,35 @@
         "Ends with next steps that place files under packs/sre-oncall/skills/sla-credit-calculator/ and require python3 validate.py to pass before opening a PR",
         "Does not invent inputs, deps, or related skills the author did not give"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "I want to add a skill to our team's skills repo. The repo is this folder (CONTRIBUTING.md, AGENTS.md, existing skills under skills/). The new one is carrier-invoice-audit: you give it a carrier's freight invoice and the rate confirmation for that load, and it lists every line where the carrier billed more than we agreed, with the difference. Ignore differences of $5.00 or less per line. It goes under billing. Related skills are rate-con-extractor and bol-parser. And if it finds a detention charge on the invoice it should kick off detention-claim-letter automatically at the end. Write everything I need for the pull request.",
+      "assertions": [
+        "The skill is delivered as skills/carrier-invoice-audit/ containing skill.yaml, INSTRUCTIONS.md and tests/cases.yaml, the layout CONTRIBUTING.md requires, and not as some other layout such as manifest.json plus SKILL.md",
+        "The related list contains rate-con-extractor and does not contain bol-parser, and the reply says bol-parser is not a skill in the repo",
+        "The skill's instructions do not make it run or hand off to detention-claim-letter, and the reply says the repo's rule that a skill never calls another skill is the reason",
+        "The owner field is a team that appears in OWNERS.md (billing-ops, dispatch or claims), and the reply tells the author the owner was not given and needs confirming",
+        "tests/cases.yaml has at least five cases, one of which covers a missing input such as no rate confirmation supplied, following AGENTS.md's rule over the three cases CONTRIBUTING.md asks for",
+        "The $5.00 per-line tolerance appears as an exact figure in INSTRUCTIONS.md, and no other threshold or percentage is introduced",
+        "A CATALOG.md row for carrier-invoice-audit is provided for the billing table",
+        "The reply tells the author to run make check before opening the pull request"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "need a new skill for our skills repo. takes the standup notes people paste from slack during the week and writes the friday update that goes to our director. not sure on the name yet, weekly-digest or friday-rollup. Priya wanted it to pull ticket status from Jira too but we don't have API access sorted so leave that out for now i guess. don't know which folder it should live in, whoever set the repo up is on leave. can you write the skill up plus a few test cases so i can open a PR when she's back",
+      "assertions": [
+        "It delivers a drafted instruction file for the skill and at least three test cases, and does not stop at a list of questions",
+        "It says the repo's conventions (required files, metadata format or folder) were not available and that the file layout used is an assumption to check",
+        "It uses one name for the skill throughout and tells the author the choice between weekly-digest and friday-rollup is still theirs to make",
+        "The skill as written does not fetch from Jira and declares no Jira credential, API key or dependency; Jira is mentioned only as left out for now",
+        "The skill's instructions tell it to report only what is in the pasted standup notes and not to add progress, blockers or ticket status the notes do not contain",
+        "It does not invent the director's name, the team's name, team members other than Priya, or a specific repo folder stated as fact",
+        "The test cases use realistic pasted standup notes as input, and at least one covers thin or missing notes"
+      ]
     }
   ]
 }

@@ -14,6 +14,36 @@
         "Does not add facts, benchmarks or figures that are not in the three sources, unless tagged [outside]",
         "Runs or recommends the citation checker and reports its result"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "We're a 45-person architecture practice and the directors are split on the 3-days-in-the-studio rule. Everything we have is in this folder: staff-survey-summary.md, badge-data.md, exit-interviews.md, director-email.md and practice-weekly-article.md. Can you pull it together for Thursday's directors' meeting? The choice is keep 3 days, drop to 2, or go up to 4 like Lucian wants. And tell me what changing it would do to retention.",
+      "assertions": [
+        "It corrects the claim that productivity is down 20%: the Castellan survey found 20% of managers believed productivity had fallen (and 34% believed it had risen), and it measured perceptions, not output",
+        "It treats Lucian's email and the Practice Weekly article as resting on the same Castellan survey, not as two independent pieces of evidence",
+        "It notes the Castellan fieldwork dates from October–November 2021 and treats it as dated or weak evidence for a 2026 decision",
+        "It points out that the Q1 answers in the staff survey add up to 40 (27 + 9 + 4) against 38 stated responses",
+        "It states that actual attendance already averages 2.4 days a week, below the 3-day rule, with 14 of 45 staff averaging 3 or more days",
+        "On retention it says the material cannot answer the question: three leavers, only one of whom (the technologist who moved to Bristol) linked leaving to office days; it gives no predicted retention effect",
+        "Each finding names the file it comes from, and the findings are grouped by topic, not written as one summary per file",
+        "It does not bring in studies, statistics or claims about hybrid working that are not in the five files"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "I talked to five cafe owners last week about whether they'd pay for our stock-ordering app. My notes are rubbish, sorry, here's what I've got:\n\n- Marta, Kiln St Coffee (2 sites). Orders by WhatsApp to 3 suppliers. Forgets oat milk 'every other week'. Said 'I'd try it'. Asked if it works with her till (Lumo), I didn't know.\n- Joss, The Larder. Does the ordering Sunday nights, takes about 2 hrs. 'If it saved me an hour I'd pay, maybe £30 a month?'\n- Dee, Dee's. Happy with her spreadsheet, 'not a problem for me'. But said her friend who runs a bakery would def pay £50/mo.\n- Priyank, Corner Cup. Ran out of time, he mostly talked about a supplier delivering late. Didn't get to the app.\n- can't find my notes for the fifth one. think it was positive\n\nCan you pull together what we learned? Do they want it, and what should we charge?",
+      "assertions": [
+        "It delivers the write-up from the notes as given and does not stop to ask for better notes first",
+        "It says only one owner, Joss, named a price they would pay (about £30 a month, said tentatively and conditional on saving an hour)",
+        "It does not treat the £50 a month figure as evidence of willingness to pay: it is Dee's second-hand remark about a bakery owner who was not interviewed",
+        "It says Dee does not see ordering as a problem and that Priyank's conversation never reached the app, so at most two of the four noted conversations show interest",
+        "The fifth conversation is treated as no evidence because the notes are missing; 'think it was positive' is not counted as a positive result",
+        "Marta's 'I'd try it' is reported as interest in trying, not as agreement to pay",
+        "It says five conversations are too few to set a price or to conclude that cafe owners want it, and gives any price suggestion as tentative",
+        "It does not add market figures, competitor prices or cafe-industry facts that are not in the notes"
+      ]
     }
   ]
 }

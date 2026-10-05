@@ -13,6 +13,35 @@
         "Includes a Python snippet passing the tool to client.messages.create(tools=[...]) and handling stop_reason == 'tool_use'",
         "Does not invent parameters, enum values, or behaviors not in the supplied signature and docstring"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "Need a Claude tool definition for bookAppointment (it's in book_appointment.ts) so our front-desk assistant can book visits for callers. Ideally the same tool lets it cancel a booking too.",
+      "assertions": [
+        "It produces a tool definition with a name, a description and an input_schema of type object, and ctx / RequestContext is not one of the properties",
+        "The top-level required array contains the clinic code, visit type, start time and contact, and does not contain duration, vet id or notes",
+        "The pet id is not unconditionally required: the definition or reply states it is needed for every visit type except new_patient and must be left out for new_patient",
+        "contact is a nested object with its own required array containing phone, with email and SMS reminders optional",
+        "It flags that the comment says bookings can be made up to 90 days ahead while the code enforces 60, and does not state 90 days as the limit",
+        "Duration is limited to 15, 30 or 45 with a default of 30, and the definition states that dental visits need 45 minutes",
+        "It says cancelling is not supported by this function and does not add a cancel parameter, action or mode to the tool",
+        "It does not list six clinic codes as an enum or as fact, since the source gives only the example PVG-03"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "need tool defs for our support agent, two things: look up a shipment by tracking number, and get a shipping quote. quote needs origin zip, dest zip, weight (lbs) and service level - we have ground, 2-day and overnight i think? Dario would know for sure. dimensions are optional on the quote. no idea yet what the lookup gives back, that endpoint's still being built",
+      "assertions": [
+        "It delivers two tool definitions, each with a name, a description and an input_schema, and does not stop at questions",
+        "The quote tool's required array includes origin zip, destination zip and weight, and dimensions is not in it",
+        "The weight parameter's description states the unit is pounds",
+        "Service level offers ground, 2-day and overnight, and the reply says that list is unconfirmed and should be checked",
+        "Each tool's description says when the agent should call it, so a tracking question and a pricing question map to different tools",
+        "It does not state a tracking number format or pattern, a weight limit, carrier names or a dimension unit as fact",
+        "It does not describe the lookup's return fields as fact, and says what the lookup returns is not yet known"
+      ]
     }
   ]
 }

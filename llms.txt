@@ -1,12 +1,12 @@
 # skilldrop
 
-> 96 portable skills for the artifacts knowledge work ships (ADRs, design docs,
-> PRDs, runbooks, threat models, decks, postmortems), plus 6 loops that sequence them
+> 99 portable skills for the artifacts knowledge work ships (ADRs, design docs,
+> PRDs, runbooks, threat models, decks, postmortems), plus 7 loops that sequence them
 > behind gates. A loop orders skills; a skill never calls a skill, so every one of the
-> 96 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
+> 99 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.16.6.
+> Version 0.16.7.
 
 ## Start here
 
@@ -23,6 +23,7 @@ Five loops cover the lifecycle and are separated by reversibility (how expensive
 mistake is to unwind), which is also what decides who may sign off. One wrapper applies
 to any generator.
 
+- [apply](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/career/loops/apply/LOOP.md) — *loop*, cap 3. Stages: fit -> tailor -> letter -> confirm. Gates: G5 (human), G6 (human).
 - [build](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/dev-team/loops/build/LOOP.md) — *loop*, cap 3. Stages: shape -> implement -> verify -> decide. Gates: G2 (mechanical), G2.1 (human).
 - [design](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/solution-architect/loops/design/LOOP.md) — *loop*, cap 3. Stages: constrain -> shape -> threat -> ratify -> record. Gates: G1 (review).
 - [discover](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/product-manager/loops/discover/LOOP.md) — *loop*, cap 3. Stages: gather -> structure -> specify -> ratify. Gates: G0 (human).
@@ -46,6 +47,8 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 ## Guides
 
 - [Why loops](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/loops.md) *(explanation)*: Why skilldrop sequences skills in a separate primitive instead of letting skills call each other, and why there are five lifecycle loops rather than three.
+- [Does the agent invent your resume?](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/resume-fabrication-comparison.md) *(explanation)*: The same 14 resume and cover-letter requests run with the career pack's skills and with plain Claude Code - how often each put something in the document that the person never said, and what kind of thing it was.
+- [What the benchmark showed](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/what-the-benchmark-showed.md) *(explanation)*: Five days of measuring skills against the agent without them - a large gain on the skills' own checks, no blind preference at first, a gain that did not survive new evals, and what the skills that do win have in common.
 - [Author a new loop](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/author-a-loop.md) *(how-to)*: How to add a loop — the closed loop.json contract, the three stage types, gate rules, and the checks that will reject a loop that only looks like governance.
 - [Author a new skill](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/author-a-skill.md) *(how-to)*: The short version of the authoring path — what a skill must contain, what gates it, and where the full contributor rules live.
 - [Benchmark skills against the agent without them](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/benchmark-skills.md) *(how-to)*: Run each acceptance eval twice as an agent session, with the skill and without it, and read the lift, the blind preference from two judges, and the cost.
@@ -59,6 +62,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Measure your loops](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/measure-your-loops.md) *(how-to)*: Turn on the opt-in, local-only run log, then see which gates pass first time, which keep looping back, and which end in BLOCKED.
 - [Use the AI engineering pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-ai-engineering-pack.md) *(how-to)*: Install the AI engineering pack, run its first task, and follow a typical session step by step.
 - [Use the API builder pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-api-builder-pack.md) *(how-to)*: Install the API builder pack, run its first task, and follow a typical session step by step.
+- [Use the Job applications pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-career-pack.md) *(how-to)*: Install the Job applications pack, run its first task, and follow a typical session step by step.
 - [Use the Converters pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-converters-pack.md) *(how-to)*: Install the Converters pack, run its first task, and follow a typical session step by step.
 - [Use the Core pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-core-pack.md) *(how-to)*: Install the Core pack, run its first task, and follow a typical session step by step.
 - [Use the Data and analytics pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-data-analytics-pack.md) *(how-to)*: Install the Data and analytics pack, run its first task, and follow a typical session step by step.
@@ -85,6 +89,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [skilldrop and the OWASP Top 10s](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/owasp-mapping.md) *(reference)*: Where skilldrop's controls meet the OWASP Agentic Skills Top 10 and the LLM Top 10 2025, what each control actually does, and the gaps it leaves.
 - [AI engineering pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-ai-engineering.md) *(reference)*: Every skill in the AI engineering pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [API builder pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-api-builder.md) *(reference)*: Every skill in the API builder pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
+- [Job applications pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-career.md) *(reference)*: Every skill in the Job applications pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Converters pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-converters.md) *(reference)*: Every skill in the Converters pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Core pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-core.md) *(reference)*: Every skill in the Core pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Data and analytics pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-data-analytics.md) *(reference)*: Every skill in the Data and analytics pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
@@ -132,6 +137,7 @@ except `api-builder` requires `core`, which installs with it.
 - **grc** (4 skills, requires core): Governance, risk and compliance drafts for compliance leads, DPOs and risk owners: a risk register with a checked heat map, a GDPR data protection impact assessment, a SOC 2 control-to-evidence map, and answers to a customer security questionnaire drawn from your own evidence, each prepared for a qualified person to review.
 - **infra-as-code** (2 skills, requires core): Terraform you can hand to another team and plans you can trust before apply: reusable modules with secure defaults, and a plan review that catches destroys, data loss, access widening and drift.
 - **skill-engineering** (2 skills, requires core): For people writing Agent Skills in their own repos: write a portable SKILL.md folder from a described task, then audit any skill for routing, portability, safety, structure and evals before you share it.
+- **career** (3 skills, loops: apply, requires core): One job application, for any occupation: an honest check of your resume against the posting, a tailored resume and a cover letter that say nothing you didn't, and a script that lists every figure and name in a draft that your own resume doesn't contain.
 
 ## Outcomes — browse by why you are here
 
@@ -149,6 +155,7 @@ except `api-builder` requires `core`, which installs with it.
 - **define-and-trust-the-numbers** (3 skills): Make the numbers a business runs on mean one thing: metric definitions a semantic layer can implement, SQL reviewed for wrong answers, and dashboards specced before they're built.
 - **manage-risk-and-compliance** (4 skills): Prepare the material compliance asks for: a data protection impact assessment, a SOC 2 evidence map, a risk register with owners and review dates, and answers to a customer's security questionnaire with the evidence behind each.
 - **build-agent-skills** (2 skills): Write and review Agent Skills for any tool: a portable SKILL.md with evals, and an audit of an existing skill before it ships.
+- **apply-for-a-job** (3 skills): Prepare one application that is tailored and true: an honest fit check against the posting, a resume reworked without adding a claim, and a cover letter built only from what you supplied.
 
 ## Reviewer subagents
 
@@ -161,10 +168,10 @@ except `api-builder` requires `core`, which installs with it.
 - [catalogue.json](https://sananthanarayan.github.io/skilldrop/catalogue.json): every skill, loop, pack and outcome as machine-readable JSON — name, description, tier, tags, related. Prefer this over scraping the site.
 - [model-routing.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/model-routing.json): the abstract tier per skill (light/standard/heavy) and the provider map that resolves a tier to a concrete model.
 - [catalogue.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/catalogue.json): pack display order and outcome membership; each pack's metadata is in `packs/<pack>/pack.json`.
-- All 96 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
+- All 99 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
 
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 41 accepted RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 42 accepted RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.

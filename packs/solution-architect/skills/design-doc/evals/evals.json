@@ -12,6 +12,35 @@
         "The rollout section names stages and what would halt it",
         "Facts not supplied by the user are marked as open questions rather than invented"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "Can you write the design doc for offline mode in the inspector app? Product's brief is brief.md and Halvard's notes from our eng discussion are eng-notes.md. It goes to design review on Thursday so it needs to stand on its own. Please include how much storage it needs per device too.",
+      "assertions": [
+        "It flags that the timeline does not work as written: 14 weeks from a 14 Dec 2026 start ends around 22 March 2027, after the 1 March 2027 Calder County deadline, and it proposes a way through or raises it as a decision",
+        "The size of the problem is given as 1,120 of 8,400 inspections (about 13%) with sync or save errors, or the brief's 'around 40%' is called out as unsupported by the logged numbers",
+        "It does not apply plain last-write-wins to signed inspections; it surfaces the conflict between the brief and the compliance rule that a signed inspection must never be overwritten",
+        "The server-side sync endpoint is shown as depending on the Platform team with no owner confirmed and nobody yet asked",
+        "Per-device storage need is stated as not yet measured, with no invented figure, and measuring it is listed as a to-do or open question",
+        "At least two of the alternatives from the notes (outbox queue, CRDT library, PDF re-keying) are described with the reason each was not chosen as the main approach",
+        "The rollout starts with the 12 Calder County volunteers and gives at least one concrete, checkable condition for widening or stopping it",
+        "It does not invent crash rates, backend load figures, costs or device counts that are not in the two files"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "need a one-pager design doc by end of day for moving our cron jobs off the old box. there's like 30ish of them on a single ec2 instance (cron-01), some of them nobody knows what they do anymore. thinking either k8s cronjobs since we already have a cluster, or some managed scheduler. Jonas wants it done before the OS on that instance goes end of life but I don't remember the date. 4 of us on the team.",
+      "assertions": [
+        "It delivers a design doc in the reply rather than only asking questions",
+        "The OS end-of-life date is recorded as unknown and to be confirmed; no specific date is invented",
+        "The jobs nobody understands are dealt with explicitly, through an inventory or audit step or a named risk with a mitigation, not assumed to be understood",
+        "Both Kubernetes CronJobs and a managed scheduler are described, with a reason for preferring one or a statement of what would decide it",
+        "The job count stays approximate ('about 30'); it does not invent an exact count, job names, schedules or failure rates",
+        "It says how a migrated job is checked before its old cron entry is removed, and how to go back if it misbehaves",
+        "It is about one page: roughly 700 words or fewer"
+      ]
     }
   ]
 }

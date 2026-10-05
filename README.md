@@ -33,6 +33,7 @@ Install one pack. Every role pack also brings `core` (intake, critique, review c
 - **Governance, risk and compliance:** `grc` — DPIAs, SOC 2 evidence maps, risk registers, security questionnaire answers. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/grc/)
 - **Infrastructure as code:** `infra-as-code` — Terraform modules with secure defaults, and plan reviews before apply. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/infra-as-code/)
 - **Writing agent skills:** `skill-engineering` — author a portable skill with evals, and review one before it ships. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/skill-engineering/)
+- **Applying for a job:** `career` — an honest fit check against the posting, a tailored resume and a cover letter that claim nothing you didn't. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/career/)
 - **Everyone:** `core` on its own. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/core/)
 
 ## Start in one command
@@ -54,7 +55,7 @@ In Claude Code you can use the plugin marketplace instead: run `/plugin marketpl
 ## How it works
 
 - **A skill produces one file you own.** Each ships a quality bar, named anti-patterns and acceptance evals, so the output is an artifact, not a conversation. See [every skill, by category](guides/reference/skill-catalogue.md).
-- **Loops order skills, and a gate decides when work moves on.** Five loops cover the lifecycle (`discover`, `design`, `build`, `release`, `operate`), plus the `ship-a-draft` wrapper for any document. Each gate is a script, a review panel or a person, chosen by how expensive the mistake is to undo. See [the loops, stage by stage](guides/reference/loops.md) and [why loops](guides/explanation/loops.md).
+- **Loops order skills, and a gate decides when work moves on.** Five loops cover the lifecycle (`discover`, `design`, `build`, `release`, `operate`), plus the `ship-a-draft` wrapper for any document and `apply` for a job application. Each gate is a script, a review panel or a person, chosen by how expensive the mistake is to undo. See [the loops, stage by stage](guides/reference/loops.md) and [why loops](guides/explanation/loops.md).
 - **Measured, not asserted.** `run_bench.py` runs each acceptance eval with the skill and without it, in a sandbox, and reports the lift, a blind preference from two judges, and the cost per run. The results are published whether or not they flatter the skills. See [how skills are checked](https://sananthanarayan.github.io/skilldrop/evals/) and [RFC-0040](docs/rfcs/0040-skill-benchmark.md).
 - **Copy, never transform.** A skill is a plain `SKILL.md` folder in the [Agent Skills](https://agentskills.io) format, at `packs/<pack>/skills/<name>/`. What runs in your agent is byte-identical to what is reviewed here. There is no runtime, and the tooling has zero dependencies.
 - **Updates keep your edits.** `npx skilldrop-cli update` replaces files you haven't touched. For any file you changed, it leaves the new version beside it as `<file>.upstream`. See [upgrade installed skills](guides/how-to/upgrade-skills.md).

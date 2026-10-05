@@ -1,0 +1,76 @@
+{
+  "skill_name": "job-fit-analysis",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "My CV is in resume.md and the job I'm looking at is in posting.md. Am I a good fit? Be honest, I don't want to waste a weekend on it.",
+      "assertions": [
+        "The Epic requirement is marked as not met, partly met or not shown, and the reply says her CV shows Cerner, not Epic, naming both systems",
+        "Basic Life Support instructor certification is shown as not held: the CV has BLS provider only",
+        "The teaching requirement is credited from precepting newly qualified nurses (9 preceptees) or the 2022 mentorship module, and the reply notes or asks how long she has been precepting, because the CV does not show two years of it",
+        "NMC registration, a nursing degree and at least 3 years of post-registration medical-surgical experience are each marked as met",
+        "A master's degree and simulation lab experience are shown as not held or not shown, and as preferred items, not required ones",
+        "The reply opens with an overall verdict on whether to apply, before the requirement-by-requirement detail",
+        "It points to the sepsis screening guide or the Cerner superuser role as existing evidence worth bringing forward",
+        "It does not credit her with any tool, qualification or experience that is not in the CV, and does not advise adding one"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Thinking of applying for this (posting.md). My resume's in resume.md. What are my chances and what's missing?",
+      "assertions": [
+        "The bachelor's degree is marked as required and not met: the resume shows a high school diploma and 18 uncompleted college credits",
+        "The degree gap is stated in the verdict or before the detailed list, as something likely to screen him out, not only as one row among many",
+        "The team-size requirement is marked short, with both numbers: he supervises 12 and the posting asks for 20 or more",
+        "SAP Extended Warehouse Management is marked not shown or partly met, and the reply says the resume shows an in-house warehouse system instead",
+        "Advanced Excel is not marked fully met: the resume shows rosters and attendance in Excel, and pivot tables and VLOOKUP are not shown",
+        "The safety record (zero lost-time incidents for 14 months) and the forklift certification are marked as met, quoting the resume",
+        "The overall verdict is not a strong match, and matches the unmet degree requirement",
+        "It does not advise him to claim a degree, SAP experience, a bigger team or any keyword he has not shown"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Is this worth applying for? I've been a barista for 4 years, shift lead for the last 2 - I do the rota for 9 people, the weekly stock order and cashing up. No degree.\n\nOffice Manager, Pell & Dray Architects (14 staff)\n- 2+ years in an office administration role\n- Managing supplier relationships and ordering\n- Organising staff schedules and meeting rooms\n- Bookkeeping experience with Xero\n- Confident with Microsoft 365\n- Friendly first point of contact for clients and visitors",
+      "assertions": [
+        "It delivers a requirement-by-requirement comparison from what was given, and does not stop to ask for a resume first",
+        "The 2+ years of office administration is marked not met or named as the main gap, since the experience is in a cafe and not an office",
+        "The rota for 9 people is credited against organising staff schedules, and the weekly stock order against ordering, each citing what the person said",
+        "Xero is marked not shown or not met, and cashing up is not presented as Xero or bookkeeping-software experience",
+        "Microsoft 365 is marked not shown or asked about, not assumed",
+        "The lack of a degree is not treated as a gap, because the posting does not ask for one",
+        "It gives an overall verdict that is honest about the office-experience gap",
+        "It does not invent an employer name, a qualification, a tool or any experience the person did not state"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-05",
+      "prompt": "Would I get anywhere with this? CV is resume.md, job is posting.md.",
+      "assertions": [
+        "The qualification requirement is marked not met: she has AAT Level 3 and two of five Level 4 units, not Level 4 complete or part-qualified ACCA or CIMA",
+        "The 2 years in a management accounts or analyst role is marked not met or short: her roles are accounts payable clerk and finance administrator",
+        "Power BI is shown as not held, and the Excel workbook is not presented as Power BI experience",
+        "Advanced Excel is credited from the workbook with pivot tables and lookups, quoting the CV",
+        "Variance analysis and budget commentary are marked not shown or not met",
+        "Sage 200 and the accruals for goods received not invoiced are credited as relevant evidence",
+        "The reply opens with a clear answer on whether to apply",
+        "It does not credit her with any qualification, tool or experience that is not in the CV"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-05",
+      "prompt": "Head chef job at a hotel, posting.md. My CV's resume.md. Realistic or not?",
+      "assertions": [
+        "Level 3 Food Safety is marked not met: he holds Level 2, and his Level 3 is in Professional Cookery, which is a different qualification",
+        "Team size is marked short with both numbers: a brigade of 6 against 12 or more",
+        "Running the kitchen on the head chef's two days off is credited toward the sous-chef-with-full-responsibility requirement, quoting the CV",
+        "Costing is credited from the weekly specials, and the 70% gross profit target is noted as not shown",
+        "Banqueting is credited from covering weddings at Harbour Rooms Hotel, and hotel experience is marked met",
+        "The reply gives a clear answer on whether it is realistic",
+        "It does not credit him with a qualification, a cover count, a team size or a system that is not in the CV"
+      ]
+    }
+  ]
+}

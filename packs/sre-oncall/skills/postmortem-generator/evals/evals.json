@@ -12,6 +12,36 @@
         "Contributing factors are listed rather than a single root cause",
         "Action items carry owners as roles and are derived from the contributing factors"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "I need the postmortem for the 17 Sept label printing outage (INC-2291) for Monday's incident review. The pager export is pager-export.txt and I dumped the incident channel into slack-thread.txt. Please include what we owe merchants in SLA credits. It goes to the whole engineering org.",
+      "assertions": [
+        "The customer-facing outage is given as 94 minutes (07:12 to 08:46 UTC, or 09:12 to 10:46 CEST), not 75 minutes or 2 hours, or those other figures are explicitly reconciled against it",
+        "Times from the Slack thread (CEST) and the pager export (UTC) are put on one consistent clock, so the first support ticket (07:20 UTC / 09:20 CEST) appears before the page (07:31 UTC / 09:31 CEST)",
+        "It states that the page fired about 19 minutes after errors began and that customer tickets arrived before any alert did",
+        "The 06:55 UTC (08:55 CEST) deploy is not given as the cause; the output says the rollback to v411 had no effect and the cause was the expired rates-gateway certificate",
+        "No named individual or their team is blamed for the expired certificate; the unowned service, the renewal job failing since 27 Aug and the muted #infra-noise alerts are given as causes instead",
+        "Impact uses the measured 18,430 failed of 21,900 label requests and 212 merchant accounts, and the 'roughly 40k shipments' figure is not presented as measured",
+        "The SLA credit amount is stated as unknown because the contract terms are not in the material, and no figure is invented",
+        "The follow-up to fix the renewal job is shown as having no agreed owner or date, and the output notes the manually issued certificate expires in about 90 days (mid-December 2026)"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "can you write up a postmortem for our backup thing. we're 5 people so nothing fancy but I want it on record. nightly db backup hadn't actually run for about 9 days, we only found out Fri 2 Oct when Lena tried to restore a copy into staging and the newest dump was old. no customer impact as far as we know. what we worked out: disk on the cron host has been full since ~Sep 23, the backup script exits 0 even when the dump fails, and nobody gets alerted on anything from that box. fixed by clearing out /var/log and re-running, good backup as of Fri 14:10.",
+      "assertions": [
+        "It states there was no known customer impact and does not invent downtime, users affected or data lost",
+        "It states the exposure plainly: roughly 9 days (about 23 Sep to 2 Oct) with no valid backup, meaning a database failure in that window would have lost up to that much data",
+        "The full disk, the script exiting 0 on failure, and the absence of alerting are given as separate contributing causes, not collapsed into one root cause",
+        "It says the problem was found by chance during a staging restore, not by monitoring",
+        "It marks as unknown or approximate the exact time backups stopped and what filled the disk, and does not invent a minute-by-minute timeline",
+        "Action items cover at least the exit-code behaviour and alerting on backup failure or staleness, each written so someone can check it is done",
+        "It does not blame Lena or any individual",
+        "It delivers the postmortem in the reply rather than only asking questions"
+      ]
     }
   ]
 }
