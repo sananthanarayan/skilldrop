@@ -256,6 +256,7 @@ flowchart LR
     fit["fit<br/><small>job-fit-analysis</small>"]:::gate
     tailor["tailor<br/><small>resume-tailor</small>"]:::gen
     letter["letter<br/><small>cover-letter</small>"]:::gen
+    form["form<br/><small>application-form-answers</small>"]:::gen
     confirm["confirm<br/><small>output-hygiene</small>"]:::review
     G5{"G5 · human"}:::gate
     G6{"G6 · human"}:::gate
@@ -264,7 +265,8 @@ flowchart LR
     fit --> G5
     G5 == "PROCEED" ==> tailor
     tailor --> letter
-    letter --> confirm
+    letter --> form
+    form --> confirm
     confirm --> G6
     G6 == "READY" ==> DONE
 

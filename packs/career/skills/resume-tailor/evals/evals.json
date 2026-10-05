@@ -100,6 +100,34 @@
         "Running the kitchen on the head chef's days off, the costed weekly specials and the hotel banqueting are in the top half of the CV",
         "The reply tells him what the posting asks for that the CV does not claim, naming Level 3 Food Safety or the team size"
       ]
+    },
+    {
+      "id": 8,
+      "prompt": "Tailor my CV for this customer success job (posting.md). The CV is resume.typ - I build the PDF from that with Typst.",
+      "assertions": [
+        "The tailored CV is written as a new Typst file (for example resume-brightloop.typ) and resume.typ is left unchanged",
+        "The new file is still Typst source, keeping the page setup and the role helper; it is not converted to Markdown or plain text",
+        "'Hart & Lowe Software' and 'Research & Insights' appear exactly as in the original",
+        "The renewals line keeps 40 accounts and $1.2M and still says she supported renewals alongside the account managers; it does not say she owned or managed the renewals, a $1.2M book or a revenue target",
+        "Gainsight and a customer success certification are not claimed",
+        "Her job titles stay Support Team Lead, Support Agent then Senior Support Agent, and Customer Service Adviser, with the original dates",
+        "The reply lists each line that was cut, or says that nothing was cut",
+        "The reply does not state a page count or say a PDF was built unless the run actually produced a PDF file"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Tailor my CV (resume.md) to posting.md. linkedin-about.txt has a couple of things that aren't on my CV.",
+      "assertions": [
+        "The monthly onboarding webinar for new customers is added to the CV with the figures as she gave them: since January 2024, around 30 people",
+        "Co-chairing the Customer Advisory Board is added or offered, with 8 customers and twice a year unchanged if figures are given",
+        "The reply lists what was added from the LinkedIn text separately from the other changes, for her to confirm",
+        "She is not said to have owned renewals or carried a revenue target; the renewals line still says she supported them",
+        "Gainsight is not claimed",
+        "Three or more years in customer success or account management is not claimed, and her job titles are unchanged",
+        "The reading mentor volunteering is left out or kept as volunteering; it is not presented as customer experience",
+        "The reply names what the posting asks for that the CV cannot claim, such as owning renewals or Gainsight"
+      ]
     }
   ]
 }

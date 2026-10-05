@@ -24,10 +24,15 @@ These four rules outrank the steps below.
 - **Write for the recruiter.** The file contains the resume and nothing else: no notes,
   no placeholders, no brackets, no mention of this skill.
 
-1. **Read both documents.** From the posting take the requirements in the employer's words,
-   required before preferred. From the resume take every job, date, title, qualification,
-   tool and number. If the person told you facts that are not in the resume, save them to
-   `notes.md` so they count as source material.
+1. **Read everything the person gave you.** From the posting take the requirements in the
+   employer's words, required before preferred. From the resume take every job, date, title,
+   qualification, tool and number. The person's own material also counts as a source: facts
+   they tell you, and any file they point to, such as a LinkedIn summary, a portfolio page
+   or a project's README. Save every fact that is not in the resume to `notes.md`, with
+   where it came from.
+
+   When the posting is a link, read the full text. If you cannot open it, say so and ask for
+   the text pasted in. Never rebuild a posting from what you remember of the employer.
 
 2. **Decide what leads.** For each requirement find the resume lines that answer it. Lines
    that answer a required item move up within their job; lines that answer nothing in this
@@ -50,16 +55,30 @@ These four rules outrank the steps below.
 4. **Write the summary last**, two or three lines at the top, built only from lines below it.
    Use the resume's own job title, not the posting's.
 
-5. **Keep it sendable.** Same sections and no more pages than the original; one
+5. **Work in the resume's own format.** Many resumes are built from a source file: Typst,
+   LaTeX, Word, a resume builder's data file. Find that file and edit a copy of it, named
+   `resume-<employer>` with the same extension, beside the original. Never edit the original
+   or anything else in its project. Keep the source valid: its imports, its escapes (`\$`,
+   `\&`), its structure. Build the copy the way the original is built when the tool is
+   there (`typst compile`, `pdflatex`), and look at the page count of what comes out. If you
+   cannot build it, say so and give the command; do not describe a PDF you did not make.
+
+6. **Treat the page count as a budget.** The result has no more pages than the original.
+   Anything you add is paid for with a cut, and every line you cut is reported in the reply
+   with a few words on why, so the person can ask for it back. Cut what answers nothing in
+   this posting first: older roles' detail before recent roles', a third example of the same
+   point before the only example of another.
+
+7. **Keep it sendable.** Same sections as the original; one
    column, standard headings, no tables, images or text boxes, so application systems can
    parse it. Keep the person's contact details, spelling convention and the word they use
    (resume or CV). Do not add a photo, date of birth or anything the original left out.
    Employment gaps stay as the original shows them.
 
-6. **Write a new file** beside the original, `resume-<employer>.md`, or the original's format
-   when you can produce it. Never overwrite the original.
+8. **Write a new file** beside the original: `resume-<employer>.md` for a text or Markdown
+   resume, or the copy from step 5. Never overwrite the original.
 
-7. **Run the check and resolve every line it prints:**
+9. **Run the check and resolve every line it prints:**
 
    ```
    python3 ${CLAUDE_SKILL_DIR}/scripts/claim_check.py resume-<employer>.md --source <original> --posting <posting>
@@ -71,9 +90,12 @@ These four rules outrank the steps below.
    source line that shows the same thing or take it out. Rerun until what remains is wording
    you can trace. If you cannot run it, do the same check by reading.
 
-8. **Reply in this order, briefly:**
+10. **Reply in this order, briefly:**
    - the file name, or the resume itself when you cannot write files;
    - **What changed**: four to six lines;
+   - **Cut**: each line you removed, with a few words on why. Say "nothing cut" when so;
+   - **Added from outside the resume**: each fact that came from what they told you or from
+     another file, with where it came from, for them to confirm before sending;
    - **Not claimed**: each thing the posting asks for that the resume doesn't support, so the
      person knows what the employer will notice;
    - **Would be stronger with**: up to five short questions whose answers you could add,
@@ -90,6 +112,8 @@ build one only from what the person tells you about their history, and say what 
 - **The posting's required items are answered in the top half**, wherever the resume can.
 - **The file can be sent as it is**: no placeholders, notes or brackets.
 - **What the resume cannot claim is reported to the person, not papered over.**
+- **Nothing is cut silently and nothing from outside the resume is added silently.**
+- **The original file and its project are untouched.**
 
 ## When to use this skill
 
@@ -113,4 +137,8 @@ build one only from what the person tells you about their history, and say what 
 - ❌ **Smoothing over a gap** by changing dates or dropping months.
 - ❌ **Rewriting everything.** A recruiter should still recognise the person's own career.
 - ❌ **A longer resume than the original.** Tailoring cuts.
+- ❌ **A silent cut.** The person finds out at interview that their favourite line is gone.
+- ❌ **Converting the format.** A Typst or Word resume handed back as Markdown loses the
+  design the person chose and cannot be sent.
+- ❌ **Claiming a build.** "The PDF is two pages" when no PDF was produced.
 - ❌ **Showing the machinery.** No mention of the check, this skill, or how the file was made.
