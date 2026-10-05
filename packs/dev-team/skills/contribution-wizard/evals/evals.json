@@ -43,6 +43,36 @@
         "It does not invent the director's name, the team's name, team members other than Priya, or a specific repo folder stated as fact",
         "The test cases use realistic pasted standup notes as input, and at least one covers thin or missing notes"
       ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "Our library systems team keeps a small skills repo, it's this folder (CONTRIBUTING.md, registry.json, a couple of existing skills under skills/). I want to add one called ILL_Request_Triage. Staff paste in an interlibrary loan request from the request form export (patron name, card number, the title, author, year published, list price, and whether the catalogue check found a copy on our shelves) and it says which of our four routes the request goes down, with a one-line reason:\n\n- fill from our own stock, if the catalogue check says we hold a copy that's on the shelf\n- borrow through the Northmere Consortium, if we don't hold it and it was published more than 2 years ago\n- buy it, if we don't hold it, it was published in the last 2 years and the list price is under £60\n\nCategory is resource-sharing, maintainer is resource-sharing@harrowgate.example. Can you write up everything I need for the pull request?",
+      "assertions": [
+        "The skill's metadata is delivered as a skill.toml file alongside PROMPT.md and an examples folder, and no meta.json is created for the new skill",
+        "The skill is given a lowercase hyphenated name that starts with a verb and spells out interlibrary loan (for example triage-interlibrary-loan-requests), not ILL_Request_Triage or a name containing the abbreviation ill, and the reply tells the author the name was changed to fit the naming rules",
+        "handles_patron_data is set to true, and the skill's instructions tell the assistant not to repeat the library card number in its output",
+        "The reply tells the author that four routes were mentioned but only three were described, and does not write a rule for a fourth route as though the author had given one",
+        "It points out at least one request the stated rules do not cover, such as a title published in the last 2 years with a list price of £60 or more, or a copy we hold that is out on loan",
+        "The skill's instructions carry the 2-year and £60 thresholds exactly as given and introduce no other price or age threshold",
+        "There are at least three example input/expected pairs, and at least one is an awkward case such as a request with a field missing",
+        "A registry.json entry for the new skill is provided with category resource-sharing and maintainer resource-sharing@harrowgate.example"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "my cofounder keeps saying we should have a 'skill' so our coding agent writes the release notes instead of me doing it every other friday. input is the list of merged PR titles since the last release, output is the notes we post for customers (they're shop owners, not devs). some PRs shouldn't show up publicly, security fixes mostly, so handle that somehow. we're 4 people and don't have a skills setup yet, i think it'd go in .claude/skills in the main repo but not sure that's right. keep it small, one file if possible, plus a couple of examples i can try it on",
+      "assertions": [
+        "It delivers a drafted instruction file for the release-notes skill and at least two example inputs to try it on, and does not stop at a list of questions",
+        "The skill itself is one instruction file, with no separate manifest, metadata file or multi-file package presented as required",
+        "It says where the skill should live is unconfirmed, treating .claude/skills as the author's guess to check, not as an established fact about their repo",
+        "The skill's instructions tell it to write only from the PR titles it is given and not to add features, fixes or details the titles do not contain",
+        "The skill's instructions tell it to write for shop owners in plain language, not to copy developer-facing PR titles through as they are",
+        "The skill's instructions keep security-fix PRs out of the public notes or set them aside for a person to decide, and the reply says the exact rule for what stays private is the author's to confirm",
+        "At least one of the examples includes a security-fix PR title",
+        "It does not invent a product name, a company name, a version number scheme, PR label names or a command for fetching the PR titles and state it as fact"
+      ]
     }
   ]
 }

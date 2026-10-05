@@ -43,6 +43,35 @@
         "It does not invent dates, PR numbers, a commit count for commits it was not shown, or features not in the pasted list",
         "It delivers usable release notes in the reply rather than only asking questions, and lists the items that need confirming before sending"
       ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "Portside WMS 5.0.0 goes out to customers on Thursday. The log since 4.9.2 is in git-log.txt. Two things please: (1) upgrade notes for admins. Our customers run Portside on their own servers, so their IT people need to know what to do before they upgrade. (2) A short paragraph for the customer newsletter, three or four sentences. Sales want the newsletter to lead with batch scanning and to say the duplicate pick list problem is finally fixed. Also remind people that 4.x support ends on 31 December.",
+      "assertions": [
+        "The PostgreSQL 15+ requirement is called out as something admins must deal with before upgrading (the installer aborts on PostgreSQL 13 and 14), even though its commit is labelled chore",
+        "The removal of /api/v1/stock is called out as a breaking change with /api/v2/stock-levels as the replacement, and the breaking items come before the new features in the admin notes",
+        "Batch scanning is described as off by default (flag scan.batch.enabled, missed reads on older handhelds), not as a feature that works out of the box after upgrading",
+        "The duplicate pick list problem is not described as fully fixed; the output says split shipments can still produce a duplicate line (#1893) or flags that the 'finally fixed' claim is not supported by the log",
+        "The end of 4.x maintenance is given as 31 March 2027, or the conflict between the requested 31 December date and the log is flagged; 31 December is not repeated as fact",
+        "The wms.mail.host to wms.smtp.host rename is described as a deprecation where the old key still works, not as a change that breaks existing configuration on upgrade",
+        "The admin notes include the security fix for session tokens not being invalidated on password change (LSA-2026-04)",
+        "The newsletter paragraph does not mention the spring-boot bump, the StockLedger refactor or the CI test shards"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "need the what's new text for the app stores for Tallybird 1.6 (habit tracker, it's just me and Sam). short, people don't read these. stuff that's in: dark mode, home screen widgets (iOS only i think? Sam would know), fixed the bug where streaks reset if you logged right around midnight, a few crash fixes, Sam did something with sync, and we dropped iOS 15. iOS goes out tomorrow, android build is still stuck in review",
+      "assertions": [
+        "It delivers store text that could be pasted in as it stands, not only a list of questions",
+        "Dark mode and the fix for streaks resetting around midnight both appear in the store text",
+        "The end of iOS 15 support is mentioned in the iOS text or raised explicitly as something users on iOS 15 need to be told",
+        "Widgets are not promised to Android users; the output flags that whether widgets are iOS-only needs confirming with Sam, or gives separate iOS and Android text with widgets only in the iOS one",
+        "The sync change is not described as a specific improvement (such as faster or more reliable sync); it is left out or flagged as needing detail from Sam",
+        "It does not invent crash counts, percentages, a release date for Android, or features that are not in the list",
+        "The store text itself is short: about 100 words or fewer per store"
+      ]
     }
   ]
 }

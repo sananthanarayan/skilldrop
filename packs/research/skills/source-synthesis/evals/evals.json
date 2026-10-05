@@ -44,6 +44,36 @@
         "It says five conversations are too few to set a price or to conclude that cafe owners want it, and gives any price suggestion as tentative",
         "It does not add market figures, competitor prices or cafe-industry facts that are not in the notes"
       ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "I'm the governance officer at Marlowe Vale Academy Trust (9 secondary schools). Next month the board decides whether to roll the phone-pouch scheme out from the two pilot schools to all nine. Everything we've got is in this folder: pilot-report.md, behaviour-logs.md, teacher-focus-group.md, parent-survey.md and vendor-brochure.md. Can you pull together what the evidence actually shows? Two pages max, it's going in the board pack. They'll particularly want to know what it did to behaviour and to exam results.",
+      "assertions": [
+        "It states that logged incidents at Fenwick Park rose from 280 to 291, which contradicts the pilot report's statement that incidents fell at both schools",
+        "It says Ashcombe's fall from 412 to 318 cannot be credited to the pouches because the logging system changed on 5 January 2026 and stopped counting low-level disruption, which was 96 of the 412 the year before",
+        "It traces the 40% reduction figure to the vendor brochure's footnote (a 2019 study of three New Zealand schools commissioned by the vendor) and does not count the pilot report's repetition of it as separate evidence",
+        "It corrects the parent survey response rate: 1,140 out of 3,050 is about 37%, not 47%",
+        "On exam results it says the sources contain no attainment data (the pilot report says results were not analysed and the brochure's 'improves grades' has no source), and it gives no estimated effect on results",
+        "It reports that phone confiscations fell at both schools (87 to 9 at Ashcombe, 64 to 22 at Fenwick Park) as the clearest measured change",
+        "It notes the teacher focus group was six teachers all from Ashcombe, with none from Fenwick Park, and reports the drawbacks they raised (for example ten minutes lost at form time or pupils pouching a dummy phone), not only the positive view in the pilot report",
+        "It does not bring in research, statistics or claims about phones in schools that are not in the five files"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "I'm on the committee for our village hall and the boiler is on its last legs. We're arguing about whether to get a heat pump instead. This is everything I've collected, sorry it's a bit scrappy:\n\n- Quote from Fernbrook Renewables: £14,200 to fit an air source heat pump. They only do heat pumps. The chap reckoned a new gas boiler would be 'about £4,100' but that's not a quote, he doesn't fit them.\n- Spoke to the treasurer at Little Aldwick hall, they got a heat pump in 2024. She said their bills 'went down about a third'. They also had the roof insulated the same year.\n- Cut a paragraph out of a magazine a while ago, no idea which one or when: 'heat pumps are three to four times as efficient as gas boilers'.\n- I think there's a grant, up to £7,500? Read it somewhere. Not sure village halls can get it.\n- We spent about £2,300 on gas last year I think. Hall's in use maybe 4 days a week.\n\nCan you pull together what we actually know? Mainly: would a heat pump be cheaper to run?",
+      "assertions": [
+        "It delivers the write-up from the notes as given and does not stop to ask for more information first",
+        "It says the notes cannot answer whether a heat pump would be cheaper to run, because they contain no electricity or gas prices and no running-cost estimate for this hall, and it states no annual saving as fact",
+        "It says Little Aldwick's bills falling by about a third cannot be put down to the heat pump alone because the roof was insulated in the same year",
+        "It says the 'three to four times as efficient' line is about efficiency, not running cost, and comes from an undated cutting from an unknown magazine",
+        "The grant is treated as unconfirmed on both the amount and whether a village hall qualifies, and the £7,500 is not subtracted from the cost as if it were secured",
+        "It notes that the £4,100 boiler figure is an offhand estimate from an installer who only fits heat pumps, not a quote",
+        "It gives the up-front gap as about £10,100 (£14,200 against about £4,100)",
+        "It does not add energy prices, grant scheme rules or typical heat pump costs from outside the notes, unless clearly labelled as not coming from the notes"
+      ]
     }
   ]
 }

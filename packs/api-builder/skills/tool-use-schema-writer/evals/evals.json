@@ -42,6 +42,36 @@
         "It does not state a tracking number format or pattern, a weight limit, carrier names or a dimension unit as fact",
         "It does not describe the lookup's return fields as fact, and says what the lookup returns is not yet known"
       ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "Need a Claude tool so our support assistant can issue refunds itself. The endpoint spec is in refunds.openapi.yaml. Policy from Marguerite (head of support): the assistant can refund up to £500 on its own, anything above that goes to a human. Amounts are in pounds. Just the tool definition plus a short list of anything in the spec that looks off, I don't need the Python around it.",
+      "assertions": [
+        "It produces a tool definition with a name, a description and an input_schema of type object whose properties include the order reference, the amount and the reason",
+        "The amount parameter is an integer in minor units (pence) and its description says so; it is not defined as pounds or as a decimal",
+        "It flags that the spec caps amount_minor at 25000, which is £250 and below the £500 policy, and does not set the maximum to 50000",
+        "It flags that the spec lists amount_minor as required while its description says to omit it for a full refund",
+        "goodwill is either left out of the reason values or marked as deprecated with customer_request to be used instead",
+        "The definition states that reason_note is needed when the reason is other and is limited to 280 characters",
+        "It does not add parameters the spec does not have, such as a currency, a customer id or a refund method",
+        "The reply contains no Python client code"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "ops run this script by hand to change a price:\n\n./reprice.sh SKU-4471 19.99 --store 12 --until 2026-11-01\n\nwant our pricing agent to be able to call it as a tool. store is optional (no store = all stores i think), until is optional too and the price goes back after that date. price is dollars. there's also a --force flag, no idea what it does, Wendell wrote the script and he's out till the 19th. quick one, just the json",
+      "assertions": [
+        "It delivers a tool definition with a name, a description and an input_schema, and does not stop at questions",
+        "The required array contains the SKU and the price, and does not contain store or until",
+        "The price parameter's description states the unit is dollars",
+        "It says that leaving store out meaning all stores is unconfirmed and should be checked",
+        "It does not state what --force does; force is either left out of the tool or included with its effect marked as unknown",
+        "The until parameter is described as a date in the YYYY-MM-DD form shown in the example",
+        "It does not state a SKU pattern, a price minimum or maximum, or a range of valid store numbers as fact; any such constraint is marked as an assumption",
+        "The reply is the JSON definition with at most a few lines of notes, and contains no Python client code"
+      ]
     }
   ]
 }

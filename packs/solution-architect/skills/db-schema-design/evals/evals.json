@@ -40,6 +40,36 @@
         "It stores the allowed range somewhere (per sensor, per greenhouse or per sensor type) and says the actual range values were not given; any numbers shown are labelled as examples",
         "Reading times are stored with a time zone or in UTC"
       ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "We're rebuilding the loyalty points system at Greenlane Markets (220 stores). My notes are in requirements.md, finance's email is in finance-email.md, and there's a small export of what we have today in members_sample.csv and points_txn_sample.csv. Can you design the new tables? I need the SQL and a short note on the decisions and anything in there that looks off — not an essay.",
+      "assertions": [
+        "It includes CREATE TABLE statements in which points movements (earn, redeem, expire, adjust) are rows in a ledger that is only ever added to, and a member's balance is either computed from those rows or kept as a stored total that it says how to keep in step with them",
+        "It points out that member M-1042's entries in the sample add up to 1,340 points while the members table says 1,410, a difference of 70",
+        "A duplicate till submission is blocked by a unique constraint or key built on the receipt reference (with store and/or till), and it notes that receipt R-88213 appears twice in the sample",
+        "It flags that the notes say points expire after 24 months and finance says 18, does not silently pick one, and stores an expiry date (or the earn date plus a configurable period) per earned lot so either rule can be applied",
+        "It says points by household cannot be produced because nothing in the data identifies a household, and it does not treat a shared postcode as a household",
+        "It points out that 400k transactions a day is about 146 million a year, not the 50 million in the notes",
+        "Points are stored as integers and money amounts as an exact type (numeric/decimal or integer pence), not FLOAT, and the value of a point is not hard-coded as 0.5p in the schema",
+        "It shows how the liability report can be run as at a past month end by store where earned, and gives an index or key on member and time for the newest-first history screen"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "we're a building firm, about 30 of us. right now who-has-what kit is tracked on a whiteboard in the yard and it's useless. I want a little internal tool: where is each thing right now, and where has it been / who had it. stuff isn't always on a site, sometimes it's in someone's van or at the repair shop. also need to know when things are due their safety test. few hundred items I'd guess? the IT guy set up a Postgres for the timesheets I think, could use that. what tables do I need",
+      "assertions": [
+        "It gives concrete table definitions (SQL or a column-by-column layout) in the reply, and does not stop to ask questions before delivering them",
+        "There is a movements or assignments table with one row per hand-over recording the item, where it went, who has it and when, so an item's full history can be listed",
+        "It says how 'where is it right now' is answered (the latest movement row, or a current-location column) and, if both are stored, how they are kept consistent",
+        "The design can record an item being somewhere that is not a site, such as a van or the repair shop, without leaving the location empty",
+        "It stores a test due date or last-tested date per item and says the test interval was not given; any interval shown is labelled as an example or assumption",
+        "It says it has assumed each item is tracked individually, or flags that it is not known whether some kit is counted in bulk (for example a box of identical items)",
+        "It says Postgres is assumed from 'I think' and should be confirmed, and does not recommend partitioning, sharding or a non-relational database for a few hundred items",
+        "It does not state a number of sites, vans or items as fact beyond the 'few hundred' guess given"
+      ]
     }
   ]
 }

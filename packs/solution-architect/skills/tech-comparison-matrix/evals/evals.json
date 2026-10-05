@@ -42,6 +42,35 @@
         "It does not invent benchmark figures, throughput numbers or costs",
         "Large-scale performance, horizontal scaling or community popularity is not among the highest-weighted criteria"
       ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "We need to decide what to do with our driver app: keep the two native apps, rewrite in React Native, or rewrite in Flutter. Everything I've collected is in mobile-options.md. Leadership wants a scored table and a recommendation on one page. Use the cold start times from the spikes for the performance score.",
+      "assertions": [
+        "It states that a full rewrite cannot deliver the proof-of-delivery photo feature by 1 Feb 2027: 26 weeks (React Native) or 30 weeks (Flutter) from 2 Nov 2026 ends in May 2027, so the feature has to ship in the native apps first or the rewrite options miss the contract date",
+        "It says Orrin does not publish or support React Native or Flutter wrappers (the 9 Sept 2026 email) and that a bridge has to be written in-house; the March 2024 wiki claim of official plugins is not relied on",
+        "It points out that the Flutter cold start of 2.1 s was measured on a Pixel 8 and not on the H4, so it is not comparable with the 2.9 s (React Native) and 1.8 s (native) H4 figures; no H4 figure is invented for Flutter",
+        "It notes that the Flutter prototype's scan screen crashed on the H4 and was not investigated, as an open risk against the scanner must-have",
+        "The share of drivers on the handheld is given as about 70% (2,650 of 3,800), or the '80%' in the notes is flagged as not matching the counts",
+        "All three options are scored against the same named criteria, with weights shown and a total per option",
+        "It gives one clear recommendation and says what would change it",
+        "It does not introduce costs, benchmark figures or effort estimates that are not in the file"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "need to pick how we run inference for our model: the GPU box in the office, cloud GPU instances, or just pay for a hosted inference API. we're 6 people, it's a document classifier, the documents are customers' contracts and a couple of them are touchy about where their data goes. volume is low right now but a big customer might sign. Kofi says the office box is basically free since we already own it. just the table and your pick, I'm pasting it into slack",
+      "assertions": [
+        "All three options (office GPU box, cloud GPU instances, hosted inference API) are compared in one table against the same named criteria, each with a score or rating",
+        "Where customer data goes, or data confidentiality, is one of the criteria and is among the most heavily weighted, tied to the remark that the documents are customers' contracts",
+        "The office box is not treated as free: the output names at least one ongoing cost or risk of it, such as the team's time to run it, no redundancy if it fails, or power and hardware upkeep",
+        "It gives one clear pick, not 'it depends'",
+        "It states that current and future volume are unknown and says how the pick would change if the big customer signs or volume grows",
+        "It does not invent prices, per-hour or per-request costs, latency or throughput figures",
+        "It is short enough to paste into Slack: the table plus no more than about 250 words of other text"
+      ]
     }
   ]
 }

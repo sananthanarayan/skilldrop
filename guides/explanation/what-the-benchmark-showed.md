@@ -119,11 +119,46 @@ and that get in the way when it does not.
 [The fabrication comparison](resume-fabrication-comparison.md) shows what such a rule buys
 in one case.
 
+## A second revision, measured before and after
+
+The obvious response to the held-out test was to fix what the judges named. The same 12
+skills were given five more rules above their steps: fit the size the user asked for; keep
+notes and open questions out of the deliverable; save a document as one file and nothing
+else; give a worked estimate when asked for a figure the input does not settle; check
+everything computed or written to be run. Each also got a line of its own from its judges'
+reasons.
+
+This time the test was set up first. Each skill got two more evals, written by an agent that
+read only the skill's one-line description. They were run against the skills as released,
+and only the totals were read. Then the revision was applied and the same evals run again.
+
+| 12 skills | Before | After the revision |
+|---|---|---|
+| Evals 1 to 3, which the revision was written against | 25 and 23 of 72 pairs | 40 and 34 of 72 |
+| Evals 4 and 5, never seen | 21 and 15 of 48 (44% and 31%) | 24 and 17 of 48 (51% and 36%) |
+
+Each cell gives the first judge, then the second. On the evals it was written against, the
+revision moved the skills from losing two pairs in three to about even. On the evals it had
+never seen it moved three pairs with one judge and two with the other, which is inside the
+noise; the intervals before and after overlap almost entirely.
+
+The rules did change behaviour. The skills' replies became about 40% shorter and matched the
+plain agent's for length. It did not help, because length was only one complaint. Across the
+53 verdicts that still went against the skills on the fresh evals, the judges' reasons were
+spread over unsupported detail, errors and contradictions, and over-built files, with no one
+fault in the lead. A skill run also cost more after the revision, $0.16 against $0.14, and
+the plain agent costs $0.10.
+
+The revision was not released. The 24 new evals were kept.
+
+This is the first finding again, under a cleaner design: for these skills, edits made from a
+judge's reasons improve the evals the reasons came from and little else.
+
 ## Where the catalogue stands
 
-Across all 174 evals, new ones included, the two judges prefer the skill's result in 60%
-(interval 53 to 67) and 61% (55 to 68) of pairs. Skills meet 74% of their checks and the
-plain agent 39%. That headline mixes skills that clearly help with skills that clearly do
+Across all 209 evals, new ones included, the two judges prefer the skill's result in 61%
+(interval 55 to 68) and 61% (55 to 67) of pairs. Skills meet 75% of their checks and the
+plain agent 44%. That headline mixes skills that clearly help with skills that clearly do
 not, and the held-out test says the second group is larger than the tuned numbers suggested.
 
 ## What follows from it
@@ -133,6 +168,7 @@ not, and the held-out test says the second group is larger than the tuned number
 - **Size the output to the request.** The losing skills need a rule that a short ask gets a
   short answer in the user's own format, before any template applies.
 - **Ask of each skill what rule it adds.** A skill with no rule the plain agent breaks is a
-  candidate for cutting, not for another round of edits.
+  candidate for cutting, not for another round of edits. Two rounds of edits to the same 12
+  skills have now failed to carry over, so the next step for them is that question.
 - **Do not tune on the judge alone.** Deliberate refusals stay, such as declining to rank
   teams from delivery metrics, even where a judge prefers the answer that complies.

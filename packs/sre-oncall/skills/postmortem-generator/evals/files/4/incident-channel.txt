@@ -1,0 +1,34 @@
+#inc-0847-double-debit -- channel export. All timestamps UTC.
+
+== Tue 22 Sep 2026 ==
+07:14 Priyanka Rao (Support lead): we've had 6 calls since 07:06 from customers saying we took their direct debit twice this morning. first call logged 07:06. is something up with collections?
+07:19 Callum Reid (Payments eng): looking
+07:25 Dermot Fahy (Incident commander): declaring an incident, INC-0847. Callum pls check dd-collect from last night
+07:41 Callum Reid: confirmed. bank received TWO files from us overnight. DD-20260922-A at 01:50 and DD-20260922-B at 02:17. dd-collect ran twice, run 55120 on sched-a and run 55121 on sched-b
+07:45 Callum Reid: file B has about 3,400 rows so looks like ~3,400 customers double charged
+07:48 Wen Li (Platform): dd-collect disabled on both schedulers until we understand this
+07:52 Dermot Fahy: can we recall file B from the bank?
+08:10 Callum Reid: bank portal says the recall window for same-day files closes at 04:00. we missed it by hours. asking our account manager anyway
+08:31 Wen Li: scheduler logs are in scheduler-log.txt. short version: sched-a lost the lock store for ~3 min during the cloud zone network blip at 01:27, sched-b took over and started the job again. sched-a never stopped its own run
+08:40 Tomasz Zielinski (Platform on-call): for the record I got paged 01:35, "sched-a: lock store unreachable", low priority. acked it, saw sched-b was leader and healthy, which is what the runbook says to check, and went back to sleep. nothing told me a job was running twice
+08:44 Callum Reid: honestly if Tomasz had dug in at 01:35 we'd have had 2.5 hours to recall the file. that's on him
+08:47 Dermot Fahy: let's not do that here. the page said nothing about jobs
+08:55 Wen Li: also relevant: lock TTL was 300s until CHG-2210 on 3 Sep, which dropped it to 30s so failover would be faster. with 300s a 3 minute blip would not have caused a takeover at all
+08:58 Callum Reid: that was Ines's change. who approved a 30s TTL??
+09:03 Ines Carvalho (Platform): it went through normal review, two approvals. it was asked for after the August failover took 6 min. nobody (me included) thought about jobs that don't stop when they lose the lock
+09:30 Dermot Fahy: bank confirms no recall possible. both debits will land in customer accounts today. we have to send the money back as credits
+09:42 Callum Reid: why B isn't a full copy of A: the job commits in batches. 55120 had committed 14 of 20 batches when sched-b started 55121, so 55121 only picked up batches 15-20. but 55120 carried on and did 15-20 as well. so the duplicates are batches 15-20 only. and I was wrong earlier, file B also has the retries of Monday's failed debits in it, so 3,400 is too high. Finance will get the real number
+11:20 Dermot Fahy: status page + email to affected customers going out at 12:00
+16:05 Farah Okonkwo (Payments eng lead): dd-collect has no check for "has this debit already gone into a file today". adding one. re-enabling tonight's run on sched-a only, with the job removed from sched-b, and I'll watch it
+
+== Wed 23 Sep ==
+10:15 Farah Okonkwo: refund file 1 submitted to the bank, 2,804 credits
+10:20 Priyanka Rao: support has had 310 contacts about this so far
+
+== Thu 24 Sep ==
+14:30 Farah Okonkwo: refund file 2 submitted, 131 credits (these needed manual matching)
+15:02 Dermot Fahy: all customers refunded. closing the incident. actions:
+   - dd-collect: skip any debit already included in a file that day (Farah, due 16 Oct)
+   - scheduler: a job must stop itself when its node loses the lock (Wen, date TBD)
+   - alert when more than one debit file goes to the bank in a night (owner?)
+   - revisit lock TTL (Ines, no date)

@@ -43,6 +43,35 @@
         "It gives a concrete fix, such as reading with the csv module and normalising the email with strip and lower",
         "It does not state as fact what the other columns hold or what the real file contains beyond what was given"
       ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "Finished the late fee feature for the tenant billing service (lateFees.ts, tests in lateFees.test.ts). Rules from finance: nothing if the invoice is 5 days or fewer past due. After that it's 1.5% of the balance for each calendar month the invoice has been overdue in, so one due 20 March and still open on 2 May has March, April and May. Capped at $75 per invoice in total. Never on paid or void invoices. A nightly job calls applyLateFees with every invoice. Tests are green. Can you go over it before I merge? Skip the style nits, I want the things that would actually bite us.",
+      "assertions": [
+        "It flags that monthsOverdue subtracts month numbers without the year, so an invoice due in November or December and still open in January gets a zero or negative count and no fee",
+        "It flags that the $75 cap is applied to one month's amount before multiplying by the months, so a large balance overdue for two or more months is charged more than $75 (for example $10,000 over two months gives $150)",
+        "It flags that applyLateFees adds the whole fee to the balance on every nightly run with nothing recording what was already charged, so the same invoice is charged again each night",
+        "It points out that the cap test uses a single month overdue, where a per-month cap and a total cap give the same $75, so it cannot catch the cap bug",
+        "It points out that the applyLateFees test only checks the balance went up after one run, and that no test runs it twice or checks the amount",
+        "It names a missing test for an invoice that is overdue across a year boundary",
+        "It does not report the grace-period check as a bug: charging nothing at 5 days late or fewer matches the stated rule",
+        "It says plainly that the change is not ready to merge as it stands"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "agent wrote this migration for me. adds region onto orders so the regional dashboards don't need the join to customers. ran clean on my laptop db. postgres. the orders table in prod is big-ish, don't know the exact size. top 3 things i should worry about before i run it friday?\n\n```sql\nALTER TABLE orders ADD COLUMN region_code VARCHAR(2) NOT NULL;\n\nUPDATE orders\nSET region_code = (SELECT region FROM customers WHERE customers.id = orders.customer_id);\n\nCREATE INDEX idx_orders_region ON orders(region_code);\n```",
+      "assertions": [
+        "It flags that adding a NOT NULL column with no default fails on a table that already has rows, so the first statement will error on prod",
+        "It says the clean run on the laptop does not show the migration works on prod, for example because the local orders table may have been empty",
+        "It flags locking or long-running work on a large table, from the single full-table UPDATE or the non-concurrent index build, and gives a concrete mitigation such as batching the backfill or CREATE INDEX CONCURRENTLY",
+        "It flags that a customer with no region, or a region longer than 2 characters, would break the backfill, and says what customers.region holds is not known from what was given",
+        "It gives a corrected order of steps: add the column as nullable, backfill it, then add the NOT NULL constraint",
+        "It does not state the row count of orders, how long the migration will take, or what customers.region contains as fact",
+        "It leads with three main concerns as asked, and anything beyond the three is kept to a brief mention"
+      ]
     }
   ]
 }

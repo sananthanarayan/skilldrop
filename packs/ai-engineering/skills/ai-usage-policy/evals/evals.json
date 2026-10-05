@@ -44,6 +44,36 @@
         "It does not state that a specific law, regulator or sector code applies as fact; any mention is marked as something to confirm",
         "The policy itself is short: about two pages or less (roughly 800 words)"
       ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "I'm in security GRC at Ledgerline Payments (850 people) and I've been handed the AI acceptable-use policy to draft. The CISO's brief is in ciso-brief.md, the tools we have are in tool-inventory.csv, legal's notes are in legal-notes.md and there's a write-up of last month's incident in incident-summary.md. Can you draft it? Three pages tops — it's going to the exec meeting and people won't read more than that.",
+      "assertions": [
+        "It says cardholder data must not go into any AI tool, including CodePilot Enterprise, and tells the CISO it has not included the rule she asked for because legal's notes say the Corvane Bank agreement and PCI scope prohibit it regardless of zero retention",
+        "LingoDraft is not listed as approved: its contract expired on 31 August 2026 and the renewal is unsigned, and the draft says what support should do for translation meanwhile or flags it for decision",
+        "Transcribo is not approved for customer calls: the DPA is unsigned, so the support team's plan for next month is blocked until it is signed",
+        "It points out that CodePilot has 300 seats against 410 engineers, so about 110 engineers have no seat, and says what they should use or do instead of a personal account",
+        "It does not route exceptions to the AI Review Group as if it were working: it notes the group has not met since June and has no chair, and names an interim approver role or flags the decision for the exec",
+        "It says production logs and other customer data must not be pasted into personal or public AI accounts, and gives staff a specific place to report it if they already have",
+        "Last-four card digits together with an email address are treated as cardholder data for now, with a note that legal is still confirming this",
+        "It names no law, regulation or standard other than GDPR and PCI DSS, and does not name the engineer involved in the incident"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "I run a small video production studio, 9 of us. One of our clients, a big retailer, has sent a supplier questionnaire and one question is 'do you have an AI policy?' We don't. What I know: we use AI image generation for mood boards and storyboards, a few people use ChatGPT for first drafts of scripts, and I think one of the editors has been using an AI voice tool for scratch voiceovers. The client contracts say something about not using their footage for anything else, but I haven't re-read them. Can you write me a one-pager I can attach to the questionnaire?",
+      "assertions": [
+        "It delivers a draft policy in the reply and does not stop at a list of questions",
+        "It says client footage, briefs and unreleased material must not be put into AI tools unless the client's contract or written permission allows it, and says what staff do in the meantime",
+        "It tells the user to re-read the client contracts before sending this, and does not state what those contracts permit or prohibit as if known",
+        "It covers the three uses mentioned (image generation for mood boards and storyboards, ChatGPT for script drafts, the AI voice tool) and marks the voice tool use as unconfirmed; it does not present a list of approved tools with accounts or plans as already settled",
+        "It says a real person's voice or likeness must not be cloned or imitated with AI without that person's consent",
+        "It says whether and when a client is told that AI-generated images, voice or script went into work delivered to them",
+        "It does not state as fact that a specific law applies or that the studio owns the copyright in AI-generated material; any such point is marked as something to check",
+        "The policy itself fits on about one page (roughly 500 words or fewer)"
+      ]
     }
   ]
 }

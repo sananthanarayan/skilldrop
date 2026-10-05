@@ -128,6 +128,14 @@ match the signed-in account's email. Agent sessions run through a signed-in Clau
 receive that address as context. It is a property of the benchmark's backend to keep in
 mind: outputs in `bench-results/` can contain it, and the published summary holds no outputs.
 
+**Follow-up, same day.** `job-fit-analysis` was revised once more for what the second judge
+named. It now names the unmet requirements in its opening line and does not count them; it
+marks a general ability, such as dealing with the public, as met by any job that plainly
+involves it; and it may not advise rewording a partly met item so it reads as met. Run with
+three trials: 13 and 11 of 15 pairs on its tuned evals, from 8 and 5 of 10, and 6 and 6 of 6
+held out. Three of its four remaining losses with the first judge are on the link-only
+fixture, where both answers are right.
+
 Across the pack's 30 evals the skills meet 95% of their assertions and the plain agent 79%.
 On evals the skills were never revised against, they won 14 and 14 of 16 pairs.
 

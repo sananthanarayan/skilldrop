@@ -1,0 +1,15 @@
+{
+  "categories": ["acquisitions", "cataloguing", "circulation", "resource-sharing"],
+  "skills": [
+    {
+      "name": "flag-overdue-holds",
+      "category": "circulation",
+      "maintainer": "circdesk@harrowgate.example"
+    },
+    {
+      "name": "summarise-reading-list",
+      "category": "cataloguing",
+      "maintainer": "metadata@harrowgate.example"
+    }
+  ]
+}
