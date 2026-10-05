@@ -30,8 +30,8 @@ import sys
 MULT = {"k": 1e3, "thousand": 1e3, "m": 1e6, "mm": 1e6, "million": 1e6,
         "bn": 1e9, "b": 1e9, "billion": 1e9}
 NUMBER = re.compile(r"(?<![\w.])(\d[\d,]*(?:\.\d+)?)(?:(k|mm|m|bn|b)\b|\s?(thousand|million|billion)\b)?"
-                    r"(\s?%|\s?percent\b|\s?per cent\b)?", re.I)
-WORD = re.compile(r"\.?[A-Za-z][A-Za-z0-9+#']*(?:\.[A-Za-z0-9]+)*")
+                    r"(\s?%|\s?percent\b|\s?per cent\b)?(?!(?:em|mm|pt|cm|px|fr)\b)", re.I)
+WORD = re.compile(r"(?<![A-Za-z0-9])\.?[A-Za-z][A-Za-z0-9+#']*(?:\.[A-Za-z0-9]+)*")
 LIST_MARK = re.compile(r"^\s*(?:[-*•–>]+|\d+[.)]|#+|\|)\s*")
 LINK = re.compile(r"\[([^\]]*)\]\([^)]*\)")
 SUFFIXES = ("ations", "ation", "ments", "ment", "ings", "ing", "ers", "ies", "ed", "er", "es", "s", "ly")
@@ -73,8 +73,10 @@ def read(path):
 
 
 def clean(line):
-    """A line with its markdown removed, so `**Go**` and `Go` read the same."""
+    """A line with its markup removed, so `**Go**` and `Go` read the same. Resumes kept as
+    Typst or LaTeX source escape `$`, `&`, `%` and `#`; the escapes are dropped too."""
     line = LINK.sub(r"\1", line)
+    line = re.sub(r"\\([$&%#_])", r"\1", line)
     line = line.replace("’", "'").replace("‘", "'").replace("–", " - ").replace("—", " - ")
     return re.sub(r"[*_`~]", "", line)
 
@@ -133,7 +135,7 @@ def phrases(line):
     so it only counts when it is name-shaped itself or opens a longer capitalised run."""
     text = LIST_MARK.sub("", clean(line))
     out, run, start_of_sentence = [], [], True
-    tokens = re.findall(r"\.?[A-Za-z][A-Za-z0-9+#']*(?:\.[A-Za-z0-9]+)*|&|[.!?;:]\s|[,|·/()]|\s-\s", text + " ")
+    tokens = re.findall(r"(?<![A-Za-z0-9])\.?[A-Za-z][A-Za-z0-9+#']*(?:\.[A-Za-z0-9]+)*|&|[.!?;:]\s|[,|·/()]|\s-\s", text + " ")
     for i, tok in enumerate(tokens):
         if not (tok[0].isalpha() or tok[0] in ".&") or tok.strip() in (".", "!", "?", ";", ":"):
             if run:
@@ -200,7 +202,7 @@ def check(draft, sources, posting):
             if missing:
                 add("name", " ".join(words), n, raw, all(key(w) in post_names for w in missing))
             elif len(content) > 1 and all(w.lower() not in PLAIN for w in content):
-                flat = " ".join(key(w) for w in words)
+                flat = " ".join(key(w) for w in words if w != "&")
                 if " " + flat + " " not in src_flat:
                     add("combination", " ".join(words), n, raw)
         if posting:
