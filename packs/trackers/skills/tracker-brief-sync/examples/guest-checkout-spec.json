@@ -1,0 +1,98 @@
+{
+  "doc": "prd-guest-checkout.md",
+  "doc_url": "https://wiki.northwind.example/checkout/prd-guest-checkout",
+  "items": [
+    {
+      "id": "E1",
+      "type": "epic",
+      "title": "Checkout without an account",
+      "description": "Let first-time shoppers pay without creating an account. Goal: sign-up-step drop-off from 38% to under 20% within 4 weeks of launch.",
+      "labels": ["guest-checkout"],
+      "source": "G1"
+    },
+    {
+      "id": "E2",
+      "type": "epic",
+      "title": "Support and safety for guest orders",
+      "description": "Guest orders can be found, screened and returned like account orders.",
+      "labels": ["guest-checkout"],
+      "source": "G2"
+    },
+    {
+      "id": "S1",
+      "type": "story",
+      "parent": "E1",
+      "title": "Pay as a guest with email and delivery details",
+      "description": "As a first-time shopper, I can pay without creating an account, so I can buy in one sitting.",
+      "acceptance_criteria": [
+        "Given a shopper with no account at checkout, when they choose Continue as guest, then they can pay after entering only an email address and delivery details",
+        "Given a guest payment succeeds, then no account is created"
+      ],
+      "labels": ["guest-checkout", "checkout"],
+      "source": "R1"
+    },
+    {
+      "id": "S2",
+      "type": "story",
+      "parent": "E1",
+      "title": "Order confirmation email for guest orders",
+      "description": "As a guest shopper, I get a confirmation email with a tracking link, so I know the order went through.",
+      "acceptance_criteria": [
+        "Given a guest order is placed, then a confirmation email is sent to the address given within 5 minutes",
+        "The email contains a link that shows the order's tracking status without signing in"
+      ],
+      "labels": ["guest-checkout", "notifications"],
+      "source": "R2"
+    },
+    {
+      "id": "S3",
+      "type": "story",
+      "parent": "E1",
+      "title": "Offer an account after a guest order",
+      "description": "As a guest shopper, I'm offered an account pre-filled from my order after paying, and I can decline.",
+      "acceptance_criteria": [
+        "Given a guest order is confirmed, then the confirmation page offers to create an account with email and address pre-filled",
+        "Given the shopper declines, then no account is created and they aren't asked again for this order"
+      ],
+      "labels": ["guest-checkout", "growth"],
+      "source": "R3"
+    },
+    {
+      "id": "S4",
+      "type": "story",
+      "parent": "E2",
+      "title": "Find guest orders by email in the admin tool",
+      "description": "As a support agent, I can find a guest order from the shopper's email address.",
+      "acceptance_criteria": [
+        "Given a guest order exists for an email address, when support searches that address in the admin tool, then the order is listed"
+      ],
+      "labels": ["guest-checkout", "ops"],
+      "source": "R4"
+    },
+    {
+      "id": "S5",
+      "type": "story",
+      "parent": "E2",
+      "title": "Fraud score on guest orders",
+      "description": "Guest orders go through fraud screening and show the same score as account orders.",
+      "acceptance_criteria": [
+        "Given a guest order, then the admin order view shows a fraud score computed the same way as for account orders"
+      ],
+      "labels": ["guest-checkout", "payments"],
+      "source": "R5"
+    },
+    {
+      "id": "S6",
+      "type": "story",
+      "parent": "E2",
+      "title": "Guest returns with order number and email",
+      "description": "As a guest shopper, I can start a return with my order number and email.",
+      "acceptance_criteria": [
+        "Given a delivered guest order, when the shopper enters the order number and the email used, then they can start a return",
+        "Given a mismatched order number and email, then no order details are shown"
+      ],
+      "labels": ["guest-checkout", "returns"],
+      "source": "R6"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "skill_name": "threat-model",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Threat model this design: a multi-tenant reporting service where customers upload CSVs, we process them in a worker, and results are served from an S3 bucket via signed URLs.",
+      "assertions": [
+        "Assets, entry points, and trust boundaries are established before any threat is listed",
+        "Every threat is anchored to a named trust-boundary crossing or asset — unanchored checklist residue is cut",
+        "Every threat narrates a scenario with actor, path, and result; 'X is possible' is not accepted as a finding",
+        "STRIDE is applied per boundary crossing rather than as a flat checklist",
+        "Severity is calibrated to this system's assets rather than CVSS theater — not everything is critical",
+        "Existing mitigations are credited as verified or assumed, and every recommendation carries a verification step",
+        "The authorization sweep (tenant-to-tenant, authn is not authz) and the insider/compromised-credential sweep are both run"
+      ]
+    }
+  ]
+}

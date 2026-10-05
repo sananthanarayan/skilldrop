@@ -1,0 +1,174 @@
+{
+  "format_version": "1.2",
+  "terraform_version": "1.9.5",
+  "planned_values": {
+    "root_module": {}
+  },
+  "resource_drift": [
+    {
+      "address": "aws_security_group.db",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "db",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["update"],
+        "before": {
+          "id": "sg-0a1b2c3d4e5f60001",
+          "name": "northwind-orders-db",
+          "description": "Postgres from app tier",
+          "ingress": [
+            {"from_port": 5432, "to_port": 5432, "protocol": "tcp", "cidr_blocks": [], "security_groups": ["sg-0a1b2c3d4e5f60002"], "description": "app tier", "ipv6_cidr_blocks": [], "prefix_list_ids": [], "self": false}
+          ],
+          "tags": {"service": "orders"}
+        },
+        "after": {
+          "id": "sg-0a1b2c3d4e5f60001",
+          "name": "northwind-orders-db",
+          "description": "Postgres from app tier",
+          "ingress": [
+            {"from_port": 5432, "to_port": 5432, "protocol": "tcp", "cidr_blocks": [], "security_groups": ["sg-0a1b2c3d4e5f60002"], "description": "app tier", "ipv6_cidr_blocks": [], "prefix_list_ids": [], "self": false},
+            {"from_port": 5432, "to_port": 5432, "protocol": "tcp", "cidr_blocks": ["10.20.0.0/16"], "security_groups": [], "description": "temp debug", "ipv6_cidr_blocks": [], "prefix_list_ids": [], "self": false}
+          ],
+          "tags": {"service": "orders"}
+        },
+        "after_unknown": {},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      }
+    }
+  ],
+  "resource_changes": [
+    {
+      "address": "aws_launch_template.app",
+      "mode": "managed",
+      "type": "aws_launch_template",
+      "name": "app",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["update"],
+        "before": {"id": "lt-0123456789abcdef0", "name": "northwind-orders-app", "instance_type": "m6i.large", "image_id": "ami-0aaa1111bbbb2222c", "latest_version": 7, "tags": {"service": "orders"}},
+        "after": {"id": "lt-0123456789abcdef0", "name": "northwind-orders-app", "instance_type": "m6i.xlarge", "image_id": "ami-0aaa1111bbbb2222c", "tags": {"service": "orders"}},
+        "after_unknown": {"latest_version": true},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      }
+    },
+    {
+      "address": "aws_autoscaling_group.app",
+      "mode": "managed",
+      "type": "aws_autoscaling_group",
+      "name": "app",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["update"],
+        "before": {"id": "northwind-orders-app", "name": "northwind-orders-app", "min_size": 2, "max_size": 6, "desired_capacity": 2, "launch_template": [{"id": "lt-0123456789abcdef0", "version": "7"}]},
+        "after": {"id": "northwind-orders-app", "name": "northwind-orders-app", "min_size": 2, "max_size": 6, "desired_capacity": 2, "launch_template": [{"id": "lt-0123456789abcdef0"}]},
+        "after_unknown": {"launch_template": [{"version": true}]},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      }
+    },
+    {
+      "address": "aws_db_instance.orders",
+      "mode": "managed",
+      "type": "aws_db_instance",
+      "name": "orders",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["delete", "create"],
+        "before": {"id": "db-ABCDEFGHIJKLMNOPQRSTUVWXY", "identifier": "northwind-orders", "engine": "postgres", "engine_version": "15.7", "instance_class": "db.r6g.large", "allocated_storage": 200, "storage_encrypted": false, "deletion_protection": false, "skip_final_snapshot": true, "username": "orders_admin", "password": "REDACTED-EXAMPLE", "tags": {"service": "orders"}},
+        "after": {"identifier": "northwind-orders", "engine": "postgres", "engine_version": "15.7", "instance_class": "db.r6g.large", "allocated_storage": 200, "storage_encrypted": true, "deletion_protection": false, "skip_final_snapshot": true, "username": "orders_admin", "password": "REDACTED-EXAMPLE", "tags": {"service": "orders"}},
+        "after_unknown": {"id": true, "arn": true, "endpoint": true, "kms_key_id": true},
+        "before_sensitive": {"password": true},
+        "after_sensitive": {"password": true},
+        "replace_paths": [["storage_encrypted"]]
+      },
+      "action_reason": "replace_because_cannot_update"
+    },
+    {
+      "address": "aws_security_group_rule.app_ssh",
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "app_ssh",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["create"],
+        "before": null,
+        "after": {"type": "ingress", "from_port": 22, "to_port": 22, "protocol": "tcp", "cidr_blocks": ["0.0.0.0/0"], "security_group_id": "sg-0a1b2c3d4e5f60002", "description": "ssh"},
+        "after_unknown": {"id": true, "security_group_rule_id": true},
+        "before_sensitive": false,
+        "after_sensitive": {}
+      }
+    },
+    {
+      "address": "aws_iam_role_policy.app",
+      "mode": "managed",
+      "type": "aws_iam_role_policy",
+      "name": "app",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["update"],
+        "before": {"id": "northwind-orders-app:app", "name": "app", "role": "northwind-orders-app", "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"s3:GetObject\",\"s3:PutObject\"],\"Resource\":\"arn:aws:s3:::northwind-orders-exports/*\"}]}"},
+        "after": {"id": "northwind-orders-app:app", "name": "app", "role": "northwind-orders-app", "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"s3:*\"],\"Resource\":\"*\"}]}"},
+        "after_unknown": {},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      }
+    },
+    {
+      "address": "aws_instance.bastion",
+      "mode": "managed",
+      "type": "aws_instance",
+      "name": "bastion",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["create", "delete"],
+        "before": {"id": "i-0fedcba9876543210", "ami": "ami-0ccc3333dddd4444e", "instance_type": "t3.micro", "tags": {"Name": "northwind-bastion"}},
+        "after": {"ami": "ami-0eee5555ffff6666a", "instance_type": "t3.micro", "tags": {"Name": "northwind-bastion"}},
+        "after_unknown": {"id": true, "public_ip": true, "private_ip": true},
+        "before_sensitive": {},
+        "after_sensitive": {},
+        "replace_paths": [["ami"]]
+      },
+      "action_reason": "replace_because_cannot_update"
+    },
+    {
+      "address": "module.monitoring.aws_cloudwatch_metric_alarm.cpu_high",
+      "module_address": "module.monitoring",
+      "mode": "managed",
+      "type": "aws_cloudwatch_metric_alarm",
+      "name": "cpu_high",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["update"],
+        "before": {"id": "northwind-orders-cpu-high", "alarm_name": "northwind-orders-cpu-high", "threshold": 80, "evaluation_periods": 3},
+        "after": {"id": "northwind-orders-cpu-high", "alarm_name": "northwind-orders-cpu-high", "threshold": 95, "evaluation_periods": 3},
+        "after_unknown": {},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      }
+    },
+    {
+      "address": "aws_s3_bucket.exports",
+      "mode": "managed",
+      "type": "aws_s3_bucket",
+      "name": "exports",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["no-op"],
+        "before": {"id": "northwind-orders-exports", "bucket": "northwind-orders-exports"},
+        "after": {"id": "northwind-orders-exports", "bucket": "northwind-orders-exports"},
+        "after_unknown": {},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      }
+    }
+  ],
+  "output_changes": {},
+  "configuration": {},
+  "timestamp": "2026-09-30T14:02:11Z",
+  "applyable": true,
+  "complete": true,
+  "errored": false
+}

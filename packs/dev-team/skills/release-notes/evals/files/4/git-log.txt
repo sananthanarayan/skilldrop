@@ -1,0 +1,26 @@
+# git log v4.9.2..v5.0.0-rc2 (oldest first) -- Portside WMS
+9c1e4a7 2026-07-14 feat(picking): wave planning screen groups orders by carrier cutoff (#1802)
+b3d0f52 2026-07-16 fix(receiving): ASN import rejects files that start with a BOM (#1809)
+4e7a918 2026-07-21 chore(deps): bump spring-boot 3.2.5 -> 3.3.2
+a80c3de 2026-07-23 feat(scan): batch barcode scan mode for handhelds (#1777)
+17f6b0c 2026-07-28 chore(db): migrations now use MERGE; requires PostgreSQL 15+ (#1815)
+    Installer aborts on PostgreSQL 13 and 14. 4.x supported 13+.
+d52e9a1 2026-07-30 fix(labels): ZPL label truncates SKUs longer than 20 characters (#1821)
+6fa23c8 2026-08-04 refactor(inventory): split StockLedger into reader and writer
+e19b7d4 2026-08-06 feat(api): /api/v2/stock-levels endpoint with pagination (#1790)
+0b4c8f1 2026-08-11 fix(picking): dedupe pick lists on wave release (#1833)
+    Partial. Split shipments can still produce a duplicate line, tracked in #1893.
+c7719ae 2026-08-13 perf(reports): stock valuation report at 500k SKUs: 212s -> 58s (#1840)
+83ad5e0 2026-08-18 feat(scan): put batch scan behind flag scan.batch.enabled, default false (#1848)
+    Field test at the pilot site showed missed reads on older handhelds.
+    Stays off by default until #1851 is fixed.
+f2061bb 2026-08-20 security: session tokens were not invalidated on password change (LSA-2026-04) (#1852)
+5d9e3c0 2026-08-25 docs: 4.x maintenance ends 2027-03-31 (was 2026-12-31) (#1856)
+a1f47e2 2026-08-27 feat(api)!: remove /api/v1/stock (deprecated since 4.6); use /api/v2/stock-levels (#1858)
+39b8d6f 2026-09-01 ci: split integration tests into 4 shards
+7c40e95 2026-09-03 fix: tweaks
+e6d1a07 2026-09-08 feat(config): rename wms.mail.host to wms.smtp.host (#1866)
+    Old key is still read and logs a deprecation warning. Removal planned for 6.0.
+2ab95f3 2026-09-10 fix(receiving): putaway suggestion ignored the bin weight limit (#1870)
+b90c7e8 2026-09-15 feat(ui): Polish translation of the handheld screens (#1874)
+d07a3b6 2026-09-22 fix(installer): upgrade from 4.9.x failed when the backup directory was a symlink (#1881)

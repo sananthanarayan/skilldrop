@@ -1,0 +1,19 @@
+{
+  "skill_name": "launch-readiness",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Are we ready to launch? PR #412 adds a `loyalty_points` column to `customers`, backfills it from order history, and shows points on the checkout page. Going to 100% of users Thursday. Load test hit p99 180ms against a 250ms target (link: grafana/d/lt-412). We have a dashboard but haven't added alerts yet. Support hasn't been told.",
+      "assertions": [
+        "Lists 3-5 failure modes specific to this change (e.g. backfill load on customers, wrong point totals shown at checkout) before the checklist",
+        "Every check row has a status of met, not met, or n/a with a reason, plus an evidence column and an owner expressed as a role",
+        "Rollback is the first row and is not met, because no tested rollback or data story was supplied",
+        "Detection is not met because no alerts exist, and the report hands off to observability-plan rather than drafting the alert inline",
+        "The quality-targets row is met and cites the supplied load-test link as evidence",
+        "Exposure is flagged because a 100% launch is not staged and no reason is given for why all-at-once is safe",
+        "The verdict is BLOCKED, and the reason given is the missing rollback",
+        "No dashboards, test results, or sign-offs are invented beyond what the prompt supplied"
+      ]
+    }
+  ]
+}

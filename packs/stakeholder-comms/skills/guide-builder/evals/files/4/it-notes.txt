@@ -1,0 +1,21 @@
+NEW STARTER LAPTOP SETUP - Fenwick & Oduya Architects
+Bram Kessel (IT, contract) - last touched 14 Feb 2026
+
+1. Log in with the account from the welcome email (firstname.lastname@fenwickoduya.example).
+   Change the password when it asks.
+2. Install the apps from Company Portal (it's in the Start menu): Tailgate VPN, DraftForge,
+   Keyhaven (password manager). DraftForge is big, takes 20-30 min.
+3. Map the P: drive -> \\studio-nas\projects
+   File Explorer > This PC > Map network drive. Tick "Reconnect at sign-in".
+   All project work lives on P:.
+4. Open DraftForge. First launch asks for a licence server, type 27000@fo-lic01
+   We have 8 floating seats. If it says "no licence available" all 8 are in use and
+   someone has to close DraftForge to free one. Ask around.
+5. Join the office wifi: Fenwick-Staff. Password is in Keyhaven in the "Office" folder.
+   (Fenwick-Guest is for visitors, it can't see P: or the licence server.)
+6. Keyhaven: Odile sends the invite to your work email. Accept it, set a master password.
+   DON'T LOSE THE MASTER PASSWORD. We can't reset it, you'd lose everything in the vault.
+7. Working from home: connect Tailgate VPN first, then P: and the DraftForge licence work
+   same as in the office. VPN login is the same as the laptop login.
+8. Backups: nothing to do. Anything on P: is backed up every night.
+   Desktop and Documents are NOT backed up. Don't keep project files there.

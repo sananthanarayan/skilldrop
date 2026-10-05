@@ -1,0 +1,40 @@
+{
+  "name": "marketing-flyer",
+  "version": "0.1.0",
+  "description": "Generate a print-ready, on-brand marketing flyer — event, launch, open day, offer, hiring — as one self-contained HTML file (Letter, A4, A5, or square and story sizes for social) that saves to PDF, built from the user's own logo, colours, fonts and content, with one call to action, a short headline, contrast checked, and no invented dates, prices or contact details. Use when the user wants a flyer, poster, one-pager, handout, leaflet or event announcement \"in our branding\", or says \"make a flyer for…\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "brand-kit",
+    "deck-builder"
+  ],
+  "handoff": [
+    {
+      "to": "brand-kit",
+      "when": "the user has brand material but no brand.json",
+      "purpose": "Capture the logo, colours and fonts once, so the flyer and later decks match.",
+      "fallback": "If brand-kit is absent, ask for the logo path and brand hex codes in the setup block and put them in the spec's brand object inline."
+    }
+  ],
+  "tags": [
+    "flyer",
+    "poster",
+    "marketing",
+    "print",
+    "pdf",
+    "brand",
+    "design"
+  ],
+  "permissions": {"network": [], "commands": ["google-chrome", "chromium", "chrome"], "files": "named-paths", "notes": "A local Chrome or Chromium is run headless only for --pdf and --png; the HTML needs nothing."},
+  "model": {
+    "tier": "standard",
+    "rationale": "Writes short copy to fit and fills a spec for a deterministic builder. Bounded generation."
+  }
+}

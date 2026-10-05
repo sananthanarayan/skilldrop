@@ -1,0 +1,41 @@
+{
+  "name": "terraform-module",
+  "version": "0.1.1",
+  "description": "Generate a Terraform module from a described need, with main.tf, variables.tf, outputs.tf and versions.tf, typed and validated variables, secure defaults (encryption on, public access off, least-privilege IAM), a merged tags variable, a basic usage example and a README with inputs and outputs tables. Use when the user says \"write a terraform module for\", \"create terraform for an S3 bucket / VPC / database\", \"turn this into a reusable module\", or \"scaffold infrastructure as code for\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "capacity-cost-model",
+    "migration-plan",
+    "pre-merge-review",
+    "terraform-plan-review",
+    "threat-model"
+  ],
+  "handoff": [
+    {
+      "to": "terraform-plan-review",
+      "when": "the module has been planned from examples/basic or a real caller",
+      "purpose": "Check the plan for destroys, stateful changes and access widening before the first apply.",
+      "fallback": "If terraform-plan-review is absent, read the plan for any -/+ or destroy lines and any 0.0.0.0/0 or wildcard IAM before applying."
+    }
+  ],
+  "tags": [
+    "terraform",
+    "infrastructure-as-code",
+    "module",
+    "security-defaults",
+    "aws",
+    "hcl"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Structured generation against fixed module conventions and a secure-defaults checklist; the judgment is bounded to choosing defaults and validation rules for a described need."
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "stakeholder-comms",
+  "version": "0.16.9",
+  "description": "Non-technical audiences: audience profiling, exec summaries, decision logs, and guides. Decks live in the design pack. (8 skills, 1 loop)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/stakeholder-comms/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "exec-summary",
+    "deck",
+    "audience",
+    "decision-log"
+  ]
+}

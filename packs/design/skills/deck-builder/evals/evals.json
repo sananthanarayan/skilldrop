@@ -1,0 +1,40 @@
+{
+  "skill_name": "deck-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build a .pptx from this content for an exec audience, using our brand palette (navy/white).",
+      "assertions": [
+        "A real .pptx file is produced, not an outline",
+        "Audience, format and design are confirmed in a single setup block rather than as a trickle of separate questions",
+        "The title slide carries a real title, subtitle, presenter, and date — never left blank",
+        "Section dividers appear sparingly, at most one every 4-5 content slides",
+        "Big-number layouts use only numbers the user supplied; no statistic is invented for emphasis",
+        "Bullet density matches the stated audience rather than a fixed default",
+        "The requested palette is applied rather than the default theme"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Build the Q3 QBR deck on our corporate template at ~/brand/acme-master.potx — 25 minutes, live, partner audience.",
+      "assertions": [
+        "The template's layouts are listed with --list-layouts before the spec is written, rather than layout names being guessed",
+        "The spec sets `template` and a `layout_map` covering at least title, section, content and closing",
+        "A palette is still collected, because the template does not colour charts, tables or big numbers",
+        "`aspect` is not fought with — the template's own slide size is accepted and stated",
+        "Slide count is derived from the 25-minute budget at roughly 2 minutes per slide"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Here are our renewal rates for the last three quarters (88%, 91%, 94%) and the SLA table from the contract. Put them in the deck.",
+      "assertions": [
+        "The three comparable figures become a `chart` slide, not a bullet list",
+        "The chart carries a `takeaway` sentence and a `source`",
+        "The SLA data becomes a `table` slide rather than aligned bullets",
+        "No figure appears that the user did not supply",
+        "Any build warning (missing image, short series) is reported to the user with its path rather than left in the file"
+      ]
+    }
+  ]
+}

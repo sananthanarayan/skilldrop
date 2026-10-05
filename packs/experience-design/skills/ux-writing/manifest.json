@@ -1,0 +1,41 @@
+{
+  "name": "ux-writing",
+  "version": "0.1.0",
+  "description": "Write the interface copy for a flow or component — buttons, labels, hints, errors, empty states, confirmations, loading and success messages — as a string table where each string has its context, a character budget, a recommended version and one variant, with error messages that say what happened and what to do next, and a terminology list so the same thing has the same name everywhere. Use when the user wants UI copy, microcopy, button text, error messages, empty states, \"write the strings for this screen\", or \"our wording is inconsistent\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "accessibility-audit",
+    "brand-kit",
+    "content-design",
+    "design-system-spec",
+    "guide-builder"
+  ],
+  "handoff": [
+    {
+      "to": "accessibility-audit",
+      "when": "the strings are built into a working UI",
+      "purpose": "Check the built flow against WCAG, which a string table can't prove.",
+      "fallback": "If accessibility-audit is absent, list the checks still owed: errors announced to screen readers, labels tied to fields, and link text that makes sense out of context."
+    }
+  ],
+  "tags": [
+    "ux-writing",
+    "microcopy",
+    "ui-copy",
+    "error-messages",
+    "content",
+    "terminology"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Short-form writing to fixed slot rules and character budgets, plus a terminology consistency pass. Bounded generation with clear checks."
+  }
+}

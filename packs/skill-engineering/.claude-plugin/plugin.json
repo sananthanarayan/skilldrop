@@ -1,0 +1,23 @@
+{
+  "name": "skill-engineering",
+  "version": "0.16.9",
+  "description": "For people writing Agent Skills in their own repos: write a portable SKILL.md folder from a described task, then audit any skill for routing, portability, safety, structure and evals before you share it. (6 skills, 1 loop)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/skill-engineering/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "agent-skills",
+    "skill-md",
+    "claude-code",
+    "codex",
+    "copilot",
+    "cursor",
+    "kiro",
+    "antigravity",
+    "lint"
+  ]
+}

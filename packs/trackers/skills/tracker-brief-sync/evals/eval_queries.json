@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Turn this PRD into Jira epics and stories as a CSV I can import",
+    "should_trigger": true
+  },
+  {
+    "query": "Create GitHub issues from this brief, each linked back to the section it came from",
+    "should_trigger": true
+  },
+  {
+    "query": "Does our Linear project still match the PRD? Find tickets with no requirement and requirements with no ticket",
+    "should_trigger": true
+  },
+  {
+    "query": "Load the guest checkout requirements into our tracker with acceptance criteria and labels",
+    "should_trigger": true
+  },
+  {
+    "query": "Draft a PRD for guest checkout from these interview notes",
+    "should_trigger": false
+  },
+  {
+    "query": "Break the guest checkout epic into thin vertical slices with a build order",
+    "should_trigger": false
+  },
+  {
+    "query": "Find duplicates and stale items in our Jira backlog",
+    "should_trigger": false
+  },
+  {
+    "query": "Summarise the guest checkout PRD in one page for the leadership team",
+    "should_trigger": false
+  }
+]

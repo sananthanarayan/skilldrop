@@ -1,0 +1,11 @@
+[
+  { "query": "Remove the Claude watermark from this doc before I send it", "should_trigger": true },
+  { "query": "Strip the 'Generated with Claude Code' footer and the co-author trailer", "should_trigger": true },
+  { "query": "This draft sounds like AI — tell me exactly which sentences give it away", "should_trigger": true },
+  { "query": "There are invisible characters in this file breaking my diff, find them", "should_trigger": true },
+  { "query": "Clean up this text I pasted out of a chat window before it goes to the board", "should_trigger": true },
+  { "query": "Review this design doc and tell me where the argument is weak", "should_trigger": false },
+  { "query": "Summarize this report for executives", "should_trigger": false },
+  { "query": "Write our company policy on acceptable AI use", "should_trigger": false },
+  { "query": "Review this pull request for correctness bugs", "should_trigger": false }
+]

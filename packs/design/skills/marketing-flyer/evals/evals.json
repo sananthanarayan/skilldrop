@@ -1,0 +1,18 @@
+{
+  "skill_name": "marketing-flyer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Make a flyer for our community health fair using ./brand/brand.json. It's Saturday 14 November, 10am to 2pm, at the Riverside Park pavilion, free. There'll be blood pressure and glucose checks, flu shots with no appointment, a kids' corner and cooking demos. People should register at northwindhealth.example/fair. Letter size.",
+      "assertions": [
+        "Uses the supplied brand.json, so the flyer carries the brand logo and colours",
+        "The headline is ten words or fewer and names the event",
+        "There is exactly one call to action, worded as a verb, with northwindhealth.example/fair",
+        "The date, time, place and price match the prompt exactly; nothing is invented (no phone number, no extra dates)",
+        "No more than four points",
+        "Runs build_flyer.py and reports the contrast figures and any warnings",
+        "Picks the event layout, or explains choosing another, because the date is the key fact"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+[
+  { "query": "Design an agent loop to keep our runbooks up to date", "should_trigger": true },
+  { "query": "My agent keeps iterating forever — how do I add proper exit criteria?", "should_trigger": true },
+  { "query": "Turn this prompt we run by hand every week into a supervised automation loop", "should_trigger": true },
+  { "query": "Review this proposed agent automation for missing human gates", "should_trigger": true },
+
+  { "query": "Implement this user story with tests", "should_trigger": false },
+  { "query": "Split this task across parallel subagents", "should_trigger": false },
+  { "query": "How many tokens should this workflow be allowed to spend?", "should_trigger": false },
+  { "query": "Design the eval set for our LLM feature", "should_trigger": false }
+]

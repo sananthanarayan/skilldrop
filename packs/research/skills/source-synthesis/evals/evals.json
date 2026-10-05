@@ -1,0 +1,79 @@
+{
+  "skill_name": "source-synthesis",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Synthesise these three sources on whether Northwind should offer annual billing discounts. S1: Contoso pricing benchmark 2026 (40 pp.): p12 'median annual discount among 300 SaaS firms is 17%'; p15 'annual plans churn 40% less, though firms self-select annual buyers'. S2: Acme finance memo, 3 pp., Feb 2026: p2 'our 2025 annual-plan pilot lifted cash collected up front by $210k'; p3 'net revenue retention unchanged'. S3: transcript, Northwind sales lead, 22 min: 08:40 'customers ask for annual all the time'; 15:10 'the big deals want 25% off'. Question: what discount, if any, should we offer?",
+      "assertions": [
+        "Every claim carries a citation with a source id and a location such as [S1:p12] or [S3:08:40]",
+        "Findings are organised by theme or sub-question, not as a source-by-source summary",
+        "Agreement and disagreement are explicit, naming which sources sit on each side (for example S1's 17% median vs S3's 25% ask)",
+        "Each finding has an evidence-strength rating and names the criteria behind it",
+        "The self-selection caveat on S1's churn figure is kept rather than turned into a causal claim",
+        "Lists gaps and what the sources do not say, such as no source testing a specific discount level on Northwind's own customers",
+        "Does not add facts, benchmarks or figures that are not in the three sources, unless tagged [outside]",
+        "Runs or recommends the citation checker and reports its result"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "We're a 45-person architecture practice and the directors are split on the 3-days-in-the-studio rule. Everything we have is in this folder: staff-survey-summary.md, badge-data.md, exit-interviews.md, director-email.md and practice-weekly-article.md. Can you pull it together for Thursday's directors' meeting? The choice is keep 3 days, drop to 2, or go up to 4 like Lucian wants. And tell me what changing it would do to retention.",
+      "assertions": [
+        "It corrects the claim that productivity is down 20%: the Castellan survey found 20% of managers believed productivity had fallen (and 34% believed it had risen), and it measured perceptions, not output",
+        "It treats Lucian's email and the Practice Weekly article as resting on the same Castellan survey, not as two independent pieces of evidence",
+        "It notes the Castellan fieldwork dates from October–November 2021 and treats it as dated or weak evidence for a 2026 decision",
+        "It points out that the Q1 answers in the staff survey add up to 40 (27 + 9 + 4) against 38 stated responses",
+        "It states that actual attendance already averages 2.4 days a week, below the 3-day rule, with 14 of 45 staff averaging 3 or more days",
+        "On retention it says the material cannot answer the question: three leavers, only one of whom (the technologist who moved to Bristol) linked leaving to office days; it gives no predicted retention effect",
+        "Each finding names the file it comes from, and the findings are grouped by topic, not written as one summary per file",
+        "It does not bring in studies, statistics or claims about hybrid working that are not in the five files"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "I talked to five cafe owners last week about whether they'd pay for our stock-ordering app. My notes are rubbish, sorry, here's what I've got:\n\n- Marta, Kiln St Coffee (2 sites). Orders by WhatsApp to 3 suppliers. Forgets oat milk 'every other week'. Said 'I'd try it'. Asked if it works with her till (Lumo), I didn't know.\n- Joss, The Larder. Does the ordering Sunday nights, takes about 2 hrs. 'If it saved me an hour I'd pay, maybe £30 a month?'\n- Dee, Dee's. Happy with her spreadsheet, 'not a problem for me'. But said her friend who runs a bakery would def pay £50/mo.\n- Priyank, Corner Cup. Ran out of time, he mostly talked about a supplier delivering late. Didn't get to the app.\n- can't find my notes for the fifth one. think it was positive\n\nCan you pull together what we learned? Do they want it, and what should we charge?",
+      "assertions": [
+        "It delivers the write-up from the notes as given and does not stop to ask for better notes first",
+        "It says only one owner, Joss, named a price they would pay (about £30 a month, said tentatively and conditional on saving an hour)",
+        "It does not treat the £50 a month figure as evidence of willingness to pay: it is Dee's second-hand remark about a bakery owner who was not interviewed",
+        "It says Dee does not see ordering as a problem and that Priyank's conversation never reached the app, so at most two of the four noted conversations show interest",
+        "The fifth conversation is treated as no evidence because the notes are missing; 'think it was positive' is not counted as a positive result",
+        "Marta's 'I'd try it' is reported as interest in trying, not as agreement to pay",
+        "It says five conversations are too few to set a price or to conclude that cafe owners want it, and gives any price suggestion as tentative",
+        "It does not add market figures, competitor prices or cafe-industry facts that are not in the notes"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "I'm the governance officer at Marlowe Vale Academy Trust (9 secondary schools). Next month the board decides whether to roll the phone-pouch scheme out from the two pilot schools to all nine. Everything we've got is in this folder: pilot-report.md, behaviour-logs.md, teacher-focus-group.md, parent-survey.md and vendor-brochure.md. Can you pull together what the evidence actually shows? Two pages max, it's going in the board pack. They'll particularly want to know what it did to behaviour and to exam results.",
+      "assertions": [
+        "It states that logged incidents at Fenwick Park rose from 280 to 291, which contradicts the pilot report's statement that incidents fell at both schools",
+        "It says Ashcombe's fall from 412 to 318 cannot be credited to the pouches because the logging system changed on 5 January 2026 and stopped counting low-level disruption, which was 96 of the 412 the year before",
+        "It traces the 40% reduction figure to the vendor brochure's footnote (a 2019 study of three New Zealand schools commissioned by the vendor) and does not count the pilot report's repetition of it as separate evidence",
+        "It corrects the parent survey response rate: 1,140 out of 3,050 is about 37%, not 47%",
+        "On exam results it says the sources contain no attainment data (the pilot report says results were not analysed and the brochure's 'improves grades' has no source), and it gives no estimated effect on results",
+        "It reports that phone confiscations fell at both schools (87 to 9 at Ashcombe, 64 to 22 at Fenwick Park) as the clearest measured change",
+        "It notes the teacher focus group was six teachers all from Ashcombe, with none from Fenwick Park, and reports the drawbacks they raised (for example ten minutes lost at form time or pupils pouching a dummy phone), not only the positive view in the pilot report",
+        "It does not bring in research, statistics or claims about phones in schools that are not in the five files"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "I'm on the committee for our village hall and the boiler is on its last legs. We're arguing about whether to get a heat pump instead. This is everything I've collected, sorry it's a bit scrappy:\n\n- Quote from Fernbrook Renewables: £14,200 to fit an air source heat pump. They only do heat pumps. The chap reckoned a new gas boiler would be 'about £4,100' but that's not a quote, he doesn't fit them.\n- Spoke to the treasurer at Little Aldwick hall, they got a heat pump in 2024. She said their bills 'went down about a third'. They also had the roof insulated the same year.\n- Cut a paragraph out of a magazine a while ago, no idea which one or when: 'heat pumps are three to four times as efficient as gas boilers'.\n- I think there's a grant, up to £7,500? Read it somewhere. Not sure village halls can get it.\n- We spent about £2,300 on gas last year I think. Hall's in use maybe 4 days a week.\n\nCan you pull together what we actually know? Mainly: would a heat pump be cheaper to run?",
+      "assertions": [
+        "It delivers the write-up from the notes as given and does not stop to ask for more information first",
+        "It says the notes cannot answer whether a heat pump would be cheaper to run, because they contain no electricity or gas prices and no running-cost estimate for this hall, and it states no annual saving as fact",
+        "It says Little Aldwick's bills falling by about a third cannot be put down to the heat pump alone because the roof was insulated in the same year",
+        "It says the 'three to four times as efficient' line is about efficiency, not running cost, and comes from an undated cutting from an unknown magazine",
+        "The grant is treated as unconfirmed on both the amount and whether a village hall qualifies, and the £7,500 is not subtracted from the cost as if it were secured",
+        "It notes that the £4,100 boiler figure is an offhand estimate from an installer who only fits heat pumps, not a quote",
+        "It gives the up-front gap as about £10,100 (£14,200 against about £4,100)",
+        "It does not add energy prices, grant scheme rules or typical heat pump costs from outside the notes, unless clearly labelled as not coming from the notes"
+      ]
+    }
+  ]
+}

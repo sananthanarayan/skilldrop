@@ -1,0 +1,20 @@
+{
+  "name": "experience-design",
+  "version": "0.16.9",
+  "description": "The experience around a product: the structure people navigate, the content and interface words they read, the components they use, and the service behind it all. (9 skills, 1 loop)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/experience-design/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "ux",
+    "information-architecture",
+    "ux-writing",
+    "content-design",
+    "design-system",
+    "service-design"
+  ]
+}

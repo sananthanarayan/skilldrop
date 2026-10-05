@@ -1,0 +1,19 @@
+{
+  "skill_name": "dpia",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Northwind Health is adding a symptom checker to its patient app: users in Germany and France type symptoms, an AI model suggests whether to book a GP, a pharmacist or urgent care, and the conversation is stored with their patient record. The model is hosted by a vendor in Ireland and we send anonymised transcripts to a US research partner to improve it. Write the DPIA. Our DPO is Claire Martin.",
+      "assertions": [
+        "The draft follows the Article 35(7) structure: systematic description and purposes, necessity and proportionality, risks to individuals, and measures",
+        "Health data is identified as special category data and given an Article 9(2) condition or an open question saying one is needed",
+        "Each purpose (triage suggestion, storing with the record, research sharing) has its own lawful basis rather than one basis for the whole activity",
+        "The transfer to the US research partner is treated as a transfer outside the EEA with a mechanism named or marked to confirm, and the 'anonymised' claim is questioned rather than accepted",
+        "Risks are scored as harms to patients (for example, a wrong triage suggestion delaying care), not as fines or reputational harm to Northwind",
+        "Residual risk counts only agreed measures, and the draft gives a view on whether prior consultation looks needed",
+        "Retention periods and other facts not in the prompt are marked to confirm and listed as DPO questions, not invented",
+        "The DPO advice and sign-off fields are left blank, and the not-legal-advice statement appears once"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "research",
+  "version": "0.16.9",
+  "description": "Take a question from vague to answered: plan the research around the decision it serves, synthesise the sources with every claim cited, and rank rival explanations by the evidence against them. (7 skills, 1 loop)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/research/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "research",
+    "literature review",
+    "synthesis",
+    "citations",
+    "hypotheses",
+    "evidence"
+  ]
+}

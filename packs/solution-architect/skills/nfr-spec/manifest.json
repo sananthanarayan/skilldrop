@@ -1,0 +1,16 @@
+{
+  "name": "nfr-spec",
+  "version": "0.1.0",
+  "description": "Sweep a feature or system through the full non-functional requirements catalog — performance, throughput, availability, durability, privacy/retention, accessibility, i18n, observability, operability, compatibility, cost — forcing every category to a measurable target, an explicit n/a, or a tagged default. Use when the user needs NFRs, quality attributes, \"how fast/reliable does it need to be\", SLO targets for a feature, or the requirements everyone forgets until they're incidents.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": ["capacity-cost-model", "design-doc", "prd-draft", "test-plan-generator", "threat-model"],
+  "handoff": [
+    { "to": "design-doc", "when": "the quality targets are set", "purpose": "Design against the stated numbers rather than against taste.", "fallback": "If design-doc is absent, restate each target beside the design choice that serves it." },
+    { "to": "threat-model", "when": "the design has a trust boundary worth attacking", "purpose": "Attack the design before it is ratified.", "fallback": "If threat-model is absent, list the trust boundaries and one abuse case per boundary inline." },
+    { "to": "test-plan-generator", "when": "the targets need verifying, not just stating", "purpose": "Turn each quality target into a coverage entry.", "fallback": "If test-plan-generator is absent, name the test that would falsify each target." }
+  ],
+  "tags": ["nfr", "requirements", "slo", "performance", "availability", "quality-attributes"],
+  "model": { "tier": "standard", "rationale": "Rubric-driven sweep with archetype defaults; the judgment is calibrating targets to business reality. Bounded by the catalog; escalate via ambiguous-input on contested SLOs." }
+}

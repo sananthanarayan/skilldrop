@@ -1,0 +1,79 @@
+{
+  "skill_name": "metric-definition",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Product and sales at Northwind both report 'active customers' and the numbers never match. Product counts any account with a login in the last 30 days; sales counts accounts with a paid subscription. We use BigQuery: `analytics.logins` (account_id, login_ts TIMESTAMP), `billing.subscriptions` (account_id, status, plan, started_at, ended_at), and `crm.accounts` (account_id, segment, is_internal BOOL). Leadership wants one monthly number for the board, reported in London time. Write the definition.",
+      "assertions": [
+        "Splits the two meanings into separately named metrics (for example login-based and paid-subscription-based) instead of one name with a footnote, and states which one the board number uses or lists it as an open decision",
+        "Writes the formula as an aggregation over the named columns, using COUNT(DISTINCT account_id)",
+        "States the time column, a half-open window and the timezone as Europe/London",
+        "States that the metric is not additive and that monthly or segment values must be recomputed, not summed",
+        "Excludes internal accounts with an explicit predicate on crm.accounts.is_internal and gives a reason",
+        "Provides reference SQL in BigQuery syntax that converts the window boundaries to Europe/London",
+        "Includes at least three runnable sanity checks, including a known-answer fixture or a reconciliation with billing",
+        "Does not invent tables, columns or an owner not given in the prompt; anything assumed is tagged [assumption] and listed under open decisions"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "Finance and CX keep turning up to the Monday meeting with different refund rates and it's getting silly. I've pasted the Slack thread into thread.md and the table descriptions into tables.md. Can you write down one proper definition of refund rate that we can all use, with the SQL? We're on Postgres.",
+      "assertions": [
+        "It separates the share of orders refunded from the share of revenue refunded as two differently named measures, or picks one as 'refund rate' and names the other as a separate measure; it does not blend them into one formula",
+        "It points out that 312 refunded orders out of 7,480 is about 4.2%, not the 4.6% quoted in the thread",
+        "The order-based SQL counts each refunded order once (COUNT DISTINCT on order_id, EXISTS, or refunds aggregated per order before joining), so orders with several refund rows are not double-counted",
+        "It states one rule for which month a refund belongs to (the order's month or the refund's month) and says what happens to a February order refunded in March",
+        "It says a single money-based rate across both stores cannot be computed from these tables as they stand because there is no exchange-rate data, and it does not invent an exchange rate or an exchange-rate table",
+        "Test orders are excluded with a condition on orders.is_test, and staff orders are flagged as not identifiable from the listed columns; it does not use a staff flag column that does not exist",
+        "Month boundaries are set in UK time (Europe/London) against timestamps stored in UTC",
+        "It lists whether cancelled orders count in the denominator and who owns the metric as open decisions, without naming an owner the thread did not name"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "need a proper definition of 'time to first response' for our support team. we use a helpdesk tool and I can export tickets to a spreadsheet. my boss wants it on the weekly report. there's 8 agents. not sure if weekends should count, we don't work them",
+      "assertions": [
+        "It delivers a written definition in the reply and does not stop at a list of questions",
+        "It defines the start and the end of the clock (ticket created to the first reply from a human agent) and says automatic acknowledgement emails do not count as the first response, or flags that as a decision",
+        "Whether weekends and out-of-hours time count is given as an open decision with a recommended default or with both versions described; it is not decided silently",
+        "It says which statistic goes on the report (median, mean or a percentile), not just 'average' left undefined",
+        "It says how tickets that have had no reply yet when the report is run are treated",
+        "It says which week a ticket is counted in (the week it was created or the week it was answered)",
+        "Any export column names it uses are marked as assumed, since no export layout was given",
+        "It does not state a response-time target or SLA figure as the team's own, since none was given"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "Ops and customer care at Tarn Valley Heating both report first-time fix rate and they're miles apart. The Slack thread is in thread.md and the tables are in tables.md (we're on Snowflake). The FD wants one number for the board pack, ready on the 1st of each month, shown next to last September. Can you write the definition — one page, with the SQL underneath?",
+      "assertions": [
+        "It points out that 3,912 out of 4,830 is 81%, not the 84% quoted in the thread",
+        "The definition counts a repair as not fixed first time when there is a return visit within a stated number of days, and does not rely only on the engineer's follow_up_required flag",
+        "It explains the gap between the two teams' figures: 630 of the 3,912 repairs with no follow-up flag had a return visit within 30 days, leaving 3,282 (68%)",
+        "A return visit is counted whether it was logged as a 'recall' or as a new 'repair', and recall visits are not themselves added to the denominator as fresh repairs",
+        "It says the month's figure cannot be final on the 1st of the next month because the return window has not yet run for late-month repairs, and proposes a provisional figure, a lag or a shorter window",
+        "It says a like-for-like comparison with September 2025 is not possible by appliance because appliance_id is empty before 3 March 2026, and says what to do instead (match by address for both periods, or mark the comparison as not comparable)",
+        "The SQL uses only the tables and columns listed in tables.md, restricts the denominator to completed repairs, and does not invent a column linking a return visit to its original job",
+        "It leaves the metric owner as an open decision, noting the previous owner left in August, and says whether subcontractor jobs are included"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "I run a coffee subscription box, just me and one part-timer. An investor asked what our monthly churn is and I realised I've never actually defined it. Billing is on Stripe and I keep a Google Sheet of subscribers. September: started the month with 312 subscribers, 21 cancelled, 9 paused (people can pause for a month or two instead of cancelling), 34 new signed up. Can you give me a quick definition I can stick to every month, and the September number for the investor update?",
+      "assertions": [
+        "It delivers a written definition and a September figure in the reply, and does not stop at a list of questions",
+        "The denominator is stated as subscribers active at the start of the month (312), and the 34 new sign-ups are not netted off against cancellations",
+        "It gives September churn on cancellations alone as 21 out of 312, about 6.7%",
+        "It does not decide silently whether pauses count: it states the choice made and gives the figure with pauses included, 30 out of 312, about 9.6%",
+        "It says revenue churn cannot be worked out from what was given because no prices or plan amounts were provided, and it does not invent a price",
+        "It says whether a cancellation is counted in the month the subscriber cancels or the month their paid period ends",
+        "It does not quote an industry-average or benchmark churn figure as fact",
+        "Any Stripe field names or sheet column names it uses are marked as assumed, since none were given"
+      ]
+    }
+  ]
+}

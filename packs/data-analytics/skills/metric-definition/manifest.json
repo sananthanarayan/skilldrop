@@ -1,0 +1,41 @@
+{
+  "name": "metric-definition",
+  "version": "0.1.1",
+  "description": "Write a metric spec precise enough for a semantic layer or dbt metric to implement and for two analysts to get the same number — name, business question, exact numerator and denominator, grain, time window and timezone, filters and exclusions (test accounts, refunds), allowed dimensions, edge cases (NULLs, late data, currency), owner, reference SQL, and the sanity checks that catch it going wrong. Use when the user says \"define this metric\", \"how exactly do we calculate X\", \"finance and product get different numbers for X\", \"write the metric spec for our semantic layer\", or \"what counts as an active user\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "dashboard-spec",
+    "data-contract",
+    "observability-plan",
+    "sql-review",
+    "success-metrics"
+  ],
+  "handoff": [
+    {
+      "to": "sql-review",
+      "when": "the reference SQL is written and the metric is about to be certified",
+      "purpose": "Check the reference SQL for fan-out, NULL and timezone bugs before it becomes the tie-breaker.",
+      "fallback": "If sql-review is absent, run the spec's join-integrity and known-answer checks and note that the SQL has not been independently reviewed."
+    }
+  ],
+  "tags": [
+    "metrics",
+    "semantic-layer",
+    "dbt",
+    "analytics",
+    "data-quality",
+    "definitions"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Structured specification against a fixed checklist (formula, grain, window, exclusions, edge cases, checks). Needs care with SQL and additivity but no adversarial judgment."
+  }
+}

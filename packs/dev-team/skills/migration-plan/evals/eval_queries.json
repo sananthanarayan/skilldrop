@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Plan the migration for this schema change",
+    "should_trigger": true
+  },
+  {
+    "query": "How do we roll this datastore swap out safely with no downtime?",
+    "should_trigger": true
+  },
+  {
+    "query": "Give me a phased expand-migrate-contract plan for this API version",
+    "should_trigger": true
+  },
+  {
+    "query": "We're switching auth providers — plan the cutover and rollback",
+    "should_trigger": true
+  },
+  {
+    "query": "Design the new database schema and its indexes",
+    "should_trigger": false
+  },
+  {
+    "query": "Split this migration work into user stories",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the runbook for the on-call team",
+    "should_trigger": false
+  },
+  {
+    "query": "Write an ADR recording why we chose this datastore",
+    "should_trigger": false
+  }
+]

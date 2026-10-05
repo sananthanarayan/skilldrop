@@ -1,0 +1,16 @@
+Issue key,Issue Type,Summary,Status,Priority,Assignee,Created,Updated,Resolved,Due date,Inward issue link (Blocks),Labels
+CHK-102,Story,Save card for future purchases,In Review,High,Tom Okafor,05/Jun/26 11:20 AM,30/Sep/26 2:45 PM,,30/Sep/26,,payments
+CHK-103,Bug,Apple Pay button missing on Safari 17,Done,High,Lena Fischer,12/Aug/26 8:01 AM,29/Sep/26 4:10 PM,29/Sep/26 4:10 PM,30/Sep/26,,bug
+CHK-105,Story,Show delivery date estimate on the cart page,Done,Medium,Lena Fischer,01/Sep/26 9:00 AM,26/Sep/26 11:00 AM,26/Sep/26 11:00 AM,30/Sep/26,,cart
+CHK-107,Task,Update PCI self-assessment questionnaire,Blocked,Highest,Aisha Bello,03/Sep/26 9:30 AM,30/Sep/26 8:40 AM,,30/Sep/26,SEC-88,compliance
+CHK-112,Story,One-click reorder from order history,In Progress,High,Aisha Bello,15/Sep/26 1:30 PM,30/Sep/26 11:00 AM,,02/Oct/26,,growth
+CHK-113,Task,Add fraud score to order admin view,Done,Highest,Tom Okafor,10/Sep/26 10:00 AM,25/Sep/26 6:00 PM,25/Sep/26 6:00 PM,25/Sep/26,,payments
+CHK-116,Story,Persist cart across devices for signed-in users,In Progress,Medium,Lena Fischer,04/Sep/26 9:00 AM,30/Sep/26 4:00 PM,,30/Sep/26,,cart
+CHK-119,Story,Accessibility fixes on the payment form,To Do,High,,21/Sep/26 9:00 AM,24/Sep/26 9:00 AM,,30/Sep/26,,a11y
+CHK-121,Bug,Discount line rounds to wrong penny on mixed-VAT carts,Done,High,Marco Rossi,23/Sep/26 10:00 AM,24/Sep/26 3:00 PM,24/Sep/26 3:00 PM,,,bug
+CHK-122,Task,Rotate PSP API keys,Done,Medium,Tom Okafor,20/Sep/26 9:00 AM,28/Sep/26 10:00 AM,28/Sep/26 10:00 AM,28/Sep/26,,payments
+CHK-123,Story,Order history pagination,Blocked,Medium,Marco Rossi,10/Sep/26 9:00 AM,22/Sep/26 2:00 PM,,02/Oct/26,API-412,growth
+CHK-124,Story,Gift card balance check,Won't Do,Low,,02/Sep/26 9:00 AM,27/Sep/26 9:00 AM,27/Sep/26 9:00 AM,30/Sep/26,,
+CHK-114,Story,Klarna pay-later option,To Do,Highest,,20/Aug/26 2:00 PM,22/Aug/26 9:00 AM,,,,payments
+CHK-108,Story,Promo code field on checkout,Done,Medium,Lena Fischer,10/May/26 2:00 PM,20/Jun/26 5:00 PM,20/Jun/26 5:00 PM,19/Jun/26,,checkout
+CHK-125,Task,Load test checkout for Black Friday,In Progress,High,Marco Rossi,22/Sep/26 9:00 AM,30/Sep/26 5:00 PM,,16/Oct/26,,perf

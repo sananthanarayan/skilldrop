@@ -1,0 +1,26 @@
+{
+  "skill_name": "pre-merge-review",
+  "evals": [
+    {
+      "id": "red-gate-is-not-ready",
+      "prompt": "Run a pre-merge review on my branch that adds a /export endpoint. The project is Python; `pytest` currently fails on one new test, and the endpoint reads user_id from the query string.",
+      "assertions": [
+        "Runs the mechanical gate (scripts/gate.py or the project's lint/typecheck/test commands) before or alongside the review — does not skip it",
+        "Treats the failing pytest as a RED gate that forces NOT READY on its own, independent of the review findings",
+        "Dispatches the three-reviewer panel (devils-advocate, security-reviewer, code-quality) or sweeps the three lenses inline",
+        "Flags the query-string user_id as an authorization/IDOR blocker with a concrete attacker path and a fix",
+        "Ends with a one-word verdict (NOT READY) plus an ordered must-fix list, gate failures first",
+        "Does not report the same file:line three times — findings are merged across lenses"
+      ]
+    },
+    {
+      "id": "clean-change-ready",
+      "prompt": "Pre-merge review this small, well-tested refactor branch — tests and lint pass locally.",
+      "assertions": [
+        "Runs the gate and reports it GREEN before rendering a positive verdict",
+        "Only returns READY when the gate is green AND there is no blocker and no major finding",
+        "Lists any minor/nit findings without letting them block the verdict"
+      ]
+    }
+  ]
+}

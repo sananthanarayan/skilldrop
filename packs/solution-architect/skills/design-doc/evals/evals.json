@@ -1,0 +1,75 @@
+{
+  "skill_name": "design-doc",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Draft a design doc for a notification service that consumes domain events and delivers email and push notifications for about 1M events/day.",
+      "assertions": [
+        "Non-goals are real scope boundaries a reader might otherwise assume are in scope, not throat-clearing",
+        "Each alternative carries a two-sentence what-it-is and why-we-didn't-pick-it",
+        "Every risk has a mitigation, not a bare list of concerns",
+        "Goals are stated with measurable targets rather than adjectives",
+        "The rollout section names stages and what would halt it",
+        "Facts not supplied by the user are marked as open questions rather than invented"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "Can you write the design doc for offline mode in the inspector app? Product's brief is brief.md and Halvard's notes from our eng discussion are eng-notes.md. It goes to design review on Thursday so it needs to stand on its own. Please include how much storage it needs per device too.",
+      "assertions": [
+        "It flags that the timeline does not work as written: 14 weeks from a 14 Dec 2026 start ends around 22 March 2027, after the 1 March 2027 Calder County deadline, and it proposes a way through or raises it as a decision",
+        "The size of the problem is given as 1,120 of 8,400 inspections (about 13%) with sync or save errors, or the brief's 'around 40%' is called out as unsupported by the logged numbers",
+        "It does not apply plain last-write-wins to signed inspections; it surfaces the conflict between the brief and the compliance rule that a signed inspection must never be overwritten",
+        "The server-side sync endpoint is shown as depending on the Platform team with no owner confirmed and nobody yet asked",
+        "Per-device storage need is stated as not yet measured, with no invented figure, and measuring it is listed as a to-do or open question",
+        "At least two of the alternatives from the notes (outbox queue, CRDT library, PDF re-keying) are described with the reason each was not chosen as the main approach",
+        "The rollout starts with the 12 Calder County volunteers and gives at least one concrete, checkable condition for widening or stopping it",
+        "It does not invent crash rates, backend load figures, costs or device counts that are not in the two files"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "need a one-pager design doc by end of day for moving our cron jobs off the old box. there's like 30ish of them on a single ec2 instance (cron-01), some of them nobody knows what they do anymore. thinking either k8s cronjobs since we already have a cluster, or some managed scheduler. Jonas wants it done before the OS on that instance goes end of life but I don't remember the date. 4 of us on the team.",
+      "assertions": [
+        "It delivers a design doc in the reply rather than only asking questions",
+        "The OS end-of-life date is recorded as unknown and to be confirmed; no specific date is invented",
+        "The jobs nobody understands are dealt with explicitly, through an inventory or audit step or a named risk with a mitigation, not assumed to be understood",
+        "Both Kubernetes CronJobs and a managed scheduler are described, with a reason for preferring one or a statement of what would decide it",
+        "The job count stays approximate ('about 30'); it does not invent an exact count, job names, schedules or failure rates",
+        "It says how a migrated job is checked before its old cron entry is removed, and how to go back if it misbehaves",
+        "It is about one page: roughly 700 words or fewer"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "Can you write the design doc for automating customer erasure requests? Ottilie's ask is in request.md, and my notes on the systems and what we discussed are in systems.md. It's going to architecture review next Wednesday. Include the support-hours saving she asked for.",
+      "assertions": [
+        "It flags that the inventory lists 7 systems holding customer data while the request says 6, and the design covers all seven (or names the fraud scoring store as the one the request missed)",
+        "The fraud scoring store is shown as having no owner since the June reorg and an unknown deletion capability, raised as a blocker or open question needing an owner",
+        "It surfaces that the immutable database backups are kept 35 days and single rows cannot be removed, so 'including backups within 30 days' cannot be met as written, and proposes a way to handle it or raises it as a decision for the privacy lead",
+        "It does not promise to delete invoices: it states the 10-year tax retention for invoices (with name and billing address) conflicts with 'all data removed', and limits erasure in the Orders DB to non-invoice fields or raises it as a decision",
+        "The support-hours saving is stated as not calculable because time spent per request has never been measured; no hours figure is invented",
+        "At least two of the three approaches from the notes (central orchestrator, event-based with an acknowledgement ledger, manual with SLA timers) are described with the reason for choosing or rejecting each, and one is recommended",
+        "Seller (business) accounts are stated as out of scope",
+        "The size of the problem is given from the request's figures (412 requests in Q3 2026, 38 late, longest 71 days), and no other volumes, costs or team sizes are presented as facts"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "need a short design doc for rate limiting our public API, a page or so, for Friday's eng sync. we're a 12 person startup, weather data API. one customer hammered us last week and it took everyone down for like 20 min. right now there are no limits at all. we have free and paid tiers. the API sits behind nginx, then a python app, and redis is already there for caching. Dana thinks we should just do it in nginx, I think in the app so we can have different limits per plan. we don't know what the limits should be yet",
+      "assertions": [
+        "It delivers a design doc in the reply rather than only asking questions",
+        "The actual limit values are recorded as not yet decided, with a way to set them (for example from observed traffic), or any numbers shown are clearly labelled as placeholders; none is presented as decided",
+        "Both doing it in nginx and doing it in the app are described, with the trade-off tied to per-plan limits, and it either picks one or says what would decide it",
+        "The incident is described only as given (one customer's traffic took the API down for everyone for about 20 minutes last week); no request rates, customer name or revenue impact are invented",
+        "It says what a client sees when it is limited (for example an HTTP 429 with when to retry)",
+        "The rollout includes a step that observes or logs would-be limiting before requests are actually blocked, or a stated way to switch enforcement off quickly",
+        "It is about one page: roughly 700 words or fewer"
+      ]
+    }
+  ]
+}

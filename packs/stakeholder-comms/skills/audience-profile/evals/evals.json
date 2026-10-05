@@ -1,0 +1,15 @@
+{
+  "skill_name": "audience-profile",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're presenting our platform strategy to a mixed room — the board plus two engineering leads. What audience rules should we design to?",
+      "assertions": [
+        "Output is concrete and structural (slide count ranges, density, tone, must-have sections, things to avoid) rather than advice like 'keep it short'",
+        "A mixed audience resolves to the least-technical archetype, with the more-technical material moved to an appendix",
+        "No new archetype is invented for a one-off case — the closest existing one is chosen and the divergence noted",
+        "The profile is reusable across deliverables rather than being a deck or summary itself"
+      ]
+    }
+  ]
+}

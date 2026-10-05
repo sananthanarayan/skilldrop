@@ -1,0 +1,37 @@
+{
+  "name": "cover-letter",
+  "version": "0.1.0",
+  "description": "Write a cover letter for one job from the person's resume and the posting: under a page, opening on the strongest evidence for the role, two or three specifics matched to what the employer asked for, and no enthusiasm, company facts or experience the person didn't supply. A script lists every figure and name in the letter that their own material doesn't contain. Works for any occupation and level. Use when the user says \"write a cover letter for this job\", \"draft a covering letter\", \"write the cover note for my application\", or needs an application email to go with a resume.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "job-fit-analysis",
+    "output-hygiene",
+    "resume-tailor"
+  ],
+  "tags": [
+    "cover-letter",
+    "job-application",
+    "resume",
+    "career",
+    "job-search",
+    "writing"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "Reads the draft, source and posting files it is given. Writes nothing."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "A short letter from supplied facts, with a script listing every figure and name the person's material doesn't contain."
+  }
+}

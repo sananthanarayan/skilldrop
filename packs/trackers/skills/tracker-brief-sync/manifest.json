@@ -1,0 +1,41 @@
+{
+  "name": "tracker-brief-sync",
+  "version": "0.1.0",
+  "description": "Turn a brief or PRD (such as prd-draft output) into tracker-ready epics and issues — title, description, acceptance criteria, labels and a link back to the doc section — as a CSV for Jira, a mapped CSV for other importers, or gh commands for GitHub; and in reverse, report drift between the doc and the tracker (issues with no section, sections with no issue, issues for Won't-have requirements). Use when the user wants to load a PRD into Jira, Linear or GitHub, says \"create tickets from this brief\", or asks \"does the tracker still match the PRD?\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "backlog-triage",
+    "prd-draft",
+    "user-story-splitter"
+  ],
+  "handoff": [
+    {
+      "to": "user-story-splitter",
+      "when": "a requirement is too large for one story",
+      "purpose": "Slice it into independently shippable stories before it goes into the spec.",
+      "fallback": "If user-story-splitter is absent, create one story for the requirement and list it under 'needs splitting' in the hand-over."
+    }
+  ],
+  "tags": [
+    "prd",
+    "jira",
+    "linear",
+    "github-projects",
+    "import",
+    "traceability",
+    "drift"
+  ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths", "notes": "The github target writes a shell script of gh commands for the user to run; it runs nothing itself."},
+  "model": {
+    "tier": "standard",
+    "rationale": "Maps doc sections to items and writes acceptance criteria that restate requirements; a script checks the spec, writes the import file and computes drift. Bounded transformation with a deterministic check."
+  }
+}

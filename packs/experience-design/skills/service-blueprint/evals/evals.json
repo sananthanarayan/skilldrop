@@ -1,0 +1,19 @@
+{
+  "skill_name": "service-blueprint",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Blueprint Acme Broadband's home installation service for a new customer, from placing the order online to having working internet. What we know: orders go into our order system, a scheduling team books an engineer from our contractor Northwind Field Services, the router is shipped by a courier, and activation is done by the network ops team once the engineer marks the job done. Customers complain that the router arrives after the engineer visit, and that they don't know when the line will go live. Our install SLA is 10 working days.",
+      "assertions": [
+        "The title names one customer type and one scenario with a trigger and an end state",
+        "All five lanes (evidence, customer, frontstage, backstage, support) and all three lines (interaction, visibility, internal interaction) are present",
+        "Every frontstage and backstage action has an owning role or team, or is flagged as unowned",
+        "Fail points and waits are marked at the steps where they happen, with durations from the prompt or tagged [estimate]",
+        "The router-arrives-late and no-go-live-date complaints are each traced to a backstage or support cause",
+        "2–3 ranked fixes are stated as outcomes, each with an owner and the lane it changes",
+        "A Mermaid diagram with one subgraph per lane matches the table",
+        "Does not invent teams, systems, SLAs or durations not in the prompt; inferred ones are tagged [assumption] or [estimate]"
+      ]
+    }
+  ]
+}

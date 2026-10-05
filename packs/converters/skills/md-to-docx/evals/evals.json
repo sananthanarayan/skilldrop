@@ -1,0 +1,29 @@
+{
+  "skill_name": "md-to-docx",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Northwind Legal wants our vendor onboarding policy as a Word doc so they can track changes. It's in docs/vendor-onboarding.md: a # title, ## sections, a numbered approval process with sub-steps, a pipe table of approval limits ($5,000 / $50,000 / unlimited), a footnote citing the finance policy, and a Mermaid flowchart of the approval path. Use ./brand/brand.json and A4 paper.",
+      "assertions": [
+        "Runs md_to_docx.py with --brand ./brand/brand.json and --page a4, writing a .docx",
+        "Deals with the Mermaid flowchart before converting: renders it to PNG with mermaid-render and embeds it, or says plainly that it stays as code",
+        "Moves the footnote's text into the body or a Notes section instead of letting it drop silently",
+        "Reports every WARN line the script printed, each with what was done about it",
+        "Keeps the approval limits ($5,000 / $50,000 / unlimited) and every other fact exactly as in the source",
+        "Checks the file opens (textutil, Quick Look, LibreOffice or Word) and reports the script's summary counts",
+        "Tells the user the headings drive Word's navigation pane and table of contents"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Convert this to Word for the Acme client, they don't use Markdown: <a 40-line Markdown status report pasted in the chat, with **Background** and **Next steps** as bold lines instead of headings, an HTML <table>, and an image linked from https://cdn.example.com/chart.png>",
+      "assertions": [
+        "Saves the pasted text to a .md file before converting",
+        "Turns the bold-line pseudo-headings into ## headings so Word sees them as headings",
+        "Rewrites the HTML table as a pipe table rather than letting it drop",
+        "Says the remote image is not embedded and asks for, or downloads, a local copy",
+        "Does not invent content, numbers or dates that are not in the pasted report"
+      ]
+    }
+  ]
+}

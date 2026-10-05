@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Design an observability plan for this service",
+    "should_trigger": true
+  },
+  {
+    "query": "What SLIs and SLOs should we define, and what should page us?",
+    "should_trigger": true
+  },
+  {
+    "query": "Set up burn-rate alerting with error budgets",
+    "should_trigger": true
+  },
+  {
+    "query": "We alert on CPU and it's useless — design symptom-based alerting",
+    "should_trigger": true
+  },
+  {
+    "query": "Sweep the full non-functional requirements catalog",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the operational runbook for the on-call team",
+    "should_trigger": false
+  },
+  {
+    "query": "Model our capacity and infrastructure cost",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the postmortem for last week's outage",
+    "should_trigger": false
+  }
+]

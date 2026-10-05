@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Postgres vs DynamoDB for our multi-tenant OLTP store — build me a weighted matrix",
+    "should_trigger": true
+  },
+  {
+    "query": "We're choosing between Snowflake and Databricks; score them against our criteria",
+    "should_trigger": true
+  },
+  {
+    "query": "Compare three observability vendors and recommend one for our team",
+    "should_trigger": true
+  },
+  {
+    "query": "Which frontend framework should we pick — React, Vue, or Svelte — for this app? Show the scoring",
+    "should_trigger": true
+  },
+  {
+    "query": "Write the business case for whether to invest in a data platform at all",
+    "should_trigger": false
+  },
+  {
+    "query": "Record the decision to adopt Kafka as an architecture decision record",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a design doc proposing the new event-driven architecture for review",
+    "should_trigger": false
+  }
+]

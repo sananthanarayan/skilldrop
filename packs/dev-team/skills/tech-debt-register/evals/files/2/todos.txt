@@ -1,0 +1,7 @@
+payments/charge.py:88:  # TODO: retries don't send an idempotency key, provider may double-charge
+payments/charge.py:140: # FIXME: currency hard-coded to USD
+payments/refund.py:31:  # TODO: currency is hard-coded, should come from the original charge
+payments/webhooks.py:12: # HACK: sleep(2) to wait for the provider to settle
+payments/ledger.py:207: # TODO: rename this function, the name is misleading
+payments/reports.py:55: # FIXME: loads the whole month into memory
+tests/test_charge.py:14: @pytest.mark.skip(reason="flaky, fix later")

@@ -1,0 +1,27 @@
+{
+  "skill_name": "file-to-markdown",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Northwind sent us their Q3 roadmap as northwind-q3.pptx (14 slides, a few charts, speaker notes on most slides). Turn it into markdown so we can critique it.",
+      "assertions": [
+        "Runs to_markdown.py on northwind-q3.pptx and writes a .md file",
+        "Each slide is a '## Slide N: title' section, in slide order",
+        "Speaker notes appear under their own slide, not collected at the end",
+        "States at the top of the reply how many charts and images were dropped, using the script's counts",
+        "Says that any critique cannot cover the chart contents because they were not converted",
+        "Does not invent slide content, numbers or chart values that are not in the converted text"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Here's acme-contract-summary.pdf, can you get the text out?",
+      "assertions": [
+        "Runs to_markdown.py on the PDF",
+        "If pdftotext is missing, passes on the install step (brew install poppler / apt install poppler-utils) and does not attempt to read the PDF bytes",
+        "If it converts, says the PDF gives text only: no headings or tables recovered",
+        "Does not summarise or paraphrase in place of the converted text"
+      ]
+    }
+  ]
+}

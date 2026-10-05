@@ -1,0 +1,21 @@
+{
+  "name": "trackers",
+  "version": "0.16.9",
+  "description": "For leads and PMs who run work in Jira, Linear or GitHub Projects: load a PRD into the tracker, triage the backlog, write the weekly status report, and check the tracker still matches the doc, all from an export or an MCP tool, with the numbers computed rather than estimated. (7 skills, 1 loop)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/trackers/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "jira",
+    "linear",
+    "github-projects",
+    "backlog",
+    "status-report",
+    "triage",
+    "prd"
+  ]
+}

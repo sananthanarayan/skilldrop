@@ -1,0 +1,9 @@
+[
+  {"query": "{a phrasing a user would type that should use this skill}", "should_trigger": true},
+  {"query": "{a second phrasing, different wording}", "should_trigger": true},
+  {"query": "{a third phrasing, naming the input}", "should_trigger": true},
+  {"query": "{a fourth phrasing, naming the output}", "should_trigger": true},
+  {"query": "{a near-miss that belongs to sibling A}", "should_trigger": false},
+  {"query": "{a near-miss that belongs to sibling B}", "should_trigger": false},
+  {"query": "{a near-miss that belongs to sibling C}", "should_trigger": false}
+]

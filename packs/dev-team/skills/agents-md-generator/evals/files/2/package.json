@@ -1,0 +1,12 @@
+{
+  "name": "acme-portal",
+  "version": "1.2.0",
+  "scripts": {
+    "build": "tsc -p .",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "eslint": "^9.0.0"
+  }
+}

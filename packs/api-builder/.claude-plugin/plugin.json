@@ -1,0 +1,19 @@
+{
+  "name": "api-builder",
+  "version": "0.16.9",
+  "description": "Skills for teams building on the Anthropic API — prompt caching, token budgeting, eval generation for skills, and tool-use schema writing. (4 skills)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/api-builder/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "anthropic",
+    "prompt-caching",
+    "tokens",
+    "tool-use",
+    "evals"
+  ]
+}

@@ -1,0 +1,6 @@
+name = "summarise-reading-list"
+summary = "Turns a module reading list into a count of items by format and a list of titles we do not hold."
+category = "cataloguing"
+maintainer = "metadata@harrowgate.example"
+handles_patron_data = false
+version = "0.3.0"

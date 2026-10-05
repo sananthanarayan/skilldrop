@@ -1,0 +1,22 @@
+{
+  "name": "career",
+  "version": "0.16.9",
+  "description": "One job application, for any occupation: an honest check of your resume against the posting, a tailored resume and a cover letter that say nothing you didn't, the application form's answers drafted from your resume, and a script that lists every figure and name in a draft that your own resume doesn't contain. (8 skills, 2 loops)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/career/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "resume",
+    "cv",
+    "cover letter",
+    "job application",
+    "job search",
+    "career change",
+    "job posting",
+    "application form"
+  ]
+}

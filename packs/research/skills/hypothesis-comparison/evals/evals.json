@@ -1,0 +1,19 @@
+{
+  "skill_name": "hypothesis-comparison",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Acme's monthly churn on the Starter plan went from 2.1% in July to 3.4% in August. Theories: the price rise from $19 to $24 on 1 Aug, a new competitor (Northwind Lite) launching in late July, or the onboarding email sequence that broke on 20 Jul. Evidence: churn rose on monthly and annual-renewal customers alike; cancellation survey 'too expensive' share went from 30% to 32%; customers who signed up after 20 Jul churn at 5.8%, older cohorts at 2.4%; win-back calls mention Northwind Lite twice out of 40. Which explanation fits best and what should we check next?",
+      "assertions": [
+        "Lists at least four rival hypotheses, including a measurement or definition hypothesis the user did not raise",
+        "Builds a matrix rating every evidence item against every hypothesis as consistent, inconsistent or neutral (or CC/II/NA)",
+        "Ranks hypotheses by how much evidence contradicts them, not by how much supports them, and shows the scores or arithmetic",
+        "Names the non-diagnostic evidence (rated the same for every hypothesis) and does not use it as support",
+        "Names the linchpin evidence whose removal would change the leader, or states that none exists",
+        "Gives the conclusion a confidence word with a reason",
+        "Names one next observation that the top two hypotheses predict differently, with the result each predicts",
+        "Does not invent evidence, numbers or sources that are not in the prompt; anything inferred is tagged [assumption]"
+      ]
+    }
+  ]
+}

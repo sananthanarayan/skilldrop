@@ -1,0 +1,77 @@
+{
+  "skill_name": "devils-advocate",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's the payment-retry handler I just finished — it retries failed charges up to 3 times with exponential backoff, and the tests pass. Review it before I open the PR.",
+      "assertions": [
+        "Every finding has a reproducible scenario a senior engineer can replay mentally — named input, current behavior, expected behavior",
+        "Every finding cites file:line, not just a section or function name",
+        "Severity is calibrated — blockers do not outnumber majors; inflated findings are demoted",
+        "Findings are grouped by the four lenses (edge cases, assumptions, staff-engineer pushback, test-coverage gaps), skipping lenses that do not apply rather than padding",
+        "Test-coverage gaps name the concrete missing test case, not 'add more tests'",
+        "Assertion theater is called out — tests that execute the code without asserting the behavior",
+        "Output ends with a 'what's solid' section so the author knows what not to touch",
+        "The review scopes to the change under review, never sweeping the whole codebase"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "Just finished the volunteer shift sign-up feature for the food bank's scheduling app (signups.py, tests in test_signups.py). Volunteers sign up until the shift's full, after that they go on a waitlist, and when someone cancels the first person on the waitlist gets the spot. No cancelling inside 24 hours of the shift. Tests all pass. Anything I've missed before I merge?",
+      "assertions": [
+        "It flags that sign_up compares the confirmed count with > instead of >=, so a shift with capacity N confirms N+1 volunteers",
+        "It flags that cancel picks the waitlisted row with ORDER BY created_at DESC, so the most recent person on the waitlist is promoted, not the first",
+        "It flags that the same volunteer can sign up twice for one shift because nothing checks for an existing sign-up",
+        "It flags that the 24-hour cutoff subtracts local-time datetime.now() from a start time stored in UTC, so the window is off by the server's UTC offset",
+        "It points out that test_waitlist_when_full puts three volunteers into a capacity-2 shift before asserting, so it passes because of the capacity bug",
+        "It points out that test_no_waitlist_raises passes even when ShiftFull is never raised",
+        "It does not report SQL injection, since every query is parameterised",
+        "It says plainly that the change is not ready to merge as it stands"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "wrote this quick script to dedupe our newsletter subscriber export before we import it into the new mail tool. worked fine on the 50-row sample i tried. good to run on the real file? it's about 40k rows, email is the third column\n\n```python\nimport sys\n\nrows = open(sys.argv[1]).read().split(\"\\n\")\nseen = {}\nfor r in rows[1:]:\n    if not r.strip():\n        continue\n    cols = r.split(\",\")\n    seen[cols[2]] = r\n\nout = open(sys.argv[1], \"w\")\nout.write(rows[0] + \"\\n\")\nfor r in seen.values():\n    out.write(r + \"\\n\")\n```",
+      "assertions": [
+        "It answers the question near the top: not as it stands, or only on a copy of the file",
+        "It flags that emails are compared exactly, so addresses differing only in letter case or surrounding spaces are kept as separate subscribers",
+        "It flags that split(\",\") breaks on a quoted field containing a comma, which shifts the column treated as the email",
+        "It flags that the script overwrites the input file in place with no backup, and recommends writing to a new file or keeping a copy",
+        "It notes that when rows share an email the last one wins, and that whether that is the right row to keep is something to confirm",
+        "It gives a concrete fix, such as reading with the csv module and normalising the email with strip and lower",
+        "It does not state as fact what the other columns hold or what the real file contains beyond what was given"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "Finished the late fee feature for the tenant billing service (lateFees.ts, tests in lateFees.test.ts). Rules from finance: nothing if the invoice is 5 days or fewer past due. After that it's 1.5% of the balance for each calendar month the invoice has been overdue in, so one due 20 March and still open on 2 May has March, April and May. Capped at $75 per invoice in total. Never on paid or void invoices. A nightly job calls applyLateFees with every invoice. Tests are green. Can you go over it before I merge? Skip the style nits, I want the things that would actually bite us.",
+      "assertions": [
+        "It flags that monthsOverdue subtracts month numbers without the year, so an invoice due in November or December and still open in January gets a zero or negative count and no fee",
+        "It flags that the $75 cap is applied to one month's amount before multiplying by the months, so a large balance overdue for two or more months is charged more than $75 (for example $10,000 over two months gives $150)",
+        "It flags that applyLateFees adds the whole fee to the balance on every nightly run with nothing recording what was already charged, so the same invoice is charged again each night",
+        "It points out that the cap test uses a single month overdue, where a per-month cap and a total cap give the same $75, so it cannot catch the cap bug",
+        "It points out that the applyLateFees test only checks the balance went up after one run, and that no test runs it twice or checks the amount",
+        "It names a missing test for an invoice that is overdue across a year boundary",
+        "It does not report the grace-period check as a bug: charging nothing at 5 days late or fewer matches the stated rule",
+        "It says plainly that the change is not ready to merge as it stands"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "agent wrote this migration for me. adds region onto orders so the regional dashboards don't need the join to customers. ran clean on my laptop db. postgres. the orders table in prod is big-ish, don't know the exact size. top 3 things i should worry about before i run it friday?\n\n```sql\nALTER TABLE orders ADD COLUMN region_code VARCHAR(2) NOT NULL;\n\nUPDATE orders\nSET region_code = (SELECT region FROM customers WHERE customers.id = orders.customer_id);\n\nCREATE INDEX idx_orders_region ON orders(region_code);\n```",
+      "assertions": [
+        "It flags that adding a NOT NULL column with no default fails on a table that already has rows, so the first statement will error on prod",
+        "It says the clean run on the laptop does not show the migration works on prod, for example because the local orders table may have been empty",
+        "It flags locking or long-running work on a large table, from the single full-table UPDATE or the non-concurrent index build, and gives a concrete mitigation such as batching the backfill or CREATE INDEX CONCURRENTLY",
+        "It flags that a customer with no region, or a region longer than 2 characters, would break the backfill, and says what customers.region holds is not known from what was given",
+        "It gives a corrected order of steps: add the column as nullable, backfill it, then add the NOT NULL constraint",
+        "It does not state the row count of orders, how long the migration will take, or what customers.region contains as fact",
+        "It leads with three main concerns as asked, and anything beyond the three is kept to a brief mention"
+      ]
+    }
+  ]
+}

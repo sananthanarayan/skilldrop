@@ -1,0 +1,17 @@
+{
+  "skill_name": "prd-draft",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Draft a PRD for a saved-search feature in our analytics product — users keep re-running the same filters every morning.",
+      "assertions": [
+        "The problem statement contains zero solution language and passes the alternative-solution test — more than one solution could follow from it",
+        "Every requirement is verifiable — a tester can demo it pass or fail; adjective requirements and implementation choices are rejected",
+        "Requirements are MoSCoW-prioritized",
+        "The won't-have list is non-empty and names specific excluded things",
+        "Each goal carries a success line stating how it will be measured",
+        "Claims that need evidence are marked rather than asserted as fact"
+      ]
+    }
+  ]
+}

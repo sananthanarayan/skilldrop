@@ -1,0 +1,49 @@
+{
+  "name": "cloud-cost-review",
+  "version": "0.1.0",
+  "description": "Review actual cloud spend from a cost export (AWS CUR or Data Exports, GCP billing export, Azure cost details) and produce a ranked savings report — idle and unattached resources, oversized instances backed by utilisation evidence, storage tiering, data transfer hot spots, commitment coverage and untagged spend — each finding with a monthly saving computed from the bill, a confidence level and an ease rating. Use when the user shares a cost CSV and says \"where are we wasting money\", \"review our AWS bill\", \"why did the cloud bill jump this month\", \"find savings in our GCP/Azure spend\", or \"should we buy savings plans\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "ai-usage-report",
+    "capacity-cost-model",
+    "observability-plan",
+    "postmortem-generator",
+    "success-metrics"
+  ],
+  "handoff": [
+    {
+      "to": "observability-plan",
+      "when": "logging or metrics ingestion is a top cost hot spot",
+      "purpose": "Set a telemetry cardinality and log-volume budget that brings the observability line down.",
+      "fallback": "If observability-plan is absent, list the top log groups or metric namespaces by cost and propose a retention and sampling cap for each inline."
+    },
+    {
+      "to": "capacity-cost-model",
+      "when": "the user needs the bill projected forward for growth or a launch",
+      "purpose": "Model cost from a demand driver at 1×/3×/10×, using this review's actual unit costs.",
+      "fallback": "If capacity-cost-model is absent, state the current cost per unit of the main driver and say that a linear projection ignores scaling cliffs."
+    }
+  ],
+  "tags": [
+    "finops",
+    "cloud-cost",
+    "aws",
+    "gcp",
+    "azure",
+    "savings",
+    "sre"
+  ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths"},
+  "model": {
+    "tier": "standard",
+    "rationale": "A stdlib script does the aggregation; the model maps columns, checks evidence and computes savings with shown arithmetic against a fixed category checklist, which is bounded judgment."
+  }
+}

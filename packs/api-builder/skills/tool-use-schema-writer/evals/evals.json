@@ -1,0 +1,77 @@
+{
+  "skill_name": "tool-use-schema-writer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write the Claude tool definition for this Python function in our Acme order service:\n\ndef search_orders(customer_id: str, status: str | None = None, placed_after: str | None = None, sort: str = 'desc', limit: int = 20):\n    \"\"\"Find a customer's orders. status is one of pending, shipped, delivered, cancelled. placed_after is an ISO date. sort is by order date, asc or desc. limit 1-100.\"\"\"\n\nThe agent also has a separate get_order(order_id) tool, so the descriptions need to keep them apart.",
+      "assertions": [
+        "Produces a valid Anthropic tool definition with name, description, and input_schema of type object",
+        "The top-level description names a decision condition (when to call search_orders versus get_order), not just a restatement of the function name",
+        "A required array is present and contains customer_id; every name in required exists in properties",
+        "Every parameter has a non-empty description, and limit states its valid range (1-100)",
+        "The status and sort enums list their values with a one-phrase explanation of each value",
+        "Includes a Python snippet passing the tool to client.messages.create(tools=[...]) and handling stop_reason == 'tool_use'",
+        "Does not invent parameters, enum values, or behaviors not in the supplied signature and docstring"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "Need a Claude tool definition for bookAppointment (it's in book_appointment.ts) so our front-desk assistant can book visits for callers. Ideally the same tool lets it cancel a booking too.",
+      "assertions": [
+        "It produces a tool definition with a name, a description and an input_schema of type object, and ctx / RequestContext is not one of the properties",
+        "The top-level required array contains the clinic code, visit type, start time and contact, and does not contain duration, vet id or notes",
+        "The pet id is not unconditionally required: the definition or reply states it is needed for every visit type except new_patient and must be left out for new_patient",
+        "contact is a nested object with its own required array containing phone, with email and SMS reminders optional",
+        "It flags that the comment says bookings can be made up to 90 days ahead while the code enforces 60, and does not state 90 days as the limit",
+        "Duration is limited to 15, 30 or 45 with a default of 30, and the definition states that dental visits need 45 minutes",
+        "It says cancelling is not supported by this function and does not add a cancel parameter, action or mode to the tool",
+        "It does not list six clinic codes as an enum or as fact, since the source gives only the example PVG-03"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "need tool defs for our support agent, two things: look up a shipment by tracking number, and get a shipping quote. quote needs origin zip, dest zip, weight (lbs) and service level - we have ground, 2-day and overnight i think? Dario would know for sure. dimensions are optional on the quote. no idea yet what the lookup gives back, that endpoint's still being built",
+      "assertions": [
+        "It delivers two tool definitions, each with a name, a description and an input_schema, and does not stop at questions",
+        "The quote tool's required array includes origin zip, destination zip and weight, and dimensions is not in it",
+        "The weight parameter's description states the unit is pounds",
+        "Service level offers ground, 2-day and overnight, and the reply says that list is unconfirmed and should be checked",
+        "Each tool's description says when the agent should call it, so a tracking question and a pricing question map to different tools",
+        "It does not state a tracking number format or pattern, a weight limit, carrier names or a dimension unit as fact",
+        "It does not describe the lookup's return fields as fact, and says what the lookup returns is not yet known"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "Need a Claude tool so our support assistant can issue refunds itself. The endpoint spec is in refunds.openapi.yaml. Policy from Marguerite (head of support): the assistant can refund up to £500 on its own, anything above that goes to a human. Amounts are in pounds. Just the tool definition plus a short list of anything in the spec that looks off, I don't need the Python around it.",
+      "assertions": [
+        "It produces a tool definition with a name, a description and an input_schema of type object whose properties include the order reference, the amount and the reason",
+        "The amount parameter is an integer in minor units (pence) and its description says so; it is not defined as pounds or as a decimal",
+        "It flags that the spec caps amount_minor at 25000, which is £250 and below the £500 policy, and does not set the maximum to 50000",
+        "It flags that the spec lists amount_minor as required while its description says to omit it for a full refund",
+        "goodwill is either left out of the reason values or marked as deprecated with customer_request to be used instead",
+        "The definition states that reason_note is needed when the reason is other and is limited to 280 characters",
+        "It does not add parameters the spec does not have, such as a currency, a customer id or a refund method",
+        "The reply contains no Python client code"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "ops run this script by hand to change a price:\n\n./reprice.sh SKU-4471 19.99 --store 12 --until 2026-11-01\n\nwant our pricing agent to be able to call it as a tool. store is optional (no store = all stores i think), until is optional too and the price goes back after that date. price is dollars. there's also a --force flag, no idea what it does, Wendell wrote the script and he's out till the 19th. quick one, just the json",
+      "assertions": [
+        "It delivers a tool definition with a name, a description and an input_schema, and does not stop at questions",
+        "The required array contains the SKU and the price, and does not contain store or until",
+        "The price parameter's description states the unit is dollars",
+        "It says that leaving store out meaning all stores is unconfirmed and should be checked",
+        "It does not state what --force does; force is either left out of the tool or included with its effect marked as unknown",
+        "The until parameter is described as a date in the YYYY-MM-DD form shown in the example",
+        "It does not state a SKU pattern, a price minimum or maximum, or a range of valid store numbers as fact; any such constraint is marked as an assumption",
+        "The reply is the JSON definition with at most a few lines of notes, and contains no Python client code"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "converters",
+  "version": "0.16.9",
+  "description": "Turn Markdown into Word, Excel and HTML files that people outside engineering can open, turn their files back into Markdown, and render diagrams to images. Standard-library Python scripts, with nothing to install. (9 skills, 1 loop)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/converters/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "convert",
+    "markdown",
+    "word",
+    "docx",
+    "excel",
+    "xlsx",
+    "html",
+    "mermaid"
+  ]
+}

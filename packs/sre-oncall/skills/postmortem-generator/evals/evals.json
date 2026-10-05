@@ -1,0 +1,77 @@
+{
+  "skill_name": "postmortem-generator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write the postmortem from this pager timeline and Slack thread for last Tuesday's checkout outage.",
+      "assertions": [
+        "Impact is quantified — duration, users or requests affected, SLO burn, revenue where known — or explicitly marked [missing]; 'significant impact' is rejected",
+        "No person is named in a causal sentence; roles appear only in response actions",
+        "Detection and mitigation gaps are computed and stated as numbers",
+        "The timeline is in UTC",
+        "Contributing factors are listed rather than a single root cause",
+        "Action items carry owners as roles and are derived from the contributing factors"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "I need the postmortem for the 17 Sept label printing outage (INC-2291) for Monday's incident review. The pager export is pager-export.txt and I dumped the incident channel into slack-thread.txt. Please include what we owe merchants in SLA credits. It goes to the whole engineering org.",
+      "assertions": [
+        "The customer-facing outage is given as 94 minutes (07:12 to 08:46 UTC, or 09:12 to 10:46 CEST), not 75 minutes or 2 hours, or those other figures are explicitly reconciled against it",
+        "Times from the Slack thread (CEST) and the pager export (UTC) are put on one consistent clock, so the first support ticket (07:20 UTC / 09:20 CEST) appears before the page (07:31 UTC / 09:31 CEST)",
+        "It states that the page fired about 19 minutes after errors began and that customer tickets arrived before any alert did",
+        "The 06:55 UTC (08:55 CEST) deploy is not given as the cause; the output says the rollback to v411 had no effect and the cause was the expired rates-gateway certificate",
+        "No named individual or their team is blamed for the expired certificate; the unowned service, the renewal job failing since 27 Aug and the muted #infra-noise alerts are given as causes instead",
+        "Impact uses the measured 18,430 failed of 21,900 label requests and 212 merchant accounts, and the 'roughly 40k shipments' figure is not presented as measured",
+        "The SLA credit amount is stated as unknown because the contract terms are not in the material, and no figure is invented",
+        "The follow-up to fix the renewal job is shown as having no agreed owner or date, and the output notes the manually issued certificate expires in about 90 days (mid-December 2026)"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "can you write up a postmortem for our backup thing. we're 5 people so nothing fancy but I want it on record. nightly db backup hadn't actually run for about 9 days, we only found out Fri 2 Oct when Lena tried to restore a copy into staging and the newest dump was old. no customer impact as far as we know. what we worked out: disk on the cron host has been full since ~Sep 23, the backup script exits 0 even when the dump fails, and nobody gets alerted on anything from that box. fixed by clearing out /var/log and re-running, good backup as of Fri 14:10.",
+      "assertions": [
+        "It states there was no known customer impact and does not invent downtime, users affected or data lost",
+        "It states the exposure plainly: roughly 9 days (about 23 Sep to 2 Oct) with no valid backup, meaning a database failure in that window would have lost up to that much data",
+        "The full disk, the script exiting 0 on failure, and the absence of alerting are given as separate contributing causes, not collapsed into one root cause",
+        "It says the problem was found by chance during a staging restore, not by monitoring",
+        "It marks as unknown or approximate the exact time backups stopped and what filled the disk, and does not invent a minute-by-minute timeline",
+        "Action items cover at least the exit-code behaviour and alerting on backup failure or staleness, each written so someone can check it is done",
+        "It does not blame Lena or any individual",
+        "It delivers the postmortem in the reply rather than only asking questions"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "Need the postmortem for INC-0847 (the double direct debit on 22 Sept) for the exec team on Thursday. Two pages max, they won't read more. Material is in incident-channel.txt, scheduler-log.txt and finance-recon.md. Dermot wants the summary to say the root cause was the cloud provider's network blip. Please also put in how many customers went overdrawn because of us.",
+      "assertions": [
+        "Impact is given from the finance reconciliation: 2,961 duplicate debits across 2,917 customers, GBP 184,306.20 taken in error; the early '~3,400 customers' estimate is not presented as the final figure",
+        "It says refunds are not complete: 2,935 of 2,961 were refunded (2,804 plus 131) and 26 are still outstanding with no date, contradicting the 'all customers refunded' closing message",
+        "The number of customers who went overdrawn is stated as unknown; it reports only that 43 support contacts mention a fee or overdraft and does not invent a count",
+        "The network blip is not given as the sole root cause; the output names at least that the original run carried on after its node lost the lock and that the job had no check against debiting the same customer twice",
+        "The lock TTL change from 300s to 30s on 3 Sep (CHG-2210) is listed as a contributing factor",
+        "No individual is blamed: neither the on-call engineer who acknowledged the 01:35 page nor the author of the TTL change is given as a cause",
+        "It states the problem was found from customer calls to support at 07:06 UTC, roughly five and a half hours after the second run started at 01:31 UTC, and after the bank's 04:00 recall cutoff had passed",
+        "The action to alert on more than one debit file per night is shown as having no owner, and the scheduler fix (stop a job when its node loses the lock) as having no date"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "can you write this up for the incident log, half a page is plenty. this morning the DNS change for the student portal went wrong, Marek's change pointed it at the old load balancer. live from about 08:15, helpdesk started getting calls 08:30ish, we rolled it back at 09:50 but some people were still seeing the broken site until around lunchtime because of the TTL (4 hours? not sure). course registration opened at 9 so terrible timing. no idea how many students were hit. it went through CAB as a standard change",
+      "assertions": [
+        "It delivers a written incident record in the reply rather than only asking questions",
+        "The outage is given as roughly 08:15 to the 09:50 rollback (about 95 minutes), with a tail to around midday for some users from cached DNS, and these times are marked approximate",
+        "The number of students affected is stated as unknown and no figure is invented",
+        "It notes that the outage overlapped the opening of course registration at 09:00",
+        "Marek is not blamed; the cause is described in terms of the change and the process (record pointed at the old load balancer, passed as a standard change) and not the person",
+        "The TTL value is marked as unconfirmed, not stated as a definite 4 hours",
+        "It says the problem was noticed through helpdesk calls about 15 minutes after the change went live, and does not invent a monitoring alert or page",
+        "At least one follow-up action addresses checking a DNS change right after it is made, lowering the TTL before a change, or avoiding changes around registration, written so someone can tell whether it was done"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "skill_name": "ai-usage-policy",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write an AI acceptable-use policy for our 500-person company. We handle customer support data including names and order history, and people are already pasting things into chatbots.",
+      "assertions": [
+        "Exactly three data tiers are defined, each with concrete examples drawn from the organisation described",
+        "Permitted and prohibited uses are stated as behaviours, not abstractions like 'inappropriate use'",
+        "Every prohibition names a permitted alternative path for the same work",
+        "The human-review matrix is keyed to consequence (customer-facing, financial, production, personnel) rather than to tool or model names",
+        "An approved-tool list is accompanied by an exception route with an approver and a turnaround time",
+        "Every section names an owner role and the document carries a review date",
+        "The disclosure rule states whether and where AI assistance must be declared",
+        "No regulation is asserted beyond what the prompt names; unclear applicability is marked [confirm with counsel]"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "I'm the office manager at a 40-person recruitment agency and the MD has asked me to write our AI policy. Her email is in md-email.md, what our IT provider told me is in it-notes.md, and our existing data labels are in data-handling-sheet.md. Can you draft the policy so I can send it to her?",
+      "assertions": [
+        "It says candidate CVs, salary details and other Confidential data must not go into personal or free chatbot accounts, and tells staff what to do instead for the same task",
+        "It separates the 8-seat ChatGPT Team workspace from personal ChatGPT accounts, and notes that about 30 people have no Team seat",
+        "Copilot is not listed as an approved or available tool: the trial ended on 30 June 2026 and was not renewed",
+        "It does not state that the tools never train on the firm's data or that data stays in the UK; it says this is unconfirmed until someone checks the contract terms",
+        "It does not simply make Brightwell IT the policy owner: it notes Brightwell declined to make policy decisions and the operations manager post is vacant, and proposes an interim owner or flags ownership for the MD to decide",
+        "It says candidate data for Aldercroft Group roles must not go into any AI tool without Aldercroft's written consent",
+        "It says what to do about the 14 CVs pasted on 16 September and tells staff who to report it to if they have already pasted Confidential data",
+        "It names no law or regulation other than GDPR, which the MD mentioned, and NoteQuill is treated as unapproved or pending review, not as cleared"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "we're a small charity, 12 staff plus volunteers. the trustees want an 'AI policy' by the next board meeting. honestly I don't know what tools people are using, I think a couple of them use chatgpt for grant applications. we hold case notes on the people we support. can you write something short I can take to the board",
+      "assertions": [
+        "It delivers a draft policy in the reply and does not stop at a list of questions",
+        "It says case notes and anything that identifies a person the charity supports must not be put into AI chatbots, and says what to do instead",
+        "Drafting grant applications with AI is allowed, with a person checking the facts and figures before the application is submitted",
+        "It says whether the policy covers volunteers as well as the 12 staff",
+        "It says which tools are in use is not known, and proposes finding out or leaves the approved-tool list to be filled in; it does not present a list of approved tools as already agreed",
+        "It names no individual and no charity name; responsibilities are given to roles (for example a named trustee role or the director) or flagged for the board to assign",
+        "It does not state that a specific law, regulator or sector code applies as fact; any mention is marked as something to confirm",
+        "The policy itself is short: about two pages or less (roughly 800 words)"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "I'm in security GRC at Ledgerline Payments (850 people) and I've been handed the AI acceptable-use policy to draft. The CISO's brief is in ciso-brief.md, the tools we have are in tool-inventory.csv, legal's notes are in legal-notes.md and there's a write-up of last month's incident in incident-summary.md. Can you draft it? Three pages tops — it's going to the exec meeting and people won't read more than that.",
+      "assertions": [
+        "It says cardholder data must not go into any AI tool, including CodePilot Enterprise, and tells the CISO it has not included the rule she asked for because legal's notes say the Corvane Bank agreement and PCI scope prohibit it regardless of zero retention",
+        "LingoDraft is not listed as approved: its contract expired on 31 August 2026 and the renewal is unsigned, and the draft says what support should do for translation meanwhile or flags it for decision",
+        "Transcribo is not approved for customer calls: the DPA is unsigned, so the support team's plan for next month is blocked until it is signed",
+        "It points out that CodePilot has 300 seats against 410 engineers, so about 110 engineers have no seat, and says what they should use or do instead of a personal account",
+        "It does not route exceptions to the AI Review Group as if it were working: it notes the group has not met since June and has no chair, and names an interim approver role or flags the decision for the exec",
+        "It says production logs and other customer data must not be pasted into personal or public AI accounts, and gives staff a specific place to report it if they already have",
+        "Last-four card digits together with an email address are treated as cardholder data for now, with a note that legal is still confirming this",
+        "It names no law, regulation or standard other than GDPR and PCI DSS, and does not name the engineer involved in the incident"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "I run a small video production studio, 9 of us. One of our clients, a big retailer, has sent a supplier questionnaire and one question is 'do you have an AI policy?' We don't. What I know: we use AI image generation for mood boards and storyboards, a few people use ChatGPT for first drafts of scripts, and I think one of the editors has been using an AI voice tool for scratch voiceovers. The client contracts say something about not using their footage for anything else, but I haven't re-read them. Can you write me a one-pager I can attach to the questionnaire?",
+      "assertions": [
+        "It delivers a draft policy in the reply and does not stop at a list of questions",
+        "It says client footage, briefs and unreleased material must not be put into AI tools unless the client's contract or written permission allows it, and says what staff do in the meantime",
+        "It tells the user to re-read the client contracts before sending this, and does not state what those contracts permit or prohibit as if known",
+        "It covers the three uses mentioned (image generation for mood boards and storyboards, ChatGPT for script drafts, the AI voice tool) and marks the voice tool use as unconfirmed; it does not present a list of approved tools with accounts or plans as already settled",
+        "It says a real person's voice or likeness must not be cloned or imitated with AI without that person's consent",
+        "It says whether and when a client is told that AI-generated images, voice or script went into work delivered to them",
+        "It does not state as fact that a specific law applies or that the studio owns the copyright in AI-generated material; any such point is marked as something to check",
+        "The policy itself fits on about one page (roughly 500 words or fewer)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "data-analytics",
+  "version": "0.16.9",
+  "description": "For analysts and the people who rely on their numbers: define a metric once so everyone gets the same figure, review SQL for the bugs that quietly inflate it, and spec dashboards around a decision instead of every chart that was easy to make. (7 skills, 1 loop)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/data-analytics/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "metrics",
+    "sql",
+    "dashboard",
+    "semantic-layer",
+    "dbt",
+    "bi",
+    "analytics"
+  ]
+}

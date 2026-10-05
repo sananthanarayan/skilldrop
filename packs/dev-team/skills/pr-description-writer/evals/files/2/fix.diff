@@ -1,0 +1,30 @@
+diff --git a/billing/totals.py b/billing/totals.py
+--- a/billing/totals.py
++++ b/billing/totals.py
+@@ -1,13 +1,13 @@
+-from decimal import Decimal, ROUND_HALF_EVEN
++from decimal import Decimal, ROUND_HALF_UP
+
+-ROUNDING = ROUND_HALF_EVEN
++ROUNDING = ROUND_HALF_UP
+ CENT = Decimal("0.01")
+
+
+ def invoice_total(lines, tax_rate):
+-    subtotal = sum(Decimal(str(l.qty)) * l.unit_price for l in lines)
+-    tax = (subtotal * tax_rate).quantize(CENT, rounding=ROUNDING)
+-    return (subtotal + tax).quantize(CENT, rounding=ROUNDING)
++    subtotal = sum((Decimal(str(l.qty)) * l.unit_price).quantize(CENT, rounding=ROUNDING) for l in lines)
++    tax = (subtotal * tax_rate).quantize(CENT, rounding=ROUNDING)
++    return subtotal + tax
+diff --git a/tests/billing/test_totals.py b/tests/billing/test_totals.py
+--- a/tests/billing/test_totals.py
++++ b/tests/billing/test_totals.py
+@@ -22,3 +22,9 @@ def test_total_with_tax():
+     assert invoice_total(lines, Decimal("0.20")) == Decimal("24.00")
++
++
++def test_line_totals_round_before_summing():
++    lines = [Line(qty=3, unit_price=Decimal("0.335")), Line(qty=3, unit_price=Decimal("0.335"))]
++    # each line is 1.005 -> 1.01, so the subtotal is 2.02, not 2.01
++    assert invoice_total(lines, Decimal("0")) == Decimal("2.02")

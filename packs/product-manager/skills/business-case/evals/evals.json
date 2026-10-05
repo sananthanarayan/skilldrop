@@ -1,0 +1,19 @@
+{
+  "skill_name": "business-case",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write the business case for replacing our homegrown support ticket router at Northwind. Today 40 agents each spend about 20 minutes a day manually re-routing misassigned tickets (from a two-week time study). Loaded agent cost is $45/hour. Options on the table: build a ML router (estimate 3 engineers for 2 quarters), buy a vendor tool (Vendor X quoted $60k/year, year-two price unknown), or keep things as they are. The same 3 engineers would otherwise ship the self-serve billing portal. The VP of Support decides by November 15.",
+      "assertions": [
+        "The first lines state the ask — option, cost, benefit range, and the November 15 deadline — in under 40 words",
+        "Option 0 (do nothing) is present and costed using the user's 40 agents x 20 min/day x $45/hour figures",
+        "Every benefit is a re-runnable calculation with formula, sourced inputs, and a confidence tag (high/medium/low)",
+        "Outputs such as ROI and payback are ranges with a stated lean, not single-point figures like '327% ROI'",
+        "Each option shows build, run, and opportunity cost, with the displaced work named as the self-serve billing portal",
+        "The vendor's unknown year-two price is called out as an unknown or flagged assumption, not filled with an invented number",
+        "Names the flip-assumption that would reverse the recommendation, with a de-risking step if its confidence is low",
+        "Recommends exactly one option and states the runner-up's strongest argument fairly"
+      ]
+    }
+  ]
+}

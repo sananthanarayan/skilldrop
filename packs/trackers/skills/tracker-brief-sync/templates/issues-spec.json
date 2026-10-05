@@ -1,0 +1,26 @@
+{
+  "doc": "prd-<feature>.md",
+  "doc_url": "https://<wiki or repo URL of the doc; optional, used in the Source line instead of doc>",
+  "items": [
+    {
+      "id": "E1",
+      "type": "epic",
+      "title": "<outcome in plain words, from the goal>",
+      "description": "<what the epic delivers and the goal's success line, copied from the doc>",
+      "labels": ["<feature-label>"],
+      "source": "G1"
+    },
+    {
+      "id": "S1",
+      "type": "story",
+      "parent": "E1",
+      "title": "<verb-first, user-visible change>",
+      "description": "As a <user from the doc>, I can <capability>, so <reason from the doc>.",
+      "acceptance_criteria": [
+        "Given <state>, when <action>, then <observable result>"
+      ],
+      "labels": ["<feature-label>", "<area>"],
+      "source": "R1"
+    }
+  ]
+}

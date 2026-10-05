@@ -1,0 +1,28 @@
+#inc-2291-labels, export for Thursday 17 Sept 2026
+(times as shown in Slack: Amsterdam time, CEST)
+
+09:20 Odile Renner (support lead): getting tickets that label printing is failing, 3 merchants in the last few min. anyone looking?
+09:24 Odile Renner: up to 9 tickets now
+09:33 Marek Dvorsky (on-call): just got paged, was on the school run, looking in 5
+09:39 Marek Dvorsky: acked. errors started right after my 8:55 deploy I think. rolling back
+09:53 Marek Dvorsky: rollback done.... still broken. so not the deploy??
+09:55 Tobias Lindqvist (eng manager): Marek's deploy is the only thing that changed this morning, it has to be that. did the rollback actually take?
+09:58 Marek Dvorsky: yes v411 is live on all pods. same errors. "upstream connect error" from rates-gateway
+10:04 Marek Dvorsky: escalating to platform
+10:06 Yusra Haddad (platform): here
+10:22 Yusra Haddad: found it. rates-gateway internal cert expired at 09:11 this morning. cert-manager renewal has been failing since 27 Aug, DNS challenge error after the zone move
+10:23 Tobias Lindqvist: how did nobody see that for 3 weeks
+10:25 Yusra Haddad: renewal failure alerts go to #infra-noise. that channel's been muted by basically everyone since the spring
+10:26 Tobias Lindqvist: so Marek's team forgot to renew a cert. great
+10:27 Yusra Haddad: it's not really anyone's cert. rates-gateway got moved to platform in the June reorg and never got an owner in the service catalog
+10:41 Yusra Haddad: issued a cert by hand, pods restarting
+10:47 Marek Dvorsky: error rate back to normal
+10:52 Odile Renner: 61 tickets total. I'm telling merchants roughly 40k shipments were affected, ok?
+10:55 Tobias Lindqvist: fine. outage was about 75 min for the status page
+11:02 Odile Renner: several merchants are saying 2 hours on their side fwiw
+11:20 Marek Dvorsky: resolving the page
+11:31 Yusra Haddad: follow ups: (1) I'll move cert renewal failures out of #infra-noise into the platform pager by Fri 25 Sept (2) someone needs to fix the renewal job itself, the DNS challenge is still broken and the manual cert is only good for 90 days (3) rates-gateway needs an owner in the catalog
+11:34 Tobias Lindqvist: (4) labelgen should fall back to cached rates when the gateway is down. Marek can you scope that
+11:35 Marek Dvorsky: will scope it, no date yet
+11:40 Odile Renner: finance asked what we owe in SLA credits. I don't have the contract terms, does anyone?
+11:41 Tobias Lindqvist: no idea. ask legal

@@ -1,0 +1,43 @@
+{
+  "skill_name": "pr-description-writer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write the PR description for this change. The diff is in change.diff and the commit log is in commits.txt. It's for issue #482 (webhook deliveries silently dropped when the receiver returns 503).",
+      "assertions": [
+        "The title is imperative, 72 characters or fewer, and names the retry behaviour rather than a file",
+        "The body explains why (deliveries dropped on a 5xx) before what changed",
+        "It reports that the diff bumps the requests dependency, which no commit mentions",
+        "It reports that the diff deletes or skips an existing test (test_delivery_timeout), which no commit mentions",
+        "The test section names only tests visible in the diff or says checks were not run; it does not claim a passing test run",
+        "It names where a reviewer should look first (the retry loop or backoff in deliver())",
+        "It does not invent an issue number other than #482, a metric, or a reviewer"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Describe this change for review: fix.diff. I ran `pytest tests/billing -q` and got 31 passed.",
+      "assertions": [
+        "The title names the rounding fix for invoice totals, in the imperative, 72 characters or fewer",
+        "The test section reports `pytest tests/billing -q`: 31 passed as the user stated, and mentions the new test in the diff",
+        "The body says no reason or issue was given for the change, or states the reason only as far as the diff shows it",
+        "It notes the changed default (ROUNDING moved from ROUND_HALF_EVEN to ROUND_HALF_UP) as something existing invoices or callers may notice",
+        "The body fits on one screen: no file-by-file walk-through",
+        "It does not invent an issue link, a customer report, or affected-invoice counts"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Write up this branch for the PR. Diff is big.diff. Tests pass.",
+      "assertions": [
+        "The breaking change (the `limit` query parameter renamed to `page_size` on GET /orders) is in the title or the first lines of the body",
+        "It reports the database migration (new orders.archived_at column and index) and says how to roll it back or that the rollback drops the column",
+        "It says the diff mixes an unrelated logging refactor with the API change and suggests splitting it",
+        "It reports the new environment variable ORDERS_ARCHIVE_DAYS",
+        "The test section does not list specific passing tests or commands that the user did not give; it records only that the user says tests pass, or asks which were run",
+        "It names where a reviewer should look first",
+        "It does not invent an issue number, a deploy date, or performance figures"
+      ]
+    }
+  ]
+}

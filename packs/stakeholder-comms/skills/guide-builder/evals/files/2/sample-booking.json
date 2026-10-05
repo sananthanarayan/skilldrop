@@ -1,0 +1,19 @@
+{
+  "id": "bkg_7Hq2Lm",
+  "status": "pending_payment",
+  "slot_id": "slt_44190",
+  "item_type": "kayak",
+  "quantity": 2,
+  "unit_price": "32.00",
+  "total": "64.00",
+  "currency": "USD",
+  "customer": {
+    "name": "Odalys Brennan",
+    "email": "odalys.brennan@example.com",
+    "phone": null
+  },
+  "partner_ref": "ORD-10492",
+  "starts_at": "2026-11-14T15:00:00Z",
+  "ends_at": "2026-11-14T17:00:00Z",
+  "created_at": "2026-11-02T09:41:07Z"
+}

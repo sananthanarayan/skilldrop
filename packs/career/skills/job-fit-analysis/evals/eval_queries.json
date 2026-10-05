@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Am I a good fit for this job? Here's the posting and my resume",
+    "should_trigger": true
+  },
+  {
+    "query": "Should I apply for this role or is it a stretch?",
+    "should_trigger": true
+  },
+  {
+    "query": "What's missing from my CV for this job description?",
+    "should_trigger": true
+  },
+  {
+    "query": "Compare my resume against these three postings and tell me which to go for",
+    "should_trigger": true
+  },
+  {
+    "query": "Tailor my resume to this job posting",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a cover letter for this role",
+    "should_trigger": false
+  },
+  {
+    "query": "Critique my resume, it's not for any particular job",
+    "should_trigger": false
+  },
+  {
+    "query": "Compare these three applicant tracking systems for our HR team",
+    "should_trigger": false
+  }
+]

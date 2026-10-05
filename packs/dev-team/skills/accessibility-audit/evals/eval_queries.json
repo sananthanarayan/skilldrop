@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Run an a11y audit on this signup page markup",
+    "should_trigger": true
+  },
+  {
+    "query": "Is this component WCAG 2.2 AA compliant? Find what blocks screen-reader users",
+    "should_trigger": true
+  },
+  {
+    "query": "Here's a screenshot of our dashboard — what accessibility issues can you spot before we build it?",
+    "should_trigger": true
+  },
+  {
+    "query": "We failed an accessibility review; check this modal for keyboard traps and focus problems",
+    "should_trigger": true
+  },
+  {
+    "query": "What WCAG level should our new product commit to, and on which scope?",
+    "should_trigger": false
+  },
+  {
+    "query": "Review this PR for correctness bugs and edge cases",
+    "should_trigger": false
+  },
+  {
+    "query": "Implement this date-picker story with tests until the acceptance criteria pass",
+    "should_trigger": false
+  }
+]

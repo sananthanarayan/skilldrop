@@ -1,0 +1,20 @@
+{
+  "_comment": "Example spec consumable by a FigJam plugin that turns it into shapes + connectors. Pair this with a tiny Figma plugin (or use a community plugin that accepts this shape) to materialize the diagram. Not a Figma REST API call — REST cannot create nodes.",
+  "title": "Three-tier web app on AWS",
+  "nodes": [
+    { "id": "n_internet", "label": "Internet",  "shape": "ELLIPSE",   "x": 0,    "y": 0   },
+    { "id": "n_alb",      "label": "ALB",       "shape": "RECTANGLE", "x": 200,  "y": 0   },
+    { "id": "n_web",      "label": "ECS web",   "shape": "RECTANGLE", "x": 400,  "y": -60 },
+    { "id": "n_worker",   "label": "ECS worker","shape": "RECTANGLE", "x": 400,  "y":  60 },
+    { "id": "n_rds",      "label": "RDS",       "shape": "CYLINDER",  "x": 640,  "y":  0  },
+    { "id": "n_sqs",      "label": "SQS",       "shape": "PARALLELOGRAM", "x": 400, "y": 200 }
+  ],
+  "edges": [
+    { "from": "n_internet", "to": "n_alb",    "label": "HTTPS" },
+    { "from": "n_alb",      "to": "n_web",    "label": "HTTP"  },
+    { "from": "n_web",      "to": "n_rds",    "label": "SQL"   },
+    { "from": "n_web",      "to": "n_sqs",    "label": "enqueue" },
+    { "from": "n_sqs",      "to": "n_worker", "label": "dequeue" },
+    { "from": "n_worker",   "to": "n_rds",    "label": "SQL"   }
+  ]
+}
