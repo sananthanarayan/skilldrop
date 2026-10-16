@@ -6,101 +6,76 @@ kind: how-to
 
 # Author a new loop
 
-A loop is a **sequence over skills that already exist**. Write one when the order and the
-gates between existing skills are the thing worth shipping; write a skill when a new artifact
-is. A loop that needs a skill nobody has written yet is blocked on that skill.
+You can add a loop that runs skills already in the catalogue in a fixed order, with a gate
+between stages that decides when work moves on.
 
-Full rules and the pre-commit checklist live in [AGENTS.md](../../AGENTS.md); the design
-rationale is [RFC-0028](../../docs/rfcs/0028-loops-as-a-primitive.md).
+Write a loop when the order and the gates are the thing worth shipping; write a skill when a new
+artifact is. Every field and gate rule is on [The loop contract](../reference/loop-contract.md).
 
-## 1. Write the RFC
+## Write the RFC
 
-Loops are a primitive, so adding one is a structural decision. Copy
-[`docs/rfcs/0000-template.md`](../../docs/rfcs/0000-template.md) to the next number and mark
-it `accepted` before building.
+Loops are a primitive, so start from the RFC template and mark the copy `accepted` before you
+build.
 
-## 2. Write `loop.json`
-
-The contract is [`contracts/loop.schema.json`](../../contracts/loop.schema.json) and it is
-**closed** — an unknown key fails, it is not ignored.
-
-```json
-{
-  "name": "build",
-  "description": "Use-case-first. What the loop delivers, then the trigger phrases an agent matches on.",
-  "entrypoint": "LOOP.md",
-  "kind": "loop",
-  "cap": 3,
-  "stages": [
-    { "id": "implement", "type": "generate", "intent": "One line.", "skills": ["feature-implement-loop"] },
-    { "id": "verify", "type": "verify", "intent": "One line.", "skills": ["pre-merge-review"],
-      "gate": { "id": "G2", "kind": "mechanical",
-                "script": "packs/dev-team/skills/pre-merge-review/scripts/gate.py",
-                "verdicts": ["READY", "NOT READY", "BLOCKED"],
-                "revise_to": "implement" } }
-  ]
-}
+```bash
+cp docs/rfcs/0000-template.md docs/rfcs/NNNN-<slug>.md
 ```
 
-- `kind` is `loop` (advances toward a terminal) or `wrapper` (its middle stage is any
-  generator, chosen at run time — only a wrapper may use `"*"` in `skills`).
-- `type` is `generate` / `verify` / `gate` — the three states
-  [`agent-loop-design`](../../packs/ai-engineering/skills/agent-loop-design/SKILL.md) mandates.
-- `cap` bounds revision rounds. Default 3.
+The RFC records why this sequence deserves to be a loop and which skills it runs.
 
-## 3. Get the gates right
+## Create the loop folder
 
-This is where a loop is won or lost. A gate that cannot fail is decoration.
+Put the loop in the one pack that, with `core`, holds every skill its stages run.
 
-- **`id`** is repo-unique (`G2`, `G2.1`) — a gate is a place people point at in review. It reads
-  in lifecycle order: the whole number is the loop's place (`discover` G0 through `operate` G4;
-  G5 and G6 are the loops outside the lifecycle), and a decimal is a second gate in the same loop.
-- **`kind`**: `mechanical` needs a real `script` whose exit code decides; `review` and `human`
-  must **not** have one.
-- **`verdicts`** must all exist in
-  [`contracts/terminals.json`](../../contracts/terminals.json). A gate may not invent a new
-  word for an outcome that already has one.
-- Every gate needs **at least one pass-class verdict and at least one non-pass**, and must be
-  able to emit **`BLOCKED`** — a required input can always be missing.
-- **`revise_to`** must name an **earlier** stage.
+```bash
+mkdir -p packs/<pack>/loops/<name>
+```
 
-## 4. Write `LOOP.md`
+In it, write `loop.json` against the closed contract: stages typed `generate`, `verify` or
+`gate`, and gates numbered by the loop's place in the lifecycle, from `G0` for `discover`.
 
-Frontmatter `name` + `description` must match `loop.json` exactly. Then: the stage table, how
-to run it, the verdicts, what to do when a stage's skill is not installed, and the same
-`Quality bar` + `Anti-patterns to avoid` sections a skill ships. A `LOOP.md` without those two
-is a diagram. Copy the `## Run log (opt-in)` section from any existing loop and change the
-example line to your loop's name and first gate; `validate.py` requires it, so
-`skilldrop loop-stats` can read every loop the same way ([Measure your loops](measure-your-loops.md)).
+## Write LOOP.md from an existing loop
 
-## 5. Register and generate
+Read a shipped loop and copy its shape, including the `## Run log (opt-in)` section with the
+example line changed to your loop's name and first gate.
 
-- Put the loop in exactly one pack: `packs/<pack>/loops/<name>/`. That pack, together with `core`, must hold every skill the loop's stages run.
-- **Do not** add it to `model-routing.json` — a loop sequences skills and makes no model call
-  of its own, so it carries no tier.
-- Add a row for it to the table in [the loops reference](../reference/loops.md), and a pair of
-  `<!-- loop:<name>:start -->` / `<!-- loop:<name>:end -->` markers where its diagram goes.
-- Give it its lines in `build_loops.py`'s `LIFECYCLE` (a stage) or `OUTSIDE` (anything else):
-  a heading, when to start, and what it ends with. The [operating model](../explanation/operating-model.md)
-  picture is drawn from them.
-- Run `python3 build_loops.py` to regenerate `docs/loops/<name>.mmd`, the reference's Mermaid
-  block and `docs/loops/operating-model.svg`. All three are generated; editing one by hand
-  fails a check.
+```bash
+cat packs/dev-team/loops/build/LOOP.md
+```
 
-## 6. Check it
+Your `LOOP.md` repeats `loop.json`'s `name` and `description` exactly and ships a `Quality bar`
+and `Anti-patterns to avoid` section, like a skill.
+
+## Draw the loop into the operating model
+
+Give the loop its lines in `build_loops.py`'s `LIFECYCLE` (a stage) or `OUTSIDE` (anything else),
+add its row and diagram markers to [the loops reference](../reference/loops.md), then regenerate.
+
+```bash
+python3 build_loops.py
+```
+
+It writes `docs/loops/<name>.mmd`, the reference's Mermaid block and the
+[operating model](../explanation/operating-model.md) picture.
+
+## Check the loop
+
+Run the repo's lint from the root.
 
 ```bash
 python3 validate.py
-node bin/skilldrop.js validate
-python3 build_loops.py --check
 ```
 
-Then install it into a clean session and run it on a realistic input:
+It fails a loop that breaks the contract, sits in `model-routing.json`, or is missing from the
+diagrams.
+
+## Run it in a clean session
+
+Install the loop into a scratch directory and run it on a realistic input.
 
 ```bash
 node bin/skilldrop.js install --loop <name> --dest /tmp/try
 ```
 
-Confirm each stage advances only through its gate, that the cap is honoured, and — the
-invariant everything rests on — that a single skill from the loop still runs standalone when
-installed on its own.
+Each stage should advance only through its gate, the cap should hold, and any one of its skills
+should still run when installed on its own.

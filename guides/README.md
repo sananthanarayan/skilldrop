@@ -32,6 +32,7 @@ New here? Start with the [operating model](explanation/operating-model.md): the 
 - [Author a new loop](how-to/author-a-loop.md) — the closed `loop.json` contract and the gate rules
 - [Wire a skill to an event](how-to/wire-a-hook.md) — opt-in hooks, projected per target
 - [Publish your own catalogue](how-to/publish-a-catalogue.md) — make `skilldrop --from <you>` work
+- [Release a change](how-to/release-a-change.md) — the release loop: a rollout with a way back, a readiness check on evidence, and your go/no-go call
 - [Upgrade installed skills](how-to/upgrade-skills.md) — keep what you have installed current; files you edited are kept and the new version lands beside them as `.upstream`
 - [Benchmark skills against the agent without them](how-to/benchmark-skills.md) — each eval run with the skill and without it: the lift, a blind preference from two judges, and the cost
 - [Measure your loops](how-to/measure-your-loops.md) — the opt-in, local-only run log, and which gates pass first time
@@ -48,7 +49,15 @@ New here? Start with the [operating model](explanation/operating-model.md): the 
 
 - [Every skill, by category](reference/skill-catalogue.md) — all the skills, one line each, plus the anatomy every skill folder shares
 - [The loops, stage by stage](reference/loops.md) — each loop's stages, gates and generated diagram
-- [Skills that ship scripts](reference/skills-with-scripts.md) — what a skill's scripts declare, the two that need packages, and how to invoke a skill
+- [The loop contract](reference/loop-contract.md) — the closed `loop.json` fields, gate ids and verdict rules, what `LOOP.md` carries, and how a loop is registered and checked
+- [The skill contract](reference/skill-contract.md) — what a new skill folder must contain, its catalogue entries, and what `validate.py` checks
+- [Install options](reference/install-options.md) — every CLI install command and flag, the plugin marketplace's plugins and how they are built, and the reviewer subagents
+- [Install targets and dependencies](reference/install-targets.md) — where each target writes skills and subagents, by-hand steps per tool, what `--local` does, and per-skill dependency installs
+- [Updates and the install ledger](reference/update-and-ledger.md) — what outdated, update, diff and doctor compare and decide: the ledger, `.upstream` rules, flags, edge cases
+- [The skilldrop GitHub Action](reference/ci-action.md) — every input and output of the Action, what it never runs, good fits, cost and privacy
+- [Benchmark options and report](reference/benchmark-options.md) — every `run_bench.py` flag, how each run is isolated, what it writes, and what each number in the report means
+- [MCP servers and skills](reference/mcp-servers.md) — which MCP servers pair with which skills and loops, config for each tool, security rules and troubleshooting
+- [Skills that ship scripts](reference/skills-with-scripts.md) — every skill with scripts and what each declares it needs, and how to invoke a skill
 - [skilldrop and the OWASP Top 10s](reference/owasp-mapping.md) — what skilldrop covers in the Agentic Skills Top 10 and LLM Top 10 2025, and the gaps
 
 ## Per pack

@@ -40,7 +40,7 @@ The `build` loop splits the work into stories, implements each one with adversar
 
 ## Ship it
 
-The `release` loop plans the rollout and the way back, judges readiness on evidence at G3, and drafts the release notes. Then you make the go/no-go call at G3.1. The two questions are separate: G3 asks whether the change can ship, and G3.1 asks whether it should ship now. See [from idea to shipped feature](../tutorial/idea-to-shipped-feature.md).
+The `release` loop plans the rollout and the way back, judges readiness on evidence at G3, and drafts the release notes. Then you make the go/no-go call at G3.1. The two questions are separate: G3 asks whether the change can ship, and G3.1 asks whether it should ship now. See [release a change](../how-to/release-a-change.md), and [from idea to shipped feature](../tutorial/idea-to-shipped-feature.md) for one release end to end.
 
 ## Run it
 

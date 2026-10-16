@@ -1,6 +1,6 @@
 ---
 title: Skills that ship scripts
-summary: Where a skill with scripts declares what they need, which two need packages beyond the standard library, and how to invoke a skill from Claude Code or any other IDE.
+summary: Every skill that ships scripts and what each declares it needs — packages, environment variables, hosts, programs and files — and how to invoke a skill from Claude Code or any other IDE.
 kind: reference
 ---
 
@@ -8,7 +8,42 @@ kind: reference
 
 Many skills ship helper scripts in a `scripts/` folder, and each one declares what its scripts need in its own `manifest.json`: `deps` for packages, `env` for environment variables, and `permissions` for the hosts, commands and files the scripts touch. You can read that block before you install.
 
-Most scripts run on the Python standard library. Two need a package: `deck-builder` (`python-pptx`) and `figma-diagrams` (`requests`). [Installing dependencies](../how-to/install-per-ide.md#installing-dependencies) covers both.
+Most scripts run on the Python standard library. Two need a package: `deck-builder` (`python-pptx`) and `figma-diagrams` (`requests`). [Installing dependencies](install-targets.md#installing-dependencies) covers both.
+
+## Every skill with scripts
+
+What each one declares in its manifest: the packages to install, the environment variables it reads, the hosts its scripts contact, the programs they run, and which files they touch (`named-paths` means only paths you pass in). The table is generated from the manifests.
+
+<!-- scripts:start -->
+| Skill | Pack | Packages | Environment | Network | Runs | Files |
+|---|---|---|---|---|---|---|
+| [`ai-usage-report`](../../packs/ai-engineering/skills/ai-usage-report/SKILL.md) | ai-engineering | — | — | — | — | named-paths |
+| [`backlog-triage`](../../packs/trackers/skills/backlog-triage/SKILL.md) | trackers | — | — | — | — | named-paths |
+| [`brand-kit`](../../packs/design/skills/brand-kit/SKILL.md) | design | — | — | — | — | none |
+| [`cloud-cost-review`](../../packs/sre-oncall/skills/cloud-cost-review/SKILL.md) | sre-oncall | — | — | — | — | named-paths |
+| [`content-design`](../../packs/experience-design/skills/content-design/SKILL.md) | experience-design | — | — | — | — | none |
+| [`cover-letter`](../../packs/career/skills/cover-letter/SKILL.md) | career | — | — | — | — | named-paths |
+| [`deck-builder`](../../packs/design/skills/deck-builder/SKILL.md) | design | `python-pptx==1.0.2` | — | — | — | named-paths |
+| [`delivery-metrics-report`](../../packs/sre-oncall/skills/delivery-metrics-report/SKILL.md) | sre-oncall | — | — | — | — | named-paths |
+| [`figma-diagrams`](../../packs/solution-architect/skills/figma-diagrams/SKILL.md) | solution-architect | `requests==2.34.2` | `FIGMA_TOKEN` | `api.figma.com` | — | named-paths |
+| [`file-to-markdown`](../../packs/converters/skills/file-to-markdown/SKILL.md) | converters | — | — | — | `pdftotext` | named-paths |
+| [`hypothesis-comparison`](../../packs/research/skills/hypothesis-comparison/SKILL.md) | research | — | — | — | — | named-paths |
+| [`marketing-flyer`](../../packs/design/skills/marketing-flyer/SKILL.md) | design | — | — | — | `google-chrome`, `chromium`, `chrome` | named-paths |
+| [`md-to-docx`](../../packs/converters/skills/md-to-docx/SKILL.md) | converters | — | — | — | — | named-paths |
+| [`md-to-html`](../../packs/converters/skills/md-to-html/SKILL.md) | converters | — | — | — | — | named-paths |
+| [`md-to-xlsx`](../../packs/converters/skills/md-to-xlsx/SKILL.md) | converters | — | — | — | — | named-paths |
+| [`mermaid-render`](../../packs/converters/skills/mermaid-render/SKILL.md) | converters | — | — | — | `mmdc` | named-paths |
+| [`output-hygiene`](../../packs/core/skills/output-hygiene/SKILL.md) | core | — | — | — | — | named-paths |
+| [`pre-merge-review`](../../packs/dev-team/skills/pre-merge-review/SKILL.md) | dev-team | — | — | — | `git`, `ruff`, `mypy`, `pytest`, `*` | project |
+| [`resume-tailor`](../../packs/career/skills/resume-tailor/SKILL.md) | career | — | — | — | — | named-paths |
+| [`risk-register`](../../packs/grc/skills/risk-register/SKILL.md) | grc | — | — | — | — | named-paths |
+| [`skill-review`](../../packs/skill-engineering/skills/skill-review/SKILL.md) | skill-engineering | — | — | — | — | named-paths |
+| [`source-synthesis`](../../packs/research/skills/source-synthesis/SKILL.md) | research | — | — | — | — | named-paths |
+| [`sql-review`](../../packs/data-analytics/skills/sql-review/SKILL.md) | data-analytics | — | — | — | — | named-paths |
+| [`team-status-report`](../../packs/trackers/skills/team-status-report/SKILL.md) | trackers | — | — | — | — | named-paths |
+| [`terraform-plan-review`](../../packs/infra-as-code/skills/terraform-plan-review/SKILL.md) | infra-as-code | — | — | — | — | named-paths |
+| [`tracker-brief-sync`](../../packs/trackers/skills/tracker-brief-sync/SKILL.md) | trackers | — | — | — | — | named-paths |
+<!-- scripts:end -->
 
 ## Invoke a skill
 

@@ -4,7 +4,7 @@
 
 ## Repo in one paragraph
 
-**skilldrop** is a collection of portable **Claude Skills**, each measured against the agent without it (RFC-0040), for the deliverables knowledge workers actually ship: diagrams, ADRs, design docs, runbooks, decks, decision logs, comparison matrices, exec summaries, structured critiques, and adversarial code review. Each skill is a plain directory at `packs/<pack>/skills/<name>/` containing a `SKILL.md` + `manifest.json` (+ optional `reference.md`, `templates/`, `lenses/`, `rubrics/`, `examples/`, `scripts/`, `requirements.txt`). Above the skills sit **loops** (`packs/<pack>/loops/<name>/LOOP.md` + `loop.json`, RFC-0028) — named sequences of stages over those skills with a gate between each, so the repo ships a way of operating and not only a bag of parts. A loop *sequences* skills; it never contains one. The pack a skill or loop sits in is its one home (RFC-0033, RFC-0034); each pack's metadata is `packs/<pack>/pack.json`, and `catalogue.json` holds pack order and outcomes. Installation is per-folder copy into the target IDE's skills/rules location — the per-IDE steps live in [`guides/how-to/install-per-ide.md`](guides/how-to/install-per-ide.md) (Claude Code, Cursor, Kiro, Codex, Antigravity, Copilot, Continue, Cline, Aider). How the loops fit together for a user is the [operating model](guides/explanation/operating-model.md).
+**skilldrop** is a collection of portable **Claude Skills**, each measured against the agent without it (RFC-0040), for the deliverables knowledge workers actually ship: diagrams, ADRs, design docs, runbooks, decks, decision logs, comparison matrices, exec summaries, structured critiques, and adversarial code review. Each skill is a plain directory at `packs/<pack>/skills/<name>/` containing a `SKILL.md` + `manifest.json` (+ optional `reference.md`, `templates/`, `lenses/`, `rubrics/`, `examples/`, `scripts/`, `requirements.txt`). Above the skills sit **loops** (`packs/<pack>/loops/<name>/LOOP.md` + `loop.json`, RFC-0028) — named sequences of stages over those skills with a gate between each, so the repo ships a way of operating and not only a bag of parts. A loop *sequences* skills; it never contains one. The pack a skill or loop sits in is its one home (RFC-0033, RFC-0034); each pack's metadata is `packs/<pack>/pack.json`, and `catalogue.json` holds pack order and outcomes. Installation is per-folder copy into the target IDE's skills/rules location — the per-IDE steps live in [`guides/how-to/install-per-ide.md`](guides/how-to/install-per-ide.md), with every path in [`guides/reference/install-targets.md`](guides/reference/install-targets.md) (Claude Code, Cursor, Kiro, Codex, Antigravity, Copilot, Continue, Cline, Aider). How the loops fit together for a user is the [operating model](guides/explanation/operating-model.md).
 
 ## Golden rules
 
@@ -256,7 +256,7 @@ The folder name is the slug used for `/`-invocation: kebab-case, descriptive, us
 
 **Every skill ships evals** (full coverage since 0.13.8; `validate.py` fails a skill without both files). The `should_trigger: false` rows are where the care goes: each one is a real near-miss that belongs to a **named sibling**, taken from the skill's "When NOT to use" section and its `related` list — "help me present this" (`exec-summary` / `slide-outliner` / `deck-builder` / `audience-profile`), "define the contract" (`api-contract-draft` / `data-contract` / `db-schema-design`), "review this" (`devils-advocate` / `doc-critique` / `council-review` / `sonar-review`). Don't invent a collision to fill the file: a no-trigger row nobody would actually type documents nothing. Assertions come from the skill's own Quality bar, and every skill that handles facts gets a "does not invent X not in the prompt" assertion. The weekly [evals workflow](.github/workflows/evals.yml) runs the trigger queries against a live model and reports the results.
 
-**5. Update the skill catalogue.** Add a row to [`guides/reference/skill-catalogue.md`](guides/reference/skill-catalogue.md) (under the right category), and to **Installing dependencies** in [`guides/how-to/install-per-ide.md`](guides/how-to/install-per-ide.md) if the skill has runtime deps.
+**5. Update the skill catalogue.** Add a row to [`guides/reference/skill-catalogue.md`](guides/reference/skill-catalogue.md) (under the right category), and to **Installing dependencies** in [`guides/reference/install-targets.md`](guides/reference/install-targets.md) if the skill has runtime deps.
 
 **6. Test it manually.** Install into a clean Claude Code session (`cp -R packs/<pack>/skills/<name> ~/.claude/skills/`), then run the `evals/evals.json` prompt and check each assertion against the output; spot-check a `should_trigger: false` query routes elsewhere. Also verify: the agent finds `SKILL.md` without confusion; templates/lenses/rubrics are read at the right moment; scripts work from both `${CLAUDE_SKILL_DIR}/scripts/…` *and* a plain relative path. If you can, run it in a second IDE to catch portability issues.
 
@@ -269,8 +269,10 @@ this section.
 
 1. **RFC first**, same as a new skill — loops are a primitive and its membership is a
    structural decision (RFC-0028).
-2. **`loop.json`** — `name`, `description` (use-case-first, trigger phrases at the end),
+2. **`loop.json`** — `name`, `version`, `description` (use-case-first, trigger phrases at the end),
    `entrypoint: "LOOP.md"`, `kind` (`loop` or `wrapper`), `cap` (default 3), and `stages`.
+   Bump `version` whenever `LOOP.md` or `loop.json` changes: `skilldrop update` refreshes an
+   installed loop only when it moves, exactly as it does for a skill.
    The contract is **closed**: an unknown key is a failure, not a no-op.
 3. **Stages** carry `id`, `type` (`generate` / `verify` / `gate` — the three
    `agent-loop-design` mandates), `intent`, and `skills` (real folder names; `*` means any
@@ -336,7 +338,7 @@ See `packs/design/skills/deck-builder/scripts/build_deck.py` for the reference p
 - [ ] **`evals/` present**: `evals.json` with ≥1 prompt + assertions, `eval_queries.json` with trigger *and* no-trigger queries, the no-trigger rows naming real siblings. `validate.py` enforces presence and shape; whether the queries are realistic is your judgment.
 - [ ] At least one **worked example** for new diagram, deck, or review skills.
 - [ ] Description **leads with the use case** and **ends with trigger phrases**.
-- [ ] Skill catalogue updated — a row in `guides/reference/skill-catalogue.md`, and in **Installing dependencies** (`guides/how-to/install-per-ide.md`) if the skill has runtime deps. The README is a short router (RFC-0035); only a new *pack* needs a README line.
+- [ ] Skill catalogue updated — a row in `guides/reference/skill-catalogue.md`, and in **Installing dependencies** (`guides/reference/install-targets.md`) if the skill has runtime deps. The README is a short router (RFC-0035); only a new *pack* needs a README line.
 - [ ] **Manual test pass** — installed the skill into a clean Claude Code session and ran it on a realistic input. Output meets the skill's own quality bar.
 - [ ] Scripts (if any) reference both `${CLAUDE_SKILL_DIR}/scripts/…` **and** a plain relative `scripts/…` so non-Claude IDEs can find them.
 - [ ] No secrets, no real customer data — placeholder values only.

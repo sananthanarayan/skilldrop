@@ -6,22 +6,23 @@ kind: how-to
 
 # Run a skill in CI
 
-The repo root is a GitHub Action. It sends a skill's `SKILL.md` (with the reference files it
-links) to Claude as the system prompt, gives it your input, writes the answer to the job
-summary and a file, and can fail the step when the answer contains a verdict you name.
+You can run a skill on every pull request with the skilldrop GitHub Action, read its answer in the job summary, and fail the check on a verdict you name.
 
-Nothing in the skill is executed. Skills that normally run a script (like `pre-merge-review`'s
-gate) are told they can't, and reason through it by hand instead, naming the command to run.
-Run the script in its own step if you need its real exit code.
+No pack needs installing: the action reads the skill from skilldrop's catalogue, or from your repo. It sends the skill to Claude and runs none of its scripts, so keep your real lint and test gate as its own step. Every input, output and limit is on [The skilldrop GitHub Action](../reference/ci-action.md).
 
-## Before you start
+## Save your API key
 
-- An Anthropic API key, saved as a repository secret named `ANTHROPIC_API_KEY`
-  (*Settings → Secrets and variables → Actions*).
-- Pin the action to a commit SHA, as you would any third-party action. The examples use `@main`
-  for readability only.
+Store an Anthropic API key as a repository secret.
+
+```bash
+gh secret set ANTHROPIC_API_KEY
+```
+
+It prompts for the key and saves it, the same as adding it under *Settings → Secrets and variables → Actions*.
 
 ## Critique every changed design doc
+
+Add this workflow as `.github/workflows/doc-review.yml`.
 
 ```yaml
 name: doc review
@@ -47,36 +48,28 @@ jobs:
           anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
 ```
 
-The critique lands in the run's summary page. With `fail-on` set, a verdict of MAJOR REWRITE
-or WRONG ARTIFACT fails the check; leave `fail-on` out to report without blocking.
+The critique lands in the run's summary page, and a MAJOR REWRITE or WRONG ARTIFACT verdict fails the check; leave `fail-on` out to report without blocking.
 
-## Inputs
+## Pin the action to a commit
 
-| Input | Default | What it does |
-|---|---|---|
-| `skill` | required | The skill's name: `doc-critique`, `pre-merge-review`, `release-notes`, … |
-| `input` | — | The request text |
-| `input-file` | — | A file appended to the request, such as a generated report |
-| `diff-base` | — | A git ref; `git diff <ref>...HEAD` is appended. Check out with `fetch-depth: 0`. |
-| `catalog` | skilldrop's catalogue | Where to find the skill: a skilldrop catalogue, or any folder of `<skill>/SKILL.md`. Use `.` for skills in your own repo (`.claude/skills/`, `.agents/skills/`, `skills/` and `packs/` are all searched). |
-| `model` | `claude-sonnet-5-5` | Any Claude model ID |
-| `max-tokens` | `8000` | Output cap |
-| `fail-on` | — | A regular expression; the step fails when the output matches |
-| `output-file` | `skill-output.md` | Where the output is written, for a later step to post as a PR comment or upload |
-| `anthropic-api-key` | required | Pass `${{ secrets.ANTHROPIC_API_KEY }}`, never a literal |
+Replace `@main` with a commit SHA, as you would for any third-party action.
 
-Outputs: `output-file`, and `failed` (`true` when `fail-on` matched).
+```bash
+git ls-remote https://github.com/sananthanarayan/skilldrop refs/heads/main
+```
 
-## Good fits
+It prints the latest commit on `main`; put that SHA after `sananthanarayan/skilldrop@`.
 
-- `doc-critique` on changed ADRs, design docs and runbooks
-- `release-notes` on `diff-base: <last tag>` to draft the notes for a release PR
-- `pre-merge-review` as an advisory second reviewer, with the real lint and test gate as its own step
-- Your own skills, with `catalog: .`
+## Run your own skills
 
-## Cost and privacy
+Point the action at your repo to run a skill you wrote.
 
-Each run is one API call: the skill's files plus your input in, the answer out. A diff and a
-skill together are usually well under 50k input tokens. The input goes to the Anthropic API
-under your key and your organisation's data terms. Don't point it at files you couldn't send
-there.
+```yaml
+      - uses: sananthanarayan/skilldrop@<sha>
+        with:
+          skill: my-skill
+          catalog: .
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+```
+
+It finds `my-skill` under `.claude/skills/`, `.agents/skills/`, `skills/` or `packs/` in your checkout.

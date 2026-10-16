@@ -198,6 +198,10 @@ FILLER = re.compile(r"\b(leverag\w*|robust\w*|seamless\w*|cutting-edge|best-in-c
                     r"you might want to|in most cases)\b", re.I)
 
 
+# A how-to past this is doing a reference page's job too (AGENTS.md § Writing a guide).
+HOWTO_WORDS = 400
+
+
 def check_guide_page(rel, text, fields):
     """RFC-0044. A title that is the page's one H1, headings that name the task rather than a step
     number, no filler, and a how-to that opens with what the reader can do."""
@@ -213,6 +217,11 @@ def check_guide_page(rel, text, fields):
         m = FILLER.search(ln)
         if m and not ln.lstrip().startswith("#"):
             fail(rel, f"{m.group(0)!r} is filler — say the specific thing, or drop the word")
+    if fields.get("kind") == "how-to":
+        words = len(re.sub(r"^#.*$", "", prose, flags=re.M).split())
+        if words > HOWTO_WORDS:
+            fail(rel, f"{words} words of prose — a how-to stays under {HOWTO_WORDS}; move flags, edge cases "
+                      f"and detail to a reference page")
     if fields.get("kind") == "how-to" and h1 is not None:
         after = prose.split("# " + h1, 1)[1].lstrip("\n")
         first = after.splitlines()[0] if after else ""

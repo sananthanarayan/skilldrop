@@ -5,7 +5,7 @@
   "$comment": "RFC-0028. A loop sequences existing skills; it never contains one. Skills stay in their own packs/<pack>/skills/<name> folders and stay independently installable — a loop is a named order plus the gates between stages. Enforced by validate.py with hand-rolled stdlib checks: skilldrop ships zero runtime dependencies and this file must not become a reason to add `jsonschema`.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["name", "description", "entrypoint", "kind", "stages"],
+  "required": ["name", "version", "description", "entrypoint", "kind", "stages"],
   "properties": {
     "$comment": { "type": "string" },
     "name": {
@@ -13,7 +13,7 @@
       "pattern": "^[a-z0-9][a-z0-9-]*$",
       "description": "Kebab-case. Must equal the folder name and the LOOP.md frontmatter name — the same triple-match skills are held to."
     },
-    "version": { "type": "string" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$", "description": "Bump it whenever LOOP.md or loop.json changes: `skilldrop update` compares it with the version a user installed." },
     "description": {
       "type": "string",
       "description": "Use-case-first. First half says what the loop delivers; second half states the trigger phrases an agent matches on."

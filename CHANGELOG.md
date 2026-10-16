@@ -8,6 +8,13 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.11 — 2026-10-16
+
+- **`skilldrop update` now updates installed loops.** `outdated` lists a loop whose version moved, `update` brings it current and keeps any file you edited beside the new one as `<file>.upstream`, and `diff` and `doctor` work on loops too. The four loops renumbered in 0.16.10 (`release`, `operate`, `ship-a-draft`, `apply`) are now version 0.3.0, so `npx skilldrop-cli update` takes them. Every loop now has to declare a `version`, and it moves whenever the loop changes.
+- **Every how-to fits on a page.** Eight long how-tos were split: the task stays on the how-to, under 400 words, and the flags, paths and edge cases move to new reference pages for install options, install targets, updates and the ledger, the GitHub Action, benchmark options, the loop and skill contracts, and MCP servers. The check fails a how-to over 400 words.
+- **New how-to: [Release a change](guides/how-to/release-a-change.md)**, the `release` loop from rollout plan to go/no-go, filed under the release stage in the docs.
+- **[Skills that ship scripts](guides/reference/skills-with-scripts.md) lists every one of them**, with the packages, environment variables, hosts, programs and files each declares, generated from the manifests.
+
 ## 0.16.10 — 2026-10-16
 
 - **An operating model page shows the whole method on one page.** The [operating model](guides/explanation/operating-model.md) puts the five stages, the gate that ends each one, the pack that helps there, and the packs for any stage in one picture, then says where the agent waits for you and what every verdict means. The picture is generated from the loops themselves, so it changes when a loop does.

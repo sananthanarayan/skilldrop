@@ -1,148 +1,81 @@
 ---
 title: Install a skill into your IDE
-summary: Per-IDE install steps for every target skilldrop supports, plus the dependency install for the two skills that have Python deps.
+summary: Put a skill where Claude Code, Cursor, Kiro, Codex, Antigravity, GitHub Copilot or another agent reads it, by copying the folder or with one CLI flag, then install its dependencies.
 kind: how-to
 ---
 
 # Install a skill into your IDE
 
-Install a skill by hand into Claude Code, Cursor, Kiro, Codex, Antigravity, GitHub Copilot or another agent, when you would rather not use the [CLI](install.md).
+Put a skilldrop skill where your coding agent reads it, by copying its folder from a clone of the repo or with one flag on the [CLI](install.md).
 
-## Manual install
+Every skill is a plain folder at `packs/<pack>/skills/<skill-name>/`, so this works for any pack; the examples use `architecture-diagrams` from the `solution-architect` pack. Paths, scopes and per-tool details are on [Install targets and dependencies](../reference/install-targets.md).
 
-Each skill is a plain directory. Installation is always the same two steps: (1) copy the skill folder into your IDE's skills/rules location, then (2) install the skill's dependencies (the commands are in `manifest.json` under `deps`, or run the install line from the skill's SKILL.md). Optionally, also copy the companions listed under `related` in the skill's `manifest.json` — skills reference each other, and while a hand-off to an uninstalled sibling degrades gracefully to inline guidance, the pipelines work best complete.
+## Copy a skill into Claude Code
 
-## Claude Code
-
-Claude Code reads skills from two locations:
-
-- **User-scope** (available in every project): `~/.claude/skills/<skill-name>/`
-- **Project-scope** (tracked with the repo): `<project>/.claude/skills/<skill-name>/`
-
-Install a skill by copying its folder — drop the directory directly into the skills location, **not** its parent category folder:
+Copy the skill folder itself, not its pack folder, into your user skills folder:
 
 ```bash
-# user-scope (recommended for personal use)
-mkdir -p ~/.claude/skills
-cp -R packs/solution-architect/skills/architecture-diagrams ~/.claude/skills/
-cp -R packs/solution-architect/skills/figma-diagrams ~/.claude/skills/
-
-# project-scope (recommended when sharing with a team)
-mkdir -p .claude/skills
-cp -R packs/solution-architect/skills/architecture-diagrams .claude/skills/
-cp -R packs/solution-architect/skills/figma-diagrams .claude/skills/
+mkdir -p ~/.claude/skills && cp -R packs/solution-architect/skills/architecture-diagrams ~/.claude/skills/
 ```
 
-Claude Code discovers the skill via its `SKILL.md` frontmatter `name` field. Invoke it in chat with `/<skill-name>` or by describing the task — Claude will route to the matching skill automatically.
+Every project now has the skill: invoke it with `/architecture-diagrams` or describe the task. Copy into `.claude/skills/` instead to share it with the repo.
 
-## Cursor
+## Install into Cursor
 
-Cursor does not have a native "skills" concept, but you can install a skill as a **project rule**:
-
-1. Copy the skill folder somewhere in the repo (e.g. `.cursor/skills/<skill-name>/`):
-   ```bash
-   mkdir -p .cursor/skills
-   cp -R packs/solution-architect/skills/architecture-diagrams .cursor/skills/
-   ```
-
-2. Create `.cursor/rules/<skill-name>.mdc` that points Cursor at it:
-   ```markdown
-   ---
-   description: <paste the skill's description from manifest.json>
-   globs:
-   alwaysApply: false
-   ---
-   Follow the instructions in .cursor/skills/<skill-name>/SKILL.md when the user requests this task.
-   ```
-
-3. In chat, attach `SKILL.md` with `@` or describe the task — the rule will fire when the description matches.
-
-## Kiro (IDE and CLI)
-
-Kiro has native **Agent Skills**, and Kiro IDE and Kiro CLI read the same directories. Copy the folder in — that's the whole install:
+Cursor has no skills folder, so the CLI copies the skill and writes a project rule that points at it:
 
 ```bash
-mkdir -p .kiro/skills                  # workspace scope
-cp -R packs/solution-architect/skills/figma-diagrams .kiro/skills/
-
-mkdir -p ~/.kiro/skills                # global scope, every project
-cp -R packs/solution-architect/skills/figma-diagrams ~/.kiro/skills/
+npx skilldrop-cli install architecture-diagrams --ide cursor
 ```
 
-Kiro matches the skill by its `SKILL.md` frontmatter `name` (which must equal the folder name) and `description` — the same contract every other tool uses.
+The skill lands in `.cursor/skills/` and the rule in `.cursor/rules/architecture-diagrams.mdc`, which fires when your request matches the skill's description.
 
-**No steering file needed.** Earlier versions of the CLI also wrote `.kiro/steering/<skill-name>.md` pointing back at the skill. That predates native Agent Skills, and because a steering file without frontmatter is *always* loaded, it pinned one description per installed skill into every session's context — to point at a folder Kiro already reads. The CLI no longer writes them, and `install`/`uninstall` remove any it wrote before. A steering file it didn't author is left alone, with a note.
+## Copy a skill into Kiro
 
-## Codex, Antigravity and GitHub Copilot
-
-Each has its own flag. Without `--project` the skills go to your personal folder and work in
-every repo; with it, they go into the repo:
+Kiro IDE and Kiro CLI read the same skills folder:
 
 ```bash
-npx skilldrop-cli install --pack dev-team --ide codex              # ~/.codex/skills
-npx skilldrop-cli install --pack dev-team --ide antigravity        # ~/.gemini/antigravity-cli/skills
-npx skilldrop-cli install --pack dev-team --ide copilot            # ~/.copilot/skills
-npx skilldrop-cli install --pack dev-team --ide copilot --project  # .github/skills
-npx skilldrop-cli install --pack dev-team --ide codex --project    # .agents/skills
+mkdir -p .kiro/skills && cp -R packs/solution-architect/skills/architecture-diagrams .kiro/skills/
 ```
 
-All three also read other tools' folders, so a project install often reaches more than one:
+Kiro matches the skill by its `name` and `description`; copy into `~/.kiro/skills/` to reach every project.
 
-| Path | Read by |
-|---|---|
-| `.claude/skills/` | Claude Code, **Copilot CLI** |
-| `.agents/skills/` | **Codex**, **Antigravity**, **Copilot CLI** (`--ide codex --project` or `--ide antigravity --project`) |
-| `.github/skills/` | **Copilot** |
-| `~/.codex/skills/` | Codex (personal) |
-| `~/.gemini/antigravity-cli/skills/` | Antigravity CLI (personal) |
-| `~/.copilot/skills/` | Copilot (personal) |
+## Install into Codex, Antigravity or Copilot
 
-**If you already ran `skilldrop install --project`, Copilot CLI can use every skill you
-installed**, because `.claude/skills/` is one of its discovery paths. Codex and Copilot also
-read a repo-root `AGENTS.md`. Google retired Gemini CLI for most users on 2026-06-18;
-Antigravity CLI replaced it, and `--ide antigravity` is its target.
+Each tool has its own `--ide` value:
 
-## Trying skills in a repo you don't own
+```bash
+npx skilldrop-cli install --pack dev-team --ide codex
+```
 
-`--local` installs into the repo (the same place `--project` would) and lists every file it
-writes in the repo's own `.git/info/exclude`. Git ignores those files the way it ignores
-`.gitignore` entries, but the exclude file is never committed, so `git status` stays clean
-and nothing can be committed by accident:
+The pack lands in `~/.codex/skills/`; use `antigravity` or `copilot` for those tools, and add `--project` to install into the repo instead.
+
+## Try skills in a repo you don't own
+
+`--local` installs into the repo and hides every file it writes from git:
 
 ```bash
 npx skilldrop-cli install --pack dev-team --local
-npx skilldrop-cli uninstall pre-merge-review --local   # removes the files and the exclude entries
 ```
 
-It works with every `--ide`. With `--with-hooks` on Claude Code, the session-start hook goes
-into `.claude/settings.local.json` rather than the shared `settings.json`.
+`git status` stays clean, nothing can be committed by accident, and `uninstall --local` removes the files.
 
-## Continue, Cline, Aider, and other agents
+## Install into another agent
 
-These tools don't have a standard skills directory yet. Two patterns work:
+For Continue, Cline, Aider or another tool without a skills folder, copy the skill into the repo:
 
-- **Context attachment.** Copy the skill folder anywhere in the repo, then attach `SKILL.md` to your prompt (Continue: `@file`, Cline: `@file`, Aider: `/add <path>`) and tell the agent to follow it.
-- **Custom prompt / agent.** Paste `SKILL.md` into the IDE's custom-agent or system-prompt configuration. The skill's `manifest.json` `description` field is a good seed for the agent's name/summary.
+```bash
+npx skilldrop-cli install architecture-diagrams --dest skills
+```
 
-In all cases, the scripts are invoked from the **copied** folder, so keep the directory structure intact — don't flatten `scripts/` or `templates/` out of the skill folder.
+Attach `skills/architecture-diagrams/SKILL.md` to your prompt (`@file` in Continue and Cline, `/add` in Aider) and tell the agent to follow it.
 
-### VS Code (Continue / Cline extensions)
+## Install a skill's dependencies
 
-These behave like the "Other agents" path above. For Continue, you can also add the skill folder to `.continue/config.json` under `contextProviders` so `SKILL.md` shows up in `@` suggestions.
+A skill that ships a `requirements.txt`, such as `figma-diagrams` or `deck-builder`, needs its Python packages; run this inside the copied folder:
 
-## Installing dependencies
+```bash
+python3 -m pip install -r requirements.txt
+```
 
-Each skill declares its deps in `manifest.json`:
-
-- **`deps.npm`** → run `npm install <packages>` before using the skill (or let `SKILL.md` step 1 install them on demand).
-- **`deps.pip`** → run `python3 -m pip install -r <skill>/requirements.txt`.
-
-Per-skill quick reference:
-
-| Skill | Install command (run from inside the copied skill folder) |
-|---|---|
-| `figma-diagrams` | `python3 -m pip install -r requirements.txt` + `export FIGMA_TOKEN=figd_...` |
-| `deck-builder` | `python3 -m pip install -r requirements.txt` (installs `python-pptx`) |
-| _all other skills_ | _no runtime deps — pure markdown skills_ |
-
-For `figma-diagrams`, you also need a [Figma Personal Access Token](https://www.figma.com/developers/api#access-tokens) exported as the `FIGMA_TOKEN` env var.
+The packages listed under `deps` in the skill's `manifest.json` install; `figma-diagrams` also needs a Figma token in `FIGMA_TOKEN`.

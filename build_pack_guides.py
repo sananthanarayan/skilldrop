@@ -6,6 +6,8 @@ CLI read (pack.json, each skill's manifest.json and SKILL.md, loop.json), so the
 drift from the catalogue:
 
   guides/how-to/packs/use-the-<pack>-pack.md   install, first task, a typical session, its loops
+  guides/reference/skills-with-scripts.md      the table of every skill that ships scripts, between
+                                               <!-- scripts:start/end --> markers
   guides/reference/packs/pack-<pack>.md        every skill: what it makes, what it needs,
                                                its quality bar, what it hands off to, and
                                                what it isn't for
@@ -223,6 +225,30 @@ def index_block(packs):
     return "\n".join(rows)
 
 
+SCRIPTS = os.path.join(ROOT, "guides", "reference", "skills-with-scripts.md")
+SCRIPTS_A, SCRIPTS_B = "<!-- scripts:start -->", "<!-- scripts:end -->"
+
+
+def scripts_block():
+    """One row per skill that ships scripts/, from what its manifest declares (RFC-0039), so the
+    reference lists every one and cannot fall behind the catalogue."""
+    def cell(items):
+        return ", ".join("`{0}`".format(i) for i in items) if items else "—"
+    rows = ["| Skill | Pack | Packages | Environment | Network | Runs | Files |",
+            "|---|---|---|---|---|---|---|"]
+    for name, d in sorted(catalog.skills().items()):
+        if not os.path.isdir(os.path.join(d, "scripts")):
+            continue
+        m = json.load(open(os.path.join(d, "manifest.json"), encoding="utf-8"))
+        deps, env, perm = m.get("deps") or {}, m.get("env") or {}, m.get("permissions") or {}
+        envs = list(env.get("required") or []) + ["{0} (optional)".format(e) for e in env.get("optional") or []]
+        rows.append("| [`{0}`](../../{1}/SKILL.md) | {2} | {3} | {4} | {5} | {6} | {7} |".format(
+            name, catalog.rel(d), os.path.basename(os.path.dirname(os.path.dirname(d))),
+            cell((deps.get("pip") or []) + (deps.get("npm") or [])), cell(envs),
+            cell(perm.get("network") or []), cell(perm.get("commands") or []), perm.get("files", "—")))
+    return "\n".join(rows)
+
+
 def render():
     packs = catalog.packs()
     out = {}
@@ -230,6 +256,10 @@ def render():
     a, b = idx.find(MARK_A), idx.find(MARK_B)
     if a >= 0 and b > a:
         out[INDEX] = idx[:a + len(MARK_A)] + "\n" + index_block(packs) + "\n" + idx[b:]
+    sc = open(SCRIPTS, encoding="utf-8").read()
+    a, b = sc.find(SCRIPTS_A), sc.find(SCRIPTS_B)
+    if a >= 0 and b > a:
+        out[SCRIPTS] = sc[:a + len(SCRIPTS_A)] + "\n" + scripts_block() + "\n" + sc[b:]
     for name, pack in packs.items():
         out[os.path.join(HOWTO_DIR, "use-the-{0}-pack.md".format(name))] = howto(name, pack, packs)
         out[os.path.join(REF_DIR, "pack-{0}.md".format(name))] = reference(name, pack, packs)
@@ -247,6 +277,8 @@ def stale():
             bad.append(os.path.relpath(p, ROOT))
     if INDEX not in want:
         bad.append("guides/README.md (no pack-guides markers)")
+    if SCRIPTS not in want:
+        bad.append("guides/reference/skills-with-scripts.md (no scripts markers)")
     for d in (HOWTO_DIR, REF_DIR):
         if os.path.isdir(d):
             for f in os.listdir(d):
@@ -273,7 +305,8 @@ def main():
     for p, body in want.items():
         with open(p, "w", encoding="utf-8") as f:
             f.write(body)
-    print("build_pack_guides: wrote {0} guides for {1} packs, and the index in guides/README.md".format(len(want) - 1, (len(want) - 1) // 2))
+    n = len([p for p in want if p not in (INDEX, SCRIPTS)])
+    print("build_pack_guides: wrote {0} guides for {1} packs, the index in guides/README.md, and the scripts table".format(n, n // 2))
     return 0
 
 

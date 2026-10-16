@@ -51,13 +51,13 @@ Usage:
                                           (--no-skills for the loop alone) (RFC-0028)
   skilldrop install --panel review        install the review panel — the 3 reviewer subagents +
                                           the pre-merge-review orchestrator that fires them (RFC-0020)
-  skilldrop update [--force] [--changed]  re-copy installed skills whose version changed; files
+  skilldrop update [--force] [--changed]  re-copy installed skills and loops whose version changed; files
                                           you edited are kept and the new copy lands beside them
                                           as <file>.upstream (--force overwrites) (RFC-0032).
                                           Files changed upstream under the same version are named,
                                           not taken, unless you add --changed (RFC-0039)
   skilldrop outdated                      show installed vs current versions, change nothing
-  skilldrop diff <skill> [--stat]         what differs between your installed copy and the catalog's —
+  skilldrop diff <name> [--stat]          what differs between your installed skill or loop and the catalog's —
                                           your edits, upstream changes, or both
   skilldrop doctor                        check a target against its ledger: missing folders, leftover
                                           .upstream files, stale wiring and hooks. Changes nothing.
@@ -1015,16 +1015,50 @@ function fileHashes(dir) {
   return out;
 }
 
+/* A loop installs as <name>/SKILL.md (its LOOP.md) plus <name>/loop.json. update, outdated,
+   diff and doctor treat a ledger row marked `loop` like a skill through these helpers: which
+   files it installs and where the catalog keeps each one, its hashes, metadata and check. */
+function loopFiles(cat, n) {
+  const d = loopDir(cat, n);
+  return { "SKILL.md": path.join(d, "LOOP.md"), "loop.json": path.join(d, "loop.json") };
+}
+function unitHashes(cat, s, isLoop) {
+  if (!isLoop) return fileHashes(skillDir(cat, s));
+  const out = {};
+  for (const [rel, p] of Object.entries(loopFiles(cat, s))) out[rel] = sha256(fs.readFileSync(p));
+  return out;
+}
+function unitSource(cat, s, isLoop, rel) {
+  return isLoop ? loopFiles(cat, s)[rel] : path.join(skillDir(cat, s), ...rel.split("/"));
+}
+function unitExists(cat, s, isLoop) { return isLoop ? loopsIn(cat).includes(s) : skillExists(cat, s); }
+function unitMeta(cat, s, isLoop) { return isLoop ? loopSpec(cat, s) : manifestOf(cat, s); }
+function unitCheck(cat, s, isLoop) { return isLoop ? checkLoop(cat, s) : checkSkill(cat, s); }
+function isLoopEntry(entry) { return !!(entry && typeof entry === "object" && entry.loop); }
+function unitLabel(r) { return r.loop ? `loop ${r.s}` : r.s; }
+
+function copyLoop(cat, n, dest, ide, l, notes) {
+  const sp = loopSpec(cat, n);
+  const out = path.join(dest, n);
+  fs.mkdirSync(out, { recursive: true });
+  for (const [rel, p] of Object.entries(loopFiles(cat, n))) fs.copyFileSync(p, path.join(out, rel));
+  const note = writeWiring(ide, dest, n, sp.description);
+  if (note && notes) notes.push(note);
+  l.data[n] = { version: sp.version || null, source: cat.source, loop: true, files: unitHashes(cat, n, true) };
+  if (cat.commit) l.data[n].commit = cat.commit;
+  return sp;
+}
+
 /* Update one skill file by file against the ledger baseline (RFC-0032):
      upstream unchanged            -> leave the local file alone, edited or not
      local untouched, or new file  -> take the new version
      local edited, upstream moved  -> keep the local file, write the new one as <file>.upstream
    A file the catalog dropped is removed only if the user never touched it. The new baseline is
    what the catalog ships now, so a kept edit stays "edited" until the user merges it. */
-function mergeOne(cat, s, dest, ide, l, notes, dry = false) {
-  const m = manifestOf(cat, s);
-  const src = skillDir(cat, s), dst = path.join(dest, s);
-  const base = l.data[s].files, next = fileHashes(src);
+function mergeOne(cat, s, dest, ide, l, notes, dry = false, isLoop = false) {
+  const m = unitMeta(cat, s, isLoop);
+  const dst = path.join(dest, s);
+  const base = l.data[s].files, next = unitHashes(cat, s, isLoop);
   const kept = [], orphaned = [];
   const at = (root, rel) => path.join(root, ...rel.split("/"));
   const localHash = (rel) => { try { return sha256(fs.readFileSync(at(dst, rel))); } catch (e) { return null; } };
@@ -1035,13 +1069,13 @@ function mergeOne(cat, s, dest, ide, l, notes, dry = false) {
     if (mine === null ? !(rel in base) : mine === base[rel]) {
       if (dry) continue;
       fs.mkdirSync(path.dirname(to), { recursive: true });
-      fs.copyFileSync(at(src, rel), to);
+      fs.copyFileSync(unitSource(cat, s, isLoop, rel), to);
       fs.rmSync(to + ".upstream", { force: true });
     } else {
       kept.push(rel);
       if (dry) continue;
       fs.mkdirSync(path.dirname(to), { recursive: true });
-      fs.copyFileSync(at(src, rel), to + ".upstream");
+      fs.copyFileSync(unitSource(cat, s, isLoop, rel), to + ".upstream");
     }
   }
   for (const rel of Object.keys(base)) {
@@ -1053,7 +1087,8 @@ function mergeOne(cat, s, dest, ide, l, notes, dry = false) {
   if (dry) return { m, kept, orphaned };
   const note = writeWiring(ide, dest, s, m.description);
   if (note && notes) notes.push(note);
-  l.data[s] = { version: m.version, source: cat.source, files: next };
+  l.data[s] = { version: m.version || null, source: cat.source, files: next };
+  if (isLoop) l.data[s].loop = true;
   if (cat.commit) l.data[s].commit = cat.commit;
   return { m, kept, orphaned };
 }
@@ -1252,20 +1287,21 @@ function installedRows(flags) {
     const src = lsrc(l.data[s]);
     let current = null, cat = null, changed = [];
     const entry = l.data[s];
+    const loop = isLoopEntry(entry);
     try {
       cat = resolveCatalog(src === BUNDLED ? undefined : src);
-      if (skillExists(cat, s)) {
-        current = manifestOf(cat, s).version;
+      if (unitExists(cat, s, loop)) {
+        current = unitMeta(cat, s, loop).version || null;
         // Same version, different files: the catalog changed the skill without bumping it.
         // The version check alone would never see that (OWASP AST07, update drift).
         if (current === lver(entry) && typeof entry === "object" && entry.files) {
-          const now = fileHashes(skillDir(cat, s));
+          const now = unitHashes(cat, s, loop);
           changed = [...new Set([...Object.keys(now), ...Object.keys(entry.files)])]
             .filter((f) => now[f] !== entry.files[f]).sort();
         }
       }
     } catch (e) { /* unreachable source: current stays null */ }
-    return { s, src, cat, installed: lver(entry), current, changed, pinned: isPinned(src) };
+    return { s, src, cat, loop, installed: lver(entry), current, changed, pinned: isPinned(src) };
   });
   return { dest, ide, l, rows };
 }
@@ -1289,18 +1325,20 @@ function update(args) {
   let n = 0, conflicts = 0;
   const silent = rows.filter((r) => r.current === r.installed && r.changed.length && !args.flags.changed);
   for (const r of rows) {
-    if (!r.current) { console.log(`skip ${r.s}: source '${r.src}' unreachable or skill gone from it`); continue; }
+    if (!r.current) { console.log(`skip ${unitLabel(r)}: source '${r.src}' unreachable, ${r.loop ? "loop" : "skill"} gone from it, or no version to compare`); continue; }
     if (!isDue(r)) continue;
-    const problems = checkSkill(r.cat, r.s);
-    if (problems.length) { console.log(`skip ${r.s}: fails structural check in '${r.src}' (${problems[0]})`); continue; }
-    // No baseline (installed before RFC-0032) or --force: overwrite as before, and record one.
+    const problems = unitCheck(r.cat, r.s, r.loop);
+    if (problems.length) { console.log(`skip ${unitLabel(r)}: fails structural check in '${r.src}' (${problems[0]})`); continue; }
+    // No baseline (installed before RFC-0032, or a loop installed before 0.16.11) or --force:
+    // overwrite as before, and record one.
     const entry = l.data[r.s];
     if (args.flags.force || typeof entry !== "object" || !entry.files) {
-      copyOne(r.cat, r.s, dest, ide, l);
-      console.log(`updated ${r.s} ${r.installed === r.current ? `${r.current} (same version, changed upstream)` : `${r.installed} -> ${r.current}`} (${r.src})`);
+      if (r.loop) copyLoop(r.cat, r.s, dest, ide, l);
+      else copyOne(r.cat, r.s, dest, ide, l);
+      console.log(`updated ${unitLabel(r)} ${r.installed === r.current ? `${r.current} (same version, changed upstream)` : `${r.installed} -> ${r.current}`} (${r.src})`);
     } else {
-      const { kept, orphaned } = mergeOne(r.cat, r.s, dest, ide, l);
-      console.log(`updated ${r.s} ${r.installed === r.current ? `${r.current} (same version, changed upstream)` : `${r.installed} -> ${r.current}`} (${r.src})`);
+      const { kept, orphaned } = mergeOne(r.cat, r.s, dest, ide, l, null, false, r.loop);
+      console.log(`updated ${unitLabel(r)} ${r.installed === r.current ? `${r.current} (same version, changed upstream)` : `${r.installed} -> ${r.current}`} (${r.src})`);
       for (const f of kept) console.log(`  kept your edits in ${f} — new version at ${f}.upstream`);
       for (const f of orphaned) console.log(`  kept ${f} — dropped upstream, but you edited it`);
       conflicts += kept.length;
@@ -1308,7 +1346,7 @@ function update(args) {
     n++;
   }
   saveLedger(l);
-  console.log(n ? `\n${n} skill(s) updated.` : (silent.length ? "no version changes." : "everything up to date."));
+  console.log(n ? `\n${n} skill(s) or loop(s) updated.` : (silent.length ? "no version changes." : "everything up to date."));
   if (silent.length)
     console.log(`\nNot taken: ${silent.map((r) => r.s).join(", ")} changed upstream without a version bump.` +
                 `\n  Read the change (skilldrop diff <skill>), then take it with: skilldrop update --changed`);
@@ -1333,28 +1371,28 @@ function planUpdate(dest, ide, l, rows, flags) {
   console.log(`dry run — nothing will be written. Target: ${dest} (${ide})\n`);
   let n = 0;
   for (const r of rows) {
-    if (!r.current) { console.log(`would skip ${r.s}: source '${r.src}' unreachable or skill gone from it`); continue; }
+    if (!r.current) { console.log(`would skip ${unitLabel(r)}: source '${r.src}' unreachable, ${r.loop ? "loop" : "skill"} gone from it, or no version to compare`); continue; }
     if (r.current === r.installed && !r.changed.length) continue;
     if (r.current === r.installed && !flags.changed) {
-      console.log(`would not take ${r.s}: ${r.changed.length} file(s) changed upstream without a version bump (add --changed to take them)`);
+      console.log(`would not take ${unitLabel(r)}: ${r.changed.length} file(s) changed upstream without a version bump (add --changed to take them)`);
       continue;
     }
-    const problems = checkSkill(r.cat, r.s);
-    if (problems.length) { console.log(`would skip ${r.s}: fails structural check (${problems[0]})`); continue; }
+    const problems = unitCheck(r.cat, r.s, r.loop);
+    if (problems.length) { console.log(`would skip ${unitLabel(r)}: fails structural check (${problems[0]})`); continue; }
     n++;
     const entry = l.data[r.s];
-    console.log(`would update ${r.s} ${r.installed} -> ${r.current} (${r.src})`);
+    console.log(`would update ${unitLabel(r)} ${r.installed} -> ${r.current} (${r.src})`);
     if (flags.force || typeof entry !== "object" || !entry.files) {
       const lost = editedFiles(dest, r.s, entry);
       if (lost.length) console.log(`  --force overwrites your edits in: ${lost.join(", ")}`);
       continue;
     }
-    const { kept, orphaned } = mergeOne(r.cat, r.s, dest, ide, l, null, true);
+    const { kept, orphaned } = mergeOne(r.cat, r.s, dest, ide, l, null, true, r.loop);
     for (const f of kept) console.log(`  would keep your edits in ${f} and write the new version to ${f}.upstream`);
     for (const f of orphaned) console.log(`  would keep ${f} — dropped upstream, but you edited it`);
   }
   const held = rows.filter((r) => r.current && r.current === r.installed && r.changed.length && !flags.changed).length;
-  console.log(n ? `\n${n} skill(s) would update. Rerun without --dry-run to apply.` : (held ? "no version changes." : "everything up to date."));
+  console.log(n ? `\n${n} skill(s) or loop(s) would update. Rerun without --dry-run to apply.` : (held ? "no version changes." : "everything up to date."));
 }
 
 function outdated(args) {
@@ -1368,15 +1406,15 @@ function outdated(args) {
       outdatedCount: stale.length,
       changedWithoutVersionCount: drift.length,
       skills: rows.map((r) => ({
-        name: r.s, installed: r.installed, current: r.current,
+        name: r.s, loop: r.loop, installed: r.installed, current: r.current,
         source: r.src, outdated: !!(r.current && r.current !== r.installed),
         changedWithoutVersion: r.changed || [], pinned: r.pinned,
       })),
     });
   if (!rows.length) return console.log(`nothing installed at ${dest}`);
-  for (const r of stale) console.log(`${r.s}: installed ${r.installed}, current ${r.current} (${r.src})`);
+  for (const r of stale) console.log(`${unitLabel(r)}: installed ${r.installed}, current ${r.current} (${r.src})`);
   for (const r of drift)
-    console.log(`${r.s}: ${r.changed.length} file(s) changed in '${r.src}' without a version bump (${r.changed.slice(0, 3).join(", ")}${r.changed.length > 3 ? ", …" : ""})`);
+    console.log(`${unitLabel(r)}: ${r.changed.length} file(s) changed in '${r.src}' without a version bump (${r.changed.slice(0, 3).join(", ")}${r.changed.length > 3 ? ", …" : ""})`);
   if (drift.length)
     console.log(`\n${drift.length} skill(s) changed upstream with the same version. Read the change first (skilldrop diff <skill>),` +
                 `\nthen take it with: skilldrop update --changed`);
@@ -1424,23 +1462,23 @@ function uninstall(args) {
    edits, an upstream change, or both. File-level always; line-level through git when it is on
    the PATH (git diff --no-index works outside any repo). */
 function diff(args) {
-  const s = args._[0] || die("pass an installed skill name: skilldrop diff <skill>");
+  const s = args._[0] || die("pass an installed skill or loop name: skilldrop diff <name>");
   const { dest } = target(args.flags);
   const l = ledger(dest);
   const entry = l.data[s];
   if (!entry && !fs.existsSync(path.join(dest, s))) die(`'${s}' is not installed at ${dest}`);
-  if (entry && entry.loop) die(`'${s}' is a loop — diff compares skills`);
+  const loop = isLoopEntry(entry);
   const src = args.flags.from || (entry ? lsrc(entry) : BUNDLED);
   const cat = resolveCatalog(src === BUNDLED ? undefined : src);
-  if (!skillExists(cat, s)) die(`'${s}' is no longer in catalog '${cat.source}'`);
-  const theirs = fileHashes(skillDir(cat, s)), mine = fileHashes(path.join(dest, s));
+  if (!unitExists(cat, s, loop)) die(`'${s}' is no longer in catalog '${cat.source}'`);
+  const theirs = unitHashes(cat, s, loop), mine = fileHashes(path.join(dest, s));
   const base = (entry && entry.files) || {};
   const changed = Object.keys(theirs).filter((f) => f in mine && mine[f] !== theirs[f]).sort();
   const onlyUp = Object.keys(theirs).filter((f) => !(f in mine)).sort();
   const onlyMine = Object.keys(mine).filter((f) => !(f in theirs)).sort();
   const why = (f) => !base[f] ? "" : mine[f] !== base[f] && theirs[f] !== base[f] ? "  (you edited it, and so did the catalog)"
     : mine[f] !== base[f] ? "  (your edit)" : "  (catalog changed it)";
-  const iv = entry ? lver(entry) : "?", cv = manifestOf(cat, s).version;
+  const iv = entry ? lver(entry) : "?", cv = unitMeta(cat, s, loop).version;
   console.log(`${s}: installed ${iv} at ${path.join(dest, s)}  vs  catalog '${cat.source}' ${cv}`);
   if (!changed.length && !onlyUp.length && !onlyMine.length) return console.log("identical.");
   for (const f of changed) console.log(`  M ${f}${why(f)}`);
@@ -1449,7 +1487,7 @@ function diff(args) {
   if (args.flags.stat) return;
   let git = true;
   for (const f of changed) {
-    const a = path.join(skillDir(cat, s), ...f.split("/")), b = path.join(dest, s, ...f.split("/"));
+    const a = unitSource(cat, s, loop, f), b = path.join(dest, s, ...f.split("/"));
     try {
       execFileSync("git", ["--no-pager", "diff", "--no-index", "--color=auto", "--src-prefix=catalog/", "--dst-prefix=installed/", a, b],
         { stdio: ["ignore", "inherit", "inherit"] });
@@ -1459,7 +1497,7 @@ function diff(args) {
     }
   }
   if (!git) console.log("\n(git not found — line-level diff needs git on the PATH; file list above)");
-  if (changed.length) console.log(`\nTake the catalog's version: skilldrop update --force, or install ${s} again.`);
+  if (changed.length) console.log(`\nTake the catalog's version: skilldrop update --force, or install ${loop ? "--loop " : ""}${s} again.`);
 }
 
 /* doctor: check an install target against its ledger and report what's out of step — skills
@@ -1477,10 +1515,13 @@ function doctor(args) {
   const names = Object.keys(data);
   for (const n of names) {
     if (!fs.existsSync(path.join(dest, n))) add("error", `${n} is in the ledger but its folder is gone`, `skilldrop install ${n} (or uninstall ${n} to drop the record)`);
-    else if (!data[n].loop && !data[n].file) {
+    else if (!data[n].file) {
+      const loop = isLoopEntry(data[n]);
       const e = editedFiles(dest, n, data[n]);
       if (e.length) add("info", `${n}: you edited ${e.join(", ")}`, `skilldrop diff ${n}`);
-      if (typeof data[n] === "string" || !data[n].files) add("warn", `${n} has no file baseline (installed before 0.13)`, `skilldrop install ${n} once; update will keep your edits after that`);
+      if (typeof data[n] === "string" || !data[n].files)
+        add("warn", `${loop ? "loop " : ""}${n} has no file baseline (installed before ${loop ? "0.16.11" : "0.13"})`,
+            `skilldrop install ${loop ? "--loop " : ""}${n} once; update will keep your edits after that`);
     }
   }
   if (fs.existsSync(dest)) {
@@ -1843,15 +1884,8 @@ function installLoops(args) {
   const l = ledger(dest);
   const notes = [];
   for (const n of names) {
-    const sp = loopSpec(cat, n);
-    const out = path.join(dest, n);
-    fs.mkdirSync(out, { recursive: true });
-    fs.copyFileSync(path.join(loopDir(cat, n), "LOOP.md"), path.join(out, "SKILL.md"));
-    fs.copyFileSync(path.join(loopDir(cat, n), "loop.json"), path.join(out, "loop.json"));
-    const note = writeWiring(ide, dest, n, sp.description);
-    if (note) notes.push(note);
-    l.data[n] = { version: sp.version || null, source: cat.source, loop: true };
-    console.log(`installed loop ${n} -> ${out}`);
+    copyLoop(cat, n, dest, ide, l, notes);
+    console.log(`installed loop ${n} -> ${path.join(dest, n)}`);
   }
   saveLedger(l);
   if (args.flags.local) addLocal(dest, ide, names);
