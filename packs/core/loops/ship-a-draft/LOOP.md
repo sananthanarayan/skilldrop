@@ -16,7 +16,7 @@ check the argument and the surface after.
 |---|---|---|---|---|
 | 1 | `intake` | generate | [`brief-intake`](../../skills/brief-intake/SKILL.md) | — |
 | 2 | `draft` | generate | any generator (`*`) | — |
-| 3 | `critique` | verify | [`doc-critique`](../../skills/doc-critique/SKILL.md) | **G4** review |
+| 3 | `critique` | verify | [`doc-critique`](../../skills/doc-critique/SKILL.md) | **G5** review |
 | 4 | `polish` | verify | [`output-hygiene`](../../skills/output-hygiene/SKILL.md) | — |
 
 ## How to run this wrapper
@@ -29,7 +29,7 @@ check the argument and the surface after.
    chosen generator will refuse to start without. Resolve those before drafting.
 3. **Draft.** Run the chosen generator on the brief. It is a normal skilldrop skill with its
    own quality bar — this wrapper does not override it.
-4. **Critique at G4.** Run `doc-critique`, which dispatches to the same rubric the generator
+4. **Critique at G5.** Run `doc-critique`, which dispatches to the same rubric the generator
    was held to. `MAJOR REWRITE` returns to `intake` (not to `draft` — a rewrite usually means
    the input was wrong, not the prose). `WRONG ARTIFACT` leaves the wrapper entirely.
 5. **Polish last.** Run `output-hygiene` only once the argument is settled. It is a surface
@@ -37,14 +37,14 @@ check the argument and the surface after.
 
 ## Verdicts
 
-Defined in [`contracts/terminals.json`](../../../../contracts/terminals.json). G4 emits the critique
+Defined in [`contracts/terminals.json`](../../../../contracts/terminals.json). G5 emits the critique
 vocabulary. `SHIP WITH CHANGES` carries its changes forward to `polish`; it does not mean the
 changes are optional.
 
 ## When a stage's skill is not installed
 
 Name the missing skill and skilldrop as its source, do the minimal inline version of that
-stage, and say the stage ran degraded. Do not skip G4 — an unreviewed artifact is the failure
+stage, and say the stage ran degraded. Do not skip G5 — an unreviewed artifact is the failure
 mode this wrapper exists to prevent.
 
 ## Run log (opt-in)
@@ -54,7 +54,7 @@ gate's verdict, append one JSON line to that file. Nothing else is recorded, and
 sent anywhere. When the variable isn't set, or you can't read it, skip this section.
 
 ```bash
-printf '%s\n' '{"ts":"2026-10-01T14:03:00Z","loop":"ship-a-draft","stage":"critique","gate":"G4","verdict":"SHIP IT","round":1}' >> "$SKILLDROP_LOOP_LOG"
+printf '%s\n' '{"ts":"2026-10-01T14:03:00Z","loop":"ship-a-draft","stage":"critique","gate":"G5","verdict":"SHIP IT","round":1}' >> "$SKILLDROP_LOOP_LOG"
 ```
 
 Fields: `ts` (UTC), `loop`, `stage`, `gate` (`null` for a stage without one), `verdict` (the
@@ -71,7 +71,7 @@ which end in `BLOCKED`.
 
 ## Anti-patterns to avoid
 
-- ❌ **Running `polish` as the whole review.** Clean prose with a broken argument still fails; that is what G4 is for.
+- ❌ **Running `polish` as the whole review.** Clean prose with a broken argument still fails; that is what G5 is for.
 - ❌ **Skipping `intake` because the input "is already structured."** A Slack thread that looks organized is still untagged — nobody downstream can tell what was inferred.
 - ❌ **Looping `critique` → `draft` instead of `critique` → `intake`.** Re-drafting from the same incomplete brief reproduces the same gaps with new words.
 - ❌ **Treating `WRONG ARTIFACT` as a severe `MAJOR REWRITE`.** It is a redirect: the user wanted a different document, and revising this one cannot get there.

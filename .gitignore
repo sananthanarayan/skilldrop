@@ -44,6 +44,9 @@ renders/
 # rsvg-convert and committed, so build_site.py stays stdlib-only (RFC-0011).
 !assets/*.svg
 !assets/*.png
+# …and the operating-model picture build_loops.py generates from loop.json (RFC-0044). It is
+# committed like docs/loops/*.mmd, so the guide shows it on GitHub too.
+!docs/loops/*.svg
 
 # Claude local state
 .claude/settings.local.json

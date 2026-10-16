@@ -13,7 +13,7 @@
       "intent": "Say honestly where the candidate stands against the posting, then let them decide whether this application is worth writing.",
       "skills": ["job-fit-analysis"],
       "gate": {
-        "id": "G5",
+        "id": "G6",
         "kind": "human",
         "verdicts": ["PROCEED", "PROCEED WITH CONDITIONS", "RECONSIDER", "BLOCKED"]
       }
@@ -42,7 +42,7 @@
       "intent": "Strip what the machine left behind, then have the candidate confirm that every line in the documents is true and theirs, and that anything added from outside the resume is right.",
       "skills": ["output-hygiene"],
       "gate": {
-        "id": "G6",
+        "id": "G6.1",
         "kind": "human",
         "verdicts": ["READY", "NOT READY", "BLOCKED"],
         "revise_to": "tailor"

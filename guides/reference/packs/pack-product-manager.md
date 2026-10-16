@@ -2,6 +2,7 @@
 title: Product manager pack reference
 summary: Every skill in the Product manager pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 kind: reference
+stage: discover
 ---
 
 # Product manager pack reference

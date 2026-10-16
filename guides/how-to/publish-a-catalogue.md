@@ -6,7 +6,7 @@ kind: how-to
 
 # Publish your own catalogue
 
-#### Third-party catalogs — publish your own skills through the same CLI
+Publish your own skills as a catalogue that anyone can browse and install with the skilldrop CLI.
 
 A git repo or directory is a **catalog** if it has either shape the CLI reads ([RFC-0003](../../docs/rfcs/0003-third-party-catalogs.md), [RFC-0034](../../docs/rfcs/0034-physical-pack-layout.md)):
 

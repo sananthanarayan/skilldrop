@@ -2,6 +2,7 @@
 title: Solution architect pack reference
 summary: Every skill in the Solution architect pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 kind: reference
+stage: design
 ---
 
 # Solution architect pack reference

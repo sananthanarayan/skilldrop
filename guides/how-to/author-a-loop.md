@@ -52,7 +52,9 @@ The contract is [`contracts/loop.schema.json`](../../contracts/loop.schema.json)
 
 This is where a loop is won or lost. A gate that cannot fail is decoration.
 
-- **`id`** is repo-unique (`G2`, `G2.1`) — a gate is a place people point at in review.
+- **`id`** is repo-unique (`G2`, `G2.1`) — a gate is a place people point at in review. It reads
+  in lifecycle order: the whole number is the loop's place (`discover` G0 through `operate` G4;
+  G5 and G6 are the loops outside the lifecycle), and a decimal is a second gate in the same loop.
 - **`kind`**: `mechanical` needs a real `script` whose exit code decides; `review` and `human`
   must **not** have one.
 - **`verdicts`** must all exist in
@@ -76,9 +78,14 @@ example line to your loop's name and first gate; `validate.py` requires it, so
 - Put the loop in exactly one pack: `packs/<pack>/loops/<name>/`. That pack, together with `core`, must hold every skill the loop's stages run.
 - **Do not** add it to `model-routing.json` — a loop sequences skills and makes no model call
   of its own, so it carries no tier.
-- Run `python3 build_loops.py` to regenerate `docs/loops/<name>.mmd` and the README's Mermaid
-  block. Both are generated; editing either by hand fails a check.
-- Add a row for it in the README — `validate.py` requires one.
+- Add a row for it to the table in [the loops reference](../reference/loops.md), and a pair of
+  `<!-- loop:<name>:start -->` / `<!-- loop:<name>:end -->` markers where its diagram goes.
+- Give it its lines in `build_loops.py`'s `LIFECYCLE` (a stage) or `OUTSIDE` (anything else):
+  a heading, when to start, and what it ends with. The [operating model](../explanation/operating-model.md)
+  picture is drawn from them.
+- Run `python3 build_loops.py` to regenerate `docs/loops/<name>.mmd`, the reference's Mermaid
+  block and `docs/loops/operating-model.svg`. All three are generated; editing one by hand
+  fails a check.
 
 ## 6. Check it
 

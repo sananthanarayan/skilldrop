@@ -741,7 +741,7 @@ def loops_index(loop_list):
         for lp in loop_list)
     body = f"""<main class="inner pk" id="main">
 <h1 class="pk__title">Loops</h1>
-<p class="pk__lede">A loop runs skills in order and stops at a gate before anything moves on. The cheaper the mistake, the more a script decides; the harder it is to undo, the more it waits for you. Five cover the lifecycle; <code>ship-a-draft</code> wraps any generator. <a href="../docs/explanation/loops.html">Why loops</a>.</p>
+<p class="pk__lede">A loop runs skills in order and stops at a gate before anything moves on. The cheaper the mistake, the more a script decides; the harder it is to undo, the more it waits for you. Five cover the lifecycle; <code>ship-a-draft</code> wraps any generator. See them all on one page in the <a href="../docs/explanation/operating-model.html">operating model</a>, or read <a href="../docs/explanation/loops.html">why loops</a>.</p>
 <ul class="pk__list">{cards}</ul>
 </main>"""
     return shell("Loops", "Every skilldrop loop: its stages, and who decides at each gate.", f"{SITE_URL}loops/", 1, body,

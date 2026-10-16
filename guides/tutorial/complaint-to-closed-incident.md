@@ -2,6 +2,7 @@
 title: From complaint to closed incident
 summary: A user complaint triggers a full response cycle — discover what's broken, operate to fix it, and close the loop with a postmortem and runbook update. Uses the discover and operate loops.
 kind: tutorial
+stage: operate
 ---
 
 # From complaint to closed incident
@@ -49,10 +50,10 @@ The skill interviews you on ambiguities — which payment path, which environmen
 
 The gate asks one question: *Is this requirement specific enough for an SRE to act on, or does it need more information?*
 
-A `READY` verdict looks like:
+A `PROCEED` verdict looks like:
 
 ```
-G0 READY
+G0 PROCEED
 Requirement is actionable. Threshold is flagged as unconfirmed but the
 incident is scoped and the onset is known. Proceed to operate.
 ```
@@ -63,7 +64,7 @@ If the requirement were too vague (e.g., "payment sometimes fails"), the gate re
 
 ## Stage 2 — Respond (`operate` loop)
 
-The `operate` loop owns everything from first response to closed incident. It sequences `incident-response` → `runbook-generator` → `postmortem-generator` with a feedback edge at G3 that routes postmortem deltas back to update the living runbook.
+The `operate` loop owns everything from first response to closed incident. It sequences `incident-response` → `runbook-generator` → `postmortem-generator` with a feedback edge at G4 that routes postmortem deltas back to update the living runbook.
 
 ### `incident-response`
 
@@ -110,12 +111,12 @@ Customer impact: ~2 hours, ~40 affected orders. Run postmortem-generator.
 
 The postmortem draft covers timeline, root cause analysis, contributing factors (no alerting on third-party API latency), action items, and — critically — a **runbook delta**: a diff of what the existing runbook is missing.
 
-### Gate G3 — postmortem closes the loop
+### Gate G4 — postmortem closes the loop
 
 The `operate` loop's gate reads the postmortem's runbook delta and routes it back to `runbook-generator`:
 
 ```
-G3 PROCEED
+G4 PROCEED
 Postmortem filed. Runbook delta identified: add vendor latency monitoring
 to detection signals section; add vendor escalation SLA to mitigation.
 Routing delta to runbook-generator for update.
@@ -142,7 +143,7 @@ Once the gate passes, the PR merges. The incident is closed:
 - Support tickets resolved and customers notified
 - Runbook updated with vendor monitoring and escalation path
 - Postmortem filed with action items tracked
-- Gate G3 confirmed the loop is closed
+- Gate G4 confirmed the loop is closed
 
 ---
 

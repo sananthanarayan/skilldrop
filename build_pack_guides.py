@@ -22,6 +22,7 @@ import re
 import sys
 
 import catalog
+from build_loops import LIFECYCLE  # lifecycle order, for each page's `stage` (RFC-0044)
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 HOWTO_DIR = os.path.join(ROOT, "guides", "how-to", "packs")
@@ -85,6 +86,13 @@ def install_lines(name):
     ]
 
 
+def stage_lines(pack):
+    """`stage: <loop>` for a pack that holds a lifecycle loop: its earliest one, so the docs
+    sidebar files the pack's pages under that stage (RFC-0044). Other packs get none."""
+    own = [lp for lp in LIFECYCLE if lp in pack.get("loops", [])]
+    return ["stage: " + own[0]] if own else []
+
+
 def howto(name, pack, packs):
     title = pack.get("display_name", name)
     fv = pack.get("first-value") or {}
@@ -92,7 +100,7 @@ def howto(name, pack, packs):
     reqs = [r for r in pack.get("requires", []) if r in packs]
     L = ["---", "title: Use the {0} pack".format(title),
          "summary: Install the {0} pack, run its first task, and follow a typical session step by step.".format(title),
-         "kind: how-to", "---", "", "# Use the {0} pack".format(title), "", GENERATED, "",
+         "kind: how-to"] + stage_lines(pack) + ["---", "", "# Use the {0} pack".format(title), "", GENERATED, "",
          pack["description"], ""]
     if j.get("when"):
         L += ["**Reach for it when:** " + j["when"], ""]
@@ -143,7 +151,7 @@ def reference(name, pack, packs):
     reqs = [r for r in pack.get("requires", []) if r in packs]
     L = ["---", "title: {0} pack reference".format(title),
          "summary: Every skill in the {0} pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.".format(title),
-         "kind: reference", "---", "", "# {0} pack reference".format(title), "", GENERATED, "",
+         "kind: reference"] + stage_lines(pack) + ["---", "", "# {0} pack reference".format(title), "", GENERATED, "",
          pack["description"], "",
          "| | |", "|---|---|",
          "| Install | `npx skilldrop-cli install --pack {0}` |".format(name),

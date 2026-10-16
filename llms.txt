@@ -6,7 +6,7 @@
 > 100 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.16.9.
+> Version 0.16.10.
 
 ## Start here
 
@@ -23,13 +23,13 @@ Five loops cover the lifecycle and are separated by reversibility (how expensive
 mistake is to unwind), which is also what decides who may sign off. One wrapper applies
 to any generator.
 
-- [apply](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/career/loops/apply/LOOP.md) — *loop*, cap 3. Stages: fit -> tailor -> letter -> form -> confirm. Gates: G5 (human), G6 (human).
+- [apply](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/career/loops/apply/LOOP.md) — *loop*, cap 3. Stages: fit -> tailor -> letter -> form -> confirm. Gates: G6 (human), G6.1 (human).
 - [build](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/dev-team/loops/build/LOOP.md) — *loop*, cap 3. Stages: shape -> implement -> verify -> decide. Gates: G2 (mechanical), G2.1 (human).
 - [design](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/solution-architect/loops/design/LOOP.md) — *loop*, cap 3. Stages: constrain -> shape -> threat -> ratify -> record. Gates: G1 (review).
 - [discover](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/product-manager/loops/discover/LOOP.md) — *loop*, cap 3. Stages: gather -> structure -> specify -> ratify. Gates: G0 (human).
-- [operate](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/sre-oncall/loops/operate/LOOP.md) — *loop*, cap 3. Stages: instrument -> document -> respond -> learn. Gates: G3 (human).
-- [release](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/dev-team/loops/release/LOOP.md) — *loop*, cap 3. Stages: plan -> ready -> announce -> go. Gates: G2.5 (review), G2.6 (human).
-- [ship-a-draft](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/core/loops/ship-a-draft/LOOP.md) — *wrapper*, cap 3. Stages: intake -> draft -> critique -> polish. Gates: G4 (review).
+- [operate](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/sre-oncall/loops/operate/LOOP.md) — *loop*, cap 3. Stages: instrument -> document -> respond -> learn. Gates: G4 (human).
+- [release](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/dev-team/loops/release/LOOP.md) — *loop*, cap 3. Stages: plan -> ready -> announce -> go. Gates: G3 (review), G3.1 (human).
+- [ship-a-draft](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/core/loops/ship-a-draft/LOOP.md) — *wrapper*, cap 3. Stages: intake -> draft -> critique -> polish. Gates: G5 (review).
 
 ## Machine-readable contracts
 
@@ -47,6 +47,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 ## Guides
 
 - [Why loops](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/loops.md) *(explanation)*: Why skilldrop sequences skills in a separate primitive instead of letting skills call each other, and why there are five lifecycle loops rather than three.
+- [Operating model](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/operating-model.md) *(explanation)*: Know which stage your work is in, which loop and pack help there, and where the agent stops for your decision.
 - [Does the agent invent your resume?](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/resume-fabrication-comparison.md) *(explanation)*: The same 14 resume and cover-letter requests run with the career pack's skills and with plain Claude Code - how often each put something in the document that the person never said, and what kind of thing it was.
 - [What the benchmark showed](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/what-the-benchmark-showed.md) *(explanation)*: Five days of measuring skills against the agent without them - a large gain on the skills' own checks, no blind preference at first, a gain that did not survive new evals, and what the skills that do win have in common.
 - [Author a new loop](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/author-a-loop.md) *(how-to)*: How to add a loop — the closed loop.json contract, the three stage types, gate rules, and the checks that will reject a loop that only looks like governance.
@@ -106,12 +107,12 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Stakeholder comms pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-stakeholder-comms.md) *(reference)*: Every skill in the Stakeholder comms pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Trackers pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-trackers.md) *(reference)*: Every skill in the Trackers pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Every skill, by category](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/skill-catalogue.md) *(reference)*: All the skills grouped by what they produce, one line each, plus the anatomy every skill folder shares.
-- [Skills that ship scripts](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/skills-with-scripts.md) *(reference)*: The two skills with executable helpers — what they need on PATH, what environment variables they read, and how to invoke them from Claude Code or any other IDE.
+- [Skills that ship scripts](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/skills-with-scripts.md) *(reference)*: Where a skill with scripts declares what they need, which two need packages beyond the standard library, and how to invoke a skill from Claude Code or any other IDE.
 - [From use-case to deployed agent — the AI engineering workflow](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/ai-engineering-workflow.md) *(tutorial)*: End-to-end AI adoption: triage the use case, assess org readiness, design the loop and agents, threat-model the system, build the evals, measure what shipped.
 - [From complaint to closed incident](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/complaint-to-closed-incident.md) *(tutorial)*: A user complaint triggers a full response cycle — discover what's broken, operate to fix it, and close the loop with a postmortem and runbook update. Uses the discover and operate loops.
 - [From story to merged code — the dev-team workflow](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/dev-team-workflow.md) *(tutorial)*: A complete dev-team session: split the story, implement with checkpoints, gate with the review panel, document what shipped.
 - [Follow one change through the loops](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/follow-a-change-through-the-loops.md) *(tutorial)*: A single realistic change — API rate limiting — walked from a stakeholder complaint to a closed incident, showing what each stage produces and what each gate actually refuses.
-- [From idea to shipped feature](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/idea-to-shipped-feature.md) *(tutorial)*: A product idea moves through all four lifecycle loops — discover, design, build, operate — with each gate refusing until its conditions are met.
+- [From idea to shipped feature](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/idea-to-shipped-feature.md) *(tutorial)*: A product idea moves through all five lifecycle loops — discover, design, build, release, operate — with each gate refusing until its conditions are met.
 - [From signal to signed-off PRD — the product manager workflow](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/product-manager-workflow.md) *(tutorial)*: A PM's full discovery-to-requirements session: sharpen the signal into a brief, test the narrative with a PR/FAQ, cascade OKRs, write the PRD, define metrics, critique before sharing.
 - [From brief to committed design — the solution architect workflow](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/solution-architect-workflow.md) *(tutorial)*: A full design session: capture the brief, draw the system, commit decisions as ADRs, write the design doc, threat-model it, gate with council review.
 
@@ -173,5 +174,5 @@ except `api-builder` requires `core`, which installs with it.
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 43 accepted RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 44 accepted RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.

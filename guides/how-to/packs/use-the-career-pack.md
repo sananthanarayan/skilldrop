@@ -77,7 +77,7 @@ A loop runs the skills in order and stops at each gate for a verdict. Install an
 npx skilldrop-cli install --loop --pack career
 ```
 
-- **apply**: Take one job posting and one resume to an application ready to send — an honest fit check, a tailored resume, a cover letter and the answers to the application form — with the candidate deciding whether to apply before any writing, and confirming every claim is true before anything is sent. Say "run the apply loop on this". Stages: fit [G5] → tailor → letter → form → confirm [G6].
+- **apply**: Take one job posting and one resume to an application ready to send — an honest fit check, a tailored resume, a cover letter and the answers to the application form — with the candidate deciding whether to apply before any writing, and confirming every claim is true before anything is sent. Say "run the apply loop on this". Stages: fit [G6] → tailor → letter → form → confirm [G6.1].
 
 ## Next
 

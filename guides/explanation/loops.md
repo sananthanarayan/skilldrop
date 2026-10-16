@@ -8,12 +8,12 @@ kind: explanation
 
 ## The problem a catalogue has
 
-57 skills is enough that a newcomer's first question stops being *"is there a skill for this"*
+Past fifty skills, a newcomer's first question stops being *"is there a skill for this"*
 and becomes *"what order do I do these in, and what stops me shipping something bad"*.
 
 skilldrop always had answers, but only as prose: a README paragraph about "two value streams",
 two hand-maintained Mermaid diagrams, a loop schema written inside `agent-loop-design`, and a
-hand-off graph spread across 57 `SKILL.md` files. None of it was machine-readable, installable,
+hand-off graph spread across every `SKILL.md`. None of it was machine-readable, installable,
 or checked. Loops make it all three.
 
 ## Why sequencing moved up instead of sideways
@@ -59,18 +59,27 @@ is allowed to sign off.
 | `release` | users and data, often irreversible | a **review** on evidence (can it ship?), then a **human** (should it ship now?) |
 | `operate` | live users; irreversible | a **human** closing the incident |
 
-Three loops do not fit this catalogue. `design` is 15 skills and does not fold into discovery
-without losing the panel gate that makes it worth having. The SRE skills have no home at all
+Three loops do not fit this catalogue. The design skills (requirements for quality, diagrams,
+design docs, contracts, threat models, ADRs) do not fold into discovery without losing the
+panel gate that makes them worth having. The SRE skills have no home at all
 in a three-loop model, and `operate` is the only loop whose failures cannot be undone — the
 one place a gate matters most.
 
 `ship-a-draft` is deliberately **not** a lifecycle stage. It is a wrapper whose middle is any
 generator: collect the input properly before, check the argument and the surface after. It
 applies to an ADR, a deck, or a postmortem alike, which is exactly why it cannot be a phase.
+`apply` sits outside the lifecycle for a different reason: it serves one person applying for a
+job, not a team shipping a change.
+
+The gate codes follow the same order. The whole number is the loop's place in the lifecycle,
+from G0 at `discover` to G4 at `operate`, and a decimal is a second gate inside the same loop,
+so G3.1 is the human go/no-go that follows the G3 readiness review. The two loops outside the
+lifecycle take the next numbers: G5 for `ship-a-draft`, G6 and G6.1 for `apply`. The
+[operating model](operating-model.md) draws every stage and gate on one page.
 
 ## What this buys
 
-A stranger can install one command and get a way of working, rather than a list of 57 things
-to choose between. And because the loops are data rather than prose, the diagrams cannot drift
+A stranger can install one command and get a way of working, rather than a list of skills to
+choose between. And because the loops are data rather than prose, the diagrams cannot drift
 from them, a renamed skill breaks a check instead of a silently-wrong document, and a gate
 cannot quietly become decorative.

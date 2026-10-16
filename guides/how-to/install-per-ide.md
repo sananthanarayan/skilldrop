@@ -6,11 +6,13 @@ kind: how-to
 
 # Install a skill into your IDE
 
-#### Manual install
+Install a skill by hand into Claude Code, Cursor, Kiro, Codex, Antigravity, GitHub Copilot or another agent, when you would rather not use the [CLI](install.md).
+
+## Manual install
 
 Each skill is a plain directory. Installation is always the same two steps: (1) copy the skill folder into your IDE's skills/rules location, then (2) install the skill's dependencies (the commands are in `manifest.json` under `deps`, or run the install line from the skill's SKILL.md). Optionally, also copy the companions listed under `related` in the skill's `manifest.json` — skills reference each other, and while a hand-off to an uninstalled sibling degrades gracefully to inline guidance, the pipelines work best complete.
 
-#### Claude Code
+## Claude Code
 
 Claude Code reads skills from two locations:
 
@@ -33,7 +35,7 @@ cp -R packs/solution-architect/skills/figma-diagrams .claude/skills/
 
 Claude Code discovers the skill via its `SKILL.md` frontmatter `name` field. Invoke it in chat with `/<skill-name>` or by describing the task — Claude will route to the matching skill automatically.
 
-#### Cursor
+## Cursor
 
 Cursor does not have a native "skills" concept, but you can install a skill as a **project rule**:
 
@@ -53,9 +55,9 @@ Cursor does not have a native "skills" concept, but you can install a skill as a
    Follow the instructions in .cursor/skills/<skill-name>/SKILL.md when the user requests this task.
    ```
 
-3. In chat, attach `SKILL.md` with `@` or simply describe the task — the rule will fire when the description matches.
+3. In chat, attach `SKILL.md` with `@` or describe the task — the rule will fire when the description matches.
 
-#### Kiro (IDE and CLI)
+## Kiro (IDE and CLI)
 
 Kiro has native **Agent Skills**, and Kiro IDE and Kiro CLI read the same directories. Copy the folder in — that's the whole install:
 
@@ -71,7 +73,7 @@ Kiro matches the skill by its `SKILL.md` frontmatter `name` (which must equal th
 
 **No steering file needed.** Earlier versions of the CLI also wrote `.kiro/steering/<skill-name>.md` pointing back at the skill. That predates native Agent Skills, and because a steering file without frontmatter is *always* loaded, it pinned one description per installed skill into every session's context — to point at a folder Kiro already reads. The CLI no longer writes them, and `install`/`uninstall` remove any it wrote before. A steering file it didn't author is left alone, with a note.
 
-#### Codex, Antigravity and GitHub Copilot
+## Codex, Antigravity and GitHub Copilot
 
 Each has its own flag. Without `--project` the skills go to your personal folder and work in
 every repo; with it, they go into the repo:
@@ -100,7 +102,7 @@ installed**, because `.claude/skills/` is one of its discovery paths. Codex and 
 read a repo-root `AGENTS.md`. Google retired Gemini CLI for most users on 2026-06-18;
 Antigravity CLI replaced it, and `--ide antigravity` is its target.
 
-#### Trying skills in a repo you don't own
+## Trying skills in a repo you don't own
 
 `--local` installs into the repo (the same place `--project` would) and lists every file it
 writes in the repo's own `.git/info/exclude`. Git ignores those files the way it ignores
@@ -115,7 +117,7 @@ npx skilldrop-cli uninstall pre-merge-review --local   # removes the files and t
 It works with every `--ide`. With `--with-hooks` on Claude Code, the session-start hook goes
 into `.claude/settings.local.json` rather than the shared `settings.json`.
 
-#### Continue, Cline, Aider, and other agents
+## Continue, Cline, Aider, and other agents
 
 These tools don't have a standard skills directory yet. Two patterns work:
 
@@ -124,11 +126,11 @@ These tools don't have a standard skills directory yet. Two patterns work:
 
 In all cases, the scripts are invoked from the **copied** folder, so keep the directory structure intact — don't flatten `scripts/` or `templates/` out of the skill folder.
 
-#### VS Code (Continue / Cline extensions)
+### VS Code (Continue / Cline extensions)
 
 These behave like the "Other agents" path above. For Continue, you can also add the skill folder to `.continue/config.json` under `contextProviders` so `SKILL.md` shows up in `@` suggestions.
 
-### Installing dependencies
+## Installing dependencies
 
 Each skill declares its deps in `manifest.json`:
 

@@ -185,6 +185,39 @@ def check_guides():
             fail(rel, f"frontmatter {e}")
         if os.path.relpath(g, gdir) not in index_txt:
             fail(rel, "not linked from guides/README.md — an unindexed guide is unfindable")
+        # The page standard (RFC-0044, AGENTS.md § Writing a guide). Generated pack guides
+        # take their words from SKILL.md and pack.json, which have their own voice rules.
+        if os.path.basename(os.path.dirname(g)) != "packs":
+            check_guide_page(rel, open(g, encoding="utf-8").read(), fields)
+
+
+# Words that pad or hedge a sentence without changing what it says. A guide that needs one of
+# these as a word, rather than as filler, can name it in backticks.
+FILLER = re.compile(r"\b(leverag\w*|robust\w*|seamless\w*|cutting-edge|best-in-class|world-class|"
+                    r"next-generation|utili[sz]\w*|simply|effortless\w*|generally|"
+                    r"you might want to|in most cases)\b", re.I)
+
+
+def check_guide_page(rel, text, fields):
+    """RFC-0044. A title that is the page's one H1, headings that name the task rather than a step
+    number, no filler, and a how-to that opens with what the reader can do."""
+    body = text.split("\n---", 1)[1] if text.startswith("---") else text
+    prose = re.sub(r"```.*?```", "", body, flags=re.S)
+    prose_lines = [re.sub(r"`[^`]*`", "", ln) for ln in prose.splitlines()]
+    h1 = next((ln[2:].strip() for ln in prose_lines if ln.startswith("# ")), None)
+    if h1 != fields.get("title"):
+        fail(rel, f"frontmatter title {fields.get('title')!r} is not the page's H1 {h1!r} — keep them identical")
+    for n, ln in enumerate(prose_lines, 1):
+        if re.match(r"^#{1,6}\s+Step\s+\d", ln):
+            fail(rel, f"heading {ln.strip()!r} — name the task in a verb phrase, not a step number")
+        m = FILLER.search(ln)
+        if m and not ln.lstrip().startswith("#"):
+            fail(rel, f"{m.group(0)!r} is filler — say the specific thing, or drop the word")
+    if fields.get("kind") == "how-to" and h1 is not None:
+        after = prose.split("# " + h1, 1)[1].lstrip("\n")
+        first = after.splitlines()[0] if after else ""
+        if not first or first[0] in "#-|>*0123456789<!":
+            fail(rel, "a how-to opens with one sentence on what the reader can do, before any heading or list")
 
 
 def check_agents(skill_dirs):

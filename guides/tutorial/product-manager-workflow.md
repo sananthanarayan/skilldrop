@@ -2,6 +2,7 @@
 title: From signal to signed-off PRD — the product manager workflow
 summary: A PM's full discovery-to-requirements session: sharpen the signal into a brief, test the narrative with a PR/FAQ, cascade OKRs, write the PRD, define metrics, critique before sharing.
 kind: tutorial
+stage: discover
 ---
 
 # From signal to signed-off PRD — the product manager workflow
@@ -16,7 +17,7 @@ npx skilldrop-cli install --pack product-manager
 
 ---
 
-## Step 1 — Structure the signal
+## Structure the signal
 
 **Skill:** `brief-intake`
 
@@ -28,7 +29,7 @@ A signal is not a requirement. Before writing anything, `brief-intake` interview
 
 ---
 
-## Step 2 — Test the narrative
+## Test the narrative
 
 **Skill:** `prfaq`
 
@@ -42,7 +43,7 @@ The press release and FAQ format forces the question the PRD often skips: *does 
 
 ---
 
-## Step 3 — Connect to OKRs
+## Connect to OKRs
 
 **Skill:** `okr-cascade`
 
@@ -54,7 +55,7 @@ The press release and FAQ format forces the question the PRD often skips: *does 
 
 ---
 
-## Step 4 — Write the PRD
+## Write the PRD
 
 **Skill:** `prd-draft`
 
@@ -66,7 +67,7 @@ The PRD is now grounded: the brief gives it requirements, the PR/FAQ has tested 
 
 ---
 
-## Step 5 — Define success metrics
+## Define success metrics
 
 **Skill:** `success-metrics`
 
@@ -78,7 +79,7 @@ A PRD without metrics is a wish. `success-metrics` takes the PRD and the OKR cas
 
 ---
 
-## Step 6 — Critique before sharing
+## Critique before sharing
 
 **Skill:** `doc-critique`
 

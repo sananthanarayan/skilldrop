@@ -12,7 +12,7 @@ the skill works on it. An MCP server gives the agent a tool that fetches that te
 where its input comes from does.
 
 No skill requires an MCP server. Skills stay portable: a skill copied into Aider with no
-servers at all still works, and a loop stage that has no server simply takes pasted text.
+servers at all still works, and a loop stage that has no server takes pasted text instead.
 
 The tracker guides already cover the per-tool basics for their tracker:
 [Jira](integrate-with-jira.md), [Linear](integrate-with-linear.md),

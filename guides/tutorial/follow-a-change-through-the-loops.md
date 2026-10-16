@@ -114,7 +114,7 @@ a defect in the loop, not diligence.
 
 ## Loop 4 — `operate`
 
-### `instrument` → `document` → `respond` → **G3 (human)**
+### `instrument` → `document` → `respond` → **G4 (human)**
 
 **instrument.** [`observability-plan`](../../packs/sre-oncall/skills/observability-plan/SKILL.md): alert when
 429 rate exceeds 5% for any single key over 10 minutes. You cannot respond to what you never
@@ -127,12 +127,12 @@ procedure for that alert. An alert with no procedure wakes someone who then has 
 [`incident-comms`](../../packs/sre-oncall/skills/incident-comms/SKILL.md), staged: *detect*, *mitigate*,
 *resolve* have different audiences and different truths.
 
-**G3 — human, and the feedback edge that matters.**
+**G4 — human, and the feedback edge that matters.**
 [`postmortem-generator`](../../packs/sre-oncall/skills/postmortem-generator/SKILL.md) is blameless and ends in
 **runbook deltas**. The finding: the runbook said "raise the limit," which treats the symptom.
 `REVISE` sends those deltas back to `document`, and the loop closes.
 
-**What G3 refuses:** a postmortem that changes no procedure — that is a story about an outage.
+**What G4 refuses:** a postmortem that changes no procedure — that is a story about an outage.
 And never guess the numbers to finish one; state the gap, because a postmortem's entire value
 is its accuracy.
 
@@ -145,7 +145,7 @@ is its accuracy.
 | **G0** | human | a brief with `[missing]` fields nobody filled |
 | **G1** | review | a design nobody attacked; untested consensus |
 | **G2** | mechanical | an argument — the exit code decides |
-| **G3** | human | a postmortem that changed no procedure |
+| **G4** | human | a postmortem that changed no procedure |
 
 Four gates, four different kinds, chosen by **how expensive the mistake is to unwind** — a
 re-brief, months of code, a revert, live users. That is the whole model.

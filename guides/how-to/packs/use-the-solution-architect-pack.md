@@ -2,6 +2,7 @@
 title: Use the Solution architect pack
 summary: Install the Solution architect pack, run its first task, and follow a typical session step by step.
 kind: how-to
+stage: design
 ---
 
 # Use the Solution architect pack

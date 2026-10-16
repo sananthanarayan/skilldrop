@@ -9,7 +9,7 @@
         "Stages the communication (detect / mitigate / resolve) and matches the message to the stage the incident is in",
         "Produces a blameless postmortem that names missing guardrails, never people",
         "Ends in concrete runbook deltas phrased as before/after edits",
-        "Routes those deltas back to `document` via G3's revise edge rather than treating the postmortem as terminal"
+        "Routes those deltas back to `document` via G4's revise edge rather than treating the postmortem as terminal"
       ]
     },
     {

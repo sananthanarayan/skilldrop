@@ -65,7 +65,7 @@ The judge gives a reason with every verdict. Across the losses four recurred:
 Two cautions came out of the same runs. The winner of a single pair flipped between two
 identical trials in 15 of 52 evals, so a per-eval result means little and nothing is compared
 on fewer than two trials. And the 31 skills were picked because they had lost: an eval a
-skill lost scores about 17% when simply rerun, and scored 28% after the edit, so the real
+skill lost scores about 17% when rerun unchanged, and scored 28% after the edit, so the real
 gain was nearer 11 points than 17.
 
 ## The held-out test

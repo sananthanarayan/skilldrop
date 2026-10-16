@@ -20,20 +20,20 @@ Five loops cover the lifecycle, and they are separated by **reversibility** — 
 | [`discover`](../../packs/product-manager/loops/discover/LOOP.md) | interviews, journeys, a strategy question | **G0** human — a person ratifies the brief | a ratified requirement | a re-brief |
 | [`design`](../../packs/solution-architect/loops/design/LOOP.md) | a ratified requirement | **G1** review — `council-review`'s panel | a recorded decision (ADR) | months, unwound in code |
 | [`build`](../../packs/dev-team/loops/build/LOOP.md) | an agreed requirement or triaged defect | **G2** mechanical — `pre-merge-review`'s gate script decides | merged code | a revert |
-| [`release`](../../packs/dev-team/loops/release/LOOP.md) | merged code | **G2.5** review — `launch-readiness` on evidence; **G2.6** human go/no-go | a live, reversible rollout | users and data, often irreversible |
-| [`operate`](../../packs/sre-oncall/loops/operate/LOOP.md) | a shipped service | **G3** human — the incident is closed | a postmortem and runbook deltas | live users, irreversible |
+| [`release`](../../packs/dev-team/loops/release/LOOP.md) | merged code | **G3** review — `launch-readiness` on evidence; **G3.1** human go/no-go | a live, reversible rollout | users and data, often irreversible |
+| [`operate`](../../packs/sre-oncall/loops/operate/LOOP.md) | a shipped service | **G4** human — the incident is closed | a postmortem and runbook deltas | live users, irreversible |
 
 Plus one **wrapper**, which is not a lifecycle stage but the two passes either side of *any* generator:
 
 | Wrapper | Takes | Gate | Produces |
 |---|---|---|---|
-| [`ship-a-draft`](../../packs/core/loops/ship-a-draft/LOOP.md) | raw notes, a transcript, a ticket | **G4** review — `doc-critique`'s verdict | a stakeholder-ready artifact |
+| [`ship-a-draft`](../../packs/core/loops/ship-a-draft/LOOP.md) | raw notes, a transcript, a ticket | **G5** review — `doc-critique`'s verdict | a stakeholder-ready artifact |
 
 And one loop outside the delivery lifecycle, for a person and not a team:
 
 | Loop | Takes | Gate | Produces | Mistake costs |
 |---|---|---|---|---|
-| [`apply`](../../packs/career/loops/apply/LOOP.md) | a job posting and a resume | **G5** human — the candidate decides to apply; **G6** human — the candidate confirms every line is true | a tailored resume and cover letter, ready to send | a claim the candidate cannot back at interview |
+| [`apply`](../../packs/career/loops/apply/LOOP.md) | a job posting and a resume | **G6** human — the candidate decides to apply; **G6.1** human — the candidate confirms every line is true | a tailored resume and cover letter, ready to send | a claim the candidate cannot back at interview |
 
 Every gate emits a verdict from one shared vocabulary ([`contracts/terminals.json`](../../contracts/terminals.json)) in five classes — pass, conditional, revise, redirect, blocked — so `READY`, `PROCEED` and `SHIP IT` are recognisably the same kind of answer. The diagrams below render on GitHub; their Mermaid sources live in [`docs/loops/`](../../docs/loops) for re-rendering.
 
@@ -158,19 +158,19 @@ flowchart LR
     ready["ready<br/><small>launch-readiness</small>"]:::review
     announce["announce<br/><small>release-notes</small>"]:::gen
     go["go<br/><small>council-review</small>"]:::gate
-    G2_5{"G2.5 · review"}:::gate
-    G2_6{"G2.6 · human"}:::gate
+    G3{"G3 · review"}:::gate
+    G3_1{"G3.1 · human"}:::gate
     DONE(["complete"]):::ship
 
     plan --> ready
-    ready --> G2_5
-    G2_5 == "PROCEED" ==> announce
+    ready --> G3
+    G3 == "PROCEED" ==> announce
     announce --> go
-    go --> G2_6
-    G2_6 == "PROCEED" ==> DONE
+    go --> G3_1
+    G3_1 == "PROCEED" ==> DONE
 
-    G2_5 -- "REVISE (max 3)" --> plan
-    G2_6 -- "REVISE (max 3)" --> plan
+    G3 -- "REVISE (max 3)" --> plan
+    G3_1 -- "REVISE (max 3)" --> plan
 ```
 
 <!-- loop:release:end -->
@@ -193,16 +193,16 @@ flowchart LR
     document["document<br/><small>runbook-generator</small>"]:::gen
     respond["respond<br/><small>incident-comms</small>"]:::gen
     learn["learn<br/><small>postmortem-generator</small>"]:::review
-    G3{"G3 · human"}:::gate
+    G4{"G4 · human"}:::gate
     DONE(["complete"]):::ship
 
     instrument --> document
     document --> respond
     respond --> learn
-    learn --> G3
-    G3 == "PROCEED" ==> DONE
+    learn --> G4
+    G4 == "PROCEED" ==> DONE
 
-    G3 -- "REVISE (max 3)" --> document
+    G4 -- "REVISE (max 3)" --> document
 ```
 
 <!-- loop:operate:end -->
@@ -225,16 +225,16 @@ flowchart LR
     draft["draft<br/><small>*</small>"]:::gen
     critique["critique<br/><small>doc-critique</small>"]:::review
     polish["polish<br/><small>output-hygiene</small>"]:::review
-    G4{"G4 · review"}:::gate
+    G5{"G5 · review"}:::gate
     DONE(["complete"]):::ship
 
     intake --> draft
     draft --> critique
-    critique --> G4
-    G4 == "SHIP IT" ==> polish
+    critique --> G5
+    G5 == "SHIP IT" ==> polish
     polish --> DONE
 
-    G4 -- "MAJOR REWRITE (max 3)" --> intake
+    G5 -- "MAJOR REWRITE (max 3)" --> intake
 ```
 
 <!-- loop:ship-a-draft:end -->
@@ -258,19 +258,19 @@ flowchart LR
     letter["letter<br/><small>cover-letter</small>"]:::gen
     form["form<br/><small>application-form-answers</small>"]:::gen
     confirm["confirm<br/><small>output-hygiene</small>"]:::review
-    G5{"G5 · human"}:::gate
     G6{"G6 · human"}:::gate
+    G6_1{"G6.1 · human"}:::gate
     DONE(["complete"]):::ship
 
-    fit --> G5
-    G5 == "PROCEED" ==> tailor
+    fit --> G6
+    G6 == "PROCEED" ==> tailor
     tailor --> letter
     letter --> form
     form --> confirm
-    confirm --> G6
-    G6 == "READY" ==> DONE
+    confirm --> G6_1
+    G6_1 == "READY" ==> DONE
 
-    G6 -- "NOT READY (max 3)" --> tailor
+    G6_1 -- "NOT READY (max 3)" --> tailor
 ```
 
 <!-- loop:apply:end -->

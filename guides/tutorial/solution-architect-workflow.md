@@ -2,6 +2,7 @@
 title: From brief to committed design — the solution architect workflow
 summary: A full design session: capture the brief, draw the system, commit decisions as ADRs, write the design doc, threat-model it, gate with council review.
 kind: tutorial
+stage: design
 ---
 
 # From brief to committed design — the solution architect workflow
@@ -16,7 +17,7 @@ npx skilldrop-cli install --pack solution-architect
 
 ---
 
-## Step 1 — Capture the brief
+## Capture the brief
 
 **Skill:** `brief-intake`
 
@@ -28,7 +29,7 @@ Before any diagram is drawn, the requirements need to be structured. `brief-inta
 
 ---
 
-## Step 2 — Visualise the system
+## Visualise the system
 
 **Skill:** `architecture-diagrams`
 
@@ -40,7 +41,7 @@ Takes the brief and produces the system diagram — components, boundaries, data
 
 ---
 
-## Step 3 — Commit decisions as ADRs
+## Commit decisions as ADRs
 
 **Skill:** `adr-generator`
 
@@ -54,7 +55,7 @@ Every significant decision made while designing the diagram becomes an Architect
 
 ---
 
-## Step 4 — Write the design doc
+## Write the design doc
 
 **Skill:** `design-doc`
 
@@ -66,7 +67,7 @@ The design document assembles from what is now established: the brief (requireme
 
 ---
 
-## Step 5 — Threat-model the design
+## Threat-model the design
 
 **Skill:** `threat-model`
 
@@ -78,7 +79,7 @@ A security pass on the committed design. `threat-model` walks the data flows and
 
 ---
 
-## Step 6 — Gate with council review
+## Gate with council review
 
 **Skill:** `council-review`
 

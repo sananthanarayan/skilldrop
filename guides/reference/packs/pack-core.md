@@ -128,7 +128,7 @@ Take raw mess to a stakeholder-ready artifact by wrapping any skilldrop generato
 |---|---|---|
 | intake | `brief-intake` | — |
 | draft | `*` | — |
-| critique | `doc-critique` | G4 review: SHIP IT / SHIP WITH CHANGES / MAJOR REWRITE / WRONG ARTIFACT / BLOCKED |
+| critique | `doc-critique` | G5 review: SHIP IT / SHIP WITH CHANGES / MAJOR REWRITE / WRONG ARTIFACT / BLOCKED |
 | polish | `output-hygiene` | — |
 
 Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/core/loops/ship-a-draft/LOOP.md)

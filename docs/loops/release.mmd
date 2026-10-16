@@ -9,16 +9,16 @@ flowchart LR
     ready["ready<br/><small>launch-readiness</small>"]:::review
     announce["announce<br/><small>release-notes</small>"]:::gen
     go["go<br/><small>council-review</small>"]:::gate
-    G2_5{"G2.5 · review"}:::gate
-    G2_6{"G2.6 · human"}:::gate
+    G3{"G3 · review"}:::gate
+    G3_1{"G3.1 · human"}:::gate
     DONE(["complete"]):::ship
 
     plan --> ready
-    ready --> G2_5
-    G2_5 == "PROCEED" ==> announce
+    ready --> G3
+    G3 == "PROCEED" ==> announce
     announce --> go
-    go --> G2_6
-    G2_6 == "PROCEED" ==> DONE
+    go --> G3_1
+    G3_1 == "PROCEED" ==> DONE
 
-    G2_5 -- "REVISE (max 3)" --> plan
-    G2_6 -- "REVISE (max 3)" --> plan
+    G3 -- "REVISE (max 3)" --> plan
+    G3_1 -- "REVISE (max 3)" --> plan

@@ -9,13 +9,13 @@ flowchart LR
     draft["draft<br/><small>*</small>"]:::gen
     critique["critique<br/><small>doc-critique</small>"]:::review
     polish["polish<br/><small>output-hygiene</small>"]:::review
-    G4{"G4 · review"}:::gate
+    G5{"G5 · review"}:::gate
     DONE(["complete"]):::ship
 
     intake --> draft
     draft --> critique
-    critique --> G4
-    G4 == "SHIP IT" ==> polish
+    critique --> G5
+    G5 == "SHIP IT" ==> polish
     polish --> DONE
 
-    G4 -- "MAJOR REWRITE (max 3)" --> intake
+    G5 -- "MAJOR REWRITE (max 3)" --> intake

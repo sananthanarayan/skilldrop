@@ -2,6 +2,7 @@
 title: Use the Dev team pack
 summary: Install the Dev team pack, run its first task, and follow a typical session step by step.
 kind: how-to
+stage: build
 ---
 
 # Use the Dev team pack
@@ -73,7 +74,7 @@ npx skilldrop-cli install --loop --pack dev-team
 ```
 
 - **build**: Take an agreed requirement to merged code through a capped generate-verify-gate loop, with a mechanical gate that decides and a human who owns the merge. Say "run the build loop on this". Stages: shape → implement → verify [G2] → decide [G2.1].
-- **release**: Take merged code to live users through a planned, reversible rollout — plan the phases and the rollback, judge readiness on evidence, draft the release notes, then a human makes the go/no-go call. Say "run the release loop on this". Stages: plan → ready [G2.5] → announce → go [G2.6].
+- **release**: Take merged code to live users through a planned, reversible rollout — plan the phases and the rollback, judge readiness on evidence, draft the release notes, then a human makes the go/no-go call. Say "run the release loop on this". Stages: plan → ready [G3] → announce → go [G3.1].
 
 ## Next
 

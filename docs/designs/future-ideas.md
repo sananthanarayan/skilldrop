@@ -6,7 +6,7 @@ is what's next. Each item says why it matters, roughly how big it is, and what i
 so you can pick one up without re-deriving the context. Sizes are rough: **S** is an hour or
 two, **M** a day, **L** several days.
 
-Last reviewed 2026-10-02, after 0.16.4.
+Last reviewed 2026-10-16, after 0.16.10.
 
 ## Distribution
 
@@ -35,7 +35,7 @@ Last reviewed 2026-10-02, after 0.16.4.
 | **Turn on the weekly evals** | The workflow exists but skips without an `ANTHROPIC_API_KEY` secret. | S | You adding the secret |
 | **Eval trend on the site** | Publish each weekly run's results to the *How skills are checked* page, so trigger accuracy is visible over time. | M | Weekly evals running |
 | **Benchmark on the light and heavy tiers** | `run_bench.py` (RFC-0040) has run on the standard tier only. Running all three shows where a cheaper model is enough, per skill. | S | Claude Code usage to spare |
-| **Three or more evals per skill** | 69 of 93 skills have one acceptance eval, so a per-skill benchmark number is an anecdote. | L | Authoring time |
+| **Three or more evals per skill** | 57 of 100 skills have one acceptance eval, so a per-skill benchmark number is an anecdote. | L | Authoring time |
 | **Monthly assertion evals** | Run the acceptance assertions on a schedule, not only by hand. They cost more than trigger checks. | S | Weekly evals running; a budget |
 | **Open the converters' output in real Word and Excel** | The .docx and .xlsx files are checked in Quick Look only. | S | Someone with Office |
 | **OCR for scanned PDFs** | `file-to-markdown` stops at a PDF with no text layer. Tesseract could add a text layer first. | M | An optional system dependency |
@@ -49,7 +49,7 @@ Last reviewed 2026-10-02, after 0.16.4.
 | **`rollout-plan` / `rollback-plan`** | Feature-flag and canary stages with the metrics that decide each step, and how to undo a release, including data and schemas. Partly covered by `migration-plan` and `launch-readiness`. | M |
 | **`feedback-synthesis`** | Turn interviews, support tickets or NPS comments into themes with evidence: a gap in the `discover` loop. | M |
 | **`codebase-tour`** | Onboard someone to an unfamiliar repo before they implement anything: a gap in the `build` loop. | M |
-| **`refactor-plan` / `tech-debt-register`** | Work that is neither a feature nor a bug. | M |
+| **`refactor-plan`** | Work that is neither a feature nor a bug. `tech-debt-register` (0.16.4) records the debt; nothing yet plans the refactor that pays it down. | M |
 | **`mcp-pairing`** | Recommend which MCP servers suit a loop. The [MCP guide](../../guides/how-to/use-with-mcp-servers.md) covers this as docs; a skill would tailor it. | S |
 | **A `research` loop** | plan → synthesise → compare hypotheses, with a gate on evidence strength. All three skills exist. | S |
 | **A `comply` loop for GRC** | risk register → DPIA → evidence map → a sign-off gate. | S |
@@ -60,7 +60,7 @@ Last reviewed 2026-10-02, after 0.16.4.
 
 | Idea | Why | Size |
 |---|---|---|
-| **More docs depth** | agent-ready-repo has about 270 doc pages; skilldrop has about 60. Per-skill how-tos are the obvious next layer. | L |
+| **More docs depth** | agent-ready-repo has about 270 doc pages; skilldrop has about 70. Per-skill how-tos are the obvious next layer. | L |
 | **Compare packs** | A page that sets two packs side by side for someone choosing between them. | S |
 | **Loop run-log dashboard** | A local HTML view of `skilldrop loop-stats --json`, for a team retrospective. | M |
 | **Team aggregation of loop stats** | Combine several people's `loop-stats --json` files into one view, still without sending anything anywhere. | S |

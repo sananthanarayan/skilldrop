@@ -2,6 +2,7 @@
 title: Use the SRE / on-call pack
 summary: Install the SRE / on-call pack, run its first task, and follow a typical session step by step.
 kind: how-to
+stage: operate
 ---
 
 # Use the SRE / on-call pack
@@ -53,7 +54,7 @@ Bring:
    You get: Separate updates for the status page, internal stakeholders and execs, each leading with user impact and naming the next update time, with no guessed cause or ETA.
 4. **`postmortem-generator`**: Paste the incident thread, pager timeline and notes once it is over.
    You get: A blameless postmortem with quantified impact, a UTC timeline showing detection and mitigation gaps, contributing factors, up to eight action items, and runbook deltas phrased as edits.
-   **You decide:** Gate G3, a human call: PROCEED closes it, PROCEED WITH CONDITIONS closes it with named follow-ups, REVISE sends the deltas back to the runbook.
+   **You decide:** Gate G4, a human call: PROCEED closes it, PROCEED WITH CONDITIONS closes it with named follow-ups, REVISE sends the deltas back to the runbook.
 5. **`delivery-metrics-report`**: A few weeks later, export deployments and incidents as CSV and ask whether the postmortem's actions moved anything.
    You get: Change fail rate, failed deployment recovery time, lead time and deployment frequency computed from the exports, with the weekly trend and the rows it had to skip.
 
@@ -67,7 +68,7 @@ A loop runs the skills in order and stops at each gate for a verdict. Install an
 npx skilldrop-cli install --loop --pack sre-oncall
 ```
 
-- **operate**: Take a shipped service through detection, response, and learning — instrument it, write the runbook, communicate the incident, then feed the postmortem's deltas back into the runbook. Say "run the operate loop on this". Stages: instrument → document → respond → learn [G3].
+- **operate**: Take a shipped service through detection, response, and learning — instrument it, write the runbook, communicate the incident, then feed the postmortem's deltas back into the runbook. Say "run the operate loop on this". Stages: instrument → document → respond → learn [G4].
 
 ## Next
 

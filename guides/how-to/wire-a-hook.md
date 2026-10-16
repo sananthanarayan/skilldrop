@@ -6,7 +6,7 @@ kind: how-to
 
 # Wire a skill to an event
 
-#### Hooks (opt-in) — wire a skill to an event
+Wire a skill to an event, such as a commit or the start of a session, so your agent reminds you to run it.
 
 Some loop-shaped skills declare **hooks** — event-triggered nudges the CLI wires into your environment when you pass `--with-hooks` ([RFC-0006](../../docs/rfcs/0006-per-ide-hooks.md)). It's off by default, so a plain install never touches your git repo or editor settings.
 

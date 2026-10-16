@@ -13,6 +13,10 @@
       "enum": ["tutorial", "how-to", "reference", "explanation"],
       "description": "tutorial = learning by doing. how-to = a task with a goal. reference = look it up. explanation = why it is this way. A page that cannot pick one is doing two jobs and should be split."
     },
-    "status": { "enum": ["draft", "review", "stable", "deprecated"], "default": "stable" }
+    "status": { "enum": ["draft", "review", "stable", "deprecated"], "default": "stable" },
+    "stage": {
+      "enum": ["discover", "design", "build", "release", "operate"],
+      "description": "RFC-0044. The lifecycle stage a page belongs to, when it belongs to one. The docs sidebar groups staged pages under that stage, beside the stage's loop; a page that spans every stage, or none, leaves it out."
+    }
   }
 }

@@ -2,6 +2,7 @@
 title: SRE / on-call pack reference
 summary: Every skill in the SRE / on-call pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 kind: reference
+stage: operate
 ---
 
 # SRE / on-call pack reference
@@ -207,7 +208,7 @@ Take a shipped service through detection, response, and learning — instrument 
 | instrument | `observability-plan` | — |
 | document | `runbook-generator` | — |
 | respond | `incident-comms` | — |
-| learn | `postmortem-generator` | G3 human: PROCEED / PROCEED WITH CONDITIONS / REVISE / BLOCKED |
+| learn | `postmortem-generator` | G4 human: PROCEED / PROCEED WITH CONDITIONS / REVISE / BLOCKED |
 
 Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/sre-oncall/loops/operate/LOOP.md)
 

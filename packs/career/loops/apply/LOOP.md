@@ -14,18 +14,18 @@ can say what the resume shows, but only the candidate knows what is true and wha
 
 | # | Stage | Type | Skills | Gate |
 |---|---|---|---|---|
-| 1 | `fit` | gate | [`job-fit-analysis`](../../skills/job-fit-analysis/SKILL.md) | **G5** human |
+| 1 | `fit` | gate | [`job-fit-analysis`](../../skills/job-fit-analysis/SKILL.md) | **G6** human |
 | 2 | `tailor` | generate | [`resume-tailor`](../../skills/resume-tailor/SKILL.md) | — |
 | 3 | `letter` | generate | [`cover-letter`](../../skills/cover-letter/SKILL.md) | — |
 | 4 | `form` | generate | [`application-form-answers`](../../skills/application-form-answers/SKILL.md) | — |
-| 5 | `confirm` | verify | [`output-hygiene`](../../../core/skills/output-hygiene/SKILL.md) | **G6** human |
+| 5 | `confirm` | verify | [`output-hygiene`](../../../core/skills/output-hygiene/SKILL.md) | **G6.1** human |
 
 ## How to run this loop
 
 1. **Check the fit and stop.** Run `job-fit-analysis` on the posting, the resume and any
    other material of the candidate's: a LinkedIn summary, a portfolio, a project. Put its
    verdict, what could get the application rejected and its questions to the candidate,
-   including whether anything outside the resume covers a gap, then wait at G5.
+   including whether anything outside the resume covers a gap, then wait at G6.
    - `PROCEED`: they are applying. Go on.
    - `PROCEED WITH CONDITIONS`: they are applying and have answered the questions. Save
      their answers to `notes.md`; from here on those answers are source material alongside
@@ -41,7 +41,7 @@ can say what the resume shows, but only the candidate knows what is true and wha
    the documents, run `application-form-answers` with those questions and the tailored
    resume. Skip this stage when there is no form.
 5. **Clean the documents.** Run `output-hygiene` on the resume and the letter.
-6. **Confirm at G6.** Show the candidate the documents with four short lists: what the
+6. **Confirm at G6.1.** Show the candidate the documents with four short lists: what the
    posting asks for that the documents do not claim; every fact added from outside the
    resume and where it came from; every line cut from the resume; and the form questions
    that are theirs alone to answer. Ask them to confirm every line is true. `NOT READY` returns to `tailor` with their
@@ -49,8 +49,8 @@ can say what the resume shows, but only the candidate knows what is true and wha
 
 ## Verdicts
 
-Defined in [`contracts/terminals.json`](../../../../contracts/terminals.json). G5 emits
-`PROCEED`, `PROCEED WITH CONDITIONS`, `RECONSIDER` or `BLOCKED`. G6 emits `READY`,
+Defined in [`contracts/terminals.json`](../../../../contracts/terminals.json). G6 emits
+`PROCEED`, `PROCEED WITH CONDITIONS`, `RECONSIDER` or `BLOCKED`. G6.1 emits `READY`,
 `NOT READY` or `BLOCKED`. `RECONSIDER` leaves the loop: the candidate's time goes to a
 better posting.
 
@@ -64,7 +64,7 @@ produce documents carrying their name that they have not confirmed.
 
 Name the missing skill and skilldrop as its source, do the minimal inline version of that
 stage under the same rule (nothing the candidate didn't supply), and record that it ran
-degraded. Never skip G6.
+degraded. Never skip G6.1.
 
 ## Run log (opt-in)
 
@@ -73,7 +73,7 @@ gate's verdict, append one JSON line to that file. Nothing else is recorded, and
 sent anywhere. When the variable isn't set, or you can't read it, skip this section.
 
 ```bash
-printf '%s\n' '{"ts":"2026-10-05T14:03:00Z","loop":"apply","stage":"fit","gate":"G5","verdict":"PROCEED","round":1}' >> "$SKILLDROP_LOOP_LOG"
+printf '%s\n' '{"ts":"2026-10-05T14:03:00Z","loop":"apply","stage":"fit","gate":"G6","verdict":"PROCEED","round":1}' >> "$SKILLDROP_LOOP_LOG"
 ```
 
 Fields: `ts` (UTC), `loop`, `stage`, `gate` (`null` for a stage without one), `verdict` (the
@@ -83,9 +83,9 @@ The log holds verdicts only: never the posting, the resume or the candidate's na
 ## Quality bar
 
 - **The candidate decides to apply before anything is written.** A tailored resume for a job they would have skipped is wasted work.
-- **Every claim in both documents traces to the resume or to something the candidate said.** Answers given at G5 are written to `notes.md`, so the trace exists.
+- **Every claim in both documents traces to the resume or to something the candidate said.** Answers given at G6 are written to `notes.md`, so the trace exists.
 - **The resume, the letter and the form agree.** Same titles, dates and numbers in all three.
-- **The candidate confirms and sends.** G6 is their signature; the loop never submits an application.
+- **The candidate confirms and sends.** G6.1 is their signature; the loop never submits an application.
 
 ## Anti-patterns to avoid
 
@@ -93,5 +93,5 @@ The log holds verdicts only: never the posting, the resume or the candidate's na
 - ❌ **Treating a `Not shown` item as true** because the candidate proceeded. Only what they answered goes in.
 - ❌ **Writing the letter from the original resume.** The letter follows the tailored one, or the two will disagree.
 - ❌ **Answering a declaration on the form** for the candidate, or leaving out the list of what was added and cut.
-- ❌ **Self-confirming at G6.** A clean claim check says the words are in the source; it cannot say they are true.
+- ❌ **Self-confirming at G6.1.** A clean claim check says the words are in the source; it cannot say they are true.
 - ❌ **Submitting the application.** Sending is the candidate's act.

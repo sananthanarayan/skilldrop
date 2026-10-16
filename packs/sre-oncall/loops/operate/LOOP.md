@@ -17,7 +17,7 @@ the cost of time; this one runs while real users are affected. Its feedback edge
 | 1 | `instrument` | generate | [`observability-plan`](../../skills/observability-plan/SKILL.md) | — |
 | 2 | `document` | generate | [`runbook-generator`](../../skills/runbook-generator/SKILL.md) | — |
 | 3 | `respond` | generate | [`incident-comms`](../../skills/incident-comms/SKILL.md) | — |
-| 4 | `learn` | verify | [`postmortem-generator`](../../skills/postmortem-generator/SKILL.md) | **G3** human |
+| 4 | `learn` | verify | [`postmortem-generator`](../../skills/postmortem-generator/SKILL.md) | **G4** human |
 
 ## How to run this loop
 
@@ -29,7 +29,7 @@ the cost of time; this one runs while real users are affected. Its feedback edge
 3. **Respond to the audience the incident actually has.** `incident-comms` is staged —
    detect, mitigate, resolve — and the stage determines the message. Writing a resolution
    update during mitigation is the most common error here.
-4. **Learn at G3.** `postmortem-generator` analyses blamelessly and ends with runbook deltas.
+4. **Learn at G4.** `postmortem-generator` analyses blamelessly and ends with runbook deltas.
    A human signs off that the incident is closed. `REVISE` returns to `document`: the deltas
    are the loop's output, and applying them is what closes it.
 
@@ -38,7 +38,7 @@ starts at `instrument`. Do not replay earlier stages for their own sake.
 
 ## Verdicts
 
-Defined in [`contracts/terminals.json`](../../../../contracts/terminals.json). G3 emits `PROCEED`,
+Defined in [`contracts/terminals.json`](../../../../contracts/terminals.json). G4 emits `PROCEED`,
 `PROCEED WITH CONDITIONS`, `REVISE`, or `BLOCKED`. `PROCEED WITH CONDITIONS` means the
 incident is closed but named follow-ups are outstanding — they travel with the postmortem.
 
@@ -61,7 +61,7 @@ gate's verdict, append one JSON line to that file. Nothing else is recorded, and
 sent anywhere. When the variable isn't set, or you can't read it, skip this section.
 
 ```bash
-printf '%s\n' '{"ts":"2026-10-01T14:03:00Z","loop":"operate","stage":"learn","gate":"G3","verdict":"PROCEED","round":1}' >> "$SKILLDROP_LOOP_LOG"
+printf '%s\n' '{"ts":"2026-10-01T14:03:00Z","loop":"operate","stage":"learn","gate":"G4","verdict":"PROCEED","round":1}' >> "$SKILLDROP_LOOP_LOG"
 ```
 
 Fields: `ts` (UTC), `loop`, `stage`, `gate` (`null` for a stage without one), `verdict` (the

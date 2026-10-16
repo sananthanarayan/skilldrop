@@ -6,6 +6,7 @@ kind: how-to
 
 # Install skills, packs and loops
 
+Install skilldrop's skills, packs and loops with the CLI, through the Claude Code plugin marketplace, or by hand.
 
 ## Quickest: the skilldrop CLI
 
@@ -17,7 +18,7 @@ npx skilldrop-cli install --pack dev-team --project     # .claude/skills — als
 npx skilldrop-cli install prfaq --ide cursor            # + writes .cursor/rules/prfaq.mdc
 npx skilldrop-cli install --pack sre-oncall --ide kiro  # .kiro/skills — Kiro IDE + Kiro CLI, discovered natively
 npx skilldrop-cli install adr-generator --dest .agents/skills   # Codex + Copilot CLI (see below)
-npx skilldrop-cli loops                                 # the six loops, their stages and gates
+npx skilldrop-cli loops                                 # every loop, its stages and gates
 npx skilldrop-cli install --loop build                  # a loop + every stage skill it sequences (RFC-0028)
 npx skilldrop-cli install --loop --pack sre-oncall      # every loop that pack declares
 npx skilldrop-cli agents                                # the reviewer subagents
@@ -41,20 +42,19 @@ skilldrop is also a **Claude Code plugin marketplace** — one marketplace, nine
 Then take the whole catalogue, or just your role's pack:
 
 ```text
-/plugin install skilldrop@skilldrop             # all 63 skills + 3 reviewer subagents
-/plugin install dev-team@skilldrop              # 18 skills (incl. core) + the 3 reviewer subagents
+/plugin install skilldrop@skilldrop             # all 100 skills + 3 reviewer subagents
+/plugin install dev-team@skilldrop              # 20 skills (incl. core) + the 3 reviewer subagents
 /plugin install solution-architect@skilldrop    # 15 skills (incl. core)
 /plugin install ai-engineering@skilldrop        # 15 skills (incl. core)
 /plugin install product-manager@skilldrop       # 12 skills (incl. core)
-/plugin install stakeholder-comms@skilldrop     # 10 skills (incl. core)
-/plugin install sre-oncall@skilldrop            # 9 skills (incl. core)
-/plugin install api-builder@skilldrop           # 4 skills
+/plugin install sre-oncall@skilldrop            # 11 skills (incl. core)
 /plugin install core@skilldrop                  # 4 skills, on their own
+# …and one plugin for every other pack: run `npx skilldrop-cli packs` for the list
 ```
 
 Every skill then invokes as `/<plugin>:<name>` (e.g. `/skilldrop:prfaq`). The whole-catalogue plugin is the repo root itself: its `plugin.json` lists each `packs/<pack>/skills/` folder, and `agents/` sits at the root — same copy-install premise, expressed in Claude's own plugin format.
 
-The eight **pack plugins** work differently, because a plugin's skills have to sit in a `skills/` folder inside the plugin. A role pack's plugin also has to carry `core`'s skills and loops, since a plugin installs on its own and cannot reach outside its folder. Rather than copy `core` into every pack folder on `main`, the marketplace entries use Claude's `git-subdir` source to point at `packs/<name>/` on a generated [`plugins`](https://github.com/sananthanarayan/skilldrop/tree/plugins) branch, rebuilt by CI on every push to main, where each pack is assembled with `core` folded in. You still only ever type the one `marketplace add`. A pack carries the reviewer subagents its own skills delegate to, so `dev-team` brings the review panel and `sre-oncall` does not.
+The **pack plugins** work differently, because a plugin's skills have to sit in a `skills/` folder inside the plugin. A role pack's plugin also has to carry `core`'s skills and loops, since a plugin installs on its own and cannot reach outside its folder. Rather than copy `core` into every pack folder on `main`, the marketplace entries use Claude's `git-subdir` source to point at `packs/<name>/` on a generated [`plugins`](https://github.com/sananthanarayan/skilldrop/tree/plugins) branch, rebuilt by CI on every push to main, where each pack is assembled with `core` folded in. You still only ever type the one `marketplace add`. A pack carries the reviewer subagents its own skills delegate to, so `dev-team` brings the review panel and `sre-oncall` does not.
 
 `.claude-plugin/{marketplace,plugin}.json` are generated from `package.json` + the `packs/` folders by [`build_marketplace.py`](../../build_marketplace.py) (`--check` guards drift in CI; `--dist` renders the branch). Use the CLI above when you want per-skill granularity, another IDE, or hooks; use the marketplace when you're in Claude Code. Rationale: [RFC-0027](../../docs/rfcs/0027-retire-agentbundle-export.md).
 
@@ -67,7 +67,7 @@ The long-form install material moved to [`guides/`](..) so this page stays scann
 | Install by hand into a specific IDE | [Install a skill into your IDE](../how-to/install-per-ide.md) |
 | Wire a skill to an event (opt-in hooks) | [Wire a skill to an event](../how-to/wire-a-hook.md) |
 | Publish your own catalogue for `--from` | [Publish your own catalogue](../how-to/publish-a-catalogue.md) |
-| Use the two skills that ship scripts | [Skills that ship scripts](../reference/skills-with-scripts.md) |
+| Check what a skill's scripts need | [Skills that ship scripts](../reference/skills-with-scripts.md) |
 | Add a skill or a loop to this repo | [Author a skill](../how-to/author-a-skill.md) · [Author a loop](../how-to/author-a-loop.md) |
 | Understand why it is built this way | [Why loops](../explanation/loops.md) · [ARCHITECTURE.md](../../ARCHITECTURE.md) |
 | See one change go through the loops | [Follow one change through the loops](../tutorial/follow-a-change-through-the-loops.md) |

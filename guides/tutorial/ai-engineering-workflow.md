@@ -16,7 +16,7 @@ npx skilldrop-cli install --pack ai-engineering
 
 ---
 
-## Step 1 — Triage the use case
+## Triage the use case
 
 **Skill:** `ai-use-case-triage`
 
@@ -28,7 +28,7 @@ Most AI use cases fail not because the model is wrong but because the use case w
 
 ---
 
-## Step 2 — Assess org readiness
+## Assess org readiness
 
 **Skill:** `ai-readiness-assessment`
 
@@ -40,7 +40,7 @@ Even a strong use case fails if the organisation is not ready to support it. `ai
 
 ---
 
-## Step 3 — Design the loop
+## Design the loop
 
 **Skill:** `agent-loop-design`
 
@@ -52,7 +52,7 @@ The agentic loop is the sequence of stages the agent runs: what it reads, what i
 
 ---
 
-## Step 4 — Design the agents
+## Design the agents
 
 **Skill:** `subagent-design`
 
@@ -64,7 +64,7 @@ Complex loops delegate to specialist subagents — each one focused on a single 
 
 ---
 
-## Step 5 — Threat-model the system
+## Threat-model the system
 
 **Skill:** `agent-threat-model`
 
@@ -76,7 +76,7 @@ Complex loops delegate to specialist subagents — each one focused on a single 
 
 ---
 
-## Step 6 — Build the evals
+## Build the evals
 
 **Skill:** `llm-eval-harness`
 
@@ -88,7 +88,7 @@ Evals are built before deployment, not after. Without them there is no way to kn
 
 ---
 
-## Step 7 — Measure what shipped
+## Measure what shipped
 
 **Skill:** `ai-usage-report`
 

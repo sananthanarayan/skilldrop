@@ -4,7 +4,7 @@
 
 ## Repo in one paragraph
 
-**skilldrop** is a collection of portable **Claude Skills**, each measured against the agent without it (RFC-0040), for the deliverables knowledge workers actually ship: diagrams, ADRs, design docs, runbooks, decks, decision logs, comparison matrices, exec summaries, structured critiques, and adversarial code review. Each skill is a plain directory at `packs/<pack>/skills/<name>/` containing a `SKILL.md` + `manifest.json` (+ optional `reference.md`, `templates/`, `lenses/`, `rubrics/`, `examples/`, `scripts/`, `requirements.txt`). Above the skills sit **loops** (`packs/<pack>/loops/<name>/LOOP.md` + `loop.json`, RFC-0028) — named sequences of stages over those skills with a gate between each, so the repo ships a way of operating and not only a bag of parts. A loop *sequences* skills; it never contains one. The pack a skill or loop sits in is its one home (RFC-0033, RFC-0034); each pack's metadata is `packs/<pack>/pack.json`, and `catalogue.json` holds pack order and outcomes. Installation is per-folder copy into the target IDE's skills/rules location — documented per-IDE install steps live in `README.md` (Claude Code, Cursor, Kiro, Continue, Cline, Aider).
+**skilldrop** is a collection of portable **Claude Skills**, each measured against the agent without it (RFC-0040), for the deliverables knowledge workers actually ship: diagrams, ADRs, design docs, runbooks, decks, decision logs, comparison matrices, exec summaries, structured critiques, and adversarial code review. Each skill is a plain directory at `packs/<pack>/skills/<name>/` containing a `SKILL.md` + `manifest.json` (+ optional `reference.md`, `templates/`, `lenses/`, `rubrics/`, `examples/`, `scripts/`, `requirements.txt`). Above the skills sit **loops** (`packs/<pack>/loops/<name>/LOOP.md` + `loop.json`, RFC-0028) — named sequences of stages over those skills with a gate between each, so the repo ships a way of operating and not only a bag of parts. A loop *sequences* skills; it never contains one. The pack a skill or loop sits in is its one home (RFC-0033, RFC-0034); each pack's metadata is `packs/<pack>/pack.json`, and `catalogue.json` holds pack order and outcomes. Installation is per-folder copy into the target IDE's skills/rules location — the per-IDE steps live in [`guides/how-to/install-per-ide.md`](guides/how-to/install-per-ide.md) (Claude Code, Cursor, Kiro, Codex, Antigravity, Copilot, Continue, Cline, Aider). How the loops fit together for a user is the [operating model](guides/explanation/operating-model.md).
 
 ## Golden rules
 
@@ -37,7 +37,8 @@ python3 validate.py
 python3.14 build_site.py           # or any 3.12+
 python3.14 build_site.py --check
 
-# Loop diagrams — regenerate docs/loops/*.mmd and the README mermaid blocks from loop.json
+# Loop diagrams — regenerate docs/loops/*.mmd, the loop reference's mermaid blocks and
+# docs/loops/operating-model.svg from loop.json
 python3 build_loops.py
 python3 build_loops.py --check   # drift check; validate.py runs this for you
 
@@ -121,9 +122,9 @@ Every version bump lands with a matching entry at the top of [`CHANGELOG.md`](CH
 | Python dep manifest for a skill | `packs/<pack>/skills/<skill-name>/requirements.txt` |
 | New loop (a sequence over existing skills) | `packs/<pack>/loops/<kebab-name>/LOOP.md` + `loop.json` beside it — needs an RFC (RFC-0028) |
 | Machine-readable index for models | Nothing to place by hand — `build_llms.py` generates `llms.txt` from the catalogue |
-| Loop diagram | Nothing to place by hand — `build_loops.py` generates `docs/loops/<loop>.mmd` and the README's mermaid blocks from `loop.json`. Edit the contract, not the picture. |
+| Loop diagram | Nothing to place by hand — `build_loops.py` generates `docs/loops/<loop>.mmd`, the loop reference's mermaid blocks and the operating-model picture (`docs/loops/operating-model.svg`) from `loop.json`. Edit the contract, not the picture. |
 | Machine-readable schema for a primitive | `contracts/<name>.schema.json` — closed schemas, checked by `validate.py`'s stdlib `check_schema()`. The shared gate verdict vocabulary is `contracts/terminals.json` |
-| Long-form doc that would bloat the README | `guides/<kind>/<slug>.md` — frontmatter `title`/`summary`/`kind` (Diátaxis), and a link from `guides/README.md`. Both enforced (RFC-0029) |
+| Long-form doc that would bloat the README | `guides/<kind>/<slug>.md` — frontmatter `title`/`summary`/`kind` (Diátaxis), optional `stage` when the page belongs to one lifecycle stage, and a link from `guides/README.md`. Enforced (RFC-0029, RFC-0044); write it to **Writing a guide** below |
 | Claude Code project settings | `.claude/settings.json` — registers the repo as a local plugin marketplace for dogfooding; also holds hooks/permissions/env. Inert for non-Claude tools. |
 | Per-pack Claude plugin output | Nothing to place by hand — `build_marketplace.py --dist` generates it and CI publishes it to the `plugins` branch. Putting a skill in a pack's folder is the whole edit (RFC-0027, RFC-0034). |
 
@@ -274,7 +275,10 @@ this section.
 3. **Stages** carry `id`, `type` (`generate` / `verify` / `gate` — the three
    `agent-loop-design` mandates), `intent`, and `skills` (real folder names; `*` means any
    generator and is legal only in a `wrapper`).
-4. **Gates** carry a repo-unique `id` (`G2`, `G2.1`), a `kind` (`mechanical` needs a real
+4. **Gates** carry a repo-unique `id` (`G2`, `G2.1`) that reads in lifecycle order: the whole
+   number is the loop's place (`discover` G0 through `operate` G4, then G5 and G6 for the loops
+   outside the lifecycle), and a decimal is a second gate inside the same loop (RFC-0044). A
+   gate has a `kind` (`mechanical` needs a real
    `script`; `review` and `human` must not have one), the `verdicts` they can emit, and
    `revise_to` naming an **earlier** stage. Every verdict must exist in
    [`contracts/terminals.json`](contracts/terminals.json) — a gate may not invent a new word
@@ -289,7 +293,10 @@ this section.
 7. **A loop's name may not collide with a skill's.** On install, `LOOP.md` projects to
    `<dest>/<name>/SKILL.md` — Claude Code and the other targets have no loop primitive, and
    `LOOP.md`'s frontmatter is already `SKILL.md`'s shape, so the two share one namespace.
-8. **Put it in a pack** — the folder is `packs/<pack>/loops/<name>/` — and re-run `python3 build_loops.py`.
+8. **Put it in a pack** — the folder is `packs/<pack>/loops/<name>/` — then give it its lines
+   in `build_loops.py`'s `LIFECYCLE` or `OUTSIDE` (heading, when to start, what it ends with)
+   and re-run `python3 build_loops.py`. The operating-model picture fails `--check` until a new
+   loop has them.
 
 ## Sibling hand-offs are advisory
 
@@ -345,12 +352,33 @@ See `packs/design/skills/deck-builder/scripts/build_deck.py` for the reference p
 - [ ] **No loop in `model-routing.json`** — loops carry no tier.
 - [ ] **`handoff` (if present) is complete** — every entry has `to`/`when`/`purpose`/`fallback`, and every `to` is also in `related`.
 - [ ] **`python3 build_llms.py` run** if skills, loops, packs, contracts or guides changed — `llms.txt` is generated and drift fails the lint.
-- [ ] **`python3 build_loops.py` run** if any `loop.json` changed — `docs/loops/*.mmd` and the README blocks are generated, and `validate.py` fails on drift.
+- [ ] **`python3 build_loops.py` run** if any `loop.json` changed — `docs/loops/*.mmd`, the loop reference's blocks and `docs/loops/operating-model.svg` are generated, and `validate.py` fails on drift.
 - [ ] **Contracts satisfied** — the manifest / `loop.json` / agent frontmatter / guide frontmatter validates against its schema in `contracts/`. These are closed: a typo'd key fails.
-- [ ] **New long-form doc is a guide**, not a README section — `guides/<kind>/<slug>.md` with Diátaxis frontmatter and a link from `guides/README.md`.
+- [ ] **New long-form doc is a guide**, not a README section — `guides/<kind>/<slug>.md` with Diátaxis frontmatter and a link from `guides/README.md`, written to **Writing a guide**.
 - [ ] **`python3 validate.py` passes** with no failures.
 
 Of these, **`validate.py` (+ `node bin/skilldrop.js validate`) mechanically enforces**: every `contracts/` schema (manifests, `pack.json`, `catalogue.json`, loops, agent and guide frontmatter — all closed), the name triple (for skills *and* loops), the whole loop contract above, the ≤500-line warning, `Quality bar` + `Anti-patterns` sections, evals presence + shape, model-tier sync, `related` sync, pack membership, reference + link integrity, script dual-referencing, and a heavy-tier `examples/` oracle. The rest — the RFC existing, voice, the manual test pass, no-secrets / no-real-data, description discipline, the non-interactive line, the README update, and the GitHub About — are **human judgment**; a green lint does not vouch for them. Keep this split honest: if a rule becomes mechanically checkable, move it into `validate.py` rather than leaving it as a checklist claim.
+
+## Writing a guide
+
+A guide is read by a person with a job to do, not by an agent. The standard (RFC-0044):
+
+- **Open with one sentence on what the reader can do.** No subtitle and no history. A how-to
+  that opens with a heading or a list fails `validate.py`.
+- **One step, one command.** A section is a lead-in sentence, one command or prompt, then one
+  sentence on what happens. Put choices in prose; put flags, edge cases and errors on a
+  reference page.
+- **Headings name the task** as a verb phrase, in reading order. No "Step N" — `validate.py`
+  fails it, because a sequence is already shown by the order.
+- **No filler.** "Leverage", "robust", "seamless", "simply", "generally" and their kind say
+  nothing; `validate.py` fails them in prose. Name the word in backticks when it is the subject.
+- **Say which packs the job needs and how to install them.** Never assume one is installed.
+- **Explain a term where the reader first acts on it**, in plain words, and keep counts out of
+  prose unless something checks them: a number that nothing checks goes stale (`57 skills`).
+- **`title` is the page's one H1**, and `stage` is set when the page belongs to one lifecycle
+  stage, so the docs sidebar files it there.
+
+Aim for 150–400 words on a how-to. A page that needs more is usually two pages.
 
 ## Voice & tone (non-negotiable)
 
@@ -400,12 +428,12 @@ A new section needs a use-case-first name, a one-sentence definition of what bel
 
 ## Skill packs
 
-Categories say what a skill *is*; packs say *who needs it*. [`packs/`](packs/) holds `core` plus role-based packs (`solution-architect`, `product-manager`, `dev-team`, `sre-oncall`, `stakeholder-comms`, `design`, `ai-engineering`, `api-builder`), each installed in one command via the CLI or [`pack.py`](pack.py). Rules — rationale in [RFC-0001](docs/rfcs/0001-skill-packs.md), [RFC-0033](docs/rfcs/0033-core-pack-and-single-home-skills.md) and [RFC-0034](docs/rfcs/0034-physical-pack-layout.md):
+Categories say what a skill *is*; packs say *who needs it*. [`packs/`](packs/) holds `core` plus role-based packs (`npx skilldrop-cli packs` lists them; `catalogue.json` sets their order), each installed in one command via the CLI or [`pack.py`](pack.py). Rules — rationale in [RFC-0001](docs/rfcs/0001-skill-packs.md), [RFC-0033](docs/rfcs/0033-core-pack-and-single-home-skills.md) and [RFC-0034](docs/rfcs/0034-physical-pack-layout.md):
 
 - **A pack is a folder.** `packs/<pack>/skills/<name>/` is where a skill lives, and that path is the membership — there is no separate list to keep in sync. `packs/<pack>/pack.json` holds the pack's metadata.
 - **One home per skill** (RFC-0033). A skill that serves every role, like `brief-intake`, goes in `core`, which each role pack `requires` and every installer brings along. Otherwise pick the role that produces the artifact. Every installer — the CLI, `pack.py`, the Claude plugins — brings `core` with a role pack.
 - **Every skill belongs to exactly one pack.** A skill with no audience shouldn't have passed the RFC. The folder layout makes this structural; `validate.py` checks that no name has a folder in two packs, that every pack folder has a `pack.json` and is listed in `catalogue.json`, and that a pack holds every skill its loops run.
-- **Every skill belongs to at least one outcome.** `catalogue.json` carries the second axis, `outcomes` (RFC-0026) — the README's nine categories restated as seven outcomes and made machine-readable, so the catalogue site can offer a *why am I here* axis beside the *who am I* one. Outcomes are a browse aid, never an install unit; the CLI does not take `--outcome`. `validate.py` applies the same two-way check packs get.
+- **Every skill belongs to at least one outcome.** `catalogue.json` carries the second axis, `outcomes` (RFC-0026) — the README's categories restated as outcomes and made machine-readable, so the catalogue site can offer a *why am I here* axis beside the *who am I* one. Outcomes are a browse aid, never an install unit; the CLI does not take `--outcome`. `validate.py` applies the same two-way check packs get.
 
 ## Model routing
 

@@ -9,13 +9,13 @@ flowchart LR
     document["document<br/><small>runbook-generator</small>"]:::gen
     respond["respond<br/><small>incident-comms</small>"]:::gen
     learn["learn<br/><small>postmortem-generator</small>"]:::review
-    G3{"G3 · human"}:::gate
+    G4{"G4 · human"}:::gate
     DONE(["complete"]):::ship
 
     instrument --> document
     document --> respond
     respond --> learn
-    learn --> G3
-    G3 == "PROCEED" ==> DONE
+    learn --> G4
+    G4 == "PROCEED" ==> DONE
 
-    G3 -- "REVISE (max 3)" --> document
+    G4 -- "REVISE (max 3)" --> document

@@ -8,6 +8,13 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.10 — 2026-10-16
+
+- **An operating model page shows the whole method on one page.** The [operating model](guides/explanation/operating-model.md) puts the five stages, the gate that ends each one, the pack that helps there, and the packs for any stage in one picture, then says where the agent waits for you and what every verdict means. The picture is generated from the loops themselves, so it changes when a loop does.
+- **Gate codes now follow the order of the work.** The whole number is the loop's place in the lifecycle and a decimal is a second gate inside it: `release` stops at G3 and G3.1 (were G2.5 and G2.6), `operate` at G4 (was G3), `ship-a-draft` at G5 (was G4), and `apply` at G6 and G6.1 (were G5 and G6). `discover`, `design` and `build` keep G0, G1, G2 and G2.1. To get the renumbered loops, install them again: `npx skilldrop-cli install --loop release operate ship-a-draft apply` (`update` refreshes skills, not loops). A loop run log written before this release still holds the old codes.
+- **The docs are arranged by stage.** The sidebar opens with Start here, then one group per stage with that stage's loop, tutorial and pack guides, then everything else by kind. A page that belongs to a stage shows it above its title.
+- **The guides follow one page standard**, checked on every commit: a how-to opens with what you can do, headings name the task instead of a step number, and filler words fail the check. The tutorial "From idea to shipped feature" now includes the `release` loop, and several pages had counts that no longer matched the catalogue corrected.
+
 ## 0.16.9 — 2026-10-05
 
 - **`job-fit-analysis` gives a verdict that matches its own table.** It names the requirements you don't meet in its first line instead of counting them, credits a general ability such as dealing with the public from any job that plainly involves it, and no longer suggests rewording a partly met requirement so it reads as met. Two blind judges now prefer it in 13 and 11 of 15 pairs, up from 8 and 5 of 10.

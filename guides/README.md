@@ -11,11 +11,13 @@ its directory, so the tree stays shallow.
 | **reference** | "What exactly does this field/command do?" |
 | **explanation** | "Why is it built this way?" |
 
+New here? Start with the [operating model](explanation/operating-model.md): the five stages, the gate that ends each one, and the pack that helps there.
+
 ## tutorial
 
 - [Follow one change through the loops](tutorial/follow-a-change-through-the-loops.md) — one realistic change walked from a complaint to a closed incident, showing what each gate refuses
 - [From complaint to closed incident](tutorial/complaint-to-closed-incident.md) — End-to-end: complaint → discover loop → operate loop → closed incident with updated runbook
-- [From idea to shipped feature](tutorial/idea-to-shipped-feature.md) — End-to-end: idea → all four lifecycle loops → shipped feature with postmortem
+- [From idea to shipped feature](tutorial/idea-to-shipped-feature.md) — End-to-end: idea → all five lifecycle loops → shipped feature with postmortem
 - [Dev-team workflow](tutorial/dev-team-workflow.md) — story → implementation → review panel → release notes
 - [Solution architect workflow](tutorial/solution-architect-workflow.md) — brief → diagrams → ADRs → design doc → threat model → council gate
 - [Product manager workflow](tutorial/product-manager-workflow.md) — signal → PR/FAQ → OKRs → PRD → metrics → critique gate
@@ -46,7 +48,7 @@ its directory, so the tree stays shallow.
 
 - [Every skill, by category](reference/skill-catalogue.md) — all the skills, one line each, plus the anatomy every skill folder shares
 - [The loops, stage by stage](reference/loops.md) — each loop's stages, gates and generated diagram
-- [Skills that ship scripts](reference/skills-with-scripts.md) — the two skills with executable helpers
+- [Skills that ship scripts](reference/skills-with-scripts.md) — what a skill's scripts declare, the two that need packages, and how to invoke a skill
 - [skilldrop and the OWASP Top 10s](reference/owasp-mapping.md) — what skilldrop covers in the Agentic Skills Top 10 and LLM Top 10 2025, and the gaps
 
 ## Per pack
@@ -79,6 +81,7 @@ A how-to and a reference page for every pack, generated from the pack's own file
 
 ## explanation
 
+- [Operating model](explanation/operating-model.md) — the five stages, the gate that ends each one, where the agent waits for you, and the packs for any stage
 - [Why loops](explanation/loops.md) — why sequencing is its own primitive, and why five loops
 - [Cost-aware model routing](../MODEL-ROUTING.md) — abstract tiers and the provider map
 - [What the benchmark showed](explanation/what-the-benchmark-showed.md) — the gain on skills' own checks, the blind preference, the held-out test that the revised skills failed, and what the winners share

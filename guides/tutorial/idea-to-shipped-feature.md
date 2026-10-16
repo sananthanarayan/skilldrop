@@ -1,18 +1,21 @@
 ---
 title: From idea to shipped feature
-summary: A product idea moves through all four lifecycle loops — discover, design, build, operate — with each gate refusing until its conditions are met.
+summary: A product idea moves through all five lifecycle loops — discover, design, build, release, operate — with each gate refusing until its conditions are met.
 kind: tutorial
+stage: release
 ---
 
 # From idea to shipped feature
 
-A customer request becomes a shipped feature. This walkthrough takes one idea through all four lifecycle loops — `discover`, `design`, `build`, `operate` — and shows a real refusal at every gate. The refusals are the point: a gate that always passes is decoration.
+A customer request becomes a shipped feature. This walkthrough takes one idea through all five lifecycle loops — `discover`, `design`, `build`, `release`, `operate` — and shows a real refusal at every gate. The refusals are the point: a gate that always passes is decoration.
 
-Install all four loops:
+Install all five loops:
 
 ```bash
-npx skilldrop-cli install --loop discover design build operate
+npx skilldrop-cli install --loop discover design build release operate
 ```
+
+The [operating model](../explanation/operating-model.md) shows the same five stages and their gates on one page.
 
 The feature: *"Let users export their data as a CSV."*
 
@@ -63,7 +66,7 @@ after retrieval.
 The PM tightens the criteria: the export query is scoped to `WHERE account_id = :current_user_account_id`, cross-account filtering is enforced at the query layer not application layer, and the field list is enumerated. Re-running:
 
 ```
-G0 READY
+G0 PROCEED
 Requirement is specific and testable. Proceed to design.
 ```
 
@@ -121,7 +124,7 @@ code-quality: No objection. The ADR captures the trade-offs clearly.
 The team adds the audit log to the architecture and a "recent exports" page to the PRD. Re-gating:
 
 ```
-G1 READY
+G1 PROCEED
 Conditions met. Proceed to build.
 ```
 
@@ -163,11 +166,53 @@ G2 READY
 Audit log failure path is tested and handled correctly. Proceed to ship.
 ```
 
-The feature ships in the next release.
+The engineer merges, and the `release` loop takes the change from there.
 
 ---
 
-## Loop 4 — `operate` (G3: postmortem closes the loop)
+## Loop 4 — `release` (G3: launch-readiness, then G3.1: a human go/no-go)
+
+### `migration-plan`
+
+`migration-plan` stages the rollout behind a feature flag: internal accounts first, then the three enterprise customers who asked, then everyone. The rollback for every phase is the same: turn the flag off. Exports are read-only, so there is no point of no return.
+
+### `launch-readiness`
+
+```
+G3 REVISE
+
+Data and privacy: not met. Exports land in S3 with customer data and no
+  deletion rule, so every CSV ever generated stays in the bucket. Add a
+  lifecycle rule that deletes export objects after 24 hours, matching the
+  4h link expiry with margin. Closed by: migration-plan (add the rule to
+  phase 0).
+Rollback: met. Detection: met (job failure rate alert). Response: met.
+```
+
+The team adds the lifecycle rule and re-gates:
+
+```
+G3 PROCEED
+```
+
+### `release-notes`
+
+`release-notes` drafts the customer-facing note ("Export your account data as CSV from Settings") and the internal note listing the flag, the bucket rule and the alert.
+
+### The go/no-go call
+
+```
+G3.1 RECONSIDER
+
+Ready, but the quarter-end freeze starts tomorrow and the on-call
+engineer for exports is out. Ship on Monday.
+```
+
+On Monday the release owner records `G3.1 PROCEED`, and the flag opens in three steps over the week.
+
+---
+
+## Loop 5 — `operate` (G4: postmortem closes the loop)
 
 ### Post-ship monitoring
 
@@ -182,7 +227,7 @@ On day 18, a silent failure pattern emerges: export jobs for accounts with files
 ### `postmortem-generator`
 
 ```
-G3 PROCEED
+G4 PROCEED
 
 Postmortem filed. Runbook delta:
 - Add BLOB column handling to the export worker's known-failure section
@@ -194,7 +239,7 @@ Postmortem filed. Runbook delta:
 Routing delta to runbook-generator for update.
 ```
 
-The updated runbook and a new threat model entry (binary column handling) are committed. Gate G3 closes the loop.
+The updated runbook and a new threat model entry (binary column handling) are committed. Gate G4 closes the loop.
 
 ---
 
@@ -205,6 +250,8 @@ The updated runbook and a new threat model entry (binary column handling) are co
 | G0 REVISE | Untestable acceptance criteria ("contains only their data") | Query-layer enforcement would have been an assumption, not a requirement — cross-account data leakage possible |
 | G1 PROCEED WITH CONDITIONS | Missing audit log; no fallback if email fails | No compliance audit trail; users with failed emails would have no way to retrieve their export |
 | G2 BLOCKED | Audit log failure path silently swallowed | A log write failure during export would have been invisible — compliance gap, no alert |
-| G3 postmortem delta | Binary column handling not in threat model; per-job alerting missing | Next binary-column incident would have gone undetected for the same reason |
+| G3 REVISE | Exports kept in S3 with no deletion rule | Every customer's data export would have stayed in the bucket indefinitely |
+| G3.1 RECONSIDER | Launching into the quarter-end freeze without the on-call engineer | A first-week problem would have landed on someone who did not know the export path |
+| G4 postmortem delta | Binary column handling not in threat model; per-job alerting missing | Next binary-column incident would have gone undetected for the same reason |
 
-The gates did not slow the feature down. G0 REVISE caught a testability gap in the acceptance criteria — that conversation would have happened anyway, just later and more expensively in code review. G1's conditions added the audit log before build started, not after a compliance audit found it missing. G2's block caught a silent failure mode in a compliance-critical path. G3 closed the loop on a gap the threat model did not anticipate.
+The gates did not slow the feature down. G0 REVISE caught a testability gap in the acceptance criteria — that conversation would have happened anyway, just later and more expensively in code review. G1's conditions added the audit log before build started, not after a compliance audit found it missing. G2's block caught a silent failure mode in a compliance-critical path. G3 kept customer data from piling up in a bucket, and G3.1 moved the launch by three days, not three weeks. G4 closed the loop on a gap the threat model did not anticipate.

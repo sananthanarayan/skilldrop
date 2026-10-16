@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 1576" width="820" height="1576" role="img" aria-labelledby="om-title om-desc">
+<title id="om-title">How work moves through skilldrop</title>
+<desc id="om-desc">Five lifecycle loops, in order. Stage 1, discover, in the product-manager pack: Find the problem worth solving. Start here when a request, a complaint or a strategy question arrives. Gates: G0 where you decide. Ends with a requirement a person ratified. Stage 2, design, in the solution-architect pack: Decide how to build it. Start here when the problem is agreed, but not the approach. Gates: G1 where a review panel decides. Ends with a recorded decision (ADR). Stage 3, build, in the dev-team pack: Build it. Start here when the work is clear enough to write down. Bug fixes start here. Gates: G2 where a script decides, G2.1 where you decide. Ends with merged code. Stage 4, release, in the dev-team pack: Ship it. Start here when a merged change needs to reach users safely. Gates: G3 where a review panel decides, G3.1 where you decide. Ends with a live, reversible rollout. Stage 5, operate, in the sre-oncall pack: Run it. Start here when the service is live, or something just broke. Gates: G4 where you decide. Ends with a postmortem and runbook changes. Outside the lifecycle, ship-a-draft, in the core pack: Wrap any draft. Gates: G5 where a review panel decides. Outside the lifecycle, apply, in the career pack: Apply for a job. Gates: G6 where you decide, G6.1 where you decide. Packs for any stage: stakeholder-comms, design, ai-engineering, api-builder, converters, experience-design, research, trackers, data-analytics, grc, infra-as-code, skill-engineering.</desc>
+<style>.s,text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;}.title{font-size:24px;font-weight:700;fill:#17171a;}.sub{font-size:14px;fill:#6a6a66;}.label{font-size:11px;font-weight:700;letter-spacing:.08em;}.h{font-size:19px;font-weight:700;fill:#17171a;}.muted{font-size:13px;fill:#5c5c58;}.mono,.chip{font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;font-size:12px;fill:#2a2a2e;}.chip{font-size:11px;}.arrow{font-size:13px;fill:#9a9a94;}.gate{fill:#FBE3A2;stroke:#D9971E;stroke-width:1.2;}.gatet{font-size:11.5px;font-weight:700;fill:#6B4500;}.ends{font-size:13px;fill:#17171a;}.endsl,.startl{font-weight:700;}.startl{fill:#3f3f3c;}.card{fill:#fff;stroke:#e4e4e0;}.dashed{fill:#fafaf9;stroke:#b8b8b2;stroke-dasharray:5 4;}.rail{stroke:#d6d3e6;stroke-width:3;}.num{font-size:13px;font-weight:700;fill:#fff;text-anchor:middle;}.section{font-size:11px;font-weight:700;letter-spacing:.08em;fill:#6a6a66;}.pack{fill:#fff;stroke:#d9d9d4;}.foot{font-size:11.5px;fill:#8a8a85;}</style>
+<rect width="820" height="1576" rx="16" fill="#fafaf9"/>
+<text x="22" y="48" class="title">How work moves through skilldrop</text>
+<text x="22" y="74" class="sub">Start at the stage your work is in. Each loop stops at its gold gates, where a script,</text>
+<text x="22" y="94" class="sub">a review panel or you decide whether the work moves on.</text>
+<line x1="36" y1="134" x2="36" y2="958" class="rail"/>
+<circle cx="36" cy="134" r="14" fill="#6d4aff"/><text x="36" y="139" class="num">1</text>
+<circle cx="36" cy="340" r="14" fill="#2563eb"/><text x="36" y="345" class="num">2</text>
+<circle cx="36" cy="546" r="14" fill="#15803d"/><text x="36" y="551" class="num">3</text>
+<circle cx="36" cy="752" r="14" fill="#be185d"/><text x="36" y="757" class="num">4</text>
+<circle cx="36" cy="958" r="14" fill="#0e7490"/><text x="36" y="963" class="num">5</text>
+<rect x="72" y="112" width="724" height="184" rx="12" class="card"/>
+<rect x="72" y="124" width="4" height="160" rx="2" fill="#6d4aff"/>
+<text x="92" y="138" class="label" fill="#6d4aff">STAGE 1 · DISCOVER</text>
+<rect x="659.4" y="124" width="116.6" height="20" rx="10" fill="#6d4aff" fill-opacity=".08" stroke="#6d4aff" stroke-opacity=".35"/><text x="667.4" y="138" class="chip" fill="#6d4aff">product-manager</text>
+<text x="92" y="166" class="h">Find the problem worth solving</text>
+<text x="92" y="190" class="muted"><tspan class="startl">Start here when</tspan> A request, a complaint or a strategy question arrives.</text>
+<text x="92.0" y="218" class="mono">requirements-interview / user-journey-map / strategy-analysis</text>
+<text x="543.5" y="218" class="arrow">→</text>
+<text x="560.5" y="218" class="mono">brief-intake</text>
+<text x="653.4" y="218" class="arrow">→</text>
+<text x="670.4" y="218" class="mono">prd-draft</text>
+<text x="97.0" y="246" class="arrow">→</text>
+<text x="114.0" y="246" class="mono">doc-critique</text>
+<text x="206.8" y="246" class="arrow">→</text>
+<rect x="223.8" y="232" width="113.2" height="20" rx="10" class="gate"/><text x="233.8" y="246" class="gatet">G0 · you decide</text>
+<text x="92" y="274" class="ends"><tspan class="endsl">Ends with</tspan> a requirement a person ratified</text>
+<rect x="72" y="318" width="724" height="184" rx="12" class="card"/>
+<rect x="72" y="330" width="4" height="160" rx="2" fill="#2563eb"/>
+<text x="92" y="344" class="label" fill="#2563eb">STAGE 2 · DESIGN</text>
+<rect x="639.2" y="330" width="136.8" height="20" rx="10" fill="#2563eb" fill-opacity=".08" stroke="#2563eb" stroke-opacity=".35"/><text x="647.2" y="344" class="chip" fill="#2563eb">solution-architect</text>
+<text x="92" y="372" class="h">Decide how to build it</text>
+<text x="92" y="396" class="muted"><tspan class="startl">Start here when</tspan> The problem is agreed, but not the approach.</text>
+<text x="92.0" y="424" class="mono">nfr-spec</text>
+<text x="155.6" y="424" class="arrow">→</text>
+<text x="172.6" y="424" class="mono">design-doc / architecture-diagrams</text>
+<text x="426.4" y="424" class="arrow">→</text>
+<text x="443.4" y="424" class="mono">threat-model</text>
+<text x="536.3" y="424" class="arrow">→</text>
+<text x="553.3" y="424" class="mono">council-review</text>
+<text x="97.0" y="452" class="arrow">→</text>
+<rect x="114.0" y="438" width="187.7" height="20" rx="10" class="gate"/><text x="124.0" y="452" class="gatet">G1 · a review panel decides</text>
+<text x="306.7" y="452" class="arrow">→</text>
+<text x="323.7" y="452" class="mono">adr-generator</text>
+<text x="92" y="480" class="ends"><tspan class="endsl">Ends with</tspan> a recorded decision (ADR)</text>
+<rect x="72" y="524" width="724" height="184" rx="12" class="card"/>
+<rect x="72" y="536" width="4" height="160" rx="2" fill="#15803d"/>
+<text x="92" y="550" class="label" fill="#15803d">STAGE 3 · BUILD</text>
+<rect x="706.3" y="536" width="69.7" height="20" rx="10" fill="#15803d" fill-opacity=".08" stroke="#15803d" stroke-opacity=".35"/><text x="714.3" y="550" class="chip" fill="#15803d">dev-team</text>
+<text x="92" y="578" class="h">Build it</text>
+<text x="92" y="602" class="muted"><tspan class="startl">Start here when</tspan> The work is clear enough to write down. Bug fixes start here.</text>
+<text x="92.0" y="630" class="mono">user-story-splitter / bug-triage</text>
+<text x="331.2" y="630" class="arrow">→</text>
+<text x="348.2" y="630" class="mono">feature-implement-loop</text>
+<text x="514.3" y="630" class="arrow">→</text>
+<text x="531.3" y="630" class="mono">pre-merge-review</text>
+<text x="97.0" y="658" class="arrow">→</text>
+<rect x="114.0" y="644" width="150.4" height="20" rx="10" class="gate"/><text x="124.0" y="658" class="gatet">G2 · a script decides</text>
+<text x="269.4" y="658" class="arrow">→</text>
+<text x="286.4" y="658" class="mono">council-review</text>
+<text x="393.9" y="658" class="arrow">→</text>
+<rect x="410.9" y="644" width="125.6" height="20" rx="10" class="gate"/><text x="420.9" y="658" class="gatet">G2.1 · you decide</text>
+<text x="92" y="686" class="ends"><tspan class="endsl">Ends with</tspan> merged code</text>
+<rect x="72" y="730" width="724" height="184" rx="12" class="card"/>
+<rect x="72" y="742" width="4" height="160" rx="2" fill="#be185d"/>
+<text x="92" y="756" class="label" fill="#be185d">STAGE 4 · RELEASE</text>
+<rect x="706.3" y="742" width="69.7" height="20" rx="10" fill="#be185d" fill-opacity=".08" stroke="#be185d" stroke-opacity=".35"/><text x="714.3" y="756" class="chip" fill="#be185d">dev-team</text>
+<text x="92" y="784" class="h">Ship it</text>
+<text x="92" y="808" class="muted"><tspan class="startl">Start here when</tspan> A merged change needs to reach users safely.</text>
+<text x="92.0" y="836" class="mono">migration-plan</text>
+<text x="199.5" y="836" class="arrow">→</text>
+<text x="216.5" y="836" class="mono">launch-readiness</text>
+<text x="338.6" y="836" class="arrow">→</text>
+<rect x="355.6" y="822" width="187.7" height="20" rx="10" class="gate"/><text x="365.6" y="836" class="gatet">G3 · a review panel decides</text>
+<text x="548.3" y="836" class="arrow">→</text>
+<text x="565.3" y="836" class="mono">release-notes</text>
+<text x="97.0" y="864" class="arrow">→</text>
+<text x="114.0" y="864" class="mono">council-review</text>
+<text x="221.5" y="864" class="arrow">→</text>
+<rect x="238.5" y="850" width="125.6" height="20" rx="10" class="gate"/><text x="248.5" y="864" class="gatet">G3.1 · you decide</text>
+<text x="92" y="892" class="ends"><tspan class="endsl">Ends with</tspan> a live, reversible rollout</text>
+<rect x="72" y="936" width="724" height="184" rx="12" class="card"/>
+<rect x="72" y="948" width="4" height="160" rx="2" fill="#0e7490"/>
+<text x="92" y="962" class="label" fill="#0e7490">STAGE 5 · OPERATE</text>
+<rect x="692.9" y="948" width="83.1" height="20" rx="10" fill="#0e7490" fill-opacity=".08" stroke="#0e7490" stroke-opacity=".35"/><text x="700.9" y="962" class="chip" fill="#0e7490">sre-oncall</text>
+<text x="92" y="990" class="h">Run it</text>
+<text x="92" y="1014" class="muted"><tspan class="startl">Start here when</tspan> The service is live, or something just broke.</text>
+<text x="92.0" y="1042" class="mono">observability-plan</text>
+<text x="228.8" y="1042" class="arrow">→</text>
+<text x="245.8" y="1042" class="mono">runbook-generator</text>
+<text x="375.2" y="1042" class="arrow">→</text>
+<text x="392.2" y="1042" class="mono">incident-comms</text>
+<text x="499.7" y="1042" class="arrow">→</text>
+<text x="516.7" y="1042" class="mono">postmortem-generator</text>
+<text x="97.0" y="1070" class="arrow">→</text>
+<rect x="114.0" y="1056" width="113.2" height="20" rx="10" class="gate"/><text x="124.0" y="1070" class="gatet">G4 · you decide</text>
+<text x="92" y="1098" class="ends"><tspan class="endsl">Ends with</tspan> a postmortem and runbook changes</text>
+<text x="72" y="1150" class="section">OUTSIDE THE LIFECYCLE</text>
+<rect x="72.0" y="1164" width="354.0" height="258" rx="12" class="card dashed"/>
+<text x="92.0" y="1190" class="label" fill="#57534e">SHIP-A-DRAFT</text>
+<rect x="363.2" y="1176" width="42.8" height="20" rx="10" fill="#57534e" fill-opacity=".08" stroke="#57534e" stroke-opacity=".35"/><text x="371.2" y="1190" class="chip" fill="#57534e">core</text>
+<text x="92.0" y="1218" class="h">Wrap any draft</text>
+<text x="92.0" y="1242" class="muted"><tspan class="startl">Start here when</tspan> Before and after any generator,</text>
+<text x="92.0" y="1260" class="muted">at any stage.</text>
+<text x="92.0" y="1288" class="mono">brief-intake</text>
+<text x="184.8" y="1288" class="arrow">→</text>
+<text x="201.8" y="1288" class="mono">any generator</text>
+<text x="97.0" y="1316" class="arrow">→</text>
+<text x="114.0" y="1316" class="mono">doc-critique</text>
+<text x="97.0" y="1344" class="arrow">→</text>
+<rect x="114.0" y="1330" width="187.7" height="20" rx="10" class="gate"/><text x="124.0" y="1344" class="gatet">G5 · a review panel decides</text>
+<text x="97.0" y="1372" class="arrow">→</text>
+<text x="114.0" y="1372" class="mono">output-hygiene</text>
+<text x="92.0" y="1400" class="ends"><tspan class="endsl">Ends with</tspan> a document ready for its reader</text>
+<rect x="442.0" y="1164" width="354.0" height="258" rx="12" class="card dashed"/>
+<text x="462.0" y="1190" class="label" fill="#57534e">APPLY</text>
+<rect x="719.7" y="1176" width="56.3" height="20" rx="10" fill="#57534e" fill-opacity=".08" stroke="#57534e" stroke-opacity=".35"/><text x="727.7" y="1190" class="chip" fill="#57534e">career</text>
+<text x="462.0" y="1218" class="h">Apply for a job</text>
+<text x="462.0" y="1242" class="muted"><tspan class="startl">Start here when</tspan> One person, one job posting,</text>
+<text x="462.0" y="1260" class="muted">one resume.</text>
+<text x="462.0" y="1288" class="mono">job-fit-analysis</text>
+<text x="584.1" y="1288" class="arrow">→</text>
+<rect x="601.1" y="1274" width="113.2" height="20" rx="10" class="gate"/><text x="611.1" y="1288" class="gatet">G6 · you decide</text>
+<text x="467.0" y="1316" class="arrow">→</text>
+<text x="484.0" y="1316" class="mono">resume-tailor</text>
+<text x="584.2" y="1316" class="arrow">→</text>
+<text x="601.2" y="1316" class="mono">cover-letter</text>
+<text x="467.0" y="1344" class="arrow">→</text>
+<text x="484.0" y="1344" class="mono">application-form-answers</text>
+<text x="467.0" y="1372" class="arrow">→</text>
+<text x="484.0" y="1372" class="mono">output-hygiene</text>
+<text x="591.5" y="1372" class="arrow">→</text>
+<rect x="608.5" y="1358" width="125.6" height="20" rx="10" class="gate"/><text x="618.5" y="1372" class="gatet">G6.1 · you decide</text>
+<text x="462.0" y="1400" class="ends"><tspan class="endsl">Ends with</tspan> an application ready to send</text>
+<text x="72" y="1456" class="section">PACKS FOR ANY STAGE</text>
+<rect x="72.0" y="1470" width="144.4" height="24" rx="12" class="pack"/><text x="82.0" y="1486" class="mono">stakeholder-comms</text>
+<rect x="224.4" y="1470" width="63.9" height="24" rx="12" class="pack"/><text x="234.4" y="1486" class="mono">design</text>
+<rect x="296.4" y="1470" width="122.5" height="24" rx="12" class="pack"/><text x="306.4" y="1486" class="mono">ai-engineering</text>
+<rect x="426.8" y="1470" width="100.5" height="24" rx="12" class="pack"/><text x="436.8" y="1486" class="mono">api-builder</text>
+<rect x="535.4" y="1470" width="93.2" height="24" rx="12" class="pack"/><text x="545.4" y="1486" class="mono">converters</text>
+<rect x="636.6" y="1470" width="144.4" height="24" rx="12" class="pack"/><text x="646.6" y="1486" class="mono">experience-design</text>
+<rect x="72.0" y="1502" width="78.6" height="24" rx="12" class="pack"/><text x="82.0" y="1518" class="mono">research</text>
+<rect x="158.6" y="1502" width="78.6" height="24" rx="12" class="pack"/><text x="168.6" y="1518" class="mono">trackers</text>
+<rect x="245.1" y="1502" width="122.5" height="24" rx="12" class="pack"/><text x="255.1" y="1518" class="mono">data-analytics</text>
+<rect x="375.6" y="1502" width="42.0" height="24" rx="12" class="pack"/><text x="385.6" y="1518" class="mono">grc</text>
+<rect x="425.6" y="1502" width="115.2" height="24" rx="12" class="pack"/><text x="435.6" y="1518" class="mono">infra-as-code</text>
+<rect x="548.7" y="1502" width="144.4" height="24" rx="12" class="pack"/><text x="558.7" y="1518" class="mono">skill-engineering</text>
+<text x="72" y="1554" class="foot">Generated from each loop.json by build_loops.py. Codes like G3 are what a loop prints when it stops at a gate.</text>
+</svg>

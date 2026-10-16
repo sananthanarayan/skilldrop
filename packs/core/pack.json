@@ -37,7 +37,7 @@
         "skill": "doc-critique",
         "you_do": "Hand over the draft you wrote from the brief, by hand or with any generator skill.",
         "you_get": "A critique that opens with a verdict and lists findings as blocker, major, minor or nit, each pointing to the section and suggesting a fix.",
-        "decide": "Gate G4: SHIP IT or SHIP WITH CHANGES moves on; MAJOR REWRITE sends you back to the brief; WRONG ARTIFACT means you need a different kind of document."
+        "decide": "Gate G5: SHIP IT or SHIP WITH CHANGES moves on; MAJOR REWRITE sends you back to the brief; WRONG ARTIFACT means you need a different kind of document."
       },
       {
         "skill": "output-hygiene",

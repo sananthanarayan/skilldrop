@@ -1,16 +1,20 @@
 ---
 title: Skills that ship scripts
-summary: The two skills with executable helpers — what they need on PATH, what environment variables they read, and how to invoke them from Claude Code or any other IDE.
+summary: Where a skill with scripts declares what they need, which two need packages beyond the standard library, and how to invoke a skill from Claude Code or any other IDE.
 kind: reference
 ---
 
 # Skills that ship scripts
 
-### Skill Usage
+Many skills ship helper scripts in a `scripts/` folder, and each one declares what its scripts need in its own `manifest.json`: `deps` for packages, `env` for environment variables, and `permissions` for the hosts, commands and files the scripts touch. You can read that block before you install.
+
+Most scripts run on the Python standard library. Two need a package: `deck-builder` (`python-pptx`) and `figma-diagrams` (`requests`). [Installing dependencies](../how-to/install-per-ide.md#installing-dependencies) covers both.
+
+## Invoke a skill
 
 All skills are invoked in chat. Arguments are passed as plain text after the skill's trigger phrase (or via `$ARGUMENTS` when invoked as a slash command in Claude Code).
 
-#### `architecture-diagrams`
+### `architecture-diagrams`
 
 Natural-language trigger (works in any IDE that has the skill installed):
 
@@ -24,7 +28,7 @@ Slash-command form (Claude Code):
 
 Everything after the slash command becomes `$ARGUMENTS` inside the skill.
 
-#### `figma-diagrams`
+### `figma-diagrams`
 
 Natural-language trigger:
 

@@ -2,6 +2,7 @@
 title: Use the Product manager pack
 summary: Install the Product manager pack, run its first task, and follow a typical session step by step.
 kind: how-to
+stage: discover
 ---
 
 # Use the Product manager pack

@@ -1185,7 +1185,7 @@ a {{ color:var(--accent-700); }}
     <h2>The agent does the work. The decisions you can't undo stay yours.</h2>
     <p class="lede">Five loops run skills in order and stop at a gate before anything moves on. The cheaper the mistake, the more a script decides; the harder it is to undo, the more it waits for you.</p>
     <ol class="flow">{flow_steps}</ol>
-    <p class="flow__more">Plus <a href="loops/ship-a-draft/"><code>ship-a-draft</code></a>, which wraps any document in intake before and critique after. <a href="loops/">Every loop &rarr;</a></p>
+    <p class="flow__more">Plus <a href="loops/ship-a-draft/"><code>ship-a-draft</code></a>, which wraps any document in intake before and critique after. <a href="docs/explanation/operating-model.html">The operating model on one page</a> · <a href="loops/">Every loop &rarr;</a></p>
   </div>
 </section>
 

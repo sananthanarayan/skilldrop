@@ -122,11 +122,11 @@ Take one job posting and one resume to an application ready to send — an hones
 
 | Stage | Skills | Gate |
 |---|---|---|
-| fit | `job-fit-analysis` | G5 human: PROCEED / PROCEED WITH CONDITIONS / RECONSIDER / BLOCKED |
+| fit | `job-fit-analysis` | G6 human: PROCEED / PROCEED WITH CONDITIONS / RECONSIDER / BLOCKED |
 | tailor | `resume-tailor` | — |
 | letter | `cover-letter` | — |
 | form | `application-form-answers` | — |
-| confirm | `output-hygiene` | G6 human: READY / NOT READY / BLOCKED |
+| confirm | `output-hygiene` | G6.1 human: READY / NOT READY / BLOCKED |
 
 Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/career/loops/apply/LOOP.md)
 

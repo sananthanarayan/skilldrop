@@ -50,7 +50,7 @@ A session takes about 20–45 minutes.
    **You decide:** Answer or explicitly accept each missing field before drafting; the brief never fills them in for you.
 2. **`doc-critique`**: Hand over the draft you wrote from the brief, by hand or with any generator skill.
    You get: A critique that opens with a verdict and lists findings as blocker, major, minor or nit, each pointing to the section and suggesting a fix.
-   **You decide:** Gate G4: SHIP IT or SHIP WITH CHANGES moves on; MAJOR REWRITE sends you back to the brief; WRONG ARTIFACT means you need a different kind of document.
+   **You decide:** Gate G5: SHIP IT or SHIP WITH CHANGES moves on; MAJOR REWRITE sends you back to the brief; WRONG ARTIFACT means you need a different kind of document.
 3. **`output-hygiene`**: Run it on the settled draft and say where it is going (markdown, commit message, plain text).
    You get: The draft with invisible Unicode, provenance trailers and chat closers stripped, prose tells quoted with rewrites, and a 'Not touched' list.
 
@@ -64,7 +64,7 @@ A loop runs the skills in order and stops at each gate for a verdict. Install an
 npx skilldrop-cli install --loop --pack core
 ```
 
-- **ship-a-draft**: Take raw mess to a stakeholder-ready artifact by wrapping any skilldrop generator in the two passes either side of it — structured intake before, critique and machine-residue scrub after. Say "run the ship-a-draft loop on this". Stages: intake → draft → critique [G4] → polish.
+- **ship-a-draft**: Take raw mess to a stakeholder-ready artifact by wrapping any skilldrop generator in the two passes either side of it — structured intake before, critique and machine-residue scrub after. Say "run the ship-a-draft loop on this". Stages: intake → draft → critique [G5] → polish.
 
 ## Next
 

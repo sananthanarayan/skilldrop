@@ -25,7 +25,7 @@
       "intent": "Review the draft against the same rubric the generator was held to.",
       "skills": ["doc-critique"],
       "gate": {
-        "id": "G4",
+        "id": "G5",
         "kind": "review",
         "verdicts": ["SHIP IT", "SHIP WITH CHANGES", "MAJOR REWRITE", "WRONG ARTIFACT", "BLOCKED"],
         "revise_to": "intake"

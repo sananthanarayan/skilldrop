@@ -31,7 +31,7 @@
       "intent": "Analyse blamelessly and emit runbook deltas. An incident that changes no procedure has not been learned from.",
       "skills": ["postmortem-generator"],
       "gate": {
-        "id": "G3",
+        "id": "G4",
         "kind": "human",
         "verdicts": ["PROCEED", "PROCEED WITH CONDITIONS", "REVISE", "BLOCKED"],
         "revise_to": "document"

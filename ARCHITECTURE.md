@@ -38,7 +38,7 @@ which is why a loop installs into the skills directory and becomes invokable wit
 needing a loop primitive of its own. The cost of that choice: loops and skills share one
 namespace, so `validate.py` refuses a name collision.
 
-### The four loops are separated by reversibility
+### The five lifecycle loops are separated by reversibility
 
 Not by team, not by phase. The question is *how expensive is the mistake to unwind* — which
 is also what determines who is allowed to decide:
@@ -47,13 +47,20 @@ is also what determines who is allowed to decide:
 |---|---|---|
 | `discover` | a re-brief | **G0** human |
 | `design` | months, unwound in code | **G1** review panel |
-| `build` | a revert | **G2** mechanical |
-| `operate` | live users; irreversible | **G3** human |
+| `build` | a revert | **G2** mechanical, then **G2.1** human |
+| `release` | users and data, often irreversible | **G3** review, then **G3.1** human |
+| `operate` | live users; irreversible | **G4** human |
 
-`ship-a-draft` is a **wrapper**, not a lifecycle stage: its middle is any generator, chosen at
-run time. Every gate answers from one shared vocabulary
+A gate code reads in lifecycle order: the whole number is the loop's place (G0 to G4), and a
+decimal is a second gate inside the same loop. Two loops sit outside the lifecycle and take
+the next numbers: `ship-a-draft` (**G5**) is a **wrapper** whose middle is any generator,
+chosen at run time, and `apply` (**G6**, **G6.1**) serves one person rather than a team
+(RFC-0044). Every gate answers from one shared vocabulary
 ([`contracts/terminals.json`](contracts/terminals.json)) in five classes — pass, conditional,
 revise, redirect, blocked — so a gate cannot invent a new word for an outcome that has one.
+
+The [operating model](guides/explanation/operating-model.md) draws all of this on one page
+for users: the stages, the gates, and the packs that work at any stage.
 
 ## The install contract
 
@@ -82,12 +89,12 @@ AGENTS.md: what is mechanical, and what is human judgment.
 |---|---|---|
 | `validate.py` | locally + every PR | contracts, name triples, two-way pack/outcome/loop membership, `related` ↔ SKILL.md sync, `handoff` ⊆ `related`, tier sync, gate/verdict rules, reference + link integrity, README coverage |
 | `node bin/skilldrop.js validate` | locally + every PR | structural check from the *installer's* point of view — including third-party catalogues |
-| `build_loops.py --check` | via validate.py | generated diagrams match `loop.json` |
+| `build_loops.py --check` | via validate.py | generated diagrams, including the operating-model picture, match `loop.json` |
 | `build_marketplace.py --check` | via validate.py + `plugins.yml` | committed `.claude-plugin/` matches its generator |
 | `build_site.py --check` | `pages.yml` | the rendered catalogue matches the manifests |
 
-**One declared producer per generated path.** `docs/loops/*.mmd` and the README's Mermaid
-blocks both come from `loop.json`; `.claude-plugin/` comes from `package.json` + the `packs/` folders.
+**One declared producer per generated path.** `docs/loops/*.mmd`, the loop reference's Mermaid
+blocks and `docs/loops/operating-model.svg` all come from `loop.json`; `.claude-plugin/` comes from `package.json` + the `packs/` folders.
 Hand-editing any of them fails a check. This rule exists because the repo previously carried
 two `.mmd` files that duplicated two README blocks with no producer relationship — editing
 one silently left the other stale.
@@ -109,12 +116,13 @@ one silently left the other stale.
 ## Repository map
 
 ```
-packs/<pack>/ 8 packs: skills/, loops/, pack.json   catalogue.json  pack order + outcomes
+packs/<pack>/ one per pack: skills/, loops/, pack.json   catalogue.json  pack order + outcomes
 agents/       3 reviewer subagents contracts/    machine-readable schemas
 catalog.py    the one loader       model-routing.json  tier per skill + provider map
 bin/          the CLI              guides/       Diátaxis how-to / reference / explanation
 docs/rfcs/    decisions            docs/loops/   generated diagrams
-build_site.py build_pages.py build_marketplace.py build_loops.py  validate.py  route.py  pack.py
+build_site.py build_pages.py build_docs.py build_catalogue.py build_marketplace.py
+build_loops.py build_pack_guides.py build_llms.py  validate.py  route.py  pack.py
 ```
 
 Anything outside `packs/`, `agents/`, and `contracts/` is repo policy or hygiene.

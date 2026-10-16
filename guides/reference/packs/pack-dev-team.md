@@ -2,6 +2,7 @@
 title: Dev team pack reference
 summary: Every skill in the Dev team pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 kind: reference
+stage: build
 ---
 
 # Dev team pack reference
@@ -415,9 +416,9 @@ Take merged code to live users through a planned, reversible rollout — plan th
 | Stage | Skills | Gate |
 |---|---|---|
 | plan | `migration-plan` | — |
-| ready | `launch-readiness` | G2.5 review: PROCEED / PROCEED WITH CONDITIONS / REVISE / BLOCKED |
+| ready | `launch-readiness` | G3 review: PROCEED / PROCEED WITH CONDITIONS / REVISE / BLOCKED |
 | announce | `release-notes` | — |
-| go | `council-review` | G2.6 human: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / BLOCKED |
+| go | `council-review` | G3.1 human: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / BLOCKED |
 
 Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/dev-team/loops/release/LOOP.md)
 

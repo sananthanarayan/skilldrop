@@ -2,6 +2,7 @@
 title: From story to merged code — the dev-team workflow
 summary: A complete dev-team session: split the story, implement with checkpoints, gate with the review panel, document what shipped.
 kind: tutorial
+stage: build
 ---
 
 # From story to merged code — the dev-team workflow
@@ -18,7 +19,7 @@ npx skilldrop-cli install --pack dev-team --panel review
 
 ---
 
-## Step 1 — Split the story
+## Split the story
 
 **Skill:** `user-story-splitter`
 
@@ -30,7 +31,7 @@ A vague story produces a vague implementation. `user-story-splitter` breaks one 
 
 ---
 
-## Step 2 — Implement
+## Implement
 
 **Skill:** `feature-implement-loop`
 
@@ -47,7 +48,7 @@ If a checkpoint fails its own check, the loop re-runs from that point — not fr
 
 ---
 
-## Step 3 — Review
+## Review
 
 **Skill:** `pre-merge-review`
 
@@ -64,7 +65,7 @@ A finding from any reviewer is a blocking issue. The report shows which reviewer
 
 ---
 
-## Step 4 — Document
+## Document
 
 **Skill:** `release-notes`
 

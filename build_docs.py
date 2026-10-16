@@ -18,6 +18,8 @@ import sys
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 GUIDES_DIR = os.path.join(ROOT, "guides")
+
+from build_loops import LIFECYCLE, COLOUR  # stage order, headings and colours (RFC-0044)
 REPO_URL = "https://github.com/sananthanarayan/skilldrop"
 SITE_URL = "https://sananthanarayan.github.io/skilldrop/"
 
@@ -29,6 +31,11 @@ KIND_LABELS = {
     "reference":   "Reference",
     "explanation": "Explanation",
 }
+# The sidebar opens with these pages, in this order, then the five stages, then everything
+# else by kind (RFC-0044). Each entry is (kind, slug); a missing one fails the build.
+START = [("explanation", "operating-model"), ("how-to", "install"), ("how-to", "install-per-ide"),
+         ("tutorial", "follow-a-change-through-the-loops")]
+
 KIND_TAGLINES = {
     "tutorial":    "Learn by doing something real.",
     "how-to":      "I have a goal — what are the steps?",
@@ -141,6 +148,25 @@ a{color:var(--accent-700);}
 .content td:first-child{white-space:nowrap;}
 .content th{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--fg-muted);}
 .content blockquote{margin:1rem 0;padding:.2rem 1rem;border-left:3px solid var(--accent-700);color:var(--fg-muted);}
+/* stages (RFC-0044): each stage keeps its colour from the operating-model picture */
+.sidebar .side-h{font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--fg-muted);margin:0 0 .6rem;}
+.sidebar details.stage{border-left:3px solid var(--stage);padding-left:.7rem;margin-bottom:.8rem;}
+.sidebar details.stage summary{color:var(--stage);}
+.sidebar .stage-n{display:inline-block;min-width:1.1rem;}
+.stage-chip{display:inline-block;margin:0 0 .6rem;padding:.15rem .6rem;border-radius:999px;font-size:.72rem;
+  font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stage);
+  border:1px solid var(--stage);}
+.content figure{margin:1.5rem 0;}
+.content figure img{display:block;width:100%;height:auto;}
+.stage-cards{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));}
+.stage-card{background:var(--card);border:1px solid var(--border);border-top:4px solid var(--stage);
+  border-radius:var(--r);padding:1rem 1.1rem;}
+.stage-card h3{margin:0;font-size:.95rem;color:var(--stage);}
+.stage-card p{margin:.2rem 0 .7rem;font-size:.82rem;color:var(--fg-muted);line-height:1.45;}
+.stage-card ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.35rem;font-size:.84rem;}
+.stage-card a{color:var(--accent-700);text-decoration:none;}
+.stage-card a:hover{text-decoration:underline;}
 /* search */
 .search-wrap{margin:1.5rem 0;}
 #docs-search{width:100%;max-width:520px;padding:.7rem 1rem;font-size:1rem;
@@ -238,6 +264,24 @@ def _inline(text, src=None, docs_base=None):
     parts.append(_esc(text[pos:]))
     return "".join(parts)
 
+# A diagram on a line of its own: ![alt](src), optionally wrapped in a link to the full size.
+_FIGURE = re.compile(r"^\[?!\[([^\]]*)\]\(([^)\s]+)\)(?:\]\(([^)\s]+)\))?$")
+# SVGs a guide shows, keyed by their path under docs/: render_all publishes each beside the pages.
+ASSETS = {}
+
+
+def _asset(target, src):
+    """A repo SVG a guide shows is published at docs/img/<name>; anything else passes through."""
+    if not src or re.match(r"^([a-z]+:|#|/)", target) or not target.endswith(".svg"):
+        return target
+    repo_path = os.path.normpath(os.path.join(os.path.dirname(src), target))
+    full = os.path.join(ROOT, repo_path)
+    if not os.path.isfile(full):
+        return target
+    ASSETS["img/" + os.path.basename(full)] = full
+    return "../img/" + os.path.basename(full)
+
+
 _TABLE_SEP = re.compile(r"^\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$")
 
 
@@ -313,6 +357,16 @@ def render_md(text, src=None, docs_base=None):
                 i += 1
             i += 1
             continue
+        m = _FIGURE.match(raw.strip())
+        if m:
+            flush_all()
+            img = _asset(m.group(2), src)
+            fig = f'<img src="{_esc(img)}" alt="{_esc(m.group(1))}" loading="lazy">'
+            if m.group(3):
+                fig = f'<a href="{_esc(_asset(m.group(3), src))}">{fig}</a>'
+            out.append(f"<figure>{fig}</figure>")
+            i += 1
+            continue
         m = re.match(r"^(#{1,6})\s+(.*)", raw)
         if m:
             flush_all()
@@ -374,6 +428,7 @@ def collect_guides():
                 "title":    meta.get("title", slug),
                 "summary":  meta.get("summary", ""),
                 "kind":     kind,
+                "stage":    meta.get("stage", ""),
                 "slug":     slug,
                 "rel_path": rel_path,
                 "abs_path": abs_path,
@@ -427,6 +482,33 @@ def _page(title, header_html, body_html, depth=2, desc="", url="", extra_head=""
 </body>
 </html>"""
 
+def _groups(by_kind):
+    """The sidebar's order (RFC-0044): Start here, then one group per lifecycle stage (its loop's
+    page, then the pages filed under that stage), then every remaining page by Diátaxis kind.
+    Each guide appears once. Returns [(key, label, [guide | ("loop", name)])]."""
+    every = {(g["kind"], g["slug"]): g for k in KINDS for g in by_kind.get(k, [])}
+    missing = [f"{k}/{s}" for k, s in START if (k, s) not in every]
+    if missing:
+        raise SystemExit(f"build_docs.py: START names guides that do not exist: {', '.join(missing)}")
+    placed = set(START)
+    groups = [("start", "Start here", [every[ks] for ks in START])]
+    for name in LIFECYCLE:
+        staged = [g for ks, g in every.items() if g["stage"] == name and ks not in placed]
+        staged.sort(key=lambda g: (bool(g.get("group")), KINDS.index(g["kind"])))
+        placed |= {(g["kind"], g["slug"]) for g in staged}
+        groups.append((f"stage:{name}", name, [("loop", name)] + staged))
+    for kind in KINDS:
+        rest = [g for g in by_kind.get(kind, []) if (g["kind"], g["slug"]) not in placed]
+        if rest:
+            groups.append((kind, KIND_LABELS[kind], rest))
+    return groups
+
+
+def _order(by_kind):
+    """Every guide in sidebar order, for previous/next."""
+    return [g for _, _, items in _groups(by_kind) for g in items if isinstance(g, dict)]
+
+
 def _sidebar_html(by_kind, current_kind, current_slug, depth):
     """depth=1 for docs/index.html, depth=2 for docs/kind/slug.html"""
     prefix = "../" * (depth - 1)
@@ -437,29 +519,47 @@ def _sidebar_html(by_kind, current_kind, current_slug, depth):
             '<a class="js-search sidebar-search" href="../index.html">Search the site'
             '<kbd>/</kbd></a>'
         )
-    for kind in KINDS:
-        guides = by_kind.get(kind, [])
-        if not guides:
+
+    def link(g):
+        href = f"{prefix}{g['kind']}/{g['slug']}.html"
+        aria = ' aria-current="page"' if g["kind"] == current_kind and g["slug"] == current_slug else ""
+        return f'<li><a href="{href}"{aria}>{_esc(g["title"])}</a></li>'
+
+    for n, (key, label, items) in enumerate(_groups(by_kind)):
+        if key.startswith("stage:"):
+            if key == f"stage:{next(iter(LIFECYCLE))}":
+                parts.append('<p class="side-h">Through the stages</p>')
+            name = key.split(":", 1)[1]
+            stage_no = list(LIFECYCLE).index(name) + 1
+            parts.append(f'<details open class="stage" style="--stage:{COLOUR[name]}">'
+                         f'<summary><span class="stage-n">{stage_no}</span>{_esc(name.capitalize())}</summary><ul>')
+            for it in items:
+                if isinstance(it, tuple):
+                    parts.append(f'<li><a href="{"../" * depth}loops/{it[1]}/">The {it[1]} loop</a></li>')
+                else:
+                    parts.append(link(it))
+            parts.append("</ul></details>")
             continue
-        label = KIND_LABELS[kind]
-        parts.append(f'<details open><summary>{label}</summary><ul>')
-        grouped = [g for g in guides if g.get("group")]
-        for g in [g for g in guides if not g.get("group")]:
-            href = f"{prefix}{g['kind']}/{g['slug']}.html"
-            current = g["kind"] == current_kind and g["slug"] == current_slug
-            aria = ' aria-current="page"' if current else ""
-            parts.append(f'<li><a href="{href}"{aria}>{_esc(g["title"])}</a></li>')
+        parts.append(f'<details open><summary>{_esc(label)}</summary><ul>')
+        grouped = [g for g in items if g.get("group")]
+        for g in [g for g in items if not g.get("group")]:
+            parts.append(link(g))
         if grouped:
             inside = any(g["kind"] == current_kind and g["slug"] == current_slug for g in grouped)
             parts.append(f'<li><details{" open" if inside else ""}><summary>Per pack ({len(grouped)})</summary><ul>')
-            for g in grouped:
-                href = f"{prefix}{g['kind']}/{g['slug']}.html"
-                aria = ' aria-current="page"' if g["kind"] == current_kind and g["slug"] == current_slug else ""
-                parts.append(f'<li><a href="{href}"{aria}>{_esc(g["title"])}</a></li>')
+            parts += [link(g) for g in grouped]
             parts.append("</ul></details></li>")
         parts.append("</ul></details>")
     parts.append("</nav>")
     return "\n".join(parts)
+
+def _stage_chip(guide):
+    name = guide.get("stage")
+    if name not in LIFECYCLE:
+        return ""
+    return (f'<p class="stage-chip" style="--stage:{COLOUR[name]}">'
+            f'Stage {list(LIFECYCLE).index(name) + 1} · {_esc(name)}</p>')
+
 
 def build_guide_page(guide, by_kind, out_dir):
     text = open(guide["abs_path"], encoding="utf-8").read()
@@ -485,7 +585,7 @@ def build_guide_page(guide, by_kind, out_dir):
         toc = ('<aside class="toc" aria-label="On this page"><p class="toc__h">On this page</p><ul>'
                + "".join(f'<li class="toc__{lvl}"><a href="#{_esc(hid)}">{txt}</a></li>' for lvl, hid, txt in heads)
                + "</ul></aside>")
-    order = [g for k in KINDS for g in by_kind.get(k, [])]
+    order = _order(by_kind)
     at = next(n for n, g in enumerate(order) if g["slug"] == guide["slug"] and g["kind"] == guide["kind"])
     prev_g = order[at - 1] if at > 0 else None
     next_g = order[at + 1] if at + 1 < len(order) else None
@@ -498,6 +598,7 @@ def build_guide_page(guide, by_kind, out_dir):
             f' · <a href="{REPO_URL}/blob/main/{_esc(rel)}">View source</a></p>')
     content = (
         f'<main class="content" id="main">'
+        f'{_stage_chip(guide)}'
         f'<h1>{_esc(guide["title"])}</h1>'
         f'<p class="summary">{_esc(guide["summary"])}</p>'
         f'{body_html}'
@@ -524,7 +625,33 @@ def build_portal_index(by_kind, out_dir):
         '<span class="sep">·</span><span>docs</span>'
         "</header>"
     )
-    cards_html = []
+    groups = _groups(by_kind)
+    start = groups[0][2]
+    cards_html = [
+        '<section class="kind-section"><h2>Start here</h2>'
+        '<p class="kind-tagline">The operating model, then install, then one change followed end to end.</p>'
+        '<div class="doc-cards">'
+        + "".join(f'<div class="doc-card"><h3>{_esc(g["title"])}</h3><p>{_esc(g["summary"])}</p>'
+                  f'<a class="read" href="{g["kind"]}/{g["slug"]}.html">Read &rarr;</a></div>' for g in start)
+        + "</div></section>"
+    ]
+    stage_cards = []
+    for key, _, items in groups:
+        if not key.startswith("stage:"):
+            continue
+        name = key.split(":", 1)[1]
+        links = "".join(
+            f'<li><a href="../loops/{it[1]}/">The {it[1]} loop</a></li>' if isinstance(it, tuple)
+            else f'<li><a href="{it["kind"]}/{it["slug"]}.html">{_esc(it["title"])}</a></li>'
+            for it in items)
+        stage_cards.append(
+            f'<div class="stage-card" style="--stage:{COLOUR[name]}">'
+            f'<h3>{list(LIFECYCLE).index(name) + 1} · {_esc(name)}</h3>'
+            f'<p>{_esc(LIFECYCLE[name][0])}</p><ul>{links}</ul></div>')
+    cards_html.append(
+        '<section class="kind-section"><h2>Through the stages</h2>'
+        '<p class="kind-tagline">Each stage\'s loop, and the guides for the work done there.</p>'
+        f'<div class="stage-cards">{"".join(stage_cards)}</div></section>')
     for kind in KINDS:
         guides = by_kind.get(kind, [])
         if not guides:
@@ -584,8 +711,8 @@ def build_portal_index(by_kind, out_dir):
         '<main class="portal-inner" id="main">'
         '<div class="portal-hero">'
         '<h1>Documentation</h1>'
-        '<p>Long-form guides split by Diátaxis kind. '
-        'Start with a tutorial to learn by doing, or jump straight to a how-to for a specific goal.</p>'
+        '<p>Start with the operating model, then follow your work through the five stages. '
+        'Every guide is also listed below by kind: tutorials to learn by doing, how-tos for a goal.</p>'
         '</div>'
         '<div class="search-wrap">'
         '<input id="docs-search" type="search" placeholder="Search guides…" autocomplete="off" aria-label="Search guides">'
@@ -637,6 +764,9 @@ def render_all(out_dir):
     # Portal index
     idx_path, idx_html = build_portal_index(by_kind, out_dir)
     pages["index.html"] = idx_html
+    # Diagrams the guides show, published beside the pages that link to them.
+    for rel, full in sorted(ASSETS.items()):
+        pages[rel] = open(full, encoding="utf-8").read()
     return pages, search_index
 
 def main():
