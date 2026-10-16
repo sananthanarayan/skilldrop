@@ -12,6 +12,7 @@ Outputs:
   (the README carried these until RFC-0035 moved the loop reference into a guide)
   docs/loops/operating-model.svg           — every loop on one picture (RFC-0044), drawn by
                                              the operating-model guide and the site
+  docs/loops/operating-model-dark.svg      — the same picture for a dark page
 
 Usage:
   python3 build_loops.py            # write
@@ -100,6 +101,8 @@ def build():
 # only the plain-English lines for each loop live here, and a loop without them fails --check.
 SVG_REL = "docs/loops/operating-model.svg"
 SVG_PATH = os.path.join(ROOT, *SVG_REL.split("/"))
+SVG_DARK_REL = "docs/loops/operating-model-dark.svg"  # the same picture for a dark page
+SVG_DARK_PATH = os.path.join(ROOT, *SVG_DARK_REL.split("/"))
 
 # loop: (heading, start here when, ends with). Dict order is lifecycle order.
 LIFECYCLE = {
@@ -123,6 +126,20 @@ OUTSIDE = {
 COLOUR = {"discover": "#6d4aff", "design": "#2563eb", "build": "#15803d", "release": "#be185d",
           "operate": "#0e7490"}
 NEUTRAL = "#57534e"
+# The dark picture: the same stage hues, lifted so they read on a dark card.
+COLOUR_DARK = {"discover": "#a08cff", "design": "#6f9dff", "build": "#3dbb7c", "release": "#f06ba1",
+               "operate": "#2bb4c8"}
+NEUTRAL_DARK = "#b5b0ab"
+PALETTE = {
+    "light": {"bg": "#fafaf9", "title": "#17171a", "sub": "#6a6a66", "h": "#17171a", "muted": "#5c5c58",
+              "mono": "#2a2a2e", "arrow": "#9a9a94", "ends": "#17171a", "startl": "#3f3f3c", "card": "#fff",
+              "cardline": "#e4e4e0", "dash": "#fafaf9", "dashline": "#b8b8b2", "rail": "#d6d3e6",
+              "section": "#6a6a66", "pack": "#fff", "packline": "#d9d9d4", "foot": "#8a8a85"},
+    "dark": {"bg": "#16161b", "title": "#ececf1", "sub": "#a3a3ad", "h": "#ececf1", "muted": "#b3b3bc",
+             "mono": "#d4d4dc", "arrow": "#6b6b75", "ends": "#ececf1", "startl": "#d0d0d8", "card": "#1d1d23",
+             "cardline": "#2f2f38", "dash": "#18181d", "dashline": "#4a4a55", "rail": "#34344a",
+             "section": "#a3a3ad", "pack": "#1d1d23", "packline": "#3a3a44", "foot": "#8a8a94"},
+}
 WHO = {"mechanical": "a script decides", "review": "a review panel decides", "human": "you decide"}
 
 SANS = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif"
@@ -231,15 +248,18 @@ def _card(name, spec, pack, copy, colour, x, y, width, stage_no=None, dashed=Fal
     return out, h
 
 
-def operating_model_svg(specs, homes, pack_order):
-    """The whole picture as an SVG string. `homes` maps a loop to its pack."""
+def operating_model_svg(specs, homes, pack_order, dark=False):
+    """The whole picture as an SVG string. `homes` maps a loop to its pack; `dark` draws the
+    same picture for a dark page."""
+    pal = PALETTE["dark" if dark else "light"]
+    colour, neutral = (COLOUR_DARK, NEUTRAL_DARK) if dark else (COLOUR, NEUTRAL)
     body, desc = [], ["Five lifecycle loops, in order."]
     y = 112
     centres = []
     for n, (name, copy) in enumerate(LIFECYCLE.items(), 1):
-        part, h = _card(name, specs[name], homes[name], copy, COLOUR[name], CARD_X, y, CARD_W, stage_no=n)
+        part, h = _card(name, specs[name], homes[name], copy, colour[name], CARD_X, y, CARD_W, stage_no=n)
         body += part
-        centres.append((y + 22, COLOUR[name], n))
+        centres.append((y + 22, colour[name], n))
         gates = ", ".join(f'{g["id"]} where {WHO[g["kind"]]}' for g in
                           (st["gate"] for st in specs[name]["stages"] if "gate" in st))
         desc.append(f"Stage {n}, {name}, in the {homes[name]} pack: {copy[0]}. "
@@ -256,7 +276,7 @@ def operating_model_svg(specs, homes, pack_order):
     half = (CARD_W - 16) / 2
     tallest = 0
     for i, (name, copy) in enumerate(OUTSIDE.items()):
-        part, h = _card(name, specs[name], homes[name], copy, NEUTRAL, CARD_X + i * (half + 16), y, half,
+        part, h = _card(name, specs[name], homes[name], copy, neutral, CARD_X + i * (half + 16), y, half,
                         dashed=True)
         body += part
         tallest = max(tallest, h)
@@ -284,30 +304,31 @@ def operating_model_svg(specs, homes, pack_order):
     height = y + 22
 
     style = (f".s,text{{font-family:{SANS};}}"
-             f".title{{font-size:24px;font-weight:700;fill:#17171a;}}"
-             f".sub{{font-size:14px;fill:#6a6a66;}}"
+             f".title{{font-size:24px;font-weight:700;fill:{pal['title']};}}"
+             f".sub{{font-size:14px;fill:{pal['sub']};}}"
              f".label{{font-size:11px;font-weight:700;letter-spacing:.08em;}}"
-             f".h{{font-size:19px;font-weight:700;fill:#17171a;}}"
-             f".muted{{font-size:13px;fill:#5c5c58;}}"
-             f".mono,.chip{{font-family:{MONO};font-size:12px;fill:#2a2a2e;}}"
+             f".h{{font-size:19px;font-weight:700;fill:{pal['h']};}}"
+             f".muted{{font-size:13px;fill:{pal['muted']};}}"
+             f".mono,.chip{{font-family:{MONO};font-size:12px;fill:{pal['mono']};}}"
              f".chip{{font-size:11px;}}"
-             f".arrow{{font-size:13px;fill:#9a9a94;}}"
+             f".arrow{{font-size:13px;fill:{pal['arrow']};}}"
              f".gate{{fill:#FBE3A2;stroke:#D9971E;stroke-width:1.2;}}"
              f".gatet{{font-size:11.5px;font-weight:700;fill:#6B4500;}}"
-             f".ends{{font-size:13px;fill:#17171a;}}.endsl,.startl{{font-weight:700;}}.startl{{fill:#3f3f3c;}}"
-             f".card{{fill:#fff;stroke:#e4e4e0;}}.dashed{{fill:#fafaf9;stroke:#b8b8b2;stroke-dasharray:5 4;}}"
-             f".rail{{stroke:#d6d3e6;stroke-width:3;}}"
+             f".ends{{font-size:13px;fill:{pal['ends']};}}.endsl,.startl{{font-weight:700;}}.startl{{fill:{pal['startl']};}}"
+             f".card{{fill:{pal['card']};stroke:{pal['cardline']};}}"
+             f".dashed{{fill:{pal['dash']};stroke:{pal['dashline']};stroke-dasharray:5 4;}}"
+             f".rail{{stroke:{pal['rail']};stroke-width:3;}}"
              f".num{{font-size:13px;font-weight:700;fill:#fff;text-anchor:middle;}}"
-             f".section{{font-size:11px;font-weight:700;letter-spacing:.08em;fill:#6a6a66;}}"
-             f".pack{{fill:#fff;stroke:#d9d9d4;}}"
-             f".foot{{font-size:11.5px;fill:#8a8a85;}}")
+             f".section{{font-size:11px;font-weight:700;letter-spacing:.08em;fill:{pal['section']};}}"
+             f".pack{{fill:{pal['pack']};stroke:{pal['packline']};}}"
+             f".foot{{font-size:11.5px;fill:{pal['foot']};}}")
     head = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {height}" width="{W}" height="{height}" '
         f'role="img" aria-labelledby="om-title om-desc">',
         '<title id="om-title">How work moves through skilldrop</title>',
         f'<desc id="om-desc">{_x(" ".join(desc))}</desc>',
         f"<style>{style}</style>",
-        f'<rect width="{W}" height="{height}" rx="16" fill="#fafaf9"/>',
+        f'<rect width="{W}" height="{height}" rx="16" fill="{pal["bg"]}"/>',
         f'<text x="{RAIL_X - 14}" y="48" class="title">How work moves through skilldrop</text>',
         f'<text x="{RAIL_X - 14}" y="74" class="sub">Start at the stage your work is in. Each loop stops at its gold gates,'
         f' where a script,</text>',
@@ -327,7 +348,9 @@ def build_svg():
         return None, [f"{SVG_REL}: build_loops.py has no lines for loop '{m}' — add it to LIFECYCLE or OUTSIDE"
                       for m in missing] + [f"{SVG_REL}: build_loops.py names loop '{g}', which does not exist"
                                            for g in gone]
-    return operating_model_svg(specs, homes, catalog.pack_names()), []
+    order = catalog.pack_names()
+    return {SVG_PATH: operating_model_svg(specs, homes, order),
+            SVG_DARK_PATH: operating_model_svg(specs, homes, order, dark=True)}, []
 
 
 def readme_blocks(rendered):
@@ -373,12 +396,12 @@ def main():
     for e in svg_errors:
         print(f"build_loops: {e}", file=sys.stderr)
     missing = missing + svg_errors
-    if svg is not None:
-        current = open(SVG_PATH, encoding="utf-8").read() if os.path.exists(SVG_PATH) else None
-        if current != svg:
-            stale.append(SVG_REL)
+    for path, body in (svg or {}).items():
+        current = open(path, encoding="utf-8").read() if os.path.exists(path) else None
+        if current != body:
+            stale.append(os.path.relpath(path, ROOT))
             if not check:
-                open(SVG_PATH, "w", encoding="utf-8").write(svg)
+                open(path, "w", encoding="utf-8").write(body)
 
     if check:
         if stale or missing:
@@ -413,8 +436,8 @@ def stale():
     out += [f"{DIAGRAM_REL} (no markers for loop '{m}')" for m in missing]
     svg, svg_errors = build_svg()
     out += svg_errors
-    if svg is not None:
-        cur = open(SVG_PATH, encoding="utf-8").read() if os.path.exists(SVG_PATH) else None
-        if cur != svg:
-            out.append(SVG_REL)
+    for path, body in (svg or {}).items():
+        cur = open(path, encoding="utf-8").read() if os.path.exists(path) else None
+        if cur != body:
+            out.append(os.path.relpath(path, ROOT))
     return out

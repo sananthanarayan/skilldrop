@@ -33,6 +33,11 @@ jobs:
         run: python3 build_catalogue.py # stdlib only — writes build/catalogue/index.html
       - name: Generate the pack, skill and changelog pages
         run: python3 build_pages.py # stdlib only — writes build/packs/, build/skills/, build/changelog/
+      - name: Index the built site for full-text search
+        # Pagefind reads the HTML and writes build/pagefind/, which the nav's search dialog loads.
+        # A build-time tool only: nothing is added to package.json or the published package, and
+        # the version is pinned. The site still searches names and summaries without it.
+        run: npx --yes pagefind@1.5.2 --site build
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:

@@ -184,7 +184,7 @@ def collect():
         skills.append({
             "name": name,
             "path": catalog.rel(skill_dirs[name]),
-            "description": m["description"],
+            "description": md_plain(m["description"]),  # shown as text on cards, pages and previews
             "version": m["version"],
             "tier": m.get("model", {}).get("tier", ""),
             "rationale": m.get("model", {}).get("rationale", ""),
@@ -268,8 +268,9 @@ def inline_md(s):
     return re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", out)
 
 
-# Self-contained: literal values, not the page's CSS variables, because the catalogue, pack
-# and docs pages each carry their own stylesheet and the nav must look the same on all of them.
+# The nav, search and footer read the colour variables every page's stylesheet defines
+# (--card, --fg, --border, ...), with the light value as a fallback, so THEME_CSS below can
+# turn every page dark by redefining the variables alone.
 NAV_CSS = """/* nav — light, on every page; a hairline separates it from the content.
    Not sticky: the catalogue's filter bar owns top:0, and two sticky layers fight. */
 .skip-nav {
@@ -277,20 +278,20 @@ NAV_CSS = """/* nav — light, on every page; a hairline separates it from the c
   color:#0d0d0f; padding:.6rem 1rem; font-weight:600; border-radius:0 0 5px 0;
 }
 .skip-nav:focus { left:0; }
-.nav { background:#fff; color:#17171a; position:relative; border-bottom:1px solid #e4e4e0; }
+.nav { background:var(--card,#fff); color:var(--fg,#17171a); position:relative; border-bottom:1px solid var(--border,#e4e4e0); }
 .nav__inner {
   max-width:1140px; margin-inline:auto; padding:1.05rem clamp(1.25rem,5vw,2.5rem);
   display:flex; align-items:center; justify-content:space-between; gap:1.5rem;
 }
 .nav__logo {
-  font:700 1.06rem ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace; letter-spacing:-.02em; color:#17171a; text-decoration:none;
+  font:700 1.06rem ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace; letter-spacing:-.02em; color:var(--fg,#17171a); text-decoration:none;
 }
-.nav__logo:hover { color:#4c31d6; }
+.nav__logo:hover { color:var(--accent-700,#4c31d6); }
 .nav__links { display:flex; align-items:center; gap:1.15rem; margin:0; padding:0; list-style:none; }
-.nav__link[aria-current=page] { color:#17171a; box-shadow:0 2px 0 #7c5cff; }
-.nav__link { font-size:.87rem; font-weight:500; color:#3a3a3f; text-decoration:none; white-space:nowrap; }
-.nav__link:hover { color:#4c31d6; }
-.nav__link--ext { color:#6a6a66; }
+.nav__link[aria-current=page] { color:var(--fg,#17171a); box-shadow:0 2px 0 #7c5cff; }
+.nav__link { font-size:.87rem; font-weight:500; color:var(--fg-2,#3a3a3f); text-decoration:none; white-space:nowrap; }
+.nav__link:hover { color:var(--accent-700,#4c31d6); }
+.nav__link--ext { color:var(--fg-muted,#6a6a66); }
 .nav__cta {
   display:inline-block; padding:.5rem 1.05rem; border-radius:999px;
   background:#7c5cff; color:#0d0d0f; font-size:.87rem; font-weight:600; text-decoration:none;
@@ -304,7 +305,7 @@ NAV_CSS = """/* nav — light, on every page; a hairline separates it from the c
 }
 .nav__toggle::-webkit-details-marker { display:none; }
 .nav__burger, .nav__burger::before, .nav__burger::after {
-  content:""; display:block; width:22px; height:2px; background:#17171a; position:relative;
+  content:""; display:block; width:22px; height:2px; background:var(--fg,#17171a); position:relative;
   transition:transform .18s ease, background-color .18s ease;
 }
 .nav__burger::before { position:absolute; top:-7px; }
@@ -315,7 +316,7 @@ NAV_CSS = """/* nav — light, on every page; a hairline separates it from the c
 .nav__drawer {
   position:absolute; top:100%; left:0; right:0; z-index:10;
   display:flex; flex-direction:column; gap:1.05rem; margin:0; list-style:none;
-  background:#fff; border-top:1px solid #e4e4e0; border-bottom:1px solid #e4e4e0;
+  background:var(--card,#fff); border-top:1px solid var(--border,#e4e4e0); border-bottom:1px solid var(--border,#e4e4e0);
   padding:1.35rem clamp(1.25rem,5vw,2.5rem) 1.7rem;
 }
 .nav__drawer .nav__cta { display:block; text-align:center; margin-top:.4rem; }
@@ -325,27 +326,27 @@ NAV_CSS = """/* nav — light, on every page; a hairline separates it from the c
 }
 
 /* closing + footer */
-.closing { background:#f3f3f1; color:#17171a; padding-block:clamp(3.5rem,7vw,5.5rem); }
-.closing h2 { color:#17171a; }
-.closing .lede { color:#6a6a66; }
-.footer { background:#f3f3f1; color:#6a6a66; border-top:1px solid #e4e4e0; padding-top:.4rem; font-size:.85rem; padding-bottom:3.2rem; }
+.closing { background:var(--surface-alt,#f3f3f1); color:var(--fg,#17171a); padding-block:clamp(3.5rem,7vw,5.5rem); }
+.closing h2 { color:var(--fg,#17171a); }
+.closing .lede { color:var(--fg-muted,#6a6a66); }
+.footer { background:var(--surface-alt,#f3f3f1); color:var(--fg-muted,#6a6a66); border-top:1px solid var(--border,#e4e4e0); padding-top:.4rem; font-size:.85rem; padding-bottom:3.2rem; }
 .footer__inner {
   max-width:1140px; margin-inline:auto; padding-inline:clamp(1.25rem,5vw,2.5rem);
   padding-top:1.8rem;
   display:flex; flex-wrap:wrap; align-items:center; gap:1rem 1.6rem;
 }
-.footer__brand { margin:0; font:700 .95rem ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace; color:#17171a; letter-spacing:-.01em; }
+.footer__brand { margin:0; font:700 .95rem ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace; color:var(--fg,#17171a); letter-spacing:-.01em; }
 .footer__links { display:flex; flex-wrap:wrap; gap:1.35rem; }
 .footer__cols { display:grid; gap:1.6rem 2.6rem; flex-basis:100%;
   grid-template-columns:repeat(auto-fit,minmax(9rem,1fr)); margin-top:.6rem; }
 .footer__col h3 { font-size:.72rem; text-transform:uppercase; letter-spacing:.09em;
-  color:#6a6a66; margin:0 0 .6rem; font-weight:600; }
+  color:var(--fg-muted,#6a6a66); margin:0 0 .6rem; font-weight:600; }
 .footer__col ul { list-style:none; margin:0; padding:0; display:grid; gap:.42rem; }
-.footer__col a { color:#3a3a3f; text-decoration:none; }
-.footer__col a:hover { color:#4c31d6; text-decoration:underline; }
-.footer__links a { color:#3a3a3f; text-decoration:none; }
-.footer__links a:hover { color:#4c31d6; text-decoration:underline; }
-.footer__copy { margin:0; flex-basis:100%; color:#6a6a66; font-size:.8rem; }
+.footer__col a { color:var(--fg-2,#3a3a3f); text-decoration:none; }
+.footer__col a:hover { color:var(--accent-700,#4c31d6); text-decoration:underline; }
+.footer__links a { color:var(--fg-2,#3a3a3f); text-decoration:none; }
+.footer__links a:hover { color:var(--accent-700,#4c31d6); text-decoration:underline; }
+.footer__copy { margin:0; flex-basis:100%; color:var(--fg-muted,#6a6a66); font-size:.8rem; }
 
 /* ── motion ── */
 @keyframes fade-up {
@@ -404,51 +405,164 @@ SEARCH_CSS = """
 /* site search (RFC-0035 follow-up) — a nav button that opens a <dialog> over one JSON index */
 .nav__search {
   display:inline-flex; align-items:center; gap:.45rem; cursor:pointer; text-decoration:none;
-  font:500 .84rem/1 inherit; color:#3a3a3f; background:#f3f3f1;
-  border:1px solid #e4e4e0; border-radius:999px; padding:.42rem .75rem; white-space:nowrap;
+  font:500 .84rem/1 inherit; color:var(--fg-2,#3a3a3f); background:var(--surface-alt,#f3f3f1);
+  border:1px solid var(--border,#e4e4e0); border-radius:999px; padding:.42rem .75rem; white-space:nowrap;
 }
-.nav__search:hover { color:#17171a; border-color:#c9c9c4; }
+.nav__search:hover { color:var(--fg,#17171a); border-color:var(--border-strong,#c9c9c4); }
 .nav__search svg { width:14px; height:14px; }
-.nav__search kbd { font:600 .68rem ui-monospace,Menlo,monospace; border:1px solid #c9c9c4; border-radius:4px; padding:0 .3rem; }
+.nav__search kbd { font:600 .68rem ui-monospace,Menlo,monospace; border:1px solid var(--border-strong,#c9c9c4); border-radius:4px; padding:0 .3rem; }
 .sx {
   width:min(680px,calc(100vw - 2rem)); max-height:min(76vh,720px); margin:9vh auto auto; padding:0;
-  border:1px solid #e4e4e0; border-radius:14px; background:#fff; color:#17171a;
+  border:1px solid var(--border,#e4e4e0); border-radius:14px; background:var(--card,#fff); color:var(--fg,#17171a);
   box-shadow:0 24px 70px rgba(0,0,0,.35); overflow:hidden;
   font:400 1rem/1.5 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,sans-serif;
 }
 .sx[open] { display:flex; flex-direction:column; }
 .sx::backdrop { background:rgba(10,10,12,.55); backdrop-filter:blur(2px); }
-.sx__bar { display:flex; align-items:center; gap:.5rem; padding:.7rem .9rem; border-bottom:1px solid #e4e4e0; margin:0; }
+.sx__bar { display:flex; align-items:center; gap:.5rem; padding:.7rem .9rem; border-bottom:1px solid var(--border,#e4e4e0); margin:0; }
 .sx__bar input { flex:1; border:0; outline:0; font:inherit; font-size:1.05rem; background:transparent; color:inherit; padding:.35rem .2rem; }
-.sx__close { cursor:pointer; font:600 .72rem ui-monospace,Menlo,monospace; color:#6a6a66; background:none; border:1px solid #e4e4e0; border-radius:5px; padding:.25rem .45rem; }
-.sx__status { margin:0; padding:.55rem 1rem 0; font-size:.78rem; color:#6a6a66; }
+.sx__close { cursor:pointer; font:600 .72rem ui-monospace,Menlo,monospace; color:var(--fg-muted,#6a6a66); background:none; border:1px solid var(--border,#e4e4e0); border-radius:5px; padding:.25rem .45rem; }
+.sx__status { margin:0; padding:.55rem 1rem 0; font-size:.78rem; color:var(--fg-muted,#6a6a66); }
 .sx__results { list-style:none; margin:0; padding:.4rem .5rem .7rem; overflow-y:auto; }
 .sx__hit { display:grid; grid-template-columns:4.6rem 1fr; gap:.1rem .7rem; padding:.55rem .6rem; border-radius:8px; text-decoration:none; color:inherit; }
 .sx__hit:hover, .sx__hit.is-sel { background:rgba(124,92,255,.10); }
-.sx__kind { grid-row:span 2; align-self:start; font:600 .64rem ui-monospace,Menlo,monospace; text-transform:uppercase; letter-spacing:.06em; color:#4c31d6; padding-top:.2rem; }
+.sx__kind { grid-row:span 2; align-self:start; font:600 .64rem ui-monospace,Menlo,monospace; text-transform:uppercase; letter-spacing:.06em; color:var(--accent-700,#4c31d6); padding-top:.2rem; }
 .sx__title { font-weight:600; font-size:.95rem; }
-.sx__snip { font-size:.84rem; color:#6a6a66; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+.sx__snip { font-size:.84rem; color:var(--fg-muted,#6a6a66); overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
 .sx mark { background:rgba(124,92,255,.22); color:inherit; border-radius:2px; padding:0 1px; }
 @media (max-width:760px) { .nav__search span, .nav__search kbd { display:none; } }
 """
 NAV_CSS += SEARCH_CSS
 
+# Dark theme. It follows the system setting until the reader picks one with the nav toggle,
+# which is remembered in localStorage. Every page defines the same variables, so redefining
+# them on <html> is the whole theme; the rules after the palette cover the few colours that
+# are literal on purpose in light mode.
+_DARK_VARS = """
+  color-scheme:dark;
+  --n-50:#111114; --n-100:#18181d; --n-200:#2b2b33; --n-600:#a3a3ad; --n-900:#ececf1;
+  --surface:#111114; --surface-alt:#18181d; --fg:#ececf1; --fg-muted:#a3a3ad; --border:#2b2b33;
+  --card:#1a1a20; --accent-700:#b4a2ff; --accent-10:rgba(164,140,255,.16);
+  --fg-2:#c9c9d1; --border-strong:#3d3d47;
+"""
+_DARK_RULES = """
+.hero { background:linear-gradient(180deg,#16161b 0%,var(--surface) 100%); }
+.nav.scrolled { background:rgba(17,17,20,.88); box-shadow:0 1px 0 rgba(255,255,255,.06); }
+.stage-chip, details.stage summary, .stage-card h3 { color:color-mix(in srgb, var(--stage) 55%, #fff); }
+.stage-chip { border-color:color-mix(in srgb, var(--stage) 55%, #fff); }
+.only-light { display:none; }
+.only-dark { display:block; }
+"""
+THEME_CSS = (
+    ":root { --fg-2:#3a3a3f; --border-strong:#c9c9c4; }\n"
+    ".only-dark { display:none; }\n"
+    ".nav__theme { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px;"
+    " border-radius:999px; border:1px solid var(--border,#e4e4e0); background:none; color:var(--fg-2,#3a3a3f);"
+    " cursor:pointer; padding:0; }\n"
+    ".nav__theme:hover { color:var(--fg,#17171a); border-color:var(--border-strong,#c9c9c4); }\n"
+    ".nav__theme svg { width:16px; height:16px; }\n"
+    ".nav__theme .i-sun { display:none; }\n"
+    "html[data-theme=dark] { " + _DARK_VARS + " }\n"
+    + "".join("html[data-theme=dark] " + r.strip() + "\n" for r in _DARK_RULES.strip().splitlines())
+    + "html[data-theme=dark] .nav__theme .i-sun { display:block; } html[data-theme=dark] .nav__theme .i-moon { display:none; }\n"
+    "@media (prefers-color-scheme: dark) {\n"
+    "  html:not([data-theme=light]) { " + _DARK_VARS + " }\n"
+    + "".join("  html:not([data-theme=light]) " + r.strip() + "\n" for r in _DARK_RULES.strip().splitlines())
+    + "  html:not([data-theme=light]) .nav__theme .i-sun { display:block; } html:not([data-theme=light]) .nav__theme .i-moon { display:none; }\n"
+    "}\n"
+)
+NAV_CSS += THEME_CSS
+
+# Runs before the page paints, so a reader who chose a theme never sees the other one flash.
+THEME_INIT = ("<script>try{var t=localStorage.getItem('skilldrop-theme');"
+              "if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>")
+THEME_JS = r"""<script>
+/* The nav's theme toggle: flips between light and dark from whatever is showing now, and
+   remembers the choice. Until then the page follows the system setting. */
+(function () {
+  var d = document.documentElement, key = 'skilldrop-theme';
+  var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  function current() { return d.getAttribute('data-theme') || (mq && mq.matches ? 'dark' : 'light'); }
+  function label() {
+    var dark = current() === 'dark';
+    document.querySelectorAll('.js-theme').forEach(function (b) {
+      b.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+      b.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    });
+  }
+  document.querySelectorAll('.js-theme').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var next = current() === 'dark' ? 'light' : 'dark';
+      d.setAttribute('data-theme', next);
+      try { localStorage.setItem(key, next); } catch (e) {}
+      label();
+    });
+  });
+  if (mq && mq.addEventListener) mq.addEventListener('change', label);
+  label();
+})();
+</script>"""
+
 SEARCH_JS = r"""<script>
-/* Site search: one index (search.json, generated by build_pages.py), opened from the nav,
-   with "/" or Cmd/Ctrl+K. Results are built with DOM nodes, never innerHTML. */
+/* Site search, opened from the nav or with "/" or Cmd/Ctrl+K. Two indexes: search.json
+   (build_pages.py) matches names and summaries instantly, and Pagefind, run over the built site
+   in CI, adds full-text matches below them. Without Pagefind (a local build) the first still
+   works. Results are built with DOM nodes, never innerHTML. */
 (function () {
   var dlg = document.getElementById('site-search');
   if (!dlg || typeof dlg.showModal !== 'function') return;  // no <dialog>: the nav link still goes to the docs index
   var root = dlg.getAttribute('data-root') || '';
   var q = document.getElementById('sx-q'), list = document.getElementById('sx-results'), status = document.getElementById('sx-status');
-  var data = null, loading = null, sel = -1;
+  var data = null, loading = null, sel = -1, pf = null, pfLoading = null, seq = 0;
+  var base = new URL(root || './', location.href);
+  function loadPagefind() {
+    if (!pfLoading) pfLoading = import(new URL('pagefind/pagefind.js', base).href)
+      .then(function (m) { return m.options({ baseUrl: base.pathname }).then(function () { pf = m; run(); }); })
+      .catch(function () { pf = false; });
+    return pfLoading;
+  }
+  function pathOf(href) { return new URL(href, location.href).pathname.replace(/index\.html$/, ''); }
+  /* A Pagefind excerpt is HTML with <mark> around matches: parse it inert, keep text and marks. */
+  function excerpt(el, html) {
+    var doc = new DOMParser().parseFromString('<p>' + html + '</p>', 'text/html');
+    doc.body.firstChild.childNodes.forEach(function (n) {
+      if (n.nodeName === 'MARK') { var m = document.createElement('mark'); m.textContent = n.textContent; el.appendChild(m); }
+      else el.appendChild(document.createTextNode(n.textContent));
+    });
+  }
+  function hitNode(n, kind, href, title) {
+    var li = document.createElement('li'), a = document.createElement('a');
+    a.href = href; a.className = 'sx__hit'; li.id = 'sx-' + n; li.setAttribute('role', 'option');
+    var k = document.createElement('span'); k.className = 'sx__kind'; k.textContent = kind;
+    var t = document.createElement('span'); t.className = 'sx__title'; t.textContent = title;
+    a.appendChild(k); a.appendChild(t); li.appendChild(a);
+    return { li: li, a: a, t: t };
+  }
+  function fullText(query, shown, mine) {
+    if (!pf) return;
+    pf.debouncedSearch(query, {}, 180).then(function (s) {
+      if (!s || mine !== seq) return;
+      return Promise.all(s.results.slice(0, 12).map(function (r) { return r.data(); })).then(function (rows) {
+        if (mine !== seq) return;
+        var n = list.children.length, added = 0;
+        rows.forEach(function (d) {
+          if (shown[pathOf(d.url)] || n >= 24) return;
+          shown[pathOf(d.url)] = true;
+          var h = hitNode(n++, (d.meta && d.meta.kind) || 'page', d.url, (d.meta && d.meta.title) || d.url);
+          var p = document.createElement('span'); p.className = 'sx__snip'; excerpt(p, d.excerpt || '');
+          h.a.appendChild(p); list.appendChild(h.li); added++;
+        });
+        if (added) status.textContent = n + ' result' + (n === 1 ? '' : 's');
+      });
+    });
+  }
   function load() {
     if (!loading) loading = fetch(root + 'search.json').then(function (r) { return r.json(); })
       .then(function (d) { data = d; run(); })
       .catch(function () { status.textContent = 'Search could not load. Try the docs index instead.'; });
     return loading;
   }
-  function open(e) { if (e) e.preventDefault(); if (!dlg.open) dlg.showModal(); q.focus(); q.select(); load(); run(); }
+  function open(e) { if (e) e.preventDefault(); if (!dlg.open) dlg.showModal(); q.focus(); q.select(); load(); loadPagefind(); run(); }
   document.querySelectorAll('.js-search').forEach(function (b) { b.addEventListener('click', open); });
   document.addEventListener('keydown', function (e) {
     var t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
@@ -488,22 +602,25 @@ SEARCH_JS = r"""<script>
     }
   }
   function run() {
-    var ws = words(q.value); list.textContent = ''; sel = -1; q.removeAttribute('aria-activedescendant');
+    var ws = words(q.value), mine = ++seq; list.textContent = ''; sel = -1; q.removeAttribute('aria-activedescendant');
     if (!ws.length) { status.textContent = 'Search skills, packs, loops and guides.'; return; }
     if (!data) { status.textContent = 'Loading…'; return; }
     var hits = data.map(function (it) { return [score(it, ws), it]; })
       .filter(function (x) { return x[0] > 0; })
       .sort(function (a, b) { return b[0] - a[0]; }).slice(0, 20);
     status.textContent = hits.length ? hits.length + (hits.length === 20 ? '+' : '') + ' result' + (hits.length === 1 ? '' : 's')
-                                     : 'Nothing matches "' + q.value + '".';
+                                     : (pf ? 'Searching the full text…' : 'Nothing matches "' + q.value + '".');
+    var shown = {};
     hits.forEach(function (h, n) {
-      var it = h[1], li = document.createElement('li'), a = document.createElement('a');
-      a.href = root + it.url; a.className = 'sx__hit'; li.id = 'sx-' + n; li.setAttribute('role', 'option');
-      var k = document.createElement('span'); k.className = 'sx__kind'; k.textContent = it.type;
-      var t = document.createElement('span'); t.className = 'sx__title'; mark(t, it.title, ws);
+      var it = h[1], node = hitNode(n, it.type, root + it.url, '');
+      node.t.textContent = ''; mark(node.t, it.title, ws);
       var p = document.createElement('span'); p.className = 'sx__snip'; mark(p, snippet(it, ws), ws);
-      a.appendChild(k); a.appendChild(t); a.appendChild(p); li.appendChild(a); list.appendChild(li);
+      node.a.appendChild(p); list.appendChild(node.li);
+      shown[pathOf(root + it.url)] = true;
     });
+    fullText(q.value, shown, mine);
+    if (pf && !hits.length)
+      setTimeout(function () { if (mine === seq && !list.children.length) status.textContent = 'Nothing matches "' + q.value + '".'; }, 1200);
   }
   q.addEventListener('input', run);
   q.addEventListener('keydown', function (e) {
@@ -522,9 +639,19 @@ SEARCH_JS = r"""<script>
 </script>"""
 
 
+def md_plain(s):
+    """Markdown marks out of a line that goes where markdown is not rendered: a meta
+    description, a social card. Links keep their text; code, bold and emphasis keep their words."""
+    s = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", s)
+    s = re.sub(r"`([^`]+)`", r"\1", s)
+    s = re.sub(r"\*\*(.+?)\*\*|__(.+?)__", lambda m: m.group(1) or m.group(2), s)
+    return re.sub(r"(?<![\w*])[*_](?![\s*_])(.+?)(?<![\s*_])[*_](?![\w*])", r"\1", s)
+
+
 def head_meta(title, desc, url, image_alt="skilldrop — a prompt gets you a draft, a skill gets you a deliverable"):
     """Description, canonical, Open Graph and Twitter tags for one page. Every page carries the
     full set, so a pack or skill page shared in a chat unfurls like the home page does."""
+    desc = md_plain(desc)
     desc = desc if len(desc) <= 200 else desc[:197].rsplit(" ", 1)[0] + "…"
     return f"""<meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{esc(url)}">
@@ -573,16 +700,22 @@ def site_nav(root="", current=None):
     search = (f'<li><a class="nav__search js-search" href="{esc(root)}docs/" aria-label="Search the site (press /)">'
               '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">'
               '<circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5"/></svg><span>Search</span><kbd>/</kbd></a></li>')
-    return f"""<a class="skip-nav" href="#main">Skip to content</a>
+    theme = ('<li><button type="button" class="nav__theme js-theme" aria-label="Switch to dark theme" aria-pressed="false">'
+             '<svg class="i-moon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">'
+             '<path d="M13.5 9.6A5.6 5.6 0 0 1 6.4 2.5a5.6 5.6 0 1 0 7.1 7.1Z"/></svg>'
+             '<svg class="i-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">'
+             '<circle cx="8" cy="8" r="3"/><path d="M8 1v1.6M8 13.4V15M1 8h1.6M13.4 8H15M3 3l1.1 1.1M11.9 11.9 13 13M3 13l1.1-1.1M11.9 4.1 13 3"/></svg>'
+             '</button></li>')
+    return f"""{THEME_INIT}<a class="skip-nav" href="#main">Skip to content</a>
 <nav class="nav" id="top" aria-label="Primary">
   <div class="nav__inner">
     <a class="nav__logo" href="{esc(root or './')}">skilldrop</a>
-    <ul class="nav__links">{search}{links}
+    <ul class="nav__links">{search}{links}{theme}
       {cta}
     </ul>
     <details class="nav__mobile">
       <summary class="nav__toggle" aria-label="Toggle navigation menu"><span class="nav__burger" aria-hidden="true"></span></summary>
-      <ul class="nav__drawer">{search}{links}
+      <ul class="nav__drawer">{search}{links}{theme}
         {cta}
       </ul>
     </details>
@@ -596,7 +729,7 @@ def site_nav(root="", current=None):
   <p class="sx__status" id="sx-status" role="status" aria-live="polite"></p>
   <ul class="sx__results" id="sx-results" role="listbox" aria-label="Results"></ul>
 </dialog>
-{SEARCH_JS}"""
+{SEARCH_JS}{THEME_JS}"""
 
 
 def guide_href(path_):
@@ -790,7 +923,8 @@ def render(skills, packs, outcomes, version, releases):
 <meta name="description" content="{esc(PITCH['meta_description'])}">
 <link rel="canonical" href="{SITE_URL}">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111114" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="skilldrop">
 <meta property="og:locale" content="en_US">

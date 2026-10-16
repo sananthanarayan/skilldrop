@@ -29,7 +29,7 @@ import re
 
 import catalog
 from build_docs import render_md, collect_guides, parse_frontmatter, _slug
-from build_site import (collect, card, esc, loops, site_nav, example_parts, head_meta, ld, breadcrumbs_ld,
+from build_site import (collect, card, esc, loops, site_nav, example_parts, head_meta, ld, breadcrumbs_ld, md_plain,
                         NAV_CSS, REPO_URL, SITE_URL)
 from build_catalogue import CSS
 
@@ -193,7 +193,8 @@ def shell(title, desc, canonical, depth, body, current=None, extra_head="", root
 {head_meta(f"{title} — skilldrop", desc, canonical)}
 {extra_head}
 <link rel="icon" href="{root}favicon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111114" media="(prefers-color-scheme: dark)">
 <style>
 {CSS}{NAV_CSS}{PAGE_CSS}</style>
 </head>
@@ -254,7 +255,7 @@ def pack_page(name, pack, packs, by_name, loop_by_name, outcome_of):
     note = f"Installs {total} skills" + (
         ", including " + ", ".join(f'<a href="../{esc(r)}/">{esc(r)}</a>' for r in reqs) if reqs else "") + "."
 
-    parts = ['<main class="inner pk" id="main">',
+    parts = ['<main class="inner pk" id="main" data-pagefind-body data-pagefind-meta="kind:pack">',
              '<p class="pk__crumb"><a href="../">Packs</a></p>',
              f'<h1 class="pk__title">{esc(title)}</h1>',
              glance(pack, total, own_loops, outcome_counts),
@@ -448,7 +449,7 @@ def evals_page(skills):
         rows.append(f'<tr><td><a href="../skills/{esc(s["name"])}/#checked"><code>{esc(s["name"])}</code></a></td>'
                     f'<td>{esc(s["packs"][0])}</td><td>{len(evs)}</td><td>{n_a}</td>{got}'
                     f'<td>{pos} / {len(qs) - pos}</td><td><a href="{src}">files</a></td></tr>')
-    body = f"""<main class="inner pk" id="main">
+    body = f"""<main class="inner pk" id="main" data-pagefind-body data-pagefind-meta="kind:evals">
 <h1 class="pk__title">How skills are checked</h1>
 <p class="pk__lede">Every skill ships two eval files. <b>Acceptance evals</b> are realistic prompts with assertions the output must meet, taken from the skill's own quality bar. <b>Trigger queries</b> are phrasings that should activate the skill, and near-misses that belong to a named sibling instead.</p>
 <dl class="pk__glance">
@@ -489,7 +490,7 @@ def skill_page(s, by_name, packs, outcome_of):
               ("The whole pack it belongs to:", f"npx skilldrop-cli install --pack {home}"),
               ("By hand, from a clone of the repo:", f"cp -R {s['path']} ~/.claude/skills/"),
               (f"In Claude Code, with the {home} plugin installed, invoke it as:", f"/{home}:{name}")]
-    parts = ['<main class="inner pk" id="main">',
+    parts = ['<main class="inner pk" id="main" data-pagefind-body data-pagefind-meta="kind:skill">',
              f'<p class="pk__crumb"><a href="../../catalogue/">Skills</a> · <a href="../../packs/{esc(home)}/">{esc(home)}</a></p>',
              f'<h1 class="pk__title"><code>{esc(name)}</code></h1>',
              f'<p class="pk__lede">{esc(s["description"])}</p>',
@@ -525,7 +526,7 @@ def skill_page(s, by_name, packs, outcome_of):
     meta = (breadcrumbs_ld([("skilldrop", SITE_URL), ("Skills", f"{SITE_URL}catalogue/"),
                             (home, f"{SITE_URL}packs/{home}/"), (name, url)])
             + ld({"@context": "https://schema.org", "@type": "SoftwareSourceCode", "name": name,
-                  "description": s["description"], "url": url,
+                  "description": md_plain(s["description"]), "url": url,
                   "codeRepository": f"{REPO_URL}/tree/main/{s['path']}", "license": ["https://opensource.org/licenses/MIT", "https://www.apache.org/licenses/LICENSE-2.0"],
                   "version": s["version"], "isPartOf": {"@type": "Collection", "name": f"skilldrop {home} pack",
                                                         "url": f"{SITE_URL}packs/{home}/"}}))
@@ -578,7 +579,7 @@ def release_page(rels, i):
     pager = '<nav class="cl__pager" aria-label="Other releases">' + (
         f'<a href="../{esc(older["version"])}/">← {esc(older["version"])}</a>' if older else "<span></span>") + (
         f'<a href="../{esc(newer["version"])}/">{esc(newer["version"])} →</a>' if newer else "<span></span>") + "</nav>"
-    body = (f'<main class="inner pk cl" id="main"><p class="pk__crumb"><a href="../">What\'s new</a> ›</p>'
+    body = (f'<main class="inner pk cl" id="main" data-pagefind-body data-pagefind-meta="kind:release"><p class="pk__crumb"><a href="../">What\'s new</a> ›</p>'
             f'<h1 class="pk__title">skilldrop {esc(r["version"])}</h1>'
             f'<p class="pk__crumb">Released {esc(r["date"])} · <code>npx skilldrop-cli@{esc(r["version"])}</code></p>'
             f'{render_md(r["md"], src="CHANGELOG.md", docs_base="../../docs/")}{pager}</main>')
@@ -710,7 +711,7 @@ def loop_page(lp, by_name):
     _, body = parse_frontmatter(open(os.path.join(ROOT, rel), encoding="utf-8").read())
     body = re.sub(r"\A\s*# [^\n]*\n", "", body)                       # the page shows the title
     body = re.sub(r"^## Stages\s*$.*?(?=^## )", "", body, flags=re.M | re.S)  # the table above replaces it
-    parts = ['<main class="inner pk" id="main">',
+    parts = ['<main class="inner pk" id="main" data-pagefind-body data-pagefind-meta="kind:loop">',
              f'<p class="pk__crumb"><a href="../">Loops</a> · <a href="../../packs/{esc(home)}/">{esc(home)}</a></p>',
              f'<h1 class="pk__title"><code>{esc(name)}</code>{" <span class=\"pk__badge\">wrapper</span>" if lp["kind"] == "wrapper" else ""}</h1>',
              f'<p class="pk__lede">{esc(loop_summary(lp))}</p>',

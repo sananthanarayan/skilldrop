@@ -146,7 +146,8 @@ def render_catalogue(skills, packs, outcomes):
 {head_meta("All skills — skilldrop", "Search and filter every skilldrop skill by the job it does, the pack it is in, or its model tier.", SITE_URL + "catalogue/")}
 {breadcrumbs_ld([("skilldrop", SITE_URL), ("Skills", SITE_URL + "catalogue/")])}
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111114" media="(prefers-color-scheme: dark)">
 <style>
 {CSS}{NAV_CSS}</style>
 </head>

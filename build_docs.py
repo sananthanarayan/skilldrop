@@ -208,6 +208,10 @@ _INLINE_CODE = re.compile(r"`([^`]+)`")
 _BOLD = re.compile(r"\*\*(.+?)\*\*")
 _ITAL = re.compile(r"(?<![*\w])\*(?![*\s])(.+?)(?<![*\s])\*(?![*\w])")
 _LINK = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
+# `_emphasis_` opens and closes only outside a word, so snake_case names stay as they are.
+_UNDER = re.compile(r"(?<![\w\\])_(?![_\s])(.+?)(?<![_\s])_(?!\w)")
+_STRIKE = re.compile(r"~~(?!\s)(.+?)(?<!\s)~~")
+_AUTOLINK = re.compile(r"<(https?://[^>\s]+)>")
 
 def _href(target, src, docs_base=None):
     """Point a guide's markdown link at something that exists on the published site. A link
@@ -245,7 +249,7 @@ def _inline(text, src=None, docs_base=None):
     parts = []
     pos = 0
     tokens = sorted(
-        [m for pat in (_INLINE_CODE, _BOLD, _LINK, _ITAL) for m in pat.finditer(text)],
+        [m for pat in (_INLINE_CODE, _AUTOLINK, _BOLD, _LINK, _ITAL, _UNDER, _STRIKE) for m in pat.finditer(text)],
         key=lambda m: m.start()
     )
     for m in tokens:
@@ -256,8 +260,12 @@ def _inline(text, src=None, docs_base=None):
             parts.append(f"<code>{_esc(m.group(1))}</code>")
         elif m.re is _BOLD:
             parts.append(f"<strong>{_inline(m.group(1), src, docs_base)}</strong>")
-        elif m.re is _ITAL:
+        elif m.re in (_ITAL, _UNDER):
             parts.append(f"<em>{_inline(m.group(1), src, docs_base)}</em>")
+        elif m.re is _STRIKE:
+            parts.append(f"<del>{_inline(m.group(1), src, docs_base)}</del>")
+        elif m.re is _AUTOLINK:
+            parts.append(f'<a href="{_esc(m.group(1))}">{_esc(m.group(1))}</a>')
         else:  # link — its text may carry `code` or **bold**, so render it inline too
             parts.append(f'<a href="{_esc(_href(m.group(2), src, docs_base))}">{_inline(m.group(1), src, docs_base)}</a>')
         pos = m.end()
@@ -282,6 +290,22 @@ def _asset(target, src):
     return "../img/" + os.path.basename(full)
 
 
+def _figure(m, src):
+    """One image line. A `#gh-light-mode-only` or `#gh-dark-mode-only` fragment, which GitHub
+    uses to pick the image for its own theme, does the same job here through a class."""
+    target, link = m.group(2), m.group(3)
+    theme = ""
+    for frag, cls in (("#gh-light-mode-only", "only-light"), ("#gh-dark-mode-only", "only-dark")):
+        if target.endswith(frag):
+            target, theme = target[: -len(frag)], cls
+        if link and link.endswith(frag):
+            link = link[: -len(frag)]
+    img = f'<img src="{_esc(_asset(target, src))}" alt="{_esc(m.group(1))}" loading="lazy">'
+    if link:
+        img = f'<a href="{_esc(_asset(link, src))}">{img}</a>'
+    return f'<figure{f" class={chr(34)}{theme}{chr(34)}" if theme else ""}>{img}</figure>'
+
+
 _TABLE_SEP = re.compile(r"^\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$")
 
 
@@ -294,12 +318,56 @@ def _cells(row):
     return [c.strip() for c in row.split("|")]
 
 
+_LIST_ITEM = re.compile(r"^(\s*)([-*+]|\d+[.)])\s+(.*)$")
+_TASK = re.compile(r"^\[([ xX])\]\s+(.*)$")
+
+
+def _list_html(lines, il):
+    """A list block, nested by indentation: an item indented past its parent's marker starts a
+    sublist, and an indented line that is not an item continues the item above it. `[ ]` and
+    `[x]` at the start of an item render as checkboxes."""
+    root = {"children": [], "indent": -1}
+    stack = [root]  # each entry: a list item dict (root is a sentinel)
+    for ln in lines:
+        if not ln.strip():
+            continue
+        m = _LIST_ITEM.match(ln)
+        if m:
+            indent = len(m.group(1).expandtabs(4))
+            while len(stack) > 1 and indent <= stack[-1]["indent"]:
+                stack.pop()
+            item = {"indent": indent, "ordered": m.group(2)[0].isdigit(), "num": m.group(2)[:-1],
+                    "text": m.group(3), "children": []}
+            stack[-1]["children"].append(item)
+            stack.append(item)
+        elif len(stack) > 1:
+            stack[-1]["text"] += " " + ln.strip()
+
+    def render(items):
+        ordered = items[0]["ordered"]
+        tag = "ol" if ordered else "ul"
+        start = items[0]["num"] if ordered else "1"
+        attr = f' start="{int(start)}"' if ordered and start.isdigit() and int(start) != 1 else ""
+        out = [f"<{tag}{attr}>"]
+        for it in items:
+            task = _TASK.match(it["text"])
+            if task:
+                box = '<input type="checkbox" disabled' + (" checked" if task.group(1) in "xX" else "") + "> "
+                body, cls = box + il(task.group(2)), ' class="task"'
+            else:
+                body, cls = il(it["text"]), ""
+            out.append(f"<li{cls}>{body}{render(it['children']) if it['children'] else ''}</li>")
+        out.append(f"</{tag}>")
+        return "".join(out)
+    return render(root["children"]) if root["children"] else ""
+
+
 def render_md(text, src=None, docs_base=None):
-    """The markdown subset the guides use: ATX headings, fenced code, lists (with wrapped
-    continuation lines), pipe tables, blockquotes, and paragraphs that span several lines."""
+    """The markdown the guides, skills and changelog use: ATX headings, fenced code, nested and
+    ordered lists with task checkboxes, pipe tables, blockquotes holding any of these, images on
+    a line of their own, and paragraphs that span several lines."""
     lines = text.splitlines()
-    out, para, item, quote = [], [], None, []
-    list_type = None  # "ul" | "ol" | None
+    out, para = [], []
     il = lambda t: _inline(t, src, docs_base)
 
     def flush_para():
@@ -307,33 +375,12 @@ def render_md(text, src=None, docs_base=None):
             out.append(f"<p>{il(' '.join(para))}</p>")
             para.clear()
 
-    def flush_item():
-        nonlocal item
-        if item is not None:
-            out.append(f"<li>{il(item)}</li>")
-            item = None
-
-    def flush_list():
-        nonlocal list_type
-        flush_item()
-        if list_type:
-            out.append(f"</{list_type}>")
-            list_type = None
-
-    def flush_quote():
-        if quote:
-            out.append(f"<blockquote><p>{il(' '.join(quote))}</p></blockquote>")
-            quote.clear()
-
-    def flush_all():
-        flush_para(); flush_list(); flush_quote()
-
     i = 0
     while i < len(lines):
         raw = lines[i]
         if raw.lstrip().startswith("```"):
             # Fences may be indented (a code block inside a list item); strip that indent.
-            flush_all()
+            flush_para()
             pad = len(raw) - len(raw.lstrip())
             lang = raw.strip()[3:].strip()
             cls = f' class="language-{_esc(lang)}"' if lang else ""
@@ -345,10 +392,10 @@ def render_md(text, src=None, docs_base=None):
             i += 1
             continue
         if not raw.strip():
-            flush_all(); i += 1
+            flush_para(); i += 1
             continue
         if re.match(r"^\s*(-{3,}|\*{3,})\s*$", raw):
-            flush_all(); out.append("<hr>"); i += 1
+            flush_para(); out.append("<hr>"); i += 1
             continue
         if raw.lstrip().startswith("<!--"):
             # HTML comments (e.g. the generated-block markers) never reach the page, including
@@ -359,24 +406,20 @@ def render_md(text, src=None, docs_base=None):
             continue
         m = _FIGURE.match(raw.strip())
         if m:
-            flush_all()
-            img = _asset(m.group(2), src)
-            fig = f'<img src="{_esc(img)}" alt="{_esc(m.group(1))}" loading="lazy">'
-            if m.group(3):
-                fig = f'<a href="{_esc(_asset(m.group(3), src))}">{fig}</a>'
-            out.append(f"<figure>{fig}</figure>")
+            flush_para()
+            out.append(_figure(m, src))
             i += 1
             continue
         m = re.match(r"^(#{1,6})\s+(.*)", raw)
         if m:
-            flush_all()
-            level, text_content = len(m.group(1)), m.group(2).strip()
+            flush_para()
+            level, text_content = len(m.group(1)), m.group(2).strip().rstrip("#").strip()
             slug = _slug(re.sub(r"[*`\[\]]", "", text_content))
             out.append(f'<h{level} id="{slug}">{il(text_content)}</h{level}>')
             i += 1
             continue
         if raw.lstrip().startswith("|") and i + 1 < len(lines) and _TABLE_SEP.match(lines[i + 1].strip()):
-            flush_all()
+            flush_para()
             head = "".join(f"<th>{il(c)}</th>" for c in _cells(raw))
             rows, i = [], i + 2
             while i < len(lines) and lines[i].lstrip().startswith("|"):
@@ -385,24 +428,37 @@ def render_md(text, src=None, docs_base=None):
             out.append(f'<div class="table-wrap"><table><thead><tr>{head}</tr></thead><tbody>{"".join(rows)}</tbody></table></div>')
             continue
         if raw.startswith(">"):
-            flush_para(); flush_list()
-            quote.append(raw.lstrip(">").strip()); i += 1
+            # A quote holds markdown of its own (an example document, a heading, a list), so its
+            # lines render recursively. Its headings carry no id: they are not this page's sections.
+            flush_para()
+            inner = []
+            while i < len(lines) and lines[i].startswith(">"):
+                ln = lines[i][1:]
+                inner.append(ln[1:] if ln.startswith(" ") else ln)
+                i += 1
+            body = re.sub(r'(<h[1-6]) id="[^"]*"', r"\1", render_md("\n".join(inner), src, docs_base))
+            out.append(f"<blockquote>{body}</blockquote>")
             continue
-        m = re.match(r"^(- |\d+\. )(.*)", raw)
-        if m:
-            flush_para(); flush_quote()
-            kind = "ul" if m.group(1) == "- " else "ol"
-            if list_type != kind:
-                flush_list(); out.append(f"<{kind}>"); list_type = kind
-            flush_item(); item = m.group(2)
-            i += 1
+        if _LIST_ITEM.match(raw) and (not para or not raw[0].isspace()):
+            flush_para()
+            # Gather the whole list: items at any depth and their indented continuation lines,
+            # through single blank lines, until a line at the margin that is not an item.
+            block = []
+            while i < len(lines):
+                ln = lines[i]
+                if ln.lstrip().startswith(("```", "|", ">")) and not _LIST_ITEM.match(ln):
+                    break
+                if not ln.strip():
+                    nxt = lines[i + 1] if i + 1 < len(lines) else ""
+                    if not (_LIST_ITEM.match(nxt) or nxt.startswith(("  ", "\t"))):
+                        break
+                elif not _LIST_ITEM.match(ln) and not ln.startswith(("  ", "\t")):
+                    break
+                block.append(ln); i += 1
+            out.append(_list_html(block, il))
             continue
-        if item is not None and raw.startswith(("  ", "\t")):
-            item += " " + raw.strip(); i += 1
-            continue
-        flush_list(); flush_quote()
         para.append(raw.strip()); i += 1
-    flush_all()
+    flush_para()
     return "\n".join(out)
 
 # ── Guide discovery ───────────────────────────────────────────────────────────
@@ -589,15 +645,15 @@ def build_guide_page(guide, by_kind, out_dir):
     at = next(n for n, g in enumerate(order) if g["slug"] == guide["slug"] and g["kind"] == guide["kind"])
     prev_g = order[at - 1] if at > 0 else None
     next_g = order[at + 1] if at + 1 < len(order) else None
-    pager = ('<nav class="pager" aria-label="Previous and next guide">'
+    pager = ('<nav class="pager" aria-label="Previous and next guide" data-pagefind-ignore>'
              + (f'<a class="pager__prev" href="../{prev_g["kind"]}/{prev_g["slug"]}.html"><span>Previous</span>{_esc(prev_g["title"])}</a>' if prev_g else '<span></span>')
              + (f'<a class="pager__next" href="../{next_g["kind"]}/{next_g["slug"]}.html"><span>Next</span>{_esc(next_g["title"])}</a>' if next_g else '<span></span>')
              + "</nav>")
     rel = os.path.relpath(guide["abs_path"], ROOT).replace(os.sep, "/")
-    edit = (f'<p class="edit"><a href="{REPO_URL}/edit/main/{_esc(rel)}">Edit this page on GitHub</a>'
+    edit = (f'<p class="edit" data-pagefind-ignore><a href="{REPO_URL}/edit/main/{_esc(rel)}">Edit this page on GitHub</a>'
             f' · <a href="{REPO_URL}/blob/main/{_esc(rel)}">View source</a></p>')
     content = (
-        f'<main class="content" id="main">'
+        f'<main class="content" id="main" data-pagefind-body data-pagefind-meta="kind:{guide["kind"]}">'
         f'{_stage_chip(guide)}'
         f'<h1>{_esc(guide["title"])}</h1>'
         f'<p class="summary">{_esc(guide["summary"])}</p>'

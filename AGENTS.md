@@ -36,6 +36,8 @@ python3 validate.py
 # 3.9 and raises a bare SyntaxError; use a Homebrew interpreter explicitly.
 python3.14 build_site.py           # or any 3.12+
 python3.14 build_site.py --check
+# Full-text search for a local preview (CI runs this after the build; the site works without it)
+npx --yes pagefind@1.5.2 --site build
 
 # Loop diagrams — regenerate docs/loops/*.mmd, the loop reference's mermaid blocks and
 # docs/loops/operating-model.svg from loop.json

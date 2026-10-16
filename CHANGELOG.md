@@ -8,6 +8,13 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.12 — 2026-10-16
+
+- **The site has a dark theme.** It follows your system setting, and the new toggle in the nav switches it and remembers your choice. The operating-model picture has a dark version too, on the site and on GitHub.
+- **Search reads every page.** The search dialog (press `/`) still finds skills, packs, loops and guides by name first, and now adds matches from the full text of every guide, skill, pack, loop and release below them, with the matching words highlighted.
+- **Pages render more of their markdown.** Nested lists, numbered lists that start past 1, checklists, quoted example documents with their own headings and lists, `_emphasis_`, strikethrough and bare links now show as written. On skill pages, nested steps had been flattened into one line, and example inputs into one paragraph.
+- **Link previews show plain text.** A skill shared in a chat no longer shows `**bold**` marks in its description.
+
 ## 0.16.11 — 2026-10-16
 
 - **`skilldrop update` now updates installed loops.** `outdated` lists a loop whose version moved, `update` brings it current and keeps any file you edited beside the new one as `<file>.upstream`, and `diff` and `doctor` work on loops too. The four loops renumbered in 0.16.10 (`release`, `operate`, `ship-a-draft`, `apply`) are now version 0.3.0, so `npx skilldrop-cli update` takes them. Every loop now has to declare a `version`, and it moves whenever the loop changes.

@@ -103,7 +103,10 @@ one silently left the other stale.
 
 1. **Zero runtime dependencies.** The most valuable property here. A contributor's PR goes
    green with no provisioning, and `npx skilldrop-cli` cannot break on a transitive update.
-   If a contract needs a JSON Schema keyword the checker lacks, teach the checker.
+   If a contract needs a JSON Schema keyword the checker lacks, teach the checker. The one
+   outside tool is the site's search index: `pages.yml` runs Pagefind, pinned, with `npx`
+   after the Python build. It is not in `package.json` or the published package, and the site
+   still searches names and summaries without it (RFC-0045).
 2. **Offline and deterministic.** No check makes a network call. `route.py` decides a model
    tier from stored rules rather than asking a model, because the right tier for a skill is
    stable and paying tokens to re-derive a fixed answer is waste.
