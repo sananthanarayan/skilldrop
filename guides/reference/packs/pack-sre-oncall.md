@@ -160,27 +160,28 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/sre-oncall/skills/obser
 
 ### `postmortem-generator`
 
-Generate a blameless incident postmortem from raw material (Slack thread, pager timeline, notes) — quantified impact, UTC timeline with detection/mitigation gaps, contributing factors instead of a single root cause, and ≤8 verifiable action items. Use after an incident or outage when the user needs a postmortem, RCA, incident review, or "lessons learned" doc.
+Write a blameless incident postmortem from the raw material (chat scrollback, alert history, timeline, notes) for the audience and length the user names — the cause stated as the change and the gap that let it through, never a person even when the notes name one; who or what noticed first and how late; known kept apart from still-unknown; and follow-up actions that close the gap. Invents no times, figures, owners or severities. Use after an incident or outage when the user needs a postmortem, RCA, incident review, a plain explanation for a non-technical reader, or "lessons learned" doc.
 
-Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/sre-oncall/skills/postmortem-generator/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/postmortem-generator/)
+Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/sre-oncall/skills/postmortem-generator/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/postmortem-generator/)
 
 **A good result:**
 
-- **Impact is numbers or `[missing]`.** Duration, users/requests affected, SLO burn, revenue if known. "Significant impact" is not a measurement.
-- **No person is named in a causal sentence.** Roles appear in response actions only. One named-blame sentence fails the doc.
-- **Detection and mitigation gaps are computed and stated.** They are the two numbers the next incident will be judged against.
-- **At least 2 contributing factors, zero of them "human error".** A single root cause means the chain of "why was that possible?" stopped one question early.
-- **Every action item is verifiable and owned.** A reader can check it's done without asking anyone's opinion; an item without a done-condition is a wish.
-- **"Where we got lucky" is non-empty.** Naming the near-miss is how it gets fixed before it's the next incident's headline.
+- **No person is named as a cause.** Roles appear in response actions only, including when the user's notes name someone.
+- **Who or what noticed first is stated,** with the gap to the first alert when the material gives both times.
+- **Known and still-open are kept apart.**
+- **Causes are conditions, not "human error",** and come only from the material.
+- **Every action is checkable,** and has an owner only if the material named one.
+- **Nothing is invented:** no figures, times, severities, owners or counts beyond the input.
+- **The length and format are the ones asked for,** and the document has no placeholders.
 
 **Hands off to:** `runbook-generator` when the postmortem produced runbook deltas.
 
 **Not for:**
 
-- During the incident — mitigate first; the postmortem starts when impact ends
-- A performance-management record — the doc is structurally blameless; misusing it kills honest reporting
-- Project retrospectives with no production incident — different ritual, different doc
-- Writing the runbook itself — emit the deltas and hand to `runbook-generator`
+- During the incident — mitigate first; live updates to stakeholders are `incident-comms`
+- A performance-management record — the document is blameless by design; using it to blame kills honest reporting
+- A project retrospective with no production incident
+- Writing the runbook itself — hand the runbook changes to `runbook-generator`
 
 ### `runbook-generator`
 

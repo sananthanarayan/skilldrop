@@ -1,67 +1,53 @@
-# Postmortem template
+# Full incident review
 
-Summary first — it's the only section most readers finish. All timestamps UTC. Unknowns get `[missing]`, never prose camouflage.
+For when the user asks for a full postmortem or an incident-review meeting doc. Leave out any
+section the material has nothing for; never fill one with a placeholder. List what is still
+unknown after the document, not inside it.
 
 ```markdown
-# Postmortem: {one-line incident title, symptom-first — "Checkout 500s for EU users", not "Config issue"}
+# Incident review: {symptom-first title — "Checkout failures for EU customers", not "Config issue"}
 
-**Status:** draft | reviewed | actions-tracked
-**Severity:** SEV{1–4} · **Date:** {YYYY-MM-DD} · **Author role:** {e.g. incident commander}
+{Date} · {who it is for, if the user said}
 
 ## Summary
 
-{3–5 sentences a director can repeat: what broke for whom, for how long, why in one
-clause, and the headline fix. No jargon that needs the timeline to decode.}
+{3–5 sentences someone can repeat: what broke for whom, for how long, why in one clause,
+how it was found, and the main change being made.}
 
 ## Impact
 
-| Measure | Value |
-|---|---|
-| Duration (impact start → end) | {Xh Ym} |
-| Users / customers affected | {number or %, or [missing]} |
-| Requests failed / degraded | {number, or [missing]} |
-| SLO / error budget burn | {e.g. "34% of monthly budget", or [missing]} |
-| Revenue / contractual | {value, "none known", or [missing]} |
+{What users could not do, for how long, and any figures the material gives. If a figure was
+asked for and the material can't give it, say what it does show and what would settle it.}
 
-## Timeline (UTC)
+## Timeline ({timezone})
 
-| Time | Event | Source |
+| Time | What happened | Source |
 |---|---|---|
-| {hh:mm} | {impact begins — state change, not Slack chatter} | {alert/log/deploy} |
-| {hh:mm} | {first human aware} | {page/user report} |
-| {hh:mm} | {mitigation applied} | … |
+| {hh:mm} | {impact begins} | {alert / log / deploy / ticket} |
+| {hh:mm} | {first noticed, and by whom or what} | … |
+| {hh:mm} | {mitigation} | … |
 | {hh:mm} | {impact ends} | … |
 
-**Detection gap:** {impact start → first human aware} — {if users reported it before
-monitoring fired, say exactly that}
-**Mitigation gap:** {detection → impact end}
+**Found by:** {who or what noticed first; the gap to the first alert}
+**Time to fix:** {noticed → impact ended}
 
-## Contributing factors (2+; "human error" is not one)
+## Why it was possible
 
-1. **{Condition, not act}** — {why this made the incident possible/worse; the guardrail
-   that was absent or didn't fire}
-2. **{…}** — {…}
+1. **{Condition, not act}** — {why it made the incident possible or worse}
+2. {…only as many as the material shows}
 
-## What went well / poorly / where we got lucky
+**Still open:** {causes not yet confirmed}
 
-**Well:** {response behaviors worth repeating}
-**Poorly:** {response-side gaps — paging, comms, tooling — not the cause itself}
-**Lucky:** {mandatory — the near-miss: "happened at 3am low traffic", "the one engineer
-who knew X was awake", "rollback happened to be safe"}
+## What went well and what didn't
 
-## Action items (≤8)
+{Response-side only: paging, comms, tooling. Add "where we got lucky" if the material shows
+a near-miss.}
 
-| # | Action | Class | Owner (role) | Done when |
-|---|---|---|---|---|
-| 1 | {specific change} | prevent / detect / mitigate | {team or role} | {verifiable condition} |
+## Follow-ups
 
-**Considered, not taken:** {candidate} — {one line why not}
+- {What changes} — done when {how anyone could check}. Owner: {as given, or "no owner yet"}
 
-## Runbook deltas
+## Runbook changes
 
-- {Runbook section} → {the edit this incident proves necessary — paste-ready}
-
-## Open questions
-
-- {anything still [missing] that follow-up should resolve, with who can answer it}
+- {Runbook section} → {the edit this incident shows is needed}
 ```

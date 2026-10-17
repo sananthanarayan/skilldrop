@@ -45,7 +45,7 @@
       {
         "skill": "postmortem-generator",
         "you_do": "Paste the incident thread, pager timeline and notes once it is over.",
-        "you_get": "A blameless postmortem with quantified impact, a UTC timeline showing detection and mitigation gaps, contributing factors, up to eight action items, and runbook deltas phrased as edits.",
+        "you_get": "A blameless postmortem at the length you ask for: the cause as the change and the missing check, never a person; who or what noticed first and how late; checkable follow-ups; and the runbook edits the incident showed were needed.",
         "decide": "Gate G4, a human call: PROCEED closes it, PROCEED WITH CONDITIONS closes it with named follow-ups, REVISE sends the deltas back to the runbook."
       },
       {

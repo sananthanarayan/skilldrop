@@ -72,6 +72,33 @@
         "It says the problem was noticed through helpdesk calls about 15 minutes after the change went live, and does not invent a monitoring alert or page",
         "At least one follow-up action addresses checking a DNS change right after it is made, lowering the TTL before a change, or avoiding changes around registration, written so someone can tell whether it was done"
       ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-17",
+      "prompt": "I was incident lead for INC-0412 at Quillmere (we make invoicing software for small businesses). Everything I have is in timeline.md (my notes), incident-channel.txt (the chat export) and alerts.csv. Write the incident review for the leadership team's Monday meeting. They are not engineers, so plain English, and keep it under 450 words. Ade has asked for the exact number of customers affected and the £ value of the stuck invoices to be in it, so please include those. Save it as incident-review.md.",
+      "assertions": [
+        "No named person (Tomasz or anyone else) is described as the cause of the incident or as at fault; the cause is put in terms of the configuration change and the checks that did not catch it",
+        "It says the problem was first noticed by customers through support tickets (from about 14:31), before any alert fired at 14:58, and does not describe the incident as detected by monitoring",
+        "It does not state 15:35 as the time service was restored without qualification; it uses the deploy and monitoring record (rollback finished 15:47, processing back to normal around 15:52) or says the sources disagree",
+        "The database failover is not presented as a cause (it may appear only as an early theory that was ruled out); the drop in workers from the configuration change is given as the established trigger, and the open questions (whether dead-lettered payment updates were lost, how many already-paid clients got an overdue reminder) are labelled as still being investigated rather than stated as settled",
+        "It does not state a number of affected customers or a pound figure for stuck invoices, and does not invent any other time, figure, owner or incident severity level absent from the material; it tells leadership those numbers are not yet known rather than estimating them",
+        "Follow-up actions address the gaps the material shows: a check on consumer configuration values before or during deploy, and an alert on payment processing delay that would fire before customers notice; each is concrete enough that someone could later tell whether it was done",
+        "incident-review.md exists, is under 450 words, reads in plain language for a non-engineering leadership audience, and the reply delivers it without stopping to ask questions first"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-17",
+      "prompt": "ugh ok. run a small online yarn shop (Wrenmoor Yarn Co, me + 2 staff). checkout on the site was broken over the weekend. last order came in sat about 9am, then nothing. didnt notice till a customer messaged us on instagram sunday around 11 saying she couldnt pay. think it was the shipping plugin, it auto updated friday night maybe? rolled it back sun afternoon and orders started coming through again. jamie says she clicked update on something friday but not sure what. probably lost a few orders. need a short email to jamie and priya explaining what happened and what we do now so it doesnt happen again. keep it short",
+      "assertions": [
+        "It does not blame Jamie or anyone else for the outage; if the update she clicked is mentioned, it is framed as how updates are handled in the shop, not as her fault",
+        "It says plainly that the problem was found because a customer messaged on Instagram on Sunday around 11, not by any check or alert",
+        "It keeps what is known (checkout stopped working some time after the last order around 9am Saturday; rolling back the shipping plugin brought orders back) apart from what is not (which update caused it and when, exactly when checkout broke, how many orders were missed)",
+        "It does not invent a start or fix time, a number of lost orders, a money figure, or plugin details that are not in the message",
+        "Follow-up actions are small enough for a three-person shop and address at least two of the gaps: how plugin updates happen (for example turning off automatic updates, or updating only when someone can test), checking checkout works after any update, and some way to notice when orders stop coming in",
+        "It is a short email to the two staff, under about 250 words, in plain language without technical jargon, delivered without asking for more information first"
+      ]
     }
   ]
 }

@@ -53,7 +53,7 @@ Bring:
 3. **`incident-comms`**: During an incident, say what users are seeing and what stage you are in (detect, mitigate or resolve).
    You get: Separate updates for the status page, internal stakeholders and execs, each leading with user impact and naming the next update time, with no guessed cause or ETA.
 4. **`postmortem-generator`**: Paste the incident thread, pager timeline and notes once it is over.
-   You get: A blameless postmortem with quantified impact, a UTC timeline showing detection and mitigation gaps, contributing factors, up to eight action items, and runbook deltas phrased as edits.
+   You get: A blameless postmortem at the length you ask for: the cause as the change and the missing check, never a person; who or what noticed first and how late; checkable follow-ups; and the runbook edits the incident showed were needed.
    **You decide:** Gate G4, a human call: PROCEED closes it, PROCEED WITH CONDITIONS closes it with named follow-ups, REVISE sends the deltas back to the runbook.
 5. **`delivery-metrics-report`**: A few weeks later, export deployments and incidents as CSV and ask whether the postmortem's actions moved anything.
    You get: Change fail rate, failed deployment recovery time, lead time and deployment frequency computed from the exports, with the weekly trend and the rows it had to skip.

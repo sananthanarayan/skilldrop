@@ -1,11 +1,11 @@
 {
   "name": "postmortem-generator",
-  "version": "0.1.2",
-  "description": "Generate a blameless incident postmortem from raw material (Slack thread, pager timeline, notes) — quantified impact, UTC timeline with detection/mitigation gaps, contributing factors instead of a single root cause, and ≤8 verifiable action items. Use after an incident or outage when the user needs a postmortem, RCA, incident review, or \"lessons learned\" doc.",
+  "version": "0.2.0",
+  "description": "Write a blameless incident postmortem from the raw material (chat scrollback, alert history, timeline, notes) for the audience and length the user names — the cause stated as the change and the gap that let it through, never a person even when the notes name one; who or what noticed first and how late; known kept apart from still-unknown; and follow-up actions that close the gap. Invents no times, figures, owners or severities. Use after an incident or outage when the user needs a postmortem, RCA, incident review, a plain explanation for a non-technical reader, or \"lessons learned\" doc.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
-  "related": ["runbook-generator"],
+  "related": ["incident-comms", "runbook-generator"],
   "handoff": [
     { "to": "runbook-generator", "when": "the postmortem produced runbook deltas", "purpose": "Apply the deltas as edits to the existing runbook.", "fallback": "If runbook-generator is absent, phrase each delta as a concrete before/after edit so a human can apply it." }
   ],

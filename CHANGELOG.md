@@ -8,6 +8,10 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.16 — 2026-10-17
+
+- **`postmortem-generator` writes the postmortem at the length and for the reader you name**: half a page for a board, a note for customers, or the full incident review. It still never names a person as the cause, even when your notes do. It now says plainly who or what noticed first and how long before any alert, keeps what is known apart from what is still open, gives owners and dates only where your material does, and leaves no `[missing]` fields or empty template rows in the document. Runbook edits are included when the incident showed a procedure was wrong. On two evals it had never seen, two blind judges preferred it to plain Claude Code in 2 and 3 of 4 pairs, the same as before the rebuild, and a run costs less than half as much. It still loses on a short note for a very small team ([RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md)).
+
 ## 0.16.15 — 2026-10-17
 
 - **`release-notes` writes one set of notes for the reader and channel you name**: a changelog page, a member email, an in-app "what's new" with a word limit, store text, or your repo's own `CHANGELOG.md` style. It says nothing the log or your notes don't, keeps a vague change as vague as you described it, leaves out work reverted later in the range, and finds a breaking change from the message text as well as from `!:` markers, phrasing the action for how your readers get the release. The commit range, counts, hashes and review lists no longer appear in customer text; what it left out is listed once, after the notes. On two evals it had never seen, two blind judges preferred it to plain Claude Code in all 4 pairs each, up from 3 and 3, at a lower cost per run ([RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md)).

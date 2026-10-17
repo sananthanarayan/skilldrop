@@ -141,6 +141,7 @@ time from 0.16.14, starting with `source-synthesis`.
 |---|---|---|---|---|---|
 | `source-synthesis` | 0.16.14 | 6, 7 | 1, 0 of 4 pairs | 3, 3 of 4 | $0.20 → $0.09 |
 | `release-notes` | 0.16.15 | 6, 7 | 3, 3 of 4 pairs | 4, 4 of 4 | $0.08 → $0.06 |
+| `postmortem-generator` | 0.16.16 | 6, 7 | 2, 3 of 4 pairs | 2, 3 of 4 | $0.26 → $0.11 |
 
 `source-synthesis`: both eval 6 wins came from adding up a source's own line items, which
 showed that its stated total was wrong. The eval 7 loss and the judges' notes on the eval 7
@@ -157,3 +158,13 @@ losses on evals 2 to 5 were working notes in customer text), so the rebuild had 
 four wins name the action-first ordering, accurate counts or leaving out unconfirmed claims.
 Eval 1's assertions, which checked the old format (range header, two artifacts, a hash on
 every line), now check the rule instead.
+
+`postmortem-generator`: shipped on the bar, not on a gain. Blind preference did not move, the
+skill met slightly more of its own checks, and a run costs less than half as much. It won all
+four pairs on the rich eval, where the judges named it staying blameless, saying a customer
+noticed before monitoring, and inventing no owners. It lost three of four on the short email
+for a three-person shop, for the reasons the rebuild was meant to remove: longer than asked, a
+file nobody requested, and a postmortem-style opening. The short, small-audience case is
+where this skill still loses. Two rules came out of the draft before it was installed. They
+answered trap types that had been written into the eval writer's brief (conflicting
+timestamps, a confident guess in chat) rather than lessons from evals 2 to 5.

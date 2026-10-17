@@ -1,74 +1,99 @@
 ---
 name: postmortem-generator
-description: Generate a blameless incident postmortem from raw material (Slack thread, pager timeline, notes) — quantified impact, UTC timeline with detection/mitigation gaps, contributing factors instead of a single root cause, and ≤8 verifiable action items. Use after an incident or outage when the user needs a postmortem, RCA, incident review, or "lessons learned" doc.
+description: Write a blameless incident postmortem from the raw material (chat scrollback, alert history, timeline, notes) for the audience and length the user names — the cause stated as the change and the gap that let it through, never a person even when the notes name one; who or what noticed first and how late; known kept apart from still-unknown; and follow-up actions that close the gap. Invents no times, figures, owners or severities. Use after an incident or outage when the user needs a postmortem, RCA, incident review, a plain explanation for a non-technical reader, or "lessons learned" doc.
 ---
 
 # postmortem-generator
 
-Turns the debris of an incident — Slack scrollback, pager entries, half-remembered timestamps — into a postmortem the next on-caller learns from. Blameless is structural here, not a tone: the doc names systems and gaps, never people and mistakes. The operate-phase counterpart to `runbook-generator`, which consumes this skill's runbook-delta output.
+**The rule: name the change and the missing check, never the person.** Incident notes are
+written in the heat of it: "Dana's deploy broke it", "Sam forgot the flag". The agent's habit
+is to carry that framing straight into the document, and a postmortem that names someone as
+the cause teaches everyone to hide the next mistake. The cause is always a condition: what
+made the error easy to make, hard to catch and quick to spread. People appear only doing
+response work, by role ("the on-call engineer rolled back at 14:32"), and that holds even when
+the user's own message points at someone.
+
+A second rule sits beside it: **say plainly who or what noticed first, and how late.** If a
+customer, a support ticket or a member of staff found the problem before any alert did, that
+is the most useful sentence in the document: ✅ *"Two teachers reported the gradebook down 40
+minutes before any alert fired."* Don't write "alerting worked" when it didn't.
 
 ## How to respond
 
-**Four rules come before the steps and outrank them:**
+1. **Fit the audience and length they asked for.** "Half a page for the board", "a note for
+   customers", "two pages max", "the full incident review": that is the format. A
+   short version is what happened, why it was possible, how it was found, and what changes.
+   The full form in [`templates/postmortem.md`](templates/postmortem.md) is for when they ask
+   for a full review or an incident-review meeting doc.
 
-- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
-- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
-- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
-- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
-- **For this skill:** With no timeline, logs or notes to work from, ask for them in two sentences and name the three things you most need. Don't describe your working directory or your template.
+2. **Build the timeline from the material.** Use the events that changed what users saw:
+   impact starts, first noticed, mitigation, impact ends. Use the timezone the material uses
+   unless asked otherwise, and state it. Compute the gaps that matter (start to noticed,
+   noticed to fixed) only from times you have.
 
-1. **Ingest the raw material.** Slack threads, pager/alert timelines, deploy logs, prose recollections — all valid. Ask at most 2 questions, and spend them on impact quantification ("how many users / requests / minutes?") — it's the data people forget fastest and the section read first. Everything else unknown gets a visible `[missing]` tag, never a vague sentence papering over it.
+3. **Keep what is known apart from what is still being investigated.** Write the cause the
+   evidence supports, and name anything not yet confirmed as open.
 
-2. **Strip blame structurally while drafting.** People appear only as roles performing response actions ("on-call engineer rolled back at 14:32"). Errors are attributed to the system that allowed them. ✅ *"A malformed config value passed review and deploy; no validation step checks this field"* — ❌ *"Dave pushed a bad config"*. If the source material is finger-pointy, translate it; the postmortem is the cleaned record.
+4. **Write the causes as conditions, more than one where the material shows more than one.**
+   For each: the condition, and why it made the incident possible or worse. ✅ *"A config value
+   passed review and deploy; nothing validates that field."* ❌ *"Human error"*, ❌ *"should
+   have been more careful"*. Don't invent extra causes to make up a number.
 
-3. **Build the timeline in UTC** with one row per event (timestamp, what happened, source). Then compute and state the two gaps that matter:
-   - **Detection gap** — impact start → first human aware. If users noticed before monitoring did, say so in those words.
-   - **Mitigation gap** — detection → impact ended.
-   The timeline ends at "impact over", not "everyone went to bed"; cleanup goes under follow-ups.
+5. **Follow-ups that close the gap.** Each action says what changes and how anyone could tell
+   it's done: ✅ *"Config deploys reject values that fail the schema, checked by a test deploy
+   of a bad value."* ❌ *"Improve config safety."* Give an owner or date only if the material
+   gives one; otherwise write "no owner yet". A few strong actions beat a long list.
 
-4. **Write contributing factors, not a root cause.** Minimum 2, typically 3–5, using "why was that possible?" chains. **"Human error" is banned as a factor** — it is always the start of a question, never the answer: what made the error easy to make, hard to catch, and fast to propagate? Each factor states the condition, not the act.
+6. **Runbook changes, when the incident proved a procedure wrong or missing.** Phrase each as
+   a concrete edit to the runbook section it affects, ready for someone to apply. Leave them
+   out of a short version for a non-technical audience unless asked.
 
-5. **Force the three honesty lists**: what went well (so it gets repeated), what went poorly (response-side, not cause-side), and **where we got lucky** — the near-misses that would have made this worse. The lucky list is mandatory; an incident with no luck involved hasn't been examined closely.
+7. **Say only what the material supports.** No affected-customer count, revenue or SLA-credit
+   figure, severity level, owner or time that isn't in it, even when a stakeholder asked for
+   one. Where a number was asked for and the material can't give it, say what it does show
+   ("12 customers have written in so far") and what would settle it. Never leave
+   `[missing]` or blank fields in the document; list what is still unknown once, briefly,
+   after it.
 
-6. **Cap action items at 8**, each with: owner (role, not name), class (**prevent** recurrence / **detect** faster / **mitigate** faster), and a verifiable done-condition. ✅ *"Config deploys reject values failing schema validation — verified by a test deploy of a malformed value"* — ❌ *"Improve config safety"*. If the analysis surfaces 15 candidates, pick the 8 with the best leverage and list the rest as "considered, not taken" with one line each on why.
-
-7. **End with runbook deltas** — the specific sections of the service runbook this incident proves wrong or missing, phrased as edits ready for `runbook-generator` or a human to apply.
-
-8. **Emit with [`templates/postmortem.md`](templates/postmortem.md)** in one message, summary first: severity, duration, quantified impact, and the one-sentence cause a director can repeat.
-
-## Useful references in this skill
-
-- [`templates/postmortem.md`](templates/postmortem.md) — the full doc skeleton with the gap calculations and action-item table
+8. **Deliver from what you have.** With notes to work from, write it and state any assumption
+   in one line. With nothing to work from, ask in two sentences for the timeline, how it was
+   noticed, and what was done.
 
 ## Quality bar
 
-- **Impact is numbers or `[missing]`.** Duration, users/requests affected, SLO burn, revenue if known. "Significant impact" is not a measurement.
-- **No person is named in a causal sentence.** Roles appear in response actions only. One named-blame sentence fails the doc.
-- **Detection and mitigation gaps are computed and stated.** They are the two numbers the next incident will be judged against.
-- **At least 2 contributing factors, zero of them "human error".** A single root cause means the chain of "why was that possible?" stopped one question early.
-- **Every action item is verifiable and owned.** A reader can check it's done without asking anyone's opinion; an item without a done-condition is a wish.
-- **"Where we got lucky" is non-empty.** Naming the near-miss is how it gets fixed before it's the next incident's headline.
+- **No person is named as a cause.** Roles appear in response actions only, including when
+  the user's notes name someone.
+- **Who or what noticed first is stated,** with the gap to the first alert when the material
+  gives both times.
+- **Known and still-open are kept apart.**
+- **Causes are conditions, not "human error",** and come only from the material.
+- **Every action is checkable,** and has an owner only if the material named one.
+- **Nothing is invented:** no figures, times, severities, owners or counts beyond the input.
+- **The length and format are the ones asked for,** and the document has no placeholders.
 
 ## When to use this skill
 
-- ✅ After an incident/outage, turning the response scrollback into the postmortem doc
+- ✅ After an incident or outage, turning the response scrollback into the postmortem
 - ✅ "Write the RCA for yesterday's outage"
+- ✅ A short explanation of what went wrong for a non-technical reader
 - ✅ Preparing the incident-review meeting doc
-- ✅ Retroactively documenting an old incident before the details evaporate
 
 ## When NOT to use this skill
 
-- ❌ During the incident — mitigate first; the postmortem starts when impact ends
-- ❌ A performance-management record — the doc is structurally blameless; misusing it kills honest reporting
-- ❌ Project retrospectives with no production incident — different ritual, different doc
-- ❌ Writing the runbook itself — emit the deltas and hand to `runbook-generator`
+- ❌ During the incident — mitigate first; live updates to stakeholders are `incident-comms`
+- ❌ A performance-management record — the document is blameless by design; using it to blame kills honest reporting
+- ❌ A project retrospective with no production incident
+- ❌ Writing the runbook itself — hand the runbook changes to `runbook-generator`
 
 ## Anti-patterns to avoid
 
-- ❌ **Single root cause.** "The config was wrong" explains nothing about review, validation, deploy gates, or blast radius — the four places to actually fix.
-- ❌ **"Human error" / "should have been more careful".** Careful is not a control. Name the missing guardrail instead.
-- ❌ **The 20-item action list.** It signals diligence and delivers nothing; nobody finishes it and the P1s drown.
-- ❌ **Timeline theater.** Forty rows of who-said-what-in-Slack instead of the ten events that changed system state.
-- ❌ **Quiet heroics as a fix.** "An engineer noticed by luck at 2am" is a detection gap wearing a cape — the action item is monitoring, not gratitude.
-- ❌ **Skipping the postmortem because impact was "minor".** Near-misses are the cheapest lessons; severity gates the meeting, not the doc.
-- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.
+- ❌ **Copying the blame from the notes.** "The outage was caused by X's change" — rewrite as
+  the change and the missing check.
+- ❌ **"Alerting worked" when a customer found it first.** The detection gap is the finding.
+- ❌ **Filling the template.** Severity rows, SLO burn, "where we got lucky" and owner columns
+  on a half-page note for a head teacher.
+- ❌ **Placeholders in a document meant to ship.** `Severity: [missing]` goes nowhere; list
+  unknowns after the document.
+- ❌ **Invented owners, dates and numbers** to make actions look tracked or impact look
+  measured.
+- ❌ **The 20-item action list.** Nobody finishes it and the important ones drown.
