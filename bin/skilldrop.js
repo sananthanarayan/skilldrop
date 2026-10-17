@@ -226,7 +226,8 @@ function readPacksCatalog(dir, source) {
     ? fs.readdirSync(d).filter((x) => fs.existsSync(path.join(d, x, marker))).sort() : [];
   const onDisk = children(packsDir, "pack.json");
   const idx = path.join(dir, "catalogue.json");
-  const listed = fs.existsSync(idx) ? (readJSON(idx).packs || []).filter((p) => onDisk.includes(p)) : [];
+  const index = fs.existsSync(idx) ? readJSON(idx) : {};
+  const listed = (index.packs || []).filter((p) => onDisk.includes(p));
   const order = [...listed, ...onDisk.filter((p) => !listed.includes(p))];
   const skillIndex = {}, loopIndex = {}, packsData = {};
   for (const pack of order) {
@@ -237,7 +238,15 @@ function readPacksCatalog(dir, source) {
     for (const l of loops) if (!loopIndex[l]) loopIndex[l] = path.join(pdir, "loops", l);
     packsData[pack] = Object.assign({}, readJSON(path.join(pdir, "pack.json")), { skills, loops });
   }
-  return { dir, source, shape: "packs", skillIndex, loopIndex, packsData };
+  return { dir, source, shape: "packs", skillIndex, loopIndex, packsData, retired: index.retired || {} };
+}
+
+/* RFC-0046: a skill that left the catalogue keeps a record in catalogue.json `retired`, so an
+   installed copy can say why it stopped updating instead of looking like an unreachable source. */
+function retiredNote(cat, s) {
+  const r = cat && cat.retired && cat.retired[s];
+  if (!r) return null;
+  return `'${s}' was retired in ${r.in}: ${r.why}` + (r.instead ? ` Use ${r.instead} instead.` : "");
 }
 
 /* Minimal TOML read — the [pack] table's basic-string scalars (name, version, description).
@@ -587,6 +596,12 @@ function target(flags) {
   // --local is a project install the repo never sees (see localExclude), so it implies --project.
   if (flags.project || flags.local || !user) return { dest: path.resolve(...proj), ide };
   return { dest: path.join(os.homedir(), ...user), ide };
+}
+
+/* The target flags again, for a command line printed back to the user. */
+function targetHint(flags) {
+  if (flags.dest) return ` --dest ${JSON.stringify(flags.dest)}`;
+  return (flags.ide && flags.ide !== "claude" ? ` --ide ${flags.ide}` : "") + (flags.local ? " --local" : flags.project ? " --project" : "");
 }
 
 /* Claude Code tool name -> Kiro built-in tool name. Confirmed against
@@ -985,7 +1000,7 @@ function expandNames(args, cat) {
     return packMembers(ps, args.flags.pack, "skills");
   }
   if (!args._.length) die("nothing to install — pass skill names, --pack <name>, or --all");
-  for (const s of args._) if (!skillExists(cat, s)) die(`unknown skill '${s}' in catalog '${cat.source}'`);
+  for (const s of args._) if (!skillExists(cat, s)) die(retiredNote(cat, s) || `unknown skill '${s}' in catalog '${cat.source}'`);
   return args._.slice();
 }
 
@@ -1285,11 +1300,12 @@ function installedRows(flags) {
   const l = ledger(dest);
   const rows = Object.keys(l.data).sort().map((s) => {
     const src = lsrc(l.data[s]);
-    let current = null, cat = null, changed = [];
+    let current = null, cat = null, changed = [], retired = null;
     const entry = l.data[s];
     const loop = isLoopEntry(entry);
     try {
       cat = resolveCatalog(src === BUNDLED ? undefined : src);
+      if (!loop && !unitExists(cat, s, loop)) retired = retiredNote(cat, s);
       if (unitExists(cat, s, loop)) {
         current = unitMeta(cat, s, loop).version || null;
         // Same version, different files: the catalog changed the skill without bumping it.
@@ -1301,7 +1317,7 @@ function installedRows(flags) {
         }
       }
     } catch (e) { /* unreachable source: current stays null */ }
-    return { s, src, cat, loop, installed: lver(entry), current, changed, pinned: isPinned(src) };
+    return { s, src, cat, loop, installed: lver(entry), current, changed, retired, pinned: isPinned(src) };
   });
   return { dest, ide, l, rows };
 }
@@ -1325,6 +1341,7 @@ function update(args) {
   let n = 0, conflicts = 0;
   const silent = rows.filter((r) => r.current === r.installed && r.changed.length && !args.flags.changed);
   for (const r of rows) {
+    if (r.retired) { console.log(`skip ${r.retired}\n  Remove it with: skilldrop uninstall ${r.s}${targetHint(args.flags)}`); continue; }
     if (!r.current) { console.log(`skip ${unitLabel(r)}: source '${r.src}' unreachable, ${r.loop ? "loop" : "skill"} gone from it, or no version to compare`); continue; }
     if (!isDue(r)) continue;
     const problems = unitCheck(r.cat, r.s, r.loop);
@@ -1346,7 +1363,7 @@ function update(args) {
     n++;
   }
   saveLedger(l);
-  console.log(n ? `\n${n} skill(s) or loop(s) updated.` : (silent.length ? "no version changes." : "everything up to date."));
+  console.log(n ? `\n${n} skill(s) or loop(s) updated.` : (silent.length ? "no version changes." : rows.some((r) => r.retired) ? "nothing else to update." : "everything up to date."));
   if (silent.length)
     console.log(`\nNot taken: ${silent.map((r) => r.s).join(", ")} changed upstream without a version bump.` +
                 `\n  Read the change (skilldrop diff <skill>), then take it with: skilldrop update --changed`);
@@ -1371,6 +1388,7 @@ function planUpdate(dest, ide, l, rows, flags) {
   console.log(`dry run — nothing will be written. Target: ${dest} (${ide})\n`);
   let n = 0;
   for (const r of rows) {
+    if (r.retired) { console.log(`would skip ${r.retired}`); continue; }
     if (!r.current) { console.log(`would skip ${unitLabel(r)}: source '${r.src}' unreachable, ${r.loop ? "loop" : "skill"} gone from it, or no version to compare`); continue; }
     if (r.current === r.installed && !r.changed.length) continue;
     if (r.current === r.installed && !flags.changed) {
@@ -1392,33 +1410,38 @@ function planUpdate(dest, ide, l, rows, flags) {
     for (const f of orphaned) console.log(`  would keep ${f} — dropped upstream, but you edited it`);
   }
   const held = rows.filter((r) => r.current && r.current === r.installed && r.changed.length && !flags.changed).length;
-  console.log(n ? `\n${n} skill(s) or loop(s) would update. Rerun without --dry-run to apply.` : (held ? "no version changes." : "everything up to date."));
+  console.log(n ? `\n${n} skill(s) or loop(s) would update. Rerun without --dry-run to apply.` : (held ? "no version changes." : rows.some((r) => r.retired) ? "nothing else to update." : "everything up to date."));
 }
 
 function outdated(args) {
   const { dest, rows } = installedRows(args.flags);
   const stale = rows.filter((r) => r.current && r.current !== r.installed);
   const drift = rows.filter((r) => r.changed && r.changed.length);
+  const gone = rows.filter((r) => r.retired);
   if (args.flags.json)
     return emitJSON({
       dest,
       count: rows.length,
       outdatedCount: stale.length,
       changedWithoutVersionCount: drift.length,
+      retiredCount: gone.length,
       skills: rows.map((r) => ({
         name: r.s, loop: r.loop, installed: r.installed, current: r.current,
         source: r.src, outdated: !!(r.current && r.current !== r.installed),
-        changedWithoutVersion: r.changed || [], pinned: r.pinned,
+        changedWithoutVersion: r.changed || [], pinned: r.pinned, retired: r.retired,
       })),
     });
   if (!rows.length) return console.log(`nothing installed at ${dest}`);
   for (const r of stale) console.log(`${unitLabel(r)}: installed ${r.installed}, current ${r.current} (${r.src})`);
   for (const r of drift)
     console.log(`${unitLabel(r)}: ${r.changed.length} file(s) changed in '${r.src}' without a version bump (${r.changed.slice(0, 3).join(", ")}${r.changed.length > 3 ? ", …" : ""})`);
+  for (const r of gone) console.log(r.retired);
   if (drift.length)
     console.log(`\n${drift.length} skill(s) changed upstream with the same version. Read the change first (skilldrop diff <skill>),` +
                 `\nthen take it with: skilldrop update --changed`);
-  console.log(stale.length ? `\n${stale.length} outdated — run: skilldrop update` : (drift.length ? "" : "everything up to date."));
+  if (gone.length)
+    console.log(`\n${gone.length} retired skill(s) will not update. Keep them as they are, or remove them: skilldrop uninstall ${gone.map((r) => r.s).join(" ")}${targetHint(args.flags)}`);
+  console.log(stale.length ? `\n${stale.length} outdated — run: skilldrop update` : (drift.length || gone.length ? "" : "everything up to date."));
 }
 
 function uninstall(args) {
@@ -1470,7 +1493,7 @@ function diff(args) {
   const loop = isLoopEntry(entry);
   const src = args.flags.from || (entry ? lsrc(entry) : BUNDLED);
   const cat = resolveCatalog(src === BUNDLED ? undefined : src);
-  if (!unitExists(cat, s, loop)) die(`'${s}' is no longer in catalog '${cat.source}'`);
+  if (!unitExists(cat, s, loop)) die(loop ? `'${s}' is no longer in catalog '${cat.source}'` : (retiredNote(cat, s) || `'${s}' is no longer in catalog '${cat.source}'`));
   const theirs = unitHashes(cat, s, loop), mine = fileHashes(path.join(dest, s));
   const base = (entry && entry.files) || {};
   const changed = Object.keys(theirs).filter((f) => f in mine && mine[f] !== theirs[f]).sort();
@@ -1514,6 +1537,8 @@ function doctor(args) {
   else try { data = JSON.parse(raw); } catch (e) { add("error", `${lp} is not valid JSON`, "fix or delete it; skilldrop can't track updates until then"); }
   const names = Object.keys(data);
   for (const n of names) {
+    const note = !isLoopEntry(data[n]) && lsrc(data[n]) === BUNDLED && retiredNote(resolveCatalog(), n);
+    if (note) add("warn", note, `skilldrop uninstall ${n}${targetHint(args.flags)}, or keep it as it is; it will not update`);
     if (!fs.existsSync(path.join(dest, n))) add("error", `${n} is in the ledger but its folder is gone`, `skilldrop install ${n} (or uninstall ${n} to drop the record)`);
     else if (!data[n].file) {
       const loop = isLoopEntry(data[n]);
@@ -2031,7 +2056,7 @@ function info(args) {
   if (args.flags.pack) return infoPack(args);
   const cat = resolveCatalog(args.flags.from);
   const s = args._[0] || die("pass a skill name, or --pack <name>");
-  if (!skillExists(cat, s)) die(`unknown skill '${s}' in catalog '${cat.source}'`);
+  if (!skillExists(cat, s)) die(retiredNote(cat, s) || `unknown skill '${s}' in catalog '${cat.source}'`);
   const m = manifestOf(cat, s);
   const ps = packsOf(cat) || {};
   const inPacks = Object.entries(ps).filter(([, p]) => p.skills.includes(s)).map(([n]) => n);

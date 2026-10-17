@@ -53,7 +53,7 @@ Plans the road from current state to target state so that at every moment the sy
 ## When NOT to use this skill
 
 - ❌ A change deployable in one reversible step — normal deploy, no plan needed
-- ❌ Choosing the target ("should we move to DynamoDB?") — that's `tech-comparison-matrix`; this skill starts after the decision
+- ❌ Choosing the target ("should we move to DynamoDB?") — this skill starts after the decision
 - ❌ The test depth itself — emit gates here, hand verification design to `test-plan-generator`
 - ❌ Organizational/process migrations with no system state — different problem
 

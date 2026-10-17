@@ -1,6 +1,6 @@
 ---
 name: brief-intake
-description: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder, tech-comparison-matrix) can consume without further intake. Use whenever the user has unstructured source material and is about to invoke another skilldrop skill, or when a draft is missing the load-bearing context the next step will need.
+description: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder) can consume without further intake. Use whenever the user has unstructured source material and is about to invoke another skilldrop skill, or when a draft is missing the load-bearing context the next step will need.
 ---
 
 # brief-intake
@@ -16,7 +16,7 @@ You help the user (or the next skill in the chain) absorb raw unstructured input
    | `adr-generator` | "ADR", "decision record", "capture a decision", "we decided X" |
    | `design-doc` | "design doc", "tech proposal", "one-pager for review", "RFC" |
    | `runbook-generator` | "runbook", "on-call doc", "operational doc", "prod-readiness" |
-   | `tech-comparison-matrix` | "compare X vs Y", "vendor selection", "tech selection" |
+   | _(tech comparison)_ | "compare X vs Y", "vendor selection", "tech selection" |
    | `exec-summary` | "exec summary", "1-pager for the VP", "board update" |
    | `deck-builder` / `slide-outliner` | "deck", "slides", "presentation", "pitch", "review meeting" |
    | `decision-log` | "decisions and action items", "follow-ups from the meeting" |

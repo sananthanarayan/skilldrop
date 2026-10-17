@@ -10,7 +10,7 @@
         "A required array is present and contains customer_id; every name in required exists in properties",
         "Every parameter has a non-empty description, and limit states its valid range (1-100)",
         "The status and sort enums list their values with a one-phrase explanation of each value",
-        "Includes a Python snippet passing the tool to client.messages.create(tools=[...]) and handling stop_reason == 'tool_use'",
+        "Gives the definition without a Python usage snippet, since none was asked for",
         "Does not invent parameters, enum values, or behaviors not in the supplied signature and docstring"
       ]
     },

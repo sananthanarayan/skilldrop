@@ -104,7 +104,7 @@ You help the user review an existing document with the same opinionated rubric t
 
 ## When NOT to use this skill
 
-- ❌ For evaluating the *underlying decision* (is Postgres the right choice?). That's a tech-debate, not a doc review — use `tech-comparison-matrix` instead.
+- ❌ For evaluating the *underlying decision* (is Postgres the right choice?). That's a tech debate, not a doc review — argue the decision itself, or put it to `council-review`.
 - ❌ For grammar / spelling pass on a doc that's otherwise solid. Use a normal editor.
 - ❌ For evaluating code. This skill reviews *documents*; for code review, the user has other tools.
 - ❌ For generating the doc. If the user wants a draft, that's the matching generator skill.

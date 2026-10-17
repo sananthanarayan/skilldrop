@@ -82,7 +82,7 @@ Run: python3 validate.py   # confirms the file is found
 - **expected_shape items that can't be checked.** "Output is comprehensive" is not checkable. Name specific sections, fields, or behaviors.
 - **Missing anti-pattern cases.** The most common eval gap is no cases that test the quality bar's failure modes. If a skill says "never present a hypothesis as the cause," there must be a case where the input tempts that failure.
 
-For designing eval harnesses for general LLM features (not skilldrop skills specifically), use `llm-eval-harness` instead. Use `contribution-wizard` when creating a new skill from scratch — it calls this skill as part of the authoring flow.
+For designing eval harnesses for general LLM features (not skilldrop skills specifically), use `llm-eval-harness` instead.
 
 ## Quality bar
 

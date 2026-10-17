@@ -123,7 +123,7 @@ derived from the task wording, no siblings checked, every tool targeted.
 
 ## When NOT to use this skill
 
-- ❌ Adding a skill to the skilldrop catalogue itself, with its manifest, pack and `validate.py` rules: use `contribution-wizard`
+- ❌ Adding a skill to the skilldrop catalogue itself, with its manifest, pack and `validate.py` rules: follow that repo's `AGENTS.md` and run `python3 validate.py`
 - ❌ Auditing a skill that already exists: use `skill-review`
 - ❌ Adding evals to an existing skill without changing it: use `eval-harness-generator`
 - ❌ Repo-wide always-on rules for agents (commands, conventions, forbidden actions): use `agents-md-generator`

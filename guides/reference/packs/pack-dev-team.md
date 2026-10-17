@@ -14,7 +14,7 @@ Build-and-ship: story splitting, implementation with adversarial review, test pl
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack dev-team` |
-| Skills | 16 plus 4 from core |
+| Skills | 15 plus 4 from core |
 | Loops | build, release |
 | How-to | [Use the Dev team pack](../../how-to/packs/use-the-dev-team-pack.md) |
 
@@ -96,14 +96,6 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/bug-tri
 - The post-incident analysis — that's `postmortem-generator`
 - A feature request wearing a bug costume ("bug: there's no dark mode") — route to `user-story-splitter`
 
-### `contribution-wizard`
-
-Guides an author through creating a new skilldrop skill from scratch — generates the manifest, SKILL.md, eval cases, and skill-catalogue entry from a plain-language description of the skill's purpose.
-
-Tier **standard** · v1.0.5 · [SKILL.md](../../../packs/dev-team/skills/contribution-wizard/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/contribution-wizard/)
-
-**Use it when** authoring a new skill for this repo or a private fork, ensuring a new skill meets the schema and validation requirements before submission.
-
 ### `devils-advocate`
 
 Adversarial review of just-generated code, run *after* an agent (or human) declares a feature done. Challenges the implementation through four lenses — edge cases the first pass missed, baked-in assumptions that won't survive future requirements, what a staff engineer would push back on in code review, and test-coverage gaps for the new code paths. Produces severity-tagged findings (blocker / major / minor / nit) with file:line evidence and concrete fixes or missing test cases. Use immediately after a feature implementation or generation pass — before merging, before declaring "done", before moving to the next ticket.
@@ -182,7 +174,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/launch-
 
 Generate a phased migration or rollout plan (schema change, API version, datastore swap, platform move, auth-provider switch) — expand→migrate→contract by default, every phase reversible or its point of no return named, observable gates between phases, idempotent backfill with parity checks.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/migration-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/migration-plan/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/dev-team/skills/migration-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/migration-plan/)
 
 **Use it when** the user needs a migration plan, cutover plan, rollout strategy, or asks "how do we get from X to Y without downtime".
 
@@ -198,7 +190,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/migrati
 **Not for:**
 
 - A change deployable in one reversible step — normal deploy, no plan needed
-- Choosing the target ("should we move to DynamoDB?") — that's `tech-comparison-matrix`; this skill starts after the decision
+- Choosing the target ("should we move to DynamoDB?") — this skill starts after the decision
 - The test depth itself — emit gates here, hand verification design to `test-plan-generator`
 - Organizational/process migrations with no system state — different problem
 
@@ -426,7 +418,7 @@ Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/dev-team/loops/release
 
 Installed with this pack. Details: [Core pack reference](pack-core.md).
 
-- `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder, tech-comparison-matrix) can consume without further intake.
+- `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder) can consume without further intake.
 - `council-review`: Convene a council of distinct senior-engineer personas (Architect, Security, Operator/SRE, Pragmatist, User-Advocate, plus optional bench seats) to deliberate a decision, design, or code change — each takes an independent stance, the genuine disagreements are surfaced as named cruxes, and a Chair issues a reconciled verdict that records dissents and states what would change the decision. The "Claude Council."
 - `doc-critique`: Review an existing document — ADR, design doc, runbook, exec summary, tech-comparison matrix, deck outline, decision log — and produce a structured critique against the same quality bars the skilldrop generators enforce. Categorizes findings by severity (blocker / major / minor / nit), points to the exact section/line, and suggests a concrete fix for each.
 - `output-hygiene`: Review agent-written text before it ships and strip the machine artifacts it carries — invisible Unicode, non-breaking spaces, homoglyphs, harness-added provenance trailers, trailing chat closers — then flag the prose tells a script cannot catch, each quoted with a rewrite.

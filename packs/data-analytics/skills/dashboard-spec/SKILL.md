@@ -27,7 +27,7 @@ Writes the one-page brief a BI developer builds from, so the dashboard answers t
 
    ✅ *"Sorted horizontal bar, because the question is which queue is worst and a ranked bar answers that at a glance."* No pies for more than three parts, no dual axes, no 3D. Every number tile shows a comparison (against target, last period, or the same period last year). A bare number can't tell anyone whether to act.
 
-5. **Name the metric behind each chart by its `metric-definition` name**, with the grain, the time window and the comparison. ✅ `first_response_hours_p90` · daily · last 8 weeks · vs target 4h. A metric with no written definition is flagged `undefined: needs a spec before build`. That's a build blocker, not a detail for the BI developer to settle by guessing.
+5. **Name the metric behind each chart by its defined name**, with the grain, the time window and the comparison. ✅ `first_response_hours_p90` · daily · last 8 weeks · vs target 4h. A metric with no written definition is flagged `undefined: needs a spec before build`. That's a build blocker, not a detail for the BI developer to settle by guessing.
 
 6. **Set the filters**, at most four global ones with their default values. Only offer a filter on a dimension each affected metric can be sliced by. A filter that fans out a metric (product category on order-level revenue) is left off with a note saying why.
 
@@ -66,7 +66,7 @@ Writes the one-page brief a BI developer builds from, so the dashboard answers t
 
 ## When NOT to use this skill
 
-- ❌ Defining how one metric is calculated (formula, filters, timezone) — that's `metric-definition`
+- ❌ Defining how one metric is calculated (formula, filters, timezone) — that's the metric owner's call; this skill flags the gap, it doesn't fill it
 - ❌ Choosing which metric judges a feature, with targets and a decision rule — that's `success-metrics`
 - ❌ Service health dashboards, SLOs and alerting — that's `observability-plan`
 - ❌ A report on AI tool usage from telemetry logs — that's `ai-usage-report`

@@ -1,6 +1,6 @@
 ---
 name: tool-use-schema-writer
-description: Takes a function description (name, purpose, parameters) and writes a valid Anthropic tool_use JSON schema, with type annotations, required fields, and a description for each parameter. Produces a Python usage snippet for client.messages.create(tools=[...]). Use when wiring a Claude agent to a function or API, designing tools for a multi-agent system, or documenting an existing tool for agent consumption.
+description: Takes a function description (name, purpose, parameters) and writes a valid Anthropic tool_use JSON schema, with type annotations, required fields, and a description for each parameter. Adds a Python client.messages.create(tools=[...]) snippet only when asked. Use when wiring a Claude agent to a function or API, designing tools for a multi-agent system, or documenting an existing tool for agent consumption.
 ---
 
 # tool-use-schema-writer
@@ -68,9 +68,9 @@ Check the definition against these rules before outputting:
 - Enum values are listed in the parameter description with a one-phrase explanation each
 - Nested objects have their own `"required"` arrays
 
-### Step 4 — Python usage snippet
+### Step 4 — Python usage snippet, only when asked
 
-Produce the Python snippet:
+Skip this step unless the user asked for client code. The definition is the deliverable; an unrequested snippet is padding the reader has to scroll past. When they ask, use this shape:
 
 ```python
 import anthropic

@@ -25,7 +25,7 @@ Prefer the official server, the one the vendor maintains. Every server below is 
 | **Linear** (official, `https://mcp.linear.app/mcp`) | Issues, projects, cycles | `bug-triage`, `backlog-triage`, `team-status-report`, `user-story-splitter`, `prd-draft` | *"Fetch the current cycle for team ENG and run team-status-report."* |
 | **Figma** (official, `https://mcp.figma.com/mcp`) | Frames, components, variables, layout | `figma-diagrams`, `design-system-spec`, `information-architecture` | *"Fetch the components and variables in this Figma file and run design-system-spec."* |
 | **Sentry** (official, `https://mcp.sentry.dev/mcp`) | Issues, events, stack traces, releases | `incident-comms`, `postmortem-generator`, the `operate` loop | *"Fetch Sentry issue WEB-3F1 with its latest event and run incident-comms for an internal update."* |
-| **Supabase** (official, Postgres, `https://mcp.supabase.com/mcp`) | Schemas, tables, query results | `sql-review`, `metric-definition`, `dashboard-spec` | *"List the tables in the analytics schema, then run metric-definition for weekly active accounts."* |
+| **Supabase** (official, Postgres, `https://mcp.supabase.com/mcp`) | Schemas, tables, query results | `sql-review`, `dashboard-spec` | *"List the tables in the analytics schema, then run sql-review on the weekly active accounts query."* |
 | **AWS Billing and Cost Management** (official, AWS Labs, local: `awslabs.billing-cost-management-mcp-server`) | Cost Explorer spend, budgets, anomalies, Savings Plans and RI coverage | `cloud-cost-review` | *"Fetch last month's cost by service and any cost anomalies, then run cloud-cost-review."* |
 | **Slack** (official, `https://mcp.slack.com/mcp`) | Channel history, threads, search | `incident-comms`, `exec-summary`, `decision-log` | *"Read the #inc-2041 channel since 09:00 and run decision-log on the decisions made."* |
 
@@ -41,7 +41,7 @@ Install a skill with `npx skilldrop-cli install <skill>`, or its whole pack with
 | `solution-architect` | `figma-diagrams` |
 | `experience-design` | `design-system-spec`, `information-architecture` |
 | `sre-oncall` | `incident-comms`, `postmortem-generator`, `cloud-cost-review`, the `operate` loop |
-| `data-analytics` | `sql-review`, `metric-definition`, `dashboard-spec` |
+| `data-analytics` | `sql-review`, `dashboard-spec` |
 | `stakeholder-comms` | `exec-summary`, `decision-log` |
 | `ai-engineering` | `agent-threat-model`, `ai-usage-policy` |
 

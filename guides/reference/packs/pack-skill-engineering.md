@@ -23,7 +23,7 @@ For people writing Agent Skills in their own repos: write a portable SKILL.md fo
 
 Write a new portable Agent Skill (a SKILL.md folder) from a described task, for Claude Code, Codex, Copilot, Cursor, Kiro or Antigravity in any repo — a description that leads with the artifact and ends with trigger phrases, decisive steps, a quality bar, when and when-not sections naming near-miss siblings, anti-patterns, a non-interactive rule, reference files and scripts that work in every tool, acceptance evals and trigger queries, and the install path for each tool.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/skill-engineering/skills/skill-author/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/skill-author/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/skill-engineering/skills/skill-author/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/skill-author/)
 
 **Use it when** the user says "turn this into a skill", "write a SKILL.md for…", "make an agent skill that…", or wants a repeatable task packaged so their coding agent does it the same way every time.
 
@@ -41,7 +41,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/skill-engineering/skill
 
 **Not for:**
 
-- Adding a skill to the skilldrop catalogue itself, with its manifest, pack and `validate.py` rules: use `contribution-wizard`
+- Adding a skill to the skilldrop catalogue itself, with its manifest, pack and `validate.py` rules: follow that repo's `AGENTS.md` and run `python3 validate.py`
 - Auditing a skill that already exists: use `skill-review`
 - Adding evals to an existing skill without changing it: use `eval-harness-generator`
 - Repo-wide always-on rules for agents (commands, conventions, forbidden actions): use `agents-md-generator`
@@ -50,7 +50,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/skill-engineering/skill
 
 Audit an existing Agent Skill folder (SKILL.md plus its scripts, references and evals) for Claude Code, Codex, Copilot, Cursor, Kiro or Antigravity, and return a READY / FIX FIRST / REWRITE verdict with severity-tagged findings across five areas — whether a router would pick it and whether it collides with a sibling, portability, safety (mapped to the OWASP Agentic Skills Top 10), structure, and eval coverage — backed by a stdlib lint script for the mechanical checks.
 
-Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/skill-engineering/skills/skill-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/skill-review/)
+Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/skill-engineering/skills/skill-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/skill-review/)
 
 **Use it when** the user says "review this skill", "is my SKILL.md any good", "why doesn't my skill trigger", "is this skill safe to install", or wants a skill checked before sharing or publishing it.
 
@@ -71,7 +71,7 @@ Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/skill-engineering/skills/s
 **Not for:**
 
 - Writing a new skill from a task description: use `skill-author`
-- Adding a skill to the skilldrop catalogue itself, which has its own manifest and `validate.py` rules: use `contribution-wizard`
+- Adding a skill to the skilldrop catalogue itself, which has its own manifest and `validate.py` rules: follow that repo's `AGENTS.md` and run `python3 validate.py`
 - Generating more eval cases for a skill whose only gap is coverage: use `eval-harness-generator`
 - Reviewing a repo's always-on AGENTS.md policy file: use `agents-md-generator`
 - Threat-modelling the agent deployment that runs skills (its tools, data and egress): use `agent-threat-model`
@@ -81,7 +81,7 @@ Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/skill-engineering/skills/s
 
 Installed with this pack. Details: [Core pack reference](pack-core.md).
 
-- `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder, tech-comparison-matrix) can consume without further intake.
+- `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder) can consume without further intake.
 - `council-review`: Convene a council of distinct senior-engineer personas (Architect, Security, Operator/SRE, Pragmatist, User-Advocate, plus optional bench seats) to deliberate a decision, design, or code change — each takes an independent stance, the genuine disagreements are surfaced as named cruxes, and a Chair issues a reconciled verdict that records dissents and states what would change the decision. The "Claude Council."
 - `doc-critique`: Review an existing document — ADR, design doc, runbook, exec summary, tech-comparison matrix, deck outline, decision log — and produce a structured critique against the same quality bars the skilldrop generators enforce. Categorizes findings by severity (blocker / major / minor / nit), points to the exact section/line, and suggests a concrete fix for each.
 - `output-hygiene`: Review agent-written text before it ships and strip the machine artifacts it carries — invisible Unicode, non-breaking spaces, homoglyphs, harness-added provenance trailers, trailing chat closers — then flag the prose tells a script cannot catch, each quoted with a rewrite.

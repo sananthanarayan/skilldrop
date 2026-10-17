@@ -21,9 +21,9 @@ The cross-role toolkit every pack builds on: structured intake, document critiqu
 
 ### `brief-intake`
 
-Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder, tech-comparison-matrix) can consume without further intake.
+Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder) can consume without further intake.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/core/skills/brief-intake/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/brief-intake/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/core/skills/brief-intake/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/brief-intake/)
 
 **Use it when** Use whenever the user has unstructured source material and is about to invoke another skilldrop skill, or when a draft is missing the load-bearing context the next step will need.
 
@@ -45,7 +45,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/core/skills/brief-intak
 
 Convene a council of distinct senior-engineer personas (Architect, Security, Operator/SRE, Pragmatist, User-Advocate, plus optional bench seats) to deliberate a decision, design, or code change — each takes an independent stance, the genuine disagreements are surfaced as named cruxes, and a Chair issues a reconciled verdict that records dissents and states what would change the decision. The "Claude Council."
 
-Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/core/skills/council-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/council-review/)
+Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/core/skills/council-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/council-review/)
 
 **Use it when** a choice has real tradeoffs and one reviewer's voice isn't enough: architecture decisions, risky changes before merge, RFC/design scrutiny, "should we adopt X?", rewrite-vs-refactor, or a pre-mortem.
 
@@ -62,7 +62,7 @@ Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/core/skills/council-review
 **Not for:**
 
 - A trivial or one-line change — convening five voices is noise. Use `devils-advocate` or just review it.
-- A single-lens task. Pure code review → `devils-advocate`. Pure doc review → `doc-critique`. Scoring named options on weighted criteria → `tech-comparison-matrix`.
+- A single-lens task. Pure code review → `devils-advocate`. Pure doc review → `doc-critique`.
 - When you need **one** expert answer fast, not a deliberation. The council is for when the disagreement *is* the point.
 - Greenfield spike/throwaway code — deliberation wastes effort on what won't survive.
 - As a rubber stamp to manufacture consensus for a decision already made. If the call is final, don't stage a fake trial.
@@ -71,7 +71,7 @@ Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/core/skills/council-review
 
 Review an existing document — ADR, design doc, runbook, exec summary, tech-comparison matrix, deck outline, decision log — and produce a structured critique against the same quality bars the skilldrop generators enforce. Categorizes findings by severity (blocker / major / minor / nit), points to the exact section/line, and suggests a concrete fix for each.
 
-Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/core/skills/doc-critique/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/doc-critique/)
+Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/core/skills/doc-critique/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/doc-critique/)
 
 **Use it when** the user wants a second-pair-of-eyes review before sharing a doc, or has been handed someone else's artifact and wants to know what to push back on.
 
@@ -85,7 +85,7 @@ Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/core/skills/doc-critique/S
 
 **Not for:**
 
-- For evaluating the *underlying decision* (is Postgres the right choice?). That's a tech-debate, not a doc review — use `tech-comparison-matrix` instead.
+- For evaluating the *underlying decision* (is Postgres the right choice?). That's a tech debate, not a doc review — argue the decision itself, or put it to `council-review`.
 - For grammar / spelling pass on a doc that's otherwise solid. Use a normal editor.
 - For evaluating code. This skill reviews *documents*; for code review, the user has other tools.
 - For generating the doc. If the user wants a draft, that's the matching generator skill.

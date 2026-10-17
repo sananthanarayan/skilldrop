@@ -427,6 +427,24 @@ def bench_section(b):
 </section>"""
 
 
+def retired_section(bench):
+    """RFC-0046: skills that left the catalogue because the agent did as well without them.
+    Listed here because this is where the evidence for removing them lives."""
+    retired = catalog.index().get("retired", {})
+    if not retired:
+        return ""
+    measured = {r["skill"] for r in (bench or {}).get("skills", [])}
+    rows = "".join(f'<tr><td><code>{esc(n)}</code></td><td>{esc(r["in"])}</td><td>{esc(r["why"])}</td></tr>'
+                   for n, r in sorted(retired.items()))
+    note = (" The published run above was made before they left, so its totals include them."
+            if measured & set(retired) else "")
+    return f"""<h2 id="retired">Retired skills</h2>
+<p>A skill that adds only a format, and no rule the agent breaks without it, is removed rather than revised again (<a href="{REPO_URL}/blob/main/docs/rfcs/0046-keep-rebuild-or-retire.md">RFC-0046</a>). An installed copy keeps working; <code>skilldrop outdated</code> says it was retired and why.{note}</p>
+<div class="tbl"><table>
+<thead><tr><th>Skill</th><th>Retired in</th><th>Why</th></tr></thead>
+<tbody>{rows}</tbody></table></div>"""
+
+
 def evals_page(skills):
     bench = json.load(open(BENCH, encoding="utf-8")) if os.path.exists(BENCH) else None
     measured = {r["skill"]: r for r in (bench or {}).get("skills", [])}  # first model listed wins
@@ -464,6 +482,7 @@ def evals_page(skills):
 <div class="tbl"><table>
 <thead><tr><th>Skill</th><th>Pack</th><th>Evals</th><th>Assertions</th>{"<th>Met with skill</th><th>Without</th><th>Blind judge preferred</th>" if bench else ""}<th>Should / shouldn't trigger</th><th>Source</th></tr></thead>
 <tbody>{''.join(rows)}</tbody></table></div>
+{retired_section(bench)}
 </main>"""
     return shell("How skills are checked", "Every skilldrop skill's acceptance evals and trigger queries, and how they run.",
                  f"{SITE_URL}evals/", 1, body)

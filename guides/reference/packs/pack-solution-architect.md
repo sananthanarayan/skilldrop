@@ -14,7 +14,7 @@ Design-phase artifacts: diagrams, decision records, design docs, contracts, sche
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack solution-architect` |
-| Skills | 11 plus 4 from core |
+| Skills | 9 plus 4 from core |
 | Loops | design |
 | How-to | [Use the Solution architect pack](../../how-to/packs/use-the-solution-architect-pack.md) |
 
@@ -40,7 +40,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/solution-architect/skil
 
 Draft an OpenAPI 3.1 contract from a feature brief or story — resource-oriented paths, a full error catalog (RFC 9457), pagination/idempotency/versioning decided not deferred, examples on every operation, plus a decisions log so review argues choices instead of YAML.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skills/api-contract-draft/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/api-contract-draft/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/solution-architect/skills/api-contract-draft/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/api-contract-draft/)
 
 **Use it when** the user wants to design an API, draft an OpenAPI/Swagger spec, define request/response shapes, or agree a contract between frontend/backend or two teams before code.
 
@@ -56,7 +56,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skil
 **Not for:**
 
 - Documenting an API that already exists — that's `guide-builder` (reference archetype)
-- Choosing REST vs GraphQL vs gRPC — that's `tech-comparison-matrix`; this skill starts after
+- Choosing REST vs GraphQL vs gRPC — this skill starts after that choice is made
 - Reviewing a contract someone else drafted — `doc-critique` or `council-review`
 - Generating server/client code from the spec — hand the frozen contract to the codegen tool
 
@@ -101,31 +101,6 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skil
 - The physical schema migration (expand/backfill/contract) — that's `migration-plan`
 - System-wide NFRs for a service — that's `nfr-spec`; this is one data asset's guarantee
 - A private dataset with exactly one consumer inside the same team — a comment in the code may suffice
-
-### `db-schema-design`
-
-Design a database schema from access patterns — paradigm chosen deliberately (relational/document/key-value/wide-column/graph), keys and partitioning driven by the actual queries, indexes mapped to predicates, money/time types right, and every read path verified to have a supporting access path.
-
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/solution-architect/skills/db-schema-design/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/db-schema-design/)
-
-**Use it when** the user is designing a data model, schema, or tables for a feature, choosing a database, or asks how to structure/store data.
-
-**A good result:**
-
-- **Access patterns are listed before the schema**, with frequency and selectivity. A schema with no query list was designed blind.
-- **The paradigm choice has a reason tied to access patterns** — and relational-by-default needs none while every move past it does.
-- **Keys are justified by queries**, and no random UUIDv4 sits as a clustered PK without a noted reason.
-- **Every index maps to a real query**; every denormalization names what keeps the copy in sync.
-- **Money is never float, timestamps carry timezone, invariants are DB constraints** — not left to application discipline.
-- **Multitenancy and the unbounded-growth table have explicit plans.** The expensive-to-reverse decisions are made on purpose.
-- **The verification table shows each access pattern's supporting path**, with full scans flagged rather than hidden.
-
-**Not for:**
-
-- Governing a dataset other teams consume (quality SLAs, evolution policy) — that's `data-contract`
-- The sync API/event shape over the data — that's `api-contract-draft`
-- Executing a schema change on a live system (expand/backfill/contract) — that's `migration-plan`
-- Picking a specific managed product (Aurora vs Cloud SQL) — that's `tech-comparison-matrix`; this designs the model, not the vendor
 
 ### `design-doc`
 
@@ -209,22 +184,6 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skil
 - When the system is too small to need diagramming (one binary, one DB, no external deps). Tell the user a sentence is enough.
 - When the only source is a deployed environment with no code/IaC access — this skill reads files; it doesn't introspect live AWS accounts.
 
-### `tech-comparison-matrix`
-
-Produce a weighted comparison matrix for a technology selection question (e.g., "Postgres vs DynamoDB", "Kafka vs Kinesis vs RabbitMQ", "Snowflake vs Databricks"). Surfaces criteria, weights, per-option scores, totals, and a recommended pick.
-
-Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/solution-architect/skills/tech-comparison-matrix/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/tech-comparison-matrix/)
-
-**Use it when** the user is choosing between technologies, vendors, frameworks, or architectural approaches.
-
-**A good result:**
-
-- **Every score has a one-line justification.** A bare "4/5" is not a comparison.
-- **Tie scores are fine** — don't force differentiation that isn't there.
-- **The recommendation is one sentence, not a paragraph of hedging.**
-- **Show your weights** — a matrix with hidden weights is just an opinion.
-- **No false precision.** If a number is a guess, say "rough" or "directional".
-
 ### `threat-model`
 
 Produce a STRIDE threat model from a design doc, architecture description, or feature spec — assets and trust boundaries first, threats anchored to boundary crossings with concrete attack scenarios, severity-ranked with verifiable mitigations.
@@ -269,7 +228,7 @@ Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/solution-architect/loo
 
 Installed with this pack. Details: [Core pack reference](pack-core.md).
 
-- `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder, tech-comparison-matrix) can consume without further intake.
+- `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder) can consume without further intake.
 - `council-review`: Convene a council of distinct senior-engineer personas (Architect, Security, Operator/SRE, Pragmatist, User-Advocate, plus optional bench seats) to deliberate a decision, design, or code change — each takes an independent stance, the genuine disagreements are surfaced as named cruxes, and a Chair issues a reconciled verdict that records dissents and states what would change the decision. The "Claude Council."
 - `doc-critique`: Review an existing document — ADR, design doc, runbook, exec summary, tech-comparison matrix, deck outline, decision log — and produce a structured critique against the same quality bars the skilldrop generators enforce. Categorizes findings by severity (blocker / major / minor / nit), points to the exact section/line, and suggests a concrete fix for each.
 - `output-hygiene`: Review agent-written text before it ships and strip the machine artifacts it carries — invisible Unicode, non-breaking spaces, homoglyphs, harness-added provenance trailers, trailing chat closers — then flag the prose tells a script cannot catch, each quoted with a rewrite.

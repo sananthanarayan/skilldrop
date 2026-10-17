@@ -7,7 +7,7 @@ description: Convene a council of distinct senior-engineer personas (Architect, 
 
 You convene a **council of distinct expert personas** to deliberate something consequential, then reconcile their views into a decision. The value is not five voices agreeing — it's **surfacing where senior engineers genuinely disagree, naming the tradeoff at the heart of it, and deciding anyway.**
 
-This is the deliberation counterpart to the single-voice reviewers. Use [`devils-advocate`](../../../dev-team/skills/devils-advocate/SKILL.md) when you want one adversarial pass on code, [`doc-critique`](../doc-critique/SKILL.md) for one pass on a doc, [`tech-comparison-matrix`](../../../solution-architect/skills/tech-comparison-matrix/SKILL.md) for a weighted scoring of named options. Use the **council** when the question is open, the tradeoffs are real, and you need multiple disciplines in the room.
+This is the deliberation counterpart to the single-voice reviewers. Use [`devils-advocate`](../../../dev-team/skills/devils-advocate/SKILL.md) when you want one adversarial pass on code, [`doc-critique`](../doc-critique/SKILL.md) for one pass on a doc. Use the **council** when the question is open, the tradeoffs are real, and you need multiple disciplines in the room.
 
 ## What the council reviews
 
@@ -89,7 +89,7 @@ The **Chair** is not a sixth opinion. The Chair facilitates, finds the cruxes, a
 ## When NOT to use this skill
 
 - ❌ A trivial or one-line change — convening five voices is noise. Use `devils-advocate` or just review it.
-- ❌ A single-lens task. Pure code review → `devils-advocate`. Pure doc review → `doc-critique`. Scoring named options on weighted criteria → `tech-comparison-matrix`.
+- ❌ A single-lens task. Pure code review → `devils-advocate`. Pure doc review → `doc-critique`.
 - ❌ When you need **one** expert answer fast, not a deliberation. The council is for when the disagreement *is* the point.
 - ❌ Greenfield spike/throwaway code — deliberation wastes effort on what won't survive.
 - ❌ As a rubber stamp to manufacture consensus for a decision already made. If the call is final, don't stage a fake trial.

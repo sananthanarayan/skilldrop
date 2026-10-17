@@ -79,6 +79,6 @@ Left off as filters: channel and tag. A ticket can carry several tags, so a tag 
 
 ## Open questions
 
-- [ ] Incoming tickets needs a `metric-definition` spec (created time, merged and spam tickets). Owner: support operations lead.
+- [ ] Incoming tickets needs a written definition (created time, merged and spam tickets). Owner: support operations lead.
 - [ ] Tickets handled per agent-week needs a spec (what "handled" means, part-time agents). Owner: support operations lead.
 - [ ] Confirm the dashboard owner.

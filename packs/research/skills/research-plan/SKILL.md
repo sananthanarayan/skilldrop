@@ -106,7 +106,6 @@ budgets become tagged assumptions (default: two weeks, 15 hours).
 - ❌ Ranking rival explanations for something that already happened — `hypothesis-comparison`
 - ❌ Writing the interview scripts for stakeholders — `requirements-interview`
 - ❌ A strategy framework such as SWOT or Five Forces on a market — `strategy-analysis`
-- ❌ Comparing named technologies or vendors — `tech-comparison-matrix`
 - ❌ Turning a messy thread into a brief for another skill — `brief-intake`
 
 ## Anti-patterns to avoid

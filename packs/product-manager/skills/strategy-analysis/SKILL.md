@@ -5,7 +5,7 @@ description: Run a strategy framework — SWOT/TOWS, Porter's Five Forces, or PE
 
 # strategy-analysis
 
-Runs the classic strategy frameworks the way a good strategist does and a bad deck doesn't: the framework is chosen to fit the question, every cell carries evidence and an implication, and the output ends in ranked, committal so-whats — not a filled-in grid. The grid is the working, never the deliverable. Sibling of `tech-comparison-matrix` (tech selection between named options) and `business-case` (a costed invest/defer decision); this skill is for the strategic question *before* options are named.
+Runs the classic strategy frameworks the way a good strategist does and a bad deck doesn't: the framework is chosen to fit the question, every cell carries evidence and an implication, and the output ends in ranked, committal so-whats — not a filled-in grid. The grid is the working, never the deliverable. Sibling of `business-case` (a costed invest/defer decision); this skill is for the strategic question *before* options are named.
 
 ## How to respond
 
@@ -36,7 +36,7 @@ Runs the classic strategy frameworks the way a good strategist does and a bad de
 
 4. **Rank the implications and commit.** End with **Implications, ranked** — 3–5 entries ordered by impact on the named decision, each an action-shaped sentence with an owner-shaped subject: ✅ *"Price the enterprise tier before Q3: supplier power is rising (🟥) and the S×O attack window closes when the incumbent's contract cycle renews"*. Then a one-paragraph **verdict** answering the user's actual question, taking a side, and naming what evidence would change it.
 
-5. **Emit in one message**: evidence base (tag summary), the framework grid(s), ranked implications, verdict. Flag every `[assumption]` that appears in a top-3 implication — those are the validation targets. Hand off: options now named and comparable → `tech-comparison-matrix`; investment decision to cost → `business-case`; product direction to test → `prfaq`.
+5. **Emit in one message**: evidence base (tag summary), the framework grid(s), ranked implications, verdict. Flag every `[assumption]` that appears in a top-3 implication — those are the validation targets. Hand off: investment decision to cost → `business-case`; product direction to test → `prfaq`.
 
 ## Quality bar
 
@@ -56,7 +56,7 @@ Runs the classic strategy frameworks the way a good strategist does and a bad de
 
 ## When NOT to use this skill
 
-- ❌ Choosing between named technologies or vendors — `tech-comparison-matrix`
+- ❌ Choosing between named technologies or vendors — the strategic question is already answered; compare the options directly
 - ❌ A costed build/buy/defer decision — `business-case`
 - ❌ Testing a specific product concept — `prfaq`
 - ❌ Quarterly goal-setting — `okr-cascade`

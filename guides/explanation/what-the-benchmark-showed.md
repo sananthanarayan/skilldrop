@@ -172,3 +172,13 @@ not, and the held-out test says the second group is larger than the tuned number
   skills have now failed to carry over, so the next step for them is that question.
 - **Do not tune on the judge alone.** Deliberate refusals stay, such as declining to rank
   teams from delivery metrics, even where a judge prefers the answer that complies.
+
+## What was done about it
+
+[RFC-0046](../../docs/rfcs/0046-keep-rebuild-or-retire.md) asked that question of all 12
+skills, using their four held-out evals. One skill already wins, and keeps its rule: a tool
+definition says only what the source enforces. Seven have a rule the plain agent broke in
+two or three of their four evals, buried under a template that cost them most of their
+losses. They are being rebuilt with the rule first, and each one ships only if both judges
+prefer it in at least half the pairs on two new evals. Four added only a format and were
+retired in 0.16.13. The evals page lists them, with the reason for each.

@@ -67,8 +67,8 @@ Reviews a query the way a skeptical analyst would before trusting its output: fi
 
 ## When NOT to use this skill
 
-- ❌ Deciding what a metric should mean (formula, filters, owner) — that's `metric-definition`; this skill checks that SQL computes it correctly
-- ❌ Designing tables, keys and indexes from access patterns — that's `db-schema-design`
+- ❌ Deciding what a metric should mean (formula, filters, owner) — that's the metric owner's call; this skill checks that SQL computes it correctly
+- ❌ Designing tables, keys and indexes from access patterns — this reviews queries against a schema, not the schema
 - ❌ Agreeing a dataset's schema, quality SLAs and change policy with its consumers — that's `data-contract`
 - ❌ General application code review, including SQL built in application code for security — that's `pre-merge-review`
 

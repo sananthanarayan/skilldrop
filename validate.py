@@ -33,6 +33,8 @@ Checks (FAIL):
     (fenced blocks + {template} lines + placeholder targets are skipped)
   - (RFC-0026) every skill belongs to at least one `outcomes` entry in catalogue.json,
     and every outcome entry names a real skill folder
+  - (RFC-0046) a skill in catalogue.json `retired` has no folder, and no current file
+    names it (CHANGELOG.md and docs/ keep the history)
   - (RFC-0016) every SKILL.md has a `## Quality bar` and `## Anti-patterns`
     section (golden rule 7); a skill with scripts/ cites both the
     ${CLAUDE_SKILL_DIR}/ and plain scripts/ forms; and a heavy-tier judgment
@@ -667,6 +669,32 @@ def main():
             outcomed.add(s)
     for s in sorted(dir_set - outcomed):
         fail("catalogue.json", f"skill '{s}' belongs to no outcome — add it to one in catalogue.json (RFC-0026)")
+
+    # RFC-0046: a retired skill leaves a record and no folder, and nothing current may still
+    # name it — a hand-off or "use X instead" pointing at a skill that is gone is a dead end.
+    # History keeps the name: CHANGELOG.md, docs/ (RFCs, benchmark data) and catalogue.json.
+    retired = index_doc.get("retired", {})
+    for r, rec in retired.items():
+        if r in dir_set:
+            fail("catalogue.json", f"'{r}' is retired but its skill folder still exists — delete the folder or the record")
+        if rec.get("instead") and rec["instead"] not in dir_set:
+            fail("catalogue.json", f"retired '{r}' points `instead` at '{rec['instead']}', which is not a skill folder")
+    if retired:
+        name_re = re.compile(r"(?<![\w-])(" + "|".join(map(re.escape, retired)) + r")(?![\w-])")
+        current = [p for p in glob.glob(os.path.join(ROOT, "**", "*"), recursive=True)
+                   if os.path.isfile(p) and p.endswith((".md", ".json", ".txt", ".py", ".js", ".yml"))]
+        history = ("CHANGELOG.md", "catalogue.json", "docs" + os.sep, "node_modules" + os.sep,
+                   "build" + os.sep, "bench-results" + os.sep, ".context" + os.sep, ".git" + os.sep)
+        for p in current:
+            rel = os.path.relpath(p, ROOT)
+            if rel.startswith(history) or rel in ("validate.py", "bin" + os.sep + "skilldrop.js"):
+                continue
+            try:
+                text = open(p, encoding="utf-8").read()
+            except (UnicodeDecodeError, OSError):
+                continue
+            for m in sorted(set(name_re.findall(text))):
+                fail(rel, f"names '{m}', which was retired in {retired[m]['in']} (RFC-0046) — remove the reference")
 
     # profiles.json: each named profile is an install recipe. Validate that every pack,
     # agent, and loop it names actually exists — a profile referencing a deleted pack is

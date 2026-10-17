@@ -152,7 +152,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/a
 
 Score an organisation's or team's readiness to adopt AI tooling across six gating dimensions — data, tooling, skills, governance, process, and culture — with an evidence line per score and the blocking gaps ranked by what stops adoption first.
 
-Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/ai-engineering/skills/ai-readiness-assessment/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/ai-readiness-assessment/)
+Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/ai-engineering/skills/ai-readiness-assessment/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/ai-readiness-assessment/)
 
 **Use it when** the user asks "are we ready for AI", wants an AI maturity or readiness baseline, or needs to know what to fix before rolling tools out. Do NOT use to pick which use cases to build (that's ai-use-case-triage) or to plan the rollout itself (that's ai-adoption-rollout).
 
@@ -255,7 +255,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/a
 
 Design an evaluation harness for an LLM-powered feature — a versioned golden set (representative + adversarial + regression cases), the cheapest adequate grading method per case, a metric with a pre-set pass bar and regression gate, and a failure taxonomy that targets iteration.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/ai-engineering/skills/llm-eval-harness/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/llm-eval-harness/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/ai-engineering/skills/llm-eval-harness/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/llm-eval-harness/)
 
 **Use it when** the user is building or tuning an LLM feature (prompt, RAG, agent, classifier) and needs evals, a way to test prompt/model changes, or to stop shipping quality regressions on vibes.
 
@@ -272,7 +272,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/ai-engineering/skills/l
 
 - Tabulating AI usage/adoption telemetry — that's `ai-usage-report`
 - Product-outcome metrics for a feature (adoption, handle time) — that's `success-metrics`
-- Picking which model/vendor to use — that's `tech-comparison-matrix`
+- Picking which model/vendor to buy on price, terms or support — this measures quality on your task, which is one input to that decision
 - The provider-specific API mechanics (token counting, streaming, tool-call format) — consult the provider's own reference; this skill is the eval methodology
 
 ### `subagent-design`
@@ -304,7 +304,7 @@ Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/ai-engineering/skills/s
 
 Installed with this pack. Details: [Core pack reference](pack-core.md).
 
-- `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder, tech-comparison-matrix) can consume without further intake.
+- `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder) can consume without further intake.
 - `council-review`: Convene a council of distinct senior-engineer personas (Architect, Security, Operator/SRE, Pragmatist, User-Advocate, plus optional bench seats) to deliberate a decision, design, or code change — each takes an independent stance, the genuine disagreements are surfaced as named cruxes, and a Chair issues a reconciled verdict that records dissents and states what would change the decision. The "Claude Council."
 - `doc-critique`: Review an existing document — ADR, design doc, runbook, exec summary, tech-comparison matrix, deck outline, decision log — and produce a structured critique against the same quality bars the skilldrop generators enforce. Categorizes findings by severity (blocker / major / minor / nit), points to the exact section/line, and suggests a concrete fix for each.
 - `output-hygiene`: Review agent-written text before it ships and strip the machine artifacts it carries — invisible Unicode, non-breaking spaces, homoglyphs, harness-added provenance trailers, trailing chat closers — then flag the prose tells a script cannot catch, each quoted with a rewrite.

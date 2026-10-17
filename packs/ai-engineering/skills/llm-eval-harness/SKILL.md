@@ -66,7 +66,7 @@ Builds the measurement that turns "the new prompt feels better" into "the new pr
 
 - ❌ Tabulating AI usage/adoption telemetry — that's `ai-usage-report`
 - ❌ Product-outcome metrics for a feature (adoption, handle time) — that's `success-metrics`
-- ❌ Picking which model/vendor to use — that's `tech-comparison-matrix`
+- ❌ Picking which model/vendor to buy on price, terms or support — this measures quality on your task, which is one input to that decision
 - ❌ The provider-specific API mechanics (token counting, streaming, tool-call format) — consult the provider's own reference; this skill is the eval methodology
 
 ## Anti-patterns to avoid

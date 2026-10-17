@@ -1,6 +1,6 @@
 # Brief: Tech Comparison
 
-> Target downstream skill: `tech-comparison-matrix`
+> Target downstream: whoever scores the candidates — the agent in the next turn, or the people making the choice. No dedicated skill.
 
 ## The question
 {One sentence — what's being chosen and what for. e.g. "Pick a primary OLTP datastore for the new checkout service."} [explicit|implied|inferred|missing]

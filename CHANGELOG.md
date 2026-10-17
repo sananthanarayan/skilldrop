@@ -8,6 +8,14 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.13 — 2026-10-17
+
+- **Four skills are retired: `tech-comparison-matrix`, `db-schema-design`, `metric-definition` and `contribution-wizard`.** On evals they were never revised against, the agent without them did as well or better, and none adds a rule the agent breaks on its own, only a format it can produce when asked ([RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md)). An installed copy keeps working. The catalogue now holds 96 skills.
+- **The CLI says when a skill you installed was retired.** `outdated`, `update` and `doctor` name it with the reason and the `uninstall` command, and remove nothing. `install`, `info` and `diff` on a retired name stop with the same reason instead of "unknown skill". The evals page lists every retired skill and why.
+- **`tool-use-schema-writer` gives the tool definition you asked for**, and adds the Python `client.messages.create` snippet only when you ask for it.
+- **Sixteen skills that pointed at a retired one were updated** so their hand-offs and "when not to use" lines no longer name a skill that is gone. The `data-analytics` pack now starts with `sql-review`, then `dashboard-spec`, then `doc-critique`.
+- **Seven more skills will be rebuilt around the one rule each adds**, one at a time, and each ships only if two blind judges prefer it on evals it has never seen. The [roadmap](ROADMAP.md) lists them.
+
 ## 0.16.12 — 2026-10-16
 
 - **The site has a dark theme.** It follows your system setting, and the new toggle in the nav switches it and remembers your choice. The operating-model picture has a dark version too, on the site and on GitHub.

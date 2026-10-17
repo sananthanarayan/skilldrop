@@ -12,8 +12,8 @@ and keep the hypothesis with the **least evidence against it**. Evidence that fi
 hypothesis feels persuasive and proves nothing, so the matrix makes that visible. The output
 is a ranked matrix, the evidence the ranking rests on, and the next observation to make.
 
-This skill explains a past or current observation. To choose between options going forward,
-use `tech-comparison-matrix` (technology) or `strategy-analysis` (market position). To gather
+This skill explains a past or current observation. It does not choose between options going
+forward; for market position, use `strategy-analysis`. To gather
 the evidence in the first place, plan it with `research-plan` and summarise sources with
 `source-synthesis`.
 
@@ -121,7 +121,7 @@ generated per step 2 and tagged `[assumption]`. If the user supplied no evidence
 
 ## When NOT to use this skill
 
-- ❌ Choosing between technologies, vendors or approaches for the future — `tech-comparison-matrix`
+- ❌ Choosing between technologies, vendors or approaches for the future — this ranks explanations, not options
 - ❌ Market or competitive position, SWOT, Five Forces — `strategy-analysis`
 - ❌ Planning what evidence to collect before you have any — `research-plan`
 - ❌ Summarising what a set of sources says — `source-synthesis`

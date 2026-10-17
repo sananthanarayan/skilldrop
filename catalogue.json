@@ -22,7 +22,7 @@
     },
     "design-the-system": {
       "for": "Architects · tech leads",
-      "description": "Commit the shape before the code: decision records, design docs, diagrams, contracts, schemas, migration and threat models, and the design of any agentic parts.",
+      "description": "Commit the shape before the code: decision records, design docs, diagrams, API and data contracts, migration and threat models, and the design of any agentic parts.",
       "skills": [
         "adr-generator",
         "design-doc",
@@ -30,9 +30,7 @@
         "reverse-architecture",
         "figma-diagrams",
         "api-contract-draft",
-        "db-schema-design",
         "data-contract",
-        "tech-comparison-matrix",
         "threat-model",
         "agent-threat-model",
         "migration-plan",
@@ -60,7 +58,6 @@
         "agents-md-generator",
         "llm-eval-harness",
         "eval-harness-generator",
-        "contribution-wizard",
         "backlog-triage",
         "tracker-brief-sync"
       ]
@@ -161,10 +158,9 @@
     },
     "define-and-trust-the-numbers": {
       "for": "Data analysts · analytics engineers",
-      "description": "Make the numbers a business runs on mean one thing: metric definitions a semantic layer can implement, SQL reviewed for wrong answers, and dashboards specced before they're built.",
+      "description": "Make the numbers a business runs on mean one thing: SQL reviewed for wrong answers, and dashboards specced before they're built, with every number on them defined.",
       "skills": [
         "dashboard-spec",
-        "metric-definition",
         "sql-review"
       ]
     },
@@ -196,5 +192,11 @@
         "application-form-answers"
       ]
     }
+  },
+  "retired": {
+    "tech-comparison-matrix": { "in": "0.16.13", "why": "On evals it was never revised against, the agent without it did as well, and its weighted totals were wrong in 4 of 8 runs." },
+    "db-schema-design": { "in": "0.16.13", "why": "On evals it was never revised against, the agent without it met as many checks (73% against 71%) and got types, time zones and constraints right unprompted." },
+    "metric-definition": { "in": "0.16.13", "why": "On evals it was never revised against, the agent without it did everything the skill teaches unprompted and won 13 of 16 blind verdicts." },
+    "contribution-wizard": { "in": "0.16.13", "why": "It prescribed a skill layout this catalogue no longer uses and imposed it on other repos. To add a skill to skilldrop, follow AGENTS.md and run validate.py." }
   }
 }

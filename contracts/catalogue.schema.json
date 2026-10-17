@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/sananthanarayan/skilldrop/contracts/catalogue.schema.json",
   "title": "skilldrop catalogue.json",
-  "$comment": "RFC-0026 / RFC-0034. The catalogue index: pack display order, and the outcome axis. Packs answer WHO needs a skill (the folder it sits in); outcomes answer WHY someone opened the catalogue.",
+  "$comment": "RFC-0026 / RFC-0034 / RFC-0046. The catalogue index: pack display order, the outcome axis, and the skills that have left the catalogue. Packs answer WHO needs a skill (the folder it sits in); outcomes answer WHY someone opened the catalogue.",
   "type": "object",
   "additionalProperties": false,
   "required": ["version", "packs", "outcomes"],
@@ -26,6 +26,20 @@
           "for": { "type": "string", "description": "Who this job belongs to, shown on the home page's outcome cards." },
           "description": { "type": "string", "description": "The chip's tooltip on the catalogue site." },
           "skills": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+        }
+      }
+    },
+    "retired": {
+      "type": "object",
+      "description": "RFC-0046. Skills removed from the catalogue, so an installed copy can say why it stopped updating. A retired name has no folder and nothing references it; validate.py checks both.",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["in", "why"],
+        "properties": {
+          "in": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$", "description": "The skilldrop-cli version that removed it." },
+          "why": { "type": "string", "description": "One sentence, shown by outdated, update, doctor, diff, info and install." },
+          "instead": { "type": "string", "description": "A skill that covers the same job, when one does. Omit it when the agent without a skill does as well." }
         }
       }
     }

@@ -115,7 +115,7 @@ against the skills named in the folder itself.
 ## When NOT to use this skill
 
 - ❌ Writing a new skill from a task description: use `skill-author`
-- ❌ Adding a skill to the skilldrop catalogue itself, which has its own manifest and `validate.py` rules: use `contribution-wizard`
+- ❌ Adding a skill to the skilldrop catalogue itself, which has its own manifest and `validate.py` rules: follow that repo's `AGENTS.md` and run `python3 validate.py`
 - ❌ Generating more eval cases for a skill whose only gap is coverage: use `eval-harness-generator`
 - ❌ Reviewing a repo's always-on AGENTS.md policy file: use `agents-md-generator`
 - ❌ Threat-modelling the agent deployment that runs skills (its tools, data and egress): use `agent-threat-model`

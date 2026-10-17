@@ -1,6 +1,6 @@
 # Rubric: Tech-Comparison Matrix
 
-Mirrors `tech-comparison-matrix`'s quality bar.
+For any weighted comparison of named options: a vendor selection, a datastore pick, a build-vs-buy matrix.
 
 ## Blockers
 - **The question is one sentence and answerable.** ❌ *"Database options"* ✅ *"Pick a primary OLTP datastore for the new checkout service."*

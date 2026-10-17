@@ -30,7 +30,7 @@
       {
         "skill": "tool-use-schema-writer",
         "you_do": "Describe each function the model should call.",
-        "you_get": "A tool_use JSON schema per function with types, required fields and parameter descriptions, plus a Python client.messages.create snippet."
+        "you_get": "A tool_use JSON schema per function with types, required fields and parameter descriptions, and a Python client.messages.create snippet when you ask for one."
       },
       {
         "skill": "token-budget-estimator",

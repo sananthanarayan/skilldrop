@@ -50,7 +50,7 @@ Bring:
 A session takes about 30–60 minutes.
 
 1. **`tool-use-schema-writer`**: Describe each function the model should call.
-   You get: A tool_use JSON schema per function with types, required fields and parameter descriptions, plus a Python client.messages.create snippet.
+   You get: A tool_use JSON schema per function with types, required fields and parameter descriptions, and a Python client.messages.create snippet when you ask for one.
 2. **`token-budget-estimator`**: Describe the workflow or share a sample request and response.
    You get: A per-component token table, the dominant cost driver, and max_tokens and other budget controls per component.
 3. **`prompt-caching-advisor`**: Paste the system prompt and a typical request.

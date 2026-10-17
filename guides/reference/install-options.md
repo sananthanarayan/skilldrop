@@ -59,7 +59,7 @@ skilldrop is also a **Claude Code plugin marketplace**: one marketplace with one
 Then take the whole catalogue, or your role's pack:
 
 ```text
-/plugin install skilldrop@skilldrop             # all 100 skills + 3 reviewer subagents
+/plugin install skilldrop@skilldrop             # all 96 skills + 3 reviewer subagents
 /plugin install dev-team@skilldrop              # 20 skills (incl. core) + the 3 reviewer subagents
 /plugin install solution-architect@skilldrop    # 15 skills (incl. core)
 /plugin install ai-engineering@skilldrop        # 15 skills (incl. core)

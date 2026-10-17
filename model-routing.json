@@ -162,10 +162,6 @@
       "tier": "standard",
       "rationale": "The script lints and renders deterministically, but fixing a broken diagram means reading the author's intent and rewriting syntax without changing nodes, edges or labels, and knowing when to ask instead."
     },
-    "metric-definition": {
-      "tier": "standard",
-      "rationale": "Structured specification against a fixed checklist (formula, grain, window, exclusions, edge cases, checks). Needs care with SQL and additivity but no adversarial judgment."
-    },
     "research-plan": {
       "tier": "standard",
       "rationale": "Structured planning against a fixed shape (decision, sub-questions, methods, criteria, stopping rule); needs judgment to cut scope but no adversarial reasoning."
@@ -368,7 +364,7 @@
     },
     "business-case": {
       "tier": "heavy",
-      "rationale": "Weighted multi-option judgment with a committal recommendation \u2014 same failure mode as tech-comparison-matrix: cheaper models mis-weight costs, inflate benefits, and miss the flip-assumption. Never downgrade."
+      "rationale": "Weighted multi-option judgment with a committal recommendation \u2014 cheaper models mis-weight costs, inflate benefits, and miss the flip-assumption. Never downgrade."
     },
     "incident-comms": {
       "tier": "standard",
@@ -390,10 +386,6 @@
       "tier": "heavy",
       "rationale": "Adversarial review against WCAG success criteria \u2014 cheaper models fault alt-text presence over quality, under-call severity, miss focus-order/name-role-value issues, and claim AT passes from screenshots. Never downgrade."
     },
-    "db-schema-design": {
-      "tier": "standard",
-      "rationale": "Design synthesis from access patterns against a fixed paradigm/indexing/anti-pattern reference. Paradigm and denormalization judgment is bounded; escalate via ambiguous-input on contested scale/consistency tradeoffs."
-    },
     "observability-plan": {
       "tier": "standard",
       "rationale": "Methodology synthesis against fixed SRE practices (golden signals, burn-rate alerting, pillar split). SLO calibration needs judgment but is bounded; escalate via ambiguous-input on contested reliability targets."
@@ -413,10 +405,6 @@
     "doc-critique": {
       "tier": "heavy",
       "rationale": "Adversarial doc review against rubrics. Same as devils-advocate: the value is catching what a fast pass misses. Never downgrade."
-    },
-    "tech-comparison-matrix": {
-      "tier": "heavy",
-      "rationale": "Weighted multi-criteria judgment with a recommendation. Mis-weighting is the failure mode; heavy is worth it. Never downgrade."
     },
     "threat-model": {
       "tier": "heavy",
@@ -473,10 +461,6 @@
     "tool-use-schema-writer": {
       "tier": "standard",
       "rationale": "Schema generation from natural-language description \u2014 structured output task that fits standard tier."
-    },
-    "contribution-wizard": {
-      "tier": "standard",
-      "rationale": "Intake plus structured generation \u2014 standard tier covers template-filling and schema-adherence judgment."
     },
     "ux-writing": {
       "tier": "standard",

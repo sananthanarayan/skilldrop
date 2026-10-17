@@ -55,7 +55,7 @@ Produces the contract *before* the code — a valid OpenAPI 3.1 document two tea
 ## When NOT to use this skill
 
 - ❌ Documenting an API that already exists — that's `guide-builder` (reference archetype)
-- ❌ Choosing REST vs GraphQL vs gRPC — that's `tech-comparison-matrix`; this skill starts after
+- ❌ Choosing REST vs GraphQL vs gRPC — this skill starts after that choice is made
 - ❌ Reviewing a contract someone else drafted — `doc-critique` or `council-review`
 - ❌ Generating server/client code from the spec — hand the frozen contract to the codegen tool
 

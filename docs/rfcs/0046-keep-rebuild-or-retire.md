@@ -1,7 +1,7 @@
 ---
 rfc: 0046
 title: Keep, rebuild or retire the twelve skills that lost on held-out evals
-status: draft
+status: accepted
 date: 2026-10-17
 author: sananthanarayan
 ---
@@ -79,7 +79,7 @@ journey are re-sequenced without `metric-definition`.
 
 ```json
 "retired": {
-  "db-schema-design": { "in": "0.16.13", "why": "The agent without it did as well on evals it was never revised against.", "instead": null }
+  "db-schema-design": { "in": "0.16.13", "why": "The agent without it did as well on evals it was never revised against." }
 }
 ```
 
@@ -130,4 +130,7 @@ plan and ranking without it), then `release-notes` and `postmortem-generator`, w
 
 ## Decision
 
-Pending the maintainer.
+Accepted by the maintainer on 2026-10-17 as proposed, with one change to (3): `instead` is
+omitted rather than set to `null`, because none of the four has a successor. Parts (1) to (3)
+shipped in 0.16.13. The site lists retired skills on the evals page. (4) runs one skill at a
+time from 0.16.14, starting with `source-synthesis`.

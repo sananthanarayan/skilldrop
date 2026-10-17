@@ -65,7 +65,7 @@ Shipped providers (Claude Code is filled in; the rest are templates you complete
 |---|---|
 | `devils-advocate` | Adversarial code review. Cheaper models miss edge cases + under-call severity. |
 | `doc-critique` | Adversarial doc review. The value is catching what a fast pass misses. |
-| `tech-comparison-matrix` | Weighted multi-criteria judgment. Mis-weighting is the failure mode. |
+| `business-case` | Weighted multi-option judgment. Mis-weighting costs and benefits is the failure mode. |
 
 ## Escalation rules (mechanical — no LLM call)
 

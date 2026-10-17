@@ -5,7 +5,7 @@ description: Build a business case for a build/buy/defer investment decision —
 
 # business-case
 
-Produces the document a sponsor can approve, challenge, or kill on its merits — because every benefit shows its arithmetic, every option includes the one nobody advocates for (doing nothing), and the case names the single assumption that flips the recommendation. Decides *whether to invest*; `tech-comparison-matrix` picks between technologies after, `prd-draft` captures requirements after, `exec-summary` compresses this doc for a board.
+Produces the document a sponsor can approve, challenge, or kill on its merits — because every benefit shows its arithmetic, every option includes the one nobody advocates for (doing nothing), and the case names the single assumption that flips the recommendation. Decides *whether to invest*; picking between technologies comes after, `prd-draft` captures requirements after, `exec-summary` compresses this doc for a board.
 
 ## How to respond
 
@@ -49,7 +49,7 @@ Produces the document a sponsor can approve, challenge, or kill on its merits �
 ## When NOT to use this skill
 
 - ❌ The investment decision is already made — go to `prd-draft`
-- ❌ Choosing between technologies for an approved initiative — `tech-comparison-matrix`
+- ❌ Choosing between technologies for an approved initiative — the investment is already decided; compare the options directly
 - ❌ Compressing an existing case for execs — `exec-summary`
 - ❌ Trivial cost ("should we buy a $400/yr tool") — the case costs more than the decision; just decide
 

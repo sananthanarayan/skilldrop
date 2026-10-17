@@ -70,7 +70,6 @@ When two seats genuinely converge, that's a *stronger* signal — present it as 
 The council is heavier than the focused reviewers — use it when the multi-disciplinary tension is the point, not as a default. Rules of thumb:
 - One adversarial pass on just-written code → [`devils-advocate`](../../../dev-team/skills/devils-advocate/SKILL.md).
 - One rubric pass on a doc → [`doc-critique`](../doc-critique/SKILL.md).
-- Score named options on weighted criteria → [`tech-comparison-matrix`](../../../solution-architect/skills/tech-comparison-matrix/SKILL.md).
 - A decision/design/change where security, ops, maintainability, delivery, and correctness pull in different directions → **council-review**.
 
 Don't chain these internally (per the repo's no-internal-chaining rule). A human runs the council, then hands a specific finding to `devils-advocate` if they want it drilled.

@@ -24,7 +24,7 @@ Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, i
 
 Build a business case for a build/buy/defer investment decision — do-nothing always included as the baseline, benefits quantified as re-runnable calculations with confidence tags, full costs (build + run + opportunity), ranges instead of false precision, and the flip-assumption named.
 
-Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/product-manager/skills/business-case/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/business-case/)
+Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/product-manager/skills/business-case/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/business-case/)
 
 **Use it when** the user needs to justify an investment, write a business case, compare build vs buy vs defer, or get budget/sponsor approval for an initiative.
 
@@ -41,7 +41,7 @@ Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/product-manager/skills/bus
 **Not for:**
 
 - The investment decision is already made — go to `prd-draft`
-- Choosing between technologies for an approved initiative — `tech-comparison-matrix`
+- Choosing between technologies for an approved initiative — the investment is already decided; compare the options directly
 - Compressing an existing case for execs — `exec-summary`
 - Trivial cost ("should we buy a $400/yr tool") — the case costs more than the decision; just decide
 
@@ -150,7 +150,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/product-manager/skills/
 
 Run a strategy framework — SWOT/TOWS, Porter's Five Forces, or PESTLE — on a product, company, or market question, choosing the right framework for the question and forcing every cell to carry evidence and a so-what.
 
-Tier **heavy** · v0.1.2 · [SKILL.md](../../../packs/product-manager/skills/strategy-analysis/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/strategy-analysis/)
+Tier **heavy** · v0.1.3 · [SKILL.md](../../../packs/product-manager/skills/strategy-analysis/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/strategy-analysis/)
 
 **Use it when** the user asks for a SWOT, a competitive/market analysis, "should we enter this market", "what's our position against X", or a macro-environment scan.
 
@@ -163,11 +163,11 @@ Tier **heavy** · v0.1.2 · [SKILL.md](../../../packs/product-manager/skills/str
 - **The implications are ranked and action-shaped**, tied to the named decision — not "consider monitoring the competitive landscape".
 - **The verdict takes a side** and names what would change it. An analysis that ends "it depends" has refused its job.
 
-**Hands off to:** `tech-comparison-matrix` when the options are named and need comparing on stated criteria; `business-case` when the direction is chosen and needs costing before approval.
+**Hands off to:** `business-case` when the direction is chosen and needs costing before approval.
 
 **Not for:**
 
-- Choosing between named technologies or vendors — `tech-comparison-matrix`
+- Choosing between named technologies or vendors — the strategic question is already answered; compare the options directly
 - A costed build/buy/defer decision — `business-case`
 - Testing a specific product concept — `prfaq`
 - Quarterly goal-setting — `okr-cascade`
@@ -242,7 +242,7 @@ Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/product-manager/loops/
 
 Installed with this pack. Details: [Core pack reference](pack-core.md).
 
-- `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder, tech-comparison-matrix) can consume without further intake.
+- `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder) can consume without further intake.
 - `council-review`: Convene a council of distinct senior-engineer personas (Architect, Security, Operator/SRE, Pragmatist, User-Advocate, plus optional bench seats) to deliberate a decision, design, or code change — each takes an independent stance, the genuine disagreements are surfaced as named cruxes, and a Chair issues a reconciled verdict that records dissents and states what would change the decision. The "Claude Council."
 - `doc-critique`: Review an existing document — ADR, design doc, runbook, exec summary, tech-comparison matrix, deck outline, decision log — and produce a structured critique against the same quality bars the skilldrop generators enforce. Categorizes findings by severity (blocker / major / minor / nit), points to the exact section/line, and suggests a concrete fix for each.
 - `output-hygiene`: Review agent-written text before it ships and strip the machine artifacts it carries — invisible Unicode, non-breaking spaces, homoglyphs, harness-added provenance trailers, trailing chat closers — then flag the prose tells a script cannot catch, each quoted with a rewrite.

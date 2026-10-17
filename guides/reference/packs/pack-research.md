@@ -23,7 +23,7 @@ Take a question from vague to answered: plan the research around the decision it
 
 Compare rival explanations for an observation with analysis of competing hypotheses (ACH) — list the hypotheses and the evidence, build a consistency matrix (consistent / inconsistent / neutral), rank hypotheses by how little evidence contradicts them rather than how much supports them, name the diagnostic evidence and the linchpins, and say which next observation would tell the leaders apart.
 
-Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/research/skills/hypothesis-comparison/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/hypothesis-comparison/)
+Tier **heavy** · v0.1.2 · [SKILL.md](../../../packs/research/skills/hypothesis-comparison/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/hypothesis-comparison/)
 
 **Use it when** the user asks "why did X happen", "which explanation fits the evidence", "what's really causing this", wants to stop arguing over a favourite theory, or says "compare these hypotheses", "competing explanations", "ACH".
 
@@ -43,7 +43,7 @@ Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/research/skills/hypothesis
 
 **Not for:**
 
-- Choosing between technologies, vendors or approaches for the future — `tech-comparison-matrix`
+- Choosing between technologies, vendors or approaches for the future — this ranks explanations, not options
 - Market or competitive position, SWOT, Five Forces — `strategy-analysis`
 - Planning what evidence to collect before you have any — `research-plan`
 - Summarising what a set of sources says — `source-synthesis`
@@ -54,7 +54,7 @@ Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/research/skills/hypothesis
 
 Turn a vague research question into a research plan — the decision the research serves, the precise question and sub-questions, what finding would change the decision, a method per sub-question (desk research, interviews, data pull, experiment), source types with inclusion and exclusion criteria, ready-to-run search strings, a stopping rule for when you have enough, and the deliverable. Starts by asking what decision the research is for.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/research/skills/research-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/research-plan/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/research/skills/research-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/research-plan/)
 
 **Use it when** the user says "I need to research X", "help me scope this research", "how should I investigate…", "what should I look into before deciding…", or wants a research or discovery plan.
 
@@ -77,7 +77,6 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/research/skills/researc
 - Ranking rival explanations for something that already happened — `hypothesis-comparison`
 - Writing the interview scripts for stakeholders — `requirements-interview`
 - A strategy framework such as SWOT or Five Forces on a market — `strategy-analysis`
-- Comparing named technologies or vendors — `tech-comparison-matrix`
 - Turning a messy thread into a brief for another skill — `brief-intake`
 
 ### `source-synthesis`
@@ -115,7 +114,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/research/skills/source-
 
 Installed with this pack. Details: [Core pack reference](pack-core.md).
 
-- `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder, tech-comparison-matrix) can consume without further intake.
+- `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder) can consume without further intake.
 - `council-review`: Convene a council of distinct senior-engineer personas (Architect, Security, Operator/SRE, Pragmatist, User-Advocate, plus optional bench seats) to deliberate a decision, design, or code change — each takes an independent stance, the genuine disagreements are surfaced as named cruxes, and a Chair issues a reconciled verdict that records dissents and states what would change the decision. The "Claude Council."
 - `doc-critique`: Review an existing document — ADR, design doc, runbook, exec summary, tech-comparison matrix, deck outline, decision log — and produce a structured critique against the same quality bars the skilldrop generators enforce. Categorizes findings by severity (blocker / major / minor / nit), points to the exact section/line, and suggests a concrete fix for each.
 - `output-hygiene`: Review agent-written text before it ships and strip the machine artifacts it carries — invisible Unicode, non-breaking spaces, homoglyphs, harness-added provenance trailers, trailing chat closers — then flag the prose tells a script cannot catch, each quoted with a rewrite.
