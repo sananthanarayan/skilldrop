@@ -6,7 +6,7 @@
 > 96 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.16.18.
+> Version 0.16.19.
 
 ## Start here
 
@@ -170,7 +170,7 @@ except `api-builder` requires `core`, which installs with it.
 ## Reviewer subagents
 
 - [code-quality](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/agents/code-quality.md): Craft-and-maintainability reviewer of just-written code. Finds what the next engineer will hate — bad names, tangled structure, duplication, needless complexity, leaky abstractions, dead code, and unreadable control flow. Does NOT hunt for bugs (that's the devils-advocate agent). Delegate to it when code works but you want it to read well before it ships.
-- [devils-advocate](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/agents/devils-advocate.md): Adversarial reviewer of just-written code and tests. Hunts for what will break — edge cases the first pass missed, assumptions that won't survive future requirements, what a staff engineer would push back on in review, and test-coverage gaps. Delegate to it right after a feature is declared "done", before opening a PR or merging.
+- [devils-advocate](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/agents/devils-advocate.md): Adversarial reviewer of just-written code and tests. Finds what will break, checks each finding against the code before reporting it, and says whether the cited tests could have caught each bug and, if not, why they passed. Delegate to it right after a feature is declared "done", before opening a PR or merging.
 - [security-reviewer](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/agents/security-reviewer.md): Security reviewer of just-written code and its dependencies. Hunts for exploitable weaknesses in the change — missing authz, injection, secret exposure, SSRF, unsafe deserialization, path traversal, weak crypto, and risky new dependencies. Does NOT hunt general bugs (that's devils-advocate) or model a design's threat surface (that's the threat-model skill). Delegate to it on a diff that touches auth, input handling, data access, external calls, or dependencies — before opening a PR or merging.
 
 ## The full catalogue

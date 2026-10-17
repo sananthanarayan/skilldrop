@@ -1,7 +1,7 @@
 ---
 rfc: 0046
 title: Keep, rebuild or retire the twelve skills that lost on held-out evals
-status: accepted
+status: implemented
 date: 2026-10-17
 author: sananthanarayan
 ---
@@ -145,6 +145,7 @@ time from 0.16.14, starting with `source-synthesis`.
 | `design-doc` | not shipped | 6, 7 | 2, 2 of 4 pairs | 2, 2 of 4 | $0.10 → $0.08 |
 | `ai-usage-policy` | 0.16.17 | 6, 7 | 0, 1 of 4 pairs | 3, 2 of 4 | $0.09 → $0.10 |
 | `guide-builder` | 0.16.18 | 6, 7 | 2, 3 of 4 pairs | 3.5, 4 of 4 | $0.09 → $0.08 |
+| `devils-advocate` | 0.16.19 | 6, 7 | 2, 1 of 4 pairs | 4, 2 of 4 | $0.14 → $0.11 |
 
 `source-synthesis`: both eval 6 wins came from adding up a source's own line items, which
 showed that its stated total was wrong. The eval 7 loss and the judges' notes on the eval 7
@@ -197,3 +198,17 @@ notes said would know, instead of a vague "your manager". It refused to state a 
 had said they were unsure of. Its open questions stayed out of the guide. The three fixed
 templates and the worked example were deleted. One judge-1 verdict came back unjudged and
 counts as a tie.
+
+`devils-advocate`: the judges named the rule in three of the six winning verdicts: the
+staging run passed because the racy code only runs when a push fails, so `-race` needs a test
+where several fail. Second-judge losses preferred a shorter reply, or a third finding about
+retries that the rebuild ranked lower. The `devils-advocate` subagent was rewritten from the
+same text, and it still tags severity when a merge gate such as `pre-merge-review` needs it.
+The four lenses stay as private checklists; the template is deleted, and the worked example
+was rewritten.
+
+Part 4 is complete. Six of the seven rebuilds shipped and one was kept as released. Across
+the six, the rebuilt skills won 19.5 and 18 of 24 pairs on evals they had never seen,
+against 10 and 11 before. Those six were shipped because of this measure, so the total
+flatters them a little; with `design-doc` included it is 21.5 and 20 of 32, against 12 and 13.
+Evals 6 and 7 have now been read, so the next check of any of these skills needs new ones.

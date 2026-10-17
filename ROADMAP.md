@@ -4,7 +4,6 @@ What is being worked on next. Not a commitment — a direction. Shipped work mov
 
 ## Upcoming
 
-- **Rebuild `devils-advocate` around its rule** ([RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md)), together with the `devils-advocate` subagent, which states the same rule. One at a time, with the rule first and the user's own format. Each is measured on two new evals before and after, and ships only if both judges prefer it in at least half the pairs. One that misses is retired. Done: `source-synthesis` in 0.16.14 (1 and 0 of 4 pairs before, 3 and 3 after) `release-notes` in 0.16.15 (3 and 3 before, 4 and 4 after), and `postmortem-generator` in 0.16.16 (2 and 3 before and after, at less than half the cost; it still loses on short notes for a small audience), `ai-usage-policy` in 0.16.17 (0 and 1 before, 3 and 2 after), and `guide-builder` in 0.16.18 (2 and 3 before, 3.5 and 4 after). `design-doc` was rebuilt and not shipped: the rebuild matched the released version without beating it.
 - **Held-out evals for every skill** — 12 skills now have evals they were never revised against; the published number should be split into the two kinds for all of them.
 - **A shortlist skill for `career`** — run the fit check across an employer's open roles. Needs network access the benchmark sandbox lacks, so it waits on a way to measure it.
 - **The light and heavy tiers** — the benchmark has run on the standard tier only. Running all three shows where a cheaper model is enough.

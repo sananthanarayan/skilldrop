@@ -8,6 +8,12 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.19 — 2026-10-17
+
+- **`devils-advocate` says what your tests actually prove.** For every passing test or clean local run you cite, it says whether it could have caught each bug it found, and if not, why it passed (a fixture that dodges the bug, an empty local table, one run where the bug needs two) and which test would fail today. It traces each finding through the code before reporting it, so a parameterised query isn't flagged as injection. It gives fixes as code when they're small, and keeps to the scope you ask for ("top 3", "skip the nits"). The four-lens sections, severity counts, verdict labels and the mandatory "what's solid" section are gone. On two evals it had never seen, two blind judges preferred it to plain Claude Code in 4 and 2 of 4 pairs, up from 2 and 1 ([RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md)).
+- **The `devils-advocate` subagent follows the same rule**, and still tags findings blocker, major, minor or nit when a merge gate such as `pre-merge-review` needs them.
+- **The rebuilds in RFC-0046 are done.** Six skills were rebuilt around the one rule each adds and shipped, and `design-doc` stayed as it was. On evals they had never seen, the six went from 10 and 11 of 24 pairs to 19.5 and 18; counting `design-doc` too, 12 and 13 of 32 became 21.5 and 20.
+
 ## 0.16.18 — 2026-10-17
 
 - **`guide-builder` writes a guide that holds only what your notes say**, at the length its reader needs: a README section, a sheet for volunteers, a page for a new starter, or a reference for developers. Anything it infers from the notes (a unit from a sample value, what a field probably means) is marked where it appears. Steps are ordered so nothing is used before it is set up. Questions for you stay in the reply, so the guide can be sent as it stands, and where the notes leave a gap the guide tells the reader who to ask. The three fixed templates and the "reading this as a setup guide" opener are gone. On two evals it had never seen, two blind judges preferred it to plain Claude Code in 3.5 and 4 of 4 pairs, up from 2 and 3 ([RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md)).

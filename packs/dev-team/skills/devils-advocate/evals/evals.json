@@ -72,6 +72,33 @@
         "It does not state the row count of orders, how long the migration will take, or what customers.region contains as fact",
         "It leads with three main concerns as asked, and anything beyond the three is kept to a brief mention"
       ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-17",
+      "prompt": "I'm the reviewer on PR #412 for the Fernlocket loyalty service and it's meant to merge this afternoon. The change is in redeem.py, the tests are in test_redeem.py, and the author's description and test run are in PR_DESCRIPTION.md. Find what's wrong with it before it ships. Give me the three issues that matter most, most serious first, and skip style and naming nits entirely.",
+      "assertions": [
+        "It finds that quantity is only checked against the upper limit, so a negative quantity gives a negative cost that passes the balance check and adds points to the member's balance, and puts this among its top issues",
+        "It finds that the points are deducted and committed before fulfillment.ship() is called, so a failed shipment leaves the member charged with no refund, and that the \"Please try again\" message invites a second deduction for the same reward",
+        "It does not report the f-string query in list_redemptions as SQL injection, since the ORDER BY text can only come from the fixed SORT_COLUMNS mapping and the values are bound parameters, and it does not report the balance read-then-update as a double-spend race, since the row is locked with FOR UPDATE inside the same transaction",
+        "It says test_fulfillment_failure_returns_502 would pass with the bug in place, because it checks only the status and call count and never the member's balance, so the 6-passed run does not show that #398 is fixed",
+        "Its fixes would work: quantity must be required to be at least 1 (a tighter upper limit is not enough), and on a failed shipment the points must be rolled back or credited back, or not committed until the shipment succeeds; logging the failure or changing the status code alone does not count",
+        "It does not state as fact anything the files don't show: how fulfillment.ship() or the transaction helper behave beyond what the code and comments say, whether the fulfillment service rejects a negative quantity, how many members or redemptions there are, or what else calls redeem()",
+        "It leads with three issues, most serious first, and makes no style or naming comments; anything beyond the three is at most a brief mention"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-17",
+      "prompt": "hey quick one, can you check this before I push? it sends the weekly digest to all subscribers, max 8 at a time. we're on go 1.23. go test ./... is green and I ran it on staging against a handful of test subscribers, all delivered fine. just tell me if anything's actually broken, I don't care about style\n\n```go\nfunc SendAll(ctx context.Context, subs []Subscriber, d Digest) error {\n\tsem := make(chan struct{}, 8) // at most 8 pushes in flight\n\tvar wg sync.WaitGroup\n\tvar errs []error\n\n\tfor _, s := range subs {\n\t\twg.Add(1)\n\t\tsem <- struct{}{}\n\t\tgo func() {\n\t\t\tdefer wg.Done()\n\t\t\tdefer func() { <-sem }()\n\t\t\tif err := push(ctx, s, d); err != nil {\n\t\t\t\terrs = append(errs, fmt.Errorf(\"subscriber %s: %w\", s.ID, err))\n\t\t\t}\n\t\t}()\n\t}\n\n\twg.Wait()\n\treturn errors.Join(errs...)\n}\n```",
+      "assertions": [
+        "It finds that the goroutines append to the shared errs slice with no lock, a data race that can lose errors or corrupt the slice when more than one push fails",
+        "It does not flag the closure capturing the loop variable s as a bug, since on Go 1.22 and later each loop iteration gets its own s",
+        "It says the green test run and the staging run don't show the code is safe: with every push succeeding the append never runs, and a plain go test without -race wouldn't report the race anyway",
+        "Its fix would work: a mutex around the append, or a per-subscriber slot in a slice sized to len(subs); if it suggests errgroup it says that this changes the behaviour (only the first error comes back, and with a group context the rest of the sends are cancelled)",
+        "It does not state as fact what push() does inside (retries, timeouts, how it uses ctx), how many subscribers there are, or that this has already failed in production",
+        "It keeps to what's actually broken, as asked: a short reply with no style or naming suggestions, not padded out with a long list of minor or hypothetical concerns"
+      ]
     }
   ]
 }

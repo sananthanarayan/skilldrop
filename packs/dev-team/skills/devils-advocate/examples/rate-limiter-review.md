@@ -1,10 +1,9 @@
-# Worked example — adversarial review of a just-written rate limiter
+# Worked example — review of a rate limiter that "passes its tests"
 
-Input → output oracle for `devils-advocate`. Shows the four-lens sweep producing
-severity-calibrated findings with `file:line` evidence and paste-able fixes — not a
-generic "looks good, consider tests" pass.
+Input → output oracle for `devils-advocate`. Shows the answer first, findings that survive a
+trace through the code, and the cited tests judged for what they could and could not catch.
 
-## Input (the "done" implementation)
+## Input
 
 > "Implemented the per-user rate limiter, tests pass, ready for review."
 
@@ -23,24 +22,45 @@ def allow(user_id: str, rate: float, burst: float) -> bool:
     return False
 ```
 
+```python
+# test_ratelimit.py
+def test_burst_then_deny():
+    for _ in range(3):
+        assert allow("u1", rate=1, burst=3)
+    assert not allow("u1", rate=1, burst=3)
+```
+
 ## Output (the review)
 
-**Verdict: not ready — 1 blocker, 1 major.** Four lenses swept; happy path is fine, the concurrency and growth paths are not.
+**Not ready to merge.** Under concurrent requests for one user it admits more than the limit,
+and the test can't see that.
 
-🟥 **Blocker — race on the shared dict (assumptions lens).** `ratelimit.py:6-11` reads then writes `_buckets[user_id]` with no lock. Two concurrent requests for the same user both read `tokens=1.0`, both pass, both write back `0.0` — the limiter leaks one token per race, so a burst of N parallel requests admits ~2× the intended rate. The "tests pass" because they're single-threaded. *Fix:* guard the read-modify-write with a per-user lock, or move to an atomic backend (Redis `INCR`+TTL). A dict-of-locks keyed by `user_id` is the minimal change.
+1. **Race on the shared dict** — `ratelimit.py:6-10`. Two requests for the same user both read
+   `tokens=1.0`, both pass, both write back `0.0`, so parallel bursts get through at up to
+   twice the intended rate. Fix: hold a per-user lock around the read-modify-write:
 
-🟧 **Major — unbounded memory growth (edge-case lens).** `_buckets` never evicts (`:1`). Every distinct `user_id` ever seen stays forever; a service facing the open internet (or spoofable user ids) OOMs over time. *Fix:* cap with an LRU (`functools.lru_cache` won't fit the mutable value — use `cachetools.TTLCache(maxsize=…, ttl=…)`), evicting idle buckets.
+   ```python
+   _locks = collections.defaultdict(threading.Lock)
 
-🟨 **Minor — first call gets a free full burst (edge-case lens).** A never-seen `user_id` starts at `(burst, now)` (`:6`), so a brand-new user can immediately spend the whole burst. If the intent is "warm up", seed at `min(burst, rate*window)` instead — flag for product, don't silently change.
+   def allow(user_id, rate, burst):
+       with _locks[user_id]:
+           ...  # existing body unchanged
+   ```
 
-⚪ **Nit — `rate`/`burst` unvalidated (staff-engineer lens).** `rate<=0` freezes every user out; `burst<1` makes `allow` always false. Assert `rate>0 and burst>=1` at the boundary.
+2. **Memory grows without bound** — `ratelimit.py:2`. Nothing ever leaves `_buckets`, so every
+   distinct `user_id` stays for the life of the process. Fix: a `cachetools.TTLCache` in place
+   of the dict, with a TTL longer than `burst / rate`.
 
-**Test-coverage gaps (the "tests pass" were happy-path only):**
-- Concurrency: two threads hammering one `user_id` must not exceed `burst + rate*elapsed` admits.
-- Refill: after exhausting tokens, `allow` returns True again only after `1/rate` seconds.
-- Eviction: memory stays bounded under 10k distinct ids.
-- Boundary: `tokens` sitting at exactly `1.0` admits; at `0.999…` denies.
+**What the test proves.** `test_burst_then_deny` runs on one thread, so it passes with the
+race in place. It also never waits, so refill is untested. Tests that would fail today:
+
+- Ten threads calling `allow("u1", rate=1, burst=3)` at once; assert at most three return
+  `True`.
+- After draining the bucket, `allow` is false at 0.5 s and true at 1.0 s (with a patched clock).
 
 ## Why this passes the quality bar
 
-Severity is calibrated (one blocker, demoted the rest); every finding cites `file:line`, names the *lens* it came from, and gives a concrete fix or a specific missing test — not "add more tests."
+The merge answer comes first. Each finding names the line, a concrete failure and a fix as
+code. The cited test is judged for what it could catch, and the missing tests are scenarios.
+The free first burst for a new user was left out: it is a product choice, not a bug in this
+change.

@@ -1,151 +1,92 @@
 ---
 name: devils-advocate
-description: Adversarial review of just-generated code, run *after* an agent (or human) declares a feature done. Challenges the implementation through four lenses — edge cases the first pass missed, baked-in assumptions that won't survive future requirements, what a staff engineer would push back on in code review, and test-coverage gaps for the new code paths. Produces severity-tagged findings (blocker / major / minor / nit) with file:line evidence and concrete fixes or missing test cases. Use immediately after a feature implementation or generation pass — before merging, before declaring "done", before moving to the next ticket.
+description: Adversarial review of a code change before it merges — the real bugs, most consequential first, each checked against the code before it is reported, with a fix that works. A passing test or clean local run counts as evidence only once you've said whether it would have caught the bug; when it couldn't, the review says why it passed and names the test that would have failed. Sized to the ask ("top 3", "skip the nits", "just security"); invents nothing about the codebase. Use right after a feature is declared done — before merging, before declaring "done", before moving to the next ticket.
 ---
 
 # devils-advocate
 
-You play the role of a **senior engineer in code review who is trying to find what the implementation missed**. Code that "works on the happy path" is the default state of newly-generated code — your job is to challenge it through four lenses and surface what the first pass didn't think about.
+**The rule: a green test is not evidence until you've said why it would have failed with the
+bug.** Changes arrive with "tests pass" or "ran it locally, fine". The agent's habit is to
+take that as support, or to ignore it. Both miss the most useful thing a reviewer can say:
+*why* the test passed anyway. A fixture that happens to dodge the bug, a table that was empty
+on the laptop, a test that runs the job once when the bug only shows on the second run, an
+assertion that one bug cancels out. For each bug you find, say whether the cited tests or run
+could have caught it, and if not, why it passed and the one test that would have failed:
+✅ *"`test_refill` passes because it waits 2 s against a rate of 1/s, so it never sees the
+partial-token case. Assert `allow()` is false at 0.5 s."*
 
-This skill is the **code counterpart to [`doc-critique`](../../../core/skills/doc-critique/SKILL.md)** — same adversarial framing, applied to code instead of artifacts.
-
-## When this skill runs
-
-The trigger is **right after an agent (or human) has declared a feature done**. The implementation exists, the happy path likely works, tests may even pass — and that's exactly the moment the skill is most useful, because that's the moment everyone stops looking.
-
-Specifically:
-- ✅ After AI code generation for a feature ("here's the implementation")
-- ✅ Before opening a PR / before requesting human review
-- ✅ Before merging
-- ✅ When the user asks "anything I might have missed?" or "is this ready to ship?"
-- ❌ For a one-line fix or trivial change — overkill
-- ❌ For greenfield exploration / spikes — adversarial review wastes effort on code that will be thrown away
-- ❌ As a substitute for actual code review by a human — this is a *pre-pass*, not a replacement
+A second rule: **report only what survives checking.** Before a finding goes in, trace it
+through the code. Does an earlier guard already handle the case? Is the query actually
+parameterised? Does the stated business rule make this behaviour correct? Does your own fix
+do what you say it does? A false finding costs the reader more than a missed nit.
 
 ## How to respond
 
-**Four rules come before the steps and outrank them:**
+1. **Answer the question first.** Open with a plain answer to what they asked, usually
+   whether it's safe to merge, and the worst problem in one sentence.
 
-- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
-- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
-- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
-- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
-- **For this skill:** With no code or document to review, ask for it in one sentence and name the three or four things you will check in it, taken from what the user said it does.
+2. **Review the change, not the repo.** The diff, the files they named, or `git diff` of the
+   working tree. Read the tests that came with it.
 
-1. **Identify the change under review.** In order of preference:
-   - The agent / user has just shown you a diff — review that diff.
-   - Git working tree has unstaged changes — `git diff` is the scope.
-   - User points to specific files / a PR / a recent commit — that's the scope.
-   - User says "the feature I just built" with no diff — ask which files, or run `git diff HEAD~1` if a commit was just made.
+3. **Find what would bite, most consequential first.** Wrong results, data loss, security
+   holes, failures on real data that the dev setup hides, retries and concurrency, then
+   fragility. For a large or unfamiliar change, the checklists in
+   [`lenses/edge-cases.md`](lenses/edge-cases.md),
+   [`lenses/future-proofing.md`](lenses/future-proofing.md),
+   [`lenses/adversarial-review.md`](lenses/adversarial-review.md) and
+   [`lenses/test-coverage.md`](lenses/test-coverage.md) are a sweep to run privately; they are
+   not sections of the reply.
 
-   **Don't review the whole repo.** The scope is the *just-generated* code. Touched files only.
+4. **Each finding:** where (`file:line`), what goes wrong in one concrete scenario ("when
+   `tz` is `None`, line 47 raises `TypeError`"), and the fix. When the fix is small,
+   give it as code they can paste. When the change is a script or migration, give the
+   corrected version.
 
-2. **Classify the code shape.** What you challenge depends on what was built. Map to one or more:
+5. **Say what the tests prove.** Apply the rule to every test or run the user cites, and name
+   the missing tests as scenarios: ✅ *"No test runs the job twice; add one asserting the reminder
+   email is sent once."*
 
-   | Shape | Lens emphasis |
-   |---|---|
-   | HTTP / RPC endpoint, API handler | edge-cases (input validation, auth), adversarial (rate limit, error mapping) |
-   | Async handler / queue consumer | edge-cases (retries, idempotency, poison messages), future-proofing (ordering) |
-   | DB migration / schema change | future-proofing (rollback, online-safe), adversarial (locking, big-table risk) |
-   | State machine / workflow | edge-cases (impossible transitions, concurrent updates) |
-   | Parser / data transformation | edge-cases (malformed, encoding, huge inputs) |
-   | CLI tool / script | edge-cases (missing flags, env, partial runs) |
-   | UI component | edge-cases (loading/empty/error states, a11y) |
-   | Background job / cron | edge-cases (overlap, missed runs, partial completion) |
-   | Library / pure function | edge-cases (boundary inputs), future-proofing (API stability) |
-   | Config / infra change | adversarial (blast radius), future-proofing (drift) |
+6. **Size to the ask.** "Top 3" gets three. "Skip the nits" gets none. "Just security" gets
+   security. Without a limit, report what would actually bite; leave style out unless asked.
+   No severity counts, verdict labels or praise sections unless they asked.
 
-   Multiple shapes is common — a PR can be "endpoint + migration + UI." Apply each lens to the right slice.
+7. **Invent nothing about the codebase.** No row counts, traffic, run times, callers,
+   column contents or config you weren't shown. Where a finding depends on one, say what to
+   check: "if `orders` already has rows in production, this migration fails".
 
-3. **Sweep the four lenses in order.** Each lens has its own checklist — read it, apply it, write findings. Don't merge lenses; each surfaces a different category of risk.
+8. **Deliver from what you have.** With code to review, review it. With nothing, ask for the
+   diff in one sentence and name the three or four things you'll check in it.
 
-   | Lens | File | Asks |
-   |---|---|---|
-   | 1. Edge cases | [`lenses/edge-cases.md`](lenses/edge-cases.md) | What inputs / states / timings break this? |
-   | 2. Future-proofing | [`lenses/future-proofing.md`](lenses/future-proofing.md) | What assumptions won't survive the next 6 months? |
-   | 3. Adversarial review | [`lenses/adversarial-review.md`](lenses/adversarial-review.md) | What would a staff engineer push back on in review? |
-   | 4. Test coverage | [`lenses/test-coverage.md`](lenses/test-coverage.md) | Which new code paths have no test, and which scenarios are missing tests? |
+## Useful references in this skill
 
-4. **Categorize every finding by severity:**
-
-   | Severity | Meaning |
-   |---|---|
-   | 🟥 **Blocker** | This will ship a bug or a security issue. Examples: SQL injection, unhandled `null`, race condition on shared state, migration that locks a 10M-row table, missing auth check, infinite retry loop. |
-   | 🟧 **Major** | This will hurt within months. Examples: hard-coded limits that 2× growth will hit, no idempotency on a retryable operation, error swallowed silently, no observability for a load-bearing path, magic constants. |
-   | 🟨 **Minor** | Good craft. Examples: missing edge-case test, suboptimal log level, naming that won't age well, a comment that explains *what* instead of *why*. |
-   | ⚪ **Nit** | Style, formatting, micro-preference. Optional. |
-
-   When in doubt between two severities, **downgrade**. Inflated severity makes the report unreadable. If your output has more blockers than major findings, you're inflating.
-
-5. **For every finding, write four parts:**
-
-   - **Where:** `file:line` (e.g. `src/api/checkout.ts:47`) — and quote 5–15 chars of the offending line.
-   - **What's wrong:** one sentence — which lens fired and why.
-   - **Concrete scenario:** ✅ "When `discount=null` reaches line 47, `applyDiscount` throws `TypeError`." — ❌ "Doesn't handle null." A scenario the first pass can reproduce.
-   - **Fix:** ✅ "Add `if (discount == null) return 0;` at the top of `applyDiscount` — or thread the null through to skip the line item entirely (preferred — see how `applyTax` handles it at line 102)." — ❌ "Add null handling."
-
-6. **Open with a verdict, not the findings.** First thing the user sees:
-
-   ```
-   Verdict: SHIP WITH FIXES — 2 blockers, 5 major, 4 minor, 3 nits.
-
-   The endpoint validates auth and the happy path but doesn't bound the request body (blocker — DoS via 1GB payload), and the new migration adds a NOT NULL column without a default on a table the migration script doesn't backfill (blocker — will fail on first deploy). Of the 5 major findings, 3 are around idempotency on the retry path. Test coverage misses the new error branches at api/checkout.ts:71–88 entirely.
-   ```
-
-   Verdicts: `SHIP IT` · `SHIP WITH FIXES` · `DO NOT MERGE` · `RECONSIDER APPROACH`. The last is for when the implementation works but solved the wrong problem (e.g. building a custom retry queue when the framework already has one).
-
-7. **Output structure** — use [`templates/challenge.md`](templates/challenge.md):
-
-   ```markdown
-   # Devil's advocate: {feature name / PR title}
-   _Scope: {N files, M lines changed} · Reviewed: {YYYY-MM-DD}_
-
-   ## Verdict
-   {one-liner} — {N} blocker · {N} major · {N} minor · {N} nit
-   {3-sentence summary, lead with the worst}
-
-   ## Findings by lens
-
-   ### 1. Edge cases
-   ### 2. Future-proofing
-   ### 3. Adversarial review
-   ### 4. Test coverage
-
-   ## What's solid
-   - {2–4 things the implementation got right — not flattery, real patterns to preserve}
-
-   ## Suggested order to address
-   1. Fix blockers
-   2. Add the missing tests in §4 (they double as regression catches)
-   3. Major findings in priority order
-   ```
-
-8. **End with "what's solid"**, not more criticism. The user (or the next agent) often needs to know what to *keep* and what *patterns to reuse* elsewhere in the change.
+- [`examples/rate-limiter-review.md`](examples/rate-limiter-review.md) — a change with "tests pass", and a review that says why they passed
 
 ## Quality bar
 
-- **Every finding has a reproducible scenario.** A senior engineer reading the finding should be able to reproduce the bug or violation in their head. "Doesn't handle null" is not a finding; "When `discount=null` reaches line 47, …" is.
-- **Severity is calibrated.** More blockers than major ⇒ inflating ⇒ demote.
-- **Findings cite `file:line`.** Reviewers must be able to jump to the spot. Section names aren't enough for code.
-- **Fixes are concrete and paste-able where possible.** When you can suggest a one-line patch, do; when you can't, suggest the *approach* in one sentence — not "improve error handling."
-- **Don't redesign.** This isn't your chance to push a different architecture. Stay in the lane of "given this approach, what's missing." If the approach itself is wrong, that's a single `RECONSIDER APPROACH` verdict, not a wholesale rewrite suggestion.
-- **Test-coverage findings reference scenarios, not files.** ❌ "No test for `applyDiscount`." ✅ "No test covers `applyDiscount(null)` — add a case that asserts the function returns 0 (or skips) without throwing."
+- **Every cited test or run is judged:** could it have caught each bug, and if not, why did it
+  pass and what test would fail.
+- **Every finding survives a trace through the code and the stated rules.** No false
+  positives.
+- **The answer to "can this merge?" comes first;** findings are ordered by consequence.
+- **Fixes work,** and are code when the change is small.
+- **The scope asked for is respected.**
+- **Nothing about the codebase is invented.**
 
 ## When NOT to use this skill
 
-- ❌ For greenfield prototype / spike code that's about to be thrown away.
-- ❌ For one-line / trivial changes — overkill, and the noise drowns out real signal.
-- ❌ As a substitute for human code review — it's a pre-pass, not a replacement.
-- ❌ For *evaluating the choice of approach* before code exists. That's a design conversation, not a code challenge. Use `design-doc` + `doc-critique` for that loop.
-- ❌ For generated code in a language you can't reason about line-by-line. Better to refuse than fabricate findings.
+- ❌ For greenfield prototype or spike code that's about to be thrown away.
+- ❌ For one-line or trivial changes.
+- ❌ As a substitute for human code review — it's a pre-pass.
+- ❌ For *evaluating the choice of approach* before code exists. That's a design conversation: `design-doc`, then `doc-critique`.
+- ❌ For code in a language you can't reason about line by line. Refuse rather than fabricate findings.
 
 ## Anti-patterns to avoid
 
-- ❌ **Severity inflation.** If everything is a blocker, the report is unreadable. Most findings are major or minor.
-- ❌ **Vague findings.** "Handle errors better" / "Consider edge cases" — the whole point of this skill is to *name* the missed cases. If you can't name a specific scenario, drop the finding.
-- ❌ **Restating the lens.** ❌ "Code should be future-proof." ✅ "Hard-coded 100ms timeout on line 53 won't survive p99 growth — make it configurable."
-- ❌ **Lecturing on style** when there's a real bug to flag. Style notes go in the Nits section, not on top.
-- ❌ **Reviewing untouched code.** Out-of-scope. The skill challenges the *change*, not the codebase.
-- ❌ **Demanding tests for *everything* the change touches.** Only the new logic and new error paths. Don't insist on backfilling tests for previously-untested neighbouring code.
-- ❌ **Skipping "what's solid".** Trains the user (or downstream agent) to dread the skill. End on signal that's actionable in the other direction.
-- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.
+- ❌ **"Tests pass" taken at face value,** or ignored. Say what they prove.
+- ❌ **The plausible false positive.** SQL injection in a parameterised query; a bug in
+  behaviour the business rule asks for; a CRLF issue text mode already handles.
+- ❌ **Padding to fill sections.** Marginal findings are where the errors are.
+- ❌ **A count that disagrees with the list.** Don't print counts.
+- ❌ **Describing a fix instead of giving it** when it fits in a few lines.
+- ❌ **Facts about production you weren't given.** Row counts, lock times, what a column holds.
+- ❌ **Redesigning.** Stay on what's missing given this approach.

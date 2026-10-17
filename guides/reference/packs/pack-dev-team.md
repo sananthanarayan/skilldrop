@@ -98,26 +98,26 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/bug-tri
 
 ### `devils-advocate`
 
-Adversarial review of just-generated code, run *after* an agent (or human) declares a feature done. Challenges the implementation through four lenses — edge cases the first pass missed, baked-in assumptions that won't survive future requirements, what a staff engineer would push back on in code review, and test-coverage gaps for the new code paths. Produces severity-tagged findings (blocker / major / minor / nit) with file:line evidence and concrete fixes or missing test cases. Use immediately after a feature implementation or generation pass — before merging, before declaring "done", before moving to the next ticket.
+Adversarial review of a code change before it merges — the real bugs, most consequential first, each checked against the code before it is reported, with a fix that works. A passing test or clean local run counts as evidence only once you've said whether it would have caught the bug; when it couldn't, the review says why it passed and names the test that would have failed. Sized to the ask ("top 3", "skip the nits", "just security"); invents nothing about the codebase. Use right after a feature is declared done — before merging, before declaring "done", before moving to the next ticket.
 
-Tier **heavy** · v0.1.2 · [SKILL.md](../../../packs/dev-team/skills/devils-advocate/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/devils-advocate/)
+Tier **heavy** · v0.2.0 · [SKILL.md](../../../packs/dev-team/skills/devils-advocate/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/devils-advocate/)
 
 **A good result:**
 
-- **Every finding has a reproducible scenario.** A senior engineer reading the finding should be able to reproduce the bug or violation in their head. "Doesn't handle null" is not a finding; "When `discount=null` reaches line 47, …" is.
-- **Severity is calibrated.** More blockers than major ⇒ inflating ⇒ demote.
-- **Findings cite `file:line`.** Reviewers must be able to jump to the spot. Section names aren't enough for code.
-- **Fixes are concrete and paste-able where possible.** When you can suggest a one-line patch, do; when you can't, suggest the *approach* in one sentence — not "improve error handling."
-- **Don't redesign.** This isn't your chance to push a different architecture. Stay in the lane of "given this approach, what's missing." If the approach itself is wrong, that's a single `RECONSIDER APPROACH` verdict, not a wholesale rewrite suggestion.
-- **Test-coverage findings reference scenarios, not files.** ❌ "No test for `applyDiscount`." ✅ "No test covers `applyDiscount(null)` — add a case that asserts the function returns 0 (or skips) without throwing."
+- **Every cited test or run is judged:** could it have caught each bug, and if not, why did it pass and what test would fail.
+- **Every finding survives a trace through the code and the stated rules.** No false positives.
+- **The answer to "can this merge?" comes first;** findings are ordered by consequence.
+- **Fixes work,** and are code when the change is small.
+- **The scope asked for is respected.**
+- **Nothing about the codebase is invented.**
 
 **Not for:**
 
-- For greenfield prototype / spike code that's about to be thrown away.
-- For one-line / trivial changes — overkill, and the noise drowns out real signal.
-- As a substitute for human code review — it's a pre-pass, not a replacement.
-- For *evaluating the choice of approach* before code exists. That's a design conversation, not a code challenge. Use `design-doc` + `doc-critique` for that loop.
-- For generated code in a language you can't reason about line-by-line. Better to refuse than fabricate findings.
+- For greenfield prototype or spike code that's about to be thrown away.
+- For one-line or trivial changes.
+- As a substitute for human code review — it's a pre-pass.
+- For *evaluating the choice of approach* before code exists. That's a design conversation: `design-doc`, then `doc-critique`.
+- For code in a language you can't reason about line by line. Refuse rather than fabricate findings.
 
 ### `feature-implement-loop`
 
