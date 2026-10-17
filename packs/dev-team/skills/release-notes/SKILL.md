@@ -1,69 +1,96 @@
 ---
 name: release-notes
-description: Turn git history between two refs into release notes — a customer-facing version written in reader benefits and an internal Keep-a-Changelog version with commit traceability, breaking changes always first. Use when the user wants release notes, a changelog, "what's in this release", a deploy announcement, or to summarize changes since the last tag.
+description: Write release notes from a git log, a list of merged PRs or rough notes about what changed — for the audience and in the format the user names (a customer changelog page, an email, an in-app "what's new", store text, a CHANGELOG.md entry). Says nothing the input doesn't, writes a vague change only as far as it was described, puts breaking changes and anything the reader must do first, and keeps internal noise and working notes out of the text. Use when the user wants release notes, a changelog entry, "what's in this release", a deploy announcement, or to summarise changes since the last tag.
 ---
 
 # release-notes
 
-Converts commit history into two artifacts with different readers: **customer-facing release notes** (benefits, no commit-speak) and an **internal changelog** (Keep a Changelog format, every line traceable to a commit). The rule that drives everything: write for the reader who didn't make the change.
+**The rule: nothing goes in the notes that the log or the user didn't say.** A release note is
+read as a promise. The agent's habit is to make a vague commit sound finished: "tweaked onboarding"
+becomes "onboarding is now simpler", a half-remembered fix gets a symptom, a reverted feature
+gets announced because its commit is in the range. Each of those reads exactly like a real
+change, and a customer will hold you to it. This skill's job is to write only what the input
+supports, as far as it supports it.
 
 ## How to respond
 
-**Four rules come before the steps and outrank them:**
+1. **Find out what actually shipped.** Read the whole range or list before writing a line.
+   - A change that was reverted later in the same range did not ship. Leave it out.
+   - A later commit can narrow or contradict an earlier one ("partial fix", a figure revised,
+     a date moved). Write the final state, not the first claim.
+   - Where you have a repo and no list, take the range from the last tag to HEAD
+     (`git describe --tags --abbrev=0`, then `git log <tag>..HEAD --no-merges`). Read a commit's
+     body or diff only when its subject is too vague to tell what it does.
 
-- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
-- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
-- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
-- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
-- **For this skill:** Write one set of notes for the audience the user named. Add the second, internal version only when they ask for both. Use the product's name only if they gave it, and count commits and pull requests from the list in front of you.
+2. **Find what breaks or needs action, wherever it is said.** A breaking change is often not
+   marked: a removed option in a PR description, a renamed setting in a commit body, an old
+   endpoint "no longer accepted". Each one goes first, with the step the reader has to take,
+   written for how this audience gets the release. Customers of a hosted service upgrade
+   nothing; they need to know what stops working and what to do instead. A library's users
+   need the version and the migration.
 
-1. **Resolve the range.** Default: last tag to HEAD (`git describe --tags --abbrev=0`). If no tags exist, ask for a start ref or take the user's two refs. State the resolved range at the top of the output: "`v1.4.0..HEAD`, 37 commits, 2026-05-02 → 2026-06-10".
+3. **Write only as far as each change was described.** "Fixed a bug in exports" stays that
+   vague if that's all the input says. Don't add a symptom, a cause, a number, a date, a
+   version, a PR number or a count the input doesn't give. A change you can't tell the meaning
+   of stays out of the notes and goes in the short list in step 6.
 
-2. **Gather the raw material.** `git log <range> --no-merges --pretty='%h|%s|%an|%ad' --date=short` for the commit list; `git log <range> --stat` only when a subject line is too vague to classify. Where the `gh` CLI is available and the repo uses PRs, prefer PR titles over commit subjects (`gh pr list --state merged --search "merged:>={date}"`) — they're written closer to reader language. Don't require `gh`; commits alone are enough.
+4. **Write for this reader, in this format.** Use the channel, length and tone the user asked
+   for: a customer changelog page, an email, a pop-up of a few lines, store text with a
+   character limit, or the repo's own CHANGELOG style if there is one. Say what the reader can
+   now do or no longer suffers ✅ *"Exports with more than 10,000 rows no longer fail"*, not
+   what the code does ❌ *"fix NPE in ReportExporter.flush()"*. Use the product name only if
+   you were given it.
 
-3. **Classify every change** into Keep-a-Changelog categories plus one local bucket:
-   - **Added / Changed / Fixed / Deprecated / Removed / Security** — reader-visible
-   - **Internal** — refactors, CI, deps, tests; appears in the internal changelog, never in customer notes
-   - **Needs review** — can't tell what it does from the commit; goes in a list for the user, never guessed into customer notes
+5. **Leave internal work out of anything a customer reads.** CI, refactors, tests, dependency
+   bumps, typo fixes and tooling are not news, not even as "various improvements". In an
+   internal changelog they may appear if the repo's existing style includes them.
 
-4. **Hoist breaking changes and migrations to the top** of both artifacts, each with an **Action required** line. A breaking change buried under "Changed" is the cardinal failure of release notes. Detect via `BREAKING`, `!:` conventional-commit markers, migration files, major dependency bumps, and removed public API — and say which signal triggered the flag.
+6. **Hand back the notes, then at most a few lines for the user.** The notes are clean: no
+   commit range, commit count, hashes, "flagged by" notes, or review lists inside them unless
+   the user's format asks for hashes (an internal CHANGELOG often does). After the notes, list
+   once, briefly, what you left out and why: changes too vague to describe, claims the log
+   contradicts, anything the user should confirm before publishing.
 
-5. **Rewrite, don't transcribe.** Each customer-facing line states what the reader can now do or no longer suffers. ✅ *"Fixed a crash when exporting reports with more than 10,000 rows"* — ❌ *"fix NPE in ReportExporter.flush()"*. Drop ticket numbers and author names from customer notes; keep both in the internal changelog with the short hash on every line.
-
-6. **Emit both artifacts** with [`templates/release-notes.md`](templates/release-notes.md): customer notes first, internal changelog second, then the **Needs review** list. If the user wants only one artifact, emit that one — but the needs-review list is never optional.
-
-## Useful references in this skill
-
-- [`templates/release-notes.md`](templates/release-notes.md) — both artifact skeletons plus the classification cheat-sheet
+7. **Deliver from what you have.** With a log, a list or notes, write the notes and state any
+   assumption about audience or format in one line. Ask first only when there is nothing to
+   work from.
 
 ## Quality bar
 
-- **Breaking changes are first, with an action.** Every breaking entry has "Action required: …" a reader can execute. No action identifiable → it goes to Needs review, not to the top section unverified.
-- **No commit-speak in customer notes.** Class names, function names, internal service names, and ticket IDs are all signals the line wasn't rewritten.
-- **Every internal-changelog line ends in a short hash** (and PR number when available). A claim nobody can trace is a claim nobody can verify.
-- **Internal noise stays internal.** Dependency bumps, refactors, CI, and test-only changes never appear in customer notes — not even as "various improvements".
-- **Nothing is guessed.** A vague commit ("fix stuff", "wip") lands in Needs review with its hash; the skill never invents a user-facing meaning for it.
-- **The range is stated.** Refs, commit count, and date span at the top — so a reader knows exactly what window the notes cover.
+- **Nothing in the notes goes beyond the input.** No invented feature, behaviour, symptom,
+  figure, date, version, PR number or count.
+- **Reverted and superseded changes don't appear;** the final state does.
+- **Breaking changes and required actions come first,** found from the text as well as the
+  markers, with an action that fits how the audience gets the release.
+- **Internal noise is absent from customer text.**
+- **The format, length and tone are the ones the user asked for,** and the notes carry no
+  working notes.
+- **Vague items are left out or kept vague, and named once to the user.**
 
 ## When to use this skill
 
 - ✅ Cutting a release and writing "what's new" for users or customers
-- ✅ Maintaining `CHANGELOG.md` between versions
-- ✅ A deploy/release announcement for internal stakeholders
-- ✅ "Summarize everything merged since the last tag"
+- ✅ A `CHANGELOG.md` entry between versions
+- ✅ A deploy or release announcement for internal stakeholders
+- ✅ "Summarise everything merged since the last tag"
 
 ## When NOT to use this skill
 
 - ❌ A single PR description — that's one change; use `pr-description-writer`
 - ❌ Reviewing the changes for quality or risk — that's `devils-advocate` / `sonar-review`
-- ❌ Stakeholder narrative about *why* the release matters strategically — feed the notes to `exec-summary`
-- ❌ Generating commit messages going forward — this skill reads history, it doesn't write it
+- ❌ A narrative about *why* the release matters strategically — feed the notes to `exec-summary`
+- ❌ Writing commit messages going forward — this skill reads history, it doesn't write it
 
 ## Anti-patterns to avoid
 
-- ❌ **Transcribing commit subjects with bullets in front.** That's `git log` with extra steps — the rewrite into reader language is the entire job.
-- ❌ **"Various bug fixes and improvements."** Either the fix is worth a line or it's internal; the vague catch-all is neither.
-- ❌ **Burying a breaking change** in the middle of "Changed" because the commit didn't shout about it. The detection signals exist precisely for quiet breaks.
-- ❌ **Padding a thin release.** Two real changes get two lines. Inflating with internal noise to look substantial erodes trust in every future release note.
-- ❌ **Marketing adjectives.** "Blazing-fast", "completely redesigned", "supercharged" — state the measurable change ("export is ~3× faster on large reports") or state nothing.
-- ❌ **Silently skipping unparseable commits.** They go to Needs review; the count of skipped commits is part of the output.
+- ❌ **Finishing a vague change.** "Looked at the search thing" becomes "search is faster".
+  Keep it as vague as it was, or leave it out and say so.
+- ❌ **Announcing reverted work.** A commit in the range is not a change that shipped.
+- ❌ **Burying a quiet break.** No `!:` marker doesn't mean nothing broke; read the bodies.
+- ❌ **"Various bug fixes and improvements."** Either a fix is worth a line or it's internal.
+- ❌ **The working notes in the text.** Ranges, counts, hashes, "flagged by", a "Needs review"
+  table in a customer email.
+- ❌ **A changelog where an email was asked for.** Headings and bullets in a two-paragraph
+  member update.
+- ❌ **Marketing adjectives.** "Blazing-fast", "completely redesigned": state the measured
+  change the input gives, or nothing.

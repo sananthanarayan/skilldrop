@@ -8,6 +8,11 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.15 — 2026-10-17
+
+- **`release-notes` writes one set of notes for the reader and channel you name**: a changelog page, a member email, an in-app "what's new" with a word limit, store text, or your repo's own `CHANGELOG.md` style. It says nothing the log or your notes don't, keeps a vague change as vague as you described it, leaves out work reverted later in the range, and finds a breaking change from the message text as well as from `!:` markers, phrasing the action for how your readers get the release. The commit range, counts, hashes and review lists no longer appear in customer text; what it left out is listed once, after the notes. On two evals it had never seen, two blind judges preferred it to plain Claude Code in all 4 pairs each, up from 3 and 3, at a lower cost per run ([RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md)).
+- **The `release` loop's announce stage** now drafts notes for each audience you name, instead of always a customer and an internal version. Loop version 0.3.1; `npx skilldrop-cli update` takes it.
+
 ## 0.16.14 — 2026-10-17
 
 - **`source-synthesis` answers your question from your sources, in the size you asked for.** It says only what the material supports and marks anything from elsewhere in the sentence where it appears. It counts a source that repeats another once, adds up each source's own totals and says which don't match, and gives a labelled estimate with its range when you need a figure the sources don't settle. Page-level citations, strength ratings and the citation checker are kept for when you ask for a literature review. On two evals written after the rebuild was planned, two blind judges preferred it to plain Claude Code in 3 of 4 pairs each, up from 1 and 0, at half the cost per run ([RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md)).

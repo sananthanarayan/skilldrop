@@ -29,8 +29,8 @@ being folded into either neighbour.
    checks rollback, detection, response, measured targets, data and privacy, comms and
    exposure, each with evidence. `REVISE` returns to `plan`, and the report names which gap to
    close and which skill closes it. A missing rollback is `BLOCKED` on its own.
-3. **Announce only once it is ready.** `release-notes` drafts the customer-facing and
-   internal notes from the git range. Writing them before G3 risks announcing a launch that
+3. **Announce only once it is ready.** `release-notes` drafts the notes for each audience
+   you name from the git range, with nothing the log doesn't say. Writing them before G3 risks announcing a launch that
    then does not happen.
 4. **A human decides at G3.1.** The release owner decides whether to ship *now*, given
    timing, freeze windows and on-call coverage. When that decision is contested, use

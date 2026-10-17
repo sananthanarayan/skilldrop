@@ -243,27 +243,27 @@ Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/dev-team/skills/pre-mer
 
 ### `release-notes`
 
-Turn git history between two refs into release notes — a customer-facing version written in reader benefits and an internal Keep-a-Changelog version with commit traceability, breaking changes always first.
+Write release notes from a git log, a list of merged PRs or rough notes about what changed — for the audience and in the format the user names (a customer changelog page, an email, an in-app "what's new", store text, a CHANGELOG.md entry). Says nothing the input doesn't, writes a vague change only as far as it was described, puts breaking changes and anything the reader must do first, and keeps internal noise and working notes out of the text.
 
-Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/dev-team/skills/release-notes/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/release-notes/)
+Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/dev-team/skills/release-notes/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/release-notes/)
 
-**Use it when** the user wants release notes, a changelog, "what's in this release", a deploy announcement, or to summarize changes since the last tag.
+**Use it when** the user wants release notes, a changelog entry, "what's in this release", a deploy announcement, or to summarise changes since the last tag.
 
 **A good result:**
 
-- **Breaking changes are first, with an action.** Every breaking entry has "Action required: …" a reader can execute. No action identifiable → it goes to Needs review, not to the top section unverified.
-- **No commit-speak in customer notes.** Class names, function names, internal service names, and ticket IDs are all signals the line wasn't rewritten.
-- **Every internal-changelog line ends in a short hash** (and PR number when available). A claim nobody can trace is a claim nobody can verify.
-- **Internal noise stays internal.** Dependency bumps, refactors, CI, and test-only changes never appear in customer notes — not even as "various improvements".
-- **Nothing is guessed.** A vague commit ("fix stuff", "wip") lands in Needs review with its hash; the skill never invents a user-facing meaning for it.
-- **The range is stated.** Refs, commit count, and date span at the top — so a reader knows exactly what window the notes cover.
+- **Nothing in the notes goes beyond the input.** No invented feature, behaviour, symptom, figure, date, version, PR number or count.
+- **Reverted and superseded changes don't appear;** the final state does.
+- **Breaking changes and required actions come first,** found from the text as well as the markers, with an action that fits how the audience gets the release.
+- **Internal noise is absent from customer text.**
+- **The format, length and tone are the ones the user asked for,** and the notes carry no working notes.
+- **Vague items are left out or kept vague, and named once to the user.**
 
 **Not for:**
 
 - A single PR description — that's one change; use `pr-description-writer`
 - Reviewing the changes for quality or risk — that's `devils-advocate` / `sonar-review`
-- Stakeholder narrative about *why* the release matters strategically — feed the notes to `exec-summary`
-- Generating commit messages going forward — this skill reads history, it doesn't write it
+- A narrative about *why* the release matters strategically — feed the notes to `exec-summary`
+- Writing commit messages going forward — this skill reads history, it doesn't write it
 
 ### `sonar-onboard`
 

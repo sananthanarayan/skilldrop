@@ -5,12 +5,12 @@
       "id": 1,
       "prompt": "Write release notes for v2.4.0 from this log (range v2.3.0..HEAD, 2026-08-12 to 2026-09-28):\n\na1b2c3d|feat: bulk CSV import for contacts (#412)\ne4f5a6b|fix: NPE in ReportExporter.flush() when >10k rows (#418)\nc7d8e9f|feat!: remove legacy /v1/contacts endpoint (#420)\n0a1b2c3|chore(deps): bump lodash 4.17.20 -> 4.17.21\n4d5e6f7|refactor: extract ExportService\n8a9b0c1|fix stuff\n2d3e4f5|perf: cache tenant settings, report export ~3x faster (#425)",
       "assertions": [
-        "States the range, commit count (7), and date span at the top",
-        "The removal of /v1/contacts is hoisted to the top of both artifacts with an 'Action required' line and names the !: marker that flagged it",
+        "Delivers the notes from the log without stopping to ask who they are for, stating any assumption about the audience in a line",
+        "The removal of /v1/contacts comes first, with the step API users must take",
         "Customer notes contain no commit-speak — no ReportExporter.flush(), class names, ticket numbers, or author names",
-        "The lodash bump and the ExportService refactor appear only in the internal changelog, never in customer notes, not even as 'various improvements'",
-        "Every internal changelog line ends with its short hash, plus PR number where present",
-        "The vague 'fix stuff' commit (8a9b0c1) goes in the Needs review list with its hash, not guessed into customer notes",
+        "The lodash bump and the ExportService refactor do not appear in customer-facing notes, not even as 'various improvements'",
+        "The notes carry no working notes: no commit range, commit count, hashes or review lists in customer-facing text",
+        "The vague 'fix stuff' commit is not given an invented meaning in the notes, and is named to the user outside them",
         "No marketing adjectives; the performance line states the measured change (~3x faster export) rather than 'blazing fast'",
         "Does not invent features or fixes not present in the log"
       ]
@@ -71,6 +71,34 @@
         "The sync change is not described as a specific improvement (such as faster or more reliable sync); it is left out or flagged as needing detail from Sam",
         "It does not invent crash counts, percentages, a release date for Android, or features that are not in the list",
         "The store text itself is short: about 100 words or fewer per store"
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-17",
+      "prompt": "Our next Quillmoor release goes out tomorrow. Quillmoor is our invoicing app for freelancers and small studios, and some of our customers use our API. The git log since the last release is in `git-log.txt`. Write the customer-facing release notes for our public changelog page: Markdown, 200 words max. I want them ready to paste.",
+      "assertions": [
+        "The webhook payload change (`amount` now an integer in minor units, `client_name` renamed to `client.display_name`) is in the notes and comes before every other change, worded so a customer with a webhook integration can tell they must update their handler",
+        "The Swiss QR-bill feature is not presented as part of the release, since it was reverted in the same range",
+        "No internal-only work appears in the notes: no CI changes, dependency bumps, test fixtures, the auth/session refactor, feature-flag removal, release checklist, or typo fixes in comments or CONTRIBUTING",
+        "The 'misc fixes from Henrike's QA pass' and 'sync stuff' commits are either left out or mentioned no more specifically than general small fixes; no particular behaviour, such as a sync feature, is attributed to them",
+        "Does not invent anything absent from the log or request: no version number, release date, PR or ticket number, count of changes, or figure such as how much faster the invoice list is",
+        "Covers at least six of these seven customer-visible changes: duplicating an invoice, receipt photos from a phone's browser, the client-portal ZIP download, no more reminders for invoices marked paid offline, the VAT rounding fix, the due date column in CSV export, and the faster invoice list",
+        "The pasteable notes are 200 words or fewer and in Markdown, are delivered without first stopping to ask questions, and contain no working notes about what was left out or why"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-17",
+      "prompt": "I run the Bramblegate Tool Library, it's a volunteer thing where members borrow tools through our little app. My nephew does the app and he did a bunch of stuff this month. From memory:\n\n- you can reserve tools a week ahead now instead of 3 days? I think a week\n- the login code by text message, he fixed that, people were complaining it didn't arrive\n- something about late fees, he changed how they work, I need to check with him but basically you get a reminder before it's late now\n- everyone has to re-accept the borrowing agreement next time they log in because the committee updated it\n- new photos on the tool pages\n- also a lot of backend stuff I don't understand\n\nCan you write the text for the \"What's new\" pop-up members see when they open the app? It's a small box, so 75 words max.",
+      "assertions": [
+        "Re-accepting the updated borrowing agreement at next log-in comes first in the pop-up text and is stated as something the member will have to do",
+        "Does not invent details: no late-fee amounts, no number of days before the due date that the reminder arrives, no reservation window other than a week, no cause for the login problem, no date, and no change that is not in the notes",
+        "The late-fee item goes only as far as described, a reminder before an item is late, and does not claim fees were raised, lowered or removed",
+        "The 'backend stuff' is not in the pop-up text, and nothing specific is claimed about it",
+        "Mentions reserving further ahead, the fixed text-message login code, and the new tool photos",
+        "The pop-up text is 75 words or fewer and in plain language for library members, with no developer jargon such as 'backend', 'OTP' or 'SMS verification flow'",
+        "Delivers the pop-up text without first stopping to ask for confirmation; any suggestion to check details with the developer sits outside the pop-up text"
       ]
     }
   ]

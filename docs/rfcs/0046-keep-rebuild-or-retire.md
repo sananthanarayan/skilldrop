@@ -140,6 +140,7 @@ time from 0.16.14, starting with `source-synthesis`.
 | Skill | Release | New evals | Before (judge 1, judge 2) | After | Cost per skill run, before → after |
 |---|---|---|---|---|---|
 | `source-synthesis` | 0.16.14 | 6, 7 | 1, 0 of 4 pairs | 3, 3 of 4 | $0.20 → $0.09 |
+| `release-notes` | 0.16.15 | 6, 7 | 3, 3 of 4 pairs | 4, 4 of 4 | $0.08 → $0.06 |
 
 `source-synthesis`: both eval 6 wins came from adding up a source's own line items, which
 showed that its stated total was wrong. The eval 7 loss and the judges' notes on the eval 7
@@ -148,3 +149,11 @@ full, and calling 150 "not higher" than 110. One caveat on independence: the reb
 after the eval writer's summary of eval 6 had been read, so its traps were known. No example
 in the skill comes from either new eval, and the sum check had already been recommended from
 evals 2 to 5. Evals 6 and 7 are now tuned for this skill; the next measure needs evals 8 and 9.
+
+`release-notes`: the eval writer reported only each eval's topic, so the rebuild was written
+without knowing the traps. Its prompt did name the kinds of trap to plant, chosen from the
+evals 2 to 5 verdict. The released skill already cleared the bar on these evals (most of its
+losses on evals 2 to 5 were working notes in customer text), so the rebuild had to beat the released version, not just reach half. It did. All
+four wins name the action-first ordering, accurate counts or leaving out unconfirmed claims.
+Eval 1's assertions, which checked the old format (range header, two artifacts, a hash on
+every line), now check the rule instead.
