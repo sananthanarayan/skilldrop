@@ -1,0 +1,13 @@
+#data-onboarding (export)
+
+Tobin: pinned my setup notes for whoever starts next. local db is on 5433 btw
+Mara: heads up, since 2.4 `lark db init` defaults to 6543. 5433 kept clashing with other stuff on people's machines
+Tobin: ah yes, my notes predate that. 6543 it is
+Pell: what region do new people put in the config? I just copied mine from someone
+Tobin: depends which team they land on. I'll check for Wren and get back to you
+Pell: also does `lark sync` need the VPN on? I think it does when I'm off-site but not 100%
+Mara: no idea, haven't worked from home in ages
+Pell: fwiw my login stopped working after the long weekend, had to run `lark login` again
+Mara: reminder for platform folks only: `lark deploy --prod` is still frozen until the migration is signed off, don't run it
+Tobin: lunch at 12:30 anyone?
+Mara: yes

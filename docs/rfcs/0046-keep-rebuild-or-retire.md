@@ -144,6 +144,7 @@ time from 0.16.14, starting with `source-synthesis`.
 | `postmortem-generator` | 0.16.16 | 6, 7 | 2, 3 of 4 pairs | 2, 3 of 4 | $0.26 → $0.11 |
 | `design-doc` | not shipped | 6, 7 | 2, 2 of 4 pairs | 2, 2 of 4 | $0.10 → $0.08 |
 | `ai-usage-policy` | 0.16.17 | 6, 7 | 0, 1 of 4 pairs | 3, 2 of 4 | $0.09 → $0.10 |
+| `guide-builder` | 0.16.18 | 6, 7 | 2, 3 of 4 pairs | 3.5, 4 of 4 | $0.09 → $0.08 |
 
 `source-synthesis`: both eval 6 wins came from adding up a source's own line items, which
 showed that its stated total was wrong. The eval 7 loss and the judges' notes on the eval 7
@@ -190,3 +191,9 @@ One harness fix came out of this round: `run_bench.py` decided which model had a
 the most output tokens, so a short judge verdict could be credited to a side call on a smaller
 model and rejected as served by the wrong one. It now accepts the requested model when that
 model produced output. This affected only rejected runs, never a counted one.
+
+`guide-builder`: every win names one of its two rules. It sent the reader to the person the
+notes said would know, instead of a vague "your manager". It refused to state a rule the user
+had said they were unsure of. Its open questions stayed out of the guide. The three fixed
+templates and the worked example were deleted. One judge-1 verdict came back unjudged and
+counts as a tie.

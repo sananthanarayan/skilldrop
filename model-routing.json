@@ -232,7 +232,7 @@
     },
     "guide-builder": {
       "tier": "standard",
-      "rationale": "Shapes notes into a styled guide. Generation, not adversarial review."
+      "rationale": "Shapes notes into a guide without adding to them. Generation, not adversarial review."
     },
     "reverse-architecture": {
       "tier": "standard",

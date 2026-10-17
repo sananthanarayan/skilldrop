@@ -72,6 +72,33 @@
         "It does not invent a queue or topic name, how often events are sent, delivery guarantees, value ranges stated as fact, or fields that are not in the sample",
         "The reference is about a page or less, with no sections on things that were not supplied such as authentication, retries or versioning"
       ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-17",
+      "prompt": "Can you turn setup-notes.md and thread.txt into a setup guide for Wren? She's a new analyst starting Monday and needs to get Larkspur running on her laptop on day one without pinging anyone. She's fine in a terminal but has never seen our stack. Something she can follow in one sitting, under 600 words.",
+      "assertions": [
+        "The steps run in an order that works: lark-analysts access is requested up front, `lark runtime start` comes before `lark db init`, the database is initialised before `lark seed`, and the config file is created before `lark login`, which comes before `lark sync`, even though the notes put seeding first",
+        "The local database port is given as 6543, the 2.4 default from the thread, and 5433 is not presented as the current port",
+        "`lark deploy --prod` does not appear as a step, and the lunch chat is left out",
+        "If the guide says the login can stop working and need `lark login` again, it is marked as one colleague's experience rather than stated as documented behaviour",
+        "It does not invent a region or workspace value, a VPN requirement either way, or any command, flag, file path, error message or timing not in the two files",
+        "The guide is delivered without stopping to ask first, and the unanswered questions (which region Wren should use, whether sync needs the VPN off-site) are raised to the requester outside the guide rather than answered by guesswork inside it",
+        "The guide is under 600 words"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-17",
+      "prompt": "hi, I do the welcome stuff for Brackenhill Allotment Association. can you make this into a short welcome guide for new plot holders? half a page max, they're mostly retirees and young families, not techy at all.\n\nshed key is in the lockbox by the gate, code is on the welcome sheet. water troughs get turned on in april by whoever's on the rota. sign the tool book when you borrow anything. bonfires NOT allowed, council letter last yr. compost bays - green bin is for weeds, the wooden ones for everything else? not sure tbh ask Derek. new folk do their induction walk with a committee member before they get a key",
+      "assertions": [
+        "The induction walk with a committee member comes before getting the key or using the lockbox, even though the notes mention the key first",
+        "It does not invent the lockbox code, a date for the water going on, rota names, contact details for Derek or anyone else, rent, opening hours, penalties or any rule not in the notes",
+        "The compost-bay split is not stated as a settled rule in the guide, and the requester is told outside the guide that it needs confirming with Derek",
+        "The bonfire ban and signing the tool book are both included as clear rules",
+        "It is written in plain everyday language a non-technical newcomer can follow, with no jargon or committee shorthand left unexplained",
+        "The guide fits in about half a page (roughly 250 words or fewer) and is delivered without stopping to ask questions first"
+      ]
     }
   ]
 }

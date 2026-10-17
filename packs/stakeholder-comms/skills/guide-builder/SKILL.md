@@ -1,68 +1,65 @@
 ---
 name: guide-builder
-description: Turn raw notes, specs, or design material into an easy-to-follow guide, auto-styled to the content — a setup/quickstart, a design walkthrough, or an API/event-schema reference. Use when the user wants setup or getting-started instructions, an onboarding walkthrough of how a system works, or developer reference docs for an API or event schema — and it is NOT an SRE operational runbook (use runbook-generator) or a design proposal for review (use design-doc).
+description: Turn raw notes, a spec, a thread or a messy procedure into a guide someone else can follow — a setup guide, a how-to, an onboarding walkthrough, or a reference for developers — in the length and voice its reader needs. Holds only what the notes say, marks anything inferred where it appears, orders steps so nothing is used before it is set up, and keeps open questions out of the guide so it can be sent as it stands. Use when the user wants setup or getting-started instructions, a walkthrough of how something works, or reference docs for an API or event schema — and it is NOT an SRE operational runbook (use runbook-generator) or a design proposal for review (use design-doc).
 ---
 
 # guide-builder
 
-You help the user turn rough material — notes, a spec, an architecture description, an endpoint list — into a guide a reader can follow top-to-bottom without you in the room. This skill picks one of three styles from the content; it is **not** the SRE operational runbook (`runbook-generator`) and **not** a design proposal for review (`design-doc`). It explains and instructs; it does not propose or page.
+**The rule: the guide holds only what the notes say.** A guide is followed literally. The
+agent's habit is to make it feel complete: a confirmation message nobody mentioned ("you
+should see *Connected*"), a menu path from a different version, "required" on every field, a
+retry policy that sounds standard. Each invented detail is a step the reader will look for
+and not find. So every fact comes from the material. An inference from it (a unit read off a
+sample value, the likely meaning of a field) is marked as an inference where it appears:
+✅ *"`ts` looks like seconds since 1970, judging by the sample; confirm before relying on
+it."*
+
+A second rule: **the guide can be sent as it stands.** Questions for the person who asked,
+internal notes, "confirm with engineering" and to-do markers go in your reply, never in the
+guide. Where the reader will need something the notes don't settle, the guide tells the
+*reader* who to ask, if the notes say who: ✅ *"Your login for the booking system comes from
+the office manager."*
 
 ## How to respond
 
-**Four rules come before the steps and outrank them:**
+1. **Write for the reader they named, at the size asked for.** A README section, a page for a
+   new starter, a sheet for volunteers, a reference for developers: that sets the voice,
+   length and shape. Short asks get short guides.
 
-- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
-- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
-- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
-- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
-- **For this skill:** Turn the notes into the guide and stop. No endpoints, expected outputs, time estimates, troubleshooting rows or teardown steps that are not in the notes, and no warnings or to-do markers inside the guide.
+2. **Order by dependency, not by the notes.** Nothing is used before the step that sets it
+   up: an account before signing in with it, a password store before the password goes in.
+   Notes are usually written in the order things were remembered; the guide follows the
+   order they have to be done.
 
-1. **Detect the style first, and say which you picked.** Classify the input into exactly one of three styles using the table below. State the choice in one line with a one-clause why — *"Reading this as a **setup guide** (it's install + config steps); say the word if you wanted the design walkthrough."* — so the user can redirect before you draft.
+3. **One action per step, with a way to tell it worked when the notes give one.** Number the
+   steps. Split compound ones. Add a success check only where the notes say what success
+   looks like; don't invent screens, messages or outputs.
 
-   | Style | Pick when the content is… | Signals in the input |
-   |---|---|---|
-   | **Setup guide** → [`templates/setup-guide.md`](templates/setup-guide.md) | install / configure / run something, step by step | "install", "set up", "getting started", prerequisites, env vars, `.env`, CLI commands, `docker`, "clone the repo" |
-   | **Design walkthrough** → [`templates/design-walkthrough.md`](templates/design-walkthrough.md) | explaining how an already-decided system works so someone can understand or build on it | components, data flow, "how X works", onboarding a new engineer, "why it's built this way" |
-   | **API reference** → [`templates/api-reference.md`](templates/api-reference.md) | contracts other developers code against | endpoints, request/response shapes, OpenAPI, event names, payload schemas, status codes, webhooks, Kafka/SNS topics, JSON Schema |
+4. **For developer references, the contract as given.** Each endpoint, event or field with
+   what the notes say about it: type, whether it's required, meaning, an example where the
+   notes have one. Where the notes don't say whether a field is required or what a value
+   means, the reference says that, rather than guessing. Error responses only as documented.
 
-2. **Handle mixed content by picking the dominant style, not blending.** If the input spans two styles (e.g. setup steps *and* the API they expose), lead with the dominant one and append the secondary as a clearly-labelled section or link out to a second guide. Only ask the user which to lead with if it's a genuine 50/50.
+5. **What the notes don't cover stays out.** A feature people have asked about but the notes
+   don't describe, steps for a device or tool the notes never mention, a header name or host
+   nobody wrote down: leave them out of the guide, and name them once in your reply.
 
-3. **Gather only what the chosen style can't do without.** Don't run a generic intake. Cap at 2 questions, pick defaults for the rest:
-   - **Setup guide** needs the *target end state* ("running locally" vs "deployed to staging") and the *prerequisites baseline*. Without an end state, a setup guide has no finish line.
-   - **Design walkthrough** needs *who it's for* (new hire vs adjacent team) and *what they should be able to do after reading*.
-   - **API reference** needs the *transport + auth model* and *versioning scheme*. Without auth, the examples are unrunnable.
-
-   If the source is genuinely too thin, say so once and draft with gaps flagged as `> ⚠️ NEEDS INPUT: …` — don't invent.
-
-4. **Fill the matching template.** Each template is ordered the way a reader actually consumes it. Don't reorder sections to match the input's order; reorder the input to match the reader's path.
-
-5. **Apply the universal easy-to-follow rules** (these are the spine of every style):
-   - **One action per step.** Number them. No compound step hiding three commands behind one number.
-   - **Every step ends in a check.** "You should see `Listening on :3000`." A step with no success signal can't tell the reader whether to continue or stop.
-   - **Commands are complete and paste-able.** Real flags, not pseudocode. Placeholders are unmistakable (`<YOUR_API_KEY>`, never `your-key-here` buried mid-line) and listed once up front.
-   - **Lead each section with the outcome, not the backstory.** "By the end of this section the service answers on localhost." The "why" belongs in a walkthrough, not a quickstart.
-   - **Front-load the happy path.** Push edge cases, troubleshooting, and teardown to the end.
-
-## Useful references in this skill
-
-- [`templates/setup-guide.md`](templates/setup-guide.md) — install/configure/run, prerequisites → verify → troubleshooting.
-- [`templates/design-walkthrough.md`](templates/design-walkthrough.md) — mental model → components → flow → key decisions → where the code lives.
-- [`templates/api-reference.md`](templates/api-reference.md) — conventions → per-endpoint/event contracts → error catalog → changelog.
-- [`examples/local-setup-guide.md`](examples/local-setup-guide.md) — raw notes → a finished setup guide, showing the detection call and the verify-after-every-step discipline.
+6. **Deliver from what you have.** With notes to work from, write the guide and state any
+   assumption about the reader in one line. Ask first only when there is nothing to work from.
 
 ## Quality bar
 
-- **A reader who follows top-to-bottom reaches the stated end state without leaving the doc for missing info.** Unstated prerequisites are the #1 failure — hunt them down.
-- **Every command block has an expected result or a verification step.** A command with no "how do I know it worked" is incomplete.
-- **Placeholders are unmistakable and listed once up front.** `<YOUR_API_KEY>`, not a real-looking string the reader pastes verbatim and wonders why it fails.
-- **No forward references that break linear reading.** "See step 7" before step 7 means the order is wrong, or it needs a link.
-- **API reference: every field has type + required/optional + a one-line meaning; every endpoint has ≥1 full example request and response, including at least one error response.**
-- **The detected style is stated up front with a one-line why,** so the user can redirect in one message instead of getting the wrong artifact.
+- **Every fact in the guide is in the notes;** every inference is marked where it appears.
+- **The guide can be sent as written:** no questions, internal notes or to-do markers in it.
+- **A reader following top to bottom never uses something before it is set up.**
+- **One action per step;** success checks only where the notes give them.
+- **References say "not stated" rather than guessing types, required fields or meanings.**
+- **Length and voice fit the reader asked for.**
 
 ## When to use this skill
 
 - ✅ "Write setup instructions for getting our service running locally."
-- ✅ "Turn this architecture description into an onboarding walkthrough for new engineers."
+- ✅ "Turn this description into an onboarding walkthrough for new staff."
 - ✅ "Document these endpoints / this event schema for the developers who'll consume them."
 - ✅ Converting messy notes or a spec into a doc someone can follow without you present.
 
@@ -75,11 +72,13 @@ You help the user turn rough material — notes, a spec, an architecture descrip
 
 ## Anti-patterns to avoid
 
-- ❌ Compound steps. "Install deps, configure the DB, and run migrations" as one numbered step — split into three.
-- ❌ Commands with no expected output. The reader can't tell success from a silent failure.
-- ❌ Backstory before the first actionable step in a setup guide. Save the "why" for a walkthrough.
-- ❌ Documenting an API in prose ("it returns the user object") instead of a typed schema + example payload.
-- ❌ Blending two styles into one undifferentiated doc. Pick the dominant style; link or append the rest.
-- ❌ Optimistic examples that omit the error/failure responses an API consumer is required to handle.
-- ❌ Reinventing `runbook-generator` (incident playbooks, on-call) or `design-doc` (alternatives, approval) — stay in the explain-and-follow lane.
-- ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.
+- ❌ **The plausible detail.** A success message, a default, a menu path or a retry count the
+  notes never mention.
+- ❌ **Notes to the requester inside the guide.** "Internal: confirm with eng before sending."
+- ❌ **Steps for what the notes don't cover,** written from general knowledge because the
+  reader will need them. Tell the reader who to ask instead.
+- ❌ **Template sections on a small ask.** "Mental model", "Data & state", "Where it runs" for a
+  five-line description.
+- ❌ **"Required: yes" on every field** because the column needed filling.
+- ❌ **Compound steps.** Three commands behind one number.
+- ❌ **Announcing your approach.** "Reading this as a setup guide…" — just write it.

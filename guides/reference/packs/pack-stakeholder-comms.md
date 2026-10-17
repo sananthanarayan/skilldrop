@@ -71,20 +71,20 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/stakeholder-comms/skill
 
 ### `guide-builder`
 
-Turn raw notes, specs, or design material into an easy-to-follow guide, auto-styled to the content — a setup/quickstart, a design walkthrough, or an API/event-schema reference.
+Turn raw notes, a spec, a thread or a messy procedure into a guide someone else can follow — a setup guide, a how-to, an onboarding walkthrough, or a reference for developers — in the length and voice its reader needs. Holds only what the notes say, marks anything inferred where it appears, orders steps so nothing is used before it is set up, and keeps open questions out of the guide so it can be sent as it stands.
 
-Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/stakeholder-comms/skills/guide-builder/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/guide-builder/)
+Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/stakeholder-comms/skills/guide-builder/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/guide-builder/)
 
-**Use it when** the user wants setup or getting-started instructions, an onboarding walkthrough of how a system works, or developer reference docs for an API or event schema — and it is NOT an SRE operational runbook (use runbook-generator) or a design proposal for review (use design-doc).
+**Use it when** the user wants setup or getting-started instructions, a walkthrough of how something works, or reference docs for an API or event schema — and it is NOT an SRE operational runbook (use runbook-generator) or a design proposal for review (use design-doc).
 
 **A good result:**
 
-- **A reader who follows top-to-bottom reaches the stated end state without leaving the doc for missing info.** Unstated prerequisites are the #1 failure — hunt them down.
-- **Every command block has an expected result or a verification step.** A command with no "how do I know it worked" is incomplete.
-- **Placeholders are unmistakable and listed once up front.** `<YOUR_API_KEY>`, not a real-looking string the reader pastes verbatim and wonders why it fails.
-- **No forward references that break linear reading.** "See step 7" before step 7 means the order is wrong, or it needs a link.
-- **API reference: every field has type + required/optional + a one-line meaning; every endpoint has ≥1 full example request and response, including at least one error response.**
-- **The detected style is stated up front with a one-line why,** so the user can redirect in one message instead of getting the wrong artifact.
+- **Every fact in the guide is in the notes;** every inference is marked where it appears.
+- **The guide can be sent as written:** no questions, internal notes or to-do markers in it.
+- **A reader following top to bottom never uses something before it is set up.**
+- **One action per step;** success checks only where the notes give them.
+- **References say "not stated" rather than guessing types, required fields or meanings.**
+- **Length and voice fit the reader asked for.**
 
 **Not for:**
 

@@ -8,6 +8,10 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.18 — 2026-10-17
+
+- **`guide-builder` writes a guide that holds only what your notes say**, at the length its reader needs: a README section, a sheet for volunteers, a page for a new starter, or a reference for developers. Anything it infers from the notes (a unit from a sample value, what a field probably means) is marked where it appears. Steps are ordered so nothing is used before it is set up. Questions for you stay in the reply, so the guide can be sent as it stands, and where the notes leave a gap the guide tells the reader who to ask. The three fixed templates and the "reading this as a setup guide" opener are gone. On two evals it had never seen, two blind judges preferred it to plain Claude Code in 3.5 and 4 of 4 pairs, up from 2 and 3 ([RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md)).
+
 ## 0.16.17 — 2026-10-17
 
 - **`ai-usage-policy` writes the policy your staff will actually follow, at the length they need**: a note for a dozen staff to pin up, a page to attach for a client, or the full policy. It says what's allowed first, pairs every "don't" with what to do instead (or says no approved way exists yet and who decides), and says what to do if data has already gone into a tool. It makes no claim about a tool's data handling, seats, owners, turnarounds or laws you didn't give it, and reports a vendor's assurances as the vendor's. The fixed three-tier table, review matrix and owner-per-section are gone. On two evals it had never seen, two blind judges preferred it to plain Claude Code in 3 and 2 of 4 pairs, up from 0 and 1 ([RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md)).
