@@ -81,23 +81,22 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/research/skills/researc
 
 ### `source-synthesis`
 
-Synthesise a set of supplied sources — papers, articles, reports, interview transcripts — into findings where every claim is cited to a source and a location ([S1:p4]), agreement and disagreement across sources are explicit, each finding carries an evidence-strength rating with the criteria used, and the gaps and what the sources do not say are listed. Never adds outside facts unless tagged as such, and ships a citation checker.
+Answer a question from a set of sources the user supplied — papers, reports, articles, interview notes, emails — saying only what the material supports, labelling anything that comes from elsewhere where it appears, counting a source that repeats another once, and giving a labelled estimate when the user needs a figure the sources don't settle. Written in the length and format the user asked for; a full cited literature review only when that is the ask.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/research/skills/source-synthesis/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/source-synthesis/)
+Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/research/skills/source-synthesis/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/source-synthesis/)
 
-**Use it when** the user hands over several sources and asks to "synthesise these", "what do these papers say", "literature review", "pull the findings together", or "where do the sources agree and disagree".
+**Use it when** the user hands over several sources and asks to "synthesise these", "what do these papers say", "pull together what we know", "literature review", or "where do the sources agree and disagree".
 
 **Needs:** Python 3 for its scripts (standard library only).
 
 **A good result:**
 
-- **Every claim is cited to a source and a location.** The checker reports no errors; any warning left is explained.
-- **Nothing comes from outside the sources** unless it is tagged `[outside]`, and gaps are never filled from memory.
-- **Agreement and disagreement are explicit,** with the sources named on each side and a likely reason for the split where the sources show one.
-- **Each finding has a strength rating and the criteria behind it.** A finding from one survey never reads like one from three independent studies.
-- **Findings are no stronger than their sources.** Hedges survive; correlation stays correlation.
-- **Gaps and what the sources do not say are listed** as specific statements.
-- **Sources that aren't independent are counted once.**
+- **Nothing reads as coming from the sources that doesn't.** Every outside input is marked as outside in the sentence where it appears; no gap is filled from memory.
+- **Echoes are counted once.** A figure repeated by a second source is traced to its origin.
+- **The sources' own sums are checked,** and any that don't add up are named.
+- **The answer opens the reply and fits the requested size and format.**
+- **A needed figure gets a worked, labelled estimate** with its range and what would settle it, not a refusal.
+- **Findings are no stronger than their sources.** Hedges, approximations and confounds survive; hearsay stays hearsay.
 
 **Hands off to:** `hypothesis-comparison` when the findings point to several rival explanations for the same observation.
 

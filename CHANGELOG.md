@@ -8,6 +8,11 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.14 — 2026-10-17
+
+- **`source-synthesis` answers your question from your sources, in the size you asked for.** It says only what the material supports and marks anything from elsewhere in the sentence where it appears. It counts a source that repeats another once, adds up each source's own totals and says which don't match, and gives a labelled estimate with its range when you need a figure the sources don't settle. Page-level citations, strength ratings and the citation checker are kept for when you ask for a literature review. On two evals written after the rebuild was planned, two blind judges preferred it to plain Claude Code in 3 of 4 pairs each, up from 1 and 0, at half the cost per run ([RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md)).
+- **`run_bench.py --evals 6,7` runs only the evals you name**, so a revision can be measured on the evals it has never seen without paying to rerun the rest.
+
 ## 0.16.13 — 2026-10-17
 
 - **Four skills are retired: `tech-comparison-matrix`, `db-schema-design`, `metric-definition` and `contribution-wizard`.** On evals they were never revised against, the agent without them did as well or better, and none adds a rule the agent breaks on its own, only a format it can produce when asked ([RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md)). An installed copy keeps working. The catalogue now holds 96 skills.

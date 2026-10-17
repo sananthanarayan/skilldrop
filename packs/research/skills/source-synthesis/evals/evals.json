@@ -74,6 +74,34 @@
         "It gives the up-front gap as about £10,100 (£14,200 against about £4,100)",
         "It does not add energy prices, grant scheme rules or typical heat pump costs from outside the notes, unless clearly labelled as not coming from the notes"
       ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-17",
+      "prompt": "I'm the practice manager at Brackenmoor Veterinary Practice. We have three vets. The partners decide on Thursday whether to start opening on Saturday mornings, and they've asked me one question: would a Saturday morning clinic cover its own staffing cost in its first year? I've put five things in this folder: client-survey-summary.md, wcapa-benchmarking-extract.md, practice-ledger-article.md, fenwick-lane-call-notes.txt and finance-email.txt. Go by what these say. The partners want a straight answer and a number they can argue about, not a literature review, so keep it to one page at most. I'm in theatre all day and can't answer questions, so just write it up.",
+      "assertions": [
+        "It answers the question directly: on the evidence in the files, a Saturday clinic probably would not cover its staffing cost across the first year, because the 14-a-session benchmark clears the break-even but the closer comparison (Fenwick Lane, 4 vets) ran at 8 to 9 a session for six months and only reached about 12 by month ten",
+        "It works out a break-even of roughly 11 to 12 appointments a session from the finance email (£640 to £680 a session divided by £58 contribution per appointment), or an equivalent comparison of contribution against cost",
+        "It treats the Practice Ledger's 14-a-session figure as a repeat of the WCAPA report, not as a second source confirming it",
+        "It points out that the WCAPA figure and Fenwick Lane's figures disagree and gives a reason to weigh them differently, such as the WCAPA practices being larger (median 7 vets, with larger practices reporting higher numbers) than Brackenmoor",
+        "It flags that the finance email's £680 a session does not match its own line items, which add up to £640, rather than silently using one of the two",
+        "Any first-year figure the files do not give directly is labelled as an estimate, and it says what would settle the question, such as finding out whether Saturday bookings would be new visits or moved from weekdays, which neither the survey nor Fenwick Lane measured",
+        "It does not invent figures that are not in the files, such as a share of Saturday visits moved from weekdays, a ratio of survey intent to actual bookings, or Saturday pay rates, and it fits on about one page without stopping to ask questions"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-17",
+      "prompt": "I'm secretary of the Hollins Green Amateur Dramatic Society, which is a fancy name for twenty-odd of us who put on a panto every January. The committee wants to know if we should move it from St Aldric's church hall to the primary school hall, because someone thinks we'd sell more tickets. I'm not a numbers person and this is all I've got, scribbled down:\n\n1. Bev from the Oakhurst Players told me at the summer fete they moved to their school hall and \"sold out every night\". I think she said 180 seats? Might have been 150.\n\n2. A clipping from the Linden Vale Gazette, no date on it, Mum cut it out ages ago: \"Linden Vale Players' panto raises £2,300 for hall roof fund ... an audience of nearly 600 across four nights.\"\n\n3. Chatted to Mr Pruett, the school caretaker. He said the hall seats 220 \"with the stage in\" but the fire officer's limit might be lower, he wasn't sure. Hire is £45 an hour. Or was it £45 a session? I didn't write it down properly.\n\n4. Our own panto last January at St Aldric's: three nights, roughly 110 a night I think, tickets £8. I'm fairly sure we turned people away on the Saturday.\n\nCould you give me a few bullet points I can read out at Tuesday's committee meeting? Five or six at most, please, nothing long.",
+      "assertions": [
+        "It does not give a firm yes: it says the notes cannot show whether moving would sell more tickets, and that the best evidence for extra demand is the society's own report of turning people away on the Saturday",
+        "It names the things to check before deciding, including the school hall's actual permitted capacity (220 or the possibly lower fire limit) and whether the £45 is per hour or per session",
+        "It treats Bev's \"sold out every night\" and the 150-or-180 seat figure as second-hand and uncertain, not as established fact",
+        "It does not use the undated Linden Vale clipping as evidence that moving venue raises sales, since the clipping says nothing about a venue change or when it happened",
+        "Any figure it gives for extra tickets, takings or hire cost is clearly labelled as a rough estimate and, for hire cost, shows that it depends on whether the £45 is per hour or per session",
+        "It does not invent facts that are not in the notes, such as fire regulations, typical panto audiences, or details about the Oakhurst or Linden Vale groups beyond what is written",
+        "It stays within six bullet points, short enough to read out, and delivers them without stopping to ask questions first"
+      ]
     }
   ]
 }

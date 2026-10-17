@@ -199,7 +199,7 @@ Capture a brand once, then build decks and flyers that use it. `brand-kit` write
 |---|---|
 | [`hypothesis-comparison`](../../packs/research/skills/hypothesis-comparison/SKILL.md) | Analysis of competing hypotheses: consistency matrix, hypotheses ranked by evidence against them, diagnostic evidence and linchpins, and the next observation that discriminates. |
 | [`research-plan`](../../packs/research/skills/research-plan/SKILL.md) | A decision-led research plan: precise question, sub-questions with the finding that would change the decision, method per sub-question, inclusion criteria, search strings, stopping rule. |
-| [`source-synthesis`](../../packs/research/skills/source-synthesis/SKILL.md) | Cited findings from supplied sources: every claim to source and location, agreement and disagreement explicit, evidence strength per finding, gaps; ships a citation checker. |
+| [`source-synthesis`](../../packs/research/skills/source-synthesis/SKILL.md) | What a set of supplied sources supports on your question, in the size you asked for: nothing from outside unless labelled where it appears, echoes counted once, the sources' own sums checked, and a labelled estimate when you need a figure they don't settle. A fully cited literature review, with a citation checker, when that is the ask. |
 
 ## Job applications
 

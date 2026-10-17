@@ -1,7 +1,7 @@
 {
   "name": "source-synthesis",
-  "version": "0.1.1",
-  "description": "Synthesise a set of supplied sources — papers, articles, reports, interview transcripts — into findings where every claim is cited to a source and a location ([S1:p4]), agreement and disagreement across sources are explicit, each finding carries an evidence-strength rating with the criteria used, and the gaps and what the sources do not say are listed. Never adds outside facts unless tagged as such, and ships a citation checker. Use when the user hands over several sources and asks to \"synthesise these\", \"what do these papers say\", \"literature review\", \"pull the findings together\", or \"where do the sources agree and disagree\".",
+  "version": "0.2.0",
+  "description": "Answer a question from a set of sources the user supplied — papers, reports, articles, interview notes, emails — saying only what the material supports, labelling anything that comes from elsewhere where it appears, counting a source that repeats another once, and giving a labelled estimate when the user needs a figure the sources don't settle. Written in the length and format the user asked for; a full cited literature review only when that is the ask. Use when the user hands over several sources and asks to \"synthesise these\", \"what do these papers say\", \"pull together what we know\", \"literature review\", or \"where do the sources agree and disagree\".",
   "entrypoint": "SKILL.md",
   "deps": {
     "npm": [],
@@ -37,6 +37,6 @@
   "permissions": {"network": [], "commands": [], "files": "named-paths"},
   "model": {
     "tier": "standard",
-    "rationale": "Bounded synthesis over supplied text with a fixed citation format and strength criteria; the citation checker catches the mechanical failures, so mid-tier judgment is enough."
+    "rationale": "Bounded synthesis over supplied text. The hard part is keeping outside knowledge out and checking the sources' own sums, which a mid-tier model does when told to."
   }
 }

@@ -56,12 +56,12 @@ A session takes about An hour to plan and an hour to synthesise, plus however lo
    You get: A two-page plan: the precise question, sub-questions with the finding that would change the decision, a method for each, inclusion criteria, search strings, and a stopping rule.
    **You decide:** Agree the thresholds before you start, so the findings can't be read to fit.
 2. **`source-synthesis`**: Hand it the sources you collected, as text, with the plan's question.
-   You get: Findings with every claim cited to a source and page, agreement and disagreement made explicit, a strength rating per finding, the gaps, and a citation check report.
+   You get: What the sources support on the question, each claim traceable to its source, with disagreements and echoes made explicit, the sources' own sums checked, labelled estimates where a figure is needed, and the gaps. Ask for a cited literature review to get page-level citations and strength ratings.
 3. **`hypothesis-comparison`**: If the question is why something happened, give it the observation and the cited findings.
    You get: A consistency matrix ranking the explanations by the evidence against them, the evidence the ranking rests on, and the next observation that would tell the leaders apart.
    **You decide:** Act on the leading explanation, or run the next observation first.
 
-You end with: A decision-led plan, a cited synthesis you can check line by line, and, for why-questions, a ranked set of explanations with the next test to run.
+You end with: A decision-led plan, a synthesis that keeps what the sources say apart from everything else, and, for why-questions, a ranked set of explanations with the next test to run.
 
 ## Next
 

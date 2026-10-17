@@ -575,6 +575,8 @@ def estimate(units, floor_units, judge_model):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--skills", help="comma-separated skill names (default: all)")
+    ap.add_argument("--evals", help="comma-separated eval ids to run within each skill, e.g. 6,7 for new held-out "
+                    "evals only (default: all)")
     ap.add_argument("--models", default="standard",
                     help="comma-separated tiers from model-routing.json (light, standard, heavy) or model ids")
     ap.add_argument("--backend", choices=("api", "claude-cli"), default="api",
@@ -607,6 +609,11 @@ def main():
     if price(a.judge_model) is None:
         sys.exit(f"no price for judge model {a.judge_model!r}: add it to PRICES in run_bench.py")
     evals = [(s, e) for s in skills for e in (load(s, "evals.json") or {}).get("evals", [])]
+    if a.evals:
+        ids = {i.strip() for i in a.evals.split(",")}
+        evals = [(s, e) for s, e in evals if str(e.get("id")) in ids]
+        if not evals:
+            sys.exit(f"no eval with id {a.evals} in {', '.join(skills)}")
     units = [(s, e, m, t) for s, e in evals for m in models for t in range(a.trials)]
     floor_units = [] if a.no_floor else evals
 

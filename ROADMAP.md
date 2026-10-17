@@ -4,7 +4,7 @@ What is being worked on next. Not a commitment — a direction. Shipped work mov
 
 ## Upcoming
 
-- **Rebuild seven skills around their rule** ([RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md)): `source-synthesis`, `release-notes`, `postmortem-generator`, `design-doc`, `ai-usage-policy`, `guide-builder`, `devils-advocate`. One at a time, with the rule first and the user's own format. Each is measured on two new evals before and after, and ships only if both judges prefer it in at least half the pairs. One that misses is retired.
+- **Rebuild six more skills around their rule** ([RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md)): `release-notes`, `postmortem-generator`, `design-doc`, `ai-usage-policy`, `guide-builder`, `devils-advocate`. One at a time, with the rule first and the user's own format. Each is measured on two new evals before and after, and ships only if both judges prefer it in at least half the pairs. One that misses is retired. `source-synthesis` was the first, in 0.16.14: 1 and 0 of 4 pairs before, 3 and 3 after.
 - **Held-out evals for every skill** — 12 skills now have evals they were never revised against; the published number should be split into the two kinds for all of them.
 - **A shortlist skill for `career`** — run the fit check across an employer's open roles. Needs network access the benchmark sandbox lacks, so it waits on a way to measure it.
 - **The light and heavy tiers** — the benchmark has run on the standard tier only. Running all three shows where a cheaper model is enough.

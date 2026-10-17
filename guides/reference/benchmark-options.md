@@ -32,6 +32,7 @@ Every flag, from `python3 run_bench.py --help`:
 | Flag | What it does | Default |
 |---|---|---|
 | `--skills a,b` | Comma-separated skill names | all |
+| `--evals 6,7` | Comma-separated eval ids, within each skill. Use it to run only evals a revision has never seen | all |
 | `--models` | Comma-separated tiers from `model-routing.json` (`light`, `standard`, `heavy`) or model ids | `standard` |
 | `--backend` | `api` or `claude-cli` | `api` |
 | `--judge-model` | The model that grades and makes the blind comparison | `claude-sonnet-5-5` |

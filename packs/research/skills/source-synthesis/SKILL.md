@@ -1,115 +1,112 @@
 ---
 name: source-synthesis
-description: Synthesise a set of supplied sources — papers, articles, reports, interview transcripts — into findings where every claim is cited to a source and a location ([S1:p4]), agreement and disagreement across sources are explicit, each finding carries an evidence-strength rating with the criteria used, and the gaps and what the sources do not say are listed. Never adds outside facts unless tagged as such, and ships a citation checker. Use when the user hands over several sources and asks to "synthesise these", "what do these papers say", "literature review", "pull the findings together", or "where do the sources agree and disagree".
+description: Answer a question from a set of sources the user supplied — papers, reports, articles, interview notes, emails — saying only what the material supports, labelling anything that comes from elsewhere where it appears, counting a source that repeats another once, and giving a labelled estimate when the user needs a figure the sources don't settle. Written in the length and format the user asked for; a full cited literature review only when that is the ask. Use when the user hands over several sources and asks to "synthesise these", "what do these papers say", "pull together what we know", "literature review", or "where do the sources agree and disagree".
 ---
 
 # source-synthesis
 
-You turn a pile of sources the user supplied into findings they can rely on and check. Every
-claim points to a source and a place in it, so a reader can verify it in under a minute.
-Where sources agree, you say how many and which; where they disagree, you show both sides and
-why they might differ. You add nothing from your own knowledge unless it is tagged
-`[outside]`. The synthesis is only as good as its sources, so each finding says how strong its
-evidence is and on what criteria.
+**The rule: say only what the material supports, and mark everything else where it appears.**
+The user handed over sources because they want to know what *those* say. A plausible fact from
+memory, a rule you happen to know about, a price range that sounds right: each one
+reads exactly like a finding, and the user can't tell it apart. The agent's habit is to fill
+gaps helpfully. This skill's job is to keep the line between "the sources say" and "I'm adding"
+visible in every sentence.
 
-What to research and where to look comes first, from `research-plan`. If the findings point to
-several rival explanations, rank them with `hypothesis-comparison`. To turn messy material into
-a brief for another skill rather than findings, use `brief-intake`.
+Two things follow from the rule:
+
+- **A source that repeats another is one source.** An article quoting a survey's figure, an
+  email forwarding a report, three people retelling the same story: trace each figure to where
+  it started and count that origin once. Agreement between echoes is not agreement.
+- **Hearsay and half-memories are reported as what they are.** "A neighbour said it was about half
+  price" is something someone said, not a data point, and an undated clipping is undated.
 
 ## How to respond
 
-**Four rules come before the steps and outrank them:**
+1. **Answer the question first, in the user's terms.** The opening lines say what the material
+   supports on the question they asked, organised around the decision in front of them (the
+   options on the table, the yes/no, the number they need). Not source by source.
 
-- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
-- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
-- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
-- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
-- **For this skill:** The reply itself carries the answer: the recommendation, the numbers behind it and the caveats. Saved files are extra. Don't report that your own checks passed.
+2. **Fit the size and format they asked for.** "Half a page", "a few bullets for the meeting",
+   "two pages for the board pack", a chat answer: that is the format. Name sources in plain
+   words where a claim comes from them ("the pilot report", "the team lead's interview",
+   "the manager survey"), so a reader can check it. Use bracketed citations with locations, a source
+   register or strength ratings only when the user asked for a literature review or an
+   evidence summary with citations (see **A cited literature review** below).
 
-1. **Ask once for what's missing.** You need the **sources** themselves (text, files or
-   excerpts, not titles) and the **question** the synthesis answers. If the user has a
-   research plan, take the question and sub-questions from it. Ask for both in one message.
-   If the user sends only titles or links you can't open, ask for the text. Don't summarise a
-   paper from memory.
+3. **Check the sources before you trust them.**
+   - Add up every total, percentage and per-unit figure a source gives from its own parts, and
+     say plainly when one doesn't match ("the report says 60 staff took part; its team table adds
+     to 54").
+   - Where sources disagree on a number, show both, and give the reason they might differ when
+     the sources show one: a different population, period, size or definition. Say which one
+     fits the user's situation better and why. Don't average them.
+   - Keep each source's hedges. "Associated with" stays "associated with"; "about a third"
+     stays approximate, and a change that happened alongside another change is not put down to
+     either one.
 
-2. **Register the sources.** Give each one an id (`S1`, `S2`, …) and one line: author or owner,
-   title, date, type (peer-reviewed study, survey, internal report, news article, interview,
-   opinion piece), and for studies the method and sample size if the source states them. Note
-   how location works in each: page numbers, section numbers, or timestamps for transcripts.
-   Mark sources that aren't independent (two articles reporting the same survey count as one
-   line of evidence).
+4. **When they need a figure the sources don't settle, estimate it and label it.** A cost, a
+   break-even point, a likely uptake: work it out from what the sources give, show the
+   sum, and give the range the uncertain inputs produce. If an input has to come from outside
+   the material, write it into the sentence as yours ("assuming 21 working days a month,
+   which none of the sources gives"), never as a finding. End with the one or
+   two facts that would settle it. "The sources can't say" on its own is not an answer.
 
-3. **Extract claims before you synthesise.** For each source, list the claims that bear on the
-   question, each with its location, in the source's own terms. Keep the source's hedges:
-   "associated with" stays "associated with", not "causes". Quote the key sentence when the
-   wording matters.
+5. **Say what the material doesn't cover, once, briefly.** The gaps that matter for the
+   decision, as plain statements at the end: ✅ *"None of the sources measures effects beyond
+   six months."* Not a list of everything a perfect study
+   would have measured.
 
-4. **Group claims into findings, one per sub-question or theme.** For each finding:
-   - **State it in one sentence,** worded no stronger than its weakest supporting source.
-   - **Cite every source that supports it,** with locations: `[S1:p4; S3:§2.1]`.
-   - **Show agreement and disagreement:** "S1, S3 and S4 agree; S2 disagrees", and give the
-     likely reason for the disagreement when the sources show one (different population,
-     period, definition or method). Don't average conflicting results into a middle answer.
-   - **Rate the evidence strength** (strong / moderate / limited / conflicting) and say which
-     criteria drove it: independent sources, source type, method, sample size, recency,
-     directness. Criteria are in [`reference.md`](reference.md).
+6. **Deliver from what you have.** If you have the sources' text and the question, write the
+   answer, stating in one line any assumption about what they want. Ask first only when there
+   is nothing to work from: titles or links you can't open, or no sources at all. Then ask for
+   the text in one or two plain sentences. Don't summarise a paper from its title or from
+   memory.
 
-5. **List the gaps and what the sources don't say.** Sub-questions no source answers;
-   populations, periods or regions no source covers; claims everyone repeats but nobody tests;
-   and the question the user is likely to ask next that these sources can't answer. Write
-   these as statements: ✅ *"None of the sources measures effects beyond 12 months."*
+7. **Keep the machinery out of the reply.** No skill names, no paths or scripts, no "checks
+   passed", no notes about how the run was set up. The reply carries the answer. A file is
+   saved only when the user asked for one, and it is the answer itself, nothing beside it.
 
-6. **Tag anything from outside.** If context the sources don't give is genuinely needed (a
-   definition, a well-known date), add it with `[outside]` so the reader knows to check it.
-   Keep it rare. Never use `[outside]` to fill a gap in the findings; list the gap instead.
+## A cited literature review
 
-7. **Write it up with [`templates/synthesis.md`](templates/synthesis.md):** the question, the
-   source register, the bottom line in three sentences or fewer, findings with citations and
-   strength, the agreement and disagreement table, gaps, what the sources do not say, and the
-   `[outside]` list.
+When the user asks for a literature review, an evidence summary with citations, or findings
+"every claim cited", produce the full form: a source register, findings grouped by theme with
+`[S1:p4]` citations to a location, agreement and disagreement named source by source, an
+evidence-strength rating with its criteria, and the gaps. Citation format, strength criteria
+and how to handle disagreement are in [`reference.md`](reference.md); the skeleton is
+[`templates/synthesis.md`](templates/synthesis.md); a worked example is
+[`examples/four-day-week.md`](examples/four-day-week.md).
 
-8. **Check every citation.** Save the draft and run:
+Before you hand it over, run the citation checker on the saved draft and fix what it reports:
 
-   ```bash
-   # Claude Code
-   python3 "${CLAUDE_SKILL_DIR}/scripts/citations.py" synthesis.md -o citation-check.md
-   # Other IDEs (from the skill folder)
-   python3 scripts/citations.py synthesis.md -o citation-check.md
-   ```
+```bash
+# Claude Code
+python3 "${CLAUDE_SKILL_DIR}/scripts/citations.py" synthesis.md
+# Other IDEs (from the skill folder)
+python3 scripts/citations.py synthesis.md
+```
 
-   It reads the `## Sources` section of the draft (or a separate file with `--sources`), and
-   reports citations that don't resolve, malformed citations, paragraphs and table rows with no
-   citation, citations with no location, sources never cited, and every `[outside]` claim. Fix
-   every error, and either fix or explain each warning. A source never cited is a question:
-   did it say nothing relevant, or did you miss it? Say which in the source register.
-
-**Non-interactive runs** (subagent, CI, headless): with no source text, emit
-`BLOCKED: need the sources' text, not titles or links`. A missing question becomes
-`[assumption] The question is: …`, inferred from the sources and stated at the top.
-
-## Useful references in this skill
-
-- [`reference.md`](reference.md) — citation format, evidence-strength criteria, how to handle disagreement, independence, and common distortions
-- [`templates/synthesis.md`](templates/synthesis.md) — the synthesis skeleton
-- [`scripts/citations.py`](scripts/citations.py) — checks that every citation resolves and every claim is cited (stdlib only)
-- [`examples/four-day-week.md`](examples/four-day-week.md) — worked example: four sources on a four-day-week pilot, the synthesis, and the checker's real output on a first draft and the fixed draft
+It reports citations that don't resolve, claims with no citation, citations with no location
+and sources never cited. It is your check, not part of the deliverable: don't save its report
+for the user or mention that it passed.
 
 ## Quality bar
 
-- **Every claim is cited to a source and a location.** The checker reports no errors; any warning left is explained.
-- **Nothing comes from outside the sources** unless it is tagged `[outside]`, and gaps are never filled from memory.
-- **Agreement and disagreement are explicit,** with the sources named on each side and a likely reason for the split where the sources show one.
-- **Each finding has a strength rating and the criteria behind it.** A finding from one survey never reads like one from three independent studies.
-- **Findings are no stronger than their sources.** Hedges survive; correlation stays correlation.
-- **Gaps and what the sources do not say are listed** as specific statements.
-- **Sources that aren't independent are counted once.**
+- **Nothing reads as coming from the sources that doesn't.** Every outside input is marked as
+  outside in the sentence where it appears; no gap is filled from memory.
+- **Echoes are counted once.** A figure repeated by a second source is traced to its origin.
+- **The sources' own sums are checked,** and any that don't add up are named.
+- **The answer opens the reply and fits the requested size and format.**
+- **A needed figure gets a worked, labelled estimate** with its range and what would settle it,
+  not a refusal.
+- **Findings are no stronger than their sources.** Hedges, approximations and confounds
+  survive; hearsay stays hearsay.
 
 ## When to use this skill
 
+- ✅ "Here's everything I've collected — what do we actually know?"
 - ✅ "Synthesise these six papers / reports / articles on X"
-- ✅ Turning a set of interview transcripts into cited themes
+- ✅ Turning interview notes or transcripts into what they show, with the disagreements kept
 - ✅ A literature review or evidence summary for a decision
-- ✅ Checking where a set of analyst reports agree and where they don't
 
 ## When NOT to use this skill
 
@@ -122,10 +119,16 @@ a brief for another skill rather than findings, use `brief-intake`.
 
 ## Anti-patterns to avoid
 
-- ❌ **Source-by-source summaries.** "S1 says…, S2 says…" is an annotated list, not a synthesis. Organise by finding.
-- ❌ **A citation with no location.** `[S2]` on a 60-page report can't be checked.
-- ❌ **Smoothing over conflict.** "Results were mixed" hides which sources disagree and why.
+- ❌ **The helpful outside fact.** A regulation's threshold, a typical salary, an industry
+  norm, written as if a source said it. Label it in the sentence, or leave it out.
+- ❌ **Counting echoes.** "Two sources agree on 63%" when the second one is quoting the first.
+- ❌ **Stopping at "the sources can't say".** The user asked a practical question; show the
+  sum with labelled assumptions and what would settle it.
+- ❌ **A research report for a meeting note.** Source registers, strength tables and
+  bracketed citations on a request for five bullets.
+- ❌ **Source-by-source summaries.** "S1 says…, S2 says…" is a list, not an answer. Organise by
+  the decision.
+- ❌ **Taking a source's total on trust.** Add it up.
 - ❌ **Promoting hedges.** "May be associated with" becomes "drives" by the second paragraph.
-- ❌ **Counting echoes.** Three news stories about one study are one source.
-- ❌ **Filling gaps from memory.** A plausible fact with no source is the error this skill exists to prevent.
-- ❌ **Citing a title you haven't read.** If you only have the abstract, say so in the register and rate accordingly.
+- ❌ **Machinery in the reply.** "Citations all pass", file names of working drafts, the
+  skill's own vocabulary.

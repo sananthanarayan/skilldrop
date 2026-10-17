@@ -134,3 +134,17 @@ Accepted by the maintainer on 2026-10-17 as proposed, with one change to (3): `i
 omitted rather than set to `null`, because none of the four has a successor. Parts (1) to (3)
 shipped in 0.16.13. The site lists retired skills on the evals page. (4) runs one skill at a
 time from 0.16.14, starting with `source-synthesis`.
+
+### Rebuild results
+
+| Skill | Release | New evals | Before (judge 1, judge 2) | After | Cost per skill run, before → after |
+|---|---|---|---|---|---|
+| `source-synthesis` | 0.16.14 | 6, 7 | 1, 0 of 4 pairs | 3, 3 of 4 | $0.20 → $0.09 |
+
+`source-synthesis`: both eval 6 wins came from adding up a source's own line items, which
+showed that its stated total was wrong. The eval 7 loss and the judges' notes on the eval 7
+win name reasoning slips that the rule does not prevent: an inference that two nights weren't
+full, and calling 150 "not higher" than 110. One caveat on independence: the rebuild was written
+after the eval writer's summary of eval 6 had been read, so its traps were known. No example
+in the skill comes from either new eval, and the sum check had already been recommended from
+evals 2 to 5. Evals 6 and 7 are now tuned for this skill; the next measure needs evals 8 and 9.
