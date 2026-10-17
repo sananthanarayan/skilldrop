@@ -4,7 +4,7 @@ What is being worked on next. Not a commitment — a direction. Shipped work mov
 
 ## Upcoming
 
-- **Decide which skills to keep** — 12 skills revised twice from a blind judge's reasons improved on the evals the reasons came from and not on fresh ones ([what the benchmark showed](guides/explanation/what-the-benchmark-showed.md)). Next: for each, name the rule it adds that the plain agent breaks, and retire or rebuild the ones that only add a format.
+- **Decide which skills to keep** — 12 skills revised twice from a blind judge's reasons improved on the evals the reasons came from and not on fresh ones ([what the benchmark showed](guides/explanation/what-the-benchmark-showed.md)). Each now has an answer to "what rule does it add that the plain agent breaks", in [RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md), a draft awaiting a decision. It proposes keeping one skill, rebuilding seven around their rule against a fresh held-out bar, and retiring four that only add a format, with a `retired` record so an installed copy says why it stopped updating.
 - **Held-out evals for every skill** — 15 skills now have evals they were never revised against; the published number should be split into the two kinds for all of them.
 - **A shortlist skill for `career`** — run the fit check across an employer's open roles. Needs network access the benchmark sandbox lacks, so it waits on a way to measure it.
 - **The light and heavy tiers** — the benchmark has run on the standard tier only. Running all three shows where a cheaper model is enough.

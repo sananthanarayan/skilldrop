@@ -129,7 +129,7 @@ def render():
     L.append("## Optional\n")
     L.append(f"- [CHANGELOG.md]({RAW}/CHANGELOG.md): what shipped in each release.")
     L.append(f"- [docs/rfcs/]({RAW}/docs/rfcs/0000-template.md): {len(glob.glob(os.path.join(ROOT, 'docs', 'rfcs', '*.md'))) - 1} "
-             f"accepted RFCs record why each structural decision was made.")
+             f"RFCs record why each structural decision was made.")
     L.append(f"- [CONTRIBUTING.md]({RAW}/CONTRIBUTING.md): the contributor lanes and gates.")
     return "\n".join(L) + "\n"
 
