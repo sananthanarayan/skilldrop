@@ -8,6 +8,12 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.17 — 2026-10-17
+
+- **`ai-usage-policy` writes the policy your staff will actually follow, at the length they need**: a note for a dozen staff to pin up, a page to attach for a client, or the full policy. It says what's allowed first, pairs every "don't" with what to do instead (or says no approved way exists yet and who decides), and says what to do if data has already gone into a tool. It makes no claim about a tool's data handling, seats, owners, turnarounds or laws you didn't give it, and reports a vendor's assurances as the vendor's. The fixed three-tier table, review matrix and owner-per-section are gone. On two evals it had never seen, two blind judges preferred it to plain Claude Code in 3 and 2 of 4 pairs, up from 0 and 1 ([RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md)).
+- **`design-doc` stays as it was.** A rebuild matched it on two new evals without beating it, so it was not released. The two new evals ship with the skill.
+- **`run_bench.py` no longer rejects a correct judge verdict** when Claude Code's small side calls on a lighter model produce more output tokens than the verdict itself.
+
 ## 0.16.16 — 2026-10-17
 
 - **`postmortem-generator` writes the postmortem at the length and for the reader you name**: half a page for a board, a note for customers, or the full incident review. It still never names a person as the cause, even when your notes do. It now says plainly who or what noticed first and how long before any alert, keeps what is known apart from what is still open, gives owners and dates only where your material does, and leaves no `[missing]` fields or empty template rows in the document. Runbook edits are included when the incident showed a procedure was wrong. On two evals it had never seen, two blind judges preferred it to plain Claude Code in 2 and 3 of 4 pairs, the same as before the rebuild, and a run costs less than half as much. It still loses on a short note for a very small team ([RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md)).

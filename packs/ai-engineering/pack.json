@@ -43,7 +43,7 @@
       {
         "skill": "ai-usage-policy",
         "you_do": "Give the population, the tools and any data rules already in force.",
-        "you_get": "An acceptable-use policy with three data tiers, permitted and prohibited uses as behaviours, a human-review matrix, approved tools with an exception route, and an owner per section."
+        "you_get": "A policy at the length your audience needs: what's allowed first, every restriction paired with what to do instead or who decides, what to do if data has already gone in, and no claim about a tool, owner or law that you didn't give it."
       },
       {
         "skill": "ai-adoption-rollout",

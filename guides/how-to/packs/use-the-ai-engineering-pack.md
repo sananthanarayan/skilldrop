@@ -53,7 +53,7 @@ Bring:
    You get: A ranked portfolio scored on value, feasibility and risk with the weights shown, one first slice with the observable that proves or kills it, and a not-yet list with promotion conditions.
    **You decide:** Confirm the first slice.
 3. **`ai-usage-policy`**: Give the population, the tools and any data rules already in force.
-   You get: An acceptable-use policy with three data tiers, permitted and prohibited uses as behaviours, a human-review matrix, approved tools with an exception route, and an owner per section.
+   You get: A policy at the length your audience needs: what's allowed first, every restriction paired with what to do instead or who decides, what to do if data has already gone in, and no claim about a tool, owner or law that you didn't give it.
 4. **`ai-adoption-rollout`**: Name the chosen tool or workflow and who it is for.
    You get: A rollout in waves with enablement per cohort, named champions, a comms plan that says what will not change, and an adoption gate on every wave.
    **You decide:** Each wave's gate must be met before the next cohort opens.

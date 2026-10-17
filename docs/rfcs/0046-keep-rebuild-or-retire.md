@@ -142,6 +142,8 @@ time from 0.16.14, starting with `source-synthesis`.
 | `source-synthesis` | 0.16.14 | 6, 7 | 1, 0 of 4 pairs | 3, 3 of 4 | $0.20 → $0.09 |
 | `release-notes` | 0.16.15 | 6, 7 | 3, 3 of 4 pairs | 4, 4 of 4 | $0.08 → $0.06 |
 | `postmortem-generator` | 0.16.16 | 6, 7 | 2, 3 of 4 pairs | 2, 3 of 4 | $0.26 → $0.11 |
+| `design-doc` | not shipped | 6, 7 | 2, 2 of 4 pairs | 2, 2 of 4 | $0.10 → $0.08 |
+| `ai-usage-policy` | 0.16.17 | 6, 7 | 0, 1 of 4 pairs | 3, 2 of 4 | $0.09 → $0.10 |
 
 `source-synthesis`: both eval 6 wins came from adding up a source's own line items, which
 showed that its stated total was wrong. The eval 7 loss and the judges' notes on the eval 7
@@ -168,3 +170,23 @@ file nobody requested, and a postmortem-style opening. The short, small-audience
 where this skill still loses. Two rules came out of the draft before it was installed. They
 answered trap types that had been written into the eval writer's brief (conflicting
 timestamps, a confident guess in chat) rather than lessons from evals 2 to 5.
+
+`design-doc`: the rebuild was not shipped and the released skill stays. On the new evals the
+released version already sat at even, and the rebuild matched it with both judges, cost a
+fifth less, and met fewer of its own checks on the one-pager. Both versions lost for the same
+reasons: details invented for a pilot plan, and a one-pager that ran past a page. Reaching the
+bar without beating what is released is not a reason to change it. The two new evals stay.
+This eval writer was given example trap types and chose its own, and reported only file paths.
+
+`ai-usage-policy`: the judges credited a policy with no blanks, a workaround for each
+restriction, and a no-blame reporting step. The loss on the rich eval softened an outright
+ban the board had decided into "needs sign-off": the skill did not hold to a decision the
+input had already made. In one run the skill named the account holder as the
+staff contact, guessed from the signed-in email the benchmark session can see. The same habit
+showed in `design-doc` (an email as author) on evals 2 to 5. It is a habit across skills, not
+one to patch in this one after measuring it.
+
+One harness fix came out of this round: `run_bench.py` decided which model had answered by
+the most output tokens, so a short judge verdict could be credited to a side call on a smaller
+model and rejected as served by the wrong one. It now accepts the requested model when that
+model produced output. This affected only rejected runs, never a counted one.

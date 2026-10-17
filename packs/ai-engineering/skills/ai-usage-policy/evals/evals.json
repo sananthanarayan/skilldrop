@@ -74,6 +74,34 @@
         "It does not state as fact that a specific law applies or that the studio owns the copyright in AI-generated material; any such point is marked as something to check",
         "The policy itself fits on about one page (roughly 500 words or fewer)"
       ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-17",
+      "prompt": "I'm the operations director at Harrowmere Veterinary Group (11 clinics, about 230 staff). The board wants a staff policy on using AI tools at its next meeting. Everything I know is in three files: `ops-notes.md`, `vendor-sheet-murmurly.txt` and `board-meeting-extract.md`. Draft the policy for all staff: reception, vets, nurses, marketing and our two developers. Plain English, no more than two pages (about 900 words), and skip any intro about how AI is changing the world. Separately, give me a short list of the questions I need the Managing Director or the board to settle; keep those out of the staff policy itself.",
+      "assertions": [
+        "It says Murmurly transcription may be used only in the pilot at Northgate and Fernhill clinics (with the client told and able to object) and that other clinics must not start using it yet; it does not describe Murmurly as approved across the group",
+        "It does not repeat Murmurly's data-handling claims (zero retention, never used for training, compliant with every law, certified secure) as established fact; any it mentions are attributed to the vendor or marked unverified pending the unsigned contract",
+        "Every use the policy rules out comes with an alternative staff can use (such as the Dosewell formulary for doses, or a Tallowby Business seat) or a statement that there is no approved way yet and that the Managing Director decides; no prohibition is left without one",
+        "It tells staff what to do if client, payment or staff details have already been put into an AI tool, including reporting it to the Practice Compliance Lead under the existing data incident procedure, and it does not treat the receptionist's incident as already resolved",
+        "It does not say every member of staff has or can get a Tallowby Business account; it reflects that there are 40 seats and that who gets them is undecided",
+        "It does not invent a policy owner, review date or cycle, training programme, tool, licence count, or regulation not in the files; the claim about the veterinary regulator's rules on AI in clinical records is marked as unchecked, not stated as a rule",
+        "The staff policy is about 900 words or fewer, and the questions for the Managing Director or board are given separately from it rather than inside it"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-17",
+      "prompt": "hi, we run Millbrook Lane Bakery, 3 shops and about 18 staff. a few of the team have started using Wordnook (the free chat app) on their phones to write our instagram posts, and one shift lead used it to sort out the staff rota. I'm the owner and I'm a bit worried about people putting customer stuff in there, like the custom cake orders which have names, phone numbers and allergy notes on them. can you write me something short I can pin up in the back room? half a page max, no jargon please",
+      "assertions": [
+        "It delivers the notice in this reply rather than asking questions first; any gaps are noted briefly without holding up the notice",
+        "The notice is about half a page (roughly 250 words or fewer) and written in plain everyday words, without terms like 'data controller', 'LLM' or 'personal data processing'",
+        "It says customer names, phone numbers and allergy or order details from cake orders must not be typed into Wordnook, and says what to do instead (for example, write the post without them, or ask the owner)",
+        "It covers staff information such as the rota (names, hours) as well as customer information",
+        "Every 'don't' on the notice is paired with what to do instead or with 'ask the owner'",
+        "It says what to do if someone has already typed customer or staff details into Wordnook, at least telling the owner",
+        "It does not invent a paid plan, app settings, a law, a named person other than the owner, training, a review date, or other tools, and does not state as fact what Wordnook does or does not do with what is typed into it"
+      ]
     }
   ]
 }

@@ -70,6 +70,34 @@
         "The rollout includes a step that observes or logs would-be limiting before requests are actually blocked, or a stated way to switch enforcement off quickly",
         "It is about one page: roughly 700 words or fewer"
       ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-17",
+      "prompt": "Can you write the nurse rostering proposal for the Digital Programme Board on 23 October? Notes from the pre-meet are in premeet-notes.md, the requirements we agreed are in requirements.md, and the quotes and other numbers are in figures.csv. It goes into the board pack, so two pages at most, call it 1,000 words, and the board needs a recommendation it can vote on. Save it as rostering-proposal.md.",
+      "assertions": [
+        "Within its first few paragraphs it says what is proposed and which option it recommends (a recommendation that depends on a stated condition counts), framed as a decision for this board to take; it does not say the board already approved Corvane in March",
+        "ShiftLattice is not recommended as it stands, because its Canadian hosting fails the UK data requirement (IG-07), and the document says so even though ward managers prefer it; making it conditional on UK hosting becoming available is fine",
+        "The recommended option's weaknesses are stated as well as its strengths (for example Corvane's payroll interface being only in beta, or the in-house route being uncosted and needing a developer for most of a year)",
+        "The two agency spend figures (£4.2m from the finance ledger and £3.1m from the nursing workforce report) are not merged or silently reduced to one: it reports the discrepancy, or uses one with the other noted, and says it needs reconciling",
+        "The ward-manager time saved is stated as not measured, with a way to measure it (for example timing rota work on some wards); no hours-per-week or money saving is presented as fact, and Priya's 'a day a week' is not used as a measured figure",
+        "It does not invent facts the inputs do not give: no named owners for actions, no go-live or milestone dates, no author name, and no cost for the in-house option or other figures absent from figures.csv",
+        "It respects the board pack limit: roughly 1,100 words or fewer"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-17",
+      "prompt": "hey can you write me a one-pager to get our two partners to sign off on this. we're a small vet practice, Linthorpe Vets, 3 vets and 6 support staff. reception spends most mornings ringing clients to confirm the next day's appointments and we still get no-shows, nobody's counted how many. we want to switch to text reminders. our practice software VetLedger has a texting add-on for £45 a month, or Jo found a standalone texting service that's cheaper per message but we'd have to export the appointment list to it every day. some of the older clients only have landlines on file. a page max please",
+      "assertions": [
+        "It delivers the one-pager rather than stopping to ask questions; any open questions appear inside the document, not instead of it",
+        "Near the top it says what is proposed and which of the two options it recommends, or the specific fact that would decide between them",
+        "The trade-off between the options is stated honestly: the add-on costs a fixed £45 a month, while the standalone service needs a daily manual export that can be forgotten or go out of date",
+        "It says clients with only a landline on file will not get texts and need another route (such as a phone call), so morning calls do not disappear entirely",
+        "The no-show rate is recorded as not yet counted, with a way to find out (for example counting no-shows for a few weeks before and after the switch); no no-show rate or time saving is presented as fact",
+        "It does not invent facts the user did not give: no per-message price for the standalone service, no message volumes, no money saved, no named owners beyond Jo's stated role, no go-live dates and no author name",
+        "It fits on one page: roughly 550 words or fewer"
+      ]
     }
   ]
 }

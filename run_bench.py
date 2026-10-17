@@ -119,7 +119,12 @@ def cli_run(cmd, user, cwd, timeout, env=None):
             r = {"is_error": True, "result": str(err)[:300]}
         if not r.get("is_error"):
             used = r.get("modelUsage", {})
-            served = sorted(used, key=lambda m: -used[m].get("outputTokens", 0))
+            # Claude Code makes small side calls on a lighter model. A short reply (a judge's
+            # verdict) can produce fewer output tokens than those, so the model that answered is
+            # the one asked for when it produced any output, and the busiest model otherwise.
+            asked = cmd[cmd.index("--model") + 1] if "--model" in cmd else ""
+            served = [m for m in used if m.startswith(asked) and used[m].get("outputTokens", 0)] if asked else []
+            served = served or sorted(used, key=lambda m: -used[m].get("outputTokens", 0))
             return r.get("result", ""), {"model": served[0] if served else "", "usage": r.get("usage", {}),
                                          "stop_reason": r.get("stop_reason"), "cost": r.get("total_cost_usd"),
                                          "turns": r.get("num_turns")}

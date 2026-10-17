@@ -176,21 +176,20 @@ Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/ai-engineering/skills/a
 
 ### `ai-usage-policy`
 
-Draft an organisation's AI acceptable-use policy — three data-sensitivity tiers with what may be put into a tool at each, permitted and prohibited uses stated as behaviours, a human-review matrix keyed to consequence, an approved-tool list with an exception route, and a named owner per rule.
+Draft an organisation's AI use policy or staff guidance from what it has told you about its people, tools, data and worries — every "don't" paired with what to do instead (or who decides, when no approved way exists yet), what to do if data has already gone into a tool, and no claim about a tool, licence, owner, regulation or commitment the input didn't give. Written in the length, labels and voice the audience needs.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/ai-engineering/skills/ai-usage-policy/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/ai-usage-policy/)
+Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/ai-engineering/skills/ai-usage-policy/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/ai-usage-policy/)
 
 **Use it when** a team needs rules for what people may put into AI tools, or asks for an AI acceptable-use or governance policy. Do NOT use to write a repo's agent-tooling policy (that's agents-md-generator) or to analyse one agent's capability surface (that's agent-threat-model).
 
 **A good result:**
 
-- **Every rule has a named owner role** and the document has a review date. An unowned policy is a document, not a control.
-- **Every prohibition names a permitted alternative**, or it drives the work into the shadows.
-- **Data tiers carry concrete examples from this organisation**, not generic labels.
-- **The review matrix is keyed to consequence, not to tool or model.** Model names age out in months; consequences don't.
-- **There is an exception route with a turnaround time.**
-- **Written for the whole staff.** If a non-technical reader hits an unexplained term, rewrite it — the audience is everyone, and unread rules govern nothing.
-- **No invented regulation.** Cite only regimes the user named; where applicability is unclear, mark `[confirm with counsel]` rather than asserting a legal position.
+- **Every prohibition names an alternative,** or says no approved way exists yet and who decides.
+- **There is a line on what to do if it has already happened.**
+- **Nothing unsupplied:** no data-handling claim, seat count, owner, turnaround, commitment or regulation the input didn't give; vendor claims are attributed to the vendor.
+- **The tool list is checked against the input** and mismatches are named.
+- **The length, voice and labels fit the audience asked for.**
+- **No notes, tags or questions to the requester inside the policy.**
 
 **Not for:**
 

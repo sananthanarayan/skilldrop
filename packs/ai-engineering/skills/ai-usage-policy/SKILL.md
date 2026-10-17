@@ -1,59 +1,75 @@
 ---
 name: ai-usage-policy
-description: Draft an organisation's AI acceptable-use policy — three data-sensitivity tiers with what may be put into a tool at each, permitted and prohibited uses stated as behaviours, a human-review matrix keyed to consequence, an approved-tool list with an exception route, and a named owner per rule. Use when a team needs rules for what people may put into AI tools, or asks for an AI acceptable-use or governance policy. Do NOT use to write a repo's agent-tooling policy (that's agents-md-generator) or to analyse one agent's capability surface (that's agent-threat-model).
+description: Draft an organisation's AI use policy or staff guidance from what it has told you about its people, tools, data and worries — every "don't" paired with what to do instead (or who decides, when no approved way exists yet), what to do if data has already gone into a tool, and no claim about a tool, licence, owner, regulation or commitment the input didn't give. Written in the length, labels and voice the audience needs. Use when a team needs rules for what people may put into AI tools, or asks for an AI acceptable-use or governance policy. Do NOT use to write a repo's agent-tooling policy (that's agents-md-generator) or to analyse one agent's capability surface (that's agent-threat-model).
 ---
 
 # ai-usage-policy
 
-Write the policy people will actually follow: **what may go in, what must be checked before it goes out, and who to ask when the rule doesn't fit.** The audience is every employee, not the security team — so it reads as rules for a job, not controls for an auditor.
+**The rule: every "don't" comes with what to do instead.** A policy that only forbids doesn't
+stop the work; it moves it to a personal account where nobody can see it. So each prohibition
+names the approved way to do the same task today: ✅ *"Don't paste client reports into a chat
+tool to summarise them. Use the summariser in the document system, which keeps them inside."*
+When no approved way exists yet, the policy says so and says who decides: ✅ *"There's no
+approved tool for transcribing interviews yet. Ask the operations lead before using one."*
 
-A policy that prohibits without offering a permitted path doesn't reduce risk; it moves the same work onto personal accounts where nobody can see it. Every prohibition here carries an alternative.
+The policy also says **what to do if it has already happened**: data pasted into the wrong
+tool, a draft sent unchecked. Who to tell, how fast, and that telling is what's expected.
+
+A second rule sits beside it: **claim nothing you weren't given.** No statement about where a
+tool sends data, whether it trains on inputs, how many seats exist, who owns the policy, how
+fast exceptions are handled, or which law applies, unless the input says so. A vendor's own
+data-sheet is the vendor's claim: report it as "the vendor says", never as fact, and never
+let it be the reason sensitive data is allowed. Check the tools against what you were told
+(seat counts against headcount, a contract that has lapsed, terms not yet signed) and say
+where they don't line up.
 
 ## How to respond
 
-**Four rules come before the steps and outrank them:**
+1. **Write for the people who'll read it, at the size asked for.** "A short note for our
+   twelve staff", "one page to attach for a client", "the full policy for the board": that
+   sets the length, voice and structure. Use the organisation's own words for its data and
+   roles; if it already classifies data, use those names, not a new scheme.
 
-- **Answer what was asked, first.** Open with the answer, the decision or the artifact, in plain words. Scores, matrices, frameworks and tags come after it, and anything that doesn't change the answer is cut.
-- **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
-- **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
-- **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
-- **For this skill:** A usable policy says what to do when the rule has already been broken (data already pasted into a tool) and how it is enforced; include both. Check that the data classes and the approved-tools list agree with each other. Make no claim about where a tool sends data unless the user told you.
+2. **Say what's allowed, plainly, first.** The common, low-risk uses (drafting, rewording,
+   brainstorming on non-sensitive material) are named as fine, so the restrictions read as
+   targeted rather than blanket.
 
-1. **Establish scope and the regulatory floor.** Which population, which tools, and any regime already binding (sector rules, customer contracts, an existing data-classification scheme). If the organisation already classifies data, **reuse those tier names** rather than inventing a parallel scheme — two classification systems means neither is followed. Cap clarifying questions at 2.
+3. **The restrictions, each with its alternative.** State them as behaviours tied to the
+   organisation's real data: what not to put in which tool, and what to do instead. Review
+   before use only where the consequence warrants it: something reaching a customer, money,
+   a legal position, a decision about a person.
 
-2. **Define three data tiers and what may enter a tool at each.** Three, because five is not memorable and one is not a policy:
+4. **The tools, as far as you know them.** The tools the input names, and what each is
+   cleared for, as far as the input says. For anything else, the route to ask, with the role
+   who decides if the input names one, or "to be agreed" if it doesn't.
 
-   | Tier | Examples | Rule |
-   |---|---|---|
-   | **Open** | public docs, published marketing, open-source code | any approved tool |
-   | **Internal** | internal docs, non-personal telemetry, private repo code | approved tools with data-retention off / enterprise terms |
-   | **Restricted** | personal data, credentials, customer content under contract, regulated records | never pasted; only via a named reviewed integration, if at all |
+5. **If something has already gone wrong.** One short section: who to tell, and that
+   reporting quickly is what's expected.
 
-   Give each tier **two concrete examples from this organisation's actual work** — abstract tiers are the reason policies get ignored.
+6. **Keep notes to the requester out of the policy.** The policy is a document someone will
+   circulate. Questions for the person who asked (who owns this, which tool contract to
+   check, whether a law applies) go in a short list after it, never as bracketed tags inside.
 
-3. **State permitted and prohibited uses as behaviours.** ✅ "Drafting a first version of a customer email, then editing before sending." ❌ "Inappropriate use." Every prohibition names the **permitted alternative**: "Do not paste customer records to summarise them — use the approved integration, which does the same thing without the data leaving."
-
-4. **Build the human-review matrix on consequence, not on technology.** What must a human check before an AI-assisted output is acted on? Key it to blast radius: reaches a customer · commits money or a legal position · changes production · informs a personnel decision. Each row says who reviews and what "reviewed" means. Low-consequence internal drafting needs no gate — say so, or the policy loses credibility everywhere else.
-
-5. **List approved tools, and give an exception route.** Named tools with the tier they're cleared to. Then the route for anything else: who approves, what they check, and a target turnaround. **A policy with no exception path is a policy people route around** — the turnaround time is the part that makes it real.
-
-6. **Name an owner per section, a review date, and the disclosure rule.** Owners as roles. A review date, because tool terms change. And one line on whether AI assistance must be disclosed, and where — the question every employee actually has.
+7. **Deliver from what you have.** With anything about the organisation to go on, write the
+   policy and state any assumption in one line. Ask first only when you don't know who it is
+   for or what kind of data they handle.
 
 ## Quality bar
 
-- **Every rule has a named owner role** and the document has a review date. An unowned policy is a document, not a control.
-- **Every prohibition names a permitted alternative**, or it drives the work into the shadows.
-- **Data tiers carry concrete examples from this organisation**, not generic labels.
-- **The review matrix is keyed to consequence, not to tool or model.** Model names age out in months; consequences don't.
-- **There is an exception route with a turnaround time.**
-- **Written for the whole staff.** If a non-technical reader hits an unexplained term, rewrite it — the audience is everyone, and unread rules govern nothing.
-- **No invented regulation.** Cite only regimes the user named; where applicability is unclear, mark `[confirm with counsel]` rather than asserting a legal position.
+- **Every prohibition names an alternative,** or says no approved way exists yet and who
+  decides.
+- **There is a line on what to do if it has already happened.**
+- **Nothing unsupplied:** no data-handling claim, seat count, owner, turnaround, commitment or
+  regulation the input didn't give; vendor claims are attributed to the vendor.
+- **The tool list is checked against the input** and mismatches are named.
+- **The length, voice and labels fit the audience asked for.**
+- **No notes, tags or questions to the requester inside the policy.**
 
 ## When to use this skill
 
 - ✅ "What are people allowed to put into these tools?" — the question every rollout hits in week one.
-- ✅ Standing up governance before or alongside an AI rollout.
-- ✅ Replacing an informal "be sensible" norm with something reviewable.
+- ✅ Standing up guidance before or alongside an AI rollout.
+- ✅ Replacing an informal "be sensible" norm with something people can follow.
 
 ## When NOT to use this skill
 
@@ -65,11 +81,14 @@ A policy that prohibits without offering a permitted path doesn't reduce risk; i
 
 ## Anti-patterns to avoid
 
-- ❌ **Prohibition without an alternative.** "Never paste customer data" with no sanctioned path moves the work to a personal account and removes your visibility entirely.
-- ❌ **Naming models and versions in the rules.** They change quarterly; consequence-based rules survive. Keep tool names in the approved-list appendix where they're cheap to update.
-- ❌ **Five or more tiers.** Nobody classifies correctly against a scheme they can't recall at the moment of pasting.
-- ❌ **Writing for auditors.** A policy in control language gets filed, not followed. Plain rules for a working day.
-- ❌ **No exception route.** Guarantees either shadow usage or a queue of blocked work — and you find out about neither.
-- ❌ **Requiring review of everything.** A gate on low-consequence drafting trains people to ignore gates that matter.
-
-**Non-interactive:** with no user to ask, assume no sector-specific regime beyond general data-protection practice and tag it `[assumption]`, listing what to confirm. If the input names no organisation type or data context, emit `BLOCKED: need the population covered and the kinds of data they handle` — a fabricated policy is worse than none, because it will be circulated as if it were reviewed.
+- ❌ **Prohibition without an alternative.** It moves the work out of sight.
+- ❌ **Repeating the vendor.** "The tool never stores your data" because a sales sheet said so.
+- ❌ **Invented machinery.** An owner, a five-day exception turnaround, a quarterly review, a
+  tier scheme the organisation never asked for.
+- ❌ **The full framework on a short note.** Tier tables and review matrices for a twelve-person
+  team that asked for half a page.
+- ❌ **Bracketed notes in the policy.** `[confirm with counsel]` in a document about to be
+  attached for a client.
+- ❌ **Naming laws the user didn't name.** Say what to check, in the note after the policy.
+- ❌ **Requiring review of everything.** A gate on low-risk drafting trains people to ignore the
+  gates that matter.
