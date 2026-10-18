@@ -1,0 +1,17 @@
+#inc-0412-topup  (Corrin Valley Transit, TallyCard top-ups)  Thursday 22 October 2026
+
+13:05 [on-call eng] Paging: top-up error rate climbing on the payments gateway
+13:09 [incident lead] Declaring SEV1. I'm IC. Comms owner is the duty comms officer.
+13:14 [support lead] Phones are lit up. Customers saying ALL top-ups are down, app and machines
+13:18 [on-call eng] Dashboard: app top-ups 38% failing. Ticket machines: card payments 100% failing. Cash at machines is fine, I can see cash top-ups going through normally
+13:22 [incident lead] So not everything. Machines take cash fine, card at machines is dead, app is partial
+13:31 [duty comms] First status page post went out at 13:40, said next update 14:30
+13:52 [support lead] Several riders on social saying they've been "charged twice" for one top-up
+13:58 [payments eng] Checked: those are duplicate authorisation holds, not captured payments. We only capture once. Holds normally drop off in 3 to 5 working days depending on the rider's bank. We are NOT issuing refunds because nothing was taken
+14:06 [on-call eng] My guess is the database failover at 12:58 left the gateway pointing at the old primary. Maybe 30 min to fix if that's it
+14:08 [incident lead] Unconfirmed. Don't put the failover theory anywhere outside this channel until we know
+14:15 [ops control] Decision from Head of Operations: revenue inspectors are told to accept riders who could not top up. Valid until end of service today (last trains around 00:30). Inspectors briefed at 14:12
+14:21 [legal] Reminder: don't name our payment processor in anything public, and don't use the word "breach". No card data is involved as far as anyone knows
+14:29 [CEO's office] CEO needs an ETA for the board call at 15:00
+14:33 [incident lead] No ETA. We are testing the failover theory now
+14:38 [incident lead] Comms: we owe the status page an update (promised 14:30). Need status page post, internal update for station and contact-centre staff, and a note for the CEO. Next updates every 30 minutes

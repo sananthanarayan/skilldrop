@@ -14,6 +14,33 @@
         "The validation plan is a tree test or card sort whose tasks do not contain the label words, each with a correct destination and a pre-set threshold",
         "Does not invent user research, search data or content items not in the prompt; anything inferred is tagged [inferred] or [assumption]"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "We're redoing the website for the Marrowby County Extension Service (we help farmers and home gardeners). Every page we have is in page-inventory.csv with monthly visits, the top search terms are in search-log.csv, and kick-off notes are in stakeholder-notes.md. Propose the new structure and navigation, and tell me what the board needs to know before they sign it off next week.",
+      "assertions": [
+        "The global navigation has no more than six items, despite the Director asking for nine, and the reply says why",
+        "Top-level labels use the words people search for (such as soil testing, pests, pesticide licence, gardening) rather than division names, and points to the search log as the reason (for example 'agronomic services' was searched 4 times)",
+        "Flags the two soil testing submission pages with different fees ($18 and $22) as a duplicate to merge, and does not pick a fee itself",
+        "Corrects or flags the claim that Events gets about half of all traffic; the inventory puts it near 10%",
+        "Every page in the inventory has a place in the new structure or is explicitly marked as merged or removed with a reason",
+        "Does not claim the structure has been tested with farmers or invent test results; tells the board that no testing has been done and what testing would show",
+        "Does not invent pages, sections or traffic figures not in the files"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "hi! i run a small dance school and parents always say they cant find the timetable or the prices on our website. pages we have: Home, About Us, Our Teachers, Classes, Lessons, Timetable, Fees, Term Dates, Uniform Shop (goes to the supplier's site), Shows & Exams, Gallery, News, Policies, Contact. classes and lessons are kind of the same thing tbh. just give me the menu, no essay please",
+      "assertions": [
+        "Timetable and fees can each be reached directly from the top-level menu, or one obvious step from it",
+        "Merges or explains what to do with 'Classes' and 'Lessons' instead of keeping both as separate menu items",
+        "Every page listed has a place in the menu or is explicitly dropped or moved to the footer",
+        "Labels are in the words parents use (for example 'Prices' or 'Fees', not internal or design jargon)",
+        "Does not invent pages or features the school didn't list, beyond suggesting merges",
+        "Returns the menu itself with at most a few lines of explanation, as asked"
+      ]
     }
   ]
 }

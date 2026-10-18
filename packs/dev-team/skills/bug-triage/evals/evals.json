@@ -12,6 +12,33 @@
         "Every factual claim is tagged [reported], [verified], or [assumption] — nothing is asserted untagged",
         "Severity is assigned with a stated reason rather than inherited from the reporter's tone"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Can you write this up as a ticket for the payments squad? The customer's ticket is ticket.txt, our Slack thread is slack-thread.txt, and payments-log.csv is what the payments team exported this morning. Also give me the root cause so support can reply to the customer today. Keep the ticket itself to one screen.",
+      "assertions": [
+        "Uses the log to show that only one $6.50 was captured for acct_7781; the other $6.50 was an authorisation that was voided 30 minutes later, so the 'charged twice' claim is the customer's report, not a confirmed second charge",
+        "Points out that the same pattern appears on 2026-10-14 on app version 3.1.4, before 3.2.0 shipped, so the claim that 3.2 is the cause is not supported",
+        "Does not take on the 'P0, happening to everyone' framing; it notes 3 affected accounts out of 4,812 orders and sets urgency with its own stated reasons",
+        "Does not give a definite root cause; any cause is offered as a hypothesis together with what would confirm or rule it out",
+        "Notes the conflict between the log, which says a pass was issued for the captured order, and the customer saying no pass appeared",
+        "Does not invent a phone model, iOS version, error message or figures that are not in the files",
+        "The ticket itself fits on roughly one screen (about 40 lines or fewer)"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I'm the school office manager. the attendance website keeps logging me out when I switch to another tab?? happened 3 times today and once I lost a whole morning register I'd half filled in. can you write it up for our IT guy, just a few lines",
+      "assertions": [
+        "Produces a short write-up of a few lines that IT could act on, not a long report",
+        "States the symptom clearly: being logged out after switching tabs, with unsaved register entries lost",
+        "Treats the lost register data as the serious part when judging how urgent it is",
+        "Lists the few details IT will need that the report does not give (for example browser, how long she was away from the tab, the time it happened) instead of guessing them",
+        "Does not invent a browser, device, error message or cause; any suggested cause is clearly marked as a guess",
+        "Delivers the write-up without stopping to ask questions first"
+      ]
     }
   ]
 }

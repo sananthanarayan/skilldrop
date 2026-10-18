@@ -31,6 +31,33 @@
         "Assumptions replacing the capped clarifying questions (e.g. competitive set) are tagged [assumption] and stated at the top",
         "Market facts drawn from general knowledge are tagged [market: ...], distinguishable from user-supplied facts and assumptions"
       ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "Our coach company's board meets next week on whether to launch an airport shuttle. My notes are in market_notes.md. Give me the analysis and a recommendation — one page, the board wants a recommendation, not a textbook.",
+      "assertions": [
+        "Uses or reconciles the airport authority's passenger figures (roughly 3–4% annual growth) rather than relying on the consultant's 12%",
+        "Catches the market-size arithmetic error: 1.2M trips x $28 is $33.6M, not $46M",
+        "Recognises that the incumbent's exclusive curbside rights until June 2029 block or limit a curbside service now, and the recommendation reflects it",
+        "Does not give a year-1 market-share number as a finding; says the inputs cannot support one, or labels any figure as a hedged assumption",
+        "Gives a clear recommendation (for example enter now, enter a different way, or wait) tied to the evidence",
+        "Does not invent competitors, figures, or regulations not in the notes",
+        "About one page (roughly 500 words or less)"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-18",
+      "prompt": "i run a swim school for kids, we rent 2 pools by the hour. a big gym chain just opened 10 min away with its own pool and kids lessons. what do i do?? a few bullets pls, im not a business person",
+      "assertions": [
+        "Gives concrete advice without stopping to ask questions first",
+        "Short — no more than about 10 bullets or 250 words",
+        "Uses plain language a non-business owner can act on; any framework terms are explained or avoided",
+        "Identifies where a specialist swim school can realistically compete with or differ from a gym chain's lessons, rather than only generic advice",
+        "Points out that depending on rented pool hours is a vulnerability or a factor to manage",
+        "Does not invent facts about the gym chain (its prices, class sizes, quality) or the local market as known; such points are framed as things to find out"
+      ]
     }
   ]
 }

@@ -14,6 +14,33 @@
         "A 3 to 5 sentence eval strategy note follows the JSON, naming the most important case and what a regression on it would mean",
         "Ends with the placement reminder for packs/<pack>/skills/vendor-risk-screen/evals/ and running python3 validate.py"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Here's the SKILL.md for a skill I'm about to publish, grant-budget-check. Write exactly 6 eval cases for it as an evals.json file in this shape: {\"skill_name\": \"grant-budget-check\", \"evals\": [{\"id\": 1, \"prompt\": \"...\", \"assertions\": [\"...\"]}]}. Save it as evals.json here. Also give me the expected pass rate for each case so I know what to aim for.",
+      "assertions": [
+        "Saves evals.json with exactly 6 cases in the requested shape (skill_name plus an evals array of id, prompt and assertions), and the file parses as JSON",
+        "Flags that the description promises PASS or FAIL while the body defines COMPLIANT, NEEDS CHANGES and REJECT, and does not quietly build cases on one of them without saying so",
+        "Flags that the indirect-cost limit conflicts (10% of direct costs in the rules, 15% of the total in the quality bar)",
+        "The cases cover both outcomes: at least one budget that breaks a funder rule and must not be passed, and at least one clean budget that should be passed",
+        "Each prompt contains concrete budget lines and amounts a user would actually paste, not 'run the skill on a budget'",
+        "Each assertion is a checkable statement about one output, not 'the output is good'",
+        "Does not give made-up expected pass rates (it explains they can only come from running the cases), and does not invent funder rules beyond those in the SKILL.md"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I wrote a little instruction file for Claude that checks knitting patterns for stitch-count mistakes. Someone on the forum said I need 'evals'. Here's the file:\n\n---\nname: stitch-check\ndescription: Checks a knitting pattern for stitch-count mistakes. Use when someone pastes a pattern and asks if the counts are right.\n---\nRead each row. Work out how many stitches you have after it (K and P keep the count, K2tog and SSK take one away, YO and M1 add one). If the row ends with a count like \"(24 sts)\" and your count is different, say which row and what you got. If everything matches, say so. Don't comment on anything else.\n\nCan you make me like 3 tests? Just paste them, no explanation.",
+      "assertions": [
+        "Gives exactly 3 tests with little or no explanation around them",
+        "Each test includes a concrete pattern excerpt with stated stitch counts, not a vague instruction",
+        "At least one test has a planted stitch-count mistake the skill should catch, and at least one has correct counts and should be left alone",
+        "The stitch counts in the tests, and the expected answers, are arithmetically correct under the file's rules",
+        "Does not add checks the file doesn't ask for, such as gauge, yarn or style comments",
+        "Delivers the tests without first asking questions"
+      ]
     }
   ]
 }

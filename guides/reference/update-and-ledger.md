@@ -56,6 +56,7 @@ Hook wiring is left in place.
 ## Edge cases
 
 - **Unreachable source.** A skill whose source is unreachable is skipped with a warning; the run does not fail.
+- **Evals are not installed.** A skill's `evals/` folder is how the catalogue measures it, so `install` leaves it out and `outdated`, `update` and `diff` ignore it. A change that only adds evals is not a change to the skill. An install made before 0.16.20 that copied `evals/` has those files removed by its next update, unless you edited them.
 - **Retired skills.** A skill the catalogue retired keeps working as installed, but never updates. `outdated`, `update` and `doctor` name it with the reason from the catalogue's `retired` list, and give the `uninstall` command. Nothing is removed for you. `install`, `info` and `diff` on a retired name stop with the same reason ([RFC-0046](../../docs/rfcs/0046-keep-rebuild-or-retire.md)).
 - **Third-party catalogues.** Skills from a third-party catalogue are run through the supply-chain scan again after they update.
 - **Same version, different files.** `update` names these and doesn't take them. Read the change with `skilldrop diff <skill>`, then take it with `skilldrop update --changed`, which keeps your edits the same way as any update.

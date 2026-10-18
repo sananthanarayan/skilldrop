@@ -12,6 +12,33 @@
         "The chosen format is MADR by default; Nygard only when explicitly requested",
         "No invented context — facts not supplied by the user are marked rather than fabricated"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "I'm the integration lead at Kestrel Vale Health Partnership. Can you write the ADR for what we decided on lab results integration? The working group notes are in integration-notes.md and the vendor quote is larchway-quote.txt. We went with FHIR subscriptions (option B) — please mark it as accepted so I can file it. It has to fit on one printed page for the review board. Save it as adr-lab-results.md.",
+      "assertions": [
+        "Does not record the decision as accepted or approved: the status reflects that the Architecture Review Board has not yet met (24 Oct 2026), and the reply says why",
+        "Points out that the notes show the group leaned towards the integration engine now (option C) with FHIR subscriptions later, not option B alone as the request says, and either writes up what the notes support or flags the mismatch prominently",
+        "States that FHIR subscriptions cannot meet the 15-minute critical-results requirement until lab system v9, which has no committed date",
+        "Flags that the £48k budget assumes 3 sites while the quote covers 4 sites at £64k a year, plus £22,500 one-off",
+        "Records a real downside of the chosen path or the EPR product owner's dissent, not only benefits",
+        "Does not invent facts not in the notes or quote (other vendors, dates, costs, patient numbers, names)",
+        "adr-lab-results.md is saved and fits on about one printed page (roughly 500 words or fewer)"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "hi, I run the office at Fernhill Primary School. we're replacing the paper visitor sign-in book at reception. we looked at two options, a cloud sign-in app on a tablet or a tablet one that works offline and syncs later, and we picked the offline one because the wifi in the old building drops out all the time and we can't have the fire register not working. the IT support guy says I need to write this up as an 'ADR' for the governors. no idea what that is tbh. half a page max please",
+      "assertions": [
+        "Writes the decision record straight away rather than asking questions first",
+        "States the decision (offline-capable tablet sign-in) and the reason (unreliable wifi in the old building; the fire register must always work)",
+        "Names the cloud app as the option considered and says why it was not chosen",
+        "Includes at least one downside, risk or follow-up of the offline choice rather than only benefits",
+        "Does not invent product names, prices, dates or people not in the message; anything unknown is marked to be confirmed",
+        "Fits in about half a page (roughly 250 words or fewer) in plain language a school governor would follow, with jargon such as 'ADR' explained or avoided"
+      ]
     }
   ]
 }

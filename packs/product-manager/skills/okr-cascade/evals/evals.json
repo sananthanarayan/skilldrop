@@ -23,6 +23,33 @@
         "The BLOCKED output states what to rerun with (the top 3-5 objectives and their KRs, plus teams in scope)",
         "No cascade tables, gap registry, or metric tree appear"
       ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I'm the planning lead for our library system. quillfield_2027.md has the board-approved system OKRs for 2027 and each team's draft OKRs. Cascade the system OKRs into team OKRs, fix what's wrong with the drafts, and tell me where the plan doesn't hold together. The director wants it to fit on two pages, with no more than 3 objectives per team.",
+      "assertions": [
+        "Flags that the 16–24 sign-up key result has no team that credibly owns it (the Teen Services post was eliminated), rather than quietly assigning it to a team that lacks the capacity",
+        "Catches that the branch visit targets add up to 1.28M, short of the system target of 1.38M",
+        "Catches that Eastgate is closed March through August 2027 yet its draft target is unchanged at 200,000 visits",
+        "Flags the social media impressions key result as not moving e-book and audiobook lending (or as a vanity metric) and replaces or drops it",
+        "Catches that 120 sessions in 4-session courses of 10 seats allows at most about 300 completions, far short of the 1,500 target, or otherwise shows the Adult Learning draft cannot deliver it",
+        "Does not invent teams, staff, budgets, or baseline figures not in the input",
+        "Keeps each team to at most 3 objectives and the whole within roughly two pages"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "my sister and i run a bakery, just us plus 2 staff. our accountant says we should do 'OKRs' for next year?? we want to start opening sundays and get more cafes buying our bread wholesale. can you just give us the table, nothing fancy",
+      "assertions": [
+        "Delivers the OKRs without stopping to ask clarifying questions first",
+        "The reply is essentially just a table, with at most a line or two of text around it",
+        "Covers both goals the user named: opening on Sundays and winning more wholesale café customers",
+        "Key results are measurable results (for example Sunday takings or number of wholesale accounts) rather than tasks such as making a flyer",
+        "Does not invent current figures (revenue, customer counts) as facts; missing baselines are left to fill in or labelled as assumptions",
+        "Sized for a four-person business — a small number of objectives, not a multi-department corporate cascade"
+      ]
     }
   ]
 }

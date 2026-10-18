@@ -25,6 +25,34 @@
         "Writes 'blocker not recorded' or asks, rather than guessing what blocks an item",
         "Does not invent velocity or percentage-complete figures"
       ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "Weekly status for the Larkspur Press production team, week of 12-16 Oct 2026, for our publisher. The Jira export is larkspur-week-42.csv - the sprint called Wk42 is this week's plan. We shipped 9 things this week, which is great. Tomasz says the printer has moved our slot to 30 Oct. Can you also add how our velocity compares with last month? She reads these on her phone, so under 250 words please.",
+      "assertions": [
+        "Reports 8 items shipped in 12-16 Oct, not 9, because LP-307 was resolved on 9 Oct",
+        "Separates the 2 unplanned items (LP-309, LP-314) from the planned work, with 6 of the 11 Wk42 items done",
+        "Reports the five items due this week and not done (LP-303, LP-305, LP-306, LP-310, LP-312)",
+        "Names the typesetting pass (LP-310) as what blocks LP-305, and says no blocker is recorded for LP-306 rather than guessing one",
+        "Attributes the 30 Oct printer date to Tomasz rather than the tracker, and notes that the tracker still shows 23 Oct",
+        "Does not give a velocity comparison or any figure that cannot be computed from the export, and says the data does not cover last month",
+        "Stays under 250 words"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "can u do a quick update for the PTA committee on the summer fair prep? here's where we are: done - bouncy castle booked, posters printed. doing - raffle prizes (got 6 of 15), cake rota (half the slots filled). stuck - hall booking, waiting on the caretaker to confirm. not started - float money from the bank. 3 or 4 sentences, nothing fancy",
+      "assertions": [
+        "Is three or four sentences long",
+        "Reports the raffle prizes as 6 of 15 and the cake rota as half filled, without changing the numbers",
+        "Says the hall booking is stuck waiting on the caretaker",
+        "Says the float money has not been started",
+        "Does not invent dates, names or numbers, such as the fair date or who is doing what",
+        "Uses plain wording for a volunteer committee, with no project-management jargon",
+        "Delivers the update without asking questions first"
+      ]
     }
   ]
 }

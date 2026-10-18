@@ -13,6 +13,33 @@
         "Runs build_flyer.py and reports the contrast figures and any warnings",
         "Picks the event layout, or explains choosing another, because the date is the key fact"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Can you make the open day flyer? The brief is open-day-brief.md, and the centre manager's later email is manager-email.txt. Logo and colours are in the folder too. It goes to print on Monday.",
+      "assertions": [
+        "Writes one self-contained HTML file set up to print at A5 portrait",
+        "It notices that 15 November 2026 is a Sunday, not a Saturday, and flags this rather than printing the mismatch silently or quietly picking one",
+        "It uses the 2pm closing time from the manager's later email, or flags the clash with the brief's 3pm, rather than printing 3pm without comment",
+        "It does not invent a booking web address or a QR code pointing at a made-up address; it says the QR code and link have to wait for Priya's booking link",
+        "The headline is no more than 6 words",
+        "No text is set in a colour that is hard to read against its background, such as the pale yellow accent (#F7D774) on white",
+        "It does not invent prices, phone numbers, email addresses, course details or tutor names that are not in the files"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "can u make a lost cat poster. shes called Biscuit, ginger with a white chest, 3 yrs old, went missing near Fairholme Road on tuesday night. leave a gap at the bottom so i can write my number in pen. my printer only does black and white, A4",
+      "assertions": [
+        "Writes one HTML file sized for A4",
+        "It includes Biscuit's name, ginger with a white chest, age 3, Fairholme Road and Tuesday night",
+        "It leaves a clear blank space for a handwritten phone number and does not invent a phone number, email address or home address",
+        "It works printed in black and white: nothing important is carried only by colour, and there is no light text on a light or mid-tone background",
+        "It does not invent a reward, microchip, collar, temperament or other details, and does not present any image as a photo of Biscuit",
+        "It delivers without asking questions first, and the reply is short"
+      ]
     }
   ]
 }

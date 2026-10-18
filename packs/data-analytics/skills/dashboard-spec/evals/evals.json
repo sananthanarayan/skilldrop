@@ -14,6 +14,33 @@
         "Sets a refresh and freshness SLA consistent with a weekly decision and the 6-hour sync, with stale-data behaviour",
         "Does not invent targets, owners or metrics not given in the prompt; assumptions are tagged"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "I'm the data volunteer at Westmoor Food Bank Network. The chair's request is in request-email.md and what data we actually have is in data-inventory.md. Can you write the spec for the trustee dashboard so our BI volunteer can build it?",
+      "assertions": [
+        "Builds the dashboard around the two November decisions, the purchasing split across the six distribution points and Saturday sessions, and stays within the six-chart, one-page limit",
+        "Defines households served as distinct households, separate from visits, and points out that the annual report's 12,000 is visits, from about 4,100 households",
+        "Does not promise daily volunteer hours; it sets freshness to what the monthly rota spreadsheet can support",
+        "Leaves out 'families lifted out of food insecurity' and explains that no outcome data exists to measure it",
+        "Cuts social media followers and the all-time kg total, saying why they do not help either decision",
+        "Applies the rule against circulating client counts below 5 to any breakdown by postcode or area",
+        "Notes there is no Saturday data and does not invent data sources, figures or refresh times beyond the inventory"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "head chef here. the owner wants a 'dashboard' on a screen in the kitchen. all we've got is the till, which shows covers and what dishes sold, and a paper waste log the team fills in at close. what should go on it? max 5 things, short list",
+      "assertions": [
+        "Lists no more than five things",
+        "Ties each item to something the kitchen can act on, during service or when planning prep",
+        "Uses only the till data and the waste log, and notes the paper waste log has to be typed in and will not update during service",
+        "Does not invent other data sources, such as a stock system, labour rota or supplier prices, as if the kitchen had them",
+        "Delivers the list without stopping to ask questions first",
+        "Uses plain kitchen language and keeps it short"
+      ]
     }
   ]
 }

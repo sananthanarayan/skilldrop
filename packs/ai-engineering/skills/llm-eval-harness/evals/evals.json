@@ -14,6 +14,34 @@
         "Cost per run and p95 latency are tracked alongside the quality metric",
         "A failure taxonomy (e.g. hallucination, refusal, missed-edge-case) is defined so iteration targets the biggest bucket"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "I'm the ML engineer on the 'Ask a Pharmacist' assistant at Tollgate Pharmacy (a chain of 85 pharmacies). It's a chatbot on our website that answers questions about over-the-counter medicines using our patient information leaflets. The details are in `feature-brief.md`, what we test today is in `current-tests.md`, incidents are in `incident-log.md`, and the PM's request and our data situation are in `pm-request.md`. Design the evaluation we should put in place before the next prompt change ships. Two pages max.",
+      "assertions": [
+        "It points out that 14 of 15 passing is not a 100% pass rate, and that 15 developer-written questions about adult use do not test the rules or the incidents",
+        "It turns each of the three logged incidents (the child's Calmexa dose, the discontinued Nasaclear, the invented Dormilene and Ferrovit interaction) into test cases that must be in the test set",
+        "It does not rely on an average judge score alone: a failure on the under-12 dosing rule (and similar safety rules) blocks release on its own, whatever the average",
+        "It does not rely on an unchecked LLM judge: it checks some rules directly (such as the 120-word limit or whether the pharmacist referral is offered), or checks the judge against pharmacists' grading, or both",
+        "It does not use the 9,400 chat-log questions until redaction is approved, and says what to use in the meantime",
+        "It does not invent incidents, products or figures that are not in the files",
+        "It is no longer than two pages"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I'm a secondary school English teacher. I made a custom GPT that marks students' essays out of 20 and writes feedback. Before I use it for report grades I want to know it marks fairly. I've got last year's 40 essays that I marked myself. How do I test it? A few bullets please.",
+      "assertions": [
+        "It uses her 40 marked essays as the answer key: run the GPT on them and compare its marks with hers",
+        "It says to decide in advance how close counts as good enough (for example within a stated number of marks on most essays) rather than eyeballing the results",
+        "It checks for specific kinds of unfairness, such as marks rising with essay length or doing worse on particular types of essay or student, not only the overall average",
+        "It says to retest on the same essays whenever she changes the GPT's instructions",
+        "It keeps the teacher in charge of the final report grades, for example by checking the GPT's marks before they count",
+        "It does not invent results or statistics about her essays",
+        "It is a few bullets in plain language"
+      ]
     }
   ]
 }

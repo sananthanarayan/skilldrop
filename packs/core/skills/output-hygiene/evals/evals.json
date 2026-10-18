@@ -25,6 +25,33 @@
         "The response does not moralize; it states the rule in a sentence and offers the cleaning it can do",
         "ai-usage-policy is named as the place the user's own disclosure rule gets written down"
       ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "This is going in our orchard group's printed newsletter: newsletter.md. Clean out anything left over from the AI chat it came from and save the result as newsletter-clean.md. Deepa's quote is word for word from her AGM speech, so leave her words alone. Then give me a short list of what you changed - five or six lines, not an essay.",
+      "assertions": [
+        "newsletter-clean.md exists, with the chat opener line ('Here's the polished version...') and the closing offer to adjust the tone removed",
+        "The zero-width character inside 'harvest' is gone from newsletter-clean.md",
+        "The Cyrillic lookalike letter in 'Payment' is identified (fixed or flagged), while the volunteer's name, written in Cyrillic, is left unchanged",
+        "Deepa Lal's quote is identical in newsletter-clean.md to the original",
+        "37 volunteers, 112 trees, £4,250, 8 November, 30 November and the 'provisional until the annual audit' caveat all survive in newsletter-clean.md",
+        "Does not add sentences, facts or claims that were not in the original",
+        "The list of changes in the reply is about six lines or fewer"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "my manager wants me to send this to a customer but it reads like a robot wrote it lol. can you fix it? keep it about the same length\n\nHi Mr Okafor,\n\nI hope this email finds you well! I wanted to reach out regarding your recent order (#4471). It's important to note that, due to unforeseen circumstances, the delivery of your oak dining table has been rescheduled to 12 November. We truly understand how frustrating this can be, and we sincerely apologise for any inconvenience this may cause. As a token of our appreciation for your patience, we'd like to offer you a 10% credit on your order. Furthermore, our team is committed to ensuring a seamless experience moving forward.\n\nPlease don't hesitate to reach out if you have any further questions or concerns!\n\nBest regards,\nLena",
+      "assertions": [
+        "Returns a rewritten email ready to send, without asking questions first",
+        "Keeps order #4471, the oak dining table, 12 November and the 10% credit exactly",
+        "Drops the stock filler (such as 'I hope this email finds you well', 'It's important to note', 'seamless experience') rather than swapping in new filler",
+        "Is no longer than the original email",
+        "Does not add facts or promises not in the original, such as a reason for the delay, extra compensation or a different date",
+        "Stays polite and apologetic, suitable for a customer"
+      ]
     }
   ]
 }

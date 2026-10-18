@@ -38,6 +38,33 @@
         "It does not invent certifications, tools, vendors or dates that are not in the policy",
         "The reply states the draft needs the security owner's review before it is sent"
       ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "Halverton Mutual sent us (Brackenford Records) a security questionnaire for a records storage and scanning contract. Their instructions are in instructions.md, the questions are in questionnaire.csv, and our evidence is in the evidence/ folder. Fill it in.",
+      "assertions": [
+        "Q1 (encryption at rest) is not answered as a plain Yes: it flags that the policy says all scanned images are encrypted but the pentest's open finding F2 says the legacy archive is unencrypted",
+        "Q3 (SOC 2 Type II report) is marked as needing input or answered No, because no SOC 2 report is in the evidence; it is not answered Yes",
+        "Q5 does not commit to 24-hour notification; it notes the policy says 72 hours and flags that agreeing would create a new commitment",
+        "Q4 (background checks) is qualified as partial, since the handbook says only warehouse and scanning staff get criminal record checks",
+        "Flags that the information security policy was last approved in March 2024 and is past its annual review, and that Q6 can't claim all high findings were fixed",
+        "Every answer cites a document from the evidence folder; does not invent certifications, documents, dates or controls, despite the request to 'be positive'",
+        "Writes questionnaire-completed.csv with the same rows and columns, Answer values limited to Yes, No, Partial or N/A, and comments of 50 words or fewer"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-18",
+      "prompt": "a corporate client wants us to answer 5 security questions before they renew our catering contract and i have no idea what to say. we're a catering company, 12 staff. we use one shared office laptop, staff use their own phones for the booking app, and we keep clients' dietary and allergy info in a spreadsheet on the laptop. the questions: 1) Do you encrypt data at rest? 2) Do you use multi-factor authentication? 3) Do you have an incident response plan? 4) Do you have cyber insurance? 5) Where is our data stored? just give me short answers i can paste in",
+      "assertions": [
+        "Does not answer Yes to encryption, MFA or an incident response plan, since nothing given supports that",
+        "Marks cyber insurance and the exact storage location as things the owner needs to check, rather than guessing",
+        "Answers 'where is our data stored' from the facts given (the shared office laptop and the booking app) without inventing a provider or region",
+        "Points out at least one thing the client will care about, such as the allergy spreadsheet on a shared laptop, or suggests quick fixes to make before answering",
+        "Does not invent tools, policies, certifications or staff roles not mentioned",
+        "Gives one short, paste-ready answer per question"
+      ]
     }
   ]
 }

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Book an event</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <img src="council-logo.png">
+    <nav>
+      <a href="/">Home</a>
+      <a href="/libraries">Libraries</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Book an event</h1>
+    <img src="divider.svg" alt="" class="divider">
+
+    <div class="form-panel">
+      <p class="hold-notice">We are holding your place. Complete the form to confirm.</p>
+
+      <form id="booking" novalidate>
+        <label for="name">Full name</label>
+        <input id="name" name="name" type="text" autocomplete="name">
+
+        <input id="email" name="email" type="email" placeholder="Email address">
+        <p class="help-text">We'll send your ticket to this address.</p>
+
+        <label for="event">Event</label>
+        <select id="event" name="event">
+          <option>Storytime for under-5s (Sat 10:00)</option>
+          <option>Local history talk (Tue 18:30)</option>
+          <option>Repair cafe (Thu 14:00)</option>
+        </select>
+
+        <span class="field-title">Number of tickets</span>
+        <div class="stepper">
+          <span class="step" onclick="change(-1)">&minus;</span>
+          <span id="count">1</span>
+          <span class="step" onclick="change(1)">+</span>
+        </div>
+        <p class="help-text">Maximum 4 tickets per booking.</p>
+
+        <button type="submit" class="btn-primary" aria-label="Submit reservation form">Book</button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; Harrowgate District Council</p>
+    <a href="/privacy">Privacy</a>
+  </footer>
+
+  <script>
+    var count = 1;
+    function change(d) {
+      count = Math.min(4, Math.max(1, count + d));
+      document.getElementById('count').textContent = count;
+    }
+
+    // Release the held place after 90 seconds.
+    setTimeout(function () {
+      document.getElementById('booking').reset();
+      window.location.href = '/events/expired';
+    }, 90000);
+
+    document.getElementById('booking').addEventListener('submit', function (e) {
+      var email = document.getElementById('email');
+      if (!email.value.includes('@')) {
+        e.preventDefault();
+        email.classList.add('invalid');
+      }
+    });
+  </script>
+</body>
+</html>

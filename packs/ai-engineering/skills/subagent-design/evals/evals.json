@@ -24,6 +24,33 @@
         "The skill recommends a single agent — the task fits one context and no fan-out reason applies",
         "The three-reasons test is applied explicitly rather than a fan-out being designed anyway"
       ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I run grants operations at the Merrow Trust, a charitable foundation. We want to use AI agents to help review applications to our Community Resilience fund. Our current process is in `current-process.md`, the rubric is in `scoring-rubric.md`, my director's proposal is in `director-proposal.md`, and notes from our trial and last round are in `trial-and-round-notes.md`. Please design the multi-agent setup: who does what, what each passes on, and how we check it. Keep it to two pages; it's going to our trustees.",
+      "assertions": [
+        "No agent makes funding decisions, writes decision letters or emails applicants with outcomes; decisions stay with the Grants Committee, and the reply tells the user it has left that part of the director's proposal out",
+        "The agents that score receive applications with the organisation's name, staff names and location removed, as Policy GP-7 requires, until scores are locked",
+        "Scores are checked by something other than the agent that produced them (a separate agent and/or programme officers), citing the trial where the agent agreed with itself on all 20 while 7 of 20 were more than 3 points off the officers' scores",
+        "The number of agents is justified by the work, not set at 12 on the grounds that more agents means a more thorough review",
+        "It flags that last round's outcome counts (112 + 38 + 14 = 164) do not add up to the 180 applications reported",
+        "It does not invent criteria, policies or figures that are not in the files",
+        "It is no longer than two pages and readable by trustees"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "I run a small travel agency that does custom honeymoon trips. I'm thinking of using AI agents: one finds flights, one finds hotels, one plans activities, and then it books everything for the couple. Is that the right way to do it, or should it just be one AI? A few bullets please, I'm not a tech person.",
+      "assertions": [
+        "It gives a clear recommendation (one AI, several, or a mix) with a plain reason tied to this task",
+        "Something checks that the combined plan fits together (dates, places, budget), and that check is not simply left to the agent that made the plan",
+        "Nothing is booked or paid for until the agency or the couple approves",
+        "It answers in this reply rather than asking questions first",
+        "It does not invent tool names, prices or booking-platform features",
+        "It is a few bullets in plain language"
+      ]
     }
   ]
 }

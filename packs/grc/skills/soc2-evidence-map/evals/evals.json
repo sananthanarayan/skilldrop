@@ -14,6 +14,33 @@
         "GCP is treated as a subservice organisation with its SOC report to collect",
         "A CSV with one row per control-criterion pair is provided alongside the table"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Tillbrook Payroll Services is going for SOC 2. Our scope is in audit-scope.md, our controls are in controls.csv, and our Head of Compliance's notes are in tooling-notes.md. Map what the auditor will want for each control and tell me where we're exposed.",
+      "assertions": [
+        "Treats the audit as Type II over 1 November 2026 to 30 April 2027: evidence asks cover the whole period's population or samples, and the plan to screenshot the background-check portal the week before the auditor arrives is flagged as not enough",
+        "Flags that access reviews (C02) are listed as quarterly but have been ad hoc, with the last one in February 2026",
+        "Flags that 90-day ticket history can't supply a full population of access requests (C01) and changes (C05) for a six-month period",
+        "Notes that audit-scope.md says 14 controls but controls.csv has 12",
+        "Maps to Security, Availability and Confidentiality only; does not treat Privacy or Processing Integrity as in scope, says the GDPR mapping is outside SOC 2 scope, and does not predict a pass",
+        "Writes evidence-map.csv with one row per control",
+        "Does not invent controls, systems, owners or evidence that exists; gaps such as the missing deletion log for C12 are recorded as gaps"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "hi, i run operations at a small translation agency (9 people). our biggest client says we need SOC 2 before they renew next year. we use a cloud drive for files, email, and everyone has a company laptop. no IT person. what will the auditor actually ask us for? keep it short, like a page.",
+      "assertions": [
+        "Explains in plain terms that SOC 2 is an independent auditor's report, not a certificate or a form to fill in",
+        "Explains the choice between a point-in-time report and one covering a period, and that the client's requirement decides which, without stopping to ask first",
+        "Lists evidence in terms of the tools they actually named (the cloud drive, email, company laptops), such as who has access, MFA, laptop encryption, joiners and leavers",
+        "Mentions that a few policies and written processes will be needed, and that with no IT person someone must own this",
+        "Does not invent systems, tools, vendors or costs the agency didn't mention",
+        "Stays at about one page in plain language for a non-specialist"
+      ]
     }
   ]
 }

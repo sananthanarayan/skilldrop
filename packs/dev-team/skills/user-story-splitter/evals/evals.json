@@ -11,6 +11,33 @@
         "Dependencies between stories are stated, and a recommended build order follows from them",
         "Stories are independently shippable rather than layered horizontally (all backend, then all frontend)"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Turn the shift-swap PRD in prd-shift-swap.md into user stories for next week's planning, with acceptance criteria and the order we should build them in.",
+      "assertions": [
+        "Each story delivers something a nurse or ward manager can use, rather than a layer such as database schema, API endpoints or UI screens",
+        "Flags the conflict between 'manager approval is required for all swaps' and section 9.4 of the staff agreement (same-grade, same-ward swaps need only notification), and does not silently pick one",
+        "Notices that the PRD's worked example is wrong (40 + 12 hours is 52, which is over the 48-hour limit) and writes acceptance criteria that enforce the 48-hour rule",
+        "Any story that needs a change to the payroll export is marked as blocked until the January freeze lifts, not placed in the near-term build order",
+        "Acceptance criteria are pass/fail with specific values from the PRD, such as the 48 hours in a rolling 7 days and the grade rule",
+        "Does not invent requirements, roles or rules that are not in the PRD, and adds no mobile app stories",
+        "Has no more than eight stories"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I coordinate volunteers for our town's food festival. We want our sign-up website to let people sign up for time slots, get reminders, and swap slots with each other. A developer friend said to send him 'user stories'. Can you write them? No more than five, as one short list I can send him.",
+      "assertions": [
+        "Splits the work into pieces a volunteer or coordinator could each try out on their own, with signing up for a slot coming before reminders and swapping",
+        "Each story has at least one concrete check for when it is done",
+        "Does not invent details the user didn't give, such as reminder channel, timing or slot limits, or marks them clearly as open questions for the developer",
+        "Gives a suggested build order with a reason",
+        "Has no more than five stories, short enough to send as one list",
+        "Delivers the list without first asking questions"
+      ]
     }
   ]
 }

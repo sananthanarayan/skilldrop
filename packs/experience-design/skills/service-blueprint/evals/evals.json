@@ -14,6 +14,33 @@
         "A Mermaid diagram with one subgraph per lane matches the table",
         "Does not invent teams, systems, SLAs or durations not in the prompt; inferred ones are tagged [assumption] or [estimate]"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Customers of Oakhollow Home (we sell furniture with optional delivery and assembly) keep complaining about delivery. Our Operations Manager wrote up how it works in process-notes.md, timings are in timings.csv, and last quarter's complaints are in complaints-summary.md. Show me what really happens behind the scenes from order to assembled furniture, where it breaks, and what we should fix first.",
+      "assertions": [
+        "Points out that the step timings add up to about 9 working days, not the 'about 5 days' in the Operations Manager's notes",
+        "Flags the disagreement over who makes the booking call (the notes say the warehouse; complaints and Brightlane say the courier sometimes does) instead of choosing one version silently",
+        "Leaves the owner of damaged-item replacement as unassigned or unknown, and flags it, rather than naming an owner the input doesn't give",
+        "Links the biggest complaint category (151 'nobody called me to book') to the specific step where it happens, and ranks fixes by the complaint data",
+        "Recommended fixes respect the no-new-software constraint, or clearly flag any that would break it",
+        "Does not invent cost savings or other figures; says the files don't contain the data needed to put a money value on each fix",
+        "Delivers the full analysis rather than stopping to ask questions first"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "i run a little home bakery doing custom birthday cakes. people order through instagram messages, i write it in a notebook, my sister bakes and decorates, i deliver or they collect. problems: sometimes we forget to take the deposit, and twice the date was wrong and a cake wasn't ready. can you show me where it's going wrong behind the scenes? one table please, no long write-up.",
+      "assertions": [
+        "Identifies copying the order from the message into the notebook as the likely place the date goes wrong",
+        "Identifies the missing step or check where the deposit should be taken, and suggests something simple to fix it",
+        "Separates what the customer sees from what happens behind the scenes (the notebook, the handover to the sister, baking)",
+        "Suggestions are simple and fit a two-person home business, not new software or staff",
+        "Does not invent facts not given, such as prices, deposit amounts, order volumes or extra staff",
+        "Delivers one table with at most a few lines around it, as asked"
+      ]
     }
   ]
 }

@@ -13,6 +13,34 @@
         "Bench seats are added only when the change warrants them, and benching is stated explicitly",
         "No persona cosplay — the persona is used as a lens, not costume prose"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Glenmarra Water's steering group decides on proposal.md on Thursday - it moves our telemetry historian to a hosted service. I've also put in last quarter's link outages (link-outages-q3.csv), the current vendor's support letter (vendor-letter.txt) and our compliance note (compliance-note.md). Pressure-test it properly and give me a verdict I can paste into the minutes, one page max. Also tell me how many hours of downtime the move will save us.",
+      "assertions": [
+        "Gives a clear decision on the proposal as written (for example go, go with conditions, or not yet) rather than only listing views",
+        "Identifies that removing local buffering at stations breaks the 15-minute gap rule, citing the multi-hour link outages in the CSV (PS-17, PS-31, PS-40), and that the hosted service's 99.99% availability does not cover the cellular link",
+        "Points out that the proposal's own figures (£310k - £215k) give an annual saving of £95k, not £120k",
+        "Notes that the vendor letter offers extended support to March 2029, so the 2027 date does not force a decision this quarter",
+        "States what would have to change, or what evidence would be needed, for the recommendation to change",
+        "Does not give a number of downtime hours saved, and says the inputs do not support one; invents no figures not in the files",
+        "Fits on one page"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "hi, I'm the business manager at a small primary school. our IT contractor wants to move all our shared files off the server in the office cupboard and onto a cloud storage service over the summer holidays, then get rid of the server. the head asked me to get a second opinion. is it a good idea? I'm not technical so a few bullets please",
+      "assertions": [
+        "Gives a clear answer (yes, yes if certain conditions are met, or no) rather than only listing considerations or asking questions first",
+        "Raises the handling of pupil and staff personal data as something to check before the files move",
+        "Raises at least one other concrete risk that fits the situation, such as relying on the school's internet connection, or removing the server before the new setup and a backup have been tested",
+        "Says what the school should ask the contractor for or agree with them before saying yes",
+        "Uses plain language with no unexplained technical jargon",
+        "Keeps to a few bullets",
+        "Does not invent facts about the school or the contractor, such as costs, staff numbers or the current setup"
+      ]
     }
   ]
 }

@@ -22,6 +22,34 @@
         "The BLOCKED output routes to prd-draft (or names the goal as what to rerun with)",
         "No primary metric, instrumentation table, or decision rule appears"
       ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "We're launching SMS reminders to get first-time blood donors to come back. The brief is in brief.md. Answer the ask in it — how will we know this worked? One page.",
+      "assertions": [
+        "Does not set a target of donating again within 30 days; recognises the 12-week minimum gap between donations and uses a timeframe consistent with it",
+        "Uses or reconciles the export's baseline (4,410 of 15,200, about 29%) rather than taking the brief's 35% as fact",
+        "Deals with the TV campaign starting the same day as a confound — for example a holdout group or comparison that separates the SMS effect — rather than relying on a simple before-and-after",
+        "Includes at least one measure that would show the reminders causing harm, such as opt-outs or complaints",
+        "Acknowledges the stated data gaps (no click data from the SMS vendor; phone bookings not tagged by channel) and does not rely on data that is not collected",
+        "Does not invent baselines or figures not in the brief; any new number is labelled as an assumption or a target",
+        "Fits on about one page"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "we're switching our school lunch line to a pre-order system — kids pick their lunch on a tablet in homeroom in the morning. the principal asked how we'd tell if it worked. few bullets, plain english, im a cafeteria manager not a data person",
+      "assertions": [
+        "Gives a short set of measures without asking questions first",
+        "A few bullets — no more than about 8 bullets or 200 words",
+        "Picks one main measure tied to a plausible purpose of pre-ordering (for example less food waste or shorter lines) and says what change would count as success, rather than listing many equal metrics",
+        "Includes something to watch for that would mean the change is hurting, such as fewer students eating lunch or students who miss the morning order going without",
+        "Measures are things a cafeteria manager can actually count without new data systems (for example meals prepared versus taken, or timing the line)",
+        "Does not invent current numbers (meals served, waste amounts) as facts",
+        "Plain English with no data jargon"
+      ]
     }
   ]
 }

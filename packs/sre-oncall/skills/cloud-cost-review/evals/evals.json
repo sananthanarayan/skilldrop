@@ -24,6 +24,34 @@
         "Treats credits as netted into cost and says so",
         "Does not invent a prior month or savings percentages"
       ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "Can you review our September cloud spend and tell the trustees where we can save? The billing export is cost-export-2026-09.csv, per-machine utilisation is in utilisation-2026-09.csv, and my notes are in notes.md.",
+      "assertions": [
+        "Attributes the September rise to the one-off archive copy to the university (about $5,200 of outbound data transfer), and does not count it as a recurring saving or use it to size a commitment",
+        "Flags that the export totals about $16,900, not the $21,400 in the notes, and that August's $11,400 was after a $2,000 credit, so the jump is overstated",
+        "Does not recommend removing or downsizing the DR standby database despite its 3% CPU, because the insurer requires it",
+        "Lists the idle notebook instance (about $553 a month) and the two unattached volumes ($300 a month together) as savings, with amounts taken from the export",
+        "Advises against a 3-year commitment covering everything: leaves out the render machine that goes in February and the one-off transfer, and limits any commitment to the steady baseline",
+        "Does not invent utilisation, resources or prices that are not in the files: it gives no rightsizing saving for the reporting server, which has no utilisation data, and does not count two savings on the same machine twice",
+        "Fits on one page for the committee papers"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "I'm treasurer for the Elmstead Community Choir. Our volunteer IT person moved away and nobody understands the Google Cloud bill. It was about $420 last month and all we have is a website and some concert photos. The bill page shows:\n\nCompute Engine  $212.40\nCloud SQL  $118.25\nNetworking  $41.20\nCloud Storage  $8.15\n\nWhat can we cut? Just a short list please.",
+      "assertions": [
+        "Gives a short, prioritised list of things to look at in the reply, not only questions",
+        "Notes that the four lines add up to $380.00, not about $420, and suggests checking for a missing line, tax or a different month",
+        "Does not tell them to delete or switch off the server or the database outright before someone confirms whether the website depends on it",
+        "Does not state exact savings that four service totals cannot support; any figure is labelled as an estimate and tied to the lines given",
+        "Gives at least one safe first step a non-technical treasurer can take or ask for, such as a budget alert or a list of what is actually running",
+        "Does not invent machines, sizes, usage or prices beyond the four lines given",
+        "Keeps to a short list in plain language"
+      ]
     }
   ]
 }

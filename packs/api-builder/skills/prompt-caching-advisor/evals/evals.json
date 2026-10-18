@@ -14,6 +14,31 @@
         "Gives a cache strategy summary paragraph with what is cached, why, expected hit rate, and the dominant cost driver before and after",
         "Does not invent prompt sections, request volumes, or models beyond those in the prompt"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Our nursing-school tutor builds every Claude request with build_request.py, and notes.md has our usage and what the team wants. Where should the cache breakpoints go? Send back a corrected build_request function and a short note explaining the changes, under 250 words.",
+      "assertions": [
+        "Identifies that the first system block holds the user's name and role plus a timestamp, which change on every request and sit at the very start, so nothing after them can be reused; the fix moves them after the cached content or out of the cached prefix",
+        "Notes that the tools list differs by role and comes before the system prompt in the cached prefix, so students and instructors get separate cache entries, or recommends one stable tools list",
+        "Does not adopt the dev lead's breakpoint-on-everything plan; the corrected function uses no more than four breakpoints and the note gives the per-request limit as the reason",
+        "Puts a breakpoint after the shared static content (handbook and few-shot examples) and one on the latest conversation turn, or the case study, so each 12-turn session reuses its earlier turns",
+        "Does not give an exact monthly saving, since the files give no daily request volume or prices; any figure is tied to stated assumptions",
+        "Provides a corrected build_request, and the note is under 250 words"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I use Claude through a little script my son set up to help edit my novel. Every time, it sends the whole 300-page manuscript plus my style guide, and then one question about a chapter. The bill is huge. Someone said 'prompt caching'. What do I change? Two or three sentences, I'm not technical.",
+      "assertions": [
+        "Says to keep the unchanging part (style guide and manuscript) at the start of every request and mark it to be cached, with the changing question after it",
+        "Warns that editing the manuscript between questions means the cached copy no longer matches and has to be rebuilt, or that the cache expires after a few minutes unused, so it pays to ask several questions in one sitting on an unchanged draft",
+        "Does not invent a dollar figure or percentage saving for their bill",
+        "Uses two or three sentences in plain language",
+        "Answers without first asking questions"
+      ]
     }
   ]
 }

@@ -40,6 +40,34 @@
         "It adds no debt items beyond the four the user listed",
         "Owners are unassigned"
       ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "I lead the warehouse systems team at Kestrel Freight. Our Q3 retro debt notes are in retro-notes.md and the incident log is incidents.csv. We've been given 3 engineer-weeks of debt time this quarter. Build the debt register and tell me what we should spend those 3 weeks on. I'm taking it to the operations director, so one page.",
+      "assertions": [
+        "Puts the scanner TLS certificate renewal among this quarter's work, citing the 2026-12-01 expiry and that the person who renewed it has left with no known notes",
+        "Treats the stock-sync notes (Marta's and Ines's split-pallet complaints) as one item",
+        "Recommends the roughly 3-day split-pallet patch rather than the two-person, full-quarter sync rewrite for this quarter, because the rewrite does not fit 3 engineer-weeks, and the items picked for the quarter fit within the 3 weeks",
+        "Flags at least one disagreement between the notes and the incident log, such as the claimed 40 engineer-hours on sync failures against 5 logged hours, or the label printer crashing 'every week' against two logged incidents, instead of silently using one figure",
+        "Does not recommend the Perl reporting rewrite for this quarter, since the notes give no evidence of what it costs today",
+        "Does not invent costs, hours, incident counts, owners or dates beyond those in the two files",
+        "Fits about one page"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-18",
+      "prompt": "I own a small bakery. My nephew built our online ordering site years ago. The new freelancer says it's 'full of tech debt' and sent me this list: PHP 5 site, no backups of the order database, customer passwords stored in plain text, copy-pasted code everywhere, no tests. She wants two weeks to fix it. What actually matters? Just a short list I can understand.",
+      "assertions": [
+        "Puts the missing database backups and the plain-text passwords at the top, saying in plain words what could go wrong for the bakery",
+        "Does not rank the copied code or the missing tests above those two",
+        "Treats the old PHP version as a real risk because it no longer gets security fixes, without inventing a specific vulnerability or attack",
+        "Does not invent costs, hours, incidents or customer numbers that are not in the message",
+        "Says what the two weeks should go on first, rather than only listing the items",
+        "Is a short list in plain language, without unexplained jargon",
+        "Answers without first asking questions"
+      ]
     }
   ]
 }

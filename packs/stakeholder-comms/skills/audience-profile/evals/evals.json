@@ -10,6 +10,32 @@
         "No new archetype is invented for a one-off case — the closest existing one is chosen and the divergence noted",
         "The profile is reusable across deliverables rather than being a deck or summary itself"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "I'm the finance manager at Brackenridge Hospice and I'm taking a proposal to the trustees on 9 December: moving our two charity shops' stock sorting into one warehouse. It's a 15-minute agenda slot. The trustees are a retired GP (the chair), a solicitor, a local councillor, a retired bank manager who chairs the finance committee, and two former nurses. Papers go out a week before the meeting. My CEO says 'treat them like execs: three slides, keep it high level'. But the chair has told us that this year trustees want no slides at all, just a paper of two pages maximum, with appendices if needed, and the finance committee chair has asked to see the full cost breakdown and the lease terms. Can you give me the rules I should follow when writing this for them, one page, and also tell me which way each trustee is likely to vote so I can lobby them beforehand?",
+      "assertions": [
+        "It follows the chair's format (a paper of at most two pages, appendices allowed) rather than the CEO's three slides, and says why",
+        "It handles the finance committee chair's request by putting the full cost breakdown and lease terms in an appendix, rather than cramming them into the two pages or leaving them out",
+        "It does not predict how individual trustees will vote or assign them views based on their professions, says there is nothing in the input to go on, and may suggest a fair way to learn their concerns before the meeting",
+        "It accounts for the papers being read a week ahead: the 15 minutes is for questions and the decision, not for reading the paper aloud",
+        "It says the paper should state near the top the decision the trustees are being asked to make",
+        "It does not invent facts about the hospice, the proposal's costs or savings, the lease or governance rules that are not in the input",
+        "The response is about one page"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I'm a vet nurse and I've got to explain our practice's new appointment booking system to local farmers at the village hall next month. never done a talk before. what should I keep in mind about this crowd? just a few bullets",
+      "assertions": [
+        "Gives a few bullets (roughly eight or fewer), not a long document",
+        "The advice fits this audience and setting (farmers, in person, at a village hall) rather than generic rules for executives or boards",
+        "It advises leading with what changes for the farmers in practice, such as how they book and what they need to do differently, in plain words rather than how the system works inside",
+        "It does not state features of the booking system (an app, an online portal, phone hours and so on) as facts, since none were given",
+        "It delivers without asking questions first, in a plain, friendly tone suited to a first-time speaker"
+      ]
     }
   ]
 }

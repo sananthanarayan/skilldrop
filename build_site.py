@@ -831,6 +831,11 @@ def measured_section():
     lows = [c[0] for c in (d.get("win_ci"), d.get("win2_ci")) if c]
     verdict = ("Both ranges sit above even. Many skills were revised against these same evals, and a sample of them lost on evals they had not seen, so read it as progress, not proof." if lows and min(lows) > 0.5 else
                "That is better than even and not yet a clear preference, and closing it is the current work.")
+    h = d.get("by_kind", {}).get("held_out")
+    if h and d.get("by_kind", {}).get("author"):
+        h2 = f" and {pc(h['win2'])}" if h.get("win2") is not None else ""
+        verdict = (f"On the {h['evals']} evals written by someone who never read the skill, the two judges preferred it in "
+                   f"{pc(h['win'])}{h2} of pairs, which is the better guide to a request the skill was not shaped around.")
     return f"""<section class="section" id="measured">
   <div class="inner"><div class="narrow">
     <p class="eyebrow">Measured</p>

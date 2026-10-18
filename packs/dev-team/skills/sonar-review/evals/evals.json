@@ -11,6 +11,33 @@
         "Findings are grouped into the lenses (bugs, vulnerabilities, security hotspots, code smells, coverage/duplication)",
         "Server vs cloud is auto-detected from sonar-project.properties rather than assumed"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Will my branch pass the quality gate? I can't run the scanner here: there's no Sonar token in this environment and no network. CI saved the last scan's output into this folder: quality-gate.json, issues.json, hotspots.json, and changed-files.txt (my branch's files against main). Locally pytest-cov says 85% coverage, so I think we're fine. Give me something I can paste into the PR description, under 300 words.",
+      "assertions": [
+        "Reports that the gate fails, taking the verdict from the status in quality-gate.json, and names at least the new-code coverage condition (61.3% against 80%) and the unreviewed security hotspot condition",
+        "Explains that the local 85% figure does not change the result: the gate measured 61.3% coverage on new code",
+        "Keeps the findings to the changed files: the blocker SQL-injection issue in legacy/ledger_import.py and the issue in intake/weighbridge.py are not presented as findings for this branch (they may be noted separately as pre-existing)",
+        "Does not list the issue resolved as a false positive (python:S1192 in intake/payments.py) as an open finding",
+        "Notes that the scan analysed revision 7f3c2e1 while the branch head is 9a41d07, whose commit message suggests the float-comparison bug was fixed after the scan, so the results may be out of date",
+        "Does not invent issues, rule IDs, line numbers or metric values that are not in the supplied files, and does not claim to have run a new scan",
+        "Stays under 300 words"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "Our contractor says the Sonar check 'went red' on their pull request and they're fixing it. I'm the project manager, not a developer. This is what I can see on the screen: 'Quality Gate failed. 2 conditions failed: Coverage on New Code 54.0% (required >= 80.0%), Duplicated Lines on New Code 6.1% (required <= 3.0%). 0 new bugs, 0 new vulnerabilities, 4 new code smells.' Is this serious? Should I hold Friday's release? Three sentences max.",
+      "assertions": [
+        "Gives a clear recommendation for Friday: this change should not go out until the gate passes, unless someone decides on purpose to accept the risk",
+        "Explains in plain words that the failures are about too little testing of the new code and too much copied code, and that no new bugs or security problems were reported",
+        "Does not describe the result as a security or data-loss problem",
+        "Does not invent files, rule IDs, specific issues or figures beyond the text on the screen, and does not claim to have run a scan",
+        "Uses at most three sentences",
+        "Answers without first asking for access, a token or more information"
+      ]
     }
   ]
 }

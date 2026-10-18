@@ -1,0 +1,23 @@
+[project]
+name = "sensor-ingest"
+version = "0.7.2"
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2.6",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.6",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+  "hardware: needs a live telemetry gateway on the plant network",
+]

@@ -26,6 +26,33 @@
         "Takes the project ID as a variable or data source rather than a literal",
         "Ends with the terraform fmt, validate and plan commands for the user to run"
       ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "Write the Terraform module for our archive bucket. The requirements are in requirements.md. Put it in modules/archive-bucket/.",
+      "assertions": [
+        "Writes the module files under modules/archive-bucket/",
+        "The bucket is not publicly readable: public access is blocked and the website reads through the caller-supplied CloudFront distribution, and the reply explains how this meets both the website need and SEC-4",
+        "Flags that deleting noncurrent versions after 30 days conflicts with keeping replaced master versions for 7 years, and does not silently apply the 30-day deletion to masters",
+        "Flags that moving the JPEG derivatives the website shows to Glacier Deep Archive would stop them being served, rather than applying the 90-day transition to everything without comment",
+        "The version constraints accept AWS provider 4.x and Terraform 1.5 (nothing requires provider 5.x)",
+        "Encrypts with a customer-managed KMS key and applies the caller-supplied tags",
+        "Does not add requirements that are not in requirements.md (for example cross-region replication or access logging) unless marked as optional or as assumptions"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "hi, I'm the admin for a psychology research group. the university gave us an AWS account and I need somewhere to keep our survey data files (they have participants' answers in them). the IT person said 'write it as a terraform module'. I don't really know terraform. just the main file please and keep it short",
+      "assertions": [
+        "Delivers a main.tf without stopping to ask questions first",
+        "The storage is private and encrypted by default, with public access blocked",
+        "Respects 'just the main file': gives one short file, or briefly explains if anything else is strictly needed",
+        "Notes that participants' answers are sensitive and suggests checking the university's data or ethics rules (for example on region or retention) rather than inventing them",
+        "Does not invent account IDs, retention periods, regions or other requirements as if they had been given",
+        "Includes a short plain-language explanation of how to use the file"
+      ]
     }
   ]
 }

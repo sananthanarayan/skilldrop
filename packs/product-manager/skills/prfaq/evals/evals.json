@@ -27,6 +27,32 @@
         "The BLOCKED output names the missing anchors (customer, problem, differentiator) and what to rerun with",
         "No invented product, customer segment, or problem statement appears"
       ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "Our farming co-op board wants a working-backwards PR/FAQ for a shared drone spraying service before we commit money. My working notes are in drone_notes.md. Write the PR/FAQ. Keep the press release under 400 words.",
+      "assertions": [
+        "Does not claim that 72% of members want the service; reflects that only 58 of 410 members responded",
+        "Catches that the per-acre costs add up to $12.00, not $10.20, so the margin at $14 is about 14%, not 27%",
+        "Does not promise members they can book a drone for any field; addresses the 50 m waterway rule affecting about 35% of member acreage",
+        "Flags that an April 2027 launch conflicts with a 9–12 month certification process that has not started, rather than writing as if spring is achievable without comment",
+        "The press release is under 400 words",
+        "Does not invent data (member counts, prices, dates, yields) not in the notes; any new figure is labelled as an assumption"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "im the volunteer coordinator for our youth soccer league. we want to start a carpool matching thing for away games so parents arent all driving separately. someone on the board said we should 'write the press release first'?? can u do a short one, like half a page, plus a few faqs",
+      "assertions": [
+        "Delivers a press release and FAQs without stopping to ask questions first",
+        "The press release is about half a page (no more than roughly 300 words) and there are only a few FAQs (no more than about 8)",
+        "Written as an announcement of the carpool matching as if it exists, with the benefit to families stated plainly",
+        "The FAQs take on at least one hard practical question a parent or the league would ask, such as driver vetting and child safety, insurance or liability, or what happens when a driver cancels",
+        "Does not invent statistics, sponsors, or partner organisations presented as fact (for example 'cuts driving by 40%')",
+        "Plain language suited to parents in a volunteer-run league, without corporate or tech jargon"
+      ]
     }
   ]
 }

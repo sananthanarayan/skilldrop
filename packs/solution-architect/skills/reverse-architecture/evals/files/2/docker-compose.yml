@@ -1,0 +1,42 @@
+services:
+  proxy:
+    image: nginx:1.27
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on: [web]
+
+  web:
+    build: ./web
+    env_file: env.example
+    environment:
+      DATABASE_URL: postgres://boxoffice@db:5432/boxoffice
+      REDIS_URL: redis://cache:6379/0
+    depends_on: [db, cache]
+
+  worker:
+    build: ./worker
+    command: rq worker emails tickets
+    environment:
+      DATABASE_URL: postgres://boxoffice@db:5432/boxoffice
+      REDIS_URL: redis://cache:6379/0
+      SMTP_HOST: smtp.mail.example.test
+    depends_on: [db, cache]
+
+  db:
+    image: postgres:16
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  cache:
+    image: redis:7
+
+  legacy-reports:
+    build: ./reports
+    profiles: ["manual"]
+    environment:
+      DATABASE_URL: postgres://reports_ro@db:5432/boxoffice
+
+volumes:
+  dbdata:

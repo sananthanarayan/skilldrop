@@ -205,6 +205,7 @@ Capture a brand once, then build decks and flyers that use it. `brand-kit` write
 
 | Skill | What it does |
 |---|---|
+| [`role-shortlist`](../../packs/career/skills/role-shortlist/SKILL.md) | Sort every open role on a careers page, a job-board export or a folder of saved postings into apply, maybe, skip and not read, against one resume. Each role is judged only from its own posting; a role it could not read is listed as unread, never guessed from its title; an unmet licence, location, right-to-work or required degree takes a role out whatever else fits; the same role posted twice counts once. |
 | [`job-fit-analysis`](../../packs/career/skills/job-fit-analysis/SKILL.md) | A posting compared with a resume: a verdict, the screening requirements first, each requirement marked met, partly, not shown or not met with the resume line behind it, and questions about what the resume doesn't show. |
 | [`resume-tailor`](../../packs/career/skills/resume-tailor/SKILL.md) | A resume reworked for one posting in its own format (Markdown, Typst, LaTeX, Word) with every employer, title, date and number unchanged, lists of what was cut, what was added from outside the resume and what it cannot claim, and a script that lists figures and names the original doesn't contain. |
 | [`cover-letter`](../../packs/career/skills/cover-letter/SKILL.md) | A cover letter under a page from the resume and the posting, with no enthusiasm, company facts or experience the person didn't supply, checked by the same script. |

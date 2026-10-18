@@ -184,8 +184,9 @@
     },
     "apply-for-a-job": {
       "for": "Anyone applying for a job, in any field",
-      "description": "Prepare one application that is tailored and true: an honest fit check against the posting, a resume reworked without adding a claim, a cover letter built only from what you supplied, and the application form's answers drafted from your resume.",
+      "description": "Choose which of an employer's roles to go for, then prepare one application that is tailored and true: an honest fit check against the posting, a resume reworked without adding a claim, a cover letter built only from what you supplied, and the application form's answers drafted from your resume.",
       "skills": [
+        "role-shortlist",
         "job-fit-analysis",
         "resume-tailor",
         "cover-letter",

@@ -1,0 +1,9 @@
+id,risk,owner,inherent_likelihood,inherent_impact,inherent_score,controls,residual_likelihood,residual_impact,residual_score,treatment,next_review
+R01,Heavy rain floods the campsite fields,Site Manager,3,4,12,French drains on fields B and C; trackway on main routes; tow tractor on standby,2,4,8,reduce,2026-11-30
+R02,Weather,Festival Director,2,5,10,Event cancellation insurance,1,5,5,transfer,2026-12-15
+R03,Crowd crush at the main stage front barrier,Safety Officer,3,5,15,Front-of-stage barrier designed by structural engineer; 40 stewards in pit; show-stop procedure,2,5,10,reduce,2026-09-30
+R04,Headliner cancels within 4 weeks of the festival,Booking Lead,2,4,12,Cancellation clause in artist contract; reserve list of three acts,2,3,6,reduce,2027-02-01
+R05,Food poisoning from a food vendor,Everyone,3,4,12,,1,3,3,reduce,2026-10-01
+R06,Ticketing outage on general sale day,,6,3,18,Queue page; second ticketing partner on standby,3,3,9,reduce,2026-12-01
+R07,Noise complaints lead to stricter licence conditions next year,Licensing Lead,4,3,12,Noise monitoring at three boundary points; curfew 23:00,3,3,9,reduce,2027-01-15
+R08,Too few volunteers sign up for stewarding and litter shifts,Volunteer Coordinator,3,3,9,Early-bird ticket for volunteers; partnership with two local colleges,2,3,6,reduce,2026-08-15

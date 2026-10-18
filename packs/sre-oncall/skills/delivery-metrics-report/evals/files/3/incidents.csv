@@ -1,0 +1,7 @@
+incident_id,service,opened_at,resolved_at,severity,caused_by_deploy,summary
+INC-201,fares-api,2026-08-11T14:10:00Z,2026-08-11T17:10:00Z,SEV2,D-1041,Child fares calculated at adult rate after release
+INC-202,fares-api,2026-08-19T11:25:00Z,2026-08-19T12:15:00Z,SEV2,D-1047,Fare lookups timing out after connection pool change
+INC-205,fares-api,2026-08-19T11:31:00Z,2026-08-19T12:20:00Z,SEV2,D-1047,Duplicate of INC-202 raised by the service desk; closed as duplicate
+INC-204,journey-planner,2026-09-01T17:20:00Z,2026-09-01T18:00:00Z,SEV3,D-1025,Platform numbers missing from journey results
+INC-203,fares-api,2026-09-02T13:10:00Z,2026-09-02T15:05:00Z,SEV2,,"Card payments failing: payment provider outage (third party), no change on our side"
+INC-206,fares-api,2026-09-17T10:20:00Z,,SEV3,D-1061,Railcard discount codes rejected for some users; mitigation in progress

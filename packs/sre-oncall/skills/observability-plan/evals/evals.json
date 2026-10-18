@@ -11,6 +11,33 @@
         "Pages are symptom-based, actionable, and runbook-linked; anything not actionable is a ticket, not a page",
         "The plan makes a deliberate metrics-vs-logs-vs-traces choice rather than proposing everything"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "We need an observability plan for Larkspur Pharmacy's repeat prescriptions service. The service is described in service-overview.md, our current alerts and how often they fire are in current-alerts.csv, and the constraints are in constraints.md. Can you write the plan?",
+      "assertions": [
+        "Does not adopt the 99.999% target: explains that the dispensary system's 99.9% commitment, with no offline mode, caps what the refill journey can honestly promise, and sets a target with that in mind",
+        "Refuses patient ID and prescription ID as metric labels, giving both the cardinality cost and the health-data rule, and offers another way to trace individual complaints that keeps identifiers out of logs, labels and traces",
+        "Stops paging on causes that were rarely actioned (CPU, memory, pod restarts, any single 5xx) and makes pages depend on what patients experience",
+        "Handles the overnight low-traffic hours so that a handful of failed requests while branches are closed does not page anyone",
+        "Addresses the $1,500 cap against the current $2,100 and says what is cut or reduced to get there, with log ingestion as the main lever",
+        "Notes that the traffic figures conflict (40,000 a week in the overview, 40,000 a day in the constraints) and does not invent other traffic, alert or cost figures",
+        "Keeps the plan to about three pages"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I sell yarn online, about 30 orders a day, it's just me. My web guy wants to set up 'alerts' and showed me a list of 25 things he can monitor (server load, memory, disk, and so on). I just want to know if customers can't buy stuff. What should actually text me at night? Few bullet points please.",
+      "assertions": [
+        "Recommends only one or a few alerts that would text her at night, each about customers being unable to reach the shop, check out or pay",
+        "Says most of the 25 items should not text her, and can go to email or an occasional check instead",
+        "Allows for the low order volume, for example by not alerting on 'no orders in the last hour' overnight or on one failed payment",
+        "Says what she or the web guy should do when each night-time alert fires",
+        "Does not invent details of her shop platform, tools or traffic beyond what she said",
+        "Delivers a few plain-language bullet points without stopping to ask questions first"
+      ]
     }
   ]
 }

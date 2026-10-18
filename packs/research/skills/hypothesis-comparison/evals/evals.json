@@ -14,6 +14,33 @@
         "Names one next observation that the top two hypotheses predict differently, with the result each predicts",
         "Does not invent evidence, numbers or sources that are not in the prompt; anything inferred is tagged [assumption]"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Our honey harvest crashed this year and my partner and I disagree about why. Everything we know is in season_notes.md. Answer the question in the notes. One page.",
+      "assertions": [
+        "Reports the drop as about 27% (3,150 kg to 2,300 kg), catching that the owner's '40%' does not match the yard data",
+        "Notes that the Hilltop yard's yield was essentially unchanged, so the loss is concentrated at Riverside and Orchard, contradicting 'every hive was hit the same'",
+        "Treats mite counts below the treatment threshold in every yard as evidence against varroa as the main cause, and does not endorse the $4,000 treatment programme on the strength of the mite theory",
+        "Does not claim the pesticide explanation is proven or enough on its own for a lawyer's letter, and says what is missing",
+        "Names a next observation that would separate the leading explanations, such as residue testing of the frozen bag of dead bees",
+        "Does not invent evidence (lab results, product names, spray dates) not in the notes",
+        "Fits about one page"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "so our village pub's sunday lunch trade has really dropped since about june. my husband says its the new chef, i reckon its the road works on the high street, our daughter says its because we put prices up. we did all three around the same time lol. few bullets on how to work out which one it actually is?",
+      "assertions": [
+        "Answers in a few bullets — no more than about 10 bullets or 250 words — without asking questions first",
+        "Weighs all three explanations and does not declare a winner without evidence",
+        "Points out that because the three changes happened at about the same time, timing alone cannot tell them apart",
+        "Suggests specific, cheap checks the pub can do that would point to one explanation over the others (for example whether weekday or drinks-only trade also fell, whether regulars still come but spend less, what reviews say about the food, or what happens when the road works end)",
+        "Does not invent sales figures, dates, or customer feedback not given",
+        "Plain language with no analysis jargon"
+      ]
     }
   ]
 }

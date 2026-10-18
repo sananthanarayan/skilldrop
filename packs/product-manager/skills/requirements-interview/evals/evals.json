@@ -11,6 +11,33 @@
         "Every script contains a kill-question, and the kit states what a kill-answer would mean",
         "Stakeholders are chosen and named by role, with a reason each one is on the list"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "I'm leading a project to speed up patient discharge at our hospital. The brief is in project_brief.md. Prepare the interview kits for the four people listed there.",
+      "assertions": [
+        "Does not plan to interview patients directly in the next two weeks, given ethics approval takes about six weeks; the patient view is sought another way (such as the Patient Liaison Officer's complaint themes) or deferred",
+        "Questions probe the pharmacy wait (median 3.1 hours) rather than accepting the sponsor's view that late discharge summaries are the main cause, and at least one question tests the sponsor's theory",
+        "Does not spend questions on adding staff, given there is no budget for new staff, or notes that this is already decided",
+        "Catches that 14% of 1,200 monthly discharges is 168, not 280",
+        "Each stakeholder's set of questions fits a 20-minute interview (no more than about 7 questions each)",
+        "Covers all four named stakeholders",
+        "Does not invent data, stakeholders, or hospital systems not in the brief"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "i own a small dog grooming salon, 3 groomers + 1 person on the front desk. thinking of paying a freelancer to build online booking. what should i ask my groomers and my front desk person before we build it? just a few bullets each",
+      "assertions": [
+        "Gives questions for both the groomers and the front-desk person without asking the user clarifying questions first",
+        "A few bullets per person — no more than about 7 questions each — and short overall",
+        "Questions get at how the salon works today and what could go wrong (for example how long different dogs take, no-shows, deposits, walk-ins, special handling), not just 'what features do you want'",
+        "At least one question tests the owner's assumption that online booking will help, for example by asking what actually goes wrong with bookings today",
+        "Questions are worded so a groomer can answer them easily, without software jargon",
+        "Does not invent facts about the salon (prices, customer counts, current software) presented as known"
+      ]
     }
   ]
 }

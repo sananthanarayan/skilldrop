@@ -11,6 +11,33 @@
         "Each test is pushed to the lowest pyramid level that would catch the failure",
         "Out-of-scope areas are named rather than silently skipped"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Write the test plan for the parking permit renewal release described in permit-renewal-spec.md. QA starts on Monday. Two pages at most.",
+      "assertions": [
+        "Flags that the low-emission price conflicts (50% off £120 is £60, but the price table says £65) as something to settle before testing, rather than silently picking one as the expected result",
+        "Flags that the spec promises seven acceptance criteria but lists six, with AC5 missing",
+        "Every acceptance criterion in the spec is covered by at least one test or explicitly listed as not covered",
+        "Includes tests on both sides of each boundary: 30 days before expiry, 60 days after expiry, and 50 g/km of CO2",
+        "Uses the vehicle register stub for testing and lists the live register lookup as not tested, rather than planning tests against the live service",
+        "Does not invent a load target such as requests per second or concurrent users for the January rush; it says the figure is needed from Parking Services",
+        "Fits about two pages"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I'm a teacher. I made a spreadsheet that works out final grades: homework is 40%, the exam is 60%, and a student who missed the exam gets 'INC'. A colleague said I should test it before I send grades home. What should I check? Just a checklist, 10 items max.",
+      "assertions": [
+        "Includes a check for a student with no exam score (expecting INC) and a check for a student with an exam score but missing homework",
+        "Includes at least one worked example with numbers and the expected result from the 40/60 weighting (for example homework 80 and exam 90 gives 86)",
+        "Includes checks for entry mistakes such as a score above 100, or a blank cell treated as zero",
+        "Does not invent letter-grade cut-offs, rounding rules or other rules the teacher did not state; if they matter, it asks the teacher to fill them in",
+        "Has no more than 10 items, written in spreadsheet terms a non-programmer understands",
+        "Delivers the checklist without first asking questions"
+      ]
     }
   ]
 }

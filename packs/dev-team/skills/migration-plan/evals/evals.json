@@ -11,6 +11,33 @@
         "Each phase carries exactly one change, so a failed phase implicates one thing",
         "Rollback steps are stated per phase rather than as a single end-of-plan afterthought"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Northvale Blood Service needs a plan for moving donor records from DonorTrack 4 to Haemora Cloud. The background is in context.md, with field-mapping.csv, deferral-codes.csv and trial-import-summary.txt. Leadership wants to cut over on 1 December. No more than two pages.",
+      "assertions": [
+        "The plan works within the legacy system's limits: no dual-write, change-data capture or DonorTrack API is assumed; it relies on the nightly full export (with repeated loads, upserts by donor_id, or a freeze window)",
+        "Flags that TEMP-TRAVEL and MED-REVIEW have no mapping in Haemora, contradicting the IT lead's '1:1' note, and treats this as something to resolve before any donor is registered in the new system, because a deferred donor could otherwise be bled",
+        "Flags that the trial import does not add up: 401,200 rows minus 9,300 merged duplicates is 391,900, but 395,400 were loaded, despite the 'SUCCESS' result",
+        "Handles records from the mobile vans that reach DonorTrack up to 3 days after an export or after cutover",
+        "Treats 1 December as conditional on checks passing, and says from what point going back to DonorTrack 4 is no longer possible and how to go back before then",
+        "Does not present invented figures or system capabilities as if they came from the input",
+        "Is no more than two pages"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I manage a dental practice and we're moving from our paper appointment book to an app called BookWell next month. how do we do it without messing up anyone's appointments? half a page max",
+      "assertions": [
+        "Gives an ordered set of steps covering entering all future appointments into the app and checking them against the paper book before relying on it",
+        "Sets a clear switch-over day, or a short period where both are kept, with one of them named as the one that counts",
+        "Includes a fallback if the app fails (for example keeping the paper book, or a printout of upcoming appointments)",
+        "Fits in half a page",
+        "Uses plain language for a practice manager rather than software jargon",
+        "Does not invent BookWell features, prices or settings"
+      ]
     }
   ]
 }

@@ -12,6 +12,32 @@
         "Relative dates are converted to absolute dates, marked when inferred",
         "The output is a structured table the user can paste into a doc or tracker"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Can you turn committee-meeting-2026-09-03.txt and followup-thread.txt into a decision log and action list I can paste into the email to the committee? Keep it to what fits on one screen.",
+      "assertions": [
+        "It records the fireworks supplier decision as Northern Lights Pyro at £4,250, because the Skyburst decision was reversed later in the same meeting; Skyburst is not shown as the final decision",
+        "It does not record 7 November as an agreed date: following the chair's correction in the thread, the date is shown as still open pending Wrenfield FC",
+        "The hog roast versus WI tea tent question is shown as undecided, not as a decision",
+        "The Church Lane road-closure call is logged as an action with no owner rather than assigned to someone, and the hi-vis vests are owned by Sam Okoro (per the thread), not Sam Patel or an unspecified 'Sam'",
+        "It flags that £1,200 plus £250 is £1,450, not the £1,500 stated in the notes",
+        "It does not invent owners or due dates; in particular the 'by next Friday' deadline for the cancelled Skyburst booking is not carried over to the Northern Lights booking as if it had been stated",
+        "The whole log fits on roughly one screen"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "can u tell me who's doing what from our street party group chat? just a list pls\n\nJo: ok so are we doing it on the 12th or not\nMark: 12th works for me\nPriya: me too. I can bring the gazebo\nJo: great. someone needs to ask the council about closing the road\nTom: lol not me I did it last year\nMark: I'll do the bunting\nPriya: actually I can only bring the gazebo if someone helps me carry it\nJo: I'll sort the music, and Tom can you do the bbq?\nTom: 👍\nAma: I'll make a cake! maybe two",
+      "assertions": [
+        "The list gives Mark on bunting, Priya on the gazebo, Jo on music, Tom on the barbecue and Ama on cake",
+        "Priya's condition (she needs someone to help carry the gazebo) is kept",
+        "Asking the council about closing the road is shown as not taken by anyone (Tom declined), not assigned to someone",
+        "It does not invent a month for 'the 12th', deadlines or owners that are not in the chat",
+        "It is just a short list with no long preamble, and it delivers without asking questions first"
+      ]
     }
   ]
 }

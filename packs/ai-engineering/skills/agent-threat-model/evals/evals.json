@@ -36,6 +36,33 @@
         "No model is produced — the output is BLOCKED: need the agent's tool/permission inventory",
         "No capability inventory, matrix, or fixes are fabricated"
       ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "I'm the IT manager at Halden Row Lettings (residential lettings, about 2,300 tenancies). We're launching a tenant-support AI agent on Monday. The spec is in `agent-spec.md`, its live config is `agent-config.yaml`, the vendor's security note is `vendor-security-note.md`, and the review my predecessor did is `previous-review.md`. The product owner says outbound email can't be removed, because replying to tenants is the whole point. Can you do the security review and tell me if we're OK for Monday? Two pages max.",
+      "assertions": [
+        "It explains that an email from anyone could instruct the agent to send tenants' data out, because the agent reads an inbox anyone can email, can see bank details and ID documents, and can send email to any address",
+        "It flags that the live config contradicts the previous review: recipients are set to '*' rather than the tenant on file, and ID documents and bank details are in the fields the agent can read, so the June approval no longer applies",
+        "It identifies opening web links on any domain as a second way data could leave, not only outbound email",
+        "It keeps outbound email but proposes specific limits, such as only sending to the tenant's address on file, removing bank and ID fields from what the agent can see, or requiring approval for messages containing personal data",
+        "It says plainly that the agent should not launch on Monday as configured, says what must change first, and does not accept the vendor's 99.9% claim as a reason to launch",
+        "It does not invent capabilities, incidents or vendor features that are not in the files",
+        "It is no longer than two pages"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-18",
+      "prompt": "I'm the office manager at a 15-person accountancy practice. Our IT contractor wants to connect an AI assistant to our shared drive (it has payroll and clients' tax returns on it) and to our main inbox, so it can summarise client emails and reply to them automatically. The partners asked me whether that's safe. Can you give me a few bullets I can paste into an email to them?",
+      "assertions": [
+        "It explains in plain words that an incoming email, from anyone, could trick the assistant into sending client or payroll files to an outsider",
+        "It recommends that replies are drafted for a person to approve rather than sent automatically, or that the assistant can only send to limited recipients",
+        "It recommends limiting what the assistant can reach on the drive, for example keeping payroll out of reach or giving access only to the folders it needs",
+        "It gives a clear answer (not safe as described, and what would make it safer) rather than an unguided 'it depends'",
+        "It does not invent product names, vendor features or legal requirements as fact",
+        "It is a few bullets the user can paste into an email, without unexplained security jargon"
+      ]
     }
   ]
 }

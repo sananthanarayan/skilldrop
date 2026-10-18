@@ -14,6 +14,33 @@
         "Names the flip-assumption that would reverse the recommendation, with a de-risking step if its confidence is low",
         "Recommends exactly one option and states the runner-up's strongest argument fairly"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "The board of our food bank network needs to decide whether to get a refrigerated van. Everything I have is in hollin_vale_inputs.md. Write the business case for the November 20 board meeting. Keep it to what fits on two printed pages — the board reads it on paper.",
+      "assertions": [
+        "Uses the warehouse log's total (about 10.4 tonnes a year) for spoilage, or explicitly reconciles it against the chair's 18-tonne figure, rather than silently using 18 tonnes",
+        "Catches that the lease quote's annual figure is wrong: $1,850 x 12 is $22,200, not $19,200",
+        "Recognises that the grant can fund only the van purchase, so the lease and all running costs (including the paid driver) must come from the $20,000-a-year operating headroom, and notes that even the buy option's recurring costs (about $33,500 a year) exceed that headroom",
+        "Treats keeping the volunteer drivers as a real option to compare against, and accounts for 3 of the 11 regular drivers leaving by spring",
+        "Does not present a number of extra families fed as a sourced fact; any conversion from produce to families is flagged as an assumption not in the input, or the gap is named",
+        "Does not invent costs, funding sources, or figures not in the input file without labelling them as assumptions",
+        "Fits roughly two printed pages (about 1,000 words or less) and makes a clear recommendation the board can vote on"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "my dental practice is thinking about getting one of those 3D intraoral scanners for crowns instead of goopy impressions, its like $30k?? my partner thinks its a waste of money. we do maybe 8 crowns a month. can you give me a few bullets on whether its worth it, dont need an essay",
+      "assertions": [
+        "Gives a usable answer on whether the scanner is worth it instead of only asking questions back",
+        "Stays to a few bullets — no more than about 10 bullets or 250 words",
+        "Compares buying against keeping traditional impressions, not just the scanner's benefits in isolation",
+        "Any figures the user did not give (lab fees, chair time saved, impression material costs, financing) are labelled as estimates or assumptions, not stated as facts",
+        "Names what the answer most depends on (for example, savings per crown or crown volume) so the owner knows what to check before deciding",
+        "Written in plain language for a dentist, without unexplained finance jargon such as NPV or IRR"
+      ]
     }
   ]
 }

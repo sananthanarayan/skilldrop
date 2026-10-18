@@ -1,0 +1,64 @@
+diff --git a/requirements.txt b/requirements.txt
+index 41c2e07..9d0a1b3 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,3 +1,3 @@
+ jinja2==3.1.4
+-reportlab==3.6.13
++reportlab==4.2.0
+ python-dateutil==2.9.0
+diff --git a/receipts/totals.py b/receipts/totals.py
+index 5e8f0aa..c31b7d2 100644
+--- a/receipts/totals.py
++++ b/receipts/totals.py
+@@ -1,12 +1,12 @@
+-from decimal import Decimal, ROUND_HALF_UP
++from decimal import Decimal, ROUND_HALF_EVEN
+ 
+ TWOPLACES = Decimal("0.01")
+ 
+ 
+ def match_amount(amount: Decimal) -> Decimal:
+     """Sponsor match on a donation: 25p for every pound given."""
+-    return (amount * Decimal("0.25")).quantize(TWOPLACES, rounding=ROUND_HALF_UP)
++    return (amount * Decimal("0.25")).quantize(TWOPLACES, rounding=ROUND_HALF_EVEN)
+ 
+ 
+ def receipt_total(amount: Decimal) -> Decimal:
+-    return amount + match_amount(amount)
++    return (amount + match_amount(amount)).quantize(TWOPLACES, rounding=ROUND_HALF_EVEN)
+diff --git a/receipts/templates/receipt.html b/receipts/templates/receipt.html
+index 0b7d3e1..4aa29f0 100644
+--- a/receipts/templates/receipt.html
++++ b/receipts/templates/receipt.html
+@@ -12,9 +12,8 @@
+   <h1>Donation receipt</h1>
+   <p>Donor: {{ donor_name }}</p>
+   <p>Amount given: &pound;{{ amount }}</p>
+   <p>Sponsor match: &pound;{{ match }}</p>
+   <p>Total to the rescue: &pound;{{ total }}</p>
+-  <p>Registered charity no. {{ charity_number }}</p>
+-  <p>Receipt issued {{ issued_on }}</p>
++  <p>Thank you for supporting Hollyfield Animal Rescue. Receipt issued {{ issued_on }}</p>
+ </body>
+ </html>
+diff --git a/tests/test_totals.py b/tests/test_totals.py
+index 7c1d9e4..2f8b6a5 100644
+--- a/tests/test_totals.py
++++ b/tests/test_totals.py
+@@ -1,6 +1,6 @@
+ from decimal import Decimal
+ 
+-from receipts.totals import match_amount, receipt_total
++from receipts.totals import receipt_total
+ 
+ 
+ def test_receipt_total_whole_pounds():
+@@ -9,7 +9,3 @@ def test_receipt_total_whole_pounds():
+ 
+ def test_receipt_total_with_pence():
+     assert receipt_total(Decimal("12.40")) == Decimal("15.50")
+-
+-
+-def test_match_rounds_half_up():
+-    assert match_amount(Decimal("10.10")) == Decimal("2.53")

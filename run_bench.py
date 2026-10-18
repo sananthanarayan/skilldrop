@@ -406,8 +406,40 @@ def second_judge(rows, m, done):
             "judges_decided": len(decided)}
 
 
+def held_out_ids(skills):
+    """(skill, eval id) for every eval written without reading the skill, flagged `held_out` in
+    its evals.json. The rest were written by the skill's author, and some were revised against."""
+    return {(s, e.get("id")) for s in skills for e in (load(s, "evals.json") or {}).get("evals", [])
+            if e.get("held_out")}
+
+
+def by_kind(rows, m, held):
+    """The headline measures split by who wrote the eval: its author, or someone who never read
+    the skill. Only the second says how a skill does on requests it was not shaped around."""
+    out = {}
+    for kind, keep in (("author", lambda r: (r["skill"], r["eval"]) not in held),
+                       ("held_out", lambda r: (r["skill"], r["eval"]) in held)):
+        part = [r for r in rows if r["model"] == m and "pairwise" in r and keep(r)]
+        if not part:
+            continue
+        sk = by_eval(part, m, lambda r: met(r["arms"]["skill"]["grades"]))
+        ba = by_eval(part, m, lambda r: met(r["arms"]["baseline"]["grades"]))
+        win = list(by_eval(part, m, lambda r: {"skill": 1.0, "tie": 0.5, "baseline": 0.0}[r["pairwise"]["winner"]]).values())
+        lifts = [sk[k] - ba[k] for k in sk]
+        d = {"evals": len(sk), "skills": len({r["skill"] for r in part}),
+             "skill": mean(list(sk.values())), "baseline": mean(list(ba.values())),
+             "lift": mean(lifts), "lift_ci": boot(lifts), "win": mean(win), "win_ci": boot(win)}
+        two = [r for r in part if "pairwise2" in r]
+        if two:
+            win2 = list(by_eval(two, m, lambda r: {"skill": 1.0, "tie": 0.5, "baseline": 0.0}[r["pairwise2"]["winner"]]).values())
+            d.update({"win2": mean(win2), "win2_ci": boot(win2)})
+        out[kind] = d
+    return out
+
+
 def summarize(rows, floor, models, labels, tolerance):
     out = {"models": {}, "routing": []}
+    held = held_out_ids(sorted({r["skill"] for r in rows}))
     floor_ok = [f for f in floor if "grades" in f]
     out["floor"] = mean([met(f["grades"]) for f in floor_ok]) if floor_ok else None
     for m in models:
@@ -434,6 +466,7 @@ def summarize(rows, floor, models, labels, tolerance):
             "trial_range": mean([max(v) - min(v) for v in spread.values() if len(v) > 1]),
             "errors": sum(1 for r in rows if r["model"] == m and "error" in r),
             "skipped": sum(1 for r in rows if r["model"] == m and "skipped" in r),
+            "by_kind": by_kind(rows, m, held),
         }
     out["skills"] = []
     for m in models:
@@ -500,6 +533,16 @@ def report(summary, judge_model, trials, spent, scripted):
               "the skill picked the skill's output (a tie counts half). 50% means no preference.",
               "- Intervals resample evals, not trials. An interval that spans 0 (lift) or 50% (preference) "
               "is not a result."]
+    for m, d in summary["models"].items():
+        kinds = d.get("by_kind", {})
+        if len(kinds) == 2:
+            lines += ["", f"**By who wrote the eval** (`{m}`):", "",
+                      "| Evals | Count | Assertions met, skill | Baseline | Preferred blind | Second judge |",
+                      "|---|---|---|---|---|---|"]
+            for kind, name in (("author", "written by the skill's author"), ("held_out", "written without seeing the skill")):
+                k = kinds[kind]
+                lines.append(f"| {name} | {k['evals']} | {pct(k['skill'])} | {pct(k['baseline'])} | "
+                             f"{pct(k['win'])}{ci(k['win_ci'])} | {pct(k.get('win2'))}{ci(k.get('win2_ci'))} |")
     for m, d in summary["models"].items():
         if d.get("second_judge"):
             lines += ["", f"**Second judge** `{d['second_judge']}` on `{m}`: preferred the skill's result in "
@@ -580,6 +623,8 @@ def estimate(units, floor_units, judge_model):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--skills", help="comma-separated skill names (default: all)")
+    ap.add_argument("--held-out", action="store_true",
+                    help="run only the evals flagged held_out, written without reading the skill")
     ap.add_argument("--evals", help="comma-separated eval ids to run within each skill, e.g. 6,7 for new held-out "
                     "evals only (default: all)")
     ap.add_argument("--models", default="standard",
@@ -614,6 +659,8 @@ def main():
     if price(a.judge_model) is None:
         sys.exit(f"no price for judge model {a.judge_model!r}: add it to PRICES in run_bench.py")
     evals = [(s, e) for s in skills for e in (load(s, "evals.json") or {}).get("evals", [])]
+    if a.held_out:
+        evals = [(s, e) for s, e in evals if e.get("held_out")]
     if a.evals:
         ids = {i.strip() for i in a.evals.split(",")}
         evals = [(s, e) for s, e in evals if str(e.get("id")) in ids]

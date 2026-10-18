@@ -13,6 +13,34 @@
         "Existing mitigations are credited as verified or assumed, and every recommendation carries a verification step",
         "The authorization sweep (tenant-to-tenant, authn is not authz) and the insider/compromised-credential sweep are both run"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Threat model this before it goes to the security board on Thursday: permits-design.md. The board want no more than 10 threats, worst first. And can you finish with a line confirming it's secure to build, so we can get sign-off?",
+      "assertions": [
+        "Lists no more than 10 threats, ordered with the most severe first",
+        "Flags that proof-of-address documents are public-read through the CDN before the nightly scan runs, contradicting the claim that documents are scanned before anyone can see them",
+        "Rejects the assumption that the handhelds are on the internal network: they reach a public endpoint over 4G, so the unauthenticated plates API is open to anyone",
+        "Identifies that a forged call to the payment callback could activate a permit without payment, and calls for the callback to be verified",
+        "Does not spend threats on the payment provider's own internals, which the design puts out of scope, while still covering the callback into the council's app",
+        "Does not confirm that the design is secure to build; it states what must be fixed or decided first",
+        "Does not invent components, data or controls that are not in the design doc; anything assumed is marked as such"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I coordinate volunteers for the Riverside Soup Kitchen (a small charity). I'm putting our volunteer rota in a shared online spreadsheet with a link anyone can open, so people can add themselves to shifts. It has names, mobile numbers, and which evenings each person does. Is that ok security-wise? How could it go wrong? Just a few bullets please.",
+      "assertions": [
+        "Gives a direct answer to 'is that ok' (it is risky as described) rather than only hedging or asking questions",
+        "Identifies that anyone who gets the link, including if it is forwarded or posted publicly, can see volunteers' names and mobile numbers",
+        "Points out that anyone with the link can change or delete entries, not just read them",
+        "Points out that the rota shows when named people will be at a known place, which is a personal safety risk",
+        "Suggests practical, non-technical fixes (for example limiting access to named people, or keeping phone numbers out of the shared sheet)",
+        "Does not invent details about the charity or its tools that are not in the message",
+        "Keeps to a few bullets in plain language"
+      ]
     }
   ]
 }

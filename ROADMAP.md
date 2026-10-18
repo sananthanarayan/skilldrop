@@ -4,9 +4,9 @@ What is being worked on next. Not a commitment — a direction. Shipped work mov
 
 ## Upcoming
 
-- **Held-out evals for every skill** — 12 skills now have evals they were never revised against; the published number should be split into the two kinds for all of them.
-- **A shortlist skill for `career`** — run the fit check across an employer's open roles. Needs network access the benchmark sandbox lacks, so it waits on a way to measure it.
-- **The light and heavy tiers** — the benchmark has run on the standard tier only. Running all three shows where a cheaper model is enough.
+- **Publish the benchmark on the current catalogue.** Every skill now has held-out evals and the summary splits them from the author's; the published run is still the 0.16.9 catalogue. A full run of 376 evals is about $50 of plan usage and several hours.
+- **Revise `role-shortlist` on the thin case** ([RFC-0047](docs/rfcs/0047-role-shortlist.md)): it prints empty groups and treats a preferred item as a requirement when given six one-line blurbs. Measure on new evals.
+- **The light and heavy tiers** — the benchmark has run on the standard tier only. `run_bench.py --held-out --models light,heavy` on the 224 held-out evals is about $80 of plan usage and shows where a cheaper model is enough.
 
 ## Considering
 

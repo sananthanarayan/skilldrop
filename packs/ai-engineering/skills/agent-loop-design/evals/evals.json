@@ -23,6 +23,34 @@
         "No loop is designed — the output is BLOCKED: need the task and its done-condition",
         "No state machine or caps are fabricated"
       ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I'm the development management lead at Corrie Vale Borough Council. We want an AI agent loop to work through householder planning applications (rear extensions, loft conversions). My manager's request is in `request-from-head-of-planning.md`, the rules it would check are in `design-guide-extract.md`, the legal position is in `legal-advice.md`, and what happened in our trial is in `trial-notes.md`. Please write the loop design my team and our IT supplier can build from. Keep it under two pages.",
+      "assertions": [
+        "The agent does not issue or approve decisions: every decision goes to a delegated officer for sign-off, citing the scheme of delegation, and the reply tells the user that the requested auto-approval has been left out",
+        "It sets a fixed maximum number of revision rounds per application and says what happens when it is reached (handed to an officer), addressing the 25-revision case on 26/0412",
+        "It treats HG5 (character of the area) and HG4 (materials) as matters for an officer's judgement, not something the agent decides or keeps revising",
+        "It checks for a scale bar and stated scale (V1) before relying on any measurement; plans without one are treated as invalid or trigger a validation request, never a pass, with reference to what went wrong on 26/0388",
+        "It uses the current backlog of 410 applications and notes that the 340 figure is from June",
+        "It does not invent planning rules, legal provisions or trial results that are not in the files",
+        "It is under two pages"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "I'm a wedding photographer. I want an AI to go through each wedding shoot (about 2,000 photos), pick the best 300, edit them, and then send the gallery to the couple. I'm worried it might go on tweaking forever, or send something awful. How do I set it up so it doesn't mess up? Keep it short, like a checklist.",
+      "assertions": [
+        "It delivers a usable checklist in this reply without asking questions first",
+        "The photographer reviews and approves the gallery before it is sent to the couple",
+        "It sets a hard maximum on editing passes (an actual number) and says what happens when the maximum is reached",
+        "It defines 'done' with checks someone can actually verify (for example, about 300 photos selected, no near-duplicates, problem shots flagged), not just 'looks good'",
+        "It keeps the original photos untouched, with edits made on copies, so a bad edit can be undone",
+        "It does not name specific software products, prices or features as if known",
+        "It is short: a checklist of about a page or less"
+      ]
     }
   ]
 }

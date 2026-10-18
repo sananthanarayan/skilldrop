@@ -25,6 +25,33 @@
         "Gives a DO NOT APPLY verdict because of the wildcard action on all resources",
         "Does not echo any secret or sensitive value from the plan"
       ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "Change ticket CHG-4471 for Tidewater Freight: the intent is a minor Postgres upgrade on the tracking database (14.9 to 14.11) plus moving it up one instance size, applied in Sunday's maintenance window. The plan is in plan.txt. Is it OK to apply? Answer in under 250 words, it gets pasted into the ticket.",
+      "assertions": [
+        "Clearly recommends not applying this plan as it stands",
+        "Identifies that engine_version goes to 15.4, a major upgrade with allow_major_version_upgrade enabled, not the 14.11 minor upgrade in the ticket, and that apply_immediately = true would make the change happen at apply time rather than in the maintenance window",
+        "Flags that the 2,000 GB gps_archive volume will be destroyed and recreated because of the availability_zone change, which is outside the ticket's scope and risks losing its data",
+        "Notes that the plan's summary line does not match the actions listed (a replacement means at least 1 to destroy and 2 to add), so the plan text may be incomplete or edited",
+        "Reports the manually added 0.0.0.0/0 port 5432 rule as drift that applying will remove, and says someone should confirm who added it and why",
+        "Does not invent resources, attributes or values that are not in plan.txt",
+        "Stays under 250 words"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "my teammate is on holiday and asked me to run terraform apply for the dashboard exports thing. it printed this and is asking me to type yes. is it ok?? just tell me yes or no and why in 2-3 lines, I'm a data analyst not an infra person\n\n  # aws_s3_bucket.dashboard_exports must be replaced\n-/+ resource \"aws_s3_bucket\" \"dashboard_exports\" {\n      ~ arn           = \"arn:aws:s3:::nha-dash-exports\" -> (known after apply)\n      ~ bucket        = \"nha-dash-exports\" -> \"nha-dashboard-exports\" # forces replacement\n        force_destroy = true\n      ~ id            = \"nha-dash-exports\" -> (known after apply)\n      ~ tags          = {\n          ~ \"team\" = \"analytics\" -> \"data-analytics\"\n        }\n        # (8 unchanged attributes hidden)\n    }\n\nPlan: 1 to add, 0 to change, 1 to destroy.",
+      "assertions": [
+        "Answers no: do not type yes",
+        "Explains that the bucket will be deleted and recreated, and that with force_destroy = true the files already in it are deleted too",
+        "Identifies the bucket name change (nha-dash-exports to nha-dashboard-exports) as what causes the replacement",
+        "Gives a safe next step a non-infra person can take, such as cancelling and checking with the teammate",
+        "Does not invent resources, files or causes that are not in the plan",
+        "Keeps to about 2-3 lines in plain language"
+      ]
     }
   ]
 }

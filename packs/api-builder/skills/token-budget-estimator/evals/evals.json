@@ -13,6 +13,33 @@
         "The rough cost estimate states its pricing-tier assumption rather than guessing silently",
         "Does not invent workflow components, session counts, or payload sizes not in the prompt"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "We're planning the grant-screening workflow in workflow.md, and pilot-usage.csv has the token usage from our pilot. Estimate the token budget and the yearly cost, and tell me whether we're inside finance's cap. One page I can send to finance.",
+      "assertions": [
+        "Catches that 1,200 applications a round for three rounds is 3,600 a year, not 4,800, and bases the yearly figure on 3,600 (or shows both and flags the error)",
+        "Notes that the pilot's scoring stage used the 2,000-character draft rubric, so its measured stage 2 input understates the final 8,000-character rubric (by roughly 1,500 tokens on every model call in the loop), and adjusts for it or flags it",
+        "Identifies the scoring stage, on the large model with the history re-sent on every tool-call turn, as the dominant cost",
+        "Uses the supplied planning prices, giving roughly $0.07 to $0.13 per application and roughly $250 to $470 a year at 3,600 applications",
+        "States whether the estimate fits the $400 annual cap, consistent with its own figures",
+        "Does not invent prices, volumes, stages or tool calls that are not in the files",
+        "Fits about one page"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "Our school district wants to use an AI to draft report card comments. 600 students, each gets a comment of about 80 words; the teacher pastes in a few notes per student (maybe 50 words), and there's one page of instructions that goes with every request. Roughly how many tokens and how much money is that? Just a few bullets.",
+      "assertions": [
+        "Gives a rough total for the 600 comments that is consistent with the inputs: on the order of a few hundred thousand tokens in total, not millions",
+        "Points out that the page of instructions, sent with every request, makes up most of the input",
+        "Any cost figure states the price it assumes and is consistent with that price, coming to a few dollars rather than hundreds",
+        "Does not invent extra requirements such as several terms, rewrites or a number of teachers, or marks any such thing clearly as an assumption",
+        "Is a few short bullets in plain language",
+        "Answers without first asking questions"
+      ]
     }
   ]
 }

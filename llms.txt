@@ -1,12 +1,12 @@
 # skilldrop
 
-> 96 portable skills for the artifacts knowledge work ships (ADRs, design docs,
+> 97 portable skills for the artifacts knowledge work ships (ADRs, design docs,
 > PRDs, runbooks, threat models, decks, postmortems), plus 7 loops that sequence them
 > behind gates. A loop orders skills; a skill never calls a skill, so every one of the
-> 96 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
+> 97 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.16.19.
+> Version 0.16.20.
 
 ## Start here
 
@@ -147,7 +147,7 @@ except `api-builder` requires `core`, which installs with it.
 - **grc** (4 skills, requires core): Governance, risk and compliance drafts for compliance leads, DPOs and risk owners: a risk register with a checked heat map, a GDPR data protection impact assessment, a SOC 2 control-to-evidence map, and answers to a customer security questionnaire drawn from your own evidence, each prepared for a qualified person to review.
 - **infra-as-code** (2 skills, requires core): Terraform you can hand to another team and plans you can trust before apply: reusable modules with secure defaults, and a plan review that catches destroys, data loss, access widening and drift.
 - **skill-engineering** (2 skills, requires core): For people writing Agent Skills in their own repos: write a portable SKILL.md folder from a described task, then audit any skill for routing, portability, safety, structure and evals before you share it.
-- **career** (4 skills, loops: apply, requires core): One job application, for any occupation: an honest check of your resume against the posting, a tailored resume and a cover letter that say nothing you didn't, the application form's answers drafted from your resume, and a script that lists every figure and name in a draft that your own resume doesn't contain.
+- **career** (5 skills, loops: apply, requires core): Job applications, for any occupation: a shortlist of which of an employer's roles to go for, an honest check of your resume against the posting, a tailored resume and a cover letter that say nothing you didn't, the application form's answers drafted from your resume, and a script that lists every figure and name in a draft that your own resume doesn't contain.
 
 ## Outcomes — browse by why you are here
 
@@ -165,7 +165,7 @@ except `api-builder` requires `core`, which installs with it.
 - **define-and-trust-the-numbers** (2 skills): Make the numbers a business runs on mean one thing: SQL reviewed for wrong answers, and dashboards specced before they're built, with every number on them defined.
 - **manage-risk-and-compliance** (4 skills): Prepare the material compliance asks for: a data protection impact assessment, a SOC 2 evidence map, a risk register with owners and review dates, and answers to a customer's security questionnaire with the evidence behind each.
 - **build-agent-skills** (2 skills): Write and review Agent Skills for any tool: a portable SKILL.md with evals, and an audit of an existing skill before it ships.
-- **apply-for-a-job** (4 skills): Prepare one application that is tailored and true: an honest fit check against the posting, a resume reworked without adding a claim, a cover letter built only from what you supplied, and the application form's answers drafted from your resume.
+- **apply-for-a-job** (5 skills): Choose which of an employer's roles to go for, then prepare one application that is tailored and true: an honest fit check against the posting, a resume reworked without adding a claim, a cover letter built only from what you supplied, and the application form's answers drafted from your resume.
 
 ## Reviewer subagents
 
@@ -178,10 +178,10 @@ except `api-builder` requires `core`, which installs with it.
 - [catalogue.json](https://sananthanarayan.github.io/skilldrop/catalogue.json): every skill, loop, pack and outcome as machine-readable JSON — name, description, tier, tags, related. Prefer this over scraping the site.
 - [model-routing.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/model-routing.json): the abstract tier per skill (light/standard/heavy) and the provider map that resolves a tier to a concrete model.
 - [catalogue.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/catalogue.json): pack display order and outcome membership; each pack's metadata is in `packs/<pack>/pack.json`.
-- All 96 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
+- All 97 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
 
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 46 RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 47 RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.

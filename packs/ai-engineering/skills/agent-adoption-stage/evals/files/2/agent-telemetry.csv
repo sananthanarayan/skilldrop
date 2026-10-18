@@ -1,0 +1,7 @@
+team,engineers,engineers_active_last_30d,agent_sessions_per_week_avg,median_concurrent_agents_per_active_engineer,merged_prs_sept,agent_authored_merged_prs_sept,median_hours_agent_pr_waiting_for_review,agent_prs_closed_unreviewed_after_7d
+routing-core,14,9,61,1,88,21,79,5
+dispatch-ui,11,6,30,1,64,14,70,4
+telematics,9,3,9,1,51,4,66,1
+billing,8,4,22,1,40,9,81,3
+data-platform,12,7,47,2,73,22,74,4
+mobile,10,5,26,1,58,11,72,2

@@ -26,6 +26,34 @@
         "For each item gives both resolutions (change the tracker or change the doc) rather than assuming the tracker is wrong",
         "Flags CHK-207 as linked only by mention and asks for its Source line to be restored"
       ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "Can you turn brief-home-delivery.md into tickets for our Jira project HDS? Our importer only accepts these columns: Summary, Issue Type, Description, Labels, Epic Name, Epic Link - it rejects the file if there's anything else, including Priority. Save it as hds-import.csv and tell me anything in the brief that needs sorting before we load it.",
+      "assertions": [
+        "Writes hds-import.csv whose header uses only the six accepted columns, with no Priority or other extra column",
+        "Creates no ticket for R7 (Won't have) or for the non-goals",
+        "Reports the care-home question (Q1) as unresolved rather than turning it into a ticket with an assumed answer",
+        "Treats R3 and R8 as the same requirement, with one ticket or an explicit flag, rather than two unflagged tickets for the same work",
+        "Flags that 180 members grown by 50% is 270, which does not match the 250 in G1",
+        "Every ticket traces back to its section of the brief, by link or section ID",
+        "Does not invent requirements, numbers, owners or dates not in the brief"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "quick one - the church hall refurb plan agreed at the AGM says this year we do: new kitchen, accessible toilet, rewiring. new chairs maybe next year, not this year. our tracker board has these cards: kitchen units, kitchen flooring, rewiring, new chairs, stage curtains. do they match? short list please, I'm the treasurer not a project person",
+      "assertions": [
+        "Flags the accessible toilet as in the plan with no card",
+        "Flags stage curtains as a card with no matching plan item",
+        "Flags new chairs as a card for work the plan puts off to next year",
+        "Treats kitchen units and kitchen flooring as covering the new kitchen, and rewiring as matching, without reporting them as mismatches",
+        "Gives a short list in plain language",
+        "Does not invent costs, dates or reasons not given",
+        "Answers without asking questions first"
+      ]
     }
   ]
 }

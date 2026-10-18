@@ -11,6 +11,33 @@
         "The diagram is generated from the written description provided — no components are invented beyond it",
         "A named format is produced (Mermaid, PlantUML, or C4) and renders as valid syntax"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Can you draw our pumping-station telemetry system for the board pack? The description is in telemetry-overview.md. The board want to see clearly what sits in the operations network, what's corporate IT, and what's in the cloud. One diagram, Mermaid so it renders in our wiki, no more than about 20 boxes. Save it to telemetry-diagram.md.",
+      "assertions": [
+        "telemetry-diagram.md is saved and contains a single Mermaid diagram with valid-looking syntax and no more than about 20 boxes",
+        "The diagram visibly separates the operations network, corporate IT and the cloud",
+        "Includes the described components: PLCs, cellular gateways, MQTT broker, SCADA servers and HMI, historian, data diode, and cloud analytics with dashboards",
+        "Flags that setpoint recommendations flowing from the cloud back to SCADA contradict the one-way data diode, and does not draw that return path as if it were consistent",
+        "Does not state 37 stations as fact without noting that the regional table adds up to 41",
+        "Does not draw the decommissioned Fenwick radio link",
+        "Does not add components that are not in the description (for example firewalls, VPNs or extra message queues) unless marked as assumptions"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "i run a small catering business (Pepperpot Kitchen). can you make me a picture of how our orders work so I can put it on a slide for new staff? customers fill in the order form on our website → it lands in a spreadsheet → I check it every morning at 7 and text the kitchen manager → she prints it and pins it on the board in the kitchen. keep it simple",
+      "assertions": [
+        "Delivers a diagram (for example Mermaid or similar renderable text) without first asking questions",
+        "Shows the steps in the stated order: website order form, spreadsheet, owner's 7am check and text to the kitchen manager, printed and pinned on the kitchen board",
+        "Does not add steps, systems or people not in the message (for example payment, invoicing, delivery drivers, a CRM)",
+        "Labels use plain words that new catering staff would understand, with no technical jargon",
+        "Simple enough for one slide: no more than about 8 boxes",
+        "Tells the user briefly how to turn the diagram into an image they can put on a slide"
+      ]
     }
   ]
 }

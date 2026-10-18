@@ -136,10 +136,11 @@ posting**, ask for the posting in one line: there is nothing to compare against.
 
 - ✅ Deciding whether a posting is worth applying for
 - ✅ Finding the gaps between a resume and a posting before tailoring the resume
-- ✅ Checking several postings against one resume to choose where to spend effort
+- ✅ Checking two or three postings against one resume to choose where to spend effort
 
 ## When NOT to use this skill
 
+- ❌ Sorting a long list of openings into which to apply for. Use `role-shortlist`, then come back for the first choice.
 - ❌ Rewriting the resume for the posting. Use `resume-tailor`.
 - ❌ Writing the cover letter. Use `cover-letter`.
 - ❌ Critiquing the resume as a document, with no job in mind. Use `doc-critique`.

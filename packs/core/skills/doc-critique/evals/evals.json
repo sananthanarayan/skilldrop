@@ -12,6 +12,33 @@
         "The critique reviews whether the doc made its case, and does not re-debate the underlying technical topic",
         "The document archetype is identified and the critique is run against that archetype's quality bar"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "This exec summary (exec-summary.md) goes in Fernhill's board pack on Friday. The pack limit is two pages and it's already at two, so I can't add anything. Just tell me what to fix - don't rewrite it for me.",
+      "assertions": [
+        "Catches that the phase totals (140 + 120 + 62 = 322) do not match the 312 homes stated",
+        "Challenges the 40% bill-cut claim as unsupported by a six-home pilot measured over one summer month",
+        "Spots that the January 2027 start contradicts the contractor being unable to start before April 2027",
+        "Notes that the summary never says what decision it needs from the board, or by when",
+        "Points each problem to where it sits in the document, by section or quoted text",
+        "Respects the length limit: fixes cut or replace existing text rather than only adding material, and the reply does not hand back a rewritten document",
+        "Does not invent figures or facts not in the document, such as a corrected savings figure"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I'm on the committee of my son's under-11s football club and someone drafted this letter to parents about subs going up. I'm not a writer - can you just give me the top 3 problems with it?\n\n\"Dear Parents,\n\nAs you know, costs have been rising. From next season, subs will go from £120 to £150, a small 15% rise. Please pay by the end of the month via the usual method. We know this is a lot but we are sure you will understand.\n\nThanks,\nThe Committee\"",
+      "assertions": [
+        "Gives three problems, as asked, not a longer list",
+        "Catches that £120 to £150 is a 25% rise, not 15%",
+        "Each problem comes with a concrete fix the committee could make",
+        "Answers without first asking questions",
+        "Uses plain language suited to a parent volunteer",
+        "Does not invent facts about the club, such as its actual costs, a payment date or a payment method"
+      ]
     }
   ]
 }

@@ -484,15 +484,20 @@ function scanSkill(cat, s) {
     let body = "";
     try { body = fs.readFileSync(file, "utf8"); } catch (e) { continue; }
     const rules = isScript ? SCRIPT_RULES : PROSE_RULES;
+    // Eval fixtures are benchmark input: a sample repo, a risky script for a reviewer to catch.
+    // The skill never runs or follows them, so they are listed, not raised.
+    const fixture = rel.split(path.sep).join("/").startsWith("evals/files/");
     body.split(/\r?\n/).forEach((line, i) => {
       if (line.length > 400) return; // minified/data line — not reviewable prose or code
       for (const r of rules) {
         if (r.re.test(line))
-          findings.push({ sev: r.sev, id: r.id, why: r.why, owasp: r.owasp, file: rel, line: i + 1, text: line.trim().slice(0, 120) });
+          findings.push({ sev: fixture ? "⚪" : r.sev, id: r.id, fixture,
+                          why: fixture ? `in an eval fixture, which the skill never runs: ${r.why}` : r.why,
+                          owasp: r.owasp, file: rel, line: i + 1, text: line.trim().slice(0, 120) });
       }
     });
   }
-  findings.push(...permissionGaps(cat, s, findings));
+  findings.push(...permissionGaps(cat, s, findings.filter((f) => !f.fixture)));
   const order = { "🟥": 0, "🟧": 1, "🟨": 2, "⚪": 3 };
   return findings.sort((a, b) => order[a.sev] - order[b.sev]);
 }
@@ -1004,9 +1009,17 @@ function expandNames(args, cat) {
   return args._.slice();
 }
 
+/* A skill's evals/ (acceptance checks and their input files) are how the catalogue measures the
+   skill, not part of what the agent reads, so an install leaves them out. Some fixtures are bait
+   on purpose, such as a script that reads credentials for a reviewer to catch. */
+const NOT_INSTALLED = "evals";
+const installed = (rel) => rel.split("/")[0] !== NOT_INSTALLED;
+
 function copyOne(cat, s, dest, ide, l, notes) {
   const m = manifestOf(cat, s);
-  fs.cpSync(skillDir(cat, s), path.join(dest, s), { recursive: true });
+  const src = skillDir(cat, s);
+  fs.cpSync(src, path.join(dest, s), { recursive: true,
+    filter: (f) => installed(path.relative(src, f).split(path.sep).join("/")) });
   const note = writeWiring(ide, dest, s, m.description);
   if (note && notes) notes.push(note);
   l.data[s] = { version: m.version, source: cat.source, files: fileHashes(skillDir(cat, s)) };
@@ -1023,6 +1036,7 @@ function fileHashes(dir) {
   (function walk(d, rel) {
     for (const e of fs.readdirSync(d, { withFileTypes: true })) {
       const r = rel ? `${rel}/${e.name}` : e.name;
+      if (!installed(r)) continue;
       if (e.isDirectory()) walk(path.join(d, e.name), r);
       else if (e.isFile() && !e.name.endsWith(".upstream")) out[r] = sha256(fs.readFileSync(path.join(d, e.name)));
     }
@@ -1313,7 +1327,7 @@ function installedRows(flags) {
         if (current === lver(entry) && typeof entry === "object" && entry.files) {
           const now = unitHashes(cat, s, loop);
           changed = [...new Set([...Object.keys(now), ...Object.keys(entry.files)])]
-            .filter((f) => now[f] !== entry.files[f]).sort();
+            .filter((f) => installed(f) && now[f] !== entry.files[f]).sort();
         }
       }
     } catch (e) { /* unreachable source: current stays null */ }

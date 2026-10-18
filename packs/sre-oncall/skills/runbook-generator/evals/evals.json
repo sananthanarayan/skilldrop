@@ -12,6 +12,33 @@
         "Escalation names the path and the trigger for escalating, not just a team name",
         "Facts not supplied (dashboard links, SLO values) are marked missing rather than invented"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "I've just taken over TideFeed at Saltholm Harbour Authority and the previous engineer leaves on Friday. Can you write the runbook from service-notes.md, deploy.sh, handover-chat.txt and standing-order.md? Save it as runbook.md. The control room keeps a printed copy, so it has to fit on three pages.",
+      "assertions": [
+        "Rollback is done by redeploying the previous release tag with deploy.sh, which takes only a tag; it flags that the script has no --rollback option despite the notes",
+        "Warns that migration 0042 is forward-only, so the app cannot be rolled back to a version before 2.6.0 such as v2.5.4",
+        "The first action when the display data is more than 15 minutes old or missing is to tell pilots to use the printed tide tables, as the standing order requires, before any troubleshooting",
+        "Does not list the gauge hardware supplier as a working escalation route, and flags that the support contract lapsed in August",
+        "Leaves SLOs and dashboards as open gaps to be filled, rather than inventing targets or dashboard links",
+        "Does not invent commands, hostnames, phone numbers or contacts that are not in the files",
+        "The runbook is saved as runbook.md and fits on about three printed pages"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "our community radio station's internet stream keeps dropping and the volunteers on the overnight shift have no idea what to do. the stream goes from the studio PC through an encoder box to our streaming host. the station manager says only phone her if it's been down more than 30 minutes. can you write a one-page 'what to do if the stream stops' sheet we can stick on the wall?",
+      "assertions": [
+        "Delivers a one-page sheet in plain language a non-technical volunteer can follow",
+        "Orders the checks from the simplest and most likely (is the studio PC playing, is the encoder box on and connected, is the internet up) before anything harder",
+        "Says to phone the station manager only after the stream has been down for more than 30 minutes",
+        "Does not invent phone numbers, passwords, equipment models or host settings; leaves clear blanks for the station to fill in",
+        "Tells volunteers how to confirm the stream is back and to note what happened for the manager",
+        "Delivers the sheet without stopping to ask questions first"
+      ]
     }
   ]
 }

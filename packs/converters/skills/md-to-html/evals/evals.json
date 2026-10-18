@@ -13,6 +13,32 @@
         "Does not invent content, numbers or sections that are not in docs/q3-review.md",
         "Tells the user to print-preview the file and check an anchor link"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Make river-survey-guide.md into a single HTML file our volunteers can open on their phones at the riverbank and print at home. Use brand.json. Most of our sites have no mobile signal at all. And please make sure the training video at the top plays.",
+      "assertions": [
+        "Writes one .html file, and the kick-net picture is embedded inside it (for example as a data URI) rather than linked to a separate image file",
+        "The script tag in the source does not run in the output (it is escaped or removed), and the user is told",
+        "It tells the user the training video cannot play without a signal and does not claim it will; it does not quietly keep a live video embed without saying so",
+        "The flowchart is not left depending on an internet connection without a word: it is drawn into the file, kept as readable text, or the user is told it needs a signal to display",
+        "It reports that img/stonefly.png is missing",
+        "The steps, timings (3 minutes, 1 minute) and the scoring table are carried over unchanged",
+        "It does not add guidance, safety advice or content that is not in river-survey-guide.md"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "can you turn nanas-lentil-soup.md into a web page I can email my sister? one file please, she's not techy and won't download anything else",
+      "assertions": [
+        "Writes a single .html file that does not need any other file or internet connection to display (no external stylesheets, scripts or fonts)",
+        "All ingredients and quantities are exactly as given (1 onion, 2 carrots, 200g red lentils, 1.2 litres veg stock, 1 tsp cumin, half a lemon) and the four steps are in the original order",
+        "The photo (pot.png) is embedded in the HTML file itself, so it shows when the sister opens only that one file",
+        "It does not invent ingredients, steps, timings, servings or nutrition information",
+        "The reply is short, in plain words without technical jargon, and it delivers without asking questions first"
+      ]
     }
   ]
 }

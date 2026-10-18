@@ -14,6 +14,33 @@
         "The summary includes a heat map and at most five risks needing a decision, each naming the decision",
         "It does not invent controls, people or dates that are not in the prompt; any it proposes are marked as proposals or assumptions"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Can you tidy up the Harrowmere Festival risk register before Thursday's committee meeting? The current register is risks-draft.csv, our scoring scale is scoring-scale.md and notes from the last discussion are in committee-notes.md. Give me the corrected register as register-updated.csv and a summary for the committee of no more than 10 bullets.",
+      "assertions": [
+        "Corrects or flags the scoring errors: R04's inherent score of 12 should be 8 (2 × 4), and R06's likelihood of 6 is outside the 1–5 scale",
+        "Flags R05's residual score dropping from 12 to 3 with no controls listed",
+        "Does not leave 'Everyone' or a blank as owner on R05 and R06; flags them as needing a named role, without inventing a specific person",
+        "Identifies the reviews overdue as of 17 October 2026 (R03, R05 and R08)",
+        "Challenges treating weather as transferred to the insurer, given the exclusions for prior weather warnings and ground conditions and the £25,000 excess, and does not keep R02's residual score of 5 without comment",
+        "Does not give a percentage probability of the festival making a loss or invent figures; says the register can't support that number",
+        "Writes register-updated.csv, and the committee summary has 10 bullets or fewer"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "i'm the treasurer for our school's parents association. the council wants a 'risk register' before they give us the permit for our summer fair. we've never done one. there'll be a bouncy castle, a BBQ, a cash tin for the stalls, maybe 300 people incl lots of kids. just the table please, nothing fancy",
+      "assertions": [
+        "Covers the hazards named: the bouncy castle, the BBQ (fire and food safety), cash handling, and crowds or a lost child",
+        "Each risk has an owner given as a role (such as 'BBQ lead' or 'treasurer'), not invented personal names",
+        "Each risk has at least one practical control a volunteer group can actually carry out",
+        "Scores, if given, use one stated scale consistently",
+        "Does not invent facts not given, such as existing insurance, trained first aiders, the venue or the date",
+        "Delivers just the table with at most a line or two around it, as asked"
+      ]
     }
   ]
 }

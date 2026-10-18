@@ -14,6 +14,33 @@
         "Provides verification queries, such as a uniqueness check on the subscription join and a reconciliation against a distinct-user count",
         "Does not invent row counts or magnitudes not given in the prompt"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Can you review monthly_donor_revenue.sql before it goes back on the trustees' dashboard? The schema is in schema.md and my notes are in context.md.",
+      "assertions": [
+        "Identifies the join to donor_addresses as repeating each donation once per address for donors with several addresses, the likely cause of the overstatement, and says SELECT DISTINCT does not fix it",
+        "Does not accept the refund theory: refunds are negative rows in donations, so the query already includes them",
+        "Flags that gift_aid_status <> 'rejected' also drops rows where the status is NULL, which the schema says is most donors, so it understates revenue as well",
+        "Flags that months are cut in UTC while finance reports by UK local time, and that integer division truncates the pounds and the average",
+        "Gives corrected PostgreSQL as a single statement (CTEs allowed) that uses one address per donor, such as the primary one, or aggregates before joining",
+        "Does not state a corrected September total, since nothing can be run, and does not invent tables or columns that are not in the schema",
+        "Keeps the review to under a page, plus the corrected query"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "hi, not a techie, I'm a teacher. the head wants the number of pupils who missed more than 10 days this term. our attendance export is an SQLite file with one row per pupil per session, morning and afternoon. a colleague wrote this:\n\nSELECT COUNT(*) FROM attendance WHERE status = 'absent' GROUP BY pupil_id HAVING COUNT(*) > 10;\n\nis it right? just tell me yes or no and give me a fixed one, short please",
+      "assertions": [
+        "Says no, the query is not right",
+        "Explains that it returns one row per pupil with a count, not a single number of pupils",
+        "Points out that with two sessions a day, more than 10 days means more than 20 absent sessions",
+        "Gives one corrected SQLite query that returns a single number",
+        "Notes the query does not limit to this term, without inventing a date column name as if it were known (any name used is marked as a guess to check)",
+        "Keeps the reply short, as asked"
+      ]
     }
   ]
 }
