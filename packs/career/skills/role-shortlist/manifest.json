@@ -1,6 +1,6 @@
 {
   "name": "role-shortlist",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Read every open role on an employer's careers page, a job-board export or a folder of saved postings, and say which ones one person should apply for — each role judged only from its own posting text, roles that couldn't be read listed as unread instead of guessed from their titles, a role whose screening requirement the person doesn't meet named as out whatever else fits, and the same role posted twice counted once. Works for any occupation. Use when the user asks \"which of these jobs should I apply for\", \"go through this company's openings\", \"shortlist these postings against my CV\", or has more postings than they want to check one by one.",
   "entrypoint": "SKILL.md",
   "deps": {

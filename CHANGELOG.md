@@ -8,6 +8,10 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.21 — 2026-10-18
+
+- **`role-shortlist` handles a few pasted blurbs and "just the top two".** It answers with the picks and a line or two on the rest, with no empty "Not read" or "Closed or duplicate" groups, and an item a posting calls preferred, desirable or a plus no longer rules a role out. On two new evals written by someone who never read the skill, two blind judges preferred it to plain Claude Code in 3 and 2 of 4 pairs, up from 3 and 1 ([RFC-0047](docs/rfcs/0047-role-shortlist.md)).
+
 ## 0.16.20 — 2026-10-18
 
 - **New skill: `role-shortlist`** (`career`). Give it an employer's careers page saved as files, a job-board export or a folder of postings, plus your resume, and it says which roles to apply for. Each role is judged only from its own posting text; one it could not read is listed as unread, never ranked from its title; an unmet licence, registration, location or required degree takes a role out whatever else fits; the same role posted twice counts once; every role you gave appears once. Admitted on a measured result ([RFC-0047](docs/rfcs/0047-role-shortlist.md)): on two evals written by someone who never read the skill, two blind judges preferred it to plain Claude Code in 3 of 4 pairs each.

@@ -70,6 +70,36 @@
         "It points out that the Lantern Room wants someone to start as soon as possible while the person can't start until after 15 November, as something to raise or weigh, rather than treating the start date as fine",
         "It does not credit the person with anything they didn't say, such as a car or driving licence, a level 3 food safety certificate, supervisory or chef de partie experience, or more than three years in kitchens, and it does not claim to know what the Brindle Café posting says"
       ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-18",
+      "prompt": "which 2 of these should i go for? bit about me: 3 yrs as a nursery assistant at a day nursery, level 3 childcare diploma, enhanced DBS. i dont drive. want term time / school hours, no weekends, 30ish hrs a week or more. based in Harwick.\n\n- Teaching Assistant, Elmfield Primary, Harwick - Year 2 reading and small groups, term time 8:30-3:30. Level 3 childcare or TA qualification required. Phonics experience a plus.\n- SEN Teaching Assistant, Brookside Academy, Harwick - 1:1 support for a Reception pupil with autism, term time 8:45-3:15. Must have experience in an early years or school setting. Makaton desirable.\n- Nursery Practitioner, Little Acorns, Harwick - full time, 7:30-6 shifts, working alternate Saturdays is a requirement. Level 3 required.\n- Forest School Assistant, Greenway Primary - outdoor learning across 3 sites, term time. Full driving licence and own vehicle essential.\n- Midday Supervisor, Harwick Junior School - 11:45-1:15 term time, lunchtime play and dinner hall. No experience needed.\n- Teaching Assistant, Ashby Lane Primary, Harwick - Year 4 maths and reading groups, term time 8:30-3:30, permanent. Previous TA experience in KS2 essential.",
+      "assertions": [
+        "Exactly two roles are given as picks, and they are the Elmfield Primary Teaching Assistant and the Brookside Academy SEN Teaching Assistant; no third role is offered as a pick",
+        "The Little Acorns Nursery Practitioner role is named as out because working alternate Saturdays is a requirement and she said no weekends, even though she meets its Level 3 requirement",
+        "The Greenway Primary Forest School Assistant role is named as out because a full driving licence and own vehicle are essential and she does not drive",
+        "The Ashby Lane Primary Teaching Assistant role is named as out or not met because previous KS2 TA experience is essential and her experience is as a nursery assistant, not a KS2 teaching assistant",
+        "Neither pick is ruled out or dropped over a preferred item: Makaton (desirable) at Brookside and phonics experience (a plus) at Elmfield may be noted as gaps or unknowns, but not as reasons she cannot apply",
+        "The Harwick Junior School Midday Supervisor role is not a pick, and the reason given is its hours (about 1.5 hours a day) against the 30-ish hours a week she asked for, not a missing qualification",
+        "The reply is short and contains no heading, section or line for unread, closed or duplicate roles (no 'Unread: none', 'Duplicates: none' or similar placeholder)",
+        "It says it judged from the short blurbs rather than full postings, does not say or assume she has phonics experience, Makaton, a driving licence or KS2 experience, and gives no percentage, score or match rating for any role"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-18",
+      "prompt": "I would be grateful for your advice on which one of the following vacancies I should prioritise. I hold a BSc (Hons) in Biomedical Science, awarded with a 2:1 in 2025, and completed a twelve-month placement year in a hospital microbiology laboratory before my final year. I am not yet HCPC registered. I live in Corlow, am seeking a permanent position, and owing to caring responsibilities I am able to work day shifts only, not nights.\n\n1. Biomedical Scientist (Band 5), Corlow General Hospital, Microbiology. Permanent; days with a weekend rota. HCPC registration as a Biomedical Scientist is essential.\n2. Laboratory Technician, Fenwick Water Services, Corlow. Permanent; Monday to Friday, days. Microbiological testing of drinking water samples. A degree in a biological science is required; experience in a UKAS ISO 17025-accredited laboratory is desirable.\n3. Medical Laboratory Assistant, Corlow General Hospital, Blood Sciences. Permanent. Sample reception and processing; a rotating shift pattern including nights is a requirement of the post.\n4. QC Microbiology Analyst, Treloar Pharmaceuticals, Corlow. Permanent; days. Environmental monitoring in a GMP facility. A minimum of two years' post-graduate experience in a GMP quality control laboratory is essential.\n5. Research Technician, University of Corlow, Cell Biology. Fixed-term contract of six months; days. Tissue culture support. A degree in a life science is required.",
+      "assertions": [
+        "Exactly one role is given as the recommendation, and it is the Laboratory Technician post at Fenwick Water Services",
+        "The Fenwick Water Services post is not ruled out or demoted because ISO 17025-accredited laboratory experience is not shown; that item is treated as desirable and may be noted as a gap or something to address, not as a bar",
+        "The Corlow General Hospital Biomedical Scientist post is named as out because HCPC registration is essential and she is not yet registered, even though it matches her microbiology placement",
+        "The Corlow General Hospital Medical Laboratory Assistant post is named as out because a rotating pattern including nights is required and she can work days only",
+        "The Treloar Pharmaceuticals QC Microbiology Analyst post is named as out because two years' post-graduate GMP QC experience is essential; the reply does not count her pre-final-year placement as post-graduate GMP experience",
+        "The University of Corlow Research Technician post is not the recommendation, and the reason given is that it is a six-month fixed-term contract when she asked for a permanent position",
+        "The reply is concise and contains no heading, section or line for unread, closed or duplicate roles (no 'Unread: none', 'Duplicates: none' or similar placeholder)",
+        "It says it worked from brief summaries rather than full postings, does not say or assume she has ISO 17025, GMP or accredited-laboratory experience, and gives no percentage, score or match rating for any role"
+      ]
     }
   ]
 }

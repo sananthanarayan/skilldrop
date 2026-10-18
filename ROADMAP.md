@@ -5,7 +5,6 @@ What is being worked on next. Not a commitment — a direction. Shipped work mov
 ## Upcoming
 
 - **Publish the benchmark on the current catalogue.** Every skill now has held-out evals and the summary splits them from the author's; the published run is still the 0.16.9 catalogue. A full run of 376 evals is about $50 of plan usage and several hours.
-- **Revise `role-shortlist` on the thin case** ([RFC-0047](docs/rfcs/0047-role-shortlist.md)): it prints empty groups and treats a preferred item as a requirement when given six one-line blurbs. Measure on new evals.
 - **The light and heavy tiers** — the benchmark has run on the standard tier only. `run_bench.py --held-out --models light,heavy` on the 224 held-out evals is about $80 of plan usage and shows where a cheaper model is enough.
 
 ## Considering
