@@ -182,3 +182,40 @@ two or three of their four evals, buried under a template that cost them most of
 losses. They are being rebuilt with the rule first, and each one ships only if both judges
 prefer it in at least half the pairs on two new evals. Four added only a format and were
 retired in 0.16.13. The evals page lists them, with the reason for each.
+
+## The light and heavy tiers
+
+Until 18 October 2026 the benchmark had run only on the standard tier. That day the 224
+held-out evals ran once each on the light tier (`claude-haiku-5-5`) and the heavy tier
+(`claude-opus-5-5`), with the same two judges. The standard tier was not rerun on these
+evals, so the routing check compares light with heavy only. The summary is in
+[`docs/benchmarks/tiers.json`](../../docs/benchmarks/tiers.json).
+
+| Tier | Assertions met, skill | Without | Preferred blind, judge 1 | Judge 2 | $ per run, skill |
+|---|---|---|---|---|---|
+| light `claude-haiku-5-5` | 83% | 80% | 41% (35 to 48) | 48% (41 to 54) | $0.007 |
+| heavy `claude-opus-5-5` | 85% | 83% | 31% (25 to 37) | 31% (25 to 37) | $0.19 |
+
+- **On evals they were not written against, the skills do not beat the plain agent on
+  either tier.** The lift on the checks is 3 points on both. Blind, the plain agent wins most
+  pairs, and on the heavy tier both judges preferred plain Opus 5.5 in about 7 pairs of 10.
+  The 61% in [Where the catalogue stands](#where-the-catalogue-stands) is the standard tier on
+  the 0.16.9 catalogue, mostly on evals the authors wrote, so it is not the comparison. The
+  standard tier on these same evals is.
+- **For most skills a cheaper model is enough, on the checks.** With the skill, Haiku 5.5
+  meets 83% of checks and Opus 5.5 85%, at about a twenty-seventh of the cost per run. Light
+  came within 5 points of heavy for 61 of 97 skills, including 9 of the 13 assigned heavy:
+  `accessibility-audit`, `agent-threat-model`, `devils-advocate`, `doc-critique`, `dpia`,
+  `skill-review`, `sql-review`, `strategy-analysis` and `terraform-plan-review`. Heavy led by
+  more than 5 points on the other four heavy skills (`business-case`, `council-review`,
+  `hypothesis-comparison`, `threat-model`) and on `decision-log`, which is assigned light. It
+  led by 15 or more on 13 standard skills, among them `adr-generator`, `brief-intake`,
+  `bug-triage`, `capacity-cost-model`, `prd-draft` and `risk-register`.
+- **No tier was changed.** Each row is two evals and one trial, and the standard tier is
+  missing from it. The model-routing rule that a heavy skill is never routed below heavy is
+  what the nine rows question; it stays until the standard tier and a second trial are in.
+
+Claude Code had no price for Haiku 5.5 when this ran, so its runs are priced from the
+runner's own table at $0.10 and $0.50 per million tokens. Light runs wrote more: 7,015 output
+tokens with the skill and 4,099 without. Evals 4 and 5 of `role-shortlist` ran on the version
+before 0.16.21.

@@ -1,0 +1,3065 @@
+{
+ "date": "2026-10-18",
+ "backend": "claude-cli",
+ "judge_model": "claude-sonnet-5-5",
+ "trials": 1,
+ "scripted": [
+  "ai-usage-report",
+  "backlog-triage",
+  "brand-kit",
+  "cloud-cost-review",
+  "content-design",
+  "cover-letter",
+  "deck-builder",
+  "delivery-metrics-report",
+  "figma-diagrams",
+  "file-to-markdown",
+  "hypothesis-comparison",
+  "marketing-flyer",
+  "md-to-docx",
+  "md-to-html",
+  "md-to-xlsx",
+  "mermaid-render",
+  "output-hygiene",
+  "pre-merge-review",
+  "resume-tailor",
+  "risk-register",
+  "skill-review",
+  "source-synthesis",
+  "sql-review",
+  "team-status-report",
+  "terraform-plan-review",
+  "tracker-brief-sync"
+ ],
+ "models": {
+  "claude-haiku-5-5": {
+   "label": "light",
+   "evals": 224,
+   "runs": 224,
+   "skill": 0.8344706632653069,
+   "baseline": 0.8040975765306129,
+   "lift": 0.03037308673469388,
+   "lift_ci": [
+    0.006079931972789105,
+    0.05553252551020405
+   ],
+   "win": 0.41294642857142855,
+   "win_ci": [
+    0.35044642857142855,
+    0.47767857142857145
+   ],
+   "second_judge": "claude-opus-5-5",
+   "win2": 0.47767857142857145,
+   "win2_ci": [
+    0.41294642857142855,
+    0.5401785714285714
+   ],
+   "judges_agree": 171,
+   "judges_decided": 220,
+   "cost_skill": 0.006798253437500004,
+   "cost_baseline": 0.004584745513392857,
+   "out_tokens_skill": 7015.044642857143,
+   "out_tokens_baseline": 4099.209821428572,
+   "truncated": 0,
+   "refused": 0,
+   "trial_range": 0.0,
+   "errors": 0,
+   "skipped": 0,
+   "by_kind": {
+    "held_out": {
+     "evals": 224,
+     "skills": 97,
+     "skill": 0.8344706632653069,
+     "baseline": 0.8040975765306129,
+     "lift": 0.03037308673469388,
+     "lift_ci": [
+      0.006079931972789105,
+      0.05553252551020405
+     ],
+     "win": 0.41294642857142855,
+     "win_ci": [
+      0.35044642857142855,
+      0.47767857142857145
+     ],
+     "win2": 0.47767857142857145,
+     "win2_ci": [
+      0.41294642857142855,
+      0.5401785714285714
+     ]
+    }
+   }
+  },
+  "claude-opus-5-5": {
+   "label": "heavy",
+   "evals": 224,
+   "runs": 224,
+   "skill": 0.854804421768708,
+   "baseline": 0.8282312925170071,
+   "lift": 0.02657312925170069,
+   "lift_ci": [
+    0.005909863945578231,
+    0.04604060374149661
+   ],
+   "win": 0.31026785714285715,
+   "win_ci": [
+    0.25223214285714285,
+    0.36830357142857145
+   ],
+   "second_judge": "claude-opus-5-5",
+   "win2": 0.3080357142857143,
+   "win2_ci": [
+    0.25,
+    0.3705357142857143
+   ],
+   "judges_agree": 183,
+   "judges_decided": 223,
+   "cost_skill": 0.18716508214285713,
+   "cost_baseline": 0.1397101142857143,
+   "out_tokens_skill": 4284.607142857143,
+   "out_tokens_baseline": 3323.9375,
+   "truncated": 0,
+   "refused": 0,
+   "trial_range": 0.0,
+   "errors": 0,
+   "skipped": 0,
+   "by_kind": {
+    "held_out": {
+     "evals": 224,
+     "skills": 97,
+     "skill": 0.854804421768708,
+     "baseline": 0.8282312925170071,
+     "lift": 0.02657312925170069,
+     "lift_ci": [
+      0.005909863945578231,
+      0.04604060374149661
+     ],
+     "win": 0.31026785714285715,
+     "win_ci": [
+      0.25223214285714285,
+      0.36830357142857145
+     ],
+     "win2": 0.3080357142857143,
+     "win2_ci": [
+      0.25,
+      0.3705357142857143
+     ]
+    }
+   }
+  }
+ },
+ "routing": [
+  {
+   "skill": "accessibility-audit",
+   "assigned": "heavy",
+   "scores": {
+    "claude-haiku-5-5": 0.7738095238095238,
+    "claude-opus-5-5": 0.7857142857142857
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "adr-generator",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.8333333333333333,
+    "claude-opus-5-5": 1.0
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "agent-adoption-stage",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7857142857142857,
+    "claude-opus-5-5": 0.7857142857142857
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "agent-budget",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.8452380952380952,
+    "claude-opus-5-5": 0.6904761904761905
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "agent-loop-design",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.9285714285714286,
+    "claude-opus-5-5": 0.6428571428571428
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "agent-threat-model",
+   "assigned": "heavy",
+   "scores": {
+    "claude-haiku-5-5": 0.7738095238095238,
+    "claude-opus-5-5": 0.7619047619047619
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "agents-md-generator",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.8452380952380952,
+    "claude-opus-5-5": 1.0
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "ai-adoption-rollout",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7857142857142857,
+    "claude-opus-5-5": 0.6428571428571428
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "ai-readiness-assessment",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7857142857142857,
+    "claude-opus-5-5": 0.7857142857142857
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "ai-usage-policy",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7857142857142857,
+    "claude-opus-5-5": 0.800595238095238
+   },
+   "cheapest_adequate": "light",
+   "evals": 6
+  },
+  {
+   "skill": "ai-usage-report",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7619047619047619,
+    "claude-opus-5-5": 0.8333333333333333
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "ai-use-case-triage",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.8333333333333333,
+    "claude-opus-5-5": 0.8452380952380952
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "api-contract-draft",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7619047619047619,
+    "claude-opus-5-5": 0.6904761904761905
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "application-form-answers",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.875,
+    "claude-opus-5-5": 0.8125
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "architecture-diagrams",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.9285714285714286,
+    "claude-opus-5-5": 0.9285714285714286
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "audience-profile",
+   "assigned": "light",
+   "scores": {
+    "claude-haiku-5-5": 0.7571428571428571,
+    "claude-opus-5-5": 0.6857142857142857
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "backlog-triage",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7023809523809523,
+    "claude-opus-5-5": 0.8452380952380952
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "brand-kit",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 1.0,
+    "claude-opus-5-5": 0.9285714285714286
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "brief-intake",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.6904761904761905,
+    "claude-opus-5-5": 0.9166666666666667
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "bug-triage",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7023809523809523,
+    "claude-opus-5-5": 0.9166666666666667
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "business-case",
+   "assigned": "heavy",
+   "scores": {
+    "claude-haiku-5-5": 0.8452380952380952,
+    "claude-opus-5-5": 0.9166666666666667
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "capacity-cost-model",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.6428571428571428,
+    "claude-opus-5-5": 0.9285714285714286
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "cloud-cost-review",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7857142857142857,
+    "claude-opus-5-5": 0.8571428571428571
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "content-design",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.8333333333333333,
+    "claude-opus-5-5": 1.0
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "council-review",
+   "assigned": "heavy",
+   "scores": {
+    "claude-haiku-5-5": 0.5714285714285714,
+    "claude-opus-5-5": 0.6428571428571428
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "cover-letter",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 1.0,
+    "claude-opus-5-5": 1.0
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "dashboard-spec",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.9285714285714286,
+    "claude-opus-5-5": 1.0
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "data-contract",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.75,
+    "claude-opus-5-5": 0.6904761904761905
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "decision-log",
+   "assigned": "light",
+   "scores": {
+    "claude-haiku-5-5": 0.7857142857142857,
+    "claude-opus-5-5": 0.8571428571428572
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "deck-builder",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.8571428571428572,
+    "claude-opus-5-5": 0.7619047619047619
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "delivery-metrics-report",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7738095238095238,
+    "claude-opus-5-5": 0.7738095238095238
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "design-doc",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.8809523809523809,
+    "claude-opus-5-5": 0.9077380952380952
+   },
+   "cheapest_adequate": "light",
+   "evals": 6
+  },
+  {
+   "skill": "design-system-spec",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.6071428571428572,
+    "claude-opus-5-5": 0.75
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "devils-advocate",
+   "assigned": "heavy",
+   "scores": {
+    "claude-haiku-5-5": 0.8293650793650794,
+    "claude-opus-5-5": 0.8492063492063493
+   },
+   "cheapest_adequate": "light",
+   "evals": 6
+  },
+  {
+   "skill": "doc-critique",
+   "assigned": "heavy",
+   "scores": {
+    "claude-haiku-5-5": 0.9285714285714286,
+    "claude-opus-5-5": 0.9285714285714286
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "dpia",
+   "assigned": "heavy",
+   "scores": {
+    "claude-haiku-5-5": 0.9166666666666667,
+    "claude-opus-5-5": 0.9285714285714286
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "eval-harness-generator",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.8571428571428572,
+    "claude-opus-5-5": 0.9285714285714286
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "exec-summary",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7142857142857143,
+    "claude-opus-5-5": 0.8285714285714285
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "feature-implement-loop",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.8452380952380952,
+    "claude-opus-5-5": 0.7619047619047619
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "figma-diagrams",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.9166666666666667,
+    "claude-opus-5-5": 0.75
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "file-to-markdown",
+   "assigned": "light",
+   "scores": {
+    "claude-haiku-5-5": 0.9285714285714286,
+    "claude-opus-5-5": 0.9285714285714286
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "guide-builder",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.9345238095238094,
+    "claude-opus-5-5": 0.9345238095238094
+   },
+   "cheapest_adequate": "light",
+   "evals": 6
+  },
+  {
+   "skill": "hypothesis-comparison",
+   "assigned": "heavy",
+   "scores": {
+    "claude-haiku-5-5": 0.7738095238095238,
+    "claude-opus-5-5": 0.9166666666666667
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "incident-comms",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.9285714285714286,
+    "claude-opus-5-5": 0.9166666666666667
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "information-architecture",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7619047619047619,
+    "claude-opus-5-5": 0.8452380952380952
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "job-fit-analysis",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.9285714285714286,
+    "claude-opus-5-5": 1.0
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "launch-readiness",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7738095238095238,
+    "claude-opus-5-5": 0.8452380952380952
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "llm-eval-harness",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7142857142857142,
+    "claude-opus-5-5": 0.7142857142857143
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "marketing-flyer",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7619047619047619,
+    "claude-opus-5-5": 0.7738095238095238
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "md-to-docx",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7142857142857142,
+    "claude-opus-5-5": 0.7857142857142857
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "md-to-html",
+   "assigned": "light",
+   "scores": {
+    "claude-haiku-5-5": 0.8285714285714285,
+    "claude-opus-5-5": 0.8285714285714285
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "md-to-xlsx",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 1.0,
+    "claude-opus-5-5": 1.0
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "mermaid-render",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 1.0,
+    "claude-opus-5-5": 1.0
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "migration-plan",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.6071428571428572,
+    "claude-opus-5-5": 0.6785714285714286
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "nfr-spec",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.6071428571428572,
+    "claude-opus-5-5": 0.6904761904761905
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "observability-plan",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7619047619047619,
+    "claude-opus-5-5": 0.6904761904761905
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "okr-cascade",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7738095238095238,
+    "claude-opus-5-5": 0.7738095238095238
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "output-hygiene",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 1.0,
+    "claude-opus-5-5": 1.0
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "postmortem-generator",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.927579365079365,
+    "claude-opus-5-5": 0.9027777777777778
+   },
+   "cheapest_adequate": "light",
+   "evals": 6
+  },
+  {
+   "skill": "pr-description-writer",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.8452380952380952,
+    "claude-opus-5-5": 0.7738095238095238
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "prd-draft",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.6785714285714286,
+    "claude-opus-5-5": 0.8452380952380952
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "pre-merge-review",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.9285714285714286,
+    "claude-opus-5-5": 0.9285714285714286
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "prfaq",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.75,
+    "claude-opus-5-5": 0.9166666666666667
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "prompt-caching-advisor",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.8333333333333333,
+    "claude-opus-5-5": 0.9
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "release-notes",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.9553571428571428,
+    "claude-opus-5-5": 1.0
+   },
+   "cheapest_adequate": "light",
+   "evals": 6
+  },
+  {
+   "skill": "requirements-interview",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.9285714285714286,
+    "claude-opus-5-5": 0.9285714285714286
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "research-plan",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7857142857142857,
+    "claude-opus-5-5": 0.7857142857142857
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "resume-tailor",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 1.0,
+    "claude-opus-5-5": 1.0
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "reverse-architecture",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.8571428571428572,
+    "claude-opus-5-5": 0.9285714285714286
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "risk-register",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.6190476190476191,
+    "claude-opus-5-5": 0.8333333333333333
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "role-shortlist",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7857142857142857,
+    "claude-opus-5-5": 0.8571428571428571
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "runbook-generator",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.9166666666666667,
+    "claude-opus-5-5": 0.9285714285714286
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "security-questionnaire-response",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.9166666666666667,
+    "claude-opus-5-5": 0.75
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "service-blueprint",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 1.0,
+    "claude-opus-5-5": 0.8452380952380952
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "skill-author",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 1.0,
+    "claude-opus-5-5": 1.0
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "skill-review",
+   "assigned": "heavy",
+   "scores": {
+    "claude-haiku-5-5": 1.0,
+    "claude-opus-5-5": 0.9285714285714286
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "slide-outliner",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.8571428571428572,
+    "claude-opus-5-5": 0.8285714285714285
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "soc2-evidence-map",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.4642857142857143,
+    "claude-opus-5-5": 0.6666666666666666
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "sonar-onboard",
+   "assigned": "light",
+   "scores": {
+    "claude-haiku-5-5": 0.8452380952380952,
+    "claude-opus-5-5": 0.75
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "sonar-review",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.9285714285714286,
+    "claude-opus-5-5": 0.9285714285714286
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "source-synthesis",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.8273809523809524,
+    "claude-opus-5-5": 0.8511904761904762
+   },
+   "cheapest_adequate": "light",
+   "evals": 6
+  },
+  {
+   "skill": "sql-review",
+   "assigned": "heavy",
+   "scores": {
+    "claude-haiku-5-5": 0.7738095238095238,
+    "claude-opus-5-5": 0.7738095238095238
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "strategy-analysis",
+   "assigned": "heavy",
+   "scores": {
+    "claude-haiku-5-5": 0.8571428571428572,
+    "claude-opus-5-5": 0.7738095238095238
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "subagent-design",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.8452380952380952,
+    "claude-opus-5-5": 1.0
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "success-metrics",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.9285714285714286,
+    "claude-opus-5-5": 0.9285714285714286
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "team-status-report",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.9285714285714286,
+    "claude-opus-5-5": 0.9285714285714286
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "tech-debt-register",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7857142857142857,
+    "claude-opus-5-5": 0.8571428571428571
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "terraform-module",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 1.0,
+    "claude-opus-5-5": 0.8333333333333333
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "terraform-plan-review",
+   "assigned": "heavy",
+   "scores": {
+    "claude-haiku-5-5": 0.7738095238095238,
+    "claude-opus-5-5": 0.7738095238095238
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "test-plan-generator",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7619047619047619,
+    "claude-opus-5-5": 0.6071428571428572
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "threat-model",
+   "assigned": "heavy",
+   "scores": {
+    "claude-haiku-5-5": 0.7857142857142857,
+    "claude-opus-5-5": 0.8571428571428572
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "token-budget-estimator",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7857142857142857,
+    "claude-opus-5-5": 0.7738095238095238
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  },
+  {
+   "skill": "tool-use-schema-writer",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.9375,
+    "claude-opus-5-5": 0.96875
+   },
+   "cheapest_adequate": "light",
+   "evals": 4
+  },
+  {
+   "skill": "tracker-brief-sync",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.8571428571428571,
+    "claude-opus-5-5": 0.9285714285714286
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "user-journey-map",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.6666666666666666,
+    "claude-opus-5-5": 0.8333333333333333
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "user-story-splitter",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.7619047619047619,
+    "claude-opus-5-5": 0.9285714285714286
+   },
+   "cheapest_adequate": "heavy",
+   "evals": 2
+  },
+  {
+   "skill": "ux-writing",
+   "assigned": "standard",
+   "scores": {
+    "claude-haiku-5-5": 0.9166666666666667,
+    "claude-opus-5-5": 0.75
+   },
+   "cheapest_adequate": "light",
+   "evals": 2
+  }
+ ],
+ "floor": 0.16394026360544217,
+ "skills": [
+  {
+   "skill": "accessibility-audit",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.7738095238095238,
+   "preferred": 0.5,
+   "cost_skill": 0.0085289575,
+   "cost_baseline": 0.00478758
+  },
+  {
+   "skill": "adr-generator",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.5,
+   "cost_skill": 0.0057945,
+   "cost_baseline": 0.0035159575000000003
+  },
+  {
+   "skill": "agent-adoption-stage",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 0.0,
+   "cost_skill": 0.0050799525,
+   "cost_baseline": 0.0038885824999999995
+  },
+  {
+   "skill": "agent-budget",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.011197212500000001,
+   "cost_baseline": 0.00652766
+  },
+  {
+   "skill": "agent-loop-design",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.5,
+   "cost_skill": 0.0055757775,
+   "cost_baseline": 0.00474551
+  },
+  {
+   "skill": "agent-threat-model",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 1.0,
+   "cost_skill": 0.0066001575,
+   "cost_baseline": 0.0039991574999999994
+  },
+  {
+   "skill": "agents-md-generator",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 0.5,
+   "cost_skill": 0.00513127,
+   "cost_baseline": 0.004117465
+  },
+  {
+   "skill": "ai-adoption-rollout",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.0,
+   "cost_skill": 0.012317535000000001,
+   "cost_baseline": 0.005266115
+  },
+  {
+   "skill": "ai-readiness-assessment",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.8571428571428571,
+   "preferred": 0.0,
+   "cost_skill": 0.0053970425,
+   "cost_baseline": 0.0037154450000000004
+  },
+  {
+   "skill": "ai-usage-policy",
+   "model": "claude-haiku-5-5",
+   "evals": 6,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.636904761904762,
+   "preferred": 0.3333333333333333,
+   "cost_skill": 0.005287675833333332,
+   "cost_baseline": 0.004412651666666667
+  },
+  {
+   "skill": "ai-usage-report",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.7738095238095238,
+   "preferred": 0.0,
+   "cost_skill": 0.0084644325,
+   "cost_baseline": 0.009391340000000001
+  },
+  {
+   "skill": "ai-use-case-triage",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.0,
+   "cost_skill": 0.00858918,
+   "cost_baseline": 0.005116285
+  },
+  {
+   "skill": "api-contract-draft",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.0,
+   "cost_skill": 0.0140302575,
+   "cost_baseline": 0.0063615575
+  },
+  {
+   "skill": "application-form-answers",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.875,
+   "baseline_met": 0.8125,
+   "preferred": 0.5,
+   "cost_skill": 0.0068561475000000005,
+   "cost_baseline": 0.004127395
+  },
+  {
+   "skill": "architecture-diagrams",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.00422908,
+   "cost_baseline": 0.005185015
+  },
+  {
+   "skill": "audience-profile",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7571428571428571,
+   "baseline_met": 0.6142857142857143,
+   "preferred": 0.5,
+   "cost_skill": 0.00273062,
+   "cost_baseline": 0.0026131475
+  },
+  {
+   "skill": "backlog-triage",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7023809523809523,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.5,
+   "cost_skill": 0.00910537,
+   "cost_baseline": 0.0045840275
+  },
+  {
+   "skill": "brand-kit",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.8285714285714285,
+   "preferred": 0.5,
+   "cost_skill": 0.008138725,
+   "cost_baseline": 0.004907452500000001
+  },
+  {
+   "skill": "brief-intake",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.6904761904761905,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 0.5,
+   "cost_skill": 0.00464735,
+   "cost_baseline": 0.0025959075
+  },
+  {
+   "skill": "bug-triage",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7023809523809523,
+   "baseline_met": 0.6071428571428572,
+   "preferred": 0.0,
+   "cost_skill": 0.006650905,
+   "cost_baseline": 0.0043942125
+  },
+  {
+   "skill": "business-case",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.5,
+   "cost_skill": 0.010237315,
+   "cost_baseline": 0.006956110000000001
+  },
+  {
+   "skill": "capacity-cost-model",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.6428571428571428,
+   "baseline_met": 0.6428571428571428,
+   "preferred": 0.0,
+   "cost_skill": 0.01414762,
+   "cost_baseline": 0.009205425
+  },
+  {
+   "skill": "cloud-cost-review",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.6428571428571428,
+   "preferred": 1.0,
+   "cost_skill": 0.010681765000000001,
+   "cost_baseline": 0.005047752500000001
+  },
+  {
+   "skill": "content-design",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 1.0,
+   "cost_skill": 0.0069475175,
+   "cost_baseline": 0.0035666975000000004
+  },
+  {
+   "skill": "council-review",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.5714285714285714,
+   "baseline_met": 0.6428571428571428,
+   "preferred": 0.5,
+   "cost_skill": 0.00754864,
+   "cost_baseline": 0.004255337499999999
+  },
+  {
+   "skill": "cover-letter",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.8571428571428571,
+   "preferred": 0.0,
+   "cost_skill": 0.0062237049999999995,
+   "cost_baseline": 0.0034050175
+  },
+  {
+   "skill": "dashboard-spec",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.6785714285714286,
+   "preferred": 1.0,
+   "cost_skill": 0.00828391,
+   "cost_baseline": 0.0037595125
+  },
+  {
+   "skill": "data-contract",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.75,
+   "baseline_met": 0.6904761904761905,
+   "preferred": 0.5,
+   "cost_skill": 0.0070114275,
+   "cost_baseline": 0.0042072775
+  },
+  {
+   "skill": "decision-log",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.6571428571428571,
+   "preferred": 0.5,
+   "cost_skill": 0.00363574,
+   "cost_baseline": 0.0022601775
+  },
+  {
+   "skill": "deck-builder",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428572,
+   "baseline_met": 0.75,
+   "preferred": 0.5,
+   "cost_skill": 0.0149848525,
+   "cost_baseline": 0.0157104
+  },
+  {
+   "skill": "delivery-metrics-report",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.7738095238095238,
+   "preferred": 0.0,
+   "cost_skill": 0.01105623,
+   "cost_baseline": 0.0054963375
+  },
+  {
+   "skill": "design-doc",
+   "model": "claude-haiku-5-5",
+   "evals": 6,
+   "skill_met": 0.8809523809523809,
+   "baseline_met": 0.863095238095238,
+   "preferred": 0.5,
+   "cost_skill": 0.0082127125,
+   "cost_baseline": 0.005176818333333333
+  },
+  {
+   "skill": "design-system-spec",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.6071428571428572,
+   "baseline_met": 0.6785714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.009520112499999999,
+   "cost_baseline": 0.0043285825
+  },
+  {
+   "skill": "devils-advocate",
+   "model": "claude-haiku-5-5",
+   "evals": 6,
+   "skill_met": 0.8293650793650794,
+   "baseline_met": 0.8591269841269841,
+   "preferred": 0.8333333333333334,
+   "cost_skill": 0.004615035,
+   "cost_baseline": 0.0035168966666666666
+  },
+  {
+   "skill": "doc-critique",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.7738095238095238,
+   "preferred": 0.5,
+   "cost_skill": 0.0062063175,
+   "cost_baseline": 0.00300962
+  },
+  {
+   "skill": "dpia",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.009778112500000002,
+   "cost_baseline": 0.006027905
+  },
+  {
+   "skill": "eval-harness-generator",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428572,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.00485492,
+   "cost_baseline": 0.004375177500000001
+  },
+  {
+   "skill": "exec-summary",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7142857142857143,
+   "baseline_met": 0.8285714285714285,
+   "preferred": 0.0,
+   "cost_skill": 0.0036054525,
+   "cost_baseline": 0.00371596
+  },
+  {
+   "skill": "feature-implement-loop",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 1.0,
+   "cost_skill": 0.008720205,
+   "cost_baseline": 0.008989210000000001
+  },
+  {
+   "skill": "figma-diagrams",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 1.0,
+   "cost_skill": 0.003931790000000001,
+   "cost_baseline": 0.004028805
+  },
+  {
+   "skill": "file-to-markdown",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.00447491,
+   "cost_baseline": 0.0041903475
+  },
+  {
+   "skill": "guide-builder",
+   "model": "claude-haiku-5-5",
+   "evals": 6,
+   "skill_met": 0.9345238095238094,
+   "baseline_met": 0.8204365079365079,
+   "preferred": 0.5,
+   "cost_skill": 0.004909785,
+   "cost_baseline": 0.004196021666666667
+  },
+  {
+   "skill": "hypothesis-comparison",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.5,
+   "cost_skill": 0.0046261275000000004,
+   "cost_baseline": 0.00284198
+  },
+  {
+   "skill": "incident-comms",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 1.0,
+   "cost_skill": 0.0037927475,
+   "cost_baseline": 0.003720595
+  },
+  {
+   "skill": "information-architecture",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.5,
+   "cost_skill": 0.006489977500000001,
+   "cost_baseline": 0.0045638250000000005
+  },
+  {
+   "skill": "job-fit-analysis",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.7321428571428572,
+   "preferred": 1.0,
+   "cost_skill": 0.005359045,
+   "cost_baseline": 0.002618075
+  },
+  {
+   "skill": "launch-readiness",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 0.0,
+   "cost_skill": 0.00470987,
+   "cost_baseline": 0.0026315925
+  },
+  {
+   "skill": "llm-eval-harness",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7142857142857142,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 1.0,
+   "cost_skill": 0.005705635000000001,
+   "cost_baseline": 0.0040723600000000006
+  },
+  {
+   "skill": "marketing-flyer",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.0071905625,
+   "cost_baseline": 0.005181855000000001
+  },
+  {
+   "skill": "md-to-docx",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7142857142857142,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 1.0,
+   "cost_skill": 0.0065157274999999995,
+   "cost_baseline": 0.0173771975
+  },
+  {
+   "skill": "md-to-html",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8285714285714285,
+   "baseline_met": 0.8285714285714285,
+   "preferred": 0.0,
+   "cost_skill": 0.007175552500000001,
+   "cost_baseline": 0.005563407500000001
+  },
+  {
+   "skill": "md-to-xlsx",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 1.0,
+   "cost_skill": 0.0087485375,
+   "cost_baseline": 0.008527275
+  },
+  {
+   "skill": "mermaid-render",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 1.0,
+   "preferred": 0.25,
+   "cost_skill": 0.0038957525000000003,
+   "cost_baseline": 0.0034229300000000002
+  },
+  {
+   "skill": "migration-plan",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.6071428571428572,
+   "baseline_met": 0.6904761904761905,
+   "preferred": 0.0,
+   "cost_skill": 0.0086155725,
+   "cost_baseline": 0.0050599175
+  },
+  {
+   "skill": "nfr-spec",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.6071428571428572,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 0.5,
+   "cost_skill": 0.007295165,
+   "cost_baseline": 0.0045510575000000004
+  },
+  {
+   "skill": "observability-plan",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.5833333333333334,
+   "preferred": 1.0,
+   "cost_skill": 0.009302765,
+   "cost_baseline": 0.00580489
+  },
+  {
+   "skill": "okr-cascade",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.00749625,
+   "cost_baseline": 0.0053912775
+  },
+  {
+   "skill": "output-hygiene",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.0,
+   "cost_skill": 0.0059007275,
+   "cost_baseline": 0.0031192000000000004
+  },
+  {
+   "skill": "postmortem-generator",
+   "model": "claude-haiku-5-5",
+   "evals": 6,
+   "skill_met": 0.927579365079365,
+   "baseline_met": 0.7410714285714285,
+   "preferred": 0.5,
+   "cost_skill": 0.006615143333333333,
+   "cost_baseline": 0.00422053
+  },
+  {
+   "skill": "pr-description-writer",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.0,
+   "cost_skill": 0.0037310325,
+   "cost_baseline": 0.0029819250000000003
+  },
+  {
+   "skill": "prd-draft",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.6785714285714286,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.0,
+   "cost_skill": 0.0082926275,
+   "cost_baseline": 0.0036927625
+  },
+  {
+   "skill": "pre-merge-review",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 0.5,
+   "cost_skill": 0.005157502500000001,
+   "cost_baseline": 0.0052613625
+  },
+  {
+   "skill": "prfaq",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.75,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.005122895000000001,
+   "cost_baseline": 0.0041116975
+  },
+  {
+   "skill": "prompt-caching-advisor",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.5,
+   "cost_skill": 0.0037802450000000007,
+   "cost_baseline": 0.0034443650000000004
+  },
+  {
+   "skill": "release-notes",
+   "model": "claude-haiku-5-5",
+   "evals": 6,
+   "skill_met": 0.9553571428571428,
+   "baseline_met": 0.7708333333333334,
+   "preferred": 0.6666666666666666,
+   "cost_skill": 0.003962238333333333,
+   "cost_baseline": 0.0032107933333333336
+  },
+  {
+   "skill": "requirements-interview",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.7738095238095238,
+   "preferred": 0.5,
+   "cost_skill": 0.006152855,
+   "cost_baseline": 0.0035581450000000004
+  },
+  {
+   "skill": "research-plan",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 1.0,
+   "cost_skill": 0.007596022500000001,
+   "cost_baseline": 0.0037204675000000005
+  },
+  {
+   "skill": "resume-tailor",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.875,
+   "preferred": 1.0,
+   "cost_skill": 0.0061066975,
+   "cost_baseline": 0.0037215875
+  },
+  {
+   "skill": "reverse-architecture",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428572,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 0.0,
+   "cost_skill": 0.00507927,
+   "cost_baseline": 0.0049443625
+  },
+  {
+   "skill": "risk-register",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.6190476190476191,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.011665037500000001,
+   "cost_baseline": 0.005008945000000001
+  },
+  {
+   "skill": "role-shortlist",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 0.0,
+   "cost_skill": 0.0051494999999999996,
+   "cost_baseline": 0.003591425
+  },
+  {
+   "skill": "runbook-generator",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 1.0,
+   "preferred": 0.5,
+   "cost_skill": 0.0074741275,
+   "cost_baseline": 0.0044388
+  },
+  {
+   "skill": "security-questionnaire-response",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.6666666666666666,
+   "preferred": 0.5,
+   "cost_skill": 0.0087210475,
+   "cost_baseline": 0.0042638175
+  },
+  {
+   "skill": "service-blueprint",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.6785714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.007041225,
+   "cost_baseline": 0.00312436
+  },
+  {
+   "skill": "skill-author",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.0,
+   "cost_skill": 0.01419624,
+   "cost_baseline": 0.005494072500000001
+  },
+  {
+   "skill": "skill-review",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.0034385075,
+   "cost_baseline": 0.002581255
+  },
+  {
+   "skill": "slide-outliner",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428572,
+   "baseline_met": 0.9,
+   "preferred": 0.5,
+   "cost_skill": 0.0038644225,
+   "cost_baseline": 0.003150585
+  },
+  {
+   "skill": "soc2-evidence-map",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.4642857142857143,
+   "baseline_met": 0.6785714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.011692445,
+   "cost_baseline": 0.0040357875
+  },
+  {
+   "skill": "sonar-onboard",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.5,
+   "cost_skill": 0.011121659999999998,
+   "cost_baseline": 0.008163657500000001
+  },
+  {
+   "skill": "sonar-review",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 1.0,
+   "cost_skill": 0.004108592500000001,
+   "cost_baseline": 0.0033382625000000004
+  },
+  {
+   "skill": "source-synthesis",
+   "model": "claude-haiku-5-5",
+   "evals": 6,
+   "skill_met": 0.8273809523809524,
+   "baseline_met": 0.6339285714285714,
+   "preferred": 0.6666666666666666,
+   "cost_skill": 0.006293476666666666,
+   "cost_baseline": 0.004825176666666667
+  },
+  {
+   "skill": "sql-review",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.6904761904761905,
+   "preferred": 1.0,
+   "cost_skill": 0.005816855000000001,
+   "cost_baseline": 0.0038511075
+  },
+  {
+   "skill": "strategy-analysis",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428572,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.5,
+   "cost_skill": 0.00455859,
+   "cost_baseline": 0.0030625599999999998
+  },
+  {
+   "skill": "subagent-design",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.7738095238095238,
+   "preferred": 0.5,
+   "cost_skill": 0.00473428,
+   "cost_baseline": 0.004410625
+  },
+  {
+   "skill": "success-metrics",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.0,
+   "cost_skill": 0.0039058825,
+   "cost_baseline": 0.0031434
+  },
+  {
+   "skill": "team-status-report",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.004477575,
+   "cost_baseline": 0.002747355
+  },
+  {
+   "skill": "tech-debt-register",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.8571428571428571,
+   "preferred": 0.5,
+   "cost_skill": 0.006228502500000001,
+   "cost_baseline": 0.003863485
+  },
+  {
+   "skill": "terraform-module",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.011233667499999999,
+   "cost_baseline": 0.006435467500000001
+  },
+  {
+   "skill": "terraform-plan-review",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.6904761904761905,
+   "preferred": 0.0,
+   "cost_skill": 0.003465325,
+   "cost_baseline": 0.0026880100000000002
+  },
+  {
+   "skill": "test-plan-generator",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.6785714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.0051997625,
+   "cost_baseline": 0.0033262875
+  },
+  {
+   "skill": "threat-model",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.0,
+   "cost_skill": 0.00642786,
+   "cost_baseline": 0.0031446474999999997
+  },
+  {
+   "skill": "token-budget-estimator",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 0.5,
+   "cost_skill": 0.007209047499999999,
+   "cost_baseline": 0.006581997499999999
+  },
+  {
+   "skill": "tool-use-schema-writer",
+   "model": "claude-haiku-5-5",
+   "evals": 4,
+   "skill_met": 0.9375,
+   "baseline_met": 0.7410714285714286,
+   "preferred": 0.25,
+   "cost_skill": 0.003563535,
+   "cost_baseline": 0.0033839250000000003
+  },
+  {
+   "skill": "tracker-brief-sync",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428571,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.5,
+   "cost_skill": 0.0105440775,
+   "cost_baseline": 0.003950395
+  },
+  {
+   "skill": "user-journey-map",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.6666666666666666,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.00812452,
+   "cost_baseline": 0.003273725
+  },
+  {
+   "skill": "user-story-splitter",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.6904761904761905,
+   "preferred": 0.5,
+   "cost_skill": 0.0068043949999999995,
+   "cost_baseline": 0.002772235
+  },
+  {
+   "skill": "ux-writing",
+   "model": "claude-haiku-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.012631792499999999,
+   "cost_baseline": 0.0053451425
+  },
+  {
+   "skill": "accessibility-audit",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.7023809523809523,
+   "preferred": 0.0,
+   "cost_skill": 0.20500980000000002,
+   "cost_baseline": 0.1280287
+  },
+  {
+   "skill": "adr-generator",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.1381668,
+   "cost_baseline": 0.08889249999999999
+  },
+  {
+   "skill": "agent-adoption-stage",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.7142857142857142,
+   "preferred": 0.0,
+   "cost_skill": 0.1591518,
+   "cost_baseline": 0.0982325
+  },
+  {
+   "skill": "agent-budget",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6904761904761905,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.0,
+   "cost_skill": 0.20950749999999996,
+   "cost_baseline": 0.1728741
+  },
+  {
+   "skill": "agent-loop-design",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6428571428571428,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.5,
+   "cost_skill": 0.1531652,
+   "cost_baseline": 0.11640470000000001
+  },
+  {
+   "skill": "agent-threat-model",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.2187514,
+   "cost_baseline": 0.1235676
+  },
+  {
+   "skill": "agents-md-generator",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.25,
+   "cost_skill": 0.1428889,
+   "cost_baseline": 0.1231507
+  },
+  {
+   "skill": "ai-adoption-rollout",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6428571428571428,
+   "baseline_met": 0.7142857142857142,
+   "preferred": 0.0,
+   "cost_skill": 0.21172380000000002,
+   "cost_baseline": 0.177445
+  },
+  {
+   "skill": "ai-readiness-assessment",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.8571428571428571,
+   "preferred": 0.0,
+   "cost_skill": 0.1384473,
+   "cost_baseline": 0.101827
+  },
+  {
+   "skill": "ai-usage-policy",
+   "model": "claude-opus-5-5",
+   "evals": 6,
+   "skill_met": 0.800595238095238,
+   "baseline_met": 0.6934523809523809,
+   "preferred": 0.5,
+   "cost_skill": 0.16568810000000003,
+   "cost_baseline": 0.17360850000000003
+  },
+  {
+   "skill": "ai-usage-report",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.27521,
+   "cost_baseline": 0.21727220000000003
+  },
+  {
+   "skill": "ai-use-case-triage",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.6904761904761905,
+   "preferred": 0.5,
+   "cost_skill": 0.2082382,
+   "cost_baseline": 0.1299708
+  },
+  {
+   "skill": "api-contract-draft",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6904761904761905,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.0,
+   "cost_skill": 0.43015289999999995,
+   "cost_baseline": 0.2495954
+  },
+  {
+   "skill": "application-form-answers",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8125,
+   "baseline_met": 0.9375,
+   "preferred": 1.0,
+   "cost_skill": 0.1572123,
+   "cost_baseline": 0.11463960000000001
+  },
+  {
+   "skill": "architecture-diagrams",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.14439820000000003,
+   "cost_baseline": 0.1527812
+  },
+  {
+   "skill": "audience-profile",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6857142857142857,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 0.0,
+   "cost_skill": 0.1159741,
+   "cost_baseline": 0.06238790000000001
+  },
+  {
+   "skill": "backlog-triage",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.18233749999999999,
+   "cost_baseline": 0.12793259999999998
+  },
+  {
+   "skill": "brand-kit",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.8,
+   "preferred": 0.5,
+   "cost_skill": 0.23323159999999998,
+   "cost_baseline": 0.2082081
+  },
+  {
+   "skill": "brief-intake",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.0,
+   "cost_skill": 0.11950419999999999,
+   "cost_baseline": 0.0853797
+  },
+  {
+   "skill": "bug-triage",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.15322969999999997,
+   "cost_baseline": 0.08552979999999999
+  },
+  {
+   "skill": "business-case",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.0,
+   "cost_skill": 0.18397660000000002,
+   "cost_baseline": 0.12368320000000002
+  },
+  {
+   "skill": "capacity-cost-model",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.3400862,
+   "cost_baseline": 0.2276933
+  },
+  {
+   "skill": "cloud-cost-review",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428571,
+   "baseline_met": 0.6428571428571428,
+   "preferred": 0.5,
+   "cost_skill": 0.2591348,
+   "cost_baseline": 0.1422295
+  },
+  {
+   "skill": "content-design",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.0,
+   "cost_skill": 0.24362840000000002,
+   "cost_baseline": 0.12373179999999999
+  },
+  {
+   "skill": "council-review",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6428571428571428,
+   "baseline_met": 0.6428571428571428,
+   "preferred": 0.0,
+   "cost_skill": 0.1678107,
+   "cost_baseline": 0.09722929999999999
+  },
+  {
+   "skill": "cover-letter",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 0.5,
+   "cost_skill": 0.1637206,
+   "cost_baseline": 0.11314680000000002
+  },
+  {
+   "skill": "dashboard-spec",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.6904761904761905,
+   "preferred": 0.5,
+   "cost_skill": 0.2537085,
+   "cost_baseline": 0.156054
+  },
+  {
+   "skill": "data-contract",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6904761904761905,
+   "baseline_met": 0.6071428571428572,
+   "preferred": 0.0,
+   "cost_skill": 0.23051419999999997,
+   "cost_baseline": 0.1401437
+  },
+  {
+   "skill": "decision-log",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428572,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.081844,
+   "cost_baseline": 0.058644100000000005
+  },
+  {
+   "skill": "deck-builder",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.2890595,
+   "cost_baseline": 0.8801108
+  },
+  {
+   "skill": "delivery-metrics-report",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.6071428571428572,
+   "preferred": 0.0,
+   "cost_skill": 0.2333661,
+   "cost_baseline": 0.1452749
+  },
+  {
+   "skill": "design-doc",
+   "model": "claude-opus-5-5",
+   "evals": 6,
+   "skill_met": 0.9077380952380952,
+   "baseline_met": 0.8392857142857143,
+   "preferred": 0.3333333333333333,
+   "cost_skill": 0.2073534,
+   "cost_baseline": 0.18403653333333334
+  },
+  {
+   "skill": "design-system-spec",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.75,
+   "baseline_met": 0.6666666666666666,
+   "preferred": 0.5,
+   "cost_skill": 0.28080599999999994,
+   "cost_baseline": 0.17771949999999997
+  },
+  {
+   "skill": "devils-advocate",
+   "model": "claude-opus-5-5",
+   "evals": 6,
+   "skill_met": 0.8492063492063493,
+   "baseline_met": 0.8075396825396827,
+   "preferred": 0.6666666666666666,
+   "cost_skill": 0.13186356666666665,
+   "cost_baseline": 0.10731063333333334
+  },
+  {
+   "skill": "doc-critique",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.1274364,
+   "cost_baseline": 0.06976289999999999
+  },
+  {
+   "skill": "dpia",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.0,
+   "cost_skill": 0.29930080000000003,
+   "cost_baseline": 0.2448906
+  },
+  {
+   "skill": "eval-harness-generator",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.5,
+   "cost_skill": 0.2104953,
+   "cost_baseline": 0.1442304
+  },
+  {
+   "skill": "exec-summary",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8285714285714285,
+   "baseline_met": 1.0,
+   "preferred": 0.5,
+   "cost_skill": 0.1029553,
+   "cost_baseline": 0.0731982
+  },
+  {
+   "skill": "feature-implement-loop",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.26508390000000004,
+   "cost_baseline": 0.1495621
+  },
+  {
+   "skill": "figma-diagrams",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.75,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.5,
+   "cost_skill": 0.0941342,
+   "cost_baseline": 0.0962176
+  },
+  {
+   "skill": "file-to-markdown",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.10539779999999999,
+   "cost_baseline": 0.1148345
+  },
+  {
+   "skill": "guide-builder",
+   "model": "claude-opus-5-5",
+   "evals": 6,
+   "skill_met": 0.9345238095238094,
+   "baseline_met": 0.7728174603174603,
+   "preferred": 0.8333333333333334,
+   "cost_skill": 0.11246626666666666,
+   "cost_baseline": 0.1299049
+  },
+  {
+   "skill": "hypothesis-comparison",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.6904761904761905,
+   "preferred": 0.5,
+   "cost_skill": 0.18171430000000002,
+   "cost_baseline": 0.0715458
+  },
+  {
+   "skill": "incident-comms",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.6785714285714286,
+   "preferred": 1.0,
+   "cost_skill": 0.12344669999999999,
+   "cost_baseline": 0.1035903
+  },
+  {
+   "skill": "information-architecture",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 0.5,
+   "cost_skill": 0.3282657,
+   "cost_baseline": 0.1424396
+  },
+  {
+   "skill": "job-fit-analysis",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 1.0,
+   "cost_skill": 0.1193853,
+   "cost_baseline": 0.0849203
+  },
+  {
+   "skill": "launch-readiness",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.1368153,
+   "cost_baseline": 0.0983667
+  },
+  {
+   "skill": "llm-eval-harness",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7142857142857143,
+   "baseline_met": 0.7142857142857142,
+   "preferred": 0.0,
+   "cost_skill": 0.1339062,
+   "cost_baseline": 0.12742269999999997
+  },
+  {
+   "skill": "marketing-flyer",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.7738095238095238,
+   "preferred": 0.5,
+   "cost_skill": 0.2604282,
+   "cost_baseline": 0.2029767
+  },
+  {
+   "skill": "md-to-docx",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 0.5,
+   "cost_skill": 0.1740259,
+   "cost_baseline": 0.38214560000000003
+  },
+  {
+   "skill": "md-to-html",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8285714285714285,
+   "baseline_met": 0.8285714285714285,
+   "preferred": 0.0,
+   "cost_skill": 0.1964488,
+   "cost_baseline": 0.1695022
+  },
+  {
+   "skill": "md-to-xlsx",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.1421438,
+   "cost_baseline": 0.40449630000000003
+  },
+  {
+   "skill": "mermaid-render",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 1.0,
+   "preferred": 0.5,
+   "cost_skill": 0.1261149,
+   "cost_baseline": 0.07954510000000001
+  },
+  {
+   "skill": "migration-plan",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6785714285714286,
+   "baseline_met": 0.7738095238095238,
+   "preferred": 0.0,
+   "cost_skill": 0.22220690000000004,
+   "cost_baseline": 0.13722689999999999
+  },
+  {
+   "skill": "nfr-spec",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6904761904761905,
+   "baseline_met": 0.6071428571428572,
+   "preferred": 0.0,
+   "cost_skill": 0.1755985,
+   "cost_baseline": 0.12730930000000001
+  },
+  {
+   "skill": "observability-plan",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6904761904761905,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.0,
+   "cost_skill": 0.3145546,
+   "cost_baseline": 0.1778103
+  },
+  {
+   "skill": "okr-cascade",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 0.0,
+   "cost_skill": 0.23926119999999998,
+   "cost_baseline": 0.1413172
+  },
+  {
+   "skill": "output-hygiene",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.1251068,
+   "cost_baseline": 0.0979219
+  },
+  {
+   "skill": "postmortem-generator",
+   "model": "claude-opus-5-5",
+   "evals": 6,
+   "skill_met": 0.9027777777777778,
+   "baseline_met": 0.8303571428571428,
+   "preferred": 0.16666666666666666,
+   "cost_skill": 0.14759919999999999,
+   "cost_baseline": 0.12627786666666665
+  },
+  {
+   "skill": "pr-description-writer",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.09588350000000001,
+   "cost_baseline": 0.0672827
+  },
+  {
+   "skill": "prd-draft",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.0,
+   "cost_skill": 0.1513659,
+   "cost_baseline": 0.1231509
+  },
+  {
+   "skill": "pre-merge-review",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.7142857142857142,
+   "preferred": 0.0,
+   "cost_skill": 0.1320874,
+   "cost_baseline": 0.1068655
+  },
+  {
+   "skill": "prfaq",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.2033207,
+   "cost_baseline": 0.1433074
+  },
+  {
+   "skill": "prompt-caching-advisor",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9,
+   "baseline_met": 0.9,
+   "preferred": 0.0,
+   "cost_skill": 0.09385019999999998,
+   "cost_baseline": 0.1454819
+  },
+  {
+   "skill": "release-notes",
+   "model": "claude-opus-5-5",
+   "evals": 6,
+   "skill_met": 1.0,
+   "baseline_met": 0.8601190476190476,
+   "preferred": 0.5,
+   "cost_skill": 0.0837651,
+   "cost_baseline": 0.09331546666666668
+  },
+  {
+   "skill": "requirements-interview",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.2520969,
+   "cost_baseline": 0.1927471
+  },
+  {
+   "skill": "research-plan",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.6428571428571428,
+   "preferred": 0.5,
+   "cost_skill": 0.1820293,
+   "cost_baseline": 0.11632040000000002
+  },
+  {
+   "skill": "resume-tailor",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 1.0,
+   "preferred": 1.0,
+   "cost_skill": 0.139881,
+   "cost_baseline": 0.10034850000000001
+  },
+  {
+   "skill": "reverse-architecture",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 0.0,
+   "cost_skill": 0.12369559999999999,
+   "cost_baseline": 0.1111125
+  },
+  {
+   "skill": "risk-register",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 0.0,
+   "cost_skill": 0.3841177,
+   "cost_baseline": 0.1401786
+  },
+  {
+   "skill": "role-shortlist",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428571,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 1.0,
+   "cost_skill": 0.10434940000000001,
+   "cost_baseline": 0.0917158
+  },
+  {
+   "skill": "runbook-generator",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 1.0,
+   "cost_skill": 0.17239939999999998,
+   "cost_baseline": 0.14016489999999998
+  },
+  {
+   "skill": "security-questionnaire-response",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.75,
+   "baseline_met": 0.75,
+   "preferred": 1.0,
+   "cost_skill": 0.2260839,
+   "cost_baseline": 0.1298089
+  },
+  {
+   "skill": "service-blueprint",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.0,
+   "cost_skill": 0.27548829999999996,
+   "cost_baseline": 0.1233957
+  },
+  {
+   "skill": "skill-author",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.5,
+   "cost_skill": 0.3675317,
+   "cost_baseline": 0.16996
+  },
+  {
+   "skill": "skill-review",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 1.0,
+   "preferred": 0.5,
+   "cost_skill": 0.09540100000000001,
+   "cost_baseline": 0.059789499999999995
+  },
+  {
+   "skill": "slide-outliner",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8285714285714285,
+   "baseline_met": 0.8285714285714285,
+   "preferred": 0.0,
+   "cost_skill": 0.1166458,
+   "cost_baseline": 0.078914
+  },
+  {
+   "skill": "soc2-evidence-map",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6666666666666666,
+   "baseline_met": 0.75,
+   "preferred": 0.0,
+   "cost_skill": 0.8269463,
+   "cost_baseline": 0.20272430000000002
+  },
+  {
+   "skill": "sonar-onboard",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.75,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.5,
+   "cost_skill": 0.358422,
+   "cost_baseline": 0.16586859999999998
+  },
+  {
+   "skill": "sonar-review",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 0.5,
+   "cost_skill": 0.1000479,
+   "cost_baseline": 0.0678066
+  },
+  {
+   "skill": "source-synthesis",
+   "model": "claude-opus-5-5",
+   "evals": 6,
+   "skill_met": 0.8511904761904762,
+   "baseline_met": 0.8065476190476191,
+   "preferred": 0.6666666666666666,
+   "cost_skill": 0.11725940000000001,
+   "cost_baseline": 0.1444606
+  },
+  {
+   "skill": "sql-review",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 1.0,
+   "cost_skill": 0.1426228,
+   "cost_baseline": 0.0825081
+  },
+  {
+   "skill": "strategy-analysis",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.6071428571428572,
+   "preferred": 0.5,
+   "cost_skill": 0.0973512,
+   "cost_baseline": 0.0820651
+  },
+  {
+   "skill": "subagent-design",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.16966760000000003,
+   "cost_baseline": 0.1291121
+  },
+  {
+   "skill": "success-metrics",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.0,
+   "cost_skill": 0.14465329999999998,
+   "cost_baseline": 0.1009017
+  },
+  {
+   "skill": "team-status-report",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.1371421,
+   "cost_baseline": 0.0589155
+  },
+  {
+   "skill": "tech-debt-register",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428571,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.0,
+   "cost_skill": 0.159326,
+   "cost_baseline": 0.0937187
+  },
+  {
+   "skill": "terraform-module",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.40066389999999996,
+   "cost_baseline": 0.1961601
+  },
+  {
+   "skill": "terraform-plan-review",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 0.0,
+   "cost_skill": 0.0822769,
+   "cost_baseline": 0.060362900000000004
+  },
+  {
+   "skill": "test-plan-generator",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6071428571428572,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.5,
+   "cost_skill": 0.14927669999999998,
+   "cost_baseline": 0.1000572
+  },
+  {
+   "skill": "threat-model",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428572,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.0,
+   "cost_skill": 0.1375615,
+   "cost_baseline": 0.12043960000000001
+  },
+  {
+   "skill": "token-budget-estimator",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.19211489999999998,
+   "cost_baseline": 0.1259169
+  },
+  {
+   "skill": "tool-use-schema-writer",
+   "model": "claude-opus-5-5",
+   "evals": 4,
+   "skill_met": 0.96875,
+   "baseline_met": 0.9017857142857143,
+   "preferred": 0.0,
+   "cost_skill": 0.09102765,
+   "cost_baseline": 0.1011846
+  },
+  {
+   "skill": "tracker-brief-sync",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.2378146,
+   "cost_baseline": 0.15440369999999998
+  },
+  {
+   "skill": "user-journey-map",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.5,
+   "cost_skill": 0.18747119999999995,
+   "cost_baseline": 0.0988463
+  },
+  {
+   "skill": "user-story-splitter",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.6190476190476191,
+   "preferred": 0.5,
+   "cost_skill": 0.2296754,
+   "cost_baseline": 0.12313009999999999
+  },
+  {
+   "skill": "ux-writing",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.75,
+   "baseline_met": 0.75,
+   "preferred": 0.5,
+   "cost_skill": 0.48500319999999997,
+   "cost_baseline": 0.17392410000000003
+  }
+ ]
+}
