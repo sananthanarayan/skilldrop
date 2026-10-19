@@ -39,10 +39,10 @@ v1.0-2026 (IDs and titles from the project's repository) and the
 | **AST06 Weak Isolation** | Only at install time: catalog content is never executed, and hooks are opt-in (`--with-hooks`) and printed. | Not covered | Installed skills run with the host agent's full permissions. skilldrop provides no sandbox. |
 | **AST07 Update Drift** | The ledger keeps each skill's version, source, commit and a SHA-256 per file. `outdated` compares files as well as versions, so a skill changed upstream under the same version is named, and `update` takes it only with `--changed`. A pinned skill doesn't move until you re-pin it. `update` re-runs the structural gate and the supply-chain scan, keeps your edited files, and `update --dry-run` and `diff` show what would change first. | Covered | Detection needs the catalogue to be fetched; nothing watches it in the background. |
 | **AST08 Poor Scanning** | The scan has a prose rule set aimed at natural-language instructions, kept separate from code rules and tuned not to flag skills that are *about* security. `--json` feeds other tools. | Partial | Pattern matching over prose is the weakness AST08 describes. RFC-0022 deliberately rejects semantic and LLM-assisted review. |
-| **AST09 No Governance** | Each target has a ledger (an inventory), `doctor` checks it against disk, profiles give curated bundles, and `ai-usage-policy` writes an approved-tool list with owners. | Partial | Everything is per machine. There is no organisation-wide inventory, approval flow or audit log. |
+| **AST09 No Governance** | An organisation policy the installer enforces ([RFC-0050](../../docs/rfcs/0050-org-governance.md)): allowed catalogues, pinning required, skills allowed or blocked, a cap on scan findings. It fails closed, refuses a whole install before writing anything, and `update` skips what it now refuses. `skilldrop inventory` reports every install on a machine and `--merge` combines machines into one view. An opt-in audit log records every install, update and uninstall in a hash chain `skilldrop audit verify` checks, naming a pseudonym by default. `verify-mirror` checks an internal mirror against its `MIRROR.json`. | Covered | Governs installs made with the CLI only: a folder copied by hand or a plugin from the Claude Code marketplace never passes through it. Reports are collected by the organisation's own tooling, not a hosted service. |
 | **AST10 Cross-Platform Reuse** | Installing across platforms is the product: Claude Code, Cursor, Kiro, Codex, Antigravity, Copilot and any folder. The `permissions` block travels inside `manifest.json` to every tool, and `skilldrop info` and third-party installs show it. Agent projection warns when a tool is dropped. | Partial | No target tool reads `permissions` itself; it informs the person installing, and the scan, but nothing enforces it at run time. |
 
-**Covered 1 · Partial 8 · Not covered 1.**
+**Covered 2 · Partial 7 · Not covered 1.**
 
 ## OWASP Top 10 for LLM Applications 2025
 
@@ -71,5 +71,6 @@ v1.0-2026 (IDs and titles from the project's repository) and the
    human review are the backstop.
 3. **No signing for third-party catalogues** (AST02). Commit pins stop a moved tag; they don't
    prove who wrote the commit.
-4. **No organisation-wide governance** (AST09): inventory, approval and audit stay per machine.
-   `skilldrop package` mirrors and `MIRROR.json` are the closest thing today.
+4. **Organisation governance covers the CLI only** (AST09): a policy, inventory and audit log
+   now exist ([RFC-0050](../../docs/rfcs/0050-org-governance.md)), but an install that never
+   goes through the CLI isn't seen.

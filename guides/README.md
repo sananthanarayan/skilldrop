@@ -38,6 +38,7 @@ New here? Start with the [operating model](explanation/operating-model.md): the 
 - [Measure your loops](how-to/measure-your-loops.md) — the opt-in, local-only run log, and which gates pass first time
 - [Run a skill in CI](how-to/run-a-skill-in-ci.md) — the GitHub Action: a skill on every pull request, results in the job summary, optional fail on a verdict
 - [Roll out across your org](how-to/enterprise-distribution.md) — bootstrap the hosted marketplace for every machine in one command
+- [Govern skills across an organisation](how-to/govern-skills.md) — a policy the installer enforces, an inventory of every machine, and an audit log that shows if it was edited
 - [Use with MCP servers](how-to/use-with-mcp-servers.md) — which servers pair with which skills, adding one in each tool, and the security rules
 - [Use with Jira](how-to/integrate-with-jira.md) — bug triage, story splitting, implementation loops, and release notes from Jira tickets
 - [Use with GitHub Projects](how-to/integrate-with-github-projects.md) — implementation loops, review gates, and release notes linked to GitHub issues
@@ -59,6 +60,7 @@ New here? Start with the [operating model](explanation/operating-model.md): the 
 - [MCP servers and skills](reference/mcp-servers.md) — which MCP servers pair with which skills and loops, config for each tool, security rules and troubleshooting
 - [Skills that ship scripts](reference/skills-with-scripts.md) — every skill with scripts and what each declares it needs, and how to invoke a skill
 - [skilldrop and the OWASP Top 10s](reference/owasp-mapping.md) — what skilldrop covers in the Agentic Skills Top 10 and LLM Top 10 2025, and the gaps
+- [Policy file and audit log](reference/policy-and-audit.md) — every field of the organisation policy, how it fails, and the audit log and inventory formats
 
 ## Per pack
 

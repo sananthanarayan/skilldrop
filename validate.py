@@ -598,6 +598,12 @@ def main():
         if os.path.isdir(os.path.join(catalog.PACKS_DIR, d)) and not os.path.isfile(os.path.join(catalog.PACKS_DIR, d, "pack.json")):
             fail(f"packs/{d}", "pack folder has no pack.json")
     index_doc = catalog.index()
+    # RFC-0050: the example policy satisfies the contract (the CLI's validate checks it too)
+    try:
+        for e in check_schema(json.load(open(os.path.join(ROOT, "contracts", "policy.example.json"))), schema("policy.schema.json")):
+            fail("contracts/policy.example.json", e)
+    except (OSError, ValueError) as e:
+        fail("contracts/policy.example.json", f"unreadable: {e}")
     for e in check_schema(index_doc, schema("catalogue.schema.json")):
         fail("catalogue.json", e)
     on_disk = set(catalog._children(catalog.PACKS_DIR, "pack.json"))

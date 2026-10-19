@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "note": "Example: Platform Security owns this policy. Ask in #ai-tools before adding a catalogue.",
+  "catalogues": {
+    "allow": ["bundled", "https://git.example.org/ai/skills"],
+    "require_pinned": true
+  },
+  "skills": {
+    "allow": ["*"],
+    "block": ["figma-diagrams"]
+  },
+  "scan": { "max": "medium" },
+  "audit": { "actor": "pseudonym", "salt_env": "SKILLDROP_AUDIT_SALT" }
+}

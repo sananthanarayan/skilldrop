@@ -6,7 +6,8 @@ is what's next. Each item says why it matters, roughly how big it is, and what i
 so you can pick one up without re-deriving the context. Sizes are rough: **S** is an hour or
 two, **M** a day, **L** several days.
 
-Last reviewed 2026-10-16, after 0.16.10.
+Last reviewed 2026-10-19, after 0.16.27. Organisation governance (AST09) shipped in 0.16.27
+([RFC-0050](../rfcs/0050-org-governance.md)).
 
 ## Distribution
 
@@ -25,7 +26,6 @@ Last reviewed 2026-10-16, after 0.16.10.
 | **Declared containment** | Skills run with the agent host's full permissions (AST06). A `permissions.containment` field could say what sandbox a skill expects, for hosts that can provide one. | M | Agent hosts that expose sandbox settings |
 | **Permissions for instruction-only skills** | A skill with no scripts can still tell the agent to run commands or fetch URLs, and today it declares nothing. Extend `permissions` to the instructions themselves. | M | Design: how to check prose against a declaration |
 | **Opt-in semantic scan** | The scan is pattern matching (AST08). An opt-in `scan --deep` could have a model read each skill against the OWASP list. | M | An API key; kept off by default to stay offline |
-| **Organisation governance** | Inventory, approval and audit are per machine (AST09). An org-level inventory could be built from ledgers, or from the `package` mirrors with `MIRROR.json`. | L | — |
 | **Scan agents, not just skills** | `skilldrop scan` covers skills; subagent files aren't scanned. | S | — |
 
 ## Quality and evals

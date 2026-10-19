@@ -6,7 +6,7 @@
 > 98 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.16.26.
+> Version 0.16.27.
 
 ## Start here
 
@@ -41,6 +41,8 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [contracts/guide.schema.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/contracts/guide.schema.json): Diátaxis `kind` is a PAGE CONTRACT, not a directory requirement — the directory is a convenience, the frontmatter is the truth.
 - [contracts/loop.schema.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/contracts/loop.schema.json): A loop sequences existing skills; it never contains one.
 - [contracts/pack.schema.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/contracts/pack.schema.json): One pack's metadata.
+- [contracts/policy.example.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/contracts/policy.example.json): 
+- [contracts/policy.schema.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/contracts/policy.schema.json): The file an organisation hands out (--policy, SKILLDROP_POLICY, or ~/.config/skilldrop/policy.json).
 - [contracts/skill.schema.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/contracts/skill.schema.json): This shape lived only as prose in AGENTS.md, so the one authoritative statement of what a manifest is was a paragraph a contributor had to read and obey.
 - [contracts/terminals.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/contracts/terminals.json): the shared verdict vocabulary.
 
@@ -54,6 +56,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Author a new skill](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/author-a-skill.md) *(how-to)*: The short version of the authoring path — what a skill must contain, what gates it, and where the full contributor rules live.
 - [Benchmark skills against the agent without them](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/benchmark-skills.md) *(how-to)*: Run each acceptance eval twice as an agent session, with the skill and without it, and read the lift, the blind preference from two judges, and the cost.
 - [Roll out skilldrop across your org](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/enterprise-distribution.md) *(how-to)*: Bootstrap the hosted marketplace for every machine in one command — covers the public catalogue and private-fork setups for enterprise orgs.
+- [Govern skills across an organisation](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/govern-skills.md) *(how-to)*: Decide which catalogues and skills people may install, see what is installed on every machine, and keep a log of every change that shows if it was edited
 - [Install a skill into your IDE](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/install-per-ide.md) *(how-to)*: Put a skill where Claude Code, Cursor, Kiro, Codex, Antigravity, GitHub Copilot or another agent reads it, by copying the folder or with one CLI flag, then install its dependencies.
 - [Install skills, packs and loops](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/install.md) *(how-to)*: Install a role's pack, one skill, a loop or the reviewer subagents with the skilldrop CLI or the Claude Code plugin marketplace.
 - [Use skilldrop with Figma](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/integrate-with-figma.md) *(how-to)*: Connect Figma files to the architecture and diagram skills — generate diagrams for FigJam, produce Figma-ready specs from a design session, or reverse-engineer decisions from a mockup.
@@ -113,6 +116,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [SRE / on-call pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-sre-oncall.md) *(reference)*: Every skill in the SRE / on-call pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Stakeholder comms pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-stakeholder-comms.md) *(reference)*: Every skill in the Stakeholder comms pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Trackers pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-trackers.md) *(reference)*: Every skill in the Trackers pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
+- [Policy file and audit log](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/policy-and-audit.md) *(reference)*: Every field of the organisation policy, where the CLI looks for it, how it fails, and the format of the audit log and the inventory report
 - [Every skill, by category](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/skill-catalogue.md) *(reference)*: All the skills grouped by what they produce, one line each, plus the anatomy every skill folder shares.
 - [The skill contract](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/skill-contract.md) *(reference)*: What a new skill folder must contain — frontmatter, manifest, size, scripts, evals, catalogue entries — and what validate.py checks before it merges.
 - [Skills that ship scripts](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/skills-with-scripts.md) *(reference)*: Every skill that ships scripts and what each declares it needs — packages, environment variables, hosts, programs and files — and how to invoke a skill from Claude Code or any other IDE.
@@ -183,5 +187,5 @@ except `api-builder` requires `core`, which installs with it.
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 49 RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 50 RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.

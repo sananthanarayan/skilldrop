@@ -8,6 +8,13 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.27 — 2026-10-19
+
+- **An organisation can decide what its people install.** Hand out a policy file (`--policy`, `SKILLDROP_POLICY`, or `~/.config/skilldrop/policy.json`) and the installer enforces it: only the catalogues you allow, pinned to a commit if you say so, only the skills you allow, none you block, and nothing whose supply-chain scan finds worse than you accept. A refused install writes nothing and names the rule; `update` leaves refused skills as they are. A policy with a mistake stops the command rather than being half-applied ([RFC-0050](docs/rfcs/0050-org-governance.md), [how-to](guides/how-to/govern-skills.md)).
+- **`skilldrop inventory` lists every install on a machine**, across every tool and scope, with what the policy thinks of each; `--merge` combines reports from many machines into one view. Paths under your home directory are written as `~`.
+- **An audit log that shows if it was edited.** With `audit` in the policy, every install, update and uninstall is recorded; each line carries the fingerprint of the one before, and `skilldrop audit verify` names the first line that doesn't follow. Entries name a pseudonym only your organisation can resolve, unless it chooses otherwise.
+- **`skilldrop verify-mirror` checks an internal mirror** against the fingerprints `skilldrop package` recorded, and names every file changed, missing or added since.
+
 ## 0.16.26 — 2026-10-19
 
 - **`interactive-diagram` asks for what a reader needs from the reply:** the link and the takeaway at the top, with at most one short line about the build before them. Three attempts to remove that line changed little, and a reader who has just watched the build run loses nothing to it ([RFC-0048](docs/rfcs/0048-interactive-diagram.md)).
