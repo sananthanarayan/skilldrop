@@ -1,0 +1,6 @@
+timestamp_utc,actor,action,field,old_value,new_value,comment
+2026-10-14T22:05:00Z,support-mei,created,status,,Open,"Several schools in the north region: lesson downloads stuck at 0% in the app"
+2026-10-14T22:05:00Z,support-mei,set,priority,,P2,
+2026-10-14T22:12:00Z,oncall-ana,set,priority,P2,P1,"Errors in lesson-sync, investigating"
+2026-10-14T22:48:00Z,support-mei,comment,,,,"School contact confirms downloads are completing again"
+2026-10-15T06:40:00Z,support-mei,set,status,Open,Resolved,"Fixed by the retry config change (max_retries 3 -> 5) deployed this morning"

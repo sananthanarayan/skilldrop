@@ -69,6 +69,96 @@
         "Each message carries or cites the words from the user's description it came from, and the diagram adds no participants or systems the user did not describe (for example no SMS service, CRM, scheduling tool or tenant app)",
         "The reply opens with where the HTML file is and the main takeaway (such as the gap found), not with a long account of how the diagram was made"
       ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-19",
+      "prompt": "Quote requests on our freight API have been slow since last week. I exported one of the slow traces to trace-quote-slow.jsonl and put my notes in notes.txt. Can you make me an interactive diagram showing where the time went? I want to send it to the rates team.",
+      "assertions": [
+        "The output is one self-contained .html file that works offline: it has no <script src>, <link href>, @import or font URL pointing at http(s) or a CDN, and its scripts and styles are inline",
+        "The request's total is given as 4,200 ms (4.2 s), the root span POST /v2/quotes from 09:41:07.300 to 09:41:11.500 UTC; the total is not given as 4,610 ms (the late end of emit quote.created) or as the sum of the span durations",
+        "The biggest contributor is named as the carrier_rates north-line call in rates-svc at 2,600 ms, about 62% of the 4,200 ms total",
+        "carrier_rates north-line (2,600 ms) and carrier_rates coastal (2,385 ms) are shown or described as running in parallel, with coastal entirely inside north-line's window; their sum (4,985 ms, the notes' '~5s') is not presented as time the request spent on carriers, and the carrier calls together take about 2,600 ms of wall-clock time",
+        "build_quote (4,090 ms) is distinguished as almost all waiting on its children, with under 100 ms of its own time, while price_and_rank (1,050 ms) is called out as about 1,040 ms of its own work (its only child, GET fx:EUR-USD, takes 8 ms), the second place to look after north-line",
+        "The emit quote.created span (notify-svc, PRODUCER) is flagged as ending at 4,610 ms, after its parent build_quote (4,150 ms) and the root (4,200 ms) end, so it is async or clock skew, and it is not counted in the 4.2 s the user waited",
+        "The rate limiter or Redis rate-limit check from the notes is said not to be in the trace; it is not drawn as a measured span or given a duration (if it is shown at all, it is marked as not in the trace or an assumption), and no other spans, services or timings are made up",
+        "The reply's first line is the path of, or a link to, the HTML file, followed by the takeaway (for example, north-line's carrier call is about 62% of the 4.2 s), not an account of how the diagram was built"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-19",
+      "prompt": "Can you turn INC-0412 (the frozen arrival boards on Saturday night) into an interactive timeline I can drop into the review doc? system-log.txt is the export from the central log and oncall-notes.md is what I typed during the night. Review is Tuesday.",
+      "assertions": [
+        "The output is one self-contained .html file that works offline: it has no <script src>, <link href>, @import or font URL pointing at http(s) or a CDN, and its scripts and styles are inline",
+        "The notes' CDT times and the log's UTC times are on one clock (UTC = CDT + 5 h): the supervisor's 10:41pm call is placed at 03:41 UTC on 11 Oct, after the 00:03:40 UTC warning and before the 03:44:20 UTC page, not at 22:41 UTC on 10 Oct; the 12:05am all-clear is on 11 Oct and comes last, not before the evening events",
+        "The logged events appear at their correct times: v3.14.0 deploy at 23:58:12 UTC on 10 Oct (6:58pm CDT), the 'serving last-known positions' warning at 00:03:40 UTC, INC-0412 opened at 03:44:20 and acknowledged at 03:46:02, the feed recovering at 04:12:07, the rollback to v3.13.2 at 04:31:45 and the incident resolved at 05:05:40 UTC",
+        "Events from the system log and from the on-call notes are kept apart as two lanes or clearly labelled sources, and each event can be traced back to the file it came from",
+        "The quiet gap of about 3 h 37 min (00:03:40 UTC to the 03:41 UTC call; about 3 h 41 min to the 03:44:20 page) is shown or stated as a period with nothing logged and no alert, and it says the FeedStale alert never fired and a person found the problem; no events are invented inside the gap",
+        "The avl-ingest restart is shown as uncertain or approximate, around 11:05 to 11:15pm CDT (04:05 to 04:15 UTC), drawn dashed or labelled as not confirmed by any log, and is not given as a precise logged time",
+        "The rollback to v3.13.2 at 04:31:45 UTC is not presented as what fixed the boards, since the feed had already recovered at 04:12:07 (about 19 minutes earlier), and the v3.14.0 deploy is not stated as the confirmed cause; the boards are given as stale for about 4 h 8 min (00:03:40 to 04:12:07 UTC)",
+        "The reply's first line is the path of, or a link to, the HTML file, followed by the takeaway (for example, the boards were stale for about 4 h 8 min and no alert fired, so a person found it after about 3 h 37 min), not an account of how the timeline was built"
+      ]
+    },
+    {
+      "id": 8,
+      "held_out": "2026-10-19",
+      "prompt": "Last night's nightly-sky-ingest run at the observatory took 25 minutes and the morning team wants to know where the time went. The orchestrator export is run-4471.json. My guess: it's the north site fetch again (their link has been flaky), plus the vacuum on catalog-db that kicks off around 1am. Calibrate is probably just sitting there waiting on the dark and flat loads. Can you make me an interactive diagram I can share with the team that shows where the time went?",
+      "assertions": [
+        "Writes one self-contained HTML file that opens offline: no <script src>, <link href>, @import or font URL pointing at http(s) or a CDN",
+        "Shows the run's wall-clock time as 25 minutes (1,500 s, 01:00:00 to 01:25:00 UTC) with the five top-level steps nested under it at their real durations: checkout_config 20 s, fetch_frames 600 s, calibrate 480 s, stack_and_publish 392 s, send_summary 8 s",
+        "Treats fetch_north, fetch_south and fetch_east as parallel (all start at 01:00:22): does not add their 1,084 s (or 1,092 s with verify_checksums) as time spent, and names fetch_south (588 s, finished 01:10:10) as the step that held fetch_frames to 600 s",
+        "Says the north site fetch was not the bottleneck: fetch_north took 278 s and finished at 01:05:00, about five minutes before fetch_south, contrary to the user's guess",
+        "Distinguishes calibrate, which is long because of its own work (about 420 s of its 480 s falls outside load_darks and load_flats, 30 s each), from fetch_frames, which is long only because it waits on its children (about 4 s of its own), and so contradicts the guess that calibrate is just waiting on the loads",
+        "Flags upload_thumbnails as detached or asynchronous: it finishes at 01:28:40, 228 s after its parent stack_and_publish ended (01:24:52) and 220 s after the run reported finished, and does not count those minutes in the 25-minute run time",
+        "Says the catalog-db vacuum does not appear anywhere in the export, so this data can neither confirm nor blame it; if it is drawn at all it is marked as an assumption, not as a measured step. Invents no other steps, durations, hosts or a 'usual' run time not in the file or the prompt",
+        "The reply's first line is the path of (or a link to) the HTML file, followed by the takeaway (for example that fetch_south and calibrate's own work account for most of the 25 minutes), not an account of how the diagram was built"
+      ]
+    },
+    {
+      "id": 9,
+      "held_out": "2026-10-19",
+      "prompt": "We need a timeline of what happened with the lesson-sync downloads on the night of 14 October for Thursday's review. I've exported the team chat (chat-export.txt), the service log (lesson-sync.log) and the support ticket history (ticket-8812.csv). Make me an interactive diagram showing when things happened.",
+      "assertions": [
+        "Writes one self-contained HTML file that opens offline: no <script src>, <link href>, @import or font URL pointing at http(s) or a CDN",
+        "Puts all three sources on one labelled clock, converting the chat from Asia/Kolkata (UTC+05:30) and handling the date change: for example the chat's '15/10 03:55 rolling back' is shown as 14 Oct 22:25 UTC, between the deploy (21:40:12 UTC) and rollback complete (22:31:04 UTC), not as a separate set of events on 15 October after the log",
+        "Shows these events at the right times (UTC, or correctly converted): v4.12.0 deploy complete 21:40:12 on 14 Oct; first 'manifest checksum mismatch' 21:52:30; ticket 8812 opened 22:05; rollback to v4.11.3 complete 22:31:04; last checksum error 22:33:41; school confirms downloads working 22:48; max_retries 3 -> 5 config change 06:12 on 15 Oct; ticket resolved 06:40 on 15 Oct",
+        "Shows the quiet period with no events in any source, from about 22:50 UTC on 14 Oct to 06:12 UTC on 15 Oct (about 7 h 22 min), as a gap, and does not suggest the outage continued through it",
+        "Marks the CDN purge as uncertain (dashed, flagged or worded as unconfirmed) at about 22:20 UTC (03:50 IST), because dev-ravi's message hedges it and it does not appear in the log or the ticket; it is not presented as a confirmed event or as the fix",
+        "Does not credit the 06:12 max_retries change as the fix, despite the ticket's resolution note: errors stopped at 22:33:41, about 2.5 minutes after the rollback completed, the success rate was back to 99.6% at 22:40 and the school confirmed at 22:48, all more than 7 hours before the config change",
+        "Invents nothing: no root cause for why v4.12.0 broke checksums beyond what the sources say (the errors starting after the deploy and stopping after the rollback may be described as a correlation), and no events, people or times not in the three files, nor error or school counts beyond what can be counted from them (the log has 9 checksum-mismatch errors)",
+        "The reply's first line is the path of (or a link to) the HTML file, followed by the takeaway (for example that the errors began about 12 minutes after the v4.12.0 deploy and ended with the rollback, not the morning retry change), not an account of how the diagram was built"
+      ]
+    },
+    {
+      "id": 10,
+      "held_out": "2026-10-19",
+      "prompt": "Last night's nightly build of our game took 46 minutes. build-4127-timing.json is the timing export from our CI. Make me an interactive diagram of where the time went that I can share with the team as one file. My guess is the new water shaders made shader compilation slow, or else we're stuck waiting for the signing machines. Someone on the team also reckons the debug-symbol upload holds up the rest of the build. Which of those is it?",
+      "assertions": [
+        "Writes one self-contained HTML file that opens offline: no CDN, and no http(s) script, stylesheet or font references",
+        "Shows all 15 steps nested under the right parents, with the right durations: build 46:00, sync_sources 2:20, compile 15:00, cook_assets 6:00, bake_lighting 10:40, package 12:00. compile_engine (15:00), compile_gameplay (8:00) and compile_editor_tools (5:30) are drawn as parallel bars starting together at 2:20, and compile is 15 minutes, set by compile_engine, not their 28:30 sum",
+        "Confirms the signing guess: package takes 12 minutes, but 9 minutes of that (540 s, 34:00 to 43:00) is spent waiting for a free agent in sign-pool. sign_binaries and make_installer take only 1:30 each, 3 minutes in all",
+        "Rejects the shader guess as not supported: compile_shaders took 3:00, running alongside cook_textures (6:00), so cook_assets' 6 minutes is set by cook_textures and a faster shader compile would not shorten the build. Mentioning the 61 water_surface permutations is fine, but they must not be blamed for the build time",
+        "Shows upload_debug_symbols (10:20 to 24:20, 14:00) running past the end of its parent compile (17:20) rather than cutting it off at the parent's end, and rejects the claim that it holds up the build: it is marked blocking=false and bake_lighting starts at 23:20 without waiting for it",
+        "Identifies bake_lighting (10:40, about 97% CPU, a leaf step with no children and no wait) as time spent on its own work, citing the lightmap cache miss on 38 of 38 levels, and does not call it waiting",
+        "Gives durations in minutes and seconds, not raw milliseconds such as 2760000. Invents nothing: no steps, causes or timings that are not in the export, and no claim about what changed since earlier builds, because the export covers one build only",
+        "The reply's first line is a link to or the path of the HTML file, followed by the takeaway: about 9 of the 46 minutes is queueing for a signing agent, and the shader and symbol-upload guesses are not supported"
+      ]
+    },
+    {
+      "id": 11,
+      "held_out": "2026-10-19",
+      "prompt": "These are the core classes from our greenhouse controller, under src/. A new developer starts on Monday. Can you make them a class diagram they can click through, one file I can send them? It should show what implements or extends what, and which things a class owns versus just holds a reference to.",
+      "assertions": [
+        "Writes one self-contained HTML file that opens offline: no CDN, and no http(s) script, stylesheet or font references",
+        "Shows all seven types from the source and their kinds: Sensor is an interface; AbstractSensor is abstract and implements Sensor; SoilMoistureSensor and TemperatureSensor extend AbstractSensor (they do not implement Sensor directly); Zone, Greenhouse and AlertService are concrete classes",
+        "Draws Greenhouse to Zone as composition (ownership), because Greenhouse creates each Zone in addZone, holds them in a private list, and Zone's constructor is package-private. This is drawn differently from Greenhouse to AlertService, a plain reference to a shared service passed in through the constructor",
+        "Draws Zone to Sensor as an association or aggregation to the Sensor interface (sensors are created elsewhere and attached with attach()), not as composition and not as links to the concrete sensor classes",
+        "WateringSchedule, which appears only in Greenhouse's doc comment, is not drawn as a real class. Either it is left out, or it is drawn dashed and marked as not found in the source, and the reply says it does not exist in the code",
+        "Members shown are accurate: for example, AbstractSensor has the final read(), isOutOfRange(), id() and the abstract rawValue(); both concrete sensors have onSample(); SoilMoistureSensor has adcChannel. No invented classes, fields, methods or relations, such as a Reading class, setters, or a link from a sensor back to Zone",
+        "Each class and relation cites the file it came from, with a line where one applies (for example Greenhouse.java line 12 or 21 for the zones composition, AbstractSensor.java line 7 for implements Sensor)",
+        "The reply's first line is a link to or the path of the HTML file, followed by the takeaway: one interface, one abstract base and two sensors; Greenhouse owns its Zones but only references AlertService; and WateringSchedule is named in a comment but missing from the code"
+      ]
     }
   ]
 }

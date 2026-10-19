@@ -1,6 +1,6 @@
 ---
 name: interactive-diagram
-description: Turn a codebase, a system description, a process or a database schema into one self-contained interactive HTML diagram (architecture, workflow, data flow, lifecycle, ERD or sequence) where every box and arrow cites the file and line or the words it came from, anything inferred is drawn dashed as an assumption, and each cited line is checked against the repository before the page is written. Laid out automatically, opens offline with no CDN, and exports SVG, PNG and Mermaid. Use when the user asks to "visualize", "map" or "make an interactive diagram of" a repo, a request path, a pipeline, an approval process or a set of tables, or wants a diagram they can click through and share as one file.
+description: Turn a codebase, a system description, a process or a database schema into one self-contained interactive HTML diagram (architecture, workflow, data flow, lifecycle, ERD, sequence, class, tree, timeline or waterfall) where every box and arrow cites the file and line or the words it came from, anything inferred is drawn dashed as an assumption, and each cited line is checked against the repository before the page is written. Laid out automatically, opens offline with no CDN, and exports SVG, PNG and Mermaid. Use when the user asks to "visualize", "map" or "make an interactive diagram of" a repo, a request path, a pipeline, an approval process, a set of tables, an incident's events or a slow trace, or wants a diagram they can click through and share as one file.
 ---
 
 # interactive-diagram
@@ -20,7 +20,8 @@ Two things follow:
   and the reply says in one line what was left out.
 - **You write the meaning; the script does the layout.** Never write coordinates. List the
   parts and connections in the order a reader meets them, and the script places them, routes
-  every arrow around the boxes, and draws groups as boxes that don't overlap.
+  every arrow around the boxes, draws groups as boxes that don't overlap, and wraps a long
+  flow onto rows so its text stays readable.
 
 ## How to respond
 
@@ -35,6 +36,10 @@ Two things follow:
    | `lifecycle` | The states something moves through and what moves it |
    | `erd` | Tables, their columns and keys, and how they reference each other |
    | `sequence` | Who calls whom, in order, for one request or exchange |
+   | `class` | Types, their members, and inherits, implements, composition and the rest |
+   | `tree` | What contains what, one parent each: a repo's folders, a capability breakdown, an org |
+   | `timeline` | When things happened, on a clock, one lane per source: an incident, a release history |
+   | `waterfall` | Where the time went in one request or run: spans to scale, nested, with the critical path |
 
 2. **Gather the facts, with where each came from.**
    - **A repository:** trace the one path the question is about. Read the entry point, follow
@@ -47,6 +52,16 @@ Two things follow:
    - **Something you believe but can't point to** (who calls the API, what the worker does
      next): `"assumed": true`. It is drawn dashed and listed. Leave it off if it doesn't help
      answer the question.
+   - **Times, for a timeline:** write each time as its source gives it, with its offset when
+     sources differ (`2026-10-11T03:41:00Z`, `2026-10-10T22:41-05:00`); the script puts them
+     on one clock. A time the source is unsure of gets `"approx": true`. Link two events
+     (`caused`, `fixed`) only when the material says one led to the other; an event that came
+     after another did not necessarily follow from it.
+   - **Spans, for a waterfall:** copy each span's start and end from the trace as they are,
+     including one that ends after its parent; the script flags it.
+   - **The person's guesses or questions** ("is it the north fetch?", "was it the vacuum?"):
+     answer each in `answers`, with evidence, or as an assumption when the material is silent.
+     They appear as a table at the top of the page.
 
 3. **Write the spec** as JSON next to where the page will go. The full shape, every kind and
    the ERD and sequence fields are in [`reference.md`](reference.md). The essentials:
@@ -63,9 +78,14 @@ Two things follow:
    ```
 
    Labels are a few words; detail goes in `note` (shown on the box) or `detail` (shown when
-   clicked). Add a `story` of three to seven steps when the map has a main path worth walking.
+   clicked). For a timeline, set `timezone` to the zone the reader works in. Write `summary`
+   last, from what the script computed: a summary that says "over four hours" beside a
+   computed 3h 37m is the kind of slip the page exists to prevent. Add a `story` of three to seven steps when the map has a main path worth walking.
 
-4. **Build it.** With a repository, always pass `--repo-root` so the citations are checked:
+4. **Build it.** With a repository, always pass `--repo-root` so the citations are checked.
+   For a waterfall or a timeline the script also prints what it computed (each span's own
+   time, which spans overlap, the longest quiet stretch, time zones): use those numbers in the
+   reply as they are, and never add up durations yourself.
 
    ```bash
    # Claude Code
@@ -79,11 +99,19 @@ Two things follow:
    right lines or mark the item assumed. Add `--mermaid diagram.mmd` for a version to paste
    into a README, and `--compare old.json` to show what a change adds, removes and alters.
 
-5. **Reply with the map first.** The first line is the link to the HTML file and what it
-   shows. Then the takeaway in one or two sentences, then one line each for what is drawn as
-   an assumption and what was left out, and last how many citations were checked. Keep the
-   spec beside the page so the map can be rebuilt after the code changes. No recap of
-   commands or layout.
+5. **Reply with the map first.** The script prints the line to open with: a link to the page,
+   titled. Use it as the first line, then the takeaway in one or two sentences, then one line
+   each for what is drawn as an assumption and what was left out, and last how many citations
+   were checked:
+
+   > **What a checkout request touches** (the script's link line: the title, linked to the page)
+   >
+   > The API charges Stripe before it records the order, and a worker books the courier later.
+   > Assumed: the shopper's browser (no client in this repo). Left out: the products table's
+   > other readers. 22 of 22 citations checked.
+
+   Keep the spec beside the page so the map can be rebuilt after the code changes. No recap of
+   commands or layout, and nothing before the link.
 
 6. **When the script can't run** (no `python3`), give the Mermaid version in the reply, with
    assumptions marked, and say that the interactive page needs Python 3.

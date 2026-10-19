@@ -19,14 +19,16 @@ Standard library only, Python 3.9+. Exit 0 when the HTML was written (warnings a
 """
 import argparse
 import base64
+import datetime
 import hashlib
 import html
 import json
+import math
 import os
 import re
 import sys
 
-TYPES = ("architecture", "workflow", "dataflow", "lifecycle", "erd", "sequence")
+TYPES = ("architecture", "workflow", "dataflow", "lifecycle", "erd", "sequence", "tree", "timeline", "waterfall", "class")
 
 # kind -> (shape, colour family). Unknown kinds fall back to a plain box, with a warning.
 KINDS = {
@@ -43,9 +45,28 @@ KINDS = {
     "state": ("round", "blue"), "final": ("final", "slate"), "initial": ("initial", "slate"),
     "table": ("table", "green"), "entity": ("table", "green"), "view": ("table", "teal"),
     "security": ("rect", "rose"), "network": ("rect", "slate"), "file": ("document", "teal"),
+    "folder": ("rect", "slate"), "module": ("rect", "blue"), "package": ("rect", "indigo"),
+    "capability": ("round", "teal"), "feature": ("round", "blue"), "team": ("rect", "rose"), "role": ("rect", "violet"),
+    "event": ("dot", "blue"), "milestone": ("dot", "violet"), "alert": ("dot", "rose"), "change": ("dot", "amber"),
+    "action": ("dot", "green"), "span": ("bar", "blue"),
+    "class": ("classbox", "blue"), "interface": ("classbox", "violet"), "abstract": ("classbox", "indigo"),
+    "enum": ("classbox", "amber"), "record": ("classbox", "teal"),
 }
-DEFAULT_KIND = {"architecture": "service", "workflow": "step", "dataflow": "service",
-                "lifecycle": "state", "erd": "table", "sequence": "service"}
+RELATIONS = ("inherits", "implements", "composition", "aggregation", "association", "dependency")
+WORDS = {  # how the detail panel names a part's connections, per diagram type
+    "default": {"out": "Goes to", "in": "Comes from", "reach_out": "Everything it reaches", "reach_in": "Everything that reaches it"},
+    "workflow": {"out": "Goes to", "in": "Comes from", "reach_out": "What can follow", "reach_in": "What leads here"},
+    "lifecycle": {"out": "Can move to", "in": "Can come from", "reach_out": "What can follow", "reach_in": "What leads here"},
+    "erd": {"out": "References", "in": "Referenced by", "reach_out": "Tables it references", "reach_in": "Tables that reference it"},
+    "sequence": {"out": "Sends to", "in": "Receives from", "reach_out": "Who it reaches", "reach_in": "Who reaches it"},
+    "tree": {"out": "Contains", "in": "Inside", "reach_out": "Everything inside it", "reach_in": "What it sits in"},
+    "timeline": {"out": "Led to", "in": "Followed from", "reach_out": "What followed", "reach_in": "What led to it"},
+    "waterfall": {"out": "Child spans", "in": "Parent span", "reach_out": "Everything it spawned", "reach_in": "What it ran under"},
+    "class": {"out": "Points to", "in": "Pointed to by", "reach_out": "What it uses or extends", "reach_in": "What uses or extends it"},
+}
+DEFAULT_KIND = {"architecture": "service", "workflow": "step", "dataflow": "service", "lifecycle": "state",
+                "erd": "table", "sequence": "service", "tree": "module", "timeline": "event", "waterfall": "span",
+                "class": "class"}
 EDGE_STYLES = ("solid", "dashed", "dotted")
 STATUSES = ("added", "removed", "changed")
 SECRET_PATH = re.compile(r"(^|/)(\.env(\..*)?|.*\.pem|.*\.key|id_rsa.*|id_ed25519.*|credentials(\..*)?|"
@@ -143,20 +164,31 @@ def normalise(spec, issues):
         issues.error("spec/title", "title", "the diagram has no title", "Add a title naming what the map shows.")
     spec.setdefault("question", "")
     spec.setdefault("summary", "")
-    spec["direction"] = "TB" if str(spec.get("direction", "LR")).upper() == "TB" and t not in ("erd", "sequence") else "LR"
+    default_dir = "TB" if t == "class" else "LR"
+    spec["direction"] = "TB" if str(spec.get("direction", default_dir)).upper() == "TB" and t not in ("erd", "sequence", "tree", "timeline", "waterfall") else "LR"
     if spec.get("source_url") and not re.match(r"^https?://[^\s\"'<>]+$", str(spec["source_url"])):
         issues.warn("spec/source-url", "source_url", "source_url is not an http(s) address; citations will not be links",
                     "Use the repository's https address, e.g. https://github.com/org/repo/blob/<commit>/")
     spec["groups"] = [dict(g) for g in as_list(spec.get("groups"))]
     spec["notes"] = as_list(spec.get("notes"))
-    key = "participants" if t == "sequence" else "nodes"
+    key = {"sequence": "participants", "timeline": "events", "waterfall": "spans", "class": "classes"}.get(t, "nodes")
     nodes = [dict(n) for n in as_list(spec.get(key) or spec.get("nodes"))]
     if not nodes:
         issues.error("spec/empty", key, "there is nothing to draw", "List the %s of the diagram." % key)
     spec["nodes"] = nodes
-    spec["edges"] = [dict(e) for e in as_list(spec.get("messages" if t == "sequence" else "edges"))]
+    spec["edges"] = [dict(e) for e in as_list(spec.get("messages" if t == "sequence" else "edges") or spec.get("relations"))]
+    if t in ("tree", "waterfall") and spec["edges"]:
+        issues.warn("edge/ignored", "edges", "a %s draws its connections from each item's parent; edges are ignored" % t,
+                    "Set parent on each item instead.")
+        spec["edges"] = []
     spec["frames"] = [dict(f) for f in as_list(spec.get("frames"))]
     spec["story"] = [dict(s) for s in as_list(spec.get("story"))]
+    spec["answers"] = [dict(a) for a in as_list(spec.get("answers"))]
+    for i, a in enumerate(spec["answers"]):
+        a["id"] = "answer %d" % (i + 1)
+        if not str(a.get("question", "")).strip() or not str(a.get("answer", "")).strip():
+            issues.error("answer/shape", a["id"], "an answer needs question and answer", "")
+        _evidence(a, a["id"], issues)
 
     ids = set()
     for g in spec["groups"]:
@@ -201,13 +233,14 @@ def normalise(spec, issues):
         if n.get("group") and n["group"] not in gids:
             issues.error("node/group", nid, "group %r does not exist" % n["group"], "Add the group or drop the field.")
             n["group"] = None
-        n["fields"] = [f if isinstance(f, dict) else {"name": str(f)} for f in as_list(n.get("fields"))]
+        n["fields"] = [f if isinstance(f, dict) else {"name": str(f)} for f in as_list(n.get("fields") or n.get("members"))]
         if len(n["label"]) > 48:
             issues.warn("node/label-long", nid, "label is %d characters; it will be cut on the map" % len(n["label"]),
                         "Keep labels to a few words and put the rest in note or detail.")
         _evidence(n, nid, issues)
 
     nid_set = {n["id"] for n in nodes}
+    _check_kind(spec, t, nodes, nid_set, issues)
     for i, e in enumerate(spec["edges"]):
         where = e.get("id") or "%s %d" % ("message" if t == "sequence" else "edge", i + 1)
         if not e.get("id"):
@@ -222,6 +255,17 @@ def normalise(spec, issues):
                 issues.error("edge/endpoint", where, "%s %r is not a %s" % (end, e.get(end), key[:-1]),
                              "Use the id of an existing %s." % key[:-1])
         e["label"] = str(e.get("label") or "")
+        if t == "class":
+            rel = str(e.get("kind") or e.get("rel") or "association").lower()
+            rel = {"extends": "inherits", "inheritance": "inherits", "realizes": "implements", "realises": "implements",
+                   "uses": "dependency", "depends": "dependency", "has": "association", "references": "association",
+                   "owns": "composition", "contains": "composition"}.get(rel, rel)
+            if rel not in RELATIONS:
+                issues.error("edge/relation", where, "relation %r is not one of %s" % (rel, ", ".join(RELATIONS)), "")
+                rel = "association"
+            e["rel"] = rel
+            if rel in ("implements", "dependency") and not e.get("style"):
+                e["style"] = "dashed"
         e["style"] = e.get("style") if e.get("style") in EDGE_STYLES else ("dashed" if e.get("kind") in ("async", "return") else "solid")
         _evidence(e, where, issues)
     for i, s in enumerate(spec["story"]):
@@ -241,7 +285,7 @@ def normalise(spec, issues):
     if t != "sequence" and len(nodes) > 36:
         issues.warn("size/large", "nodes", "%d nodes is more than one map reads well" % len(nodes),
                     "Split it by question, or group the detail into fewer boxes.")
-    if t not in ("sequence", "erd"):
+    if t not in ("sequence", "erd", "tree", "timeline", "waterfall", "class"):
         linked = {e.get("from") for e in spec["edges"]} | {e.get("to") for e in spec["edges"]}
         for n in nodes:
             if n["id"] not in linked and len(nodes) > 1:
@@ -263,12 +307,78 @@ def _evidence(item, where, issues):
                      'Cite where it comes from ("src/x.py:10", "user: ...") or set "assumed": true so it is drawn as an assumption.')
 
 
+def _check_kind(spec, t, nodes, ids, issues):
+    """What the tree, timeline and waterfall types need from their items."""
+    by_id = {n["id"]: n for n in nodes}
+    if t in ("tree", "waterfall"):
+        for n in nodes:
+            if n.get("parent") and n["parent"] not in ids:
+                issues.error("parent/missing", n["id"], "parent %r does not exist" % n["parent"],
+                             "Name an existing item, or drop parent for a top-level one.")
+                n["parent"] = None
+        for n in nodes:
+            seen, cur = set(), n
+            while cur and cur.get("parent"):
+                if cur["id"] in seen:
+                    issues.error("parent/cycle", n["id"], "parents form a loop", "Each item has one parent, and the chain must end.")
+                    n["parent"] = None
+                    break
+                seen.add(cur["id"])
+                cur = by_id.get(cur["parent"])
+    if t == "timeline":
+        base = None
+        for n in nodes:
+            w = parse_when(n.get("at"))
+            if w is None:
+                issues.error("time/missing", n["id"], "at %r is not a time" % n.get("at"),
+                             'Use a date or date-time ("2026-10-03T14:05"), a time of day ("14:05") or a number.')
+                w = (0.0, base or "num")
+            if base is None:
+                base = w[1]
+            elif w[1].split(":")[0] != base.split(":")[0]:
+                issues.error("time/mixed", n["id"], "this time is written differently from the first one",
+                             "Write every time the same way: all dates, all times of day, or all numbers.")
+            n["_t"] = (w[0], base)
+            n["_zone"] = w[1][4:] if w[1].startswith("abs:") else ("+0000" if w[1] == "abs" and re.search(r"(Z|[+-]00:?00)$", str(n.get("at"))) else None)
+            n["when"] = str(n.get("at"))
+            if n.get("end") is not None:
+                we = parse_when(n["end"])
+                if we is None or we[0] < w[0]:
+                    issues.error("time/end", n["id"], "end %r is not a time after at" % n["end"], "")
+                else:
+                    n["_end"] = (we[0], base)
+                    n["when"] += " to " + str(n["end"])
+    if t == "waterfall":
+        for n in nodes:
+            st, en, du = parse_when(n.get("start")), parse_when(n.get("end")), n.get("duration")
+            if st is None:
+                issues.error("span/start", n["id"], "start %r is not a number or time" % n.get("start"), "")
+                n["_start"] = n["_end"] = 0.0
+                continue
+            k = 1000.0 if st[1].startswith("abs") or st[1] == "clock" else 1.0  # dates and times of day become ms
+            n["_start"] = st[0] * k
+            if en is not None:
+                n["_end"] = en[0] * k
+            elif isinstance(du, (int, float)) and not isinstance(du, bool):
+                n["_end"] = n["_start"] + float(du)
+            else:
+                issues.error("span/end", n["id"], "a span needs end or duration", "")
+                n["_end"] = n["_start"]
+            if n["_end"] < n["_start"]:
+                issues.error("span/order", n["id"], "the span ends before it starts", "")
+        for n in nodes:
+            p = by_id.get(n.get("parent"))
+            if p and "_start" in p and "_start" in n and (n["_start"] < p["_start"] - 1e-9 or n["_end"] > p["_end"] + 1e-9):
+                issues.warn("span/outside", n["id"], "%r runs outside its parent %r" % (n["label"], p["label"]),
+                            "Check the times: clocks on two machines can disagree, or the child is not really under that parent.")
+
+
 def verify_evidence(spec, repo_root, issues):
     """Check every file citation against the repository: the file exists, the lines exist,
     and a quoted fragment appears on those lines. Attach the cited lines as a snippet, except
     from files that hold secrets, and with secret-looking lines masked."""
     cache, total = {}, 0
-    items = [("node", n) for n in spec["nodes"]] + [("edge", e) for e in spec["edges"]]
+    items = [("node", n) for n in spec["nodes"]] + [("edge", e) for e in spec["edges"]] + [("answer", a) for a in spec["answers"]]
     root = os.path.realpath(repo_root) if repo_root else None
     for kind, item in items:
         for e in item["evidence"]:
@@ -404,6 +514,12 @@ def wrap(s, max_w, size=13.0, max_lines=2):
     return lines or [""]
 
 
+def member_text(f):
+    vis = {"public": "+", "private": "-", "protected": "#", "package": "~"}.get(str(f.get("visibility", "")), str(f.get("visibility", "")))
+    typ = str(f.get("type") or "")
+    return ("%s %s" % (vis, f.get("name", ""))).strip() + (": " + typ if typ else "")
+
+
 def size_node(n):
     shape = KINDS.get(n["kind"], ("rect", "slate"))[0]
     n["shape"] = shape
@@ -414,6 +530,15 @@ def size_node(n):
         n["w"] = int(min(max(widest, 170), 320))
         n["lines"] = [n["label"]]
         n["h"] = 32 + 20 * len(rows) + (18 if len(n["fields"]) > 24 else 0) + (4 if rows else 6)
+        return
+    if shape == "classbox":
+        stereo = "" if n["kind"] == "class" else "\u00ab%s\u00bb" % n["kind"]
+        n["stereo"] = stereo
+        n["member_lines"] = [member_text(f) for f in n["fields"][:30]]
+        widest = max([text_w(n["label"], 13) + 30, text_w(stereo, 11) + 30] + [text_w(l, 12) + 24 for l in n["member_lines"]])
+        n["w"] = int(min(max(widest, 150), 380))
+        n["lines"] = [n["label"]]
+        n["h"] = 30 + (14 if stereo else 0) + 18 * len(n["member_lines"]) + (8 if n["member_lines"] else 0) + (16 if len(n["fields"]) > 30 else 0)
         return
     if shape in ("initial", "final"):
         n["lines"] = wrap(n["label"], 120, 11) if n.get("label_shown", n["label"] != n["id"]) else []
@@ -595,61 +720,94 @@ def layout_graph(spec):
     return ax, by_id, layer, edges, back, bands, spans, cells, n_layers
 
 
-def place(spec, geo, gap_m, gap_c):
-    """Coordinates from the ordering. gap_m[i] is the space before layer i (gap_m[n_layers]
-    is after the last); route lanes run there. gap_c[i] is the corridor before band i
-    (gap_c[n_bands] is after the last); long routes run there. Neither holds a node."""
+def grid(n_layers, per_row):
+    """Layer l sits in row l // cols, column l % cols. One row unless the flow wraps."""
+    cols = max(1, min(per_row, n_layers))
+    return cols, -(-n_layers // cols)
+
+
+def place(spec, geo, gap_m, gap_c, per_row):
+    """Coordinates from the ordering. A long flow wraps onto rows, like text: layer l is in
+    row l // cols, column l % cols. gap_m[k] is the space before column k (gap_m[cols] is after
+    the last); route lanes run there, through every row. gap_c[r * (bands + 1) + i] is the
+    corridor before band i of row r (i == bands is after the row's last band); long routes
+    and the routes from one row to the next run there. Neither ever holds a node."""
     ax, by_id, layer, edges, back, bands, spans, cells, n_layers = geo
     lr = ax.lr
     pad, head = 18, 26
-    layer_m = [0] * n_layers
+    cols, rows = grid(n_layers, per_row)
+    nb = len(bands)
+    col_m = [0] * cols
     for n in spec["nodes"]:
-        layer_m[layer[n["id"]]] = max(layer_m[layer[n["id"]]], ax.m_size(n))
+        k = layer[n["id"]] % cols
+        col_m[k] = max(col_m[k], ax.m_size(n))
     max_depth = max([d for (_, _, d) in spans.values()] or [0])
     m = 20 + (pad + (0 if lr else head)) * max_depth
-    layer_start, gap_mid = [], []
-    for l in range(n_layers):
-        gap_mid.append(m + gap_m[l] / 2.0)
-        m += gap_m[l]
-        layer_start.append(m)
-        m += layer_m[l]
-    gap_mid.append(m + gap_m[n_layers] / 2.0)
-    m += gap_m[n_layers] + (pad + (0 if lr else head)) * max_depth + 20
-    opening = lambda bi: sorted(d for (s, e, d) in spans.values() if s == bi)
-    closing = lambda bi: [d for (s, e, d) in spans.values() if e == bi]
-    band_start, band_size, corridors, c = [], [], [], 20.0
-    for bi in range(len(bands)):
-        corridors.append(c + gap_c[bi] / 2.0)
-        c += gap_c[bi] + len(opening(bi)) * (head + 6 if lr else pad)
-        band_start.append(c)
-        size = 0
-        for l in range(n_layers):
-            stack = cells.get((bi, l), [])
-            size = max(size, sum(ax.c_size(by_id[u]) for u in stack) + 26 * max(len(stack) - 1, 0))
-        band_size.append(size)
-        c += size + pad * len(closing(bi))
-    corridors.append(c + gap_c[len(bands)] / 2.0)
-    c += gap_c[len(bands)] + 20
-    for bi in range(len(bands)):
-        for l in range(n_layers):
+    col_start, gap_mid = [], []
+    for k in range(cols):
+        gap_mid.append(m + gap_m[k] / 2.0)
+        m += gap_m[k]
+        col_start.append(m)
+        m += col_m[k]
+    gap_mid.append(m + gap_m[cols] / 2.0)
+    m += gap_m[cols] + (pad + (0 if lr else head)) * max_depth + 20
+    row_layers = [range(r * cols, min((r + 1) * cols, n_layers)) for r in range(rows)]
+    present = [[any(cells.get((bi, l)) for l in row_layers[r]) for bi in range(nb)] for r in range(rows)]
+
+    def span_in_row(r, s_, e_):
+        bis = [bi for bi in range(s_, e_ + 1) if present[r][bi]]
+        return (bis[0], bis[-1]) if bis else None
+    opening = lambda r, bi: sorted(d for (s_, e_, d) in spans.values() if (span_in_row(r, s_, e_) or (None,))[0] == bi)
+    closing = lambda r, bi: [d for (s_, e_, d) in spans.values() if (span_in_row(r, s_, e_) or (None, None))[1] == bi]
+    band_start, band_size, corridors, c = {}, {}, [], 20.0
+    for r in range(rows):
+        for bi in range(nb):
+            if not present[r][bi]:
+                continue
+            idx = r * (nb + 1) + bi
+            corridors.append((c + gap_c[idx] / 2.0, idx))
+            c += gap_c[idx] + len(opening(r, bi)) * (head + 6 if lr else pad)
+            band_start[(r, bi)] = c
+            size = 0
+            for l in row_layers[r]:
+                stack = cells.get((bi, l), [])
+                size = max(size, sum(ax.c_size(by_id[u]) for u in stack) + 26 * max(len(stack) - 1, 0))
+            band_size[(r, bi)] = size
+            c += size + pad * len(closing(r, bi))
+        idx = r * (nb + 1) + nb
+        corridors.append((c + gap_c[idx] / 2.0, idx))
+        c += gap_c[idx]
+    c += 20
+    for (r, bi), start in band_start.items():
+        for l in row_layers[r]:
             stack = cells.get((bi, l), [])
             total = sum(ax.c_size(by_id[u]) for u in stack) + 26 * max(len(stack) - 1, 0)
-            cc = band_start[bi] + (band_size[bi] - total) / 2.0
+            cc = start + (band_size[(r, bi)] - total) / 2.0
+            k = l % cols
             for u in stack:
                 n = by_id[u]
-                n["m"] = layer_start[l] + (layer_m[l] - ax.m_size(n)) / 2.0
+                n["m"] = col_start[k] + (col_m[k] - ax.m_size(n)) / 2.0
                 n["c"] = cc
                 cc += ax.c_size(n) + 26
     boxes = []
-    for gid, (s, e, d) in spans.items():
-        mem = [n for n in spec["nodes"] if band_of_group(n, gid, spec)]
-        outer = max_depth - d + 1  # how many group borders sit inside this one, plus one
-        m0 = min(n["m"] for n in mem) - pad * outer - (0 if lr else head * outer)
-        m1 = max(n["m"] + ax.m_size(n) for n in mem) + pad * outer
-        c0 = band_start[s] - sum(1 for x in opening(s) if x >= d) * (head + 6 if lr else pad)
-        c1 = band_start[e] + band_size[e] + pad * sum(1 for x in closing(e) if x >= d)
-        boxes.append({"id": gid, "m0": m0, "m1": m1, "c0": c0, "c1": c1, "depth": d})
-    return {"groups": boxes, "corridors": corridors, "gaps": gap_mid, "extent": (m, c)}
+    for gid, (s_, e_, d) in spans.items():
+        first_row = None
+        for r in range(rows):
+            sp_ = span_in_row(r, s_, e_)
+            if not sp_:
+                continue
+            mem = [n for n in spec["nodes"] if layer[n["id"]] in row_layers[r] and band_of_group(n, gid, spec)]
+            if not mem:
+                continue
+            first_row = r if first_row is None else first_row
+            outer = max_depth - d + 1  # how many group borders sit inside this one, plus one
+            m0 = min(n["m"] for n in mem) - pad * outer - (0 if lr else head * outer)
+            m1 = max(n["m"] + ax.m_size(n) for n in mem) + pad * outer
+            c0 = band_start[(r, sp_[0])] - sum(1 for x in opening(r, sp_[0]) if x >= d) * (head + 6 if lr else pad)
+            c1 = band_start[(r, sp_[1])] + band_size[(r, sp_[1])] + pad * sum(1 for x in closing(r, sp_[1]) if x >= d)
+            boxes.append({"id": gid, "m0": m0, "m1": m1, "c0": c0, "c1": c1, "depth": d, "cont": r != first_row})
+    return {"groups": boxes, "corridors": [cv for cv, _ in corridors], "corridor_idx": [i for _, i in corridors],
+            "gaps": gap_mid, "extent": (m, c), "cols": cols, "rows": rows}
 
 
 def band_of_group(n, gid, spec):
@@ -666,6 +824,7 @@ def route(spec, geo, pl):
     """Orthogonal routes that never cross a node: lanes run in the gaps between layers and in
     the corridors between bands, which hold no nodes by construction."""
     ax, by_id, layer, edges, back, bands, spans, cells, n_layers = geo
+    cols = pl["cols"]
     lanes_v = {}  # gap key -> list of (lo, hi, edge id)
     lanes_h = {}
     plans = []
@@ -683,14 +842,15 @@ def route(spec, geo, pl):
         if s["id"] == t["id"]:
             plans.append({"e": e, "kind": "self"})
             continue
-        if lt == ls + 1:
-            plans.append({"e": e, "kind": "adjacent", "gap": ("v", lt), "out": "end", "in": "start"})
-        elif lt > ls + 1:
+        same_row = ls // cols == lt // cols
+        if lt == ls + 1 and same_row:
+            plans.append({"e": e, "kind": "adjacent", "gap": ("v", lt % cols), "out": "end", "in": "start"})
+        elif lt > ls + 1 and same_row:
             plans.append({"e": e, "kind": "multi", "out": "end", "in": "start"})
         elif lt == ls:
-            plans.append({"e": e, "kind": "same", "gap": ("v", ls + 1), "out": "end", "in": "end"})
-        else:
-            plans.append({"e": e, "kind": "corridor", "g1": ("v", ls + 1), "g2": ("v", lt), "out": "end", "in": "start"})
+            plans.append({"e": e, "kind": "same", "gap": ("v", ls % cols + 1), "out": "end", "in": "end"})
+        else:  # backwards, or on to a later row
+            plans.append({"e": e, "kind": "corridor", "g1": ("v", ls % cols + 1), "g2": ("v", lt % cols), "out": "end", "in": "start"})
     # ports: spread the edges that share a node side, ordered by the far end
     for p in plans:
         if p["kind"] == "self":
@@ -743,11 +903,11 @@ def route(spec, geo, pl):
             continue
         ls, lt = layer[p["e"]["from"]], layer[p["e"]["to"]]
         if clear(p["sp"][1], ls + 1, lt):
-            p.update(kind="straight", gap=("v", lt))
+            p.update(kind="straight", gap=("v", lt % cols))
         elif clear(p["tp"][1], ls + 1, lt):
-            p.update(kind="straight", gap=("v", ls + 1))
+            p.update(kind="straight", gap=("v", ls % cols + 1))
         else:
-            p.update(kind="corridor", g1=("v", ls + 1), g2=("v", lt))
+            p.update(kind="corridor", g1=("v", ls % cols + 1), g2=("v", lt % cols))
     for p in plans:
         if p["kind"] == "self":
             continue
@@ -846,17 +1006,23 @@ def build_paths(spec, geo, pl, plans, lanes_v, lanes_h, need_v, need_h):
         e["pts"] = [ax.xy(m, c) for m, c in clean]
 
 
-def layout_graph_full(spec):
-    geo = layout_graph(spec)
-    ax, n_layers, n_bands = geo[0], geo[8], len(geo[5])
-    gap_m = [24] + [72] * (n_layers - 1) + [24]
-    gap_c = [30] * (n_bands + 1)
+VIEW_W, VIEW_H = 1360.0, 720.0  # the canvas on a laptop screen; wrapping aims to fill it
+
+
+def run_graph(spec, geo, per_row):
+    ax, n_layers, nb = geo[0], geo[8], len(geo[5])
+    cols, rows = grid(n_layers, per_row)
+    edge_gap = lambda k: 24 if k in (0, cols) else 72
+    row_gap = lambda i: 44 if i % (nb + 1) == 0 and i > 0 else 30
+    gap_m = [edge_gap(k) for k in range(cols + 1)]
+    gap_c = [row_gap(i) for i in range(rows * (nb + 1))]
     for _ in range(4):
-        pl = place(spec, geo, gap_m, gap_c)
+        pl = place(spec, geo, gap_m, gap_c, per_row)
         plans, lv, lh, need_v, need_h = route(spec, geo, pl)
-        base = lambda l: 24 if l in (0, n_layers) else 72
-        new_m = [max(base(l), 30 + 9 * need_v.get(("v", l), 0)) for l in range(n_layers + 1)]
-        new_c = [max(30, 20 + 9 * need_h.get(i, 0)) for i in range(n_bands + 1)]
+        new_m = [max(edge_gap(k), 30 + 9 * need_v.get(("v", k), 0)) for k in range(cols + 1)]
+        new_c = list(gap_c)
+        for j, idx in enumerate(pl["corridor_idx"]):
+            new_c[idx] = max(row_gap(idx), 20 + 9 * need_h.get(j, 0))
         if new_m == gap_m and new_c == gap_c:
             break
         gap_m, gap_c = new_m, new_c
@@ -882,7 +1048,28 @@ def layout_graph_full(spec):
         g["y"] += dy
     W = max(b[2] for b in boxes) + dx + 40
     H = max(b[3] for b in boxes) + dy + 40
-    return {"w": W, "h": H, "groups": pl["groups"]}
+    return {"w": W, "h": H, "groups": pl["groups"], "rows": rows}
+
+
+def layout_graph_full(spec):
+    """Lay the graph out; a long left-to-right flow wraps onto as many rows as keep its text
+    largest on a laptop screen. "wrap": false keeps one row; a number sets layers per row."""
+    geo = layout_graph(spec)
+    n_layers = geo[8]
+    wrap = spec.get("wrap")
+    if wrap is False or spec["direction"] != "LR" or n_layers < 6:
+        options = [n_layers]
+    elif isinstance(wrap, int) and not isinstance(wrap, bool) and wrap > 0:
+        options = [max(2, wrap)]
+    else:
+        options = sorted({max(3, -(-n_layers // r)) for r in range(1, 5)}, reverse=True)
+    best = None
+    for per_row in options:
+        out = run_graph(spec, geo, per_row)
+        score = min(VIEW_W / out["w"], VIEW_H / out["h"], 1.0) * (0.95 ** (out["rows"] - 1))
+        if best is None or score > best[0] + 1e-9:
+            best = (score, per_row)
+    return run_graph(spec, geo, best[1]) if len(options) > 1 else out
 
 
 # --------------------------------------------------------------------------- sequence layout
@@ -960,6 +1147,514 @@ def layout_sequence(spec):
     return {"w": W, "h": end_y + 40, "groups": boxes, "lifeline": (top + head_h - 30, end_y)}
 
 
+# --------------------------------------------------------------------------- time
+
+def parse_when(v):
+    """A point in time as (seconds, kind). kind is "abs" for a date or date-time, "clock" for
+    a time of day ("14:05"), "num" for a plain number. Returns None when it can't be read."""
+    if isinstance(v, bool):
+        return None
+    if isinstance(v, (int, float)):
+        return float(v), "num"
+    s = str(v).strip()
+    m = re.match(r"^(\d{1,2}):(\d{2})(?::(\d{2})(\.\d+)?)?$", s)
+    if m:
+        return int(m.group(1)) * 3600 + int(m.group(2)) * 60 + int(m.group(3) or 0) + float(m.group(4) or 0), "clock"
+    iso = s.replace("Z", "+00:00")
+    if " " in iso and "T" not in iso:
+        iso = iso.replace(" ", "T", 1)
+    try:
+        dt = datetime.datetime.fromisoformat(iso)
+    except ValueError:
+        try:
+            return float(s), "num"
+        except ValueError:
+            return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=datetime.timezone.utc)  # wall-clock time, shown as written
+        return dt.timestamp(), "abs"
+    return dt.timestamp(), "abs:" + dt.strftime("%z")
+
+
+def fmt_when(t, kind, interval=60):
+    if kind == "num":
+        return ("%g" % round(t, 3))
+    if kind == "clock":
+        t = int(round(t))
+        return "%02d:%02d" % ((t // 3600) % 24, (t // 60) % 60) + (":%02d" % (t % 60) if interval < 60 else "")
+    tz = datetime.timezone.utc
+    if kind.startswith("abs:"):
+        off = kind[4:]
+        sign = -1 if off.startswith("-") else 1
+        tz = datetime.timezone(sign * datetime.timedelta(hours=int(off[1:3]), minutes=int(off[3:5])))
+    d = datetime.datetime.fromtimestamp(t, tz)
+    if interval >= 86400:
+        return d.strftime("%d %b %Y") if interval >= 30 * 86400 else d.strftime("%d %b")
+    return d.strftime("%H:%M" + (":%S" if interval < 60 else ""))
+
+
+def fmt_span(seconds, kind):
+    if kind == "num":
+        return "%g" % round(seconds, 3)
+    s = int(round(abs(seconds)))
+    d, h, m = s // 86400, (s % 86400) // 3600, (s % 3600) // 60
+    parts = (["%dd" % d] if d else []) + (["%dh" % h] if h else []) + (["%dm" % m] if m and not d else [])
+    return " ".join(parts) or "%ds" % s
+
+
+def nice_step(span, target=8):
+    """A round step (1, 2 or 5 times a power of ten) giving about target ticks."""
+    if span <= 0:
+        return 1.0
+    raw = span / float(target)
+    p = 10 ** math.floor(math.log10(raw))
+    for k in (1, 2, 5, 10):
+        if k * p >= raw:
+            return k * p
+    return 10 * p
+
+
+TIME_STEPS = [1, 5, 10, 15, 30, 60, 300, 600, 900, 1800, 3600, 7200, 10800, 21600, 43200, 86400, 172800,
+              604800, 1209600, 2592000, 7776000, 31536000]
+
+
+# --------------------------------------------------------------------------- tree
+
+def layout_tree(spec):
+    """Single-parent containment, depth left to right: leaves stack in order, each parent
+    sits beside the middle of its children."""
+    nodes = spec["nodes"]
+    for n in nodes:
+        size_node(n)
+    by_id = {n["id"]: n for n in nodes}
+    kids = {n["id"]: [] for n in nodes}
+    roots = []
+    for n in nodes:
+        (kids[n["parent"]] if n.get("parent") in by_id else roots).append(n["id"])
+    depth = {}
+
+    def set_depth(u, d):
+        depth[u] = d
+        for v in kids[u]:
+            set_depth(v, d + 1)
+    for r in roots:
+        set_depth(r, 0)
+    col_w = {}
+    for n in nodes:
+        col_w[depth[n["id"]]] = max(col_w.get(depth[n["id"]], 0), n["w"])
+    col_x, x = {}, 30.0
+    for d in sorted(col_w):
+        col_x[d] = x
+        x += col_w[d] + 64
+    cursor = [30.0]
+
+    def place_(u):
+        n = by_id[u]
+        if not kids[u]:
+            n["y"] = cursor[0]
+            cursor[0] += n["h"] + 14
+        else:
+            for v in kids[u]:
+                place_(v)
+            first, last = by_id[kids[u][0]], by_id[kids[u][-1]]
+            mid = (first["y"] + first["h"] / 2.0 + last["y"] + last["h"] / 2.0) / 2.0
+            n["y"] = mid - n["h"] / 2.0
+            low = cursor[0]
+            if n["y"] + n["h"] + 14 > low:  # a tall parent with few children
+                cursor[0] = n["y"] + n["h"] + 14
+        n["x"] = col_x[depth[u]] + (col_w[depth[u]] - n["w"]) / 2.0 if not kids[u] else col_x[depth[u]]
+    for r in roots:
+        place_(r)
+        cursor[0] += 16
+    spec["edges"] = []
+    for n in nodes:
+        if n.get("parent") in by_id:
+            p = by_id[n["parent"]]
+            mx = col_x[depth[p["id"]]] + col_w[depth[p["id"]]] + 32
+            py, cy = p["y"] + p["h"] / 2.0, n["y"] + n["h"] / 2.0
+            spec["edges"].append({"id": "t-" + n["id"], "from": p["id"], "to": n["id"], "label": "", "style": "solid",
+                                  "assumed": n["assumed"], "evidence": [], "tree": True,
+                                  "pts": [(p["x"] + p["w"], py), (mx, py), (mx, cy), (n["x"], cy)]})
+    W = max(n["x"] + n["w"] for n in nodes) + 40
+    H = max(n["y"] + n["h"] for n in nodes) + 40
+    return {"w": W, "h": H, "groups": []}
+
+
+# --------------------------------------------------------------------------- timeline
+
+def timeline_findings(spec, evs, kind):
+    """The span, the longest quiet stretch, approximate times and time zones, computed."""
+    out = []
+    order = sorted(evs, key=lambda e: e["_t"][0])
+    if len(order) >= 2:
+        first = order[0]["when"]
+        if kind.startswith("abs") and ":" in first and not re.match(r"^~?\d{2} [A-Z][a-z]{2} ", first):
+            first = fmt_when(order[0]["_t"][0], kind, 86400) + " " + first  # one day: give its date once
+        out.append("From %s to %s: %s." % (first, order[-1]["when"].split(" to ")[0], fmt_span(order[-1]["_t"][0] - order[0]["_t"][0], kind)))
+        gaps = [(b["_t"][0] - (a["_end"][0] if a.get("_end") else a["_t"][0]), a, b) for a, b in zip(order, order[1:])]
+        g, a, b = max(gaps, key=lambda x: x[0])
+        if g > 0:
+            out.append("Longest quiet stretch: %s, between %s (%s) and %s (%s)." % (
+                fmt_span(g, kind), a["label"], a["when"], b["label"], b["when"]))
+    approx = [e for e in order if e.get("approx")]
+    if approx:
+        out.append("Approximate times (the source is unsure): " + "; ".join("%s at %s" % (e["label"], e["when"]) for e in approx) + ".")
+    zname = lambda z: "UTC" if z in ("+0000", "") else "UTC%s:%s" % (z[:3], z[3:])
+    zones = sorted({e["_zone"] for e in evs if e.get("_zone")})
+    if len(zones) > 1:
+        out.append("The sources give times in %s; all are shown in %s." % (" and ".join(zname(z) for z in zones), zname(kind[4:])))
+    return out
+
+
+def layout_timeline(spec):
+    """Events on a time axis, one lane per source. A long quiet stretch is shortened and
+    marked, so a burst of events stays readable; everything else is to scale."""
+    evs = spec["nodes"]
+    kind = evs[0]["_t"][1]
+    times = sorted({e["_t"][0] for e in evs} | {e["_end"][0] for e in evs if e.get("_end")})
+    t0, t1 = times[0], times[-1]
+    total = (t1 - t0) or 1.0
+    long_gaps = []
+    if len(times) >= 4:
+        for a, b in zip(times, times[1:]):
+            if b - a > 0.3 * total:
+                long_gaps.append((a, b))
+    width, brk = 1080.0, 64.0
+    kept = total - sum(b - a for a, b in long_gaps)
+    per = (width - brk * len(long_gaps)) / (kept or 1.0)
+    x0 = 190.0
+
+    def X(t):
+        x, cur = x0, t0
+        for a, b in long_gaps:
+            if t <= a:
+                break
+            x += (min(t, a) - cur) * per
+            if t >= b:
+                x += brk
+                cur = b
+            else:
+                return x + brk * (t - a) / (b - a)
+        return x + (t - cur) * per
+    groups = {g["id"]: g["label"] for g in spec["groups"]}
+    lanes = []
+    for e in evs:
+        ln = e.get("lane") or e.get("group") or ""
+        if ln not in lanes:
+            lanes.append(ln)
+    lane_label = lambda ln: groups.get(ln, ln) or "Events"
+    y = 70.0
+    lane_geo = {}
+    for ln in lanes:
+        rows = []
+        mine = sorted([e for e in evs if (e.get("lane") or e.get("group") or "") == ln], key=lambda e: e["_t"][0])
+        for e in mine:
+            e["lines"] = wrap(e["label"], 200, 12, 2)
+            w = max(text_w(l, 12) for l in e["lines"]) + 12
+            x = X(e["_t"][0])
+            box = (x - 4, x - 4 + w)
+            for r, used in enumerate(rows):
+                if all(box[0] > b + 8 or box[1] < a - 8 for a, b in used):
+                    used.append(box)
+                    e["_row"] = r
+                    break
+            else:
+                rows.append([box])
+                e["_row"] = len(rows) - 1
+        row_h = 34
+        lane_h = max(len(rows), 1) * row_h + 34
+        line_y = y + lane_h - 18
+        lane_geo[ln] = (y, lane_h, line_y)
+        for e in mine:
+            x = X(e["_t"][0])
+            e["x"], e["y"], e["w"], e["h"] = x - 7, line_y - 7, 14, 14
+            e["label_y"] = line_y - 26 - e["_row"] * row_h - 14 * (len(e["lines"]) - 1)
+            if e.get("_end"):
+                e["x2"] = X(e["_end"][0])
+        y += lane_h + 10
+    # ticks inside the stretches drawn to scale
+    span_kept = kept or total
+    step = next((s for s in TIME_STEPS if span_kept / s <= 9), TIME_STEPS[-1]) if kind != "num" else nice_step(span_kept)
+    ticks, t = [], math.ceil(t0 / step) * step
+    while t <= t1 + 1e-9:
+        if not any(a < t < b for a, b in long_gaps):
+            ticks.append(t)
+        t += step
+    shown = str(spec.get("timezone") or "").strip().upper()
+    if kind.startswith("abs") and shown:
+        m = re.match(r"^(?:UTC)?([+-])(\d{1,2}):?(\d{2})?$", shown)
+        if shown in ("UTC", "Z", "GMT"):
+            kind = "abs:+0000"
+        elif m:
+            kind = "abs:%s%02d%s" % (m.group(1), int(m.group(2)), m.group(3) or "00")
+    one_day = kind.startswith("abs") and fmt_when(t0, kind, 86400) == fmt_when(t1, kind, 86400)
+    for e in evs:
+        raw = str(e.get("at"))
+        if kind.startswith("abs"):
+            date_only = bool(re.match(r"^\d{4}-\d{2}-\d{2}$", raw))
+            e["when"] = fmt_when(e["_t"][0], kind, 86400 * 30 if date_only else 60)
+            if not date_only and not one_day:
+                e["when"] = fmt_when(e["_t"][0], kind, 86400) + " " + e["when"]
+        if e.get("approx"):
+            e["when"] = "~" + e["when"]
+            if e.get("_end"):
+                e["when"] += " to " + (fmt_when(e["_end"][0], kind, 60) if one_day or fmt_when(e["_end"][0], kind, 86400) == fmt_when(e["_t"][0], kind, 86400)
+                                       else fmt_when(e["_end"][0], kind, 86400) + " " + fmt_when(e["_end"][0], kind, 60))
+    tick_labels, last_day = [], None
+    for t in ticks:
+        lab = fmt_when(t, kind, step)
+        if kind.startswith("abs") and step < 86400 and not one_day:
+            day = fmt_when(t, kind, 86400)
+            if day != last_day:
+                lab = day + " " + lab
+                last_day = day
+        tick_labels.append((X(t), lab))
+    spec["_findings"] = timeline_findings(spec, evs, kind)
+    spec["_timeline"] = {"lanes": [(lane_label(ln),) + lane_geo[ln] for ln in lanes], "ticks": tick_labels,
+                         "breaks": [(X(a) + 6, X(b) - 6, fmt_span(b - a, kind)) for a, b in long_gaps], "x0": x0, "x1": X(t1), "kind": kind,
+                         "start": "", "end": "",
+                         "span": fmt_span(total, kind)}
+    for e in spec["edges"]:
+        a, b = next((n for n in evs if n["id"] == e["from"]), None), next((n for n in evs if n["id"] == e["to"]), None)
+        if a and b:
+            e["pts"] = [(a["x"] + 7, a["y"] + 7), (b["x"] + 7, b["y"] + 7)]
+    first, last = min(evs, key=lambda e: e["_t"][0]), max(evs, key=lambda e: e["_end"][0] if e.get("_end") else e["_t"][0])
+    spec["_timeline"]["start"] = first["when"].split(" to ")[0]
+    spec["_timeline"]["end"] = last["when"].split(" to ")[-1] if not last.get("_end") or " " in last["when"].split(" to ")[-1] else last["when"]
+    right = max([X(t1) + 40] + [e["x"] + max(text_w(l, 12) for l in e["lines"]) + 24 for e in evs])
+    spec["_timeline"]["right"] = right
+    return {"w": right + 40, "h": y + 30, "groups": []}
+
+
+def timeline_svg(spec):
+    tl = spec["_timeline"]
+    out = []
+    for label, top, h, line_y in tl["lanes"]:
+        out.append('<g class="lane"><rect x="20" y="%.1f" width="%.1f" height="%.1f" rx="8"/><text class="glabel" x="32" y="%.1f">%s</text>'
+                   '<line class="lane-line" x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f"/></g>' % (
+                       top, tl["right"] - 20, h, line_y + 4, esc(label), tl["x0"] - 10, line_y, tl["x1"] + 30, line_y))
+    out.append('<g class="axis">')
+    for x, lab in tl["ticks"]:
+        out.append('<line x1="%.1f" y1="44" x2="%.1f" y2="52"/><text x="%.1f" y="38" text-anchor="middle">%s</text>' % (x, x, x, esc(lab)))
+    for a, b, lab in tl["breaks"]:
+        mid = (a + b) / 2.0
+        out.append('<path class="brk" d="M%.1f,40 l6,16 M%.1f,40 l6,16"/><text class="brk-label" x="%.1f" y="66" text-anchor="middle">%s later</text>' % (
+            mid - 7, mid + 1, mid, esc(lab)))
+    out.append('<line x1="%.1f" y1="48" x2="%.1f" y2="48"/></g>' % (tl["x0"] - 10, tl["x1"] + 30))
+    for e in spec["edges"]:
+        if e.get("pts"):
+            out.append(edge_svg(e))
+    for n in spec["nodes"]:
+        fam = KINDS.get(n["kind"], ("dot", "blue"))[1]
+        cls = ["node", "event", "c-" + fam, "k-" + n["kind"]] + (["assumed"] if n["assumed"] else []) + (["approx"] if n.get("approx") else []) + (["st-" + n["status"]] if n.get("status") else [])
+        cx, cy = n["x"] + 7, n["y"] + 7
+        g = ['<g class="%s" id="n-%s" data-id="%s" tabindex="0" role="button" aria-label="%s">' % (
+            " ".join(cls), esc(n["id"]), esc(n["id"]), esc(n["when"] + " " + n["label"]))]
+        g.append("<title>%s — %s</title>" % (esc(n["when"]), esc(n["label"])))
+        if n.get("x2"):
+            g.append('<rect class="shape bar" x="%.1f" y="%.1f" width="%.1f" height="10" rx="5"/>' % (cx, cy - 5, max(n["x2"] - cx, 4)))
+        g.append('<line class="leader" x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f"/>' % (cx, cy - 7, cx, n["label_y"] + 4 + 14 * (len(n["lines"]) - 1)))
+        if n["kind"] == "milestone":
+            g.append('<path class="shape" d="M%.1f,%.1f l8,8 l-8,8 l-8,-8 z"/>' % (cx, cy - 8))
+        else:
+            g.append('<circle class="shape" cx="%.1f" cy="%.1f" r="6.5"/>' % (cx, cy))
+        for i, l in enumerate(n["lines"]):
+            g.append('<text class="label tl" x="%.1f" y="%.1f">%s</text>' % (cx - 3, n["label_y"] + 14 * i, esc(l)))
+        g.append('<text class="note tl" x="%.1f" y="%.1f">%s</text>' % (cx - 3, n["label_y"] - 13, esc(n["when"])))
+        g.append("</g>")
+        out.append("".join(g))
+    return "".join(out)
+
+
+# --------------------------------------------------------------------------- waterfall
+
+SERVICE_COLOURS = ["#3b82f6", "#16a34a", "#d97706", "#8b5cf6", "#0d9488", "#e11d48", "#4f46e5", "#64748b"]
+
+
+def layout_waterfall(spec):
+    """Spans as bars on one clock, in call order, children under their parent. The critical
+    path (the chain of spans that decided when the whole thing ended) is marked."""
+    spans = spec["nodes"]
+    by_id = {s["id"]: s for s in spans}
+    kids = {s["id"]: [] for s in spans}
+    roots = []
+    for s in spans:
+        (kids[s["parent"]] if s.get("parent") in by_id else roots).append(s["id"])
+    key = lambda i: (by_id[i]["_start"], by_id[i]["_end"])
+    order, depth = [], {}
+
+    def walk(u, d):
+        order.append(u)
+        depth[u] = d
+        for v in sorted(kids[u], key=key):
+            walk(v, d + 1)
+    for r in sorted(roots, key=key):
+        walk(r, 0)
+    t0 = min(s["_start"] for s in spans)
+    t1 = max(s["_end"] for s in spans)
+    total = (t1 - t0) or 1.0  # the axis
+    whole = (by_id[roots[0]]["_end"] - by_id[roots[0]]["_start"]) if len(roots) == 1 else total
+    whole = whole or 1.0
+    crit, crit_order = set(), []
+
+    def critical(u):
+        """u is on the path; so is the child that finished last, the child that finished last
+        before that one started, and so on back to the start of u."""
+        crit.add(u)
+        crit_order.append(u)
+        limit, chain = by_id[u]["_end"], []
+        inside = [c for c in kids[u] if by_id[c]["_end"] <= by_id[u]["_end"] + 1e-9]  # a span that outlives its parent was not waited for
+        for c in sorted(inside, key=lambda i: by_id[i]["_end"], reverse=True):
+            if by_id[c]["_end"] <= limit + 1e-9:
+                chain.append(c)
+                limit = by_id[c]["_start"]
+        for c in sorted(chain, key=lambda i: by_id[i]["_start"]):
+            critical(c)
+    if roots:
+        critical(max(roots, key=lambda i: by_id[i]["_end"]))
+    unit = spec.get("unit") or "ms"
+    label_w = min(max([text_w(by_id[i]["label"], 12) + 18 * depth[i] + 20 for i in order] + [180]), 360)
+    bx0, bw = label_w + 30, 880.0
+    X = lambda t: bx0 + (t - t0) / total * bw
+    services = []
+    for i, sid in enumerate(order):
+        s = by_id[sid]
+        svc = s.get("service") or ""
+        if svc not in services:
+            services.append(svc)
+        s["row"], s["depth"], s["crit"] = i, depth[sid], sid in crit
+        s["x"], s["y"], s["w"], s["h"] = X(s["_start"]), 60 + i * 28, max(X(s["_end"]) - X(s["_start"]), 2), 18
+        s["colour"] = SERVICE_COLOURS[services.index(svc) % len(SERVICE_COLOURS)]
+        dur = s["_end"] - s["_start"]
+        covered, cur_end = 0.0, s["_start"]
+        for k in sorted(kids[sid], key=key):
+            a, b = max(by_id[k]["_start"], cur_end), min(by_id[k]["_end"], s["_end"])
+            if b > a:
+                covered += b - a
+                cur_end = b
+        parent = by_id.get(s.get("parent"))
+        s["_detached"] = bool(parent and s["_end"] > parent["_end"] + 1e-9)
+        s["facts"] = [["starts at", fmt_dur(s["_start"] - t0, unit)], ["takes", fmt_dur(dur, unit)],
+                      ["share of the whole", "%.0f%%" % (100.0 * dur / whole)], ["time of its own (not in a child span)", fmt_dur(dur - covered, unit)]]
+        s["_self"] = dur - covered
+        if s["crit"]:
+            s["facts"].append(["on the critical path", "yes"])
+        if s["_detached"]:
+            s["facts"].append(["after its parent ends", "runs on for %s; nothing waits for it" % fmt_dur(s["_end"] - parent["_end"], unit)])
+    k = UNIT_MS.get(str(unit).lower())
+    if k:
+        step = next((st for st in TIME_STEPS_MS if total * k / st <= 8), TIME_STEPS_MS[-1]) / k
+    else:
+        step = nice_step(total)
+    ticks, t = [], 0.0
+    while t <= total + 1e-9:
+        ticks.append((X(t0 + t), fmt_dur(t, unit) if k else fmt_num(t) + " " + unit))
+        t += step
+    spec["edges"] = [{"id": "w-" + s["id"], "from": s["parent"], "to": s["id"], "label": "", "style": "solid", "assumed": False,
+                      "evidence": []} for s in spans if s.get("parent") in by_id]
+    spec["_findings"] = waterfall_findings(spans, by_id, kids, roots, whole, unit)
+    waited = [i for i in order if i in crit and (not any(c in crit for c in kids[i]) or by_id[i]["_self"] >= 0.05 * whole)]
+    spec["_waterfall"] = {"ticks": ticks, "bx0": bx0, "bw": bw, "label_w": label_w, "services": services, "total": fmt_dur(whole, unit),
+                          "crit": waited}
+    return {"w": bx0 + bw + 160, "h": 60 + len(order) * 28 + 40, "groups": []}
+
+
+def waterfall_findings(spans, by_id, kids, roots, whole, unit):
+    """What the trace says about where the time went, computed, so nobody has to add it up:
+    the spans with the most time of their own, the ones that mostly wait on their children,
+    siblings that overlap (their durations must not be summed), and spans that outlive their
+    parent (not part of the wait)."""
+    u = lambda v: fmt_dur(v, unit)
+    pct = lambda v: "%.0f%%" % (100.0 * v / whole)
+    out = []
+    if len(roots) == 1:
+        r = by_id[roots[0]]
+        out.append("The whole of %s took %s." % (r["label"], u(r["_end"] - r["_start"])))
+    # what the whole waited on: own time of spans on the critical path (a span running beside a
+    # slower sibling, or detached from its parent, cost no wall-clock time)
+    own = sorted([s for s in spans if s.get("crit") and not s.get("_detached")], key=lambda s: -s["_self"])
+    top = [s for s in own if s["_self"] > 0.05 * whole][:3]
+    if top:
+        out.append("What the whole waited on most: " + "; ".join("%s, %s of its own work (%s)" % (s["label"], u(s["_self"]), pct(s["_self"])) for s in top) + ".")
+    for s in spans:
+        dur = s["_end"] - s["_start"]
+        if kids[s["id"]] and dur > 0.2 * whole and s["_self"] < 0.1 * dur:
+            out.append("%s takes %s but only %s of it is its own; the rest is waiting on what it calls." % (s["label"], u(dur), u(s["_self"])))
+    for pid, ks in kids.items():
+        ks = sorted(ks, key=lambda i: by_id[i]["_start"])
+        for i, a in enumerate(ks):
+            for b in ks[i + 1:]:
+                A, B = by_id[a], by_id[b]
+                ov = min(A["_end"], B["_end"]) - max(A["_start"], B["_start"])
+                if ov > 0.1 * min(A["_end"] - A["_start"], B["_end"] - B["_start"]) and ov > 0.02 * whole:
+                    both = (A["_end"] - A["_start"]) + (B["_end"] - B["_start"])
+                    wall = max(A["_end"], B["_end"]) - min(A["_start"], B["_start"])
+                    out.append("%s and %s run at the same time for %s: together they take %s, not the %s their durations add up to." % (
+                        A["label"], B["label"], u(ov), u(wall), u(both)))
+    for s in spans:
+        p = by_id.get(s.get("parent"))
+        if p and s["_end"] > p["_end"] + 1e-9:
+            out.append("%s ends %s after %s does, so nothing waited for it: it runs on after its parent (fire-and-forget), or the two clocks disagree." % (
+                s["label"], u(s["_end"] - p["_end"]), p["label"]))
+    return out
+
+
+UNIT_MS = {"us": 0.001, "\u00b5s": 0.001, "ms": 1.0, "s": 1000.0, "sec": 1000.0, "min": 60000.0, "m": 60000.0, "h": 3600000.0}
+TIME_STEPS_MS = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 15000, 30000, 60000, 120000, 300000, 600000,
+                 900000, 1800000, 3600000, 7200000, 10800000, 21600000, 43200000, 86400000]
+
+
+def fmt_dur(v, unit):
+    """A duration as a person says it. Units the script doesn't know stay as written."""
+    k = UNIT_MS.get(str(unit).lower())
+    if k is None:
+        return "%s %s" % (fmt_num(v), unit)
+    ms = abs(v) * k
+    sign = "-" if v < 0 else ""
+    if ms < 1000:
+        return sign + "%s ms" % fmt_num(ms)
+    if ms < 60000:
+        return sign + ("%.1f s" % (ms / 1000.0) if ms < 10000 else "%d s" % round(ms / 1000.0))
+    if ms < 3600000:
+        sec = int(round(ms / 1000.0))
+        return sign + "%dm %02ds" % (sec // 60, sec % 60)
+    mins = int(round(ms / 60000.0))
+    return sign + "%dh %02dm" % (mins // 60, mins % 60)
+
+
+def fmt_num(v):
+    return ("%.1f" % v).rstrip("0").rstrip(".") if abs(v) < 100 else "%d" % round(v)
+
+
+def waterfall_svg(spec):
+    wf = spec["_waterfall"]
+    out = ['<g class="axis">']
+    for x, lab in wf["ticks"]:
+        out.append('<line class="grid" x1="%.1f" y1="44" x2="%.1f" y2="%.1f"/><text x="%.1f" y="38" text-anchor="middle">%s</text>' % (
+            x, x, 60 + 28 * len(spec["nodes"]) + 4, x, esc(lab)))
+    out.append("</g>")
+    for s in sorted(spec["nodes"], key=lambda s: s["row"]):
+        cls = ["node", "span"] + (["crit"] if s["crit"] else []) + (["err"] if str(s.get("status", "")).lower() in ("error", "failed", "err") else []) + \
+              (["assumed"] if s["assumed"] else [])
+        dur = s["facts"][1][1]
+        g = ['<g class="%s" id="n-%s" data-id="%s" tabindex="0" role="button" aria-label="%s">' % (
+            " ".join(cls), esc(s["id"]), esc(s["id"]), esc("%s, %s" % (s["label"], dur)))]
+        g.append("<title>%s — %s</title>" % (esc(s["label"]), esc(dur)))
+        g.append('<rect class="rowbg" x="20" y="%.1f" width="%.1f" height="26"/>' % (s["y"] - 4, wf["bx0"] + wf["bw"] + 120))
+        label = s["label"]
+        while label and text_w(label, 12) + 18 * s["depth"] > wf["label_w"]:
+            label = label[:-2]
+        if label != s["label"]:
+            label = label.rstrip() + "…"
+        g.append('<text class="label wf" x="%.1f" y="%.1f">%s</text>' % (30 + 18 * s["depth"], s["y"] + 13, esc(label)))
+        g.append('<rect class="shape bar" style="fill:%s" x="%.1f" y="%.1f" width="%.1f" height="%.1f" rx="3"/>' % (
+            s["colour"], s["x"], s["y"], s["w"], s["h"]))
+        g.append('<text class="note wf" x="%.1f" y="%.1f">%s</text>' % (s["x"] + s["w"] + 6, s["y"] + 13, esc(dur)))
+        g.append("</g>")
+        out.append("".join(g))
+    return "".join(out)
+
+
 # --------------------------------------------------------------------------- SVG
 
 def esc(s):
@@ -1033,7 +1728,19 @@ def node_svg(n):
     out.append("<title>%s</title>" % (label + (" — " + esc(n.get("note")) if n.get("note") else "")))
     out.append(node_shape(n))
     x, y, w, h = n["x"], n["y"], n["w"], n["h"]
-    if n["shape"] == "table":
+    if n["shape"] == "classbox":
+        hh = 30 + (14 if n["stereo"] else 0)
+        out.append('<rect class="table-head" x="%.1f" y="%.1f" width="%.1f" height="%d" rx="6"/>' % (x, y, w, hh))
+        out.append('<rect class="table-head" x="%.1f" y="%.1f" width="%.1f" height="8"/>' % (x, y + hh - 8, w))
+        if n["stereo"]:
+            out.append('<text class="note" x="%.1f" y="%.1f" text-anchor="middle">%s</text>' % (x + w / 2, y + 14, esc(n["stereo"])))
+        out.append('<text class="label%s" x="%.1f" y="%.1f" text-anchor="middle">%s</text>' % (
+            " italic" if n["kind"] in ("abstract", "interface") else "", x + w / 2, y + hh - 9, label))
+        for i, l in enumerate(n["member_lines"]):
+            out.append('<text class="fname" x="%.1f" y="%.1f">%s</text>' % (x + 10, y + hh + 16 + 18 * i, esc(l)))
+        if len(n["fields"]) > 30:
+            out.append('<text class="ftype" x="%.1f" y="%.1f">+%d more (open for all)</text>' % (x + 10, y + hh + 16 + 18 * 30, len(n["fields"]) - 30))
+    elif n["shape"] == "table":
         out.append('<rect class="table-head" x="%.1f" y="%.1f" width="%.1f" height="28" rx="6"/>' % (x, y, w))
         out.append('<rect class="table-head" x="%.1f" y="%.1f" width="%.1f" height="8"/>' % (x, y + 20, w))
         out.append('<text class="label" x="%.1f" y="%.1f" text-anchor="middle">%s</text>' % (x + w / 2, y + 19, label))
@@ -1132,10 +1839,22 @@ def edge_svg(e, seq=False):
         cls.append("s-dashed")
     title = esc(e["label"] or "%s → %s" % (e["from"], e["to"]))
     out = ['<g class="%s" id="e-%s" data-id="%s" data-from="%s" data-to="%s">' % (
-        " ".join(cls), esc(e["id"]), esc(e["id"]), esc(e["from"]), esc(e["to"]))]
+        " ".join(cls + (["tree"] if e.get("tree") else [])), esc(e["id"]), esc(e["id"]), esc(e["from"]), esc(e["to"]))]
     out.append("<title>%s</title>" % title)
     d = rounded_path(e["pts"]) if not seq else "M" + " L".join("%.1f,%.1f" % p for p in e["pts"])
-    markers = ' marker-end="url(#arrow)"' + (' marker-start="url(#arrow-start)"' if e.get("both") else "")
+    rel = e.get("rel")
+    if e.get("tree"):
+        markers = ""
+    elif rel in ("inherits", "implements"):
+        markers = ' marker-end="url(#tri)"'
+    elif rel == "composition":
+        markers = ' marker-start="url(#dia-solid)"'
+    elif rel == "aggregation":
+        markers = ' marker-start="url(#dia-open)"'
+    elif rel in ("association", "dependency"):
+        markers = ' marker-end="url(#open)"'
+    else:
+        markers = ' marker-end="url(#arrow)"' + (' marker-start="url(#arrow-start)"' if e.get("both") else "")
     out.append('<path class="hit" d="%s"/>' % d)
     out.append('<path class="line" d="%s"%s/>' % (d, markers))
     if seq and e.get("lines"):
@@ -1162,10 +1881,18 @@ def render_svg(spec, geo):
     seq = spec["type"] == "sequence"
     out = ['<svg id="map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" role="group" aria-label="%s">' % (
         W, H, W, H, esc(spec["title"]))]
-    out.append('<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">'
+    out.append('<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse">'
                '<path d="M0,0 L10,5 L0,10 z" class="arrowhead"/></marker>'
-               '<marker id="arrow-start" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">'
-               '<path d="M0,0 L10,5 L0,10 z" class="arrowhead"/></marker></defs>')
+               '<marker id="arrow-start" viewBox="0 0 10 10" refX="1" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse">'
+               '<path d="M0,0 L10,5 L0,10 z" class="arrowhead"/></marker>'
+               '<marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto-start-reverse">'
+               '<path d="M1,1 L11,6 L1,11 z" class="mk-open"/></marker>'
+               '<marker id="open" viewBox="0 0 12 12" refX="11" refY="6" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse">'
+               '<path d="M1,1 L11,6 L1,11" class="mk-line"/></marker>'
+               '<marker id="dia-solid" viewBox="0 0 16 10" refX="15" refY="5" markerUnits="userSpaceOnUse" markerWidth="18" markerHeight="11" orient="auto-start-reverse">'
+               '<path d="M1,5 L8,1 L15,5 L8,9 z" class="arrowhead"/></marker>'
+               '<marker id="dia-open" viewBox="0 0 16 10" refX="15" refY="5" markerUnits="userSpaceOnUse" markerWidth="18" markerHeight="11" orient="auto-start-reverse">'
+               '<path d="M1,5 L8,1 L15,5 L8,9 z" class="mk-open"/></marker></defs>')
     out.append('<rect class="canvas" x="0" y="0" width="%d" height="%d"/>' % (W, H))
     labels = {g["id"]: g for g in spec["groups"]}
     for g in sorted(geo["groups"], key=lambda g: g["depth"]):
@@ -1173,7 +1900,8 @@ def render_svg(spec, geo):
         cls = "group d%d" % min(g["depth"], 3) + (" st-" + meta["status"] if meta.get("status") else "")
         out.append('<g class="%s" data-group="%s"><rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" rx="10"/>'
                    '<text class="glabel" x="%.1f" y="%.1f">%s</text></g>' % (
-                       cls, esc(g["id"]), g["x"], g["y"], g["w"], g["h"], g["x"] + 12, g["y"] + 18, esc(meta.get("label", g["id"]))))
+                       cls, esc(g["id"]), g["x"], g["y"], g["w"], g["h"], g["x"] + 12, g["y"] + 18,
+                       esc(meta.get("label", g["id"]) + (" (continued)" if g.get("cont") else ""))))
     if seq:
         y0, y1 = geo["lifeline"]
         for f in spec["frames"]:
@@ -1189,11 +1917,16 @@ def render_svg(spec, geo):
         for i, m in enumerate(spec["edges"]):
             if m.get("pts"):
                 out.append('<text class="seqno" x="%.1f" y="%.1f">%d</text>' % (14, m["pts"][0][1] + 4, i + 1))
-    for e in spec["edges"]:
-        if e.get("pts"):
-            out.append(edge_svg(e, seq))
-    for n in spec["nodes"]:
-        out.append(node_svg(n))
+    if spec["type"] == "timeline":
+        out.append(timeline_svg(spec))
+    elif spec["type"] == "waterfall":
+        out.append(waterfall_svg(spec))
+    else:
+        for e in spec["edges"]:
+            if e.get("pts"):
+                out.append(edge_svg(e, seq))
+        for n in spec["nodes"]:
+            out.append(node_svg(n))
     out.append("</svg>")
     return "".join(out)
 
@@ -1212,6 +1945,57 @@ def to_mermaid(spec):
     t = spec["type"]
     nodes = [n for n in spec["nodes"] if n.get("status") != "removed"]
     edges = [e for e in spec["edges"] if e.get("status") != "removed"]
+    if t == "tree":
+        out = ["flowchart LR"] + ['    %s["%s"]' % (mm_id(n["id"]), mm_text(n["label"])) for n in nodes]
+        out += ["    %s --- %s" % (mm_id(n["parent"]), mm_id(n["id"])) for n in nodes if n.get("parent")]
+        return "\n".join(out) + "\n"
+    if t == "timeline":
+        groups = {g["id"]: g["label"] for g in spec["groups"]}
+        out = ["timeline", "    title %s" % mm_text(spec["title"]).replace(":", " -")]
+        lanes = []
+        for n in nodes:
+            ln = n.get("lane") or n.get("group") or ""
+            if ln not in lanes:
+                lanes.append(ln)
+        for ln in lanes:
+            if ln:
+                out.append("    section %s" % mm_text(groups.get(ln, ln)).replace(":", " -"))
+            for n in sorted([n for n in nodes if (n.get("lane") or n.get("group") or "") == ln], key=lambda n: n["_t"][0]):
+                out.append("        %s : %s" % (mm_text(n["when"]).replace(":", "."), mm_text(n["label"]).replace(":", " -")))
+        return "\n".join(out) + "\n"
+    if t == "waterfall":
+        t0 = min(n["_start"] for n in nodes)
+        out = ["gantt", "    title %s" % mm_text(spec["title"]).replace(":", " -"), "    dateFormat x", "    axisFormat %S.%L"]
+        svcs = []
+        for n in sorted(nodes, key=lambda n: n.get("row", 0)):
+            svc = n.get("service") or "spans"
+            if svc not in svcs:
+                svcs.append(svc)
+        for svc in svcs:
+            out.append("    section %s" % mm_text(svc).replace(":", " -"))
+            for n in sorted([n for n in nodes if (n.get("service") or "spans") == svc], key=lambda n: n.get("row", 0)):
+                tag = "crit, " if n.get("crit") else ""
+                out.append("    %s :%s%s, %d, %d" % (mm_text(n["label"]).replace(":", " -"), tag, mm_id(n["id"]),
+                                                    round(n["_start"] - t0), max(round(n["_end"] - t0), round(n["_start"] - t0) + 1)))
+        return "\n".join(out) + "\n"
+    if t == "class":
+        out = ["classDiagram"]
+        if spec["direction"] == "LR":
+            out.append("    direction LR")
+        for n in nodes:
+            out.append("    class %s {" % mm_id(n["label"]))
+            if n["kind"] != "class":
+                out.append("        <<%s>>" % n["kind"])
+            for f in n["fields"]:
+                out.append("        %s" % mm_text(member_text(f)).replace("{", "(").replace("}", ")"))
+            out.append("    }")
+        name = {n["id"]: mm_id(n["label"]) for n in nodes}
+        arrow = {"inherits": "--|>", "implements": "..|>", "composition": "*--", "aggregation": "o--",
+                 "association": "-->", "dependency": "..>"}
+        for e in edges:
+            lab = (" : " + mm_text(e["label"])) if e["label"] else ""
+            out.append("    %s %s %s%s" % (name[e["from"]], arrow[e["rel"]], name[e["to"]], lab))
+        return "\n".join(out) + "\n"
     if t == "sequence":
         out = ["sequenceDiagram"]
         for p in nodes:
@@ -1301,6 +2085,39 @@ def to_mermaid(spec):
 
 # --------------------------------------------------------------------------- text outline
 
+def outline_special(spec, evs, assumed):
+    t = spec["type"]
+    if t == "tree":
+        kids = {}
+        for n in spec["nodes"]:
+            kids.setdefault(n.get("parent"), []).append(n)
+
+        def ul(parent):
+            items = kids.get(parent, [])
+            if not items:
+                return ""
+            return "<ul>" + "".join("<li><b>%s</b>%s%s%s%s</li>" % (
+                esc(n["label"]), (" \u2014 " + esc(n["note"])) if n.get("note") else "", assumed(n), evs(n), ul(n["id"])) for n in items) + "</ul>"
+        return "<h2>What contains what</h2>" + ul(None)
+    if t == "timeline":
+        groups = {g["id"]: g["label"] for g in spec["groups"]}
+        rows = sorted(spec["nodes"], key=lambda n: n["_t"][0])
+        tl = spec.get("_timeline") or {}
+        head = "<p>%s to %s (%s).</p>" % (esc(tl.get("start", "")), esc(tl.get("end", "")), esc(tl.get("span", ""))) if tl else ""
+        return "<h2>Events, in time order</h2>" + head + "<ol>" + "".join("<li><b>%s</b> %s%s%s%s</li>" % (
+            esc(n["when"]), esc(n["label"]), (" <span class=\"muted\">(%s)</span>" % esc(groups.get(n.get("lane") or n.get("group"), n.get("lane") or n.get("group"))))
+            if (n.get("lane") or n.get("group")) else "", assumed(n), evs(n)) for n in rows) + "</ol>"
+    if t == "waterfall":
+        wf = spec.get("_waterfall") or {}
+        rows = sorted(spec["nodes"], key=lambda n: n.get("row", 0))
+        return ("<h2>Spans, in call order</h2><p>Total %s. What it waited on, in order: %s.</p><ul>" % (
+            esc(wf.get("total", "")), esc(" \u2192 ".join(next(n["label"] for n in rows if n["id"] == i) for i in wf.get("crit", [])))) +
+            "".join("<li>%s<b>%s</b>: starts at %s, takes %s (%s)%s%s</li>" % (
+                "\u2003" * n.get("depth", 0), esc(n["label"]), esc(n["facts"][0][1]), esc(n["facts"][1][1]), esc(n["facts"][2][1]),
+                assumed(n), evs(n)) for n in rows) + "</ul>")
+    return None
+
+
 def outline_html(spec):
     """The map as text: what a screen reader, a search engine, a judge or a reader without
     JavaScript gets, and what can be pasted into a doc."""
@@ -1325,7 +2142,13 @@ def outline_html(spec):
             mark = " ✓" if e.get("verified") else ""
             parts.append("<code>%s</code>%s" % (esc(ev_text(e)), mark))
         return ' <span class="ev">(%s)</span>' % ", ".join(parts)
-    noun = "Participants" if t == "sequence" else ("Tables" if t == "erd" else ("States" if t == "lifecycle" else "Parts"))
+    found = ""  # the findings sit at the top of the page
+    special = outline_special(spec, evs, assumed)
+    if special is not None:
+        return found + special
+    if special is not None:
+        return special
+    noun = {"sequence": "Participants", "erd": "Tables", "lifecycle": "States", "class": "Types"}.get(t, "Parts")
     out.append("<h2>%s</h2><ul>" % noun)
     for n in spec["nodes"]:
         g = groups.get(n.get("group"))
@@ -1386,6 +2209,11 @@ section.text{max-width:1100px;padding:10px 24px 40px}section.text h2{font-size:1
 .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted);padding:6px 24px 0}
 .legend i{display:inline-block;width:22px;height:0;border-top:2px solid var(--edge);vertical-align:middle;margin-right:5px}
 .legend i.d{border-top-style:dashed}.legend i.a{border-top:2px dashed var(--warn)}
+.findings{margin:10px 0 0;padding:8px 14px;border-left:3px solid var(--accent);background:var(--panel);border-radius:4px;max-width:1000px}
+.findings ul{margin:4px 0 0;padding-left:18px}.findings li{margin:2px 0}
+table.answers{border-collapse:collapse;margin:10px 0 0;max-width:1100px;font-size:13px}
+table.answers th,table.answers td{border:1px solid var(--line);padding:5px 9px;text-align:left;vertical-align:top}
+table.answers th{background:var(--group2);font-weight:600}table.answers td.ev{font-size:12px;color:var(--muted)}
 .issues{margin:8px 24px 0;padding:8px 12px;border:1px solid var(--warn);border-radius:6px;color:var(--warn);font-size:13px}
 /* diagram */
 .canvas{fill:var(--canvas)}
@@ -1415,12 +2243,23 @@ svg.focus .on,svg.focus .group.on{opacity:1}svg .node.on .shape{stroke-width:2.6
 svg .node.sel .shape{stroke:var(--hl)!important;stroke-width:3}svg .node:focus-visible .shape{stroke:var(--accent)!important;stroke-width:3}
 @media (prefers-reduced-motion:no-preference){svg .edge.on.flow .line{stroke-dasharray:8 6;animation:flow 1s linear infinite}}
 @keyframes flow{to{stroke-dashoffset:-28}}
+.lane rect{fill:var(--group);stroke:var(--line)}.lane-line{stroke:var(--line);stroke-width:2}
+.axis line{stroke:var(--muted);stroke-width:1}.axis text{font-size:11px;fill:var(--muted)}.axis .grid{stroke:var(--line);stroke-dasharray:2 4}
+.brk{stroke:var(--muted);stroke-width:1.5;fill:none}.brk-label{font-size:10px;fill:var(--muted)}
+.node.event .shape{stroke-width:2;fill:var(--panel)}.node.event .bar{fill:var(--group2);stroke-width:1.5}
+.node.event .leader{stroke:var(--line);stroke-width:1}.node.event.approx .shape{stroke-dasharray:3 2}.node .label.tl{font-size:12px}.node .note.tl{font-size:10px}
+.node.span .rowbg{fill:transparent}.node.span:hover .rowbg,.node.span.on .rowbg{fill:var(--group)}
+.node.span .bar{stroke:none;opacity:.88}.node.span.crit .bar{stroke:var(--hl);stroke-width:2.5;opacity:1}
+.node.span.err .bar{stroke:var(--bad);stroke-width:2.5}.node .label.wf{font-size:12px;font-weight:500}.node .note.wf{font-size:11px}
+.node .label.italic{font-style:italic}.mk-open{fill:var(--canvas);stroke:var(--edge);stroke-width:1.2}.mk-line{fill:none;stroke:var(--edge);stroke-width:1.4}
+.edge.tree .line{stroke:var(--line);stroke-width:1.5}
+aside table.facts{border-collapse:collapse;font-size:13px;margin:6px 0}aside table.facts th{text-align:left;color:var(--muted);font-weight:400;padding:2px 10px 2px 0}
 @media print{.bar,aside,.caption{display:none!important}.wrap{height:auto}#stage{border:0}#stage svg{position:static;height:auto}}
 """
 
 JS = r"""
 (function(){
-var DATA=JSON.parse(document.getElementById('diagram-data').textContent);
+var DATA=JSON.parse(document.getElementById('diagram-data').textContent);var WD=DATA.words;
 var svg=document.getElementById('map'),stage=document.getElementById('stage'),panel=document.getElementById('panel');
 var root=document.documentElement;
 var pref=localStorage.getItem('idg-theme')||root.getAttribute('data-theme-default');
@@ -1464,11 +2303,12 @@ function show(kind,id){var x=kind==='n'?nodes.get(id):edges.get(id);if(!x)return
  if(kind==='n'){h+='<h3>'+esc(x.label)+'</h3><div class="kind">'+esc(x.kind)+(x.group_label?' · '+esc(x.group_label):'')+(x.assumed?' · <span style="color:var(--warn)">assumption</span>':'')+(x.status?' · '+esc(x.status):'')+'</div>';
   if(x.note)h+='<p>'+esc(x.note)+'</p>';if(x.detail)h+='<p>'+esc(x.detail)+'</p>';
   if(x.fields&&x.fields.length)h+='<ul>'+x.fields.map(function(f){return '<li><code>'+esc(f.name)+'</code> '+esc(f.type||'')+(f.key?' <b>'+esc([].concat(f.key).join('/').toUpperCase())+'</b>':'')+(f.references?' → '+esc(f.references):'')+(f.note?' — '+esc(f.note):'')+'</li>'}).join('')+'</ul>';
-  h+='<div class="acts"><button data-act="up">What it depends on</button><button data-act="down">What depends on it</button><button data-act="near">Neighbours</button></div>';
+  if(x.facts&&x.facts.length)h+='<table class="facts">'+x.facts.map(function(f){return '<tr><th>'+esc(f[0])+'</th><td>'+esc(f[1])+'</td></tr>'}).join('')+'</table>';
+  h+='<div class="acts"><button data-act="out">'+esc(WD.reach_out)+'</button><button data-act="in">'+esc(WD.reach_in)+'</button><button data-act="near">Neighbours</button></div>';
   h+='<p class="muted" style="font-size:12px">Shift-click another part to see the path between them.</p>';
   var o=outE.get(id).map(function(i){var e=edges.get(i);return '<li><a class="jump" data-n="'+esc(e.to)+'">'+esc(nodes.get(e.to).label)+'</a>'+(e.label?' — '+esc(e.label):'')+'</li>'}).join('');
   var n=inE.get(id).map(function(i){var e=edges.get(i);return '<li><a class="jump" data-n="'+esc(e.from)+'">'+esc(nodes.get(e.from).label)+'</a>'+(e.label?' — '+esc(e.label):'')+'</li>'}).join('');
-  if(o)h+='<b>Goes to</b><ul>'+o+'</ul>';if(n)h+='<b>Comes from</b><ul>'+n+'</ul>';
+  if(o)h+='<b>'+esc(WD.out)+'</b><ul>'+o+'</ul>';if(n)h+='<b>'+esc(WD.in)+'</b><ul>'+n+'</ul>';
   h+='<b>Evidence</b>'+evHtml(x.evidence);
   var nb=new Set([id]);outE.get(id).concat(inE.get(id)).forEach(function(i){nb.add(edges.get(i).from);nb.add(edges.get(i).to)});light(Array.from(nb),outE.get(id).concat(inE.get(id)));el('n',id).classList.add('sel');
  }else{h+='<h3>'+esc(nodes.get(x.from).label)+' → '+esc(nodes.get(x.to).label)+'</h3><div class="kind">'+(x.label?esc(x.label):'connection')+(x.assumed?' · <span style="color:var(--warn)">assumption</span>':'')+(x.status?' · '+esc(x.status):'')+'</div>';
@@ -1477,7 +2317,7 @@ function show(kind,id){var x=kind==='n'?nodes.get(id):edges.get(id);if(!x)return
  panel.querySelector('.close').onclick=function(){panel.classList.remove('open');clear();selected=null};
  panel.querySelectorAll('.jump').forEach(function(a){a.onclick=function(){show('n',a.getAttribute('data-n'))}});
  panel.querySelectorAll('[data-act]').forEach(function(b){b.onclick=function(){var a=b.getAttribute('data-act');
-  if(a==='near'){show('n',id);return}var r=reach(id,a==='down'?1:-1);light(r.n,r.e,true);el('n',id).classList.add('sel')}})}
+  if(a==='near'){show('n',id);return}var r=reach(id,a==='out'?1:-1);light(r.n,r.e,true);el('n',id).classList.add('sel')}})}
 svg.addEventListener('click',function(e){var g=e.target.closest('.node');if(g){var id=g.getAttribute('data-id');
   if(e.shiftKey&&selected&&selected!==id){var p=path(selected,id,true)||path(selected,id,false);if(p){light(p.n,p.e,true)}return}show('n',id);return}
  var ed=e.target.closest('.edge');if(ed){show('e',ed.getAttribute('data-id'));return}});
@@ -1500,7 +2340,7 @@ document.getElementById('xpng').onclick=function(){var img=new Image();img.onloa
  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(standalone())};
 document.getElementById('xmmd').onclick=function(){var t=DATA.mermaid;if(navigator.clipboard)navigator.clipboard.writeText(t).catch(function(){});download(base+'.mmd','text/plain',t)};
 var tour=null,cap=document.getElementById('caption');
-var steps=DATA.story&&DATA.story.length?DATA.story:(DATA.type==='sequence'?DATA.edges.map(function(m,i){return {text:(i+1)+'. '+nodes.get(m.from).label+' → '+nodes.get(m.to).label+(m.label?': '+m.label:''),edges:[m.id],nodes:[m.from,m.to]}}):[]);
+var steps=DATA.story&&DATA.story.length?DATA.story:(DATA.auto_steps&&DATA.auto_steps.length)?DATA.auto_steps:(DATA.type==='sequence'?DATA.edges.map(function(m,i){return {text:(i+1)+'. '+nodes.get(m.from).label+' → '+nodes.get(m.to).label+(m.label?': '+m.label:''),edges:[m.id],nodes:[m.from,m.to]}}):[]);
 var tb=document.getElementById('tour');if(!steps.length){tb.style.display='none'}
 function step(d){tour.i=Math.max(0,Math.min(steps.length-1,tour.i+d));var s=steps[tour.i];
  light((s.nodes||[]).concat((s.edges||[]).map(function(i){return edges.get(i)?edges.get(i).from:null}).filter(Boolean)).concat((s.edges||[]).map(function(i){return edges.get(i)?edges.get(i).to:null}).filter(Boolean)),s.edges||[],true);
@@ -1522,20 +2362,59 @@ hash();window.addEventListener('hashchange',hash);
 """
 
 
+def auto_steps(spec):
+    """A walkthrough when the spec has none: a timeline in time order, a waterfall along its
+    critical path."""
+    t = spec["type"]
+    if spec["story"]:
+        return []
+    if t == "timeline":
+        return [{"text": "%s \u2014 %s" % (n["when"], n["label"]), "nodes": [n["id"]]}
+                for n in sorted(spec["nodes"], key=lambda n: n["_t"][0])]
+    if t == "waterfall":
+        by_id = {n["id"]: n for n in spec["nodes"]}
+        return [{"text": "%s: %s, %s of the whole, %s of its own" % (by_id[i]["label"], by_id[i]["facts"][1][1], by_id[i]["facts"][2][1],
+                                                                 by_id[i]["facts"][3][1]), "nodes": [i]}
+                for i in spec["_waterfall"]["crit"]]
+    return []
+
+
+def type_facts(spec):
+    """Facts a part's detail panel lists, beyond its note and evidence."""
+    t = spec["type"]
+    if t == "timeline":
+        groups = {g["id"]: g["label"] for g in spec["groups"]}
+        for n in spec["nodes"]:
+            ln = n.get("lane") or n.get("group")
+            n["facts"] = [["when", n["when"]]] + ([["source", groups.get(ln, ln)]] if ln else [])
+    if t == "tree":
+        kids = {}
+        for n in spec["nodes"]:
+            kids.setdefault(n.get("parent"), []).append(n["id"])
+
+        def count(u):
+            return sum(1 + count(v) for v in kids.get(u, []))
+        for n in spec["nodes"]:
+            c = count(n["id"])
+            if c:
+                n["facts"] = [["inside it", "%d item%s" % (c, "" if c == 1 else "s")]]
+
+
 def build_html(spec, svg, mermaid, issues, theme):
     t = spec["type"]
     by_group = {g["id"]: g["label"] for g in spec["groups"]}
     data = {"type": t, "slug": re.sub(r"[^a-z0-9]+", "-", spec["title"].lower()).strip("-")[:60] or "diagram",
             "source_url": spec.get("source_url") if re.match(r"^https?://[^\s\"'<>]+$", str(spec.get("source_url") or "")) else None,
-            "story": spec["story"], "nodes": [], "edges": [], "mermaid": mermaid}
+            "story": spec["story"], "nodes": [], "edges": [], "mermaid": mermaid,
+            "words": WORDS.get(t, WORDS["default"]), "auto_steps": auto_steps(spec)}
     for n in spec["nodes"]:
-        d = {k: n.get(k) for k in ("id", "label", "kind", "note", "detail", "fields", "evidence", "assumed", "status")}
+        d = {k: n.get(k) for k in ("id", "label", "kind", "note", "detail", "fields", "evidence", "assumed", "status", "facts")}
         d["group_label"] = by_group.get(n.get("group"))
         data["nodes"].append(d)
     for e in spec["edges"]:
         data["edges"].append({k: e.get(k) for k in ("id", "from", "to", "label", "detail", "evidence", "assumed", "status")})
     payload = json.dumps(data, ensure_ascii=False).replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
-    assumed_n = sum(1 for x in spec["nodes"] + spec["edges"] if x["assumed"])
+    assumed_n = sum(1 for x in spec["nodes"] + spec["edges"] if x["assumed"] and not x.get("tree"))
     file_ev = [e for x in spec["nodes"] + spec["edges"] for e in x["evidence"] if "file" in e]
     checked = sum(1 for e in file_ev if e.get("verified"))
     facts = []
@@ -1550,16 +2429,34 @@ def build_html(spec, svg, mermaid, issues, theme):
             if x.get("status"):
                 cnt[x["status"]] = cnt.get(x["status"], 0) + 1
         facts.append(", ".join("%d %s" % (v, k) for k, v in sorted(cnt.items())) or "no changes")
-    legend = ['<span><i></i>connection</span>', '<span><i class="d"></i>async / optional</span>']
+    legend = {
+        "tree": ['<span><i></i>contains</span>'],
+        "timeline": ['<span>\u25cf event</span>', '<span>\u25c6 milestone</span>', '<span>\u25ac lasted from \u2026 to</span>',
+                     '<span>// a quiet stretch, shortened</span>'],
+        "waterfall": ['<span>\u25ac a span, to scale</span>', '<span style="color:var(--hl)">\u25ad what the whole waited on (the critical path)</span>',
+                      '<span style="color:var(--bad)">\u25ad failed</span>'] + (
+            ['<span>total %s</span>' % esc(spec["_waterfall"]["total"])] if spec.get("_waterfall") else []),
+        "class": ['<span>\u25b7 inherits (solid) or implements (dashed)</span>', '<span>\u25c6 composition</span>',
+                  '<span>\u25c7 aggregation</span>', '<span>\u2192 association</span>', '<span>\u21e2 dependency</span>'],
+    }.get(spec["type"], ['<span><i></i>connection</span>', '<span><i class="d"></i>async / optional</span>'])
     if assumed_n:
         legend.append('<span><i class="a"></i>assumption (not shown by the evidence)</span>')
     if spec.get("compared"):
         legend.append('<span style="color:var(--ok)">■ added</span><span style="color:var(--bad)">■ removed</span>'
                       '<span style="color:var(--accent)">■ changed</span>')
     notes = "".join("<li>%s</li>" % esc(x) for x in spec["notes"])
-    warn_html = ""
-    if issues.warnings:
-        warn_html = '<div class="issues"><b>Check before sharing:</b> ' + "; ".join(esc(w["message"] + " (" + w["where"] + ")") for w in issues.warnings[:6]) + "</div>"
+    warn_html = ""  # warnings are for whoever builds the page; they are printed, not published
+    up_front = ""
+    if spec.get("_findings"):
+        up_front += '<div class="findings"><b>What it shows</b><ul>' + "".join("<li>%s</li>" % esc(f) for f in spec["_findings"]) + "</ul></div>"
+    if spec["answers"]:
+        def ev_short(a):
+            if a.get("assumed") and not a["evidence"]:
+                return '<span class="tag warn">assumption</span>'
+            return ", ".join("<code>%s</code>%s" % (esc(ev_text(e)), " \u2713" if e.get("verified") else "") for e in a["evidence"])
+        up_front += ('<table class="answers"><thead><tr><th>Question</th><th>What the material says</th><th>From</th></tr></thead><tbody>' +
+                     "".join("<tr><td>%s</td><td>%s</td><td class=\"ev\">%s</td></tr>" % (esc(a["question"]), esc(a["answer"]), ev_short(a))
+                             for a in spec["answers"]) + "</tbody></table>")
     return """<!doctype html>
 <html lang="en" data-theme-default="%(theme)s"><head><meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src '%(js_hash)s'; style-src 'unsafe-inline'; img-src data: blob:; base-uri 'none'; form-action 'none'">
@@ -1567,7 +2464,7 @@ def build_html(spec, svg, mermaid, issues, theme):
 <!-- One self-contained file: no external scripts, styles, fonts or requests. The policy above makes the browser refuse any. -->
 <title>%(title)s</title><meta name="generator" content="interactive-diagram (skilldrop)"></head>
 <body>
-<header class="top"><h1>%(title)s</h1>%(question)s%(summary)s<p class="muted" style="font-size:12px;margin:6px 0 0">%(facts)s</p></header>
+<header class="top"><h1>%(title)s</h1>%(question)s%(summary)s%(up_front)s<p class="muted" style="font-size:12px;margin:6px 0 0">%(facts)s</p></header>
 <section class="text" id="outline" aria-label="The diagram as text">
 <details%(open)s><summary>The diagram as text</summary>%(outline)s%(notes)s</details></section>
 <nav class="bar" aria-label="Diagram controls">
@@ -1589,7 +2486,7 @@ def build_html(spec, svg, mermaid, issues, theme):
        "summary": '<p class="sum">%s</p>' % esc(spec["summary"]) if spec["summary"] else "",
        "facts": esc(" · ".join(facts)), "open": "" if len(spec["nodes"]) > 12 else " open",
        "outline": outline_html(spec), "notes": "<h2>Notes</h2><ul>%s</ul>" % notes if notes else "",
-       "legend": "".join(legend), "warn": warn_html, "svg": svg, "css": CSS,
+       "legend": "".join(legend), "warn": warn_html, "up_front": up_front, "svg": svg, "css": CSS,
        "data": payload, "js": JS,
        "js_hash": "sha256-" + base64.b64encode(hashlib.sha256(JS.encode("utf-8")).digest()).decode()}
 
@@ -1638,14 +2535,31 @@ def main(argv=None):
                "file_citations": len(file_ev), "verified": sum(1 for e in file_ev if e.get("verified")),
                "errors": issues.errors, "warnings": issues.warnings}
     if not issues.errors and not a.check:
-        if spec["type"] == "sequence":
+        t = spec["type"]
+        if t == "sequence":
             geo = layout_sequence(spec)
+        elif t == "tree":
+            geo = layout_tree(spec)
+        elif t == "timeline":
+            geo = layout_timeline(spec)
+        elif t == "waterfall":
+            geo = layout_waterfall(spec)
         else:
+            flipped = [e for e in spec["edges"] if e.get("rel") in ("inherits", "implements")]
+            for e in flipped:  # the parent goes first, so it sits above its children
+                e["from"], e["to"] = e["to"], e["from"]
             geo = layout_graph_full(spec)
+            for e in flipped:
+                e["from"], e["to"] = e["to"], e["from"]
+                e["pts"] = list(reversed(e.get("pts", [])))
             occupied = [(n["x"], n["y"], n["x"] + n["w"], n["y"] + n["h"]) for n in spec["nodes"]]
             labels = {g["id"]: g["label"] for g in spec["groups"]}
             occupied += [(g["x"] + 6, g["y"] + 4, g["x"] + 18 + text_w(labels.get(g["id"], ""), 12), g["y"] + 24) for g in geo["groups"]]
             place_labels(spec, occupied)
+        if t == "tree":
+            for e in spec["edges"]:
+                e.pop("label_box", None)
+        type_facts(spec)
         svg = render_svg(spec, geo)
         mermaid = to_mermaid(spec)
         out = build_html(spec, svg, mermaid, issues, a.theme)
@@ -1654,6 +2568,10 @@ def main(argv=None):
             fh.write(out)
         receipt["output"] = os.path.abspath(a.out)
         receipt["bytes"] = len(out.encode("utf-8"))
+        receipt["edges"] = len([e for e in spec["edges"] if not e.get("tree")]) or len(spec["edges"])
+        shown_path = os.path.relpath(os.path.abspath(a.out)) if not os.path.relpath(os.path.abspath(a.out)).startswith("..") else os.path.abspath(a.out)
+        receipt["reply_first_line"] = "[%s](%s)" % (spec["title"].replace("]", ")"), shown_path)
+        receipt["findings"] = spec.get("_findings", [])
         if a.mermaid:
             with open(a.mermaid, "w", encoding="utf-8") as fh:
                 fh.write(mermaid)
@@ -1671,10 +2589,15 @@ def main(argv=None):
                 receipt["nodes"], "participants" if spec["type"] == "sequence" else "nodes", receipt["edges"],
                 "messages" if spec["type"] == "sequence" else "edges", receipt["assumed"], receipt["verified"], receipt["file_citations"]))
         else:
-            print("wrote %s (%d KB): %d %s, %d %s, %d assumed, %d of %d file citations verified" % (
-                a.out, receipt["bytes"] // 1024, receipt["nodes"], "participants" if spec["type"] == "sequence" else "nodes",
-                receipt["edges"], "messages" if spec["type"] == "sequence" else "edges", receipt["assumed"],
-                receipt["verified"], receipt["file_citations"]))
+            item, link = {"sequence": ("participants", "messages"), "tree": ("items", "links"), "timeline": ("events", "links"),
+                          "waterfall": ("spans", "parent links"), "class": ("types", "relations")}.get(spec["type"], ("nodes", "edges"))
+            print("Your reply starts with this line, before anything else:\n" + receipt["reply_first_line"] + "\n")
+            print("For the end of the reply: %d of %d file citations checked; %d drawn as assumptions. (%s, %d KB: %d %s, %d %s.)" % (
+                receipt["verified"], receipt["file_citations"], receipt["assumed"], a.out, receipt["bytes"] // 1024,
+                receipt["nodes"], item, receipt["edges"], link))
+            if receipt["findings"]:
+                print("Computed from the spec, and shown at the top of the page (use these numbers as they are; don't re-add durations):\n"
+                      + "\n".join("- " + f for f in receipt["findings"]))
     return 1 if issues.errors else 0
 
 
