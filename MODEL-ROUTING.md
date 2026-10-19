@@ -85,7 +85,7 @@ The declared tier is the **starting point**. These rules adjust it from cheap si
 
 > Use the model-router agent to run `decision-log` on these meeting notes: …
 
-It prints its decision (`Routing decision-log → light / claude-haiku-4-5 (declared tier: light)`), then runs the skill on a subagent at the resolved model and returns the artifact. Other tools don't have a subagent-with-model-override primitive yet, so they use the manual path — but they read the **same table**, so the routing decisions are identical.
+It prints its decision (`Routing decision-log → light / claude-haiku-5-5 (declared tier: light)`), then runs the skill on a subagent at the resolved model and returns the artifact. Other tools don't have a subagent-with-model-override primitive yet, so they use the manual path — but they read the **same table**, so the routing decisions are identical.
 
 ## `route.py` — pure-rules engine (no API key, no network, instant)
 
@@ -103,7 +103,7 @@ It prints the declared tier, the final tier, the resolved model for the active (
 
 ```
 decision-log: light → heavy
-  model:     claude-opus-5  (provider: claude-code)
+  model:     claude-opus-5-5  (provider: claude-code)
   signals (net +2):
     +1  explicit-rigor('thorough')
     +1  high-stakes-context('board')

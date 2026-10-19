@@ -8,6 +8,13 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.21 — 2026-10-18
+
+- **`role-shortlist` handles a few pasted blurbs and "just the top two".** It answers with the picks and a line or two on the rest, with no empty "Not read" or "Closed or duplicate" groups, and an item a posting calls preferred, desirable or a plus no longer rules a role out. On two new evals written by someone who never read the skill, two blind judges preferred it to plain Claude Code in 3 and 2 of 4 pairs, up from 3 and 1 ([RFC-0047](docs/rfcs/0047-role-shortlist.md)).
+- **The light and heavy tiers resolve to Claude Haiku 5.5 and Claude Opus 5.5** in Claude Code, up from Haiku 4.5 and Opus 5, so the `model-router` agent and `route.py` pick the current models.
+- **The benchmark has run on the light and heavy tiers.** On the 224 held-out evals, a skill on Haiku 5.5 meets 83% of its checks and on Opus 5.5 85%, at about a twenty-seventh of the cost; light came within 5 points of heavy for 61 of 97 skills, including 9 of the 13 assigned heavy. Blind, the plain agent was preferred on both tiers: the skill won 41% and 48% of pairs on Haiku 5.5, and 31% with both judges on Opus 5.5. No tier was changed; the account is in [What the benchmark showed](guides/explanation/what-the-benchmark-showed.md#the-light-and-heavy-tiers) and the summary in `docs/benchmarks/tiers.json`.
+- **`run_bench.py` prices a model Claude Code has no price for yet** from its own table, instead of the placeholder rate Claude Code reports, so a new model's dollars per run are list price.
+
 ## 0.16.20 — 2026-10-18
 
 - **New skill: `role-shortlist`** (`career`). Give it an employer's careers page saved as files, a job-board export or a folder of postings, plus your resume, and it says which roles to apply for. Each role is judged only from its own posting text; one it could not read is listed as unread, never ranked from its title; an unmet licence, registration, location or required degree takes a role out whatever else fits; the same role posted twice counts once; every role you gave appears once. Admitted on a measured result ([RFC-0047](docs/rfcs/0047-role-shortlist.md)): on two evals written by someone who never read the skill, two blind judges preferred it to plain Claude Code in 3 of 4 pairs each.

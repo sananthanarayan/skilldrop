@@ -71,10 +71,11 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 CACHE = os.path.join(ROOT, ".bench-cache")
 JUDGE_MODEL = "claude-sonnet-5-5"
 
-# USD per million tokens (input, output), Anthropic first-party rates as of 2026-09-25.
+# USD per million tokens (input, output), Anthropic first-party rates as of 2026-10-06.
 # A cache read bills at 0.1x input and a cache write at 1.25x input.
 PRICES = {
     "claude-haiku-4-5": (1.0, 5.0),
+    "claude-haiku-5-5": (0.1, 0.5),  # prompts up to 100K tokens; 0.5 / 2.5 beyond
     "claude-sonnet-5": (2.0, 10.0),
     "claude-sonnet-5-5": (2.0, 10.0),
     "claude-opus-5": (5.0, 25.0),
@@ -126,10 +127,27 @@ def cli_run(cmd, user, cwd, timeout, env=None):
             served = [m for m in used if m.startswith(asked) and used[m].get("outputTokens", 0)] if asked else []
             served = served or sorted(used, key=lambda m: -used[m].get("outputTokens", 0))
             return r.get("result", ""), {"model": served[0] if served else "", "usage": r.get("usage", {}),
-                                         "stop_reason": r.get("stop_reason"), "cost": r.get("total_cost_usd"),
+                                         "stop_reason": r.get("stop_reason"), "cost": cli_cost(r),
                                          "turns": r.get("num_turns")}
         time.sleep(60 * (attempt + 1))  # usage limits and overloads clear on their own
     raise APIError("claude -p failed: %s" % str(r.get("result"))[:300])
+
+
+def cli_cost(r):
+    """The cost Claude Code reports, except for a model it has no price for (costBasis "unknown"),
+    which it bills at a placeholder rate: that model's tokens are priced from PRICES instead."""
+    used = r.get("modelUsage") or {}
+    if not any(u.get("costBasis") == "unknown" for u in used.values()):
+        return r.get("total_cost_usd")
+    total = 0.0
+    for m, u in used.items():
+        if u.get("costBasis") == "unknown" and price(m):
+            total += cost_of(m, {"input_tokens": u.get("inputTokens", 0), "output_tokens": u.get("outputTokens", 0),
+                                 "cache_read_input_tokens": u.get("cacheReadInputTokens", 0),
+                                 "cache_creation_input_tokens": u.get("cacheCreationInputTokens", 0)})
+        else:
+            total += u.get("costUSD", 0.0)
+    return total
 
 
 def cli_messages(model, system, user):

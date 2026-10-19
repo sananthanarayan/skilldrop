@@ -119,17 +119,17 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/career/skills/resume-ta
 
 Read every open role on an employer's careers page, a job-board export or a folder of saved postings, and say which ones one person should apply for — each role judged only from its own posting text, roles that couldn't be read listed as unread instead of guessed from their titles, a role whose screening requirement the person doesn't meet named as out whatever else fits, and the same role posted twice counted once. Works for any occupation.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/career/skills/role-shortlist/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/role-shortlist/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/career/skills/role-shortlist/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/role-shortlist/)
 
 **Use it when** the user asks "which of these jobs should I apply for", "go through this company's openings", "shortlist these postings against my CV", or has more postings than they want to check one by one.
 
 **A good result:**
 
 - **No role is ranked without its posting text having been read.** Unread roles are listed as unread, with no verdict.
-- **A role with an unmet screening requirement is never under Apply,** and the requirement is named.
+- **A role with an unmet screening requirement is never under Apply,** and the requirement is named. An item the posting calls preferred is never treated as one.
 - **Every role given appears exactly once;** duplicates are merged, closed ones are noted.
 - **Every "fits" rests on the person's own material,** and a similar thing is not counted as the named one.
-- **The answer opens the reply,** and the size is the one asked for.
+- **The answer opens the reply,** and the size is the one asked for, with no empty groups.
 
 **Hands off to:** `job-fit-analysis` when the shortlist has put one or two roles under Apply.
 

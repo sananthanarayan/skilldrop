@@ -19,7 +19,8 @@ Two things follow from the rule:
   registration, a degree the posting says is required, a minimum number of years, the right
   to work in a country, a location or shift, a clearance, a language. One of those unmet
   outweighs everything else that fits, so the role goes under **Skip** with that requirement
-  named, however good the rest looks.
+  named, however good the rest looks. Only the posting decides what is required: an item it
+  calls preferred, desirable, a plus or nice to have never takes a role out.
 - **One role is one role.** The same job posted in three cities, or reposted with a new
   reference number, is one entry with its locations listed. A posting marked closed, or past
   its closing date, is noted and not ranked.
@@ -37,9 +38,12 @@ Two things follow from the rule:
    the kind of role they want.
 
 3. **Check each posting for what could screen them out first.** For every role, find the
-   requirements an employer checks before reading the rest, and mark whether the person's
-   material meets them. Any unmet one sends the role to **Skip**, named in a few words:
-   "requires HCPC registration".
+   requirements the posting makes a condition: what it calls required, essential or a must,
+   and the facts of the job itself (where it is, the hours or shift, a licence the work needs).
+   Mark whether the person's material meets them. Any unmet one sends the role to **Skip**,
+   named in a few words: "requires HCPC registration". An item the posting calls preferred,
+   desirable or a plus is not one of these, even a degree or a licence; it is a gap to weigh in
+   step 4, and the role stays in.
 
 4. **Rank the rest from the posting's own requirements.** For each remaining role, compare
    the required and preferred items with the person's evidence, and say in one line why it
@@ -48,7 +52,9 @@ Two things follow from the rule:
    requires is met only if the person's material names it.
 
 5. **Give the shortlist, answer first.** Open with the two or three roles worth applying for
-   and why, in a sentence or two. Then:
+   and why, in a sentence or two. Then the roles under these groups, using only the groups that
+   have a role in them. A heading with nothing under it, or with "none", is not shown: when every
+   posting was read and none is closed, there is no Not read or Closed group.
    - **Apply**: roles where nothing screening is unmet and most of what's required is met.
    - **Maybe**: roles worth applying for if one named question has the right answer ("if your
      forklift licence is current").
@@ -63,24 +69,27 @@ Two things follow from the rule:
    the one or two questions whose answers would move a role between groups, and which unread
    postings to fetch.
 
-7. **Fit the size and format they asked for.** "Just the top three" gets three, with one line
-   saying how many others were reviewed. A list for a spreadsheet gets one row per role. The
-   whole answer is in the reply unless they ask for a file.
+7. **Fit the size and format they asked for.** "Just the top two" gets two, each with its
+   reason and anything to check first, then the rest in a line or two: which were ruled out and
+   by what, and any that couldn't be read. No groups and no headings; the person asked for two
+   names, not a sorted list. A list for a spreadsheet gets one row per role. The whole answer
+   is in the reply unless they ask for a file.
 
 8. **Deliver from what you have.** With postings and a few lines about the person, shortlist
-   against those and say a resume would settle the rest. With a resume and no postings, ask
-   for the postings in one line.
+   against those and say a resume would settle the rest. When each role is only a line or two,
+   say the picks rest on those lines and the full postings come next. With a resume and no
+   postings, ask for the postings in one line.
 
 ## Quality bar
 
 - **No role is ranked without its posting text having been read.** Unread roles are listed as
   unread, with no verdict.
 - **A role with an unmet screening requirement is never under Apply,** and the requirement is
-  named.
+  named. An item the posting calls preferred is never treated as one.
 - **Every role given appears exactly once;** duplicates are merged, closed ones are noted.
 - **Every "fits" rests on the person's own material,** and a similar thing is not counted as
   the named one.
-- **The answer opens the reply,** and the size is the one asked for.
+- **The answer opens the reply,** and the size is the one asked for, with no empty groups.
 
 ## When to use this skill
 
@@ -99,6 +108,8 @@ Two things follow from the rule:
 - ❌ **Ranking from titles.** "Operations Lead sounds like a good fit" with the posting unread.
 - ❌ **Guessing an unread posting** from what the employer or the job title usually means.
 - ❌ **A strong fit over an unmet licence.** Screening requirements decide first.
+- ❌ **A preferred item as a requirement.** "Degree preferred" is a gap to weigh, not a reason to skip.
+- ❌ **Empty groups.** A "Not read: none" heading, or the full five groups for a top-two answer.
 - ❌ **Counting a duplicate twice,** or ranking a closed posting.
 - ❌ **Dropping roles silently.** A list that covers 9 of 12 postings without saying so.
 - ❌ **Crediting the usual.** "As a nurse you'll have used Epic" is an invention.

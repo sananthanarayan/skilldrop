@@ -82,3 +82,33 @@ blurb called preferred as a requirement. Step 5's fixed list of groups causes th
 second breaks step 3, which is about what an employer checks first, and a preferred item is
 not that. Both are for the next revision, measured on new evals. The judges' reasons for
 eval 5 have now been read, so it no longer counts as unseen.
+
+## Revision: the thin case (0.16.21)
+
+The two causes, fixed where they sit. Step 3 now takes as screening only what the posting
+makes a condition (required, essential, a must, or a fact of the job such as its place or
+shift), and says an item called preferred, desirable or a plus is a gap to weigh, never a
+reason to skip. Step 5 shows only the groups that have a role in them, and step 7 answers "just
+the top two" with two picks and a line or two on the rest, without groups.
+
+It was measured on two new evals, 6 and 7, written by an agent that read only the skill's
+description and was asked for the thin case: five or six one-line blurbs pasted in the
+request, a few lines about the person, a top one or two, and preferred items the picks don't
+meet. Both versions ran twice on every eval against the same plain Claude Code outputs, with
+two judges on `claude-sonnet-5`. The judges' reasons on 6 and 7 were not read before the
+revision was written or measured.
+
+| | Pairs won, judge 1 | Judge 2 | Assertions met, skill | Without |
+|---|---|---|---|---|
+| Evals 6 and 7, before | 3 of 4 | 1 of 4 | 75% | 72% |
+| Evals 6 and 7, after | 3 of 4 | 2 of 4 | 88% | 72% |
+| All seven evals, before | 8 of 14 | 6 of 14 | 81% | 65% |
+| All seven evals, after | 11 of 14 | 6.5 of 14 | 83% | 65% |
+
+On the new evals the assertion that the reply carries no empty unread, closed or duplicate
+group went from 1 of 4 runs to 4 of 4, and no run set a pick aside over a preferred item. Eval
+3, the author's thin case, went from 0 of 2 pairs with each judge to 1 of 2. The second judge
+still prefers plain Claude Code in about half the pairs overall, and in every run on 6 and 7
+the skill missed the last assertion, the one that includes saying the picks rest on short
+blurbs and not full postings; the outputs read leave that line out. Evals 6 and 7 have now been
+run against this revision and their outputs read, so the next revision needs evals of its own.
