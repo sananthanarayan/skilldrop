@@ -161,3 +161,11 @@ What is left is the agent's habit of reporting a tool run before its result. Thr
 to what the skill says and prints have not moved it past about two in three, and the judges'
 preference does not follow it. The next attempt should change something the agent can't
 narrate around, or accept the line and stop checking for it.
+
+**Decided (0.16.26): accept the line.** The quality bar now asks for what a reader needs: the
+link and the takeaway lead the reply, with at most one short line about the build before
+them, and no account of how it was made. In Claude Code the person has just watched the build
+run, so one line about it costs them little; a long account, or a missing link or takeaway,
+would cost them a lot, and those are now rare. The held-out evals keep their stricter check
+as their writers wrote it, so the measurement is not weakened to match; that one assertion is
+known to be stricter than the skill's own bar.
