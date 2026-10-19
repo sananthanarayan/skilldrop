@@ -5,31 +5,67 @@
   "$comment": "RFC-0050. The file an organisation hands out (--policy, SKILLDROP_POLICY, or ~/.config/skilldrop/policy.json). Closed at every level: an unknown key stops the command, because a misspelt rule that is silently ignored is a rule that isn't there. bin/governance.js enforces the same shape; contracts/policy.example.json must satisfy both.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["version"],
+  "required": [
+    "version"
+  ],
   "properties": {
-    "version": { "const": 1 },
-    "note": { "type": "string", "description": "Free text: who owns this policy and where to ask about it." },
+    "version": {
+      "const": 1
+    },
+    "note": {
+      "type": "string",
+      "description": "Free text: who owns this policy and where to ask about it."
+    },
     "catalogues": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "allow": { "type": "array", "items": { "type": "string" }, "description": "Catalogue sources allowed: \"bundled\", a git URL (a trailing * matches a prefix, e.g. https://git.example.org/skills/*), or a path. Absent: any." },
-        "require_pinned": { "type": "boolean", "description": "Every catalogue other than the bundled one must be pinned to a commit (--from <url>#<commit>)." }
+        "allow": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Catalogue sources allowed: \"bundled\", a git URL (a trailing * matches a prefix, e.g. https://git.example.org/skills/*), or a path. Absent: any."
+        },
+        "require_pinned": {
+          "type": "boolean",
+          "description": "Every catalogue other than the bundled one must be pinned to a commit (--from <url>#<commit>)."
+        }
       }
     },
     "skills": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "allow": { "type": "array", "items": { "type": "string" }, "description": "Skill, loop and agent names allowed; * matches anything. Absent: any." },
-        "block": { "type": "array", "items": { "type": "string" }, "description": "Names refused even when allowed." }
+        "allow": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Skill, loop and agent names allowed; * matches anything. Absent: any."
+        },
+        "block": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Names refused even when allowed."
+        }
       }
     },
     "scan": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "max": { "enum": ["none", "low", "medium", "high"], "description": "The worst supply-chain scan finding a skill may carry: none, low (🟨), medium (🟧), high (🟥). Findings in eval fixtures and example inputs never count." }
+        "max": {
+          "enum": [
+            "none",
+            "low",
+            "medium",
+            "high"
+          ],
+          "description": "The worst supply-chain scan finding a skill may carry: none, low (🟨), medium (🟧), high (🟥). Findings in eval fixtures and example inputs never count."
+        }
       }
     },
     "audit": {
@@ -37,10 +73,22 @@
       "additionalProperties": false,
       "description": "Present: install, update and uninstall append to a tamper-evident log.",
       "properties": {
-        "log": { "type": "string", "description": "Where the log goes. Default ~/.config/skilldrop/audit.jsonl. Refused inside a git working tree." },
-        "actor": { "description": "Who each entry names: \"pseudonym\" (default; a keyed hash of user and machine, needs the salt), \"none\", \"os-user\", or {\"fixed\": \"<name>\"} such as a team or machine id." },
-        "salt_env": { "type": "string", "description": "The environment variable holding the organisation's secret salt for pseudonyms. Default SKILLDROP_AUDIT_SALT." }
+        "log": {
+          "type": "string",
+          "description": "Where the log goes. Default ~/.config/skilldrop/audit.jsonl. Refused inside a git working tree."
+        },
+        "actor": {
+          "description": "Who each entry names: \"pseudonym\" (default; a keyed hash of user and machine, needs the salt), \"none\", \"os-user\", or {\"fixed\": \"<name>\"} such as a team or machine id."
+        },
+        "salt_env": {
+          "type": "string",
+          "description": "The environment variable holding the organisation's secret salt for pseudonyms. Default SKILLDROP_AUDIT_SALT."
+        }
       }
+    },
+    "require_containment": {
+      "type": "boolean",
+      "description": "RFC-0051. true: an install must be contained (--contain, or a Claude Code project whose own settings already run the strict sandbox); targets that can't be are refused, and --contain also sets sandbox.failIfUnavailable."
     }
   }
 }

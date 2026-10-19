@@ -7,7 +7,8 @@ so you can pick one up without re-deriving the context. Sizes are rough: **S** i
 two, **M** a day, **L** several days.
 
 Last reviewed 2026-10-19, after 0.16.27. Organisation governance (AST09) shipped in 0.16.27
-([RFC-0050](../rfcs/0050-org-governance.md)).
+([RFC-0050](../rfcs/0050-org-governance.md)) and declared containment (AST06) in 0.16.28
+([RFC-0051](../rfcs/0051-declared-containment.md)).
 
 ## Distribution
 
@@ -23,7 +24,6 @@ Last reviewed 2026-10-19, after 0.16.27. Organisation governance (AST09) shipped
 | Idea | Why | Size | Depends on |
 |---|---|---|---|
 | **Signed catalogues** | Commit pins stop a moved tag but don't prove who wrote the commit (AST02). Verify a signature (Sigstore or git commit signing) before install. | L | A key-distribution decision, ideally without adding dependencies |
-| **Declared containment** | Skills run with the agent host's full permissions (AST06). A `permissions.containment` field could say what sandbox a skill expects, for hosts that can provide one. | M | Agent hosts that expose sandbox settings |
 | **Permissions for instruction-only skills** | A skill with no scripts can still tell the agent to run commands or fetch URLs, and today it declares nothing. Extend `permissions` to the instructions themselves. | M | Design: how to check prose against a declaration |
 | **Opt-in semantic scan** | The scan is pattern matching (AST08). An opt-in `scan --deep` could have a model read each skill against the OWASP list. | M | An API key; kept off by default to stay offline |
 | **Scan agents, not just skills** | `skilldrop scan` covers skills; subagent files aren't scanned. | S | — |

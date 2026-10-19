@@ -105,6 +105,9 @@ Install/update/uninstall targets (pick one):
                      repo you don't own without touching its tracked files or .gitignore
 
 Organisation policy (RFC-0050):
+  --contain          Claude Code project installs: turn on the strict sandbox for this project in
+                     .claude/settings.local.json, allowing only the network hosts the skills declare.
+                     Only adds restrictions; refuses a skill that declares writing anywhere (RFC-0051)
   --policy <file>    the policy to enforce; also SKILLDROP_POLICY, else ~/.config/skilldrop/policy.json.
                      It can allow only some catalogues (and require them pinned), allow or block skills,
                      cap the supply-chain scan's findings, and turn on an audit log. A policy that is
@@ -457,6 +460,62 @@ function enforcePolicy(flags, cat, names, kind) {
     die(`the policy in ${gov.tilde(policy.file)} refuses ${new Set(problems.map((x) => x.name)).size} ${kind}(s) — nothing was installed`);
   }
   return policy;
+}
+
+/* RFC-0051: --contain turns on Claude Code's strict sandbox for the project a skill is installed
+   into, sized to what the skills declare. Planned (and refused) before anything is copied;
+   applied after. Only ever adds restrictions; see gov.containmentPlan. */
+function containmentFor(flags, cat, names, dest, ide, policy) {
+  const require = !!(policy && policy.require_containment);
+  if (!flags.contain && !require) return null;
+  if (ide !== "claude") {
+    if (require) die(`the policy requires containment, which skilldrop sets up for Claude Code project installs; ` +
+                     `${ide === "generic" ? "--dest" : "--ide " + ide} has no sandbox it can configure — nothing was installed`);
+    const want = names.map((s) => { const pm = manifestOf(cat, s).permissions; return pm ? `${s}: network ${(pm.network || []).join(", ") || "none"}, writes ${pm.files}` : `${s}: no scripts`; });
+    console.log(`note: ${ide === "generic" ? "this target" : ide} has no sandbox skilldrop can configure. What the skills expect:\n  ${want.join("\n  ")}`);
+    return null;
+  }
+  const userDir = path.join(os.homedir(), ".claude", "skills");
+  if (path.resolve(dest) === userDir)
+    die("containment applies to one project: install with --project --contain (or --local --contain). A user-scope " +
+        "install reaches every project, and skilldrop won't change your user settings — nothing was installed");
+  const base = path.dirname(dest);
+  const files = { local: path.join(base, "settings.local.json"), project: path.join(base, "settings.json"),
+                  user: path.join(os.homedir(), ".claude", "settings.json") };
+  if (!flags.contain) {
+    if (gov.contained(files)) return null;
+    die("the policy requires containment: re-run with --contain, which turns on Claude Code's strict sandbox for this " +
+        "project — nothing was installed");
+  }
+  const plan = gov.containmentPlan(names.map((s) => ({ name: s, perms: manifestOf(cat, s).permissions })), files, { require });
+  if (plan.uncontainable.length)
+    die(`${plan.uncontainable.join(", ")} declare${plan.uncontainable.length === 1 ? "s" : ""} writing anywhere on disk ` +
+        "(permissions.files), so it can't run inside the sandbox. Install without --contain, or leave it out — nothing was installed");
+  return Object.assign(plan, { files });
+}
+
+function applyContainment(plan, dry) {
+  const f = plan.files.local;
+  const where = path.relative(process.cwd(), f) || f;
+  console.log(`\n${dry ? "would contain" : "Contained"} (RFC-0051): ${where}`);
+  if (!plan.changed) console.log("  already contained: nothing to change");
+  for (const c of plan.changes) console.log(`  ${dry ? "would set" : "set"} ${c}`);
+  for (const n of plan.notes) console.log(`  note: ${n}`);
+  if (dry) return;
+  if (plan.changed) {
+    fs.mkdirSync(path.dirname(f), { recursive: true });
+    fs.writeFileSync(f, JSON.stringify(plan.next, null, 2) + "\n");
+  }
+  // settings.local.json is personal: keep it out of git if nothing ignores it already
+  const root = gitRoot(process.cwd());
+  if (root && path.resolve(f).startsWith(path.resolve(root) + path.sep)) {
+    let ignored = false;
+    try { execFileSync("git", ["check-ignore", "-q", f], { cwd: root, stdio: "ignore" }); ignored = true; } catch (e) { /* not ignored */ }
+    if (!ignored) {
+      writeExclude(root, readExclude(root).entries.concat(excludeEntry(root, f, false)));
+      console.log(`  listed it in ${path.relative(process.cwd(), excludePath(root)) || excludePath(root)} so git won't see it`);
+    }
+  }
 }
 
 const auditUnit = (cat, name, kind, version, dest) =>
@@ -1265,7 +1324,8 @@ function install(args) {
   gate(cat, names);
   const policy = enforcePolicy(args.flags, cat, names, "skill");
   const { dest, ide } = target(args.flags);
-  if (args.flags["dry-run"]) return planInstall(cat, names, dest, ide, args.flags);
+  const contain = containmentFor(args.flags, cat, names, dest, ide, policy);
+  if (args.flags["dry-run"]) { planInstall(cat, names, dest, ide, args.flags); if (contain) applyContainment(contain, true); return; }
   fs.mkdirSync(dest, { recursive: true });
   const l = ledger(dest);
   const pipDeps = [], suggestions = new Set(), notes = [];
@@ -1276,7 +1336,8 @@ function install(args) {
     console.log(`installed ${s}@${m.version} -> ${dest}`);
   }
   saveLedger(l);
-  gov.audit(policy, "install", names.map((s) => auditUnit(cat, s, "skill", lver(l.data[s]), dest)));
+  if (contain) applyContainment(contain, false);
+  gov.audit(policy, "install", names.map((s) => Object.assign(auditUnit(cat, s, "skill", lver(l.data[s]), dest), contain ? { contained: true } : {})));
   console.log(`\n${names.length} skill(s) installed (${ide}).`);
   if (notes.length) console.log(`\nCleanup:\n${notes.join("\n")}`);
   const local = !!args.flags.local;
@@ -2253,6 +2314,8 @@ function inventory(args) {
       installs.push({ target: gov.tilde(t.dest), scope: t.scope, ide: t.ide, kind, name, version: lver(e) || null,
                       source: gov.tilde(src), commit: (e && e.commit) || null, pinned,
                       edited: kind === "agent" ? 0 : editedFiles(t.dest, name, e).length,
+                      contained: t.ide === "claude" && t.scope === "project" && kind !== "agent"
+                        ? gov.contained({ local: path.join(path.dirname(t.dest), "settings.local.json"), project: path.join(path.dirname(t.dest), "settings.json") }) : null,
                       policy: policy ? (refused.length ? refused.map((x) => x.why) : "ok") : null });
     }
   }

@@ -38,6 +38,7 @@ New here? Start with the [operating model](explanation/operating-model.md): the 
 - [Measure your loops](how-to/measure-your-loops.md) — the opt-in, local-only run log, and which gates pass first time
 - [Run a skill in CI](how-to/run-a-skill-in-ci.md) — the GitHub Action: a skill on every pull request, results in the job summary, optional fail on a verdict
 - [Roll out across your org](how-to/enterprise-distribution.md) — bootstrap the hosted marketplace for every machine in one command
+- [Contain a skill's reach](how-to/contain-skills.md) — run a project's shell commands in Claude Code's sandbox, limited to what its skills declare
 - [Govern skills across an organisation](how-to/govern-skills.md) — a policy the installer enforces, an inventory of every machine, and an audit log that shows if it was edited
 - [Use with MCP servers](how-to/use-with-mcp-servers.md) — which servers pair with which skills, adding one in each tool, and the security rules
 - [Use with Jira](how-to/integrate-with-jira.md) — bug triage, story splitting, implementation loops, and release notes from Jira tickets

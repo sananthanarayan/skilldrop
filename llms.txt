@@ -6,7 +6,7 @@
 > 98 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.16.27.
+> Version 0.16.28.
 
 ## Start here
 
@@ -55,6 +55,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Author a new loop](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/author-a-loop.md) *(how-to)*: How to add a loop — the closed loop.json contract, the three stage types, gate rules, and the checks that will reject a loop that only looks like governance.
 - [Author a new skill](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/author-a-skill.md) *(how-to)*: The short version of the authoring path — what a skill must contain, what gates it, and where the full contributor rules live.
 - [Benchmark skills against the agent without them](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/benchmark-skills.md) *(how-to)*: Run each acceptance eval twice as an agent session, with the skill and without it, and read the lift, the blind preference from two judges, and the cost.
+- [Contain a skill's reach](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/contain-skills.md) *(how-to)*: Run a project's shell commands in Claude Code's sandbox, limited to the folder and the network hosts its skills declare, without loosening anything you already set
 - [Roll out skilldrop across your org](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/enterprise-distribution.md) *(how-to)*: Bootstrap the hosted marketplace for every machine in one command — covers the public catalogue and private-fork setups for enterprise orgs.
 - [Govern skills across an organisation](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/govern-skills.md) *(how-to)*: Decide which catalogues and skills people may install, see what is installed on every machine, and keep a log of every change that shows if it was edited
 - [Install a skill into your IDE](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/install-per-ide.md) *(how-to)*: Put a skill where Claude Code, Cursor, Kiro, Codex, Antigravity, GitHub Copilot or another agent reads it, by copying the folder or with one CLI flag, then install its dependencies.
@@ -187,5 +188,5 @@ except `api-builder` requires `core`, which installs with it.
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 50 RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 51 RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.

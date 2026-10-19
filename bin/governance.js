@@ -16,7 +16,7 @@ const { execFileSync } = require("child_process");
 const SEVERITY = { "🟥": 3, "🟧": 2, "🟨": 1 };          // scan findings; ⚪ (fixtures) never count
 const MAX = { none: 0, low: 1, medium: 2, high: 3 };      // policy scan.max: the worst finding allowed
 const KEYS = {
-  "": ["version", "catalogues", "skills", "scan", "audit", "note"],
+  "": ["version", "catalogues", "skills", "scan", "audit", "require_containment", "note"],
   catalogues: ["allow", "require_pinned"],
   skills: ["allow", "block"],
   scan: ["max"],
@@ -60,6 +60,8 @@ function load(flags) {
   list(p.skills && p.skills.block, "skills.block");
   if (p.catalogues && p.catalogues.require_pinned !== undefined && typeof p.catalogues.require_pinned !== "boolean")
     problems.push("catalogues.require_pinned must be true or false");
+  if (p.require_containment !== undefined && typeof p.require_containment !== "boolean")
+    problems.push("require_containment must be true or false");
   if (p.scan && p.scan.max !== undefined && !(p.scan.max in MAX)) problems.push(`scan.max must be one of ${Object.keys(MAX).join(", ")}`);
   if (p.audit) {
     const a = p.audit.actor;
@@ -209,4 +211,63 @@ function verifyMirror(dir) {
   return { source: m.source, created: m.created, files: Object.keys(want).length, missing, changed, extra };
 }
 
-module.exports = { load, check, prepare, audit, verifyAudit, verifyMirror, sourceKey, tilde, SEVERITY };
+/* ---------- containment (RFC-0051, OWASP AST06) ----------
+   Claude Code's sandbox confines the shell commands a session runs, and every process they
+   start: writes to the working directory and temp, network only to allowed hosts. It applies
+   to a whole project session, not to one skill, so containing a skill means turning the strict
+   sandbox on for the project it is installed into, sized to what its manifest declares
+   (permissions.network, permissions.files). It only ever adds restrictions: it never removes
+   a setting, never sets one to something looser, and never widens a sandbox that is already
+   on. Facts from code.claude.com/docs/en/sandboxing and /permissions, checked 2026-10-19. */
+function readSettings(f) {
+  if (!f || !fs.existsSync(f)) return {};
+  try { return JSON.parse(fs.readFileSync(f, "utf8")); }
+  catch (e) { die(`${tilde(f)} is not valid JSON — fix it before containment changes it; nothing was installed`); }
+}
+const strictIn = (d) => !!(d && d.sandbox && d.sandbox.enabled === true && d.sandbox.allowUnsandboxedCommands === false);
+
+/* units: [{name, perms}]; files: {local, project, user}; opts: {require}.
+   Returns what --contain would change, without writing anything. */
+function containmentPlan(units, files, opts = {}) {
+  const uncontainable = units.filter((u) => u.perms && u.perms.files === "anywhere").map((u) => u.name);
+  const hosts = [...new Set(units.flatMap((u) => (u.perms && u.perms.network) || []))].sort();
+  const local = readSettings(files.local);
+  const others = [files.project, files.user].filter((f) => f && f !== files.local).map(readSettings);
+  const before = JSON.stringify(local);
+  const next = JSON.parse(before);
+  const sb = (next.sandbox = next.sandbox && typeof next.sandbox === "object" ? next.sandbox : {});
+  const alreadyOn = sb.enabled === true || others.some((d) => d.sandbox && d.sandbox.enabled === true);
+  const changes = [], notes = [];
+  if (sb.enabled !== true) { sb.enabled = true; changes.push("sandbox.enabled: true — shell commands and what they start run in the OS sandbox"); }
+  if (sb.allowUnsandboxedCommands !== false) {
+    sb.allowUnsandboxedCommands = false;
+    changes.push("sandbox.allowUnsandboxedCommands: false — a command that fails in the sandbox can't retry outside it");
+  }
+  if (opts.require && sb.failIfUnavailable !== true) {
+    sb.failIfUnavailable = true;
+    changes.push("sandbox.failIfUnavailable: true — Claude Code won't start here if the sandbox can't (the policy requires containment)");
+  }
+  if (hosts.length && alreadyOn)
+    notes.push(`these skills declare network hosts (${hosts.join(", ")}). The sandbox was already on, so they were not added: ` +
+               "adding hosts would widen it. Add them to sandbox.network.allowedDomains yourself if the skills should reach them.");
+  else if (hosts.length) {
+    sb.network = sb.network && typeof sb.network === "object" ? sb.network : {};
+    const have = new Set(sb.network.allowedDomains || []);
+    const add = hosts.filter((h) => !have.has(h));
+    if (add.length) {
+      sb.network.allowedDomains = [...(sb.network.allowedDomains || []), ...add];
+      changes.push(`sandbox.network.allowedDomains: ${add.join(", ")} — the hosts these skills declare; shell commands reach no other host without asking`);
+    }
+  } else if (!alreadyOn) notes.push("these skills declare no network hosts, so shell commands reach none without asking");
+  if ((sb.excludedCommands || []).length)
+    notes.push(`this file's sandbox.excludedCommands (${sb.excludedCommands.join(", ")}) still run outside the sandbox`);
+  notes.push('the sandbox covers shell commands only: Claude Code\'s file tools, web tools, MCP servers and hooks follow permission rules instead. ' +
+             'To keep these skills off the web entirely, add "permissions": {"deny": ["WebFetch", "WebSearch"]} to this file.');
+  return { uncontainable, hosts, changes, notes, next, changed: JSON.stringify(next) !== before };
+}
+
+/* Is a project already contained (strict sandbox on in its own settings)? For inventory and
+   for a policy that requires containment. */
+function contained(files) { return strictIn(readSettings(files.local)) || strictIn(readSettings(files.project)); }
+
+module.exports = { containmentPlan, contained, load, check, prepare, audit, verifyAudit, verifyMirror, sourceKey, tilde, SEVERITY };
