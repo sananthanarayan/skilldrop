@@ -1,0 +1,21 @@
+{"type": "timeline",
+ "title": "Card payments failing, 3 October",
+ "question": "What happened, and how long did it take anyone to notice?",
+ "summary": "Errors climbed seven minutes after the 2.14 rollout, but the page fired 22 minutes later because the alert waits for a fixed 5% to hold. From the page, rollback took 28 minutes.",
+ "groups": [{"id": "deploys", "label": "Deploys"}, {"id": "monitoring", "label": "Monitoring"}, {"id": "oncall", "label": "On-call"}],
+ "events": [
+  {"id": "deploy", "label": "v2.14 rolled out", "at": "2026-10-03T09:12", "lane": "deploys", "kind": "change", "evidence": ["oncall-notes.md:5#v2.14 rolled out"]},
+  {"id": "climb", "label": "Card errors pass 5%", "at": "2026-10-03T09:19", "lane": "monitoring", "kind": "alert", "evidence": ["oncall-notes.md:6#pass 5%"]},
+  {"id": "page", "label": "Pager fires", "at": "2026-10-03T09:41", "lane": "monitoring", "kind": "alert", "detail": "22 minutes after the climb began: the alert waits for 5% to hold for 20 minutes.", "evidence": ["oncall-notes.md:7#22 minutes after"]},
+  {"id": "ack", "label": "Ana acknowledges", "at": "2026-10-03T09:44", "lane": "oncall", "kind": "action", "evidence": ["oncall-notes.md:8#acknowledges"]},
+  {"id": "cause", "label": "Rollout named as the cause", "at": "2026-10-03T09:51", "lane": "oncall", "kind": "action", "evidence": ["oncall-notes.md:9#started with the 2.14 rollout"]},
+  {"id": "rollback", "label": "Rollback to v2.13", "at": "2026-10-03T09:58", "end": "2026-10-03T10:09", "lane": "deploys", "kind": "change", "evidence": ["oncall-notes.md:10-11#rollback finished"]},
+  {"id": "normal", "label": "Errors back under 0.5%", "at": "2026-10-03T10:11", "lane": "monitoring", "kind": "milestone", "evidence": ["oncall-notes.md:12#back under 0.5%"]},
+  {"id": "status", "label": "Status page: resolved", "at": "2026-10-03T10:30", "lane": "oncall", "kind": "action", "evidence": ["oncall-notes.md:13#resolved"]},
+  {"id": "pm", "label": "Postmortem", "at": "2026-10-06T14:00", "lane": "oncall", "kind": "milestone", "detail": "Action: alert on the rise in the error rate, not on a fixed 5% for 20 minutes.", "evidence": ["oncall-notes.md:14#postmortem held"]}
+ ],
+ "edges": [
+  {"from": "deploy", "to": "climb", "label": "caused", "evidence": ["oncall-notes.md:9#errors started with the 2.14 rollout"]},
+  {"from": "climb", "to": "page", "label": "detected 22 min later", "evidence": ["oncall-notes.md:7"]}
+ ],
+ "notes": ["Customer impact (how many payments failed) is not in the notes, so it is not on the timeline."]}

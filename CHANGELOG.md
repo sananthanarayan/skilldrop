@@ -8,6 +8,15 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.23 — 2026-10-19
+
+- **`interactive-diagram` draws four more kinds of diagram:** class diagrams from source (members, interfaces and abstract classes, and inherits, implements, composition, aggregation, association and dependency), trees of what contains what, timelines of an incident or a release, and waterfalls of where the time went in one request or run. A timeline puts sources from different time zones on one clock, marks approximate times, and shortens a long quiet stretch so a burst of events stays readable. A waterfall marks the critical path and gives each span's own time.
+- **It works out what a trace or timeline shows, and says it at the top of the page:** what the whole waited on, which steps only wait on their children, which steps ran side by side (with the real elapsed time, not the sum), what ran on after its parent, and the longest quiet stretch. Your own guesses ("is it the north fetch?") can be answered in a table at the top, each with its evidence. Durations read as you'd say them (9m 48s, not 588000 ms).
+- **A long flow wraps onto rows** instead of shrinking to fit, so a 14-step process stays readable on a laptop.
+- **The detail panel's "what it depends on" and "what depends on it" buttons were swapped**; they now say what they do, in each diagram's own terms ("Everything inside it" on a tree, "What led to it" on a timeline).
+- **Two more live examples** on the skill page: an incident timeline and a slow request's waterfall, both built from files whose every cited line was checked.
+- On two new evals written by someone who never read the skill, two blind judges preferred it to plain Claude Code in 4 and 2 of 4 pairs, with 81% of checks met against 44% ([RFC-0048](docs/rfcs/0048-interactive-diagram.md)).
+
 ## 0.16.22 — 2026-10-18
 
 - **New skill: `interactive-diagram`** (`solution-architect`). Ask for an interactive diagram of a repo, a request path, a process or a schema and get one HTML file you can send: architecture, data flow, workflow, lifecycle, ERD or sequence. Every box and arrow cites the file and lines or the words it came from, and anything the material doesn't show is drawn dashed as an assumption. Each cited line is checked against the repository before the page is written, and clicking a part shows the cited code. Nobody places anything by hand: the script lays the diagram out with no arrow crossing a box. The page works offline, loads nothing from the network (its security policy blocks it), and offers pan and zoom, paths between parts, what depends on what, a walkthrough, light and dark, and SVG, PNG and Mermaid export. It can also compare two versions and mark what was added, removed and changed. It needs only Python 3. On two evals written by someone who never read the skill, two blind judges preferred it to plain Claude Code in 4 and 3 of 4 pairs ([RFC-0048](docs/rfcs/0048-interactive-diagram.md)).

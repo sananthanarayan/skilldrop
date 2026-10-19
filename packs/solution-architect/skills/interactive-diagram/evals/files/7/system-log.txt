@@ -1,0 +1,14 @@
+# central log export, filter: service in (feed-builder, deploy, pager)   tz=UTC
+2026-10-10T23:30:00Z feed-builder INFO  published realtime feed vehicles=209 age_s=4
+2026-10-10T23:45:00Z feed-builder INFO  published realtime feed vehicles=211 age_s=3
+2026-10-10T23:58:12Z deploy       INFO  feed-builder v3.14.0 rolled out (3/3 pods) by ci-bot
+2026-10-11T00:00:00Z feed-builder INFO  published realtime feed vehicles=210 age_s=5
+2026-10-11T00:03:40Z feed-builder WARN  avl source returned 0 vehicle positions; serving last-known positions (vehicles=210)
+2026-10-11T03:44:20Z pager        INFO  incident INC-0412 opened manually by night-supervisor; paging oncall-transit-data
+2026-10-11T03:46:02Z pager        INFO  INC-0412 acknowledged by oncall-transit-data
+2026-10-11T04:12:07Z feed-builder INFO  avl source recovered vehicles=212; published realtime feed age_s=6
+2026-10-11T04:15:00Z feed-builder INFO  published realtime feed vehicles=212 age_s=4
+2026-10-11T04:31:45Z deploy       INFO  feed-builder v3.13.2 rolled out (3/3 pods) by oncall-transit-data
+2026-10-11T04:45:00Z feed-builder INFO  published realtime feed vehicles=208 age_s=3
+2026-10-11T05:00:00Z feed-builder INFO  published realtime feed vehicles=205 age_s=4
+2026-10-11T05:05:40Z pager        INFO  INC-0412 resolved by oncall-transit-data

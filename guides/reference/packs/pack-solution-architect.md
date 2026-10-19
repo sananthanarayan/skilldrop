@@ -138,11 +138,11 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/solution-architect/skil
 
 ### `interactive-diagram`
 
-Turn a codebase, a system description, a process or a database schema into one self-contained interactive HTML diagram (architecture, workflow, data flow, lifecycle, ERD or sequence) where every box and arrow cites the file and line or the words it came from, anything inferred is drawn dashed as an assumption, and each cited line is checked against the repository before the page is written. Laid out automatically, opens offline with no CDN, and exports SVG, PNG and Mermaid.
+Turn a codebase, a system description, a process or a database schema into one self-contained interactive HTML diagram (architecture, workflow, data flow, lifecycle, ERD, sequence, class, tree, timeline or waterfall) where every box and arrow cites the file and line or the words it came from, anything inferred is drawn dashed as an assumption, and each cited line is checked against the repository before the page is written. Laid out automatically, opens offline with no CDN, and exports SVG, PNG and Mermaid.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skills/interactive-diagram/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/interactive-diagram/)
+Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/solution-architect/skills/interactive-diagram/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/interactive-diagram/)
 
-**Use it when** the user asks to "visualize", "map" or "make an interactive diagram of" a repo, a request path, a pipeline, an approval process or a set of tables, or wants a diagram they can click through and share as one file.
+**Use it when** the user asks to "visualize", "map" or "make an interactive diagram of" a repo, a request path, a pipeline, an approval process, a set of tables, an incident's events or a slow trace, or wants a diagram they can click through and share as one file.
 
 **Needs:** Python 3 for its scripts (standard library only).
 

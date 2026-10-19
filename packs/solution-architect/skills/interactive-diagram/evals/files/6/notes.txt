@@ -1,0 +1,7 @@
+quote api slowness - notes (Wed 14 Oct)
+
+- trace above is one of the slow ones from this morning. the customer said the quote page hung for "just over 4 seconds".
+- my bet is the rate limiter. ops told me the ratelimiter check against redis has been taking 300ms+ since the redis upgrade last week.
+- also the two carrier calls add up to ~5s on their own so carriers are basically the whole story?
+- rates team owns rates-svc and the carrier integrations. quote team owns quote-svc.
+- want something I can send the rates team that shows where the time goes.

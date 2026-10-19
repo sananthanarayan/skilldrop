@@ -98,3 +98,50 @@ an image and an inline script into a built page; all three were refused. The pag
 (CodeQL `js/remote-property-injection`). The site publishes a
 skill's `examples/*.html` beside its page as live examples, and `skilldrop scan` treats
 `examples/inputs/` like eval fixtures.
+
+## Revision: four more types, wrapping, computed findings (0.16.23)
+
+The weaknesses named at admission, and what was done about each:
+
+- **Six types to archify's ten.** Added `class` (members, stereotypes, and inherits,
+  implements, composition, aggregation, association and dependency, with parents placed
+  above), `tree` (single-parent containment), `timeline` (lanes, to scale, with a long quiet
+  stretch shortened and marked, mixed time zones put on one clock, approximate times marked)
+  and `waterfall` (spans to scale, the critical path, each span's own time). Each exports to
+  Mermaid (`classDiagram`, `flowchart`, `timeline`, `gantt`).
+- **A long chain shrank to fit.** A long left-to-right flow now wraps onto rows, choosing the
+  number that keeps its text largest on a laptop screen; routes between rows run in the
+  corridor between them, so no arrow crosses a box. `wrap` sets or turns it off.
+- **The reply did not open with the link.** The script now prints the reply's first line
+  before anything else. This is only partly fixed: 14 of 22 replies opened with it in the
+  last run, against 6 of 10 at admission. The agent's habit of reporting the build first
+  persists; it is the open item.
+
+The first measurement of the new types, on two fresh evals written blind (6 and 7: a trace
+and an incident timeline), was weak: two judges preferred the skill in 2 and 1 of 4 pairs.
+The pages were right but the agent's account of them was not. The script now computes what
+a waterfall or timeline shows (the total, what the whole waited on, spans that mostly wait,
+siblings that overlap with the wall-clock time and the misleading sum, spans that outlive
+their parent, the longest quiet stretch, time zones) and states it at the top of the page and
+in its output. On the next two fresh evals (8 and 9) assertions met rose to 84% against 56%,
+but the judges still preferred plain Claude Code on readability: raw milliseconds, findings
+hidden in a collapsed section, an author's warning box on a shared page, and a detached span
+counted as a cost. Those were fixed: durations read as a person says them, findings and an
+`answers` table for the person's own guesses sit at the top of the page, warnings stay in the
+terminal, and only the critical path counts as waited on. A bug that put a detached span on
+the critical path was fixed too, and the panel's two reach buttons, which had their labels
+swapped, now say what they do in each diagram's terms.
+
+Measured on two more fresh evals (10 and 11: a build timing export and a class diagram from
+Java source), two trials, two judges, `claude-sonnet-5`:
+
+| Evals | Pairs won, judge 1 | Judge 2 | Assertions met, skill | Without |
+|---|---|---|---|---|
+| 6 and 7, first version of the new types | 2 of 4 | 1 of 4 | 62% | 56% |
+| 8 and 9, with computed findings | 2 of 4 | 1 of 4 | 84% | 56% |
+| 10 and 11, final | 4 of 4 | 2 of 4 | 81% | 44% |
+| All eleven, final | 20 of 22 | 12 of 22 | 83% | 59% |
+
+The fresh pairs clear the bar of half with both judges. The second judge still prefers plain
+Claude Code in about half the pairs overall, most often for a page it finds easier to read.
+Evals 6 to 11 have now had their reasons read, so the next revision needs evals of its own.

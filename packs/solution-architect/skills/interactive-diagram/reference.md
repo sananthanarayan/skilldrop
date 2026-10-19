@@ -7,17 +7,20 @@ file. Nothing in the spec is a coordinate or a colour.
 
 | Field | Required | Meaning |
 |---|---|---|
-| `type` | yes | `architecture`, `dataflow`, `workflow`, `lifecycle`, `erd` or `sequence` |
+| `type` | yes | `architecture`, `dataflow`, `workflow`, `lifecycle`, `erd`, `sequence`, `class`, `tree`, `timeline` or `waterfall` |
 | `title` | yes | What the map shows, in a few words |
 | `question` | no | The one question the map answers; shown under the title |
 | `summary` | no | The takeaway in one or two sentences; shown under the question |
-| `direction` | no | `LR` (default, flow left to right) or `TB` (top to bottom). ERD and sequence are always LR |
+| `direction` | no | `LR` (default, flow left to right) or `TB` (top to bottom; the default for `class`). ERD, sequence, tree, timeline and waterfall have their own layouts |
+| `wrap` | no | A long left-to-right flow wraps onto rows, like text, choosing the number that keeps its text largest on a laptop screen. `false` keeps one row; a number sets how many steps go on each row |
 | `groups` | no | Boxes around parts: `{"id", "label", "parent"}`. `parent` nests a group inside another |
-| `nodes` | yes | The parts (for `sequence`, call them `participants`) |
+| `nodes` | yes | The parts. `sequence` may call them `participants`, `timeline` `events`, `waterfall` `spans`, `class` `classes` |
 | `edges` | no | The connections (for `sequence`, call them `messages`; their order is the order on the page) |
 | `story` | no | A walkthrough: `[{"text", "nodes": [...], "edges": [...]}]`, three to seven steps |
 | `frames` | no | Sequence only: `{"kind": "alt\|loop\|opt\|par", "label", "from": <message id>, "to": <message id>}` |
 | `notes` | no | Lines shown under the text version, such as what was left out |
+| `answers` | no | The person's questions or guesses, answered: `[{"question", "answer", "evidence"}]` (or `"assumed": true`). Shown as a table at the top of the page; evidence is checked like any other |
+| `timezone` | no | Timelines: the zone times are shown in (`UTC`, `-05:00`, `+05:30`). Default: the first event's |
 | `source_url` | no | Turns file citations into links, e.g. `https://github.com/org/repo/blob/<commit>/` |
 
 Ids are unique across groups, nodes and edges. An edge without an `id` is numbered `e1`,
@@ -53,6 +56,9 @@ Kinds:
 | Dots | `initial`, `final` (lifecycle start and end; the label is hidden unless it differs from the id) |
 | Document | `document`, `file` |
 | Table | `table`, `entity`, `view` |
+| Class box | `class`, `interface`, `abstract`, `enum`, `record` (the kind is shown as a stereotype) |
+| Tree items | any box kind, plus `folder`, `module`, `package`, `capability`, `feature`, `team`, `role` |
+| Timeline marks | `event`, `alert`, `change`, `action` (dots), `milestone` (diamond) |
 
 ## Edges and messages
 
@@ -93,14 +99,25 @@ quote that isn't on its lines. Warnings are shown on the page and in the output:
 kinds, long labels, parts with no connections, more than 36 parts, file citations that
 weren't checked because `--repo-root` was missing.
 
+For a waterfall or a timeline the script computes what the data shows and puts it at the top
+of the page under **What it shows**: for a waterfall, the total, what the whole waited on most
+(own work of spans on the critical path), spans that mostly wait on their children, siblings
+that overlap (with the wall-clock time and the misleading sum), and spans that end after their
+parent; for a timeline, the span, the longest quiet stretch, approximate times and the time
+zones the sources used. Warnings about the spec are printed for whoever builds the page, never
+published on it.
+
 `--check` runs the checks and writes nothing. `--json` prints the result as JSON:
-`{"ok", "nodes", "edges", "assumed", "file_citations", "verified", "errors", "warnings", "output"}`.
+`{"ok", "nodes", "edges", "assumed", "file_citations", "verified", "errors", "warnings", "output", "reply_first_line"}`.
+A successful build also prints `reply_first_line`: the titled link the reply opens with.
 
 ## What the page does
 
 - Pan (drag), zoom (scroll, or + and −), Fit.
-- Click a part: its note, detail, fields, connections in and out, and its evidence with the
-  cited lines. From there: what it depends on, what depends on it, its neighbours.
+- Click a part: its note, detail, fields or members, facts (a span's timings, an event's time,
+  how much a tree item contains), connections in and out, and its evidence with the cited
+  lines. From there: everything it reaches, everything that reaches it, its neighbours (named
+  for the diagram: "Everything inside it" on a tree, "What led to it" on a timeline).
 - Shift-click a second part: the path between them.
 - Find a part by name, note or column.
 - Walk through: the story, step by step (← and →); a sequence walks its messages in order.
@@ -117,6 +134,69 @@ Write a spec for each version and build the newer one with `--compare older.json
 connections only in the newer are marked added, those only in the older are drawn struck
 through as removed, and a part whose label, kind, group or note changed is marked changed.
 Connections match on their ends and label.
+
+## Class diagrams
+
+`classes` (or `nodes`) take `members`: `{"name": "charge(amount)", "type": "Receipt", "visibility": "+"}`
+(`+`, `-`, `#`, `~`, or `public`, `private`, `protected`, `package`). Each relation in `edges`
+(or `relations`) has a `kind`:
+
+| `kind` | `from` → `to` | Drawn as |
+|---|---|---|
+| `inherits` | child → parent | solid line, hollow triangle at the parent |
+| `implements` | class → interface | dashed line, hollow triangle at the interface |
+| `composition` | whole → part | filled diamond at the whole |
+| `aggregation` | whole → part | hollow diamond at the whole |
+| `association` | one → the other it holds | solid line, open arrow |
+| `dependency` | user → used | dashed line, open arrow |
+
+Parents and interfaces are placed above what extends them.
+
+## Trees
+
+Each item names its `parent` (the top item has none; several top items make a forest). Edges
+are not used: the lines come from the parents. The page shows how many items each one
+contains, and "Everything inside it" highlights a subtree.
+
+```json
+{"type": "tree", "title": "What the payments service is made of",
+ "nodes": [{"id": "root", "label": "payments/", "kind": "folder", "evidence": ["payments/README.md"]},
+           {"id": "api", "label": "api/", "kind": "folder", "parent": "root", "evidence": ["payments/api/__init__.py"]}]}
+```
+
+## Timelines
+
+Each event has `at`, and optionally `end` (drawn as a bar) and `lane` (a group id, or any
+name). Times are dates or date-times (`2026-10-03`, `2026-10-03T09:12`, with or without an
+offset), times of day (`09:12`), or plain numbers, but all the same way in one spec. The axis
+is to scale, except that a quiet stretch longer than about a third of the whole is shortened
+and marked with how long it was, so a burst of events stays readable. `edges` between events
+(`caused`, `detected`) are drawn as straight links; mark them assumed unless something shows
+the link. The walkthrough steps through the events in time order.
+
+```json
+{"type": "timeline", "title": "Payment outage, 3 October",
+ "groups": [{"id": "alerts", "label": "Monitoring"}],
+ "events": [{"id": "a1", "label": "Card error rate above 5%", "at": "2026-10-03T09:19", "lane": "alerts",
+             "kind": "alert", "evidence": ["incident.md:12"]}]}
+```
+
+## Waterfalls
+
+Each span has `start` and either `end` or `duration`, and optionally `parent`, `service` (sets
+its colour) and `status` (`error` outlines it red). Numbers are in `unit` (default `ms`);
+date-times work too. The page marks the critical path (the span that finished last, the one
+that finished last before that one started, and so on, inside each span), and each span's
+panel gives its start, duration, share of the whole and the time not covered by a child span.
+A span that runs outside its parent is a warning, because clocks on two machines disagree or
+the parent is wrong. The walkthrough follows the critical path.
+
+```json
+{"type": "waterfall", "title": "Where a slow checkout spent its time", "unit": "ms",
+ "spans": [{"id": "root", "label": "POST /checkout", "start": 0, "end": 1840, "service": "api", "evidence": ["trace-7f3a.json"]},
+           {"id": "pay", "label": "stripe.PaymentIntent.create", "start": 430, "duration": 1190, "parent": "root",
+            "service": "stripe", "evidence": ["trace-7f3a.json"]}]}
+```
 
 ## Sequence example
 
