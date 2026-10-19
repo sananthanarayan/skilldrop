@@ -61,3 +61,6 @@ renders/
 
 # Input files an eval hands to a benchmark run (RFC-0040)
 !packs/*/skills/*/evals/files/**
+
+# privacy.py: extra terms a maintainer protects, never committed (RFC-0049)
+/.skilldrop-private

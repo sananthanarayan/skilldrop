@@ -34,6 +34,44 @@ The second category is a real bug class, not a theoretical one — [`agent-threa
 - Prompt injection *against an agent you pointed at untrusted content*, when skilldrop's role was only to supply the instructions you chose to install. Model that with `agent-threat-model`.
 - Unpinned Python ranges in a skill's `requirements.txt`. Known, tracked, and installed on your machine under your control — a hardening item, not a live vulnerability.
 
+## Keeping your identity out
+
+This repository is public, and two things try to publish its maintainers without asking. An
+agent session knows who is signed in, and a model will write that name into a document's
+Author or contact field. Git records whatever email the machine is configured with. Four
+guards stop both ([RFC-0049](docs/rfcs/0049-identity-guard.md)), and none of them needs your
+private details written anywhere in the repository: [`privacy.py`](privacy.py) reads them from
+the machine it runs on (the signed-in Claude account, git config, your user name and home
+directory) and reports a match by kind, never by printing it.
+
+| Guard | Where | What it stops |
+|---|---|---|
+| `pre-commit` and `commit-msg` hooks | each clone (`.githooks/`) | your name, email, organization or home path in a staged change or a commit message; a commit email that is not a GitHub noreply address |
+| `python3 validate.py` | locally and in CI | the same, across every tracked file |
+| `Commit identities are noreply` | CI, every push and pull request | any commit whose author or committer email is not a GitHub noreply address, whoever pushed it |
+| `run_bench.py` | each benchmark run | outputs that name you are counted in the report and redacted in `results.json`; `--publish` refuses a summary that names you |
+
+Your name is allowed only where it is published on purpose: `package.json`, the `LICENSE`
+files, `.claude-plugin/` and the site footer. Public GitHub handles are never flagged.
+
+**Set up once, for each GitHub account that commits here** (today `sananthanarayan` and
+`sanjay-ananth`):
+
+1. On github.com, **Settings → Emails**: turn on **Keep my email addresses private** and
+   **Block command line pushes that expose my email**. GitHub then rejects a push that would
+   publish your address, and uses your noreply address for commits made on the website.
+2. In each clone or worktree, commit as that account's noreply address and turn the hooks on:
+
+   ```bash
+   git config user.name  <handle>
+   git config user.email <id>+<handle>@users.noreply.github.com   # Settings → Emails shows it
+   git config core.hooksPath .githooks
+   ```
+
+3. Anything else to protect (a second email, a work domain, a nickname) goes one per line in
+   `.skilldrop-private` at the repository root. Git ignores that file, so it never leaves your
+   machine; `SKILLDROP_PRIVATE_TERMS` (comma-separated) works too.
+
 ## Supported versions
 
 Only the latest `skilldrop-cli` on npm is supported. Fixes ship forward; there are no backports.

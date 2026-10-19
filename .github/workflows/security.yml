@@ -42,6 +42,26 @@ jobs:
       - name: Secrets (gitleaks)
         run: gitleaks git --config .gitleaks.toml --redact --no-banner .
 
+      # RFC-0049: every commit is authored and committed with a GitHub noreply address, so no
+      # maintainer's personal or work email reaches the public history.
+      - name: Commit identities are noreply
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT" = "pull_request" ]; then
+            range="origin/${BASE_REF}..HEAD^2"
+            git rev-parse -q --verify HEAD^2 >/dev/null || range="origin/${BASE_REF}..HEAD"
+          elif [ "${BEFORE}" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
+            range="${AFTER}~1..${AFTER}"
+          else
+            range="${BEFORE}..${AFTER}"
+          fi
+          python3 privacy.py --commits "$range"
+
       - name: Workflow lint (actionlint)
         run: actionlint
 

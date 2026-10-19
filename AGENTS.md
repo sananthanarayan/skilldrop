@@ -12,7 +12,7 @@
 2. **Do not move** `packs/`, `LICENSE`, or `README.md`, and do not move a skill between packs without an RFC. A skill's path is `packs/<pack>/skills/<name>/`; moving it breaks every install instruction, GitHub link, and plugin that names that path (RFC-0034).
 3. **Keep `SKILL.md` under ~500 lines.** Spill into `reference.md`, `templates/`, `lenses/`, `rubrics/`, or `examples/`. Agent context is the binding constraint — a bloated `SKILL.md` crowds out the user's actual prompt.
 4. **Never invent commands, env vars, or file conventions.** Use those documented below. The only automated checks are `python3 validate.py` and `node bin/skilldrop.js validate`, run locally and by CI (`.github/workflows/release.yml`, which also publishes to npm on version bump — see **Releasing**). Don't pretend other test runners or linters exist.
-5. **No secrets, no real customer names, no personal data** in templates, examples, or sample inputs. Placeholder data only.
+5. **No secrets, no real customer names, no personal data** in templates, examples, or sample inputs. Placeholder data only. That includes the signed-in user: an Author, Owner or Contact field is filled from the user's own material, never from the account the session runs as. `python3 privacy.py` and the `.githooks/` hooks enforce it for this repo's maintainers (RFC-0049).
 6. **Voice is opinionated, not hedged.** Strip "generally", "consider", "you might want to". The `✅` / `❌` markers have semantic meaning — don't use them decoratively, don't add other decorative emoji.
 7. **A skill never invokes a skill; a loop orders them.** Sequencing lives in `packs/<pack>/loops/<name>/loop.json` (RFC-0028) — that is what keeps a single-folder copy working in Cursor, Kiro, and Aider.
 8. **Every new skill ships with `Quality bar` and `Anti-patterns to avoid` sections** — and so does every `LOOP.md`. A skill without them is a description, not a generator; a loop without them is a diagram. Both are enforced by `validate.py` (RFC-0016, RFC-0028).
@@ -31,6 +31,11 @@ cd packs/<pack>/skills/<skill-name> && python3 -m pip install -r requirements.tx
 
 # Consistency lint — run from the repo root before committing (works on Python 3.9+)
 python3 validate.py
+
+# Keep your own name, email and organization out of commits (RFC-0049) — once per clone
+git config core.hooksPath .githooks
+python3 privacy.py --tree            # every tracked file; validate.py runs this too
+python3 privacy.py --commits A..B    # author and committer emails are GitHub noreply
 
 # Site build — NOTE: needs Python 3.12+ (PEP 701 f-strings). The macOS system python3 is
 # 3.9 and raises a bare SyntaxError; use a Homebrew interpreter explicitly.
