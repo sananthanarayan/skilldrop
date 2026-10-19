@@ -2591,7 +2591,7 @@ def main(argv=None):
         else:
             item, link = {"sequence": ("participants", "messages"), "tree": ("items", "links"), "timeline": ("events", "links"),
                           "waterfall": ("spans", "parent links"), "class": ("types", "relations")}.get(spec["type"], ("nodes", "edges"))
-            print("Your reply starts with this line, before anything else:\n" + receipt["reply_first_line"] + "\n")
+            print("Lead the reply with this line, then the takeaway:\n" + receipt["reply_first_line"] + "\n")
             print("For the end of the reply: %d of %d file citations checked; %d drawn as assumptions. (%s, %d KB: %d %s, %d %s.)" % (
                 receipt["verified"], receipt["file_citations"], receipt["assumed"], a.out, receipt["bytes"] // 1024,
                 receipt["nodes"], item, receipt["edges"], link))

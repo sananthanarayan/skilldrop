@@ -8,6 +8,10 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.26 — 2026-10-19
+
+- **`interactive-diagram` asks for what a reader needs from the reply:** the link and the takeaway at the top, with at most one short line about the build before them. Three attempts to remove that line changed little, and a reader who has just watched the build run loses nothing to it ([RFC-0048](docs/rfcs/0048-interactive-diagram.md)).
+
 ## 0.16.25 — 2026-10-19
 
 - **The site shows live examples as a gallery.** The home page and each skill page with finished example pages show them as cards with a live, shrunken preview of the real page, which opens full size when clicked. The previews run in a sandbox with no access to the site and load only when scrolled to.

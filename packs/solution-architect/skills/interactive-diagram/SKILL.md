@@ -99,10 +99,9 @@ Two things follow:
    right lines or mark the item assumed. Add `--mermaid diagram.mmd` for a version to paste
    into a README, and `--compare old.json` to show what a change adds, removes and alters.
 
-5. **Reply with the map first.** The script prints the line to open with: a link to the page,
-   titled. Use it as the first line, then the takeaway in one or two sentences, then one line
-   each for what is drawn as an assumption and what was left out, and last how many citations
-   were checked:
+5. **Lead the reply with the map.** The script prints a titled link to the page. Put it at the
+   top, then the takeaway in one or two sentences, then one line each for what is drawn as an
+   assumption and what was left out, and last how many citations were checked:
 
    > **What a checkout request touches** (the script's link line: the title, linked to the page)
    >
@@ -110,8 +109,8 @@ Two things follow:
    > Assumed: the shopper's browser (no client in this repo). Left out: the products table's
    > other readers. 22 of 22 citations checked.
 
-   Keep the spec beside the page so the map can be rebuilt after the code changes. No recap of
-   commands or layout, and nothing before the link.
+   Keep the spec beside the page so the map can be rebuilt after the code changes. At most one
+   short line about the build may come before the link; no recap of commands or layout.
 
 6. **When the script can't run** (no `python3`), give the Mermaid version in the reply, with
    assumptions marked, and say that the interactive page needs Python 3.
@@ -131,7 +130,8 @@ don't cite them in the first place, and read the page before it leaves the team.
 - **Nothing on the map comes only from a README, a plan or what such systems usually have.**
 - **The map answers one stated question,** and what was left out is said.
 - **One HTML file that works offline:** no CDN, no external fonts, no network requests.
-- **The reply opens with the link and the takeaway,** not with how it was made.
+- **The link and the takeaway lead the reply,** with at most one short line about the build
+  before them and no account of how it was made.
 
 ## When to use this skill
 
