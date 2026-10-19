@@ -109,6 +109,8 @@ Every version bump lands with a matching entry at the top of [`CHANGELOG.md`](CH
 | Long-form reference for a skill | `packs/<pack>/skills/<skill-name>/reference.md` |
 | Paste-able starter content | `packs/<pack>/skills/<skill-name>/templates/<name>.md` |
 | Worked example (input → output) | `packs/<pack>/skills/<skill-name>/examples/<name>.md` |
+| A finished page a skill produced, for readers to open | `packs/<pack>/skills/<skill-name>/examples/<name>.html` — published beside the skill page as a live example |
+| Input files a worked example was made from | `packs/<pack>/skills/<skill-name>/examples/inputs/` — like eval fixtures, the scan lists what it finds there without raising it |
 | Adversarial-sweep checklist (devils-advocate style) | `packs/<pack>/skills/<skill-name>/lenses/<name>.md` |
 | Per-archetype quality bar (doc-critique style) | `packs/<pack>/skills/<skill-name>/rubrics/<archetype>.md` |
 | Input files an eval's prompt names | `packs/<pack>/skills/<skill-name>/evals/files/<eval id>/` — copied into the working directory of a benchmark run (RFC-0040) |

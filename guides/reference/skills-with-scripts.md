@@ -28,6 +28,7 @@ What each one declares in its manifest: the packages to install, the environment
 | [`figma-diagrams`](../../packs/solution-architect/skills/figma-diagrams/SKILL.md) | solution-architect | `requests==2.34.2` | `FIGMA_TOKEN` | `api.figma.com` | — | named-paths |
 | [`file-to-markdown`](../../packs/converters/skills/file-to-markdown/SKILL.md) | converters | — | — | — | `pdftotext` | named-paths |
 | [`hypothesis-comparison`](../../packs/research/skills/hypothesis-comparison/SKILL.md) | research | — | — | — | — | named-paths |
+| [`interactive-diagram`](../../packs/solution-architect/skills/interactive-diagram/SKILL.md) | solution-architect | — | — | — | — | project |
 | [`marketing-flyer`](../../packs/design/skills/marketing-flyer/SKILL.md) | design | — | — | — | `google-chrome`, `chromium`, `chrome` | named-paths |
 | [`md-to-docx`](../../packs/converters/skills/md-to-docx/SKILL.md) | converters | — | — | — | — | named-paths |
 | [`md-to-html`](../../packs/converters/skills/md-to-html/SKILL.md) | converters | — | — | — | — | named-paths |

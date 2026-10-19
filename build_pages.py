@@ -500,6 +500,19 @@ def evals_page(skills):
                  f"{SITE_URL}evals/", 1, body)
 
 
+def live_examples(name):
+    """A skill's examples/*.html: finished pages a reader can open, published beside the skill
+    page. Each file's <title> names it. They are copied as they are, never rewritten."""
+    d = os.path.join(catalog.skill_dir(name), "examples")
+    found = []
+    for f in sorted(os.listdir(d)) if os.path.isdir(d) else []:
+        if f.endswith(".html"):
+            text = open(os.path.join(d, f), encoding="utf-8").read()
+            m = re.search(r"<title>(.*?)</title>", text, re.S)
+            found.append((f, html.unescape(m.group(1).strip()) if m else f, text))
+    return found
+
+
 def skill_page(s, by_name, packs, outcome_of):
     name, home = s["name"], s["packs"][0]
     sdir = catalog.skill_dir(name)
@@ -534,6 +547,13 @@ def skill_page(s, by_name, packs, outcome_of):
     if bar:
         parts.append('<h2>What a good result looks like</h2><ul class="pk__bar">'
                      + "".join(f"<li>{md(b)}</li>" for b in bar) + "</ul>")
+    live = live_examples(name)
+    if live:
+        parts.append('<section aria-labelledby="live"><h2 id="live">Live examples</h2>'
+                     '<p>Pages this skill made, as it made them. Each one is a single file that works offline.</p><ul>'
+                     + "".join(f'<li><a href="examples/{esc(f)}">{esc(t)}</a> &middot; '
+                               f'<a href="{REPO_URL}/blob/main/{esc(s["path"])}/examples/{esc(f)}">source</a></li>'
+                               for f, t, _ in live) + "</ul></section>")
     ex = example_parts(name)
     if ex:
         ex_title, ex_in, ex_out, ex_note, ex_rel = ex
@@ -830,6 +850,8 @@ def render():
         out[f"packs/{name}/index.html"] = pack_page(name, pack, packs, by_name, loop_by_name, outcome_of)
     for s in skills:
         out[f"skills/{s['name']}/index.html"] = skill_page(s, by_name, packs, outcome_of)
+        for f, _, text in live_examples(s["name"]):
+            out[f"skills/{s['name']}/examples/{f}"] = text
     for lp in loop_by_name.values():
         out[f"loops/{lp['name']}/index.html"] = loop_page(lp, by_name)
     for i, r in enumerate(rels):

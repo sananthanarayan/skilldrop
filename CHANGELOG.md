@@ -8,6 +8,12 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.22 — 2026-10-18
+
+- **New skill: `interactive-diagram`** (`solution-architect`). Ask for an interactive diagram of a repo, a request path, a process or a schema and get one HTML file you can send: architecture, data flow, workflow, lifecycle, ERD or sequence. Every box and arrow cites the file and lines or the words it came from, and anything the material doesn't show is drawn dashed as an assumption. Each cited line is checked against the repository before the page is written, and clicking a part shows the cited code. Nobody places anything by hand: the script lays the diagram out with no arrow crossing a box. The page works offline, loads nothing from the network (its security policy blocks it), and offers pan and zoom, paths between parts, what depends on what, a walkthrough, light and dark, and SVG, PNG and Mermaid export. It can also compare two versions and mark what was added, removed and changed. It needs only Python 3. On two evals written by someone who never read the skill, two blind judges preferred it to plain Claude Code in 4 and 3 of 4 pairs ([RFC-0048](docs/rfcs/0048-interactive-diagram.md)).
+- **Skill pages can show live examples.** A finished page in a skill's `examples/` folder is published beside the skill's page on the site; `interactive-diagram` has two.
+- **`skilldrop scan` lists what it finds in a worked example's input files** (`examples/inputs/`) without raising it, as it already does for eval fixtures. The skill never runs either.
+
 ## 0.16.21 — 2026-10-18
 
 - **`role-shortlist` handles a few pasted blurbs and "just the top two".** It answers with the picks and a line or two on the rest, with no empty "Not read" or "Closed or duplicate" groups, and an item a posting calls preferred, desirable or a plus no longer rules a role out. On two new evals written by someone who never read the skill, two blind judges preferred it to plain Claude Code in 3 and 2 of 4 pairs, up from 3 and 1 ([RFC-0047](docs/rfcs/0047-role-shortlist.md)).
