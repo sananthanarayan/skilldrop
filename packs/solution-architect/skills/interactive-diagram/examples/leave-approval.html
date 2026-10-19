@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" data-theme-default="auto"><head><meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-QovRMJb3DvdUh3/KJ8b2XJssBwHste6kV+tSMK9W84o='; style-src 'unsafe-inline'; img-src data: blob:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-x8uMUP6tcCdtva9qPkw2RN4FPyZ3BQ4hbm/v2UzDBzA='; style-src 'unsafe-inline'; img-src data: blob:; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <!-- One self-contained file: no external scripts, styles, fonts or requests. The policy above makes the browser refuse any. -->
 <title>How annual leave gets approved</title><meta name="generator" content="interactive-diagram (skilldrop)"></head>
@@ -101,19 +101,21 @@ var drag=null;
 stage.addEventListener('pointerdown',function(e){if(e.target.closest('.node')||e.target.closest('.edge'))return;drag={x:e.clientX,y:e.clientY,vx:vb.x,vy:vb.y};stage.classList.add('drag');stage.setPointerCapture(e.pointerId)});
 stage.addEventListener('pointermove',function(e){if(!drag)return;var r=stage.getBoundingClientRect();vb.x=drag.vx-(e.clientX-drag.x)*vb.w/r.width;vb.y=drag.vy-(e.clientY-drag.y)*vb.h/r.height;apply()});
 stage.addEventListener('pointerup',function(){drag=null;stage.classList.remove('drag')});
-var nodes={},edges={},outE={},inE={};
-DATA.nodes.forEach(function(n){nodes[n.id]=n;outE[n.id]=[];inE[n.id]=[]});
-DATA.edges.forEach(function(e){edges[e.id]=e;if(outE[e.from])outE[e.from].push(e.id);if(inE[e.to])inE[e.to].push(e.id)});
+// Lookups are Maps, never plain objects: ids come from the spec and the URL, and a key such as
+// __proto__ must stay a key.
+var nodes=new Map(),edges=new Map(),outE=new Map(),inE=new Map();
+DATA.nodes.forEach(function(n){nodes.set(n.id,n);outE.set(n.id,[]);inE.set(n.id,[])});
+DATA.edges.forEach(function(e){edges.set(e.id,e);if(outE.has(e.from))outE.get(e.from).push(e.id);if(inE.has(e.to))inE.get(e.to).push(e.id)});
 function el(kind,id){return document.getElementById(kind+'-'+id)}
 function clear(){svg.classList.remove('focus');svg.querySelectorAll('.on,.sel,.flow').forEach(function(x){x.classList.remove('on','sel','flow')})}
 function light(ns,es,flow){clear();svg.classList.add('focus');ns.forEach(function(i){var x=el('n',i);x&&x.classList.add('on')});
  es.forEach(function(i){var x=el('e',i);if(x){x.classList.add('on');flow&&x.classList.add('flow')}})}
-function reach(id,dir){if(!nodes[id])return {n:[],e:[]};var seen={},es=[],q=[id];seen[id]=1;while(q.length){var u=q.shift();(dir>0?outE[u]:inE[u]).forEach(function(eid){var e=edges[eid];es.push(eid);var v=dir>0?e.to:e.from;if(!seen[v]){seen[v]=1;q.push(v)}})}
- return {n:Object.keys(seen),e:es}}
-function path(a,b,directed){if(!nodes[a]||!nodes[b])return null;var prev={},q=[a];prev[a]=null;while(q.length){var u=q.shift();if(u===b)break;
- var nb=outE[u].map(function(i){return [edges[i].to,i]});if(!directed)nb=nb.concat(inE[u].map(function(i){return [edges[i].from,i]}));
- nb.forEach(function(p){if(!(p[0] in prev)){prev[p[0]]=[u,p[1]];q.push(p[0])}})}
- if(!(b in prev))return null;var ns=[b],es=[],c=b;while(prev[c]){es.push(prev[c][1]);c=prev[c][0];ns.push(c)}return {n:ns.reverse(),e:es.reverse()}}
+function reach(id,dir){if(!nodes.has(id))return {n:[],e:[]};var seen=new Set([id]),es=[],q=[id];while(q.length){var u=q.shift();(dir>0?outE.get(u):inE.get(u)).forEach(function(eid){var e=edges.get(eid);es.push(eid);var v=dir>0?e.to:e.from;if(!seen.has(v)){seen.add(v);q.push(v)}})}
+ return {n:Array.from(seen),e:es}}
+function path(a,b,directed){if(!nodes.has(a)||!nodes.has(b))return null;var prev=new Map([[a,null]]),q=[a];while(q.length){var u=q.shift();if(u===b)break;
+ var nb=outE.get(u).map(function(i){return [edges.get(i).to,i]});if(!directed)nb=nb.concat(inE.get(u).map(function(i){return [edges.get(i).from,i]}));
+ nb.forEach(function(p){if(!prev.has(p[0])){prev.set(p[0],[u,p[1]]);q.push(p[0])}})}
+ if(!prev.has(b))return null;var ns=[b],es=[],c=b;while(prev.get(c)){es.push(prev.get(c)[1]);c=prev.get(c)[0];ns.push(c)}return {n:ns.reverse(),e:es.reverse()}}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function evHtml(list){if(!list||!list.length)return '<p class="muted">No evidence cited.</p>';
  return '<ul>'+list.map(function(e){var t=e.said!=null?(esc(e.source||'user')+': “'+esc(e.said)+'”'):esc(e.file+(e.start?':'+e.start+(e.end!==e.start?'-'+e.end:''):''));
@@ -121,18 +123,18 @@ function evHtml(list){if(!list||!list.length)return '<p class="muted">No evidenc
   var v=e.verified===true?' <span class="tag" style="color:var(--ok)">checked</span>':(e.verified===null&&e.file?' <span class="tag">not checked</span>':'');
   return '<li>'+t+v+(e.snippet?'<pre>'+esc(e.snippet)+'</pre>':'')+'</li>'}).join('')+'</ul>'}
 var selected=null;
-function show(kind,id){var x=kind==='n'?nodes[id]:edges[id];if(!x)return;var h='<button class="close" aria-label="Close">×</button>';
+function show(kind,id){var x=kind==='n'?nodes.get(id):edges.get(id);if(!x)return;var h='<button class="close" aria-label="Close">×</button>';
  if(kind==='n'){h+='<h3>'+esc(x.label)+'</h3><div class="kind">'+esc(x.kind)+(x.group_label?' · '+esc(x.group_label):'')+(x.assumed?' · <span style="color:var(--warn)">assumption</span>':'')+(x.status?' · '+esc(x.status):'')+'</div>';
   if(x.note)h+='<p>'+esc(x.note)+'</p>';if(x.detail)h+='<p>'+esc(x.detail)+'</p>';
   if(x.fields&&x.fields.length)h+='<ul>'+x.fields.map(function(f){return '<li><code>'+esc(f.name)+'</code> '+esc(f.type||'')+(f.key?' <b>'+esc([].concat(f.key).join('/').toUpperCase())+'</b>':'')+(f.references?' → '+esc(f.references):'')+(f.note?' — '+esc(f.note):'')+'</li>'}).join('')+'</ul>';
   h+='<div class="acts"><button data-act="up">What it depends on</button><button data-act="down">What depends on it</button><button data-act="near">Neighbours</button></div>';
   h+='<p class="muted" style="font-size:12px">Shift-click another part to see the path between them.</p>';
-  var o=outE[id].map(function(i){var e=edges[i];return '<li><a class="jump" data-n="'+esc(e.to)+'">'+esc(nodes[e.to].label)+'</a>'+(e.label?' — '+esc(e.label):'')+'</li>'}).join('');
-  var n=inE[id].map(function(i){var e=edges[i];return '<li><a class="jump" data-n="'+esc(e.from)+'">'+esc(nodes[e.from].label)+'</a>'+(e.label?' — '+esc(e.label):'')+'</li>'}).join('');
+  var o=outE.get(id).map(function(i){var e=edges.get(i);return '<li><a class="jump" data-n="'+esc(e.to)+'">'+esc(nodes.get(e.to).label)+'</a>'+(e.label?' — '+esc(e.label):'')+'</li>'}).join('');
+  var n=inE.get(id).map(function(i){var e=edges.get(i);return '<li><a class="jump" data-n="'+esc(e.from)+'">'+esc(nodes.get(e.from).label)+'</a>'+(e.label?' — '+esc(e.label):'')+'</li>'}).join('');
   if(o)h+='<b>Goes to</b><ul>'+o+'</ul>';if(n)h+='<b>Comes from</b><ul>'+n+'</ul>';
   h+='<b>Evidence</b>'+evHtml(x.evidence);
-  var nb={};nb[id]=1;outE[id].concat(inE[id]).forEach(function(i){nb[edges[i].from]=1;nb[edges[i].to]=1});light(Object.keys(nb),outE[id].concat(inE[id]));el('n',id).classList.add('sel');
- }else{h+='<h3>'+esc(nodes[x.from].label)+' → '+esc(nodes[x.to].label)+'</h3><div class="kind">'+(x.label?esc(x.label):'connection')+(x.assumed?' · <span style="color:var(--warn)">assumption</span>':'')+(x.status?' · '+esc(x.status):'')+'</div>';
+  var nb=new Set([id]);outE.get(id).concat(inE.get(id)).forEach(function(i){nb.add(edges.get(i).from);nb.add(edges.get(i).to)});light(Array.from(nb),outE.get(id).concat(inE.get(id)));el('n',id).classList.add('sel');
+ }else{h+='<h3>'+esc(nodes.get(x.from).label)+' → '+esc(nodes.get(x.to).label)+'</h3><div class="kind">'+(x.label?esc(x.label):'connection')+(x.assumed?' · <span style="color:var(--warn)">assumption</span>':'')+(x.status?' · '+esc(x.status):'')+'</div>';
   if(x.detail)h+='<p>'+esc(x.detail)+'</p>';h+='<b>Evidence</b>'+evHtml(x.evidence);light([x.from,x.to],[id],true)}
  panel.innerHTML=h;panel.classList.add('open');selected=kind==='n'?id:null;
  panel.querySelector('.close').onclick=function(){panel.classList.remove('open');clear();selected=null};
@@ -161,10 +163,10 @@ document.getElementById('xpng').onclick=function(){var img=new Image();img.onloa
  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(standalone())};
 document.getElementById('xmmd').onclick=function(){var t=DATA.mermaid;if(navigator.clipboard)navigator.clipboard.writeText(t).catch(function(){});download(base+'.mmd','text/plain',t)};
 var tour=null,cap=document.getElementById('caption');
-var steps=DATA.story&&DATA.story.length?DATA.story:(DATA.type==='sequence'?DATA.edges.map(function(m,i){return {text:(i+1)+'. '+nodes[m.from].label+' → '+nodes[m.to].label+(m.label?': '+m.label:''),edges:[m.id],nodes:[m.from,m.to]}}):[]);
+var steps=DATA.story&&DATA.story.length?DATA.story:(DATA.type==='sequence'?DATA.edges.map(function(m,i){return {text:(i+1)+'. '+nodes.get(m.from).label+' → '+nodes.get(m.to).label+(m.label?': '+m.label:''),edges:[m.id],nodes:[m.from,m.to]}}):[]);
 var tb=document.getElementById('tour');if(!steps.length){tb.style.display='none'}
 function step(d){tour.i=Math.max(0,Math.min(steps.length-1,tour.i+d));var s=steps[tour.i];
- light((s.nodes||[]).concat((s.edges||[]).map(function(i){return edges[i]?edges[i].from:null}).filter(Boolean)).concat((s.edges||[]).map(function(i){return edges[i]?edges[i].to:null}).filter(Boolean)),s.edges||[],true);
+ light((s.nodes||[]).concat((s.edges||[]).map(function(i){return edges.get(i)?edges.get(i).from:null}).filter(Boolean)).concat((s.edges||[]).map(function(i){return edges.get(i)?edges.get(i).to:null}).filter(Boolean)),s.edges||[],true);
  cap.innerHTML='<b>Step '+(tour.i+1)+' of '+steps.length+'</b> — '+esc(s.text||'')+' <span class="muted">(← → to move, Esc to stop)</span>';cap.classList.add('on')}
 tb.onclick=function(){if(tour){tour=null;cap.classList.remove('on');clear();tb.textContent='Walk through';return}tour={i:-1};tb.textContent='Stop';step(1)};
 document.getElementById('prev').onclick=function(){if(tour)step(-1)};document.getElementById('next').onclick=function(){if(!tour){tb.onclick()}else step(1)};
@@ -172,12 +174,12 @@ if(!steps.length){document.getElementById('prev').style.display='none';document.
 function size(){var wr=document.querySelector('.wrap');var avail=Math.max(window.innerHeight-150,360);var r=stage.getBoundingClientRect();
  var s=Math.max(W/Math.max(r.width,1),0.6);wr.style.height=Math.min(avail,Math.max(H/s+24,300))+'px'}
 size();fit();window.addEventListener('resize',function(){size();fit()});
-function hash(){var h=decodeURIComponent(location.hash.slice(1));if(!h)return;var kv={};h.split('&').forEach(function(p){var i=p.indexOf('=');kv[p.slice(0,i)]=p.slice(i+1)});
- if(kv.theme)root.setAttribute('data-theme',kv.theme);
- if(kv.n&&nodes[kv.n])show('n',kv.n);if(kv.e&&edges[kv.e])show('e',kv.e);
- if(kv.path){var ab=kv.path.split(',');var p=path(ab[0],ab[1],true)||path(ab[0],ab[1],false);if(p)light(p.n,p.e,true)}
- if(kv.reach){var ar=kv.reach.split(',');var r=reach(ar[0],ar[1]==='up'?-1:1);light(r.n,r.e,true)}
- if(kv.step&&steps.length){tour={i:-1};tb.textContent='Stop';step(+kv.step)}}
+function hash(){var h=decodeURIComponent(location.hash.slice(1));if(!h)return;var kv=new Map();h.split('&').forEach(function(p){var i=p.indexOf('=');if(i>0)kv.set(p.slice(0,i),p.slice(i+1))});
+ if(kv.get('theme'))root.setAttribute('data-theme',kv.get('theme'));
+ if(kv.get('n')&&nodes.get(kv.get('n')))show('n',kv.get('n'));if(kv.get('e')&&edges.get(kv.get('e')))show('e',kv.get('e'));
+ if(kv.get('path')){var ab=kv.get('path').split(',');var p=path(ab[0],ab[1],true)||path(ab[0],ab[1],false);if(p)light(p.n,p.e,true)}
+ if(kv.get('reach')){var ar=kv.get('reach').split(',');var r=reach(ar[0],ar[1]==='up'?-1:1);light(r.n,r.e,true)}
+ if(kv.get('step')&&steps.length){tour={i:-1};tb.textContent='Stop';step(+kv.get('step'))}}
 hash();window.addEventListener('hashchange',hash);
 })();
 </script>

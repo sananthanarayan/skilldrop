@@ -93,6 +93,8 @@ been read, so the next revision needs evals of its own.
 
 Built alongside: the page carries a Content-Security-Policy that lets only its own script run
 (pinned by hash) and blocks every network request, checked by injecting an external script,
-an image and an inline script into a built page; all three were refused. The site publishes a
+an image and an inline script into a built page; all three were refused. The page's lookups are
+`Map`s, so an id or a deep link such as `#__proto__=x` can't reach an object prototype
+(CodeQL `js/remote-property-injection`). The site publishes a
 skill's `examples/*.html` beside its page as live examples, and `skilldrop scan` treats
 `examples/inputs/` like eval fixtures.

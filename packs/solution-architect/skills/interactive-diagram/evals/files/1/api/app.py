@@ -12,18 +12,18 @@ queue = redis.Redis.from_url(os.environ["REDIS_URL"])
 
 def validate(order):
     if not order.get("items"):
-        raise ValueError("an order needs at least one item")
+        return "an order needs at least one item"
     if not order.get("email"):
-        raise ValueError("an order needs an email for the confirmation")
+        return "an order needs an email for the confirmation"
 
 
 @app.post("/orders")
 def place_order():
     order = request.get_json()
-    try:
-        validate(order)
-    except ValueError as err:
-        return jsonify(error=str(err)), 400
+    problem = validate(order)
+    if problem:
+        # the first rule the order breaks, in words the storefront can show
+        return jsonify(error=problem), 400
     with db.cursor() as cur:
         cur.execute(
             "insert into orders (shop_id, email, items) values (%s, %s, %s) returning id",
