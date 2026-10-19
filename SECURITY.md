@@ -78,7 +78,7 @@ Only the latest `skilldrop-cli` on npm is supported. Fixes ship forward; there a
 
 ## How this repo is hardened
 
-- The npm package has **zero runtime dependencies** — nothing transitive to compromise.
+- The npm package has **zero runtime dependencies** — nothing transitive to compromise — and runs no code at install. `validate.py` holds both: adding a dependency fails CI until a lockfile and npm Dependabot updates come with it, and an install-time script (`preinstall`, `install`, `postinstall`, `prepare`) fails it outright.
 - Publishing uses **npm OIDC trusted publishing with provenance**. No long-lived token exists to steal.
 - **GitHub Actions are pinned to commit SHAs**, so a repointed tag cannot inject code into a job that holds publish rights.
 - Workflows default to `permissions: contents: read`; write scopes are granted per job.
