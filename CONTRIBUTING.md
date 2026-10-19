@@ -9,7 +9,7 @@ Two reads, in order:
 1. **[AGENTS.md](AGENTS.md)** — the source of truth. Golden rules, verified commands, file placement, skill anatomy, the pre-commit checklist, and the voice rules. This file routes you to it; it does not replace it.
 2. **[README.md](README.md)** — what each skill does and how it installs into each IDE.
 
-No setup step. The checks are stdlib Python and Node — `python3` and `node` are the only prerequisites, and only if you want to run the linters locally (CI runs them either way).
+No setup step beyond one line: `git config core.hooksPath .githooks`, which stops a commit that would publish your own name or email ([SECURITY.md](SECURITY.md#keeping-your-identity-out)). The checks are stdlib Python and Node — `python3` and `node` are the only prerequisites, and only if you want to run the linters locally (CI runs them either way).
 
 **Write an RFC first** if you are adding a new skill, a new top-level file or directory, changing the skill anatomy or manifest schema, or introducing a repo-wide convention. Copy [`docs/rfcs/0000-template.md`](docs/rfcs/0000-template.md) to `docs/rfcs/NNNN-<kebab-slug>.md` with the next sequential number. Keep it under a page — the RFC records the decision, the PR does the work. **No RFC needed** for fixes and improvements to an existing skill, doc corrections, or eval additions.
 

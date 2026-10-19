@@ -64,6 +64,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 
 import catalog
+import privacy
 from anthropic_api import APIError, api_key, messages
 from run_evals import grade, load, skill_system
 
@@ -704,15 +705,32 @@ def main():
     with ThreadPoolExecutor(max_workers=a.workers) as ex:
         rows = list(ex.map(lambda u: run_unit(u, a.judge_model, budget), units))
         floor = list(ex.map(lambda u: run_floor(u, a.judge_model, budget), floor_units))
+    # RFC-0049: a session knows who is signed in, and a model will write that name into an
+    # Author or contact field unasked. Count it per skill, and keep it out of what is saved.
+    pats = privacy.matcher(privacy.terms())
+    named = {}
+    for r in rows:
+        for arm, d in r.get("arms", {}).items():
+            d["output"], n = privacy.redact(d.get("output", ""), pats)
+            if n:
+                named.setdefault(r["skill"], set()).add(arm)
+                d["named_you"] = n
     summary = summarize(rows, floor, models, labels, a.tolerance)
     scripted = {s for s in skills if os.path.isdir(os.path.join(catalog.skill_dir(s), "scripts"))}
     md = report(summary, a.judge_model, a.trials, budget.spent, scripted)
+    if named:
+        md += ("\n**Named you:** %d run(s) wrote the signed-in account's name, email or organization into their output "
+               "(replaced with [you] in results.json): %s.\n" % (
+                   sum(1 for r in rows for d in r.get("arms", {}).values() if d.get("named_you")),
+                   ", ".join("`%s` (%s)" % (k, ", ".join(sorted(v))) for k, v in sorted(named.items()))))
     os.makedirs(a.out, exist_ok=True)
     json.dump({"backend": BACKEND, "judge_model": a.judge_model, "models": models, "trials": a.trials, "spent": budget.spent,
                "summary": summary, "floor": floor, "runs": rows},
               open(os.path.join(a.out, "results.json"), "w"), indent=2)
     open(os.path.join(a.out, "report.md"), "w").write(md)
     if a.publish:
+        if privacy.scan_text(json.dumps(summary), pats):
+            sys.exit("not publishing: the summary contains your name, email or organization (RFC-0049)")
         os.makedirs(os.path.dirname(os.path.abspath(a.publish)), exist_ok=True)
         with open(a.publish, "w") as f:
             json.dump({"date": time.strftime("%Y-%m-%d"), "backend": BACKEND, "judge_model": a.judge_model,

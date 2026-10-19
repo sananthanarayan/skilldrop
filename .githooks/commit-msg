@@ -1,0 +1,3 @@
+#!/bin/sh
+# Refuse a commit message that names the committer (RFC-0049).
+exec python3 "$(git rev-parse --show-toplevel)/privacy.py" --message "$1"

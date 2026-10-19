@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Status | {Draft / In Review / Approved / Implemented} |
-| Author(s) | {Names} |
+| Author(s) | {Names the brief gives; leave blank if it gives none} |
 | Reviewers | {Names — list the people whose approval you need} |
 | Date | {YYYY-MM-DD} |
 | Related | {Links to ADRs, prior design docs, tickets} |

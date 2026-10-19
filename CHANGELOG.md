@@ -8,6 +8,13 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.24 — 2026-10-19
+
+- **Commits and content can't publish a maintainer's own identity by accident.** `python3 privacy.py` reads who you are from your own machine (the signed-in Claude account, git config, your user name and home directory, plus anything you list in the git-ignored `.skilldrop-private`) and stops your name, email, organization or home path reaching a commit, a commit message or any tracked file, without ever printing them. Turn the hooks on once per clone with `git config core.hooksPath .githooks`; `validate.py` runs the same scan. CI now fails a push or pull request whose commits use anything but a GitHub noreply email, for every account that commits ([RFC-0049](docs/rfcs/0049-identity-guard.md), [SECURITY.md](SECURITY.md#keeping-your-identity-out)).
+- **Benchmark runs say when an output named you.** A model will write the signed-in account's name into an Author field unasked (it did three times in the tier run, once with no skill at all). `run_bench.py` now counts those runs in the report, replaces the name with [you] in `results.json`, and refuses to publish a summary that contains it.
+- **`design-doc` fills its Author field only from your brief**, and leaves it blank otherwise.
+- **The benchmark guide shows how to run a long benchmark from a terminal**, detached, so a task time limit can't stop it halfway; a rerun resumes from the cache.
+
 ## 0.16.23 — 2026-10-19
 
 - **`interactive-diagram` draws four more kinds of diagram:** class diagrams from source (members, interfaces and abstract classes, and inherits, implements, composition, aggregation, association and dependency), trees of what contains what, timelines of an incident or a release, and waterfalls of where the time went in one request or run. A timeline puts sources from different time zones on one clock, marks approximate times, and shortens a long quiet stretch so a burst of events stays readable. A waterfall marks the critical path and gives each span's own time.

@@ -48,6 +48,7 @@ import glob
 import json
 import os
 import re
+import subprocess
 import sys
 
 import catalog           # where skills, loops and packs live (RFC-0034)
@@ -816,6 +817,20 @@ def main():
                 t = target.split("#")[0].strip()
                 if t and not os.path.exists(os.path.normpath(os.path.join(d0, t))):
                     fail("links", f"{os.path.relpath(mf, ROOT)}: dangling link -> {target}")
+
+    # RFC-0049: the maintainers' own identity (read from this machine, never committed) stays
+    # out of the tree; matches are reported by kind, never printed
+    import privacy
+    pats = privacy.matcher(privacy.terms())
+    for rel in subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True).stdout.splitlines():
+        if rel.lower().endswith(privacy.SKIP_EXT):
+            continue
+        try:
+            text = open(os.path.join(ROOT, rel), encoding="utf-8").read()
+        except (OSError, UnicodeDecodeError):
+            continue
+        for line, kind in privacy.scan_text(text, pats, allow_names=privacy.attribution(rel))[:3]:
+            fail("privacy", f"{rel}:{line} contains your {kind} — see SECURITY.md, Keeping your identity out")
 
     quiet = "--quiet" in sys.argv
     if warnings and not quiet:

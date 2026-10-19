@@ -37,6 +37,20 @@ python3 run_bench.py --backend claude-cli --skills adr-generator --trials 2 \
 Each arm runs in an empty, sandboxed directory with no network, and the results land in
 `bench-results/`.
 
+## Run a long benchmark from a terminal
+
+A full catalogue run takes hours. Start it from your own terminal, detached, so an editor's or
+an agent's task time limit can't stop it halfway, and follow the log:
+
+```bash
+nohup python3 run_bench.py --backend claude-cli --held-out --second-judge claude-opus-5-5 \
+  --budget 60 > bench.log 2>&1 &
+tail -f bench.log
+```
+
+If it stops anyway, run the same command again: every finished call is cached, so only what is
+missing is paid for.
+
 ## Read the report
 
 Open the report and compare both arms against the floor, the score a non-answer gets.

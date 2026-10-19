@@ -106,7 +106,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skil
 
 Generate a Google-style engineering design doc (problem, goals/non-goals, options considered, recommended approach, risks, rollout) from a feature brief or short description.
 
-Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/solution-architect/skills/design-doc/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/design-doc/)
+Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/solution-architect/skills/design-doc/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/design-doc/)
 
 **Use it when** the user wants to draft a design doc, technical proposal, or one-pager for an engineering review.
 

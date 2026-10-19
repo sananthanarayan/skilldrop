@@ -1,0 +1,4 @@
+#!/bin/sh
+# Refuse a commit that would publish the committer's own identity (RFC-0049).
+# Turn on once per clone:  git config core.hooksPath .githooks
+exec python3 "$(git rev-parse --show-toplevel)/privacy.py" --staged
