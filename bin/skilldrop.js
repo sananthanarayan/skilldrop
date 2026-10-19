@@ -15,6 +15,7 @@ const path = require("path");
 const os = require("os");
 const { execFileSync } = require("child_process");
 const crypto = require("crypto");
+const gov = require("./governance");  // org policy, audit log, mirror check (RFC-0050)
 
 const ROOT = path.resolve(__dirname, "..");
 const LEDGER = ".skilldrop.json";
@@ -75,6 +76,11 @@ Usage:
   skilldrop init-catalogue <dir> [--pack <name>]  start a private catalogue for your team's skills
   skilldrop package <dir> [--pack a,b] [--skills x,y] [--agents]  copy a vetted subset of a catalogue
                                           into a standalone one to host internally (writes MIRROR.json)
+  skilldrop inventory [--json] [--label <machine>]  every skilldrop install on this machine, with
+                                          what the policy thinks of each (RFC-0050)
+  skilldrop inventory --merge <files...>  combine inventory reports from many machines into one view
+  skilldrop audit verify|show [<file>]    check the audit log's chain, or show its last entries
+  skilldrop verify-mirror <dir>           check a mirror against the SHA-256s its MIRROR.json recorded
   skilldrop --version                     print the CLI version
   skilldrop bootstrap                     add the skilldrop marketplace to ~/.claude/settings.json
                                           (idempotent — safe to run in onboarding scripts)
@@ -97,6 +103,12 @@ Install/update/uninstall targets (pick one):
   --dest <dir>       any directory              e.g. Continue / Cline / Aider
   --local            project scope, hidden from git via .git/info/exclude — try skills in a
                      repo you don't own without touching its tracked files or .gitignore
+
+Organisation policy (RFC-0050):
+  --policy <file>    the policy to enforce; also SKILLDROP_POLICY, else ~/.config/skilldrop/policy.json.
+                     It can allow only some catalogues (and require them pinned), allow or block skills,
+                     cap the supply-chain scan's findings, and turn on an audit log. A policy that is
+                     named but missing or unreadable stops the command.
 
 Options:
   --dry-run          install | update | uninstall | new-skill: print what would change, change nothing
@@ -131,7 +143,8 @@ function parseArgs(argv) {
   const out = { _: [], flags: {} };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a === "--pack" || a === "--ide" || a === "--dest" || a === "--from" || a === "--panel" || a === "--profile" || a === "--tier" || a === "--skills" || a === "--days") out.flags[a.slice(2)] = argv[++i];
+    if (a === "--pack" || a === "--ide" || a === "--dest" || a === "--from" || a === "--panel" || a === "--profile" || a === "--tier" || a === "--skills" || a === "--days" ||
+        a === "--policy" || a === "--merge" || a === "--label" || a === "--last") out.flags[a.slice(2)] = argv[++i];
     else if (a.startsWith("--")) out.flags[a.slice(2)] = true;
     else out._.push(a);
   }
@@ -419,6 +432,35 @@ function gate(cat, names) {
   }
   if (bad) die(`${bad} skill(s) failed the structural check — nothing was installed`);
 }
+
+/* RFC-0050: the worst scan finding per skill, for a policy's scan.max. Eval fixtures and
+   example inputs (⚪) never count. */
+function worstFindings(cat, names) {
+  const out = {};
+  for (const s of names) {
+    let w;
+    for (const f of scanSkill(cat, s)) if (!f.fixture && (!w || gov.SEVERITY[f.sev] > gov.SEVERITY[w])) w = f.sev;
+    if (w) out[s] = w;
+  }
+  return out;
+}
+
+/* Refuse the whole install when the policy in force forbids any part of it. */
+function enforcePolicy(flags, cat, names, kind) {
+  const policy = gov.load(flags);
+  gov.prepare(policy);  // an audit log that can't be written stops the install before it starts
+  if (!policy || !names.length) return policy;
+  const worst = kind === "skill" && policy.scan && policy.scan.max !== undefined ? worstFindings(cat, names) : {};
+  const problems = gov.check(policy, { source: cat.source, pinned: cat.pinned, names, worst, kind });
+  if (problems.length) {
+    for (const pr of problems) console.error(`refused ${pr.name}: ${pr.why}`);
+    die(`the policy in ${gov.tilde(policy.file)} refuses ${new Set(problems.map((x) => x.name)).size} ${kind}(s) — nothing was installed`);
+  }
+  return policy;
+}
+
+const auditUnit = (cat, name, kind, version, dest) =>
+  ({ kind, name, version: version || null, source: cat.source, commit: cat.commit || null, pinned: !!cat.pinned, target: dest });
 
 /* ---------- supply-chain scan (RFC-0022) ----------
    A skill is instruction prose an agent will obey, and its scripts are code that runs on the
@@ -1221,6 +1263,7 @@ function install(args) {
     }
   }
   gate(cat, names);
+  const policy = enforcePolicy(args.flags, cat, names, "skill");
   const { dest, ide } = target(args.flags);
   if (args.flags["dry-run"]) return planInstall(cat, names, dest, ide, args.flags);
   fs.mkdirSync(dest, { recursive: true });
@@ -1233,6 +1276,7 @@ function install(args) {
     console.log(`installed ${s}@${m.version} -> ${dest}`);
   }
   saveLedger(l);
+  gov.audit(policy, "install", names.map((s) => auditUnit(cat, s, "skill", lver(l.data[s]), dest)));
   console.log(`\n${names.length} skill(s) installed (${ide}).`);
   if (notes.length) console.log(`\nCleanup:\n${notes.join("\n")}`);
   const local = !!args.flags.local;
@@ -1354,7 +1398,10 @@ function update(args) {
     }
   }
   if (dry) return planUpdate(dest, ide, l, rows, args.flags);
-  let n = 0, conflicts = 0;
+  const policy = gov.load(args.flags);
+  gov.prepare(policy);
+  const done = [];
+  let n = 0, conflicts = 0, refusedByPolicy = 0;
   const silent = rows.filter((r) => r.current === r.installed && r.changed.length && !args.flags.changed);
   for (const r of rows) {
     if (r.retired) { console.log(`skip ${r.retired}\n  Remove it with: skilldrop uninstall ${r.s}${targetHint(args.flags)}`); continue; }
@@ -1362,6 +1409,9 @@ function update(args) {
     if (!isDue(r)) continue;
     const problems = unitCheck(r.cat, r.s, r.loop);
     if (problems.length) { console.log(`skip ${unitLabel(r)}: fails structural check in '${r.src}' (${problems[0]})`); continue; }
+    const refused = gov.check(policy, { source: r.src, pinned: r.pinned, names: [r.s], kind: r.loop ? "loop" : "skill",
+      worst: !r.loop && policy && policy.scan && policy.scan.max !== undefined ? worstFindings(r.cat, [r.s]) : {} });
+    if (refused.length) { console.log(`skip ${unitLabel(r)}: the policy refuses it (${refused[0].why})`); refusedByPolicy++; continue; }
     // No baseline (installed before RFC-0032, or a loop installed before 0.16.11) or --force:
     // overwrite as before, and record one.
     const entry = l.data[r.s];
@@ -1377,9 +1427,12 @@ function update(args) {
       conflicts += kept.length;
     }
     n++;
+    done.push(auditUnit(r.cat, r.s, r.loop ? "loop" : "skill", r.current, dest));
   }
   saveLedger(l);
-  console.log(n ? `\n${n} skill(s) or loop(s) updated.` : (silent.length ? "no version changes." : rows.some((r) => r.retired) ? "nothing else to update." : "everything up to date."));
+  gov.audit(policy, "update", done);
+  if (refusedByPolicy) console.log(`\n${refusedByPolicy} not updated because the policy refuses them; they stay as they are. Remove them with skilldrop uninstall, or change the policy.`);
+  else console.log(n ? `\n${n} skill(s) or loop(s) updated.` : (silent.length ? "no version changes." : rows.some((r) => r.retired) ? "nothing else to update." : "everything up to date."));
   if (silent.length)
     console.log(`\nNot taken: ${silent.map((r) => r.s).join(", ")} changed upstream without a version bump.` +
                 `\n  Read the change (skilldrop diff <skill>), then take it with: skilldrop update --changed`);
@@ -1484,11 +1537,14 @@ function uninstall(args) {
   const what = `Remove ${present.length} skill(s) from ${dest}: ${present.join(", ")}` +
                (edits.length ? `\n  (${edits.length} of the files have your edits: ${edits.join(", ")})` : "") + "?";
   if (!confirm(what, args.flags)) return console.log("cancelled — nothing removed.");
+  gov.prepare(gov.load(args.flags));
   for (const s of present) {
     fs.rmSync(path.join(dest, s), { recursive: true, force: true });
     const w = wiringPath(ide, dest, s);
     if (w) fs.rmSync(w, { force: true });
     removeHooksFor(s, dest, ide);
+    gov.audit(gov.load(args.flags), "uninstall", [{ kind: "skill", name: s, version: l.data[s] ? lver(l.data[s]) : null,
+      source: l.data[s] ? lsrc(l.data[s]) : null, target: dest }]);
     delete l.data[s];
     console.log(`removed ${s} from ${dest}`);
   }
@@ -1919,6 +1975,12 @@ function installLoops(args) {
     if (problems.length) bad++;
   }
   if (bad) die(`${bad} loop(s) failed the structural check — nothing was installed`);
+  const policy = enforcePolicy(args.flags, cat, names, "loop");
+  if (!args.flags["no-skills"]) {
+    const stage = [];
+    for (const n of names) for (const sk of loopSkills(cat, n)) if (!stage.includes(sk)) stage.push(sk);
+    enforcePolicy(args.flags, cat, stage, "skill");
+  }
 
   const { dest, ide } = target(args.flags);
   fs.mkdirSync(dest, { recursive: true });
@@ -1929,6 +1991,7 @@ function installLoops(args) {
     console.log(`installed loop ${n} -> ${path.join(dest, n)}`);
   }
   saveLedger(l);
+  gov.audit(policy, "install", names.map((n) => auditUnit(cat, n, "loop", lver(l.data[n]), dest)));
   if (args.flags.local) addLocal(dest, ide, names);
 
   const wanted = [];
@@ -1959,6 +2022,8 @@ function uninstallLoops(args) {
     fs.rmSync(path.join(dest, n), { recursive: true, force: true });
     const w = wiringPath(ide, dest, n);
     if (w) fs.rmSync(w, { force: true });
+    gov.audit(gov.load(args.flags), "uninstall", [{ kind: "loop", name: n, version: l.data[n] ? lver(l.data[n]) : null,
+      source: l.data[n] ? lsrc(l.data[n]) : null, target: dest }]);
     delete l.data[n];
     console.log(`removed loop ${n} from ${dest} (stage skills left in place)`);
   }
@@ -1981,6 +2046,7 @@ function installAgents(args) {
     if (problems.length) bad++;
   }
   if (bad) die(`${bad} agent(s) failed the structural check — nothing was installed`);
+  const policy = enforcePolicy(args.flags, cat, names, "agent");
 
   const { dest, ide } = agentTarget(args.flags);
   fs.mkdirSync(dest, { recursive: true });
@@ -1993,6 +2059,7 @@ function installAgents(args) {
     console.log(`installed ${a} -> ${path.join(dest, file)}`);
   }
   saveLedger(l);
+  gov.audit(policy, "install", names.map((a) => auditUnit(cat, a, "agent", null, dest)));
   console.log(`\n${names.length} agent(s) installed (${ide}).`);
   if (warns.length) console.log(`\nTool mapping:\n${warns.join("\n")}`);
   if (ide === "claude") console.log("Delegate by name, e.g. \"use the devils-advocate agent on this diff\".");
@@ -2125,6 +2192,10 @@ function validateCmd(args) {
   const cat = resolveCatalog(args.flags.from);
   const names = skillsIn(cat);
   let bad = 0;
+  // RFC-0050: this CLI accepts the policy example the contract describes (validate.py checks the
+  // other half), so the schema and the enforcement can't drift apart unnoticed.
+  const example = path.join(cat.dir || ROOT, "contracts", "policy.example.json");
+  if (!args.flags.from && fs.existsSync(example)) gov.load({ policy: example });
   for (const s of names) {
     const problems = checkSkill(cat, s);
     for (const f of scanSkill(cat, s).filter((x) => x.id.startsWith("undeclared-")))
@@ -2148,6 +2219,118 @@ function validateCmd(args) {
 const BOOTSTRAP_MARKETPLACE_KEY = "skilldrop";
 const BOOTSTRAP_GITHUB_OWNER = "sananthanarayan";
 const BOOTSTRAP_GITHUB_REPO = "skilldrop";
+
+/* ---------- inventory (RFC-0050) ----------
+   Every skilldrop install on this machine, from each target's ledger: one report an
+   organisation can collect, and --merge to combine many into one view. Paths under the home
+   directory are written as ~ so a report names no one. */
+function inventoryTargets(flags) {
+  if (flags.dest) return [{ dest: path.resolve(flags.dest), ide: "generic", scope: "dest" }];
+  const out = [];
+  for (const [ide, [proj, user]] of Object.entries(SKILL_DIRS)) {
+    out.push({ dest: path.resolve(...proj), ide, scope: "project" });
+    if (user) out.push({ dest: path.join(os.homedir(), ...user), ide, scope: "user" });
+  }
+  for (const ide of ["claude", "codex"]) for (const project of [true, false]) {
+    try { const t = agentTarget({ ide, project }); out.push({ dest: t.dest, ide, scope: project ? "project" : "user" }); } catch (e) { /* no target */ }
+  }
+  const seen = new Set();
+  return out.filter((t) => !seen.has(t.dest) && seen.add(t.dest));
+}
+
+function inventory(args) {
+  if (args.flags.merge) return mergeInventories([String(args.flags.merge), ...args._], args.flags);
+  const policy = gov.load(args.flags);
+  const installs = [];
+  for (const t of inventoryTargets(args.flags)) {
+    const l = ledger(t.dest);
+    for (const name of Object.keys(l.data).sort()) {
+      const e = l.data[name];
+      const kind = isLoopEntry(e) ? "loop" : e && e.file ? "agent" : "skill";
+      const src = lsrc(e);
+      const pinned = isPinned(src);
+      const refused = gov.check(policy, { source: src, pinned, names: [name], kind });
+      installs.push({ target: gov.tilde(t.dest), scope: t.scope, ide: t.ide, kind, name, version: lver(e) || null,
+                      source: gov.tilde(src), commit: (e && e.commit) || null, pinned,
+                      edited: kind === "agent" ? 0 : editedFiles(t.dest, name, e).length,
+                      policy: policy ? (refused.length ? refused.map((x) => x.why) : "ok") : null });
+    }
+  }
+  const report = { inventory: 1, created: new Date().toISOString(), label: args.flags.label && args.flags.label !== true ? String(args.flags.label) : null,
+                   cli: readJSON(path.join(ROOT, "package.json")).version, policy: policy ? policy.hash : null, installs };
+  if (args.flags.json) return emitJSON(report);
+  if (!installs.length) return console.log("no skilldrop installs found on this machine (looked in every --ide target, user and project scope)");
+  for (const i of installs)
+    console.log(`${i.target}  ${i.kind} ${i.name}@${i.version || "-"}  ${i.source}${i.pinned ? " (pinned)" : ""}` +
+                (i.edited ? `  ${i.edited} edited file(s)` : "") + (Array.isArray(i.policy) ? `  REFUSED: ${i.policy[0]}` : ""));
+  const bad = installs.filter((i) => Array.isArray(i.policy));
+  console.log(`\n${installs.length} install(s)` + (policy ? `, ${bad.length} the policy refuses` : "") +
+              ". For an organisation-wide view: skilldrop inventory --json --label <machine> > <file>, then skilldrop inventory --merge <files...>");
+  if (bad.length) process.exitCode = 1;
+}
+
+function mergeInventories(files, flags) {
+  const by = {};
+  let reports = 0;
+  for (const f of files) {
+    let r;
+    try { r = readJSON(f); } catch (e) { die(`${f} is not an inventory report`); }
+    if (r.inventory !== 1 || !Array.isArray(r.installs)) die(`${f} is not an inventory report (skilldrop inventory --json)`);
+    reports++;
+    const who = r.label || path.basename(f);
+    for (const i of r.installs) {
+      const k = `${i.kind}\u0000${i.name}\u0000${i.source}`;
+      const a = (by[k] = by[k] || { kind: i.kind, name: i.name, source: i.source, machines: new Set(), versions: new Set(), unpinned: 0, edited: 0, refused: 0 });
+      a.machines.add(who);
+      a.versions.add(i.version || "-");
+      if (i.source !== "bundled" && !i.pinned) a.unpinned++;
+      if (i.edited) a.edited++;
+      if (Array.isArray(i.policy)) a.refused++;
+    }
+  }
+  const rows = Object.values(by).map((a) => Object.assign(a, { machines: [...a.machines].sort(), versions: [...a.versions].sort() }))
+    .sort((x, y) => x.name.localeCompare(y.name));
+  if (flags.json) return emitJSON({ reports, units: rows });
+  for (const a of rows)
+    console.log(`${a.kind} ${a.name}  ${a.source}  on ${a.machines.length} machine(s)  version(s) ${a.versions.join(", ")}` +
+                (a.unpinned ? `  ${a.unpinned} unpinned` : "") + (a.edited ? `  ${a.edited} edited` : "") + (a.refused ? `  ${a.refused} REFUSED by policy` : ""));
+  console.log(`\n${rows.length} distinct install(s) across ${reports} report(s).`);
+}
+
+/* skilldrop audit verify|show [<file>] — the append-only log install, update and uninstall
+   write when a policy turns it on (or SKILLDROP_AUDIT_LOG names a file). */
+function auditCmd(args) {
+  const sub = args._.shift();
+  const policy = gov.load(args.flags);
+  const file = args._[0] || process.env.SKILLDROP_AUDIT_LOG || (policy && policy.audit && (policy.audit.log || "~/.config/skilldrop/audit.jsonl"));
+  if (!file) die("no audit log: pass a file, set SKILLDROP_AUDIT_LOG, or turn it on in the policy (audit.log)");
+  if (sub === "verify") {
+    const r = gov.verifyAudit(file);
+    if (r.ok) return console.log(`ok: ${r.count} entr${r.count === 1 ? "y" : "ies"}, each following the one before it`);
+    console.log(`BROKEN at line ${r.line} of ${r.count}: ${r.why}`);
+    process.exitCode = 1;
+  } else if (sub === "show") {
+    const lines = fs.readFileSync(path.resolve(file.replace(/^~(?=\/)/, os.homedir())), "utf8").split("\n").filter(Boolean);
+    const n = args.flags.last && args.flags.last !== true ? Math.max(1, parseInt(args.flags.last, 10) || 20) : 20;
+    for (const line of lines.slice(-n)) {
+      const e = JSON.parse(line);
+      console.log(`${e.ts}  ${e.action} ${e.kind} ${e.name}${e.version ? "@" + e.version : ""}  ${e.source || ""}${e.pinned ? " (pinned)" : ""}  ${e.target || ""}${e.actor ? "  by " + e.actor : ""}`);
+    }
+  } else die("usage: skilldrop audit verify|show [<file>] [--last N]");
+}
+
+/* skilldrop verify-mirror <dir> — is an internal mirror still what skilldrop package made? */
+function verifyMirrorCmd(args) {
+  const r = gov.verifyMirror(args._[0] || die("usage: skilldrop verify-mirror <dir>"));
+  if (args.flags.json) { emitJSON(r); if (r.missing.length || r.changed.length || r.extra.length) process.exitCode = 1; return; }
+  for (const f of r.changed) console.log(`changed  ${f}`);
+  for (const f of r.missing) console.log(`missing  ${f}`);
+  for (const f of r.extra) console.log(`added    ${f}  (not in MIRROR.json)`);
+  const bad = r.changed.length + r.missing.length + r.extra.length;
+  console.log(bad ? `\n${bad} file(s) differ from what was packaged from '${r.source}' on ${r.created}.`
+                  : `ok: all ${r.files} file(s) match what was packaged from '${r.source}' on ${r.created}.`);
+  if (bad) process.exitCode = 1;
+}
 
 function bootstrap() {
   const settingsPath = path.join(os.homedir(), ".claude", "settings.json");
@@ -2178,7 +2361,8 @@ function bootstrap() {
 
 const args = parseArgs(process.argv.slice(2));
 const cmd = args._.shift();
-const commands = { list, info, packs: listPacks, profiles: listProfiles, agents: listAgents, loops: listLoops, install, update, outdated, uninstall, diff, doctor, "new-skill": newSkill, "loop-stats": loopStats, "init-catalogue": initCatalogue, package: packageCatalogue, validate: validateCmd, scan, bootstrap };
+const commands = { list, info, packs: listPacks, profiles: listProfiles, agents: listAgents, loops: listLoops, install, update, outdated, uninstall, diff, doctor, "new-skill": newSkill, "loop-stats": loopStats, "init-catalogue": initCatalogue, package: packageCatalogue, validate: validateCmd, scan, bootstrap,
+                   inventory, audit: auditCmd, "verify-mirror": verifyMirrorCmd };
 if (args.flags.version || cmd === "version") console.log(readJSON(path.join(ROOT, "package.json")).version);
 else if (!cmd || cmd === "help" || args.flags.help) console.log(HELP);
 else if (commands[cmd]) commands[cmd](args);
