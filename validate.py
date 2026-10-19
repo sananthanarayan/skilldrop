@@ -824,6 +824,28 @@ def main():
                 if t and not os.path.exists(os.path.normpath(os.path.join(d0, t))):
                     fail("links", f"{os.path.relpath(mf, ROOT)}: dangling link -> {target}")
 
+    # The npm package's supply chain. Zero dependencies is what makes `npm audit` and an npm
+    # Dependabot unnecessary; the day one is added, both become necessary, so adding one must
+    # bring a lockfile and the npm ecosystem in .github/dependabot.yml with it. And the package
+    # runs no code at install: an install-time lifecycle script would run on every user's
+    # machine during `npm install`, against SECURITY.md's "install copies files".
+    pkg = json.load(open(os.path.join(ROOT, "package.json")))
+    deps = [k for k in ("dependencies", "devDependencies", "optionalDependencies", "peerDependencies",
+                        "bundleDependencies", "bundledDependencies") if pkg.get(k)]
+    if deps:
+        tracked = set(subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True).stdout.split())
+        if not ({"package-lock.json", "npm-shrinkwrap.json"} & tracked):
+            fail("package.json", f"declares {', '.join(deps)} but no lockfile is committed: run `npm install --package-lock-only` "
+                                 "and commit package-lock.json, so versions are pinned and `npm audit` has something to check")
+        dependabot = open(os.path.join(ROOT, ".github", "dependabot.yml"), encoding="utf-8").read()
+        if not re.search(r"package-ecosystem:\s*[\"']?npm[\"']?\s*$", dependabot, re.M):
+            fail("package.json", f"declares {', '.join(deps)}, but .github/dependabot.yml has no npm ecosystem: add one, and drop "
+                                 "the 'zero dependencies' note there and in SECURITY.md")
+    for hook in ("preinstall", "install", "postinstall", "prepare", "preprepare", "postprepare"):
+        if (pkg.get("scripts") or {}).get(hook):
+            fail("package.json", f"scripts.{hook} would run on every user's machine during `npm install` — the package "
+                                 "must run no code at install (SECURITY.md)")
+
     # RFC-0049: the maintainers' own identity (read from this machine, never committed) stays
     # out of the tree; matches are reported by kind, never printed
     import privacy
