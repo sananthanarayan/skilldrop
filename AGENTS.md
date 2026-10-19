@@ -69,6 +69,7 @@ node bin/skilldrop.js package <dir> [--pack a,b] [--skills x,y]  # vetted subset
 node bin/skilldrop.js init-catalogue <dir> [--pack <name>]       # start a private catalogue
 node bin/skilldrop.js loop-stats [<file>] [--days N]             # summarise the opt-in loop run log (SKILLDROP_LOOP_LOG)
 node bin/skilldrop.js install ... --policy <file>                # enforce an organisation policy (also SKILLDROP_POLICY) (RFC-0050)
+node bin/skilldrop.js install <skill...> --project --contain     # Claude Code's strict sandbox for this project, sized to what the skills declare (RFC-0051)
 node bin/skilldrop.js inventory [--json] [--label <m>] | --merge <files...>   # every install on a machine; many machines in one view
 node bin/skilldrop.js audit verify|show [<file>]                 # the opt-in audit log's hash chain, or its last entries
 node bin/skilldrop.js verify-mirror <dir>                        # a mirror still matches the SHA-256s in its MIRROR.json

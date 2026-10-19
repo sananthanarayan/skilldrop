@@ -30,6 +30,7 @@ key this version doesn't know: the command stops and nothing changes.
 | `skills.allow` | Names of skills, loops and agents allowed; `*` matches anything | any name |
 | `skills.block` | Names refused even when allowed | none |
 | `scan.max` | The worst supply-chain scan finding a skill may carry: `none`, `low` (🟨), `medium` (🟧), `high` (🟥). Findings in eval fixtures and example inputs never count | no limit |
+| `require_containment` | `true`: an install must be contained ([RFC-0051](../../docs/rfcs/0051-declared-containment.md)): `--contain`, or a Claude Code project whose own settings already run the strict sandbox. Other tools and user-scope installs are refused, and `--contain` also sets `sandbox.failIfUnavailable` | not required |
 | `audit.log` | Where the audit log goes | `~/.config/skilldrop/audit.jsonl` |
 | `audit.actor` | `"pseudonym"`, `"none"`, `"os-user"`, or `{"fixed": "<name>"}` | `"pseudonym"` |
 | `audit.salt_env` | The variable holding the secret salt for pseudonyms | `SKILLDROP_AUDIT_SALT` |
@@ -42,6 +43,30 @@ key this version doesn't know: the command stops and nothing changes.
 | `update` | Skips each skill or loop the policy now refuses; the installed copy stays as it is |
 | `inventory` | Marks each install the policy refuses, and exits 1 if there is one |
 | `install`, `update`, `uninstall` with `audit` set | Append one line per skill, loop or agent |
+
+## Containment
+
+`install --project --contain` (or `--local --contain`), [RFC-0051](../../docs/rfcs/0051-declared-containment.md),
+changes `.claude/settings.local.json` beside the installed skills, and only by tightening:
+
+| Setting | Set to | When |
+|---|---|---|
+| `sandbox.enabled` | `true` | always |
+| `sandbox.allowUnsandboxedCommands` | `false`: a failed command can't retry outside the sandbox | always |
+| `sandbox.network.allowedDomains` | the hosts the skills declare in `permissions.network` | only if no settings file the session reads already turns the sandbox on; otherwise the hosts are named and left to you |
+| `sandbox.failIfUnavailable` | `true`: Claude Code won't start without the sandbox | when the policy has `require_containment` |
+
+| Case | What happens |
+|---|---|
+| A skill declares `permissions.files: "anywhere"` | Refused before anything is copied |
+| User-scope install | Refused: user settings reach every project |
+| `--ide` other than Claude Code, or `--dest` | Prints what the skills expect; refused under `require_containment` |
+| The settings file isn't valid JSON | Refused before anything is copied |
+| The file isn't ignored by git | Listed in `.git/info/exclude` |
+| Existing `excludedCommands` | Kept, and named: they run outside the sandbox |
+
+The sandbox covers shell commands and the processes they start. Claude Code's file and web
+tools, MCP servers and hooks follow permission rules instead.
 
 ## The audit log
 

@@ -46,6 +46,11 @@ export SKILLDROP_POLICY=/etc/skilldrop/policy.json
 From then on, `install` refuses anything the policy forbids before it writes a file, and
 names the rule; `update` skips what the policy now refuses and leaves it as it is.
 
+## Contain what skills can reach
+
+Install into projects with `--contain`, and add `"require_containment": true` to the policy to
+make it the rule. [Contain a skill's reach](contain-skills.md) has the steps.
+
 ## Turn on the audit log
 
 With `audit` in the policy, every install, update and uninstall appends a line to

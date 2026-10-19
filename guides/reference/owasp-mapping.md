@@ -36,13 +36,13 @@ v1.0-2026 (IDs and titles from the project's repository) and the
 | **AST03 Over-Privileged Skills** | A skill that ships scripts declares `permissions`: the hosts it contacts, the programs it runs, and where it writes. `skilldrop scan` checks the scripts against it and raises any undeclared network call, command or broad write as a 🟥 finding, and `skilldrop validate` fails a catalogue that has one. All 24 bundled script skills declare theirs. Agents declare `tools:`, and projecting an agent to another IDE drops tools that have no equivalent, with a warning. | Partial | The check is only as good as the scan's patterns, so code that hides what it does can pass. Instruction-only skills (no scripts) declare nothing, though their prose can still tell an agent to run things. |
 | **AST04 Insecure Metadata** | The structural gate refuses a whole install if any manifest is invalid JSON, a name doesn't match its folder, or a required field is missing. Frontmatter is read by pattern, never by a YAML loader. Skill names are regex-escaped before use. | Partial | Parsing is safe, but nothing checks meaning: an impersonating name or a misleading description passes. |
 | **AST05 Untrusted External Instructions** | The scan's `remote-instructions` rule flags a skill that tells the agent to fetch instructions, rules or a prompt from a URL at run time. | Partial | A pattern match, so a paraphrase evades it. External material is not hash-pinned. |
-| **AST06 Weak Isolation** | Only at install time: catalog content is never executed, and hooks are opt-in (`--with-hooks`) and printed. | Not covered | Installed skills run with the host agent's full permissions. skilldrop provides no sandbox. |
+| **AST06 Weak Isolation** | `install --project --contain` turns on Claude Code's strict sandbox for the project, sized to what the skills declare in `permissions`: shell commands write only to the working directory and temp, and reach only the declared hosts ([RFC-0051](../../docs/rfcs/0051-declared-containment.md)). It only tightens settings, refuses a skill that declares writing anywhere, and a policy can require it. At install time, catalog content is never executed and hooks are opt-in. | Partial | The sandbox covers shell commands only: Claude Code's file and web tools, MCP servers and hooks run outside it. It applies to a whole project, not one skill; other tools and native Windows have no sandbox skilldrop can configure; and it is opt-in unless a policy requires it. |
 | **AST07 Update Drift** | The ledger keeps each skill's version, source, commit and a SHA-256 per file. `outdated` compares files as well as versions, so a skill changed upstream under the same version is named, and `update` takes it only with `--changed`. A pinned skill doesn't move until you re-pin it. `update` re-runs the structural gate and the supply-chain scan, keeps your edited files, and `update --dry-run` and `diff` show what would change first. | Covered | Detection needs the catalogue to be fetched; nothing watches it in the background. |
 | **AST08 Poor Scanning** | The scan has a prose rule set aimed at natural-language instructions, kept separate from code rules and tuned not to flag skills that are *about* security. `--json` feeds other tools. | Partial | Pattern matching over prose is the weakness AST08 describes. RFC-0022 deliberately rejects semantic and LLM-assisted review. |
 | **AST09 No Governance** | An organisation policy the installer enforces ([RFC-0050](../../docs/rfcs/0050-org-governance.md)): allowed catalogues, pinning required, skills allowed or blocked, a cap on scan findings. It fails closed, refuses a whole install before writing anything, and `update` skips what it now refuses. `skilldrop inventory` reports every install on a machine and `--merge` combines machines into one view. An opt-in audit log records every install, update and uninstall in a hash chain `skilldrop audit verify` checks, naming a pseudonym by default. `verify-mirror` checks an internal mirror against its `MIRROR.json`. | Covered | Governs installs made with the CLI only: a folder copied by hand or a plugin from the Claude Code marketplace never passes through it. Reports are collected by the organisation's own tooling, not a hosted service. |
 | **AST10 Cross-Platform Reuse** | Installing across platforms is the product: Claude Code, Cursor, Kiro, Codex, Antigravity, Copilot and any folder. The `permissions` block travels inside `manifest.json` to every tool, and `skilldrop info` and third-party installs show it. Agent projection warns when a tool is dropped. | Partial | No target tool reads `permissions` itself; it informs the person installing, and the scan, but nothing enforces it at run time. |
 
-**Covered 2 · Partial 7 · Not covered 1.**
+**Covered 2 · Partial 8 · Not covered 0.**
 
 ## OWASP Top 10 for LLM Applications 2025
 
@@ -63,9 +63,9 @@ v1.0-2026 (IDs and titles from the project's repository) and the
 
 ## The biggest gaps, in order
 
-1. **No run-time isolation** (AST06). Installed skills run with the host agent's full
-   permissions. That belongs to the agent host, not an installer, but a skill could at least
-   say what containment it expects.
+1. **Isolation covers the shell only** (AST06). `--contain` runs a project's shell commands in
+   Claude Code's sandbox, sized to what its skills declare; the agent's other tools, and every
+   other host, stay outside what an installer can configure.
 2. **The scan is pattern matching** (AST08). That's a deliberate trade for a zero-dependency,
    offline CLI, and it limits how much the `permissions` check can prove. The weekly evals and
    human review are the backstop.

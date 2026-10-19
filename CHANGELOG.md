@@ -8,6 +8,11 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.28 — 2026-10-19
+
+- **Contain what a skill can reach.** `skilldrop install <skill> --project --contain` turns on Claude Code's strict sandbox for that project, sized to what the skills declare: shell commands, and everything they start, write only inside the project and reach only the hosts the skills say they need. It only ever tightens your settings, never loosens or widens them, keeps the file out of git, and refuses a skill that says it writes anywhere on disk. It also says plainly what the sandbox doesn't cover (Claude Code's file and web tools, MCP servers, hooks) and how to close that ([RFC-0051](docs/rfcs/0051-declared-containment.md), [how-to](guides/how-to/contain-skills.md)).
+- **A policy can require it.** With `"require_containment": true`, an install that isn't contained is refused, and Claude Code won't start in a contained project if its sandbox can't. `skilldrop inventory` shows which projects are contained.
+
 ## 0.16.27 — 2026-10-19
 
 - **An organisation can decide what its people install.** Hand out a policy file (`--policy`, `SKILLDROP_POLICY`, or `~/.config/skilldrop/policy.json`) and the installer enforces it: only the catalogues you allow, pinned to a commit if you say so, only the skills you allow, none you block, and nothing whose supply-chain scan finds worse than you accept. A refused install writes nothing and names the rule; `update` leaves refused skills as they are. A policy with a mistake stops the command rather than being half-applied ([RFC-0050](docs/rfcs/0050-org-governance.md), [how-to](guides/how-to/govern-skills.md)).
