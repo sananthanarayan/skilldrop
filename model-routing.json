@@ -278,6 +278,10 @@
       "tier": "standard",
       "rationale": "Structured synthesis from a content list into groups, labels and a nav model against fixed IA practice. Grouping needs judgment, but the method and the validation plan bound it."
     },
+    "interactive-diagram": {
+      "tier": "standard",
+      "rationale": "Tracing a path through code and citing each part is careful reading, not adversarial judgement; the layout and the checks are done by the script."
+    },
     "job-fit-analysis": {
       "tier": "standard",
       "rationale": "Matches a posting's requirements to resume lines and reports the gaps. The rule is mechanical: no line in the resume, no credit."

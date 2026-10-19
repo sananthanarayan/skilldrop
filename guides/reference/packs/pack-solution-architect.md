@@ -14,7 +14,7 @@ Design-phase artifacts: diagrams, decision records, design docs, contracts, sche
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack solution-architect` |
-| Skills | 9 plus 4 from core |
+| Skills | 10 plus 4 from core |
 | Loops | design |
 | How-to | [Use the Solution architect pack](../../how-to/packs/use-the-solution-architect-pack.md) |
 
@@ -135,6 +135,32 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/solution-architect/skil
 - **Don't dump 5 MB of JSON** to the user. Filter to pages/frames/groups (3 levels) and summarize.
 - **Confirm before posting comments.** A comment is visible to anyone with file access — show the user the exact text and the file URL before calling `post_comment.py`.
 - **Handle 429s.** The Figma API rate-limits (~25 req/min for some endpoints). If a script returns 429, back off and retry; don't loop.
+
+### `interactive-diagram`
+
+Turn a codebase, a system description, a process or a database schema into one self-contained interactive HTML diagram (architecture, workflow, data flow, lifecycle, ERD or sequence) where every box and arrow cites the file and line or the words it came from, anything inferred is drawn dashed as an assumption, and each cited line is checked against the repository before the page is written. Laid out automatically, opens offline with no CDN, and exports SVG, PNG and Mermaid.
+
+Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skills/interactive-diagram/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/interactive-diagram/)
+
+**Use it when** the user asks to "visualize", "map" or "make an interactive diagram of" a repo, a request path, a pipeline, an approval process or a set of tables, or wants a diagram they can click through and share as one file.
+
+**Needs:** Python 3 for its scripts (standard library only).
+
+**A good result:**
+
+- **Every part and connection cites its source or is drawn as an assumption.** No exceptions for the "obvious" ones.
+- **Every file citation was checked** against the repository, with the count in the reply.
+- **Nothing on the map comes only from a README, a plan or what such systems usually have.**
+- **The map answers one stated question,** and what was left out is said.
+- **One HTML file that works offline:** no CDN, no external fonts, no network requests.
+- **The reply opens with the link and the takeaway,** not with how it was made.
+
+**Not for:**
+
+- A Mermaid, PlantUML or C4 diagram to paste into a doc — use `architecture-diagrams`
+- An as-is architecture write-up in C4 levels from infrastructure files — use `reverse-architecture`
+- Fixing or rendering an existing Mermaid diagram — use `mermaid-render`
+- Charts of numbers, dashboards or metrics — this draws structure, not data
 
 ### `nfr-spec`
 

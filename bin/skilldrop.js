@@ -485,14 +485,16 @@ function scanSkill(cat, s) {
     try { body = fs.readFileSync(file, "utf8"); } catch (e) { continue; }
     const rules = isScript ? SCRIPT_RULES : PROSE_RULES;
     // Eval fixtures are benchmark input: a sample repo, a risky script for a reviewer to catch.
-    // The skill never runs or follows them, so they are listed, not raised.
-    const fixture = rel.split(path.sep).join("/").startsWith("evals/files/");
+    // Example inputs are the material a worked example was made from. The skill never runs or
+    // follows either, so they are listed, not raised.
+    const relPosix = rel.split(path.sep).join("/");
+    const fixture = relPosix.startsWith("evals/files/") || relPosix.startsWith("examples/inputs/");
     body.split(/\r?\n/).forEach((line, i) => {
       if (line.length > 400) return; // minified/data line — not reviewable prose or code
       for (const r of rules) {
         if (r.re.test(line))
           findings.push({ sev: fixture ? "⚪" : r.sev, id: r.id, fixture,
-                          why: fixture ? `in an eval fixture, which the skill never runs: ${r.why}` : r.why,
+                          why: fixture ? `in ${relPosix.startsWith("examples/") ? "an example's input" : "an eval fixture"}, which the skill never runs: ${r.why}` : r.why,
                           owasp: r.owasp, file: rel, line: i + 1, text: line.trim().slice(0, 120) });
       }
     });

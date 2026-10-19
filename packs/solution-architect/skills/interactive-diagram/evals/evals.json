@@ -1,0 +1,74 @@
+{
+  "skill_name": "interactive-diagram",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "This is the Larder repo. I'm onboarding two new developers next week. Can you make an interactive diagram, one HTML file I can send them, of what happens when a customer places an order?",
+      "assertions": [
+        "An HTML file is written that works on its own offline: it loads no script, stylesheet or font from a CDN or any http(s) URL",
+        "The diagram shows the order path the code shows: the web checkout posting to the API's POST /orders, the API validating and inserting into Postgres, pushing an email job onto the Redis 'emails' list, and the worker popping it and posting to the mailer service",
+        "Kafka does not appear as part of the order path; if it is mentioned at all, it is described as planned in the README and not in the code",
+        "No payment step or payment provider appears in the order path (the README says payment is taken in the shop on collection)",
+        "It does not add parts the repo does not contain, such as a load balancer, CDN, auth service, cache or separate analytics service",
+        "The parts or connections in the diagram, or the page's text, name the files they come from (for example api/app.py, worker/worker.py, web/checkout.js, docker-compose.yml)",
+        "Anything drawn that the code does not show (for example who hosts the mailer, or what happens after the email is sent) is marked as an assumption, or left off",
+        "The reply opens with where the file is and what the diagram shows, in a few sentences, without a long account of how it was built"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Can you turn this into an interactive flowchart I can share with the team as a single file? Here's how expense claims work at our office: you fill in a claim in the finance portal and attach the receipts. Your line manager approves it. If it's over £500 it also needs the finance director. Finance then checks the receipts match and pays it in the next payroll run. Claims older than 90 days are rejected automatically when you submit them.",
+      "assertions": [
+        "An HTML file is written that works on its own offline, loading nothing from a CDN or any http(s) URL",
+        "The flow includes, in order: submit in the finance portal with receipts, the automatic rejection of claims older than 90 days, line manager approval, the over £500 decision leading to finance director approval, finance checking receipts, and payment in the next payroll run",
+        "The over £500 rule and the 90-day rule are drawn as decisions or branches, not as plain steps",
+        "What happens when the line manager or finance director declines, or when receipts don't match, is not stated in the description, so it is either left off or visibly marked as an assumption, never drawn as a definite step",
+        "It adds no steps, roles, systems or thresholds the description does not contain (for example no budget-holder step, no expense card, no second threshold)",
+        "The reply is short: where the file is, what it shows, and which paths were not covered by the description"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I need an interactive ERD of schema.sql for the team wiki - something people can click on to see the columns. One self-contained HTML file.",
+      "assertions": [
+        "An HTML file is written that works on its own offline, loading nothing from a CDN or any http(s) URL",
+        "All five tables appear (clinics, practitioners, patients, appointments, appointment_notes) with every column the schema defines and no column it does not",
+        "The four foreign keys are drawn as relationships with the right direction: practitioners to clinics, appointments to practitioners, appointments to patients, appointment_notes to appointments",
+        "booked_by_user_id is shown as a column but no relationship is drawn for it to a users or staff table as if it existed; if it is mentioned, the reply or page says it has no table in this schema",
+        "Primary keys and foreign keys are marked on their columns, and appointment_notes.appointment_id is shown as both",
+        "appointment_notes to appointments is shown as one-to-one or at most one note per appointment, not one-to-many",
+        "It invents no tables, columns, indexes or constraints that schema.sql does not contain"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "This is castbox-media, the backend for our podcast hosting platform. I need to explain to the new on-call engineer what actually happens when a creator's episode upload finishes and the storage webhook hits us, up to the point where we stop being in control. Make me an interactive diagram of that path I can click through and send them as one file.",
+      "assertions": [
+        "Writes one self-contained HTML file that opens offline: no <script src>, <link href>, @import or font URL pointing at http(s), and the diagram's code and styles are inline",
+        "Shows the path in order: the object store's webhook to POST /webhooks/storage (src/server.js), handleStorageWebhook checking the x-storage-signature HMAC and the object.finalized event type (src/handlers/storageWebhook.js), the episodes row set to 'uploaded' in PostgreSQL, a 'transcribe-episode' job added to the Redis/BullMQ 'media' queue, the worker (src/worker.js) running transcribeEpisode (src/jobs/transcribeEpisode.js), submitTranscription POSTing to the transcription API's /v2/jobs (src/clients/transcription.js), the episode set to 'transcribing' with its transcription_job_id, and the processing email sent over SMTP via src/mailer.js",
+        "Shows at least one of the branches the code takes: bad signature returns 401, non-finalized events return 204 and are ignored, an unknown or already-taken upload_key is ignored, the email only goes out when notify_on_processing is true, or the episode is marked 'failed' after the 3 attempts are used up",
+        "Boxes and arrows cite the source file (and line where given) they came from, and every cited file is one that exists in the repo",
+        "Does not draw transcoding, the search indexing or the CDN purge as steps on this path: the README and config/default.json mention them but no code on the upload path calls them (search is only used by the nightly 'nightly-reindex' job, and transcoding and CDN purge appear in no code). If shown at all, they are marked as not called or as claims from the README",
+        "Keeps the other paths out of the main flow: the GET /feeds/:showId.xml RSS route and the 03:00 nightly-reindex job are either absent or clearly marked as separate from the upload path",
+        "Does not present what the transcription service does after accepting the job as fact: the callback to /webhooks/transcription is dashed, marked as an assumption or left out, and the reply or diagram notes that src/server.js registers no /webhooks/transcription route, so nothing in this repo receives the result or moves the episode to 'published'",
+        "The reply opens with where the HTML file is and the main takeaway (for example that the app's part ends once the job is submitted and the email sent, and the transcript callback has no handler), not with a long account of how the diagram was made"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-18",
+      "prompt": "Can you make an interactive sequence diagram of how a repair request goes through at Fernhill Housing Co-op? I want to show it to our board next week as one file they can open. Here's how it works as far as I know:\n\nA tenant phones the contact centre or fills in the web form to report a repair. The contact centre logs it in our housing management system (HMS) and gives the tenant a reference number. Every weekday morning the repairs coordinator goes through the new jobs in HMS, decides the priority (emergency = attend within 24 hours, routine = within 20 working days) and assigns it to one of our two contractors by emailing them the job sheet. The contractor rings the tenant to book a visit, then does the work. After the visit the contractor marks the job complete in their own portal. At the end of each month the contractor sends us an invoice listing the jobs they finished, and finance closes those jobs in HMS when they pay the invoice.\n\nIf the contractor needs to order parts I'm honestly not sure what happens, I think they tell the coordinator? We used to post the tenant a confirmation letter when a job was closed but we stopped doing that in 2025. There's also the annual gas safety check programme but that's a different process, leave it out.",
+      "assertions": [
+        "Writes one self-contained HTML file that opens offline: no <script src>, <link href>, @import or font URL pointing at http(s), and the diagram's code and styles are inline",
+        "It is a sequence diagram with at least these participants: tenant, contact centre, HMS, repairs coordinator, contractor and finance (the contractor's portal may be its own participant or part of the contractor)",
+        "The messages run in this order: tenant reports by phone or web form; contact centre logs the job in HMS and gives the tenant a reference number; the coordinator reviews new jobs each weekday morning, sets the priority (emergency 24 hours, routine 20 working days) and emails the job sheet to a contractor; the contractor rings the tenant to book and does the visit; the contractor marks the job complete in its own portal; the contractor sends a monthly invoice to finance; finance closes the jobs in HMS on payment",
+        "The parts-ordering step is drawn dashed or labelled as an assumption or unconfirmed (the user said they are not sure), not as a solid confirmed message",
+        "The posted confirmation letter does not appear as a current step (absent, or shown only as stopped in 2025), and the gas safety check programme does not appear",
+        "Points out at least one hand-off gap the description reveals: nothing tells the tenant the repair is finished or closed; HMS only learns a job is done when finance pays the monthly invoice, so jobs stay open in HMS for weeks; or an emergency reported after the morning review waits until the next weekday morning before the coordinator sees it",
+        "Each message carries or cites the words from the user's description it came from, and the diagram adds no participants or systems the user did not describe (for example no SMS service, CRM, scheduling tool or tenant app)",
+        "The reply opens with where the HTML file is and the main takeaway (such as the gap found), not with a long account of how the diagram was made"
+      ]
+    }
+  ]
+}
