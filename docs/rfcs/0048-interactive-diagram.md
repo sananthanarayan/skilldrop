@@ -145,3 +145,19 @@ Java source), two trials, two judges, `claude-sonnet-5`:
 The fresh pairs clear the bar of half with both judges. The second judge still prefers plain
 Claude Code in about half the pairs overall, most often for a page it finds easier to read.
 Evals 6 to 11 have now had their reasons read, so the next revision needs evals of its own.
+
+## Tried and reverted: a reply drafted by the script (0.16.25)
+
+To make the reply open with the link, the script printed a whole reply to send (link,
+summary, findings, assumptions, notes, citation count). Measured on all thirteen evals, two
+trials: 13 of 26 replies opened with the link, against 14 of 22 without it, because the
+agent still wrote a line about the build and then pasted the draft under it. Judge 1's
+preference on evals 1 to 11 fell from 20 to 15 of 22 with the replies made longer. It was
+reverted. The released skill, on two new evals written blind (12 and 13: a library-holds
+repository and an adoption process told in words), was preferred in 4 and 3 of 4 pairs, with
+66% of checks met against 38%; one of its four replies opened with the link.
+
+What is left is the agent's habit of reporting a tool run before its result. Three changes
+to what the skill says and prints have not moved it past about two in three, and the judges'
+preference does not follow it. The next attempt should change something the agent can't
+narrate around, or accept the line and stop checking for it.

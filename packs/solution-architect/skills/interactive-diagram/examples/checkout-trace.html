@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" data-theme-default="auto"><head><meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-KdTstAM29gVIP104X7Tju5/PTeQKbRDMMG1TjJdsOyI='; style-src 'unsafe-inline'; img-src data: blob:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-dOZxqp+jotySWDDWlSu2y160GhZpNuhUrNadh3tdhNM='; style-src 'unsafe-inline'; img-src data: blob:; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <!-- One self-contained file: no external scripts, styles, fonts or requests. The policy above makes the browser refuse any. -->
 <title>Where a slow checkout spent its time</title><meta name="generator" content="interactive-diagram (skilldrop)"></head>
@@ -102,7 +102,7 @@ aside table.facts{border-collapse:collapse;font-size:13px;margin:6px 0}aside tab
 var DATA=JSON.parse(document.getElementById('diagram-data').textContent);var WD=DATA.words;
 var svg=document.getElementById('map'),stage=document.getElementById('stage'),panel=document.getElementById('panel');
 var root=document.documentElement;
-var pref=localStorage.getItem('idg-theme')||root.getAttribute('data-theme-default');
+var pref=null;try{pref=localStorage.getItem('idg-theme')}catch(e){}pref=pref||root.getAttribute('data-theme-default');
 if(pref==='auto'||!pref){pref=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
 root.setAttribute('data-theme',pref);
 var W=+svg.getAttribute('width'),H=+svg.getAttribute('height');svg.removeAttribute('width');svg.removeAttribute('height');

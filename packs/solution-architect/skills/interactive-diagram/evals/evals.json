@@ -159,6 +159,36 @@
         "Each class and relation cites the file it came from, with a line where one applies (for example Greenhouse.java line 12 or 21 for the zones composition, AbstractSensor.java line 7 for implements Sensor)",
         "The reply's first line is a link to or the path of the HTML file, followed by the takeaway: one interface, one abstract base and two sensors; Greenhouse owns its Zones but only references AlertService; and WateringSchedule is named in a comment but missing from the code"
       ]
+    },
+    {
+      "id": 12,
+      "held_out": "2026-10-19",
+      "prompt": "This is our library's holds service. A new developer starts Monday and I want to hand them one interactive diagram of how a hold works: a patron asks for a book, and later gets told it's ready to collect. Just that journey, nothing else. Can you make it?",
+      "assertions": [
+        "Writes one self-contained .html file that opens offline: no <script src>, stylesheet link, @import or font URL pointing at http(s) or a CDN",
+        "Draws the place-hold path as the code does it: POST /holds (app/api.py) -> holds.place_hold, which refuses when the card is missing or expired or the patron already has 10 active holds, inserts a 'waiting' hold, then either takes an on-shelf copy and makes the hold ready, or leaves it waiting and returns the queue position counted from the holds table",
+        "Draws the second way a hold becomes ready: POST /checkins -> holds.on_checkin, which picks the oldest waiting hold for that title (ORDER BY placed_at) and calls _make_ready, or puts the copy back on the shelf when nobody is waiting; both routes run through _make_ready -> notify.send_ready -> an HTTP POST to the NOTIFY_WEBHOOK_URL webhook",
+        "Does not draw Redis as part of the hold journey, even though README.md says Redis keeps each patron's place in the hold queue: the code works out the position from Postgres and only catalog.search uses Redis. The diagram or reply points out that the README and the code disagree",
+        "Leaves out the behaviours the user didn't ask about: catalogue search (GET /search) and the nightly fines job (jobs/fines.py) are not drawn as steps in the hold journey (at most shown greyed out or listed as out of scope)",
+        "Treats what sits behind the webhook as unknown: who receives hold.ready and how the patron is actually emailed or texted is drawn dashed or marked unknown, with no made-up provider name, and it notes that the code makes one attempt with a 5-second timeout, only logs a failure, and never retries",
+        "Boxes and arrows cite real places in the fixture files (for example app/holds.py place_hold near line 13, on_checkin near line 45, _make_ready near line 59, app/notify.py requests.post near line 26), and no component, table, queue or step appears that the repository doesn't contain",
+        "The reply's first line is the path or link to the HTML file, followed straight away by the takeaway (such as the two ways a hold becomes ready, or the README/Redis mismatch); no build log, tool output or status report comes before it"
+      ]
+    },
+    {
+      "id": 13,
+      "held_out": "2026-10-19",
+      "prompt": "I coordinate adoptions at a small animal rescue (call it Hollyford Rescue) and I'd love an interactive diagram of our adoption process to share with new volunteers. Here's how it goes, as best I can explain it:\n\nSomeone spots an animal on our website and fills in the online enquiry. A volunteer rings them within 3 days for a chat. If it sounds like a fit we email them the full application form; if not, we point them to other rescues. When the application comes back we take up two references - one has to be their vet if they've had pets before. Then there's a home visit. We do a home visit for every adoption, except cats going to someone who's adopted from us before - unless they've moved house since, in which case we do it again. After that comes a meet-and-greet at the shelter, and dogs also meet any dog already living in the household. The adoption panel sits on Thursdays and approves or declines. If they decline we email the applicant, and they can reapply after 3 months. If approved, we hold the animal for them for 48 hours. They pay the fee (150 pounds for dogs, 90 for cats) and sign the adoption contract. Our vet does a final health check and transfers the microchip, then it's collection day. We ring them two weeks after collection, and someone visits at six months.",
+      "assertions": [
+        "Writes one self-contained .html file that opens offline: no <script src>, stylesheet link, @import or font URL pointing at http(s) or a CDN",
+        "All the steps appear in the order described, none merged away: online enquiry, phone chat within 3 days, application form emailed, application returned, two references, home visit, meet-and-greet, Thursday panel, 48-hour hold, fee and contract, vet check and microchip transfer, collection, two-week call, six-month visit",
+        "Gets the home-visit rule right: a home visit by default; skipped only for a cat going to a previous adopter who has not moved house; dogs always get one; a previous cat adopter who has moved gets one again. It does not draw 'previous adopters skip the home visit' without the cat and moved-house conditions",
+        "Shows the two branches the user gave: not a fit after the phone chat -> pointed to other rescues; panel declines -> email, can reapply after 3 months. The panel step says it sits on Thursdays",
+        "Gets the smaller conditions right: the vet must be one of the two references only if the applicant has had pets before; only dogs meet the household's resident dog; the fee is 150 pounds for a dog and 90 for a cat",
+        "Flags the gap: the description never says what happens if the 48 hours run out before the fee is paid and the contract signed. That outcome is drawn dashed or marked as an open question, and the reply raises it, rather than being drawn as a solid step",
+        "Nothing is invented: no step, fee, deposit, timing, role or outcome the user didn't describe (for example no path for a failed reference or a failed home visit) is drawn as fact; anything like that is dashed and labelled as an assumption. Steps cite the user's own words as their source",
+        "The reply's first line is the path or link to the HTML file, followed straight away by the takeaway (such as the 48-hour gap or the home-visit exception); no build log, tool output or status report comes before it"
+      ]
     }
   ]
 }

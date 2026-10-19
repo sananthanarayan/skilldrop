@@ -30,7 +30,7 @@ import re
 import catalog
 from build_docs import render_md, collect_guides, parse_frontmatter, _slug
 from build_site import (collect, card, esc, loops, site_nav, example_parts, head_meta, ld, breadcrumbs_ld, md_plain,
-                        NAV_CSS, REPO_URL, SITE_URL)
+                        NAV_CSS, REPO_URL, SITE_URL, gallery, GALLERY_CSS)
 from build_catalogue import CSS
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -196,7 +196,7 @@ def shell(title, desc, canonical, depth, body, current=None, extra_head="", root
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#111114" media="(prefers-color-scheme: dark)">
 <style>
-{CSS}{NAV_CSS}{PAGE_CSS}</style>
+{CSS}{NAV_CSS}{PAGE_CSS}{GALLERY_CSS}</style>
 </head>
 <body>
 {site_nav(root, current)}
@@ -550,10 +550,9 @@ def skill_page(s, by_name, packs, outcome_of):
     live = live_examples(name)
     if live:
         parts.append('<section aria-labelledby="live"><h2 id="live">Live examples</h2>'
-                     '<p>Pages this skill made, as it made them. Each one is a single file that works offline.</p><ul>'
-                     + "".join(f'<li><a href="examples/{esc(f)}">{esc(t)}</a> &middot; '
-                               f'<a href="{REPO_URL}/blob/main/{esc(s["path"])}/examples/{esc(f)}">source</a></li>'
-                               for f, t, _ in live) + "</ul></section>")
+                     '<p>Pages this skill made, as it made them. Each one is a single file that works offline; '
+                     f'the specs and inputs they were built from are <a href="{REPO_URL}/tree/main/{esc(s["path"])}/examples">in the repo</a>.</p>'
+                     + gallery([(name, f, t) for f, t, _ in live], root="../../", show_skill=False) + "</section>")
     ex = example_parts(name)
     if ex:
         ex_title, ex_in, ex_out, ex_note, ex_rel = ex

@@ -8,6 +8,12 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.25 — 2026-10-19
+
+- **The site shows live examples as a gallery.** The home page and each skill page with finished example pages show them as cards with a live, shrunken preview of the real page, which opens full size when clicked. The previews run in a sandbox with no access to the site and load only when scrolled to.
+- **`interactive-diagram` pages work inside a sandboxed frame** (an embed, or the site's preview), where the browser refuses saved preferences; the theme simply follows the system setting there.
+- **`interactive-diagram` has two more evals written by someone who never read the skill**, a repository's data flow and a process told in words; two blind judges preferred it to plain Claude Code in 4 and 3 of 4 pairs. A reply drafted by the script, tried to make replies open with the link, did not, and was reverted ([RFC-0048](docs/rfcs/0048-interactive-diagram.md)).
+
 ## 0.16.24 — 2026-10-19
 
 - **Commits and content can't publish a maintainer's own identity by accident.** `python3 privacy.py` reads who you are from your own machine (the signed-in Claude account, git config, your user name and home directory, plus anything you list in the git-ignored `.skilldrop-private`) and stops your name, email, organization or home path reaching a commit, a commit message or any tracked file, without ever printing them. Turn the hooks on once per clone with `git config core.hooksPath .githooks`; `validate.py` runs the same scan. CI now fails a push or pull request whose commits use anything but a GitHub noreply email, for every account that commits ([RFC-0049](docs/rfcs/0049-identity-guard.md), [SECURITY.md](SECURITY.md#keeping-your-identity-out)).

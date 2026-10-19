@@ -770,6 +770,47 @@ def example_parts(skill):
     return title, None, body, "", rel
 
 
+def live_examples_all():
+    """(skill, file, title) for every finished page a skill keeps in examples/*.html. The site
+    publishes them beside the skill's page (build_pages.py) and shows them as a gallery."""
+    out = []
+    for s in catalog.skills():
+        d = os.path.join(catalog.skill_dir(s), "examples")
+        for f in sorted(os.listdir(d)) if os.path.isdir(d) else []:
+            if f.endswith(".html"):
+                text = open(os.path.join(d, f), encoding="utf-8").read()
+                m = re.search(r"<title>(.*?)</title>", text, re.S)
+                out.append((s, f, html.unescape(m.group(1).strip()) if m else f))
+    return out
+
+
+def gallery(items, root="", show_skill=True):
+    """Cards with a live, shrunken preview of each page. The preview runs in a sandbox with
+    no access to this site, can't be focused, and loads only when scrolled to."""
+    if not items:
+        return ""
+    cards = "".join(
+        f'<li class="gal__card"><a class="gal__link" href="{root}skills/{esc(s)}/examples/{esc(f)}">'
+        f'<span class="gal__frame" aria-hidden="true"><iframe src="{root}skills/{esc(s)}/examples/{esc(f)}" loading="lazy" '
+        f'sandbox="allow-scripts" scrolling="no" tabindex="-1" title="Preview: {esc(t)}"></iframe></span>'
+        f'<span class="gal__title">{esc(t)}</span>'
+        + (f'<span class="gal__meta"><code>{esc(s)}</code></span>' if show_skill else "") + "</a></li>"
+        for s, f, t in items)
+    return f'<ul class="gal">{cards}</ul>'
+
+
+GALLERY_CSS = """
+.gal { list-style:none; padding:0; margin:1.2rem 0 0; display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:1rem; }
+.gal__link { display:block; border:1px solid var(--border); border-radius:var(--r); background:var(--card); overflow:hidden; text-decoration:none; color:inherit; transition:border-color .15s, transform .15s; }
+.gal__link:hover, .gal__link:focus-visible { border-color:var(--accent); transform:translateY(-2px); }
+.gal__frame { display:block; position:relative; height:180px; overflow:hidden; background:#f7f8fa; border-bottom:1px solid var(--border); }
+.gal__frame iframe { position:absolute; top:0; left:0; width:calc(100% / .22); height:calc(100% / .22); border:0; transform:scale(.22); transform-origin:0 0; pointer-events:none; }
+.gal__title { display:block; padding:.65rem .85rem .1rem; font-weight:600; font-size:.92rem; }
+.gal__meta { display:block; padding:0 .85rem .7rem; font-size:.78rem; color:var(--fg-muted); }
+@media (prefers-reduced-motion: reduce) { .gal__link { transition:none; } .gal__link:hover { transform:none; } }
+"""
+
+
 def proof(skill):
     """The home page's 'see it work' panes: a real input beside the output the skill returned."""
     parts = example_parts(skill)
@@ -1037,6 +1078,8 @@ a {{ color:var(--accent-700); }}
 .pack__who {{ list-style:none; margin:0 0 1rem; padding:0; font-size:.86rem; color:var(--fg-muted); flex:1; }}
 .pack__who li {{ margin:.2rem 0; }}
 .pack__who b {{ color:var(--fg); font-weight:600; }}
+{GALLERY_CSS}
+.gal__head {{ margin:2.4rem 0 .3rem; font-size:1.15rem; }}
 .proof {{ display:grid; grid-template-columns:minmax(0,2fr) minmax(0,3fr); gap:1.2rem; margin-top:1.4rem; }}
 @media (max-width:860px) {{ .proof {{ grid-template-columns:1fr; }} }}
 .proof__pane {{ background:var(--card); border:1px solid var(--border); border-radius:var(--r); overflow:hidden; }}
@@ -1307,6 +1350,7 @@ a {{ color:var(--accent-700); }}
     <h2>One real run: a launch that is not ready yet.</h2>
     <p class="lede">The input is what a team would paste. The output is what <a href="skills/{PROOF_SKILL}/"><code>{PROOF_SKILL}</code></a> returns, unedited, from its worked example. The rollback is fine, so it does not block, but two failure modes nothing would detect send it back.</p>
     {proof_html}
+    {('<h3 class="gal__head" id="live">Or open one: pages a skill made, live</h3><p>Each one is a single file that works offline. Click a part to see the source it came from.</p>' + gallery(live_examples_all())) if live_examples_all() else ''}
   </div>
 </section>
 
