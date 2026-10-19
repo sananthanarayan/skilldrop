@@ -2262,7 +2262,7 @@ JS = r"""
 var DATA=JSON.parse(document.getElementById('diagram-data').textContent);var WD=DATA.words;
 var svg=document.getElementById('map'),stage=document.getElementById('stage'),panel=document.getElementById('panel');
 var root=document.documentElement;
-var pref=localStorage.getItem('idg-theme')||root.getAttribute('data-theme-default');
+var pref=null;try{pref=localStorage.getItem('idg-theme')}catch(e){}pref=pref||root.getAttribute('data-theme-default');
 if(pref==='auto'||!pref){pref=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
 root.setAttribute('data-theme',pref);
 var W=+svg.getAttribute('width'),H=+svg.getAttribute('height');svg.removeAttribute('width');svg.removeAttribute('height');

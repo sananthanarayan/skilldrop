@@ -1,0 +1,18 @@
+database:
+  url: ${DATABASE_URL}
+  pool_size: 5
+
+redis:
+  url: redis://cache.internal:6379/0
+  search_ttl_seconds: 300
+
+notify:
+  webhook_url: ${NOTIFY_WEBHOOK_URL}
+  timeout_seconds: 5
+
+holds:
+  max_active_per_patron: 10
+
+fines:
+  daily_rate_pence: 20
+  cap_pence: 500
