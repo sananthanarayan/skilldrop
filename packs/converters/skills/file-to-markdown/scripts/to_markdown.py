@@ -1104,9 +1104,78 @@ def _pdf_page_plain(page):
     return out
 
 
-def _pdf_page_md(page, rep):
+_BBOX_PAGE = re.compile(r"<page\b.*?</page>", re.S)
+_BBOX_WORD = re.compile(r'<word xMin="([\d.]+)" yMin="([\d.]+)" xMax="([\d.]+)" yMax="([\d.]+)">(.*?)</word>', re.S)
+
+
+def _word_rows(bbox_html):
+    """Each physical line of every page as [(xMin, xMax, height, text)], keyed by its words.
+    `pdftotext -bbox-layout` puts each table cell in a block of its own, so words are
+    regrouped by their vertical position into the rows the layout reading shows."""
+    import html as _html
+    rows = {}
+    for page in _BBOX_PAGE.findall(bbox_html):
+        words = [(float(a), float(b), float(c), float(d), _html.unescape(t)) for a, b, c, d, t in _BBOX_WORD.findall(page)]
+        words.sort(key=lambda w: (round(w[3]), w[0]))
+        line, base = [], None
+        for x0, y0, x1, y1, t in words + [(0, 0, 0, -99, "")]:
+            if base is not None and abs(y1 - base) > 2:
+                line.sort()
+                key = " ".join(w[3] for w in line)
+                if key and key not in rows:
+                    rows[key] = line
+                line = []
+            base = y1
+            if t:
+                line.append((x0, x1, y1 - y0, t))
+    return rows
+
+
+def _finer_cells(region, boxes):
+    """The region's rows split again from where each word sits on the page, or None.
+
+    `pdftotext -layout` turns positions into characters, so two columns whose text sits closer
+    than about two characters (a right-aligned amount beside a left-aligned date) come out one
+    space apart and merge into one cell. A gap between words is a column when it is at least
+    0.6 of the line's height (a word space is about a quarter of it) and, when the table has
+    word spaces to compare with, at least twice the smallest of them, which keeps a monospace
+    font's wide spaces from reading as columns. The new split is used only when every row then
+    has the same number of cells, so a table that already came out right is never changed."""
+    if not boxes:
+        return None
+    found = [boxes.get(" ".join(r.split())) for r in region]
+    if not any(found):
+        return None
+    gaps = []
+    for ws in found:
+        if ws:
+            h = sorted(w[2] for w in ws)[len(ws) // 2]
+            gaps += [(b[0] - a[1], h) for a, b in zip(ws, ws[1:])]
+    small = [g for g, h in gaps if g < 0.6 * h]
+    floor = 2 * min(small) if small else 0
+    rows = []
+    for r, ws in zip(region, found):
+        if not ws:
+            rows.append(_cells(r))
+            continue
+        h = sorted(w[2] for w in ws)[len(ws) // 2]
+        cells, cur = [], [ws[0][3]]
+        for a, b in zip(ws, ws[1:]):
+            g = b[0] - a[1]
+            if g >= 0.6 * h and g >= floor:
+                cells.append(" ".join(cur)); cur = []
+            cur.append(b[3])
+        cells.append(" ".join(cur))
+        rows.append(cells)
+    if len(set(len(c) for c in rows)) != 1 or rows == [_cells(r) for r in region]:
+        return None
+    return rows
+
+
+def _pdf_page_md(page, rep, fine=None):
     """One page of `pdftotext -layout` text -> Markdown. Layout mode keeps line breaks,
-    indentation and column alignment, which is what tables and lists are recovered from."""
+    indentation and column alignment, which is what tables and lists are recovered from.
+    `fine` maps a line's words to where each word sits on the page (see _finer_cells)."""
     lines = page.splitlines()
     out, i, n = [], 0, len(lines)
     while i < n:
@@ -1133,7 +1202,16 @@ def _pdf_page_md(page, rep):
                     break
             if rows >= 2:
                 widths = set(len(_cells(r)) for r in region)
-                if len(widths) == 1 and rows == len(region):
+                finer = _finer_cells(region, fine) if rows == len(region) else None
+                if finer and (len(widths) != 1 or len(finer[0]) > len(_cells(region[0]))):
+                    rep.keep("pdf table columns separated by position", 1)
+                    cells = [[cell_text(md_escape(c)) for c in r] for r in finer]
+                    width = len(cells[0])
+                    out.append("| " + " | ".join(cells[0]) + " |")
+                    out.append("|" + "---|" * width)
+                    out += ["| " + " | ".join(r) + " |" for r in cells[1:]]
+                    rep.keep("pdf tables", 1)
+                elif len(widths) == 1 and rows == len(region):
                     cells = [[cell_text(md_escape(c)) for c in _cells(r)] for r in region]
                     width = len(cells[0])
                     out.append("| " + " | ".join(cells[0]) + " |")
@@ -1318,6 +1396,11 @@ def pdf_to_md(path, rep, ocr=True, ocr_lang="eng"):
     elif blank and len(blank) == len(layout):
         sys.exit("error: %s has no text layer (probably scanned), and --no-ocr was given." % path)
     layout = _join_split_tables(layout, rep)
+    # Where each word sits, to tell table columns apart that sit closer than two characters
+    # in the layout reading (see _finer_cells).
+    proc = subprocess.run([exe, "-bbox-layout", "-enc", "UTF-8", str(path), "-"], stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE, check=False)
+    fine = _word_rows(proc.stdout.decode("utf-8", "replace")) if proc.returncode == 0 else {}
     out, plain_pages = [], []
     for n, page in enumerate(layout, 1):
         out += ["<!-- page %d -->" % n, ""]
@@ -1325,7 +1408,7 @@ def pdf_to_md(path, rep, ocr=True, ocr_lang="eng"):
             out += _pdf_page_plain(reading[n - 1])
             plain_pages.append(n)
         else:
-            out += _pdf_page_md(page, rep)
+            out += _pdf_page_md(page, rep, fine)
     pages = layout
     if plain_pages:
         rep.notes.append("page(s) %s have side-by-side columns, so they were read in column order with "

@@ -6,7 +6,7 @@ is what's next. Each item says why it matters, roughly how big it is, and what i
 so you can pick one up without re-deriving the context. Sizes are rough: **S** is an hour or
 two, **M** a day, **L** several days.
 
-Last reviewed 2026-10-20, after 0.16.34. Organisation governance (AST09) shipped in 0.16.27
+Last reviewed 2026-10-20, after 0.16.35. Organisation governance (AST09) shipped in 0.16.27
 ([RFC-0050](../rfcs/0050-org-governance.md)), declared containment (AST06) in 0.16.28
 ([RFC-0051](../rfcs/0051-declared-containment.md)), and the `research`, `comply` and `measure`
 loops with a tutorial for each pack added in 0.14.0 in 0.16.29
@@ -39,4 +39,3 @@ on Windows in CI ([RFC-0056](../rfcs/0056-search-and-windows-ci.md)).
 | Idea | Why | Size | Depends on |
 |---|---|---|---|
 | **Turn on the weekly evals** | The workflow, the monthly assertion run and the trend on the site are all built ([RFC-0055](../rfcs/0055-eval-history-branch.md)); they skip without an `ANTHROPIC_API_KEY` secret. Set `EVALS_MONTHLY_BUDGET` to change the monthly cap from $20. | S | You adding the secret |
-| **PDF columns closer than two spaces** | `file-to-markdown` splits PDF table columns on two or more spaces, so a right-aligned number column next to a left-aligned one (Word's "Spend" and "Renewal") merges into one cell. Reading column positions from `pdftotext -bbox` would separate them. | M | — |

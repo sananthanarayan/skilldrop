@@ -47,7 +47,7 @@ or a rewrite that goes back out through `md-to-docx` or `md-to-html`.
    | `.csv` / `.tsv` | One table, delimiter detected |
    | `.json` | An array of objects becomes a table; an object becomes a key/value table plus a table per array |
    | `.txt` / `.md` | Passed through |
-   | `.pdf` | Through `pdftotext`. Tables from aligned columns, lists from indentation, short standalone lines as `###` headings (guessed, and said so); a table that runs onto the next page is joined into one, without the header the PDF repeats; pages with side-by-side columns are read in column order with nothing inferred. Scanned pages are read by OCR when `tesseract` is installed. No images |
+   | `.pdf` | Through `pdftotext`. Tables from aligned columns (told apart by where each word sits on the page, so two columns set close together don't merge), lists from indentation, short standalone lines as `###` headings (guessed, and said so); a table that runs onto the next page is joined into one, without the header the PDF repeats; pages with side-by-side columns are read in column order with nothing inferred. Scanned pages are read by OCR when `tesseract` is installed. No images |
 
 3. **PDF without `pdftotext`.** The script stops with install steps (`brew install poppler`
    on macOS, `sudo apt install poppler-utils` on Debian/Ubuntu). Pass those on; don't try to
