@@ -24,6 +24,7 @@ Stdlib only, Python 3.9+. Reads only the paths given; writes only OUT. No networ
 """
 import argparse
 import fnmatch
+import hashlib
 import json
 import os
 import re
@@ -254,9 +255,18 @@ def line_of(lines, *needles):
     return 0
 
 
+# Public token prefixes. Only these constant labels are printed, never characters of the secret.
+TOKEN_KINDS = [("ghp_", "GitHub token"), ("github_pat_", "GitHub token"), ("gho_", "GitHub token"),
+               ("sk-ant-", "Anthropic key"), ("sk-", "API key (sk-)"), ("xox", "Slack token"),
+               ("AKIA", "AWS access key"), ("AIza", "Google API key"), ("glpat-", "GitLab token")]
+
+
 def mask(value):
+    """A secret as its kind, length and a short fingerprint, so two findings can be told apart
+    or matched without printing any part of the value."""
     v = str(value)
-    return "{}... ({} chars)".format(v[:4], len(v)) if len(v) > 4 else "****"
+    kind = next((label for pre, label in TOKEN_KINDS if v.startswith(pre)), "secret")
+    return "[{}, {} chars, sha256:{}]".format(kind, len(v), hashlib.sha256(v.encode("utf-8")).hexdigest()[:8])
 
 
 URL_CREDS = re.compile(r"(://[^/\s:@\"']+:)([^@\s\"'$]{3,})(@)")

@@ -69,7 +69,8 @@ CODE_ALIASES = {"python": "py", "python3": "py", "javascript": "js", "node": "js
                 "xhtml": "xml", "csharp": "c#", "cs": "c#", "c++": "cpp", "c": "cpp", "ts": "typescript",
                 "ps1": "powershell", "pwsh": "powershell", "rb": "ruby", "erlang": "erl", "golang": "go",
                 "kt": "kotlin", "patch": "diff", "plaintext": "text", "txt": "text", "jsonc": "json"}
-XML_BAD = re.compile("[\x00-\x08\x0b\x0c\x0e-\x1f\ufffe\uffff\ue000\ue001]")
+# Characters XML 1.0 can't hold, and the two private-use stash markers, removed by translate().
+XML_BAD = {c: None for c in [*range(0, 9), 11, 12, *range(14, 32), 0xFFFE, 0xFFFF, 0xE000, 0xE001]}
 STASH_OPEN, STASH_CLOSE = "\ue000", "\ue001"
 ENTITY_RE = re.compile(r"&(?:#[0-9]{1,7}|#[xX][0-9a-fA-F]{1,6}|[A-Za-z][A-Za-z0-9]{1,31});")
 
@@ -208,7 +209,7 @@ def inline(text, ctx):
     # Decode character references (&amp; &mdash; &#8212;) outside the stashed pieces, then escape
     # everything once. Only semicolon-terminated ones, so "?a=1&para=2" stays as typed.
     parts = re.split("(%s\\d+%s)" % (STASH_OPEN, STASH_CLOSE), text)
-    text = "".join(pt if k % 2 else XML_BAD.sub("", ENTITY_RE.sub(lambda m: html.unescape(m.group(0)), pt))
+    text = "".join(pt if k % 2 else ENTITY_RE.sub(lambda m: html.unescape(m.group(0)), pt).translate(XML_BAD)
                    for k, pt in enumerate(parts))
     text = emphasis(esc(text))
     pat = re.compile("%s(\\d+)%s" % (STASH_OPEN, STASH_CLOSE))
@@ -510,7 +511,7 @@ def check_well_formed(body):
 
 
 def convert(src, base_dir, toc=False, keep_h1=False, title=None):
-    text = XML_BAD.sub("", src.replace("\r\n", "\n").replace("\r", "\n"))
+    text = src.replace("\r\n", "\n").replace("\r", "\n").translate(XML_BAD)
     raw = text.split("\n")
     offset, fm_title = 0, None
     if raw and raw[0].strip() == "---":
