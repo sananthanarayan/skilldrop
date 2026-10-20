@@ -1,0 +1,6 @@
+item_id,person_id,source,plan,region,themes,severity
+T-101,A-17,tickets,Pro,UK,card-payment-fails,S1
+T-102,A-17,tickets,Pro,UK,card-payment-fails,S1
+N-04,,nps,Growth,,+reminders;logo-blurry:S4,
+I-2,A-30,interview,Pro,US,rate-change-manual;+reminders,S2
+T-108,A-41,tickets,Starter,US,,

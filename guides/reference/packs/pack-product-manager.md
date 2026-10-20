@@ -14,7 +14,7 @@ Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, i
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack product-manager` |
-| Skills | 8 plus 4 from core |
+| Skills | 9 plus 4 from core |
 | Loops | discover |
 | How-to | [Use the Product manager pack](../../how-to/packs/use-the-product-manager-pack.md) |
 
@@ -44,6 +44,39 @@ Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/product-manager/skills/bus
 - Choosing between technologies for an approved initiative — the investment is already decided; compare the options directly
 - Compressing an existing case for execs — `exec-summary`
 - Trivial cost ("should we buy a $400/yr tool") — the case costs more than the decision; just decide
+
+### `feedback-synthesis`
+
+Turn raw customer feedback — interview notes, support tickets, NPS or CSAT verbatims, app-store reviews, sales-call notes — into ranked themes a product decision can rest on, each a problem statement rather than a feature request, counted by distinct people or accounts not mentions, with segments, severity kept separate from frequency, verbatim quotes with source IDs, what people value, where sources disagree, what the sample cannot tell, and the questions for the next interviews. A stdlib script computes the counts.
+
+Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/product-manager/skills/feedback-synthesis/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/feedback-synthesis/)
+
+**Use it when** the user says "what are customers telling us", "synthesise this feedback", "find the themes in these tickets / reviews / NPS comments", "affinity map these interview notes", or "what should we fix first based on feedback".
+
+**Needs:** Python 3 for its scripts (standard library only).
+
+**A good result:**
+
+- **Every count is distinct people or accounts,** computed from the coded items, and says which unit; mentions appear only beside it.
+- **The ranking puts severity before frequency** and says so where the two disagree.
+- **Every theme title is a falsifiable problem statement** naming who and what it costs; no theme is titled with a proposed feature.
+- **Every quote is verbatim with a source ID;** paraphrase never sits inside quotation marks.
+- **Segments are reported per theme,** and a one-segment theme is called out.
+- **Each source's sampling bias is named,** and no percentage of the whole user base is drawn from a self-selected sample.
+- **What people value and where the sources disagree** are both present.
+- **Interview questions are tied to themes,** open, and include one that could disconfirm the top theme.
+- **Nothing is invented:** no quote, count, segment, reason or customer that isn't in the input.
+
+**Hands off to:** `brief-intake` when the ranked themes and their evidence are agreed; `requirements-interview` when the synthesis ends with open questions that only new interviews can answer.
+
+**Not for:**
+
+- Planning or running the interviews themselves, or writing the question guide — `requirements-interview`
+- Mapping the stages of a journey a customer goes through — `user-journey-map`
+- Answering a research question from papers, reports or articles — `source-synthesis`
+- Ranking rival explanations for a metric change ("why did churn rise in March?") — `hypothesis-comparison`
+- Turning agreed findings into a brief for a PRD or design doc — `brief-intake`
+- Cleaning up a tracker backlog: duplicates, stale tickets, ordering — `backlog-triage`
 
 ### `okr-cascade`
 
@@ -231,7 +264,7 @@ Take raw signal — interviews, journeys, a strategy question — to a requireme
 
 | Stage | Skills | Gate |
 |---|---|---|
-| gather | `requirements-interview`, `user-journey-map`, `strategy-analysis` | — |
+| gather | `requirements-interview`, `user-journey-map`, `strategy-analysis`, `feedback-synthesis` | — |
 | structure | `brief-intake` | — |
 | specify | `prd-draft` | — |
 | ratify | `doc-critique` | G0 human: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / BLOCKED |

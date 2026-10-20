@@ -1,0 +1,84 @@
+diff --git a/package.json b/package.json
+index 61b0e2a..e3f7c19 100644
+--- a/package.json
++++ b/package.json
+@@ -14,7 +14,7 @@
+   },
+   "devDependencies": {
+     "eslint-mini": "^9.1.0",
+-    "release-notary": "^1.8.2",
++    "release-notary": "^1.9.0",
+     "rollup-lite": "^4.0.3",
+     "vitest-lite": "^2.0.0"
+   }
+diff --git a/package-lock.json b/package-lock.json
+index 9f2d4b7..1ac80e5 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -12,7 +12,7 @@
+       "devDependencies": {
+         "eslint-mini": "^9.1.0",
+-        "release-notary": "^1.8.2",
++        "release-notary": "^1.9.0",
+         "rollup-lite": "^4.0.3",
+         "vitest-lite": "^2.0.0"
+       }
+@@ -88,16 +88,6 @@
+-    "node_modules/ansi-tint": {
+-      "version": "1.0.4",
+-      "resolved": "https://registry.npmjs.org/ansi-tint/-/ansi-tint-1.0.4.tgz",
+-      "integrity": "sha512-G/ihecLGe8wYlmaKXMJUFfgBUV/HgkesmrXhTTxBqhQrYzGlVOniQfCu4MlJAUfeyjvVf+TYrCCSemjHEdDQjA==",
+-      "dev": true,
+-      "license": "MIT",
+-      "engines": {
+-        "node": ">=14"
+-      }
+-    },
+@@ -402,30 +392,45 @@
++    "node_modules/notary-telemetry": {
++      "version": "0.2.1",
++      "resolved": "https://npm.notary-cdn.io/notary-telemetry/-/notary-telemetry-0.2.1.tgz",
++      "integrity": "sha512-kJAfi+YYicLisVOtWlYrspxPF4uz6y3b6QfD9GN44+ykAjLtZFIBMPzpRjsixIrGncIVsO5cZPGTL3edJLEDag==",
++      "dev": true,
++      "hasInstallScript": true,
++      "license": "SEE LICENSE IN LICENSE.txt",
++      "dependencies": {
++        "semver-lite": "^2.3.0"
++      }
++    },
+     "node_modules/release-notary": {
+-      "version": "1.8.2",
+-      "resolved": "https://registry.npmjs.org/release-notary/-/release-notary-1.8.2.tgz",
+-      "integrity": "sha512-fS99/rtXzwQTzMu2D7jDqVze+VZpAS8ftGR6+1J6GeJ4JMhkxkVVRhHLpzVp6hV0ijP3EophissfTP0Hmkwt1w==",
++      "version": "1.9.0",
++      "resolved": "https://registry.npmjs.org/release-notary/-/release-notary-1.9.0.tgz",
++      "integrity": "sha512-tQijziAJ067sx63E+cIXmDsbRdzLEMQHqy0fgw7fIyhUwgdc5a8fuiPWzqjJYAobtCht6aI/joOp+Up2ehJRJw==",
+       "dev": true,
+       "license": "MIT",
+       "dependencies": {
+-        "ansi-tint": "^1.0.4",
+-        "semver-lite": "^2.1.0"
++        "notary-telemetry": "^0.2.0",
++        "semver-lite": "^2.3.0"
+       },
+       "bin": {
+         "release-notary": "bin/cli.js"
+       },
+       "engines": {
+-        "node": ">=18"
++        "node": ">=20"
+       }
+     },
+     "node_modules/semver-lite": {
+-      "version": "2.1.0",
+-      "resolved": "https://registry.npmjs.org/semver-lite/-/semver-lite-2.1.0.tgz",
+-      "integrity": "sha512-OvGVOs6Tl8EYX9VxOQgB0MNBqP8uY+ct5KATLIi3BGLPF+9vAb31PrWFxtbLBcjZh4H9oT1HyzGrx+ItXrSJNw==",
++      "version": "2.3.0",
++      "resolved": "https://registry.npmjs.org/semver-lite/-/semver-lite-2.3.0.tgz",
++      "integrity": "sha512-nqjU6Z/9qqziJrOHoLWWbE+gjkE23/xqf9pqZOkyicwfti0SgB9uhlk/QMZGMbmYzsnc3cKwq6VD/3JmK2JnHA==",
+       "dev": true,
+       "license": "ISC",
+       "engines": {
+         "node": ">=16"
+       }
+     },

@@ -1,0 +1,50 @@
+{
+  "name": "dependency-upgrade-review",
+  "version": "0.1.0",
+  "description": "Give a merge verdict on a dependency-upgrade pull request (Dependabot, Renovate or a hand-made bump) across npm, pip, Go, Cargo and Maven lockfiles and GitHub Actions pins. Reads the release notes for every skipped version, lists what the lockfile changes beyond the PR title (transitive bumps, new and removed packages, install scripts, registry changes), checks that each SHA pin is the commit its release tag points to, says whether CI ran the changed code, finds the repo's uses of changed APIs and writes the rollback, ending in MERGE, MERGE AFTER CHECKS or DO NOT MERGE. Use when the user says \"review this Dependabot PR\", \"is this Renovate bump safe to merge\", \"can I merge this dependency upgrade\", \"check this lockfile diff\", or \"is this action SHA pin right\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "migration-plan",
+    "pre-merge-review",
+    "release-notes"
+  ],
+  "handoff": [
+    {
+      "to": "migration-plan",
+      "when": "the upgrade is a major framework or runtime jump that cannot land as one PR",
+      "purpose": "Plan the staged migration, the compatibility shims and the cutover instead of forcing the bump through.",
+      "fallback": "If migration-plan is absent, list the breaking changes the repo hits, the order to fix them in, and the rollback point for each step inline, and keep the verdict at DO NOT MERGE."
+    },
+    {
+      "to": "pre-merge-review",
+      "when": "the PR also carries hand-written code changes beyond manifests, lockfiles and pins",
+      "purpose": "Review the code change itself with the full correctness, security and quality pass.",
+      "fallback": "If pre-merge-review is absent, review the non-dependency files inline for correctness and tests, and say that part of the review was done without the full panel."
+    }
+  ],
+  "tags": [
+    "dependencies",
+    "supply-chain",
+    "code-review",
+    "dependabot",
+    "github-actions"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "Reads only the diff path it is given, or stdin; writes only the -o path when given. No network: SHA verification and changelog reading are printed as commands for the reviewer to run."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "Reads a version diff, changelogs and CI evidence against a fixed checklist; the merge verdict follows from what is verified, not open-ended judgment."
+  }
+}

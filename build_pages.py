@@ -285,6 +285,7 @@ def pack_page(name, pack, packs, by_name, loop_by_name, outcome_of):
             for l in own_loops)
         parts.append(f'<h2>Loops</h2><ul class="pk__loops">{items}</ul>')
 
+    parts.append(f'<p class="pk__total"><a href="../compare/?a={esc(name)}">Compare {esc(title)} with another pack</a></p>')
     cards = "\n".join(card(by_name[s], root="../../", show_pack=False) for s in sorted(pack["skills"]) if s in by_name)
     parts.append(f'<h2>Skills in this pack ({len(pack["skills"])})</h2><ul class="skills">{cards}</ul>')
     for r in reqs:
@@ -337,13 +338,144 @@ def index_page(packs, outcomes, home_of):
         for n, p in packs.items())
     body = f"""<main class="inner pk" id="main">
 <h1 class="pk__title">Packs</h1>
-<p class="pk__lede">Start from the job in front of you. Each pack installs with one command, and every role pack brings <a href="core/">core</a> with it. The number beside a pack is how many of that job's skills it holds.</p>
+<p class="pk__lede">Start from the job in front of you. Each pack installs with one command, and every role pack brings <a href="core/">core</a> with it. The number beside a pack is how many of that job's skills it holds. Choosing between two? <a href="compare/">Compare them side by side</a>.</p>
 {''.join(groups)}
 <h2>Every pack</h2>
 <ul class="pk__list">{items}</ul>
 </main>"""
     return shell("Packs", "Every skilldrop pack, grouped by the job it does, with what to try first.",
                  f"{SITE_URL}packs/", 1, body, current="packs/")
+
+
+COMPARE_CSS = """<style>
+.cmp__pick{display:flex;flex-wrap:wrap;gap:.8rem 1.2rem;align-items:end;margin:1rem 0 1.4rem}
+.cmp__pick label{display:flex;flex-direction:column;gap:.25rem;font-size:.85rem;color:var(--muted);font-weight:600}
+.cmp__pick select{font:inherit;padding:.4rem .6rem;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--fg);min-width:14rem}
+.cmp{width:100%;border-collapse:collapse;table-layout:fixed}
+.cmp th,.cmp td{text-align:left;vertical-align:top;padding:.7rem .7rem;border-top:1px solid var(--border)}
+.cmp thead th{border-top:0;font-size:1.15rem}
+.cmp thead th:first-child{width:16%}.cmp tbody th{font-size:.85rem;color:var(--muted)}
+.cmp ul{margin:0;padding-left:1.1rem}.cmp code{font-size:.85em}
+.cmp__chips{display:flex;flex-wrap:wrap;gap:.3rem;list-style:none;padding:0!important}
+.cmp__chips li a{display:inline-block;padding:.1rem .5rem;border:1px solid var(--border);border-radius:999px;font-size:.85rem;text-decoration:none}
+@media (max-width:700px){.cmp thead th:first-child{width:28%}}
+</style>"""
+
+COMPARE_JS = r"""<script>
+/* Re-render the comparison for the two packs picked; the default pair is already in the page,
+   so with scripting off the page still compares something and links every pack. */
+(function () {
+  var data = JSON.parse(document.getElementById('cmp-data').textContent);
+  var a = document.getElementById('cmp-a'), b = document.getElementById('cmp-b'), table = document.getElementById('cmp');
+  var el = function (tag, text, attrs) { var e = document.createElement(tag); if (text != null) e.textContent = text;
+    for (var k in attrs || {}) e.setAttribute(k, attrs[k]); return e; };
+  var list = function (items) { var u = el('ul'); items.forEach(function (t) { u.appendChild(el('li', t)); }); return u; };
+  var chips = function (names) { if (!names.length) return el('span', 'none');
+    var u = el('ul', null, { 'class': 'cmp__chips' });
+    names.forEach(function (n) { var li = el('li'); li.appendChild(el('a', n, { href: '../../skills/' + n + '/' })); u.appendChild(li); }); return u; };
+  var cell = function (row, node) { var td = el('td'); if (typeof node === 'string') td.textContent = node; else td.appendChild(node); row.appendChild(td); };
+  var render = function () {
+    var A = data[a.value], B = data[b.value];
+    if (!A || !B) return;
+    var inA = {}, inB = {}; A.skills.forEach(function (n) { inA[n] = 1; }); B.skills.forEach(function (n) { inB[n] = 1; });
+    var rows = [
+      ['What it is for', function (P) { return P.description; }],
+      ['Start it when', function (P) { return P.when; }],
+      ['You bring', function (P) { return list(P.bring); }],
+      ['Try first', function (P) { return P.starter; }],
+      ['Loops and gates', function (P) { return P.loops.length ? list(P.loops) : 'No loop of its own; the skills run one at a time.'; }],
+      ['Where a person decides', function (P) { return P.decide; }],
+      ['Jobs it covers', function (P) { return P.outcomes.join(', ') || '-'; }],
+      ['Size', function (P) { return P.size; }],
+      ['Only in this pack', function (P, Q, inQ) { return chips(P.skills.filter(function (n) { return !inQ[n]; })); }],
+      ['In both', function (P, Q, inQ) { return chips(P.skills.filter(function (n) { return inQ[n]; })); }],
+      ['Install', function (P) { return el('code', P.install); }]
+    ];
+    var body = el('tbody'), head = el('thead'), hr = el('tr');
+    hr.appendChild(el('th', '', { scope: 'col' }));
+    [A, B].forEach(function (P) { var th = el('th', null, { scope: 'col' }); th.appendChild(el('a', P.title, { href: '../' + P.name + '/' })); hr.appendChild(th); });
+    head.appendChild(hr);
+    rows.forEach(function (r) {
+      var tr = el('tr'); tr.appendChild(el('th', r[0], { scope: 'row' }));
+      if (r[0] === 'In both') { var td = el('td', null, { colspan: '2' }); td.appendChild(r[1](A, B, inB)); tr.appendChild(td); }
+      else { cell(tr, r[1](A, B, inB)); cell(tr, r[1](B, A, inA)); }
+      body.appendChild(tr);
+    });
+    table.replaceChildren(head, body);
+    history.replaceState(null, '', '?a=' + encodeURIComponent(a.value) + '&b=' + encodeURIComponent(b.value));
+  };
+  var q = new URLSearchParams(location.search);
+  if (data[q.get('a')]) a.value = q.get('a');
+  if (data[q.get('b')]) b.value = q.get('b');
+  if (a.value === b.value) b.value = Object.keys(data).filter(function (n) { return n !== a.value && n !== 'core'; })[0];
+  a.addEventListener('change', render); b.addEventListener('change', render);
+  if (q.get('a') || q.get('b')) render();
+})();
+</script>"""
+
+
+def compare_data(packs, by_name, loop_by_name, outcome_of):
+    """Each pack as the rows the comparison shows. Skills include what `requires` brings, so
+    the shared row shows what installing either one gives you anyway."""
+    data = {}
+    for name, pack in packs.items():
+        reqs = pack.get("requires", [])
+        skills = sorted(set(pack["skills"]).union(*(packs[r]["skills"] for r in reqs)))
+        own_loops = [loop_by_name[l] for l in pack.get("loops", []) if l in loop_by_name]
+        gs = [g for l in own_loops for g, _ in gates(l)]
+        people = [g for g in gs if g["kind"] in ("human", "review")]
+        counts = {}
+        for sk in pack["skills"]:
+            for o in outcome_of.get(sk, []):
+                counts[o] = counts.get(o, 0) + 1
+        fv, j = pack.get("first-value") or {}, pack.get("journey") or {}
+        data[name] = {
+            "name": name, "title": pack.get("display_name", name),
+            "description": md_plain(pack["description"]), "when": md_plain(j.get("when", "")) or "-",
+            "bring": [md_plain(b) for b in j.get("you_bring", [])], "starter": fv.get("starter-task", "-"),
+            "loops": [f"{l['name']}: " + " → ".join(st["id"] + (f" [{st['gate']['id']} {st['gate']['kind']}]" if st.get("gate") else "")
+                                                   for st in l["stages"]) for l in own_loops],
+            "decide": (", ".join(f"{g['id']} ({g['kind']})" for g in people) if people else "No gate of its own"),
+            "outcomes": [pretty(o) for o, _ in sorted(counts.items(), key=lambda kv: -kv[1])],
+            "size": f"{len(skills)} skills installed ({len(pack['skills'])} its own)" + (f", {len(own_loops)} loop{'s' if len(own_loops) != 1 else ''}" if own_loops else ""),
+            "skills": [x for x in skills if x in by_name],
+            "install": f"npx skilldrop-cli install --pack {name}"}
+    return data
+
+
+def compare_page(packs, by_name, loop_by_name, outcome_of, a="product-manager", b="solution-architect"):
+    """Two packs side by side for someone choosing between them (or deciding they need both)."""
+    data = compare_data(packs, by_name, loop_by_name, outcome_of)
+    a, b = (a if a in data else next(iter(data))), (b if b in data else list(data)[1])
+    opts = lambda sel: "".join(f'<option value="{esc(n)}"{" selected" if n == sel else ""}>{esc(d["title"])}</option>' for n, d in data.items())
+    A, B = data[a], data[b]
+    chips = lambda names: ('<ul class="cmp__chips">' + "".join(f'<li><a href="../../skills/{esc(n)}/">{esc(n)}</a></li>' for n in names)
+                           + "</ul>") if names else "none"
+    ul = lambda items: "<ul>" + "".join(f"<li>{esc(i)}</li>" for i in items) + "</ul>"
+    rows = [("What it is for", lambda P, Q: esc(P["description"])), ("Start it when", lambda P, Q: esc(P["when"])),
+            ("You bring", lambda P, Q: ul(P["bring"])), ("Try first", lambda P, Q: esc(P["starter"])),
+            ("Loops and gates", lambda P, Q: ul(P["loops"]) if P["loops"] else "No loop of its own; the skills run one at a time."),
+            ("Where a person decides", lambda P, Q: esc(P["decide"])), ("Jobs it covers", lambda P, Q: esc(", ".join(P["outcomes"]) or "-")),
+            ("Size", lambda P, Q: esc(P["size"])),
+            ("Only in this pack", lambda P, Q: chips([n for n in P["skills"] if n not in Q["skills"]]))]
+    body = "".join(f'<tr><th scope="row">{esc(t)}</th><td>{f(A, B)}</td><td>{f(B, A)}</td></tr>' for t, f in rows)
+    body += f'<tr><th scope="row">In both</th><td colspan="2">{chips([n for n in A["skills"] if n in B["skills"]])}</td></tr>'
+    body += f'<tr><th scope="row">Install</th><td><code>{esc(A["install"])}</code></td><td><code>{esc(B["install"])}</code></td></tr>'
+    payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
+    html_body = f"""<main class="inner pk" id="main">
+<p class="pk__crumb"><a href="../">Packs</a></p>
+<h1 class="pk__title">Compare two packs</h1>
+<p class="pk__lede">Pick two packs to see what each is for, where a person decides, and which skills only one of them has. Installing both is fine: shared skills install once.</p>
+<form class="cmp__pick" onsubmit="return false">
+<label>First pack<select id="cmp-a">{opts(a)}</select></label>
+<label>Second pack<select id="cmp-b">{opts(b)}</select></label>
+</form>
+<table class="cmp" id="cmp"><thead><tr><th scope="col"></th><th scope="col"><a href="../{esc(a)}/">{esc(A["title"])}</a></th><th scope="col"><a href="../{esc(b)}/">{esc(B["title"])}</a></th></tr></thead>
+<tbody>{body}</tbody></table>
+<script type="application/json" id="cmp-data">{payload}</script>
+</main>"""
+    return shell("Compare two packs", "Two skilldrop packs side by side: what each is for, its loops and gates, and the skills only one has.",
+                 f"{SITE_URL}packs/compare/", 2, html_body + COMPARE_JS, current="packs/", extra_head=COMPARE_CSS)
 
 
 def _section(md_text, heading):
@@ -847,6 +979,7 @@ def render():
                                           f'<link rel="canonical" href="{SITE_URL}packs/{new}/"><a href="../{new}/">{new}</a>\n')
     for name, pack in packs.items():
         out[f"packs/{name}/index.html"] = pack_page(name, pack, packs, by_name, loop_by_name, outcome_of)
+    out["packs/compare/index.html"] = compare_page(packs, by_name, loop_by_name, outcome_of)
     for s in skills:
         out[f"skills/{s['name']}/index.html"] = skill_page(s, by_name, packs, outcome_of)
         for f, _, text in live_examples(s["name"]):

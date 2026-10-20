@@ -8,6 +8,17 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.30 — 2026-10-20
+
+- **Four new skills**, each admitted on held-out evals written by someone who saw only its description ([RFC-0053](docs/rfcs/0053-six-skills-for-the-lifecycle-gaps.md)):
+  - **`dependency-upgrade-review`** gives a merge verdict on a Dependabot or Renovate pull request: MERGE, MERGE AFTER CHECKS or DO NOT MERGE. It reads the release notes for every skipped version and lists what the lockfile changes beyond the title. Each SHA pin stays unverified until it matches its tag. It says whether CI ran the changed code and writes the rollback.
+  - **`feedback-synthesis`** turns tickets, NPS comments, reviews and interview notes into ranked problems. Each one is counted by distinct people, not mentions, with verbatim quotes and what the sample can't tell you. It's an option in the `discover` loop's first stage.
+  - **`codebase-tour`** orients someone in an unfamiliar repo before one change. Commands come from CI and the package scripts. The path the change touches is cited to file and line, and the tour flags where the README is wrong and what traps to avoid. It's an option in the `build` loop's first stage.
+  - **`mcp-pairing`** says which MCP servers a loop needs, stage by stage, with the narrowest access: read-only by default and never write access on a review or gate stage. It names no server you didn't, and gives a fallback for running without one.
+- **`loop-stats` combines a team's numbers and draws them.** Pass several run logs, or other people's `--json` summaries, and it shows them as one view. `--html` writes a dashboard of each gate's verdicts, overall and week by week, that loads nothing from the network. The `--json` summary no longer includes the log's file path, so it can be shared ([how-to](guides/how-to/measure-your-loops.md)).
+- **Compare two packs** side by side on the site, from the packs page or any pack's page: what each is for, its loops and where a person decides, and the skills only one has.
+- **A how-to for every skill** in the docs: install it, requests that route to it, what a good result looks like, what to use instead, and which loops run it. There are now 191 guides.
+
 ## 0.16.29 — 2026-10-20
 
 - **Three new loops, for jobs that run alongside delivery** ([RFC-0052](docs/rfcs/0052-research-comply-measure-loops.md)):

@@ -56,7 +56,7 @@ flowchart LR
     classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
     classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
 
-    gather["gather<br/><small>requirements-interview +2</small>"]:::gen
+    gather["gather<br/><small>requirements-interview +3</small>"]:::gen
     structure["structure<br/><small>brief-intake</small>"]:::gen
     specify["specify<br/><small>prd-draft</small>"]:::gen
     ratify["ratify<br/><small>doc-critique</small>"]:::gate
@@ -122,7 +122,7 @@ flowchart LR
     classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
     classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
 
-    shape["shape<br/><small>user-story-splitter·bug-triage</small>"]:::gen
+    shape["shape<br/><small>user-story-splitter +2</small>"]:::gen
     implement["implement<br/><small>feature-implement-loop</small>"]:::gen
     verify["verify<br/><small>pre-merge-review</small>"]:::review
     decide["decide<br/><small>council-review</small>"]:::gate

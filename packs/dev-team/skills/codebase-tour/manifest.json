@@ -1,0 +1,47 @@
+{
+  "name": "codebase-tour",
+  "version": "0.1.0",
+  "description": "Get a newcomer (a new engineer, or the agent itself) oriented in an unfamiliar repository before they make one specific change, with a short tour scoped to that change. It gives the install, run and test commands taken from CI, package scripts and the Makefile; the path the change touches, traced through the code with file:line citations; where the change goes; the conventions the code actually follows; the traps (generated files, a second copy of the logic, untested code, env vars, flags); and a first step that can be checked. Use when someone says \"I'm new to this repo\", \"get me oriented\", \"where would I make this change\", \"walk me through the code for X\", \"onboard me before I start this ticket\", or \"how do I run and test this\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "agents-md-generator",
+    "architecture-diagrams",
+    "feature-implement-loop",
+    "interactive-diagram",
+    "pre-merge-review",
+    "reverse-architecture"
+  ],
+  "handoff": [
+    {
+      "to": "feature-implement-loop",
+      "when": "the tour names where the change goes and a first step",
+      "purpose": "Implement the change against acceptance criteria, starting from the tour's first step and running the area's test command it found.",
+      "fallback": "If feature-implement-loop is absent, take the tour's first step: write the failing test it names, run the area's test command before and after the change, and update every place listed under 'Must change with it'."
+    }
+  ],
+  "tags": [
+    "onboarding",
+    "codebase",
+    "repo-orientation",
+    "provenance",
+    "developer-experience"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "none",
+    "notes": "scripts/repo_facts.py reads files under the repository root it is given and prints to stdout. It writes nothing and runs no commands."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "Reading a repo and citing what it finds is generation over evidence; every claim is checked against a file, so a mid tier is enough."
+  }
+}

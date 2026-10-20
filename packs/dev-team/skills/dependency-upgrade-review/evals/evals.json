@@ -1,0 +1,77 @@
+{
+  "skill_name": "dependency-upgrade-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Dependabot opened PR #212 on harbor-notes: \"Bump quillmark from 3.4.1 to 4.1.0\". CI is green. The PR diff is in pr.diff, quillmark's changelog is quillmark-CHANGELOG.md, and I've attached src/render/, test/ and .github/workflows/ci.yml from the repo. Can I merge it?",
+      "assertions": [
+        "Gives exactly one verdict at the top, and it is DO NOT MERGE",
+        "Reports that renderInline() was removed in 4.0.0 and that src/render/comment.js still imports and calls it, citing the file and line",
+        "Flags that 4.0.0 changed the sanitize default to false and that src/render/note.js renders note bodies with quillmark.render(markdown) and no sanitize option, so raw HTML from users passes through",
+        "Lists the lockfile changes the title does not mention: entity-codec 2.1.0 to 3.0.2 (a major, with its licence changing from MIT to MPL-2.0), html-escape-lite removed, and quill-native-highlight and prebuild-install added, with quill-native-highlight's new install script",
+        "Says the green CI does not cover the change: the only test renders Markdown with no raw HTML, and no test imports src/render/comment.js",
+        "Accounts for the skipped releases, not only 4.1.0: names the 3.5.0 link-title security fix and the setOptions() deprecation that src/render/note.js still uses",
+        "Gives a rollback that pins quillmark back and regenerates package-lock.json (or reverts the PR), and names taking 3.5.x as the way to get the security fix without the breaking changes",
+        "Does not invent versions, advisory IDs, APIs, files or tests that are not in the supplied input"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Dependabot PR #88 on tidewater-tools: \"Bump the github-actions group with 2 updates\". Checks passed. Diff in pr.diff, the two workflow files after the change are in .github/workflows/, and I pasted the release notes from both action repos into release-notes.md. OK to merge?",
+      "assertions": [
+        "Gives MERGE AFTER CHECKS, not MERGE",
+        "Treats the northwind-ci/checkout-lite SHA as unverified and gives the exact git ls-remote command for refs/tags/v3.2.0 and refs/tags/v3.2.0^{}, saying which line must equal 9b8e7a6d5c4b3a291807f6e5d4c3b2a1908f7e6d",
+        "Says octo-tools/pypi-publish moving from @v2 to @v3 is a tag-only pin that can be moved after review, recommends pinning it to a commit SHA, and notes the step receives secrets.PYPI_TOKEN",
+        "Says the passing checks never ran pypi-publish v3, because release.yml runs only on a v* tag push, and names a way to exercise it before the next real release",
+        "Reports that release.yml still passes the deprecated password input (release.yml line 22) and that verify-metadata now defaults to true, so the next release can fail on an invalid long description",
+        "Classes the jumps: checkout-lite v3.1.0 to v3.2.0 as minor, pypi-publish v2 to v3 as major",
+        "Gives a rollback (revert the PR or restore the old uses: lines) and notes a revert cannot undo a release already published to PyPI with v3",
+        "Does not invent action versions, SHAs, inputs or workflow steps that are not in the supplied files"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Renovate PR on our Go rate-limiter service: \"fix(deps): update module github.com/lanternhq/ratelimit to v0.9.0\". CI passed. Quick verdict please.\n\ngo.mod:\n-\tgithub.com/lanternhq/ratelimit v0.8.3\n+\tgithub.com/lanternhq/ratelimit v0.9.0\n+\tgithub.com/lanternhq/clock v1.2.0 // indirect\n\ngo.sum:\n-github.com/lanternhq/ratelimit v0.8.3 h1:AbCd=\n-github.com/lanternhq/ratelimit v0.8.3/go.mod h1:EfGh=\n+github.com/lanternhq/clock v1.2.0 h1:IjKl=\n+github.com/lanternhq/clock v1.2.0/go.mod h1:MnOp=\n+github.com/lanternhq/ratelimit v0.9.0 h1:QrSt=\n+github.com/lanternhq/ratelimit v0.9.0/go.mod h1:UvWx=\n\nRelease notes for v0.9.0:\n- Limiter.Wait(ctx) now returns ErrLimitExceeded immediately when burst is 0, instead of blocking.\n- NewLimiter(rate, burst) is deprecated; use New(Config{Rate: r, Burst: b}).\n- Uses github.com/lanternhq/clock for time, so tests can inject a fake clock.",
+      "assertions": [
+        "Gives MERGE AFTER CHECKS, not MERGE",
+        "States that v0.8.3 to v0.9.0 is a 0.x minor bump, which semver treats as potentially breaking",
+        "Names the Wait behaviour change and the NewLimiter deprecation, and gives a concrete search command for Wait( and NewLimiter( since no code was supplied, without claiming there are or are not hits",
+        "Points out that only the v0.9.0 notes were supplied, so any releases between v0.8.3 and v0.9.0 are still unread",
+        "Flags github.com/lanternhq/clock v1.2.0 as a new indirect module the PR title does not mention",
+        "Says the passing CI only covers this if a test exercises the burst-0 Wait path, and lists that as a check rather than assuming it",
+        "Gives a rollback command such as go get github.com/lanternhq/ratelimit@v0.8.3 followed by go mod tidy, or reverting the PR",
+        "Does not invent file names, call sites, tests or release versions that are not in the prompt"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-20",
+      "prompt": "Renovate opened PR #287 bumping quillstream from 2.4.1 to 3.1.0 and CI is green. The PR body is in PR.md, the diff is pr.diff, and I copied the upstream changelog into upstream/. Repo is checked out at main. Is this safe to merge? I'd like to get it in today.",
+      "assertions": [
+        "Gives the verdict DO NOT MERGE for #287 (not MERGE, and not MERGE AFTER CHECKS without code changes), and ties it to at least one breaking change that hits code in this repo.",
+        "Points out that read_legacy_archive in src/ingest/reader.py imports quillstream.legacy.parse_frame inside the function, and that the 3.0.0 entry in the changelog (a release this PR skips) removes that module. Names quillstream.frames.decode(buf, strict=False) as the replacement and says the `header, payload = parse_frame(...)` unpacking has to change too, because decode returns a Frame object.",
+        "Points out that fetch_with_retry in src/ingest/client.py retries only on `if result is None`. Under 3.0.0, Client.fetch raises quillstream.errors.QuillTimeout instead of returning None, so timeouts will escape as exceptions rather than being retried. Suggests catching QuillTimeout, or migrating first with 2.5.0's Client(raise_on_timeout=True).",
+        "Flags that the Dockerfile builds FROM python:3.9-slim while 3.0.0 requires Python >=3.10 (and grainwire wheels only cover CPython 3.10–3.13), so the production image build or install will break. Notes that CI and pip-compile both ran on Python 3.11, so a green CI could not catch this.",
+        "Lists the requirements.txt changes beyond the title, as shown in pr.diff: new transitive package grainwire 1.0.0, removed compat-six 1.16.2, and typing-shimx bumped 4.5.0 -> 4.9.1. Ties grainwire to the 3.1.0 changelog entry, including the sdist/Rust-toolchain caveat for platforms without wheels.",
+        "Explains why the green check is weak evidence: tests/test_reader.py only tests read_stream, with a mocked Client whose fetch returns a payload. Nothing exercises read_legacy_archive (the lazy import means the missing module never fails at import or collection time) or the timeout/None path.",
+        "Gives a concrete rollback: revert the PR, or restore quillstream==2.4.1 in requirements.in and re-run `pip-compile --generate-hashes`, then rebuild and redeploy the image. Optionally offers a staged path, e.g. moving to 2.5.0 first to surface the deprecation warnings.",
+        "Does not invent versions, APIs or changelog entries that are not in the files (e.g. no made-up 3.0.1 fix, no Python-3.9 compatibility shim). Does not claim to have installed the package, run the tests, or checked the sha256 hashes against PyPI. If it recommends checking the hashes, it says that needs network access and gives the command rather than asserting they match."
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-20",
+      "prompt": "Dependabot opened two PRs this morning and both are green: #412 bumps the bramblewick/setup-toolchain action pin (a teammate pushed an extra commit to it) and #413 bumps release-notary. Descriptions are PR-412.md / PR-413.md, diffs are pr-412.diff / pr-413.diff, upstream release notes are in upstream/. Are the action SHA pins right, and can I merge both before we push the v5.13.0 tag on Friday?",
+      "assertions": [
+        "Gives a separate verdict for each PR. #413 is DO NOT MERGE. #412 is not a plain MERGE: it is MERGE AFTER CHECKS or DO NOT MERGE until the pins are reconciled.",
+        "Catches that pr-412.diff pins setup-toolchain to two different commits that are both labelled `# v3.3.0`: 8141d107d0837efc25f86e096a7eefd58e979515 in ci.yml (from Dependabot) and 7dd0aa52537f8f4f4002b505507186cdaec669c4 in release.yml (from mkowalczyk's hand-made commit). Says at most one of them can be the tag's commit, and that the release.yml one is the suspect because it was edited by hand and is the one that runs with production secrets.",
+        "Says plainly that it cannot confirm offline which SHA (if either) the v3.3.0 tag points to. Gives a concrete command, e.g. `git ls-remote https://github.com/bramblewick/setup-toolchain 'refs/tags/v3.3.0*'` (using the peeled `^{}` line if the tag is annotated) or `gh api repos/bramblewick/setup-toolchain/git/ref/tags/v3.3.0`. Never states that either SHA is verified.",
+        "For #412, notes that v3.3.0 switches the action to the node24 runtime, which needs self-hosted runners on v2.328.0 or newer. release.yml runs on [self-hosted, linux, release] and PR CI runs only on ubuntu-latest, so the first real test would be Friday's tag push. Also mentions the `cache` default flipping to true, which affects the release job.",
+        "For #413, finds that scripts/release.mjs calls createNotary({ legacyMode: true, ... }). 1.9.0 removed legacyMode and now throws TypeError: Unknown option \"legacyMode\", so `npm run release` in release.yml will fail. Also notes that the switch to the v2 manifest layout breaks the downstream ledger-portal parser mentioned in the code comment.",
+        "For #413, lists the package-lock changes beyond the title: a new transitive package notary-telemetry 0.2.1 with \"hasInstallScript\": true, resolved from https://npm.notary-cdn.io rather than registry.npmjs.org; ansi-tint 1.0.4 removed; semver-lite 2.1.0 -> 2.3.0; release-notary's engines raised to node >=20. Treats the install script plus the off-registry tarball as a supply-chain concern in its own right.",
+        "Explains that the green checks never ran the changed code. ci.yml runs on pull_request with `npm ci --ignore-scripts` and never runs scripts/release.mjs. release.yml runs plain `npm ci`, so notary-telemetry's install script would first execute in the production environment, with RELEASE_SIGNING_KEY and NPM_TOKEN in the job and contents: write / id-token: write permissions. Mentions NOTARY_TELEMETRY=0 and/or keeping 1.8.x as mitigations.",
+        "Gives a rollback for each PR: revert #412 to restore the c8aee2ae521bdb1ef1b97761673ebbe92c953b0f (v3.2.0) pins; revert #413, or pin release-notary back to 1.8.2 and regenerate package-lock.json. Does not invent versions, flags or APIs that are not in the files, and does not claim to have run npm install, the workflows, or the release script."
+      ]
+    }
+  ]
+}

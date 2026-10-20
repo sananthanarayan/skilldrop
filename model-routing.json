@@ -190,6 +190,10 @@
       "tier": "standard",
       "rationale": "A stdlib script does the aggregation; the model maps columns, checks evidence and computes savings with shown arithmetic against a fixed category checklist, which is bounded judgment."
     },
+    "codebase-tour": {
+      "tier": "standard",
+      "rationale": "Reading a repo and citing what it finds is generation over evidence; every claim is checked against a file, so a mid tier is enough."
+    },
     "content-design": {
       "tier": "standard",
       "rationale": "Rewrites source text from user needs under fixed plain-language rules, with a script for the readability numbers. Prioritising questions needs judgment, but facts come from the source."
@@ -222,6 +226,10 @@
       "tier": "standard",
       "rationale": "A stdlib script computes every number; the model maps columns, checks data quality and interprets weekly trends against fixed DORA definitions, which is bounded judgment."
     },
+    "dependency-upgrade-review": {
+      "tier": "standard",
+      "rationale": "Reads a version diff, changelogs and CI evidence against a fixed checklist; the merge verdict follows from what is verified, not open-ended judgment."
+    },
     "design-doc": {
       "tier": "standard",
       "rationale": "Synthesizes a design doc from a brief. Escalate to heavy via large-input or ambiguous-input when alternatives are genuinely contested."
@@ -253,6 +261,10 @@
     "feature-implement-loop": {
       "tier": "standard",
       "rationale": "Code + test generation against acceptance criteria. The adversarial pass delegates to devils-advocate (heavy) where available; the loop itself is generation."
+    },
+    "feedback-synthesis": {
+      "tier": "standard",
+      "rationale": "Coding feedback into themes is bounded judgment; the counts by distinct person and segment come from its script."
     },
     "figma-diagrams": {
       "tier": "standard",
@@ -297,6 +309,10 @@
     "marketing-flyer": {
       "tier": "standard",
       "rationale": "Writes short copy to fit and fills a spec for a deterministic builder. Bounded generation."
+    },
+    "mcp-pairing": {
+      "tier": "standard",
+      "rationale": "Matching a loop's stages to the context each needs and the narrowest access that provides it is bounded judgment over a short checklist."
     },
     "md-to-docx": {
       "tier": "standard",

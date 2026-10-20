@@ -34,7 +34,6 @@ variable and logging stops. Delete the file and the history is gone.
 ```bash
 npx skilldrop-cli loop-stats              # reads $SKILLDROP_LOOP_LOG
 npx skilldrop-cli loop-stats --days 30    # the last 30 days only
-npx skilldrop-cli loop-stats --json       # for a dashboard or a spreadsheet
 ```
 
 ```text
@@ -43,17 +42,35 @@ build  G2 (verify)
   33% pass first time · 1 blocked · longest run 3 round(s)
 ```
 
-Verdicts are classified with the shared vocabulary in `contracts/terminals.json`. A
-conditional pass (SHIP WITH CHANGES, PROCEED WITH CONDITIONS) counts as passing first time.
+A conditional pass (SHIP WITH CHANGES, PROCEED WITH CONDITIONS) counts as passing first time.
+
+## See it as a page
+
+For a retrospective, write a dashboard: each gate's verdict mix and its verdicts per week.
+
+```bash
+npx skilldrop-cli loop-stats --days 90 --html loop-stats.html
+```
+
+The page has no script and its policy blocks every request, so it can be sent on as a file.
+
+## Combine a team's numbers
+
+Each person writes a summary, which holds counts only, and shares the file however the team
+shares files:
+
+```bash
+npx skilldrop-cli loop-stats --days 30 --json > alex.json
+npx skilldrop-cli loop-stats alex.json sam.json priya.json --html team.html
+```
+
+Any mix of summaries and raw logs combines into one view.
 
 ## What to do with it
 
 - **A gate that rarely passes first time** usually points upstream. If G2 keeps failing,
-  look at the acceptance criteria coming out of `shape` before blaming the implementation.
-- **Frequent BLOCKED** means a missing input. The verdict line says which stage; the loop's
-  output names what was missing.
+  look at the acceptance criteria coming out of `shape`.
+- **Frequent BLOCKED** means a missing input; the loop's output names it.
 - **A gate that always passes** may not be checking anything. Read a few of its reviews.
 
-The log is per machine. To compare across a team, have each person run
-`loop-stats --json` and combine the results. Don't rank people by them: a hard change loops
-more than an easy one.
+Don't rank people by these numbers: a hard change loops more than an easy one.

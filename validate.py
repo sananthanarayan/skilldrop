@@ -189,8 +189,8 @@ def check_guides():
         if os.path.relpath(g, gdir) not in index_txt:
             fail(rel, "not linked from guides/README.md — an unindexed guide is unfindable")
         # The page standard (RFC-0044, AGENTS.md § Writing a guide). Generated pack guides
-        # take their words from SKILL.md and pack.json, which have their own voice rules.
-        if os.path.basename(os.path.dirname(g)) != "packs":
+        # (packs/ and skills/) take their words from SKILL.md and pack.json, which have their own voice rules.
+        if os.path.basename(os.path.dirname(g)) not in ("packs", "skills"):
             check_guide_page(rel, open(g, encoding="utf-8").read(), fields)
 
 

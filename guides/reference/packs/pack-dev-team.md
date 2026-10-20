@@ -14,7 +14,7 @@ Build-and-ship: story splitting, implementation with adversarial review, test pl
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack dev-team` |
-| Skills | 15 plus 4 from core |
+| Skills | 17 plus 4 from core |
 | Loops | build, release |
 | How-to | [Use the Dev team pack](../../how-to/packs/use-the-dev-team-pack.md) |
 
@@ -95,6 +95,69 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/bug-tri
 - A production incident in progress — mitigate first; this is queue work, not response work
 - The post-incident analysis — that's `postmortem-generator`
 - A feature request wearing a bug costume ("bug: there's no dark mode") — route to `user-story-splitter`
+
+### `codebase-tour`
+
+Get a newcomer (a new engineer, or the agent itself) oriented in an unfamiliar repository before they make one specific change, with a short tour scoped to that change. It gives the install, run and test commands taken from CI, package scripts and the Makefile; the path the change touches, traced through the code with file:line citations; where the change goes; the conventions the code actually follows; the traps (generated files, a second copy of the logic, untested code, env vars, flags); and a first step that can be checked.
+
+Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/codebase-tour/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/codebase-tour/)
+
+**Use it when** someone says "I'm new to this repo", "get me oriented", "where would I make this change", "walk me through the code for X", "onboard me before I start this ticket", or "how do I run and test this".
+
+**Needs:** Python 3 for its scripts (standard library only).
+
+**A good result:**
+
+- **Every claim has a citation or an `[inferred]` tag.** Run a spot check: pick any three statements in the tour, and each must lead to a file and line that says it.
+- **Zero invented commands.** Every command traces to CI, a package script, a Makefile, a tox or nox session or pyproject, or it is a labelled derived filter of a runner the repo already calls.
+- **Ran and read are never blurred.** Every command carries `ran: passed`, `ran: failed`, or `read, not run`.
+- **README-versus-code conflicts are named**, each with both citations and the code taken as the fact.
+- **Scoped, not surveyed.** The path stops at the change's far edge, the tour fits the caps, and the scope line says what was skipped.
+- **The trap checks all report**, including "none found". A second copy of the logic, when one exists, is named with its location.
+- **The tests for the area are named, with a command for just those**, or the tour says plainly that there are none.
+- **It ends at a place to work.** Files and functions, then a first step with a command and an expected result, then at most five open questions.
+- **The reply leads with the 3–5 things that matter**, not a tree.
+
+**Hands off to:** `feature-implement-loop` when the tour names where the change goes and a first step.
+
+**Not for:**
+
+- A full as-is architecture write-up or diagram of the whole system: `reverse-architecture`
+- Drawing a diagram of a flow or a system: `interactive-diagram` or `architecture-diagrams`
+- Writing a standing `AGENTS.md` or agent-policy file for the repo: `agents-md-generator`
+- Writing the code for the change: `feature-implement-loop`
+- Reviewing a diff that already exists: `pre-merge-review`
+
+### `dependency-upgrade-review`
+
+Give a merge verdict on a dependency-upgrade pull request (Dependabot, Renovate or a hand-made bump) across npm, pip, Go, Cargo and Maven lockfiles and GitHub Actions pins. Reads the release notes for every skipped version, lists what the lockfile changes beyond the PR title (transitive bumps, new and removed packages, install scripts, registry changes), checks that each SHA pin is the commit its release tag points to, says whether CI ran the changed code, finds the repo's uses of changed APIs and writes the rollback, ending in MERGE, MERGE AFTER CHECKS or DO NOT MERGE.
+
+Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/dependency-upgrade-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/dependency-upgrade-review/)
+
+**Use it when** the user says "review this Dependabot PR", "is this Renovate bump safe to merge", "can I merge this dependency upgrade", "check this lockfile diff", or "is this action SHA pin right".
+
+**Needs:** Python 3 for its scripts (standard library only).
+
+**A good result:**
+
+- **Exactly one verdict, first, and it follows from the checks.** Any unverified SHA, added install script, or removed API still in use rules out MERGE.
+- **Every release between old and new is accounted for:** read, with its breaking changes, deprecations, security fixes and licence changes named, or listed as unread.
+- **Everything the lockfile changes beyond the title is listed:** transitive bumps, added and removed packages, install scripts, native code, source changes.
+- **Every changed API has a search result:** `file:line` hits, "no hits", or the command to run when there is no repo.
+- **Every SHA pin is verified or marked UNVERIFIED with the `git ls-remote` command;** tag-only pins are called weaker.
+- **CI coverage is named per changed package:** the job and test that exercise it, or "nothing does".
+- **A rollback with the exact command** and what a revert does not undo.
+- **No invented versions, advisories, APIs, files or test names.** Everything cited appears in the diff, the notes or the repo supplied.
+
+**Hands off to:** `migration-plan` when the upgrade is a major framework or runtime jump that cannot land as one PR; `pre-merge-review` when the PR also carries hand-written code changes beyond manifests, lockfiles and pins.
+
+**Not for:**
+
+- Reviewing a PR whose substance is the repo's own code change: use `pre-merge-review`
+- Writing the release notes or changelog for this project's next version: use `release-notes`
+- Planning a multi-step framework or runtime migration (a major framework version across many services): use `migration-plan`
+- Scanning installed skills for supply-chain patterns: that is the `skilldrop scan` command
+- Choosing which library to adopt in the first place: this reviews a version change, not a selection
 
 ### `devils-advocate`
 
@@ -394,7 +457,7 @@ Take an agreed requirement to merged code through a capped generate-verify-gate 
 
 | Stage | Skills | Gate |
 |---|---|---|
-| shape | `user-story-splitter`, `bug-triage` | — |
+| shape | `user-story-splitter`, `bug-triage`, `codebase-tour` | — |
 | implement | `feature-implement-loop` | — |
 | verify | `pre-merge-review` | G2 mechanical: READY / NOT READY / BLOCKED |
 | decide | `council-review` | G2.1 human: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / SPLIT / BLOCKED |

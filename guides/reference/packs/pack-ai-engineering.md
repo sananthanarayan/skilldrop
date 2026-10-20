@@ -13,7 +13,7 @@ Adopt and build AI systems: readiness assessment, use-case triage, rollout and a
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack ai-engineering` |
-| Skills | 11 plus 4 from core |
+| Skills | 12 plus 4 from core |
 | Loops | none |
 | How-to | [Use the AI engineering pack](../../how-to/packs/use-the-ai-engineering-pack.md) |
 
@@ -273,6 +273,36 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/ai-engineering/skills/l
 - Product-outcome metrics for a feature (adoption, handle time) — that's `success-metrics`
 - Picking which model/vendor to buy on price, terms or support — this measures quality on your task, which is one input to that decision
 - The provider-specific API mechanics (token counting, streaming, tool-call format) — consult the provider's own reference; this skill is the eval methodology
+
+### `mcp-pairing`
+
+Recommend which MCP servers to connect for a loop, workflow or task, stage by stage, with the narrowest access that works — what outside context or action each stage needs, the server that provides it (only ones the user named or the vendor officially publishes), the scopes to grant (read-only by default, never write on a review or gate stage), what it must not be able to do, the export-file fallback that keeps the stage running without it, and which stages need no server at all.
+
+Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/mcp-pairing/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/mcp-pairing/)
+
+**Use it when** the user asks "which MCP servers should we hook up for this loop", "what should our agent connect to", "what token scopes does this stage need", "is this MCP setup too broad", or wants to wire GitHub, GitLab, Jira, Linear, Slack, Sentry, Grafana or a database into an agent workflow.
+
+**A good result:**
+
+- **Every stage has a row,** including the ones that get **None**. A plan that lists only servers hides which stages hold nothing.
+- **No verify or gate stage holds a write scope.** Not comment, not approve, not label.
+- **Every write grant names the stage whose output it is** and sits on its own credential.
+- **No invented names.** Every server, package, URL and scope in the plan came from the user or is a vendor's own server with the confirm step written beside it.
+- **Every grant is narrower than "read-only":** a scope, a project or repository, a role.
+- **Every stage that reads untrusted content is checked** against write, exec and network tools in the same session, and the combination is split or dropped.
+- **Every stage has an export-file fallback** a person can produce today.
+- **At least one server is argued against** or the plan says why each one earns its place.
+- **No token value appears anywhere,** and the config placement keeps tokens out of git.
+
+**Hands off to:** `agent-threat-model` when the pairing still puts private data, untrusted content and any way to send data out in one session, or before the setup is connected at work.
+
+**Not for:**
+
+- Threat-modelling a finished agent's tools and data for exfiltration paths — `agent-threat-model`
+- Designing the loop itself: stages, exit criteria, caps, human gates — `agent-loop-design`
+- Deciding how to split work across subagents and what each one is told — `subagent-design`
+- Writing the organization's rules for which AI tools and data are allowed — `ai-usage-policy`
+- Setting up one tracker step by step (Jira, Linear, GitHub Projects) — that is the per-tracker integration guide in the skilldrop docs, not a plan
 
 ### `subagent-design`
 

@@ -490,7 +490,7 @@ def collect_guides():
                 "abs_path": abs_path,
                 # Generated per-pack guides (build_pack_guides.py) live in a packs/ subfolder and
                 # are grouped, so 2 × N pack pages don't bury the hand-written guides.
-                "group":    "packs" if os.path.basename(dirpath) == "packs" else "",
+                "group":    os.path.basename(dirpath) if os.path.basename(dirpath) in ("packs", "skills") else "",
             })
     return by_kind
 
@@ -597,12 +597,14 @@ def _sidebar_html(by_kind, current_kind, current_slug, depth):
             parts.append("</ul></details>")
             continue
         parts.append(f'<details open><summary>{_esc(label)}</summary><ul>')
-        grouped = [g for g in items if g.get("group")]
         for g in [g for g in items if not g.get("group")]:
             parts.append(link(g))
-        if grouped:
+        for gname, glabel in (("packs", "Per pack"), ("skills", "Per skill")):
+            grouped = [g for g in items if g.get("group") == gname]
+            if not grouped:
+                continue
             inside = any(g["kind"] == current_kind and g["slug"] == current_slug for g in grouped)
-            parts.append(f'<li><details{" open" if inside else ""}><summary>Per pack ({len(grouped)})</summary><ul>')
+            parts.append(f'<li><details{" open" if inside else ""}><summary>{glabel} ({len(grouped)})</summary><ul>')
             parts += [link(g) for g in grouped]
             parts.append("</ul></details></li>")
         parts.append("</ul></details>")

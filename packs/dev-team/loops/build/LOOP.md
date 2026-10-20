@@ -13,7 +13,7 @@ one. Every skill named below stays independently installable and runnable on its
 
 | # | Stage | Type | Skills | Gate |
 |---|---|---|---|---|
-| 1 | `shape` | generate | [`user-story-splitter`](../../skills/user-story-splitter/SKILL.md), [`bug-triage`](../../skills/bug-triage/SKILL.md) | — |
+| 1 | `shape` | generate | [`user-story-splitter`](../../skills/user-story-splitter/SKILL.md), [`bug-triage`](../../skills/bug-triage/SKILL.md), [`codebase-tour`](../../skills/codebase-tour/SKILL.md) | — |
 | 2 | `implement` | generate | [`feature-implement-loop`](../../skills/feature-implement-loop/SKILL.md) | — |
 | 3 | `verify` | verify | [`pre-merge-review`](../../skills/pre-merge-review/SKILL.md) | **G2** mechanical |
 | 4 | `decide` | gate | [`council-review`](../../../core/skills/council-review/SKILL.md) | **G2.1** human |
@@ -22,7 +22,9 @@ one. Every skill named below stays independently installable and runnable on its
 
 1. **Establish the unit of work.** New capability → `user-story-splitter`. Reported defect →
    `bug-triage`. The stage is done when there is one vertical slice with acceptance criteria a
-   test can assert. Vague criteria are the single largest cause of a wasted round 3.
+   test can assert. Vague criteria are the single largest cause of a wasted round 3. In a
+   repository nobody on the change knows yet, run `codebase-tour` on the slice first: where
+   the change goes, the commands that test it, and the traps, each cited to a file.
 2. **Implement.** Hand the slice to `feature-implement-loop`, which runs its own capped
    generate-challenge-gate cycle internally. Do not re-implement its rounds here — this loop's
    `cap` governs returns from G2, not the inner skill's rounds.
