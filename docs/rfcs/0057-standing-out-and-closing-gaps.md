@@ -114,4 +114,33 @@ need evals of their own.
     the skill imposed that weren't in the data, and run-1 figures presented as if both runs
     were merged.
 
-Both are being revised and will be measured again on fresh evals. Benchmark spend was $32.26.
+Benchmark spend was $32.26.
+
+## Revision: `bundle-size-review` and `judge-audit` (0.16.37)
+
+- **`bundle-size-review`**, revised once:
+  - It reads the repository around the stats file before concluding anything: browser
+    targets, the bundler config, installed versions, and the source that imports each heavy
+    package.
+  - It leads with exact byte sizes in one unit (kB = 1000), and gives a compressed size only
+    when it was measured.
+  - It answers the question first, and checks that fixes suit the installed versions.
+- **`judge-audit`**, revised twice:
+  - The second draft added weighted kappa for 1–5 scores, and a per-variant breakdown so a
+    judge biased toward one arm shows.
+  - The third draft:
+    - checks only against the user's own gate and invents no pass mark;
+    - names a pick when asked which judge to use;
+    - reports each run on its own, joined by item id;
+    - reports precision and recall, with intervals, for a rare class.
+
+Measured on two new held-out evals each, written blind, two trials, the same two judges:
+
+| Skill | Evals | Pairs won, judge 1 | Judge 2 | Checks met, skill | Without |
+|---|---|---|---|---|---|
+| `bundle-size-review` | 6 and 7 | 3 of 4 | 3 of 4 | 31% | 31% |
+| `judge-audit` | 8 and 9 | 2 of 4 | 2 of 4 | 41% | 19% |
+
+Both clear the bar. **`judge-audit` clears it exactly, after three drafts**, so its next
+revision needs evals of its own. **`bundle-size-review` meets no more checks than the plain
+agent;** the judges preferred it for exact figures and safe fixes. Re-test spend was $9.47.

@@ -1,0 +1,136 @@
+{
+  "skill_name": "judge-audit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Tomás reckons our LLM judges are reliable enough to gate the reply drafter. Everything is in notes.md and judgements.csv. Can we use judge-b as the release gate from next sprint? Keep it short.",
+      "assertions": [
+        "The first lines say judge-b should not be relied on as the release gate as things stand, and name that gate as the decision",
+        "It does not accept the 91% agreement as evidence: it gives the chance-corrected figure (Cohen's kappa about 0.54, with about 81% agreement expected by chance) instead of raw agreement alone",
+        "It compares the judges with the support lead's 40 labels and reports that judge-b passes 10 of the 12 replies she failed (about 83%), with an interval or a note that 12 failures is a small base",
+        "It translates the gate: on her 40 replies the judges pass about 88% while she passes 70%, so an 85% judge pass rate does not mean 85% of replies are sendable",
+        "It reports judge-b's flip rate between trials (12 of 80, about 15%) against judge-a's (3 of 80) and says this matters for choosing the cheaper judge",
+        "It points out that the two judges share errors (both passed the same long replies R29–R37 that the support lead failed), so their agreement with each other does not validate them",
+        "It notes that passes rise with reply length while the support lead's do not, and recommends judging policy correctness as a separate criterion to gate on instead of one 'good reply' score",
+        "It does not invent figures, names, items or labels that are not in the files"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Growth wants to switch our onboarding emails to prompt v2 because the grader picked it 53 to 43. The setup is in run-notes.md and the raw results in pairwise.csv. Is that solid enough to ship v2 on?",
+      "assertions": [
+        "The first lines say the grader result is not enough to ship v2 on",
+        "It finds the grader picks whichever email is shown first about 70% of the time (67 of 96 decided comparisons)",
+        "It finds that v2 was shown first in 60 of the 96 decided comparisons despite the randomisation, so the raw 55% win rate is inflated by position",
+        "It gives an order-balanced figure of about 50% (v2 wins about 70% when shown first and about 31% when shown second), so the data shows no evidence v2 is better",
+        "It reports that the grader's pick changed between the two runs on about half the profiles (26 of 50)",
+        "It recommends judging each pair in both orders and counting a win only when it holds in both, or an equivalent fix, and says that an interval on the win rate (computed over the 50 profiles, not the 100 judgements) cannot remove the order effect",
+        "It notes there are no human labels, so even a consistent grader has not been shown to pick the better email",
+        "It does not invent numbers, profiles or human judgements that are not in the files"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Quick one. We're piloting two LLM judges to grade our support agents' ticket replies as good or poor, and the grades will feed into quarterly bonus decisions. On 20 replies the two judges agreed on 18: both said good on 16, both said poor on 2, and they split on the other 2 (one each way). That's 90% agreement, so good enough to go ahead? A couple of lines is fine.",
+      "assertions": [
+        "The first line or two say no, not for bonus decisions",
+        "It corrects the 90% for chance: with each judge saying good on 17 of 20, about 75% agreement is expected by chance, giving a kappa of about 0.6",
+        "It says 20 replies is too few to conclude, for example that the uncertainty on the agreement figure runs from near zero to near perfect",
+        "It says the two judges agreeing does not show either is right, and that their grades need comparing with a sample graded by a person such as a team lead or QA reviewer",
+        "It ties the answer to the decision: grades that affect individual people's bonuses need a much higher bar than tracking an overall trend",
+        "It stays short: a few lines or bullets, no long report or tables",
+        "It does not invent results, reply counts or statistics beyond the counts given"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-20",
+      "prompt": "hey, sanity check before thursday. we moved the support reply prompt to v2 and the grader model says it's way better (avg went ~3.25 -> ~4.0 on the 1-5 scale). Priya hand-scored 32 of them last week and I got a weighted kappa of 0.85 between her and the grader, so I'm thinking we just use the grader as the release gate and ship v2 to all queues. grades.csv is the export. am I good??",
+      "assertions": [
+        "Answers the actual question up front with a clear verdict: the grader should NOT be relied on to gate the v2 rollout as things stand (do-not-rely, or use-with-conditions where the conditions rule out using it alone for this v2-vs-v1 call). It does not endorse shipping on the grader's say-so.",
+        "Shows that the pooled quadratic-weighted kappa (about 0.85 on the 32 labelled rows) hides a split by version: the grader matches Priya exactly on 14 of 16 v1 rows but only 7 of 16 v2 rows, and on v2 it scores higher than her on 9 of 16 rows and lower on none (mean grader-minus-Priya +0.625 on v2 vs 0.00 on v1).",
+        "Spots the length confound: v2 replies are much longer (mean about 201 words vs about 80 for v1), and the grader's over-scoring grows with reply length (e.g. grader-minus-human error correlates positively with reply_words, r about 0.6 on the labelled rows), so the +0.77 average gain may be the grader rewarding length rather than quality.",
+        "Points out that on the human-labelled rows Priya's own scores show no v2 improvement (mean about 3.25 for v2 vs about 3.44 for v1), and notes that with only 16 labels per version this human difference is itself very uncertain (a CI that spans zero), so it neither proves v2 better nor proves it worse.",
+        "Mentions what this data cannot measure: there is a single grader run (no test-retest / flip rate) and a single human labeller (no human-human baseline), and suggests checking these rather than claiming them.",
+        "Gives concrete next steps that fit the Thursday deadline, e.g. hand-label a fresh random sample of v2 replies (especially long ones), re-score with a rubric or prompt that controls for length, or keep a human check on the gate, rather than a generic 'collect more data'.",
+        "Is sized to a quick 'am I good?' sanity check: leads with the verdict and the two or three numbers that drive it, without a long tutorial on kappa theory.",
+        "Invents nothing: every number, name and file it cites comes from grades.csv or the message (no made-up grader model name, extra labellers, columns, or statistics that the data doesn't support)."
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-20",
+      "prompt": "I'm comparing our current RAG pipeline (A) against a new reranker variant (B) on 30 eval questions. Two judge models, orca-judge-large and wren-judge-small, each judged every A/B pair twice (trial 1 and trial 2). Across all 120 judgements B won 73, A won 40, 7 ties, and the two judges agree on roughly two thirds of verdicts. I have to tell the eng review on Friday whether B is a real winner or noise. Raw data is in pairwise_judgements.jsonl. Can you check whether these judges are trustworthy enough to make that call, and whether B's win is real?",
+      "assertions": [
+        "Answers both questions directly: the judges, as this experiment was run, are not trustworthy enough to declare B the winner, and B's win is not established (verdict do-not-rely, or use-with-conditions where the condition is a position-balanced rerun). It does not tell the review that B is a real winner.",
+        "Catches the order imbalance in the first_shown field: B was shown first on 22 of the 30 questions (88 of the 120 judgements), and each question kept the same order in both trials, so B's win rate is confounded with position.",
+        "Quantifies the position bias from the data: the first-shown answer won 90 of 120 judgements (75%; orca-judge-large 50/60, wren-judge-small 40/60), and B won only 6 of 32 judgements when A was shown first versus 67 of 88 when B was shown first.",
+        "Reports chance-corrected agreement between the two judges rather than the raw ~65% (39 of 60 paired verdicts): Cohen's kappa about 0.33 pooled (about 0.38 in trial 1, 0.29 in trial 2), or Fleiss' kappa about 0.32 across all four ratings, and calls that fair or weak agreement, not strong.",
+        "Reports test-retest instability from the two same-order trials: orca-judge-large changed its verdict on 8 of 30 questions and wren-judge-small on 11 of 30.",
+        "Treats the 30 questions, not the 120 judgements, as the unit of analysis (judgements on the same question are not independent), so any confidence interval on B's win rate is clustered or bootstrapped by question, and it explains that even an interval excluding 50% would not fix the position confound.",
+        "Recommends a specific fix: rerun every question in both orders (A-first and B-first), count a win only when it holds in both orders (flips count as ties), and add some expert or human labels, noting that the file has no ground-truth labels so agreement with experts cannot be checked yet.",
+        "Invents nothing: every count, rate and name it cites comes from pairwise_judgements.jsonl or the message; it does not make up expert labels, extra judges, or results of a rerun that hasn't happened."
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-20",
+      "prompt": "We run a nightly relevance eval on our RAG retriever and its labels gate whether retriever changes ship. atlas-xl is the judge today, but at ~20k judgments a night finance wants the bill down. I ran all three Atlas tiers over the same 300 query-passage pairs and Priya hand-labelled 60 of them - everything, including prices and how the gate works, is in rag-judge/. Which is the cheapest judge we can switch to without making the gate meaningless? Dmitri's position is that nano agrees with xl about 80% of the time so nano is fine. Is he right?",
+      "assertions": [
+        "Answers the actual question directly: recommends atlas-m (not atlas-nano) as the cheapest judge to switch to, with conditions, and says plainly that Dmitri's '80% agreement' argument does not justify nano.",
+        "Reports chance-corrected agreement with Priya's 60 expert labels for each judge, matching the data to within about 0.02: Cohen's kappa ~0.80 for atlas-xl, ~0.72 for atlas-m, ~0.37-0.38 for atlas-nano (raw accuracy 55/60, 53/60, 47/60).",
+        "Explains why raw agreement misleads here: 42 of the 60 expert-labelled pairs (70%) are relevant, so always answering 'relevant' already scores 70%; nano's ~78% accuracy and its ~80% raw agreement with xl (kappa ~0.42 over all 300 pairs) sit close to that baseline.",
+        "Identifies nano's failure mode: it over-labels 'relevant' (12 of the 18 expert-irrelevant pairs judged relevant), and the false positives are concentrated on long passages (10 of 11 long irrelevant passages vs 2 of 7 short ones, using the ~400-token split in passage_tokens).",
+        "Connects that length bias to the decision: the planned Q1 re-chunk to ~900-token chunks would be judged by a model that favours long passages, so nano would inflate the new retriever's precision@5 and could wave it through the gate.",
+        "States the uncertainty from a 60-label (only 18 irrelevant) sample - e.g. wide confidence intervals on kappa or accuracy - and says the xl-vs-m difference is not clearly distinguishable on this data; recommends a concrete next step such as more expert labels (especially irrelevant and long passages) before or alongside the switch.",
+        "Notes what the data cannot show rather than asserting it: each judge ran once (no test-retest or flip rate), and the expert labels come from a single annotator; does not report a position-bias result for these pointwise judgments.",
+        "Invents nothing not in the input: no fabricated judge names, prices, label counts, extra annotators or files; any cost figures follow from the README (e.g. roughly $96/night for xl vs $22 for m and $3.60 for nano at 20k judgments)."
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-20",
+      "prompt": "ok quick one - we ran our mod judge (sentinel-2) twice over the same 100 forum posts from the review queue and it's like 96-97% accurate vs what T&S labelled. can we turn on auto-remove for the forums monday?? files are in moderation/, sorry the run 2 export came out in a different format",
+      "assertions": [
+        "Answers the actual question directly: no, do not turn on auto-remove on this evidence (a 'do not rely on it' verdict for auto-removal), optionally offering a narrower use such as ranking or routing posts to human review.",
+        "Points out that only 5 of the 100 posts are violations, so a judge that flags nothing scores 95% - the 96-97% accuracy (97% run 1, 96% run 2) is barely above that baseline.",
+        "Reports the per-run confusion against the gold labels: each run catches 3 of 5 violations (recall 60%); run 1 has 1 false positive (precision 3/4), run 2 has 2 (precision 3/5); chance-corrected agreement with gold is moderate (Cohen's kappa ~0.65 run 1, ~0.58 run 2).",
+        "Joins run_1.jsonl and run_2.jsonl on the post ID (item_id vs id, flagged true/false vs verdict VIOLATION/OK) rather than by line order - run 2 is in a different row order - and gets test-retest agreement of 95/100 with Cohen's kappa ~0.42; does not report the near-zero kappa (~ -0.05) that a line-by-line comparison would produce.",
+        "Shows the instability where it matters: 5 posts flip between runs, including 2 real violations (fp-35782 and fp-31250), and of the 7 posts flagged in either run only 2 (fp-30923, fp-38748) were flagged both times.",
+        "Flags that the self-harm violation fp-34265 was missed in both runs, and that false positives (fp-36620, fp-31299, fp-31504) mean auto-remove would delete legitimate posts.",
+        "Quantifies how little 5 positives can show - e.g. a 95% interval on 3/5 recall spanning roughly 23% to 88% - and recommends a concrete next step such as labelling a larger, violation-enriched sample before reconsidering auto-remove.",
+        "Invents nothing not in the input: no fabricated post IDs, counts, policy categories, thresholds or files, and the reply stays proportionate to a quick Slack-style question (a clear verdict plus the key numbers, not a long report)."
+      ]
+    },
+    {
+      "id": 8,
+      "held_out": "2026-10-20",
+      "prompt": "quick one - our code review bot has an LLM judge that scores every generated patch 0-10 for correctness, been running since july. my manager wants to turn on auto-merge next sprint for anything the judge scores above 8. i dumped what we have into patches.csv (tests col = CI unit test result, only where the repo actually has tests; we also re-ran the judge on some patches last week, that's the rerun col). from eyeballing it the 9s and 10s basically all pass tests so i think we're good?? can u sanity check before i tell him yes",
+      "assertions": [
+        "Opens with a direct answer to 'can I tell him yes': no, not as proposed (a 'do not rely on it' or 'use only with conditions' verdict), and does not endorse auto-merging every patch scored above 8 across all repos.",
+        "Reads 'above 8' as scores 9-10 (or says which reading it used, or shows both >8 and >=8) and computes the decision metric from patches.csv: of the labelled patches scored 9-10, 20 of 24 passed tests (about 83%), so 'basically all pass' is wrong; it names or counts the 4 high-scored failures (PR-1101, PR-1085, PR-1139, PR-1004) that would have been auto-merged.",
+        "Puts that 20/24 in context with uncertainty and a chance baseline: gives a confidence interval (e.g. Wilson about 64-93%, or Clopper-Pearson about 63-95%) and compares it with the base pass rate of 107/153 labelled patches (about 70%), making the point that the judge adds only modest lift over merging blind.",
+        "Catches that infra-scripts has no test results at all yet supplies 15 of the 40 patches scored above 8, so the judge's precision there is unmeasured and the 20/24 figure says nothing about that repo.",
+        "Detects size/length bias: judge scores climb with lines_changed whether or not tests pass (e.g. rank correlation around 0.56 overall, or failing patches scoring high when large); all 4 high-scored failures are 230+ lines, while all 14 labelled patches under 200 lines that scored above 8 passed.",
+        "Uses the judge_score_rerun column for test-retest: of the 60 patches scored twice, only 17 got the same score and 9 land on opposite sides of the 'above 8' line; 14 were above 8 in at least one run but only 5 in both. It concludes the gate itself is unstable.",
+        "Handles the 4 rows whose judge_score is ERR (PR-1222, PR-1161, PR-1127, PR-1133) by excluding them and saying so, not by treating them as 0 or dropping them silently. Any conditions it proposes follow from the findings (e.g. only small patches in repos with tests, CI must still be green, two consistent judge runs, and a labelled sample from infra-scripts before including it).",
+        "Invents nothing: every number, patch ID, repo and test result it cites can be derived from patches.csv. It does not name or guess which LLM the bot uses, and does not claim to have run the bot or CI. The reply is sized as a sanity check (a verdict plus a handful of key numbers and conditions), not a long methodology essay."
+      ]
+    },
+    {
+      "id": 9,
+      "held_out": "2026-10-20",
+      "prompt": "I run localization QA at Halvorsen Language Services. Every segment we deliver is scored for adequacy on a 1-4 scale (1 = meaning lost, 2 = major errors, 3 = minor errors, 4 = complete) by three linguists, and any segment whose average is below 2.5 goes back to the translator for retranslation. A vendor, Quillmark, is pitching an LLM rater; their deck says it \"matches human linguists within one point 92% of the time\". We ran a pilot: adequacy_ratings.csv has 150 segments across en-de, en-es and en-ja, each rated by the three linguists we use for that language (linguist_1/2/3 are slots, not the same people across languages) and by the vendor's LLM. The steering committee meets Thursday and the question is simple: can the LLM replace one of our three linguists? I need a yes / no / yes-with-conditions answer and the evidence behind it, one page at most.",
+      "assertions": [
+        "Answers the committee's question in the first lines with one verdict. It is not an unqualified yes: either no, or yes-with-conditions where the conditions at least exclude en-ja. The whole reply fits roughly one page, as asked.",
+        "Takes apart the vendor's metric: it confirms LLM-linguist within-one-point agreement of about 92% (92.4% pooled) but shows the number is near-meaningless on a 4-point scale, because chance alone gives about 72-73% from these rating distributions and the linguists agree within one point about 98% of the time with each other.",
+        "Uses chance-corrected agreement that suits an ordinal scale (weighted kappa, or Fleiss/Krippendorff with an ordinal treatment) and benchmarks the LLM against the linguists rather than an absolute cutoff. Pooled, mean quadratic-weighted kappa is about 0.85 linguist-to-linguist versus about 0.64 LLM-to-linguist (or equivalent figures from a comparable method), so the LLM is a noticeably weaker rater than any linguist.",
+        "Breaks results out by language pair and flags en-ja. There, LLM-to-linguist quadratic-weighted kappa is about 0.47 versus about 0.88 between linguists (or three-linguist Fleiss kappa about 0.69 dropping to about 0.32-0.36 when the LLM replaces any one slot), while within-one agreement stays about 92% and hides the problem. It notes en-ja has only 40 segments (via an interval or an explicit sample-size caveat).",
+        "Notices the LLM compresses the scale and almost never says 'meaning lost': it gave a 1 only 3 times in 150 (never in en-ja), against 25-29 times per linguist slot. On the 28 segments where at least two linguists gave a 1, the LLM gave a 1 only twice.",
+        "Connects the agreement findings to the retranslation rule (average below 2.5): e.g. three linguists send back 44 segments, and replacing one slot with the LLM changes the send-back decision on 4-5 of the 150 segments. It also says that small number is cushioned by the two remaining linguists and does not show the LLM is as good as a human. A reply that reports agreement statistics only fails this.",
+        "Does not invent test-retest or position-bias numbers. It notes the pilot ran the LLM once per segment, so its stability is unknown, and recommends a repeat run (and, if relevant, a check by segment type or length) before any rollout.",
+        "Invents nothing: every figure, segment ID and language breakdown comes from adequacy_ratings.csv. It attributes no capabilities, model names or other claims to Quillmark beyond the one quoted in the request."
+      ]
+    }
+  ]
+}

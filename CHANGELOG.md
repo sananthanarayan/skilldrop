@@ -8,6 +8,12 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.37 — 2026-10-20
+
+- **`bundle-size-review`**, in the `frontend` pack, finds what makes a JavaScript bundle heavy from webpack, esbuild or Vite stats. Before reaching a conclusion, it reads your repository: the browser targets, the bundler config, the installed versions, and the files that import each heavy package. It reports exact byte sizes for what each entry loads before first render, the import chain behind each heavy module, duplicates, and polyfills your browser targets don't need. Given before and after stats, it shows what grew and which per-entry budget would have caught it.
+- **`judge-audit`**, in `ai-engineering`, checks whether an LLM judge can be trusted for the decision its scores drive. It measures agreement with expert labels, using weighted kappa for 1–5 scores. Its numbers are broken down by the variants you're comparing, so a judge that favours one of them shows up. Each run is reported separately, a rare class gets precision and recall with intervals, and the result is checked against your own pass mark.
+- Both failed their first measurement in 0.16.36. They were revised from the judges' reasons, then preferred to plain Claude Code on new held-out evals ([RFC-0057](docs/rfcs/0057-standing-out-and-closing-gaps.md)).
+
 ## 0.16.36 — 2026-10-20
 
 - **Ten new skills.** Each was preferred by blind judges to plain Claude Code on held-out evals ([RFC-0057](docs/rfcs/0057-standing-out-and-closing-gaps.md)).

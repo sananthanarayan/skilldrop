@@ -32,7 +32,7 @@ Install one pack. Every role pack also brings `core` (intake, critique, review c
 - **Data and analytics:** `data-analytics` — metric definitions, SQL review, dashboard specs. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/data-analytics/)
 - **Governance, risk and compliance:** `grc` — DPIAs, SOC 2 evidence maps, risk registers, security questionnaire answers. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/grc/)
 - **Infrastructure as code:** `infra-as-code` — Terraform modules with secure defaults, and plan reviews before apply. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/infra-as-code/)
-- **Frontend:** `frontend` — what makes a page slow for real users, and how each route should be rendered. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/frontend/)
+- **Frontend:** `frontend` — what makes a page slow for real users, what makes a bundle heavy, and how each route should be rendered. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/frontend/)
 - **Writing agent skills:** `skill-engineering` — author a portable skill with evals, and review one before it ships. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/skill-engineering/)
 - **Applying for a job:** `career` — an honest fit check against the posting, a tailored resume and cover letter that claim nothing you didn't, and the application form's answers. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/career/)
 - **Everyone:** `core` on its own. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/core/)

@@ -62,7 +62,7 @@ A good result:
 ## Use something else when
 
 - The accessibility findings in the same Lighthouse report: use `accessibility-audit`
-- What is in a JavaScript bundle and why it is heavy (source maps, stats files): that needs the bundler's stats file, not a Lighthouse report
+- What is in a JavaScript bundle and why it is heavy (source maps, stats files): use `bundle-size-review`
 - Choosing SSR, static, ISR or client rendering for routes: use `rendering-strategy`
 - Setting up RUM, web-vitals collection, dashboards or alerts: use `observability-plan`
 - Lighthouse SEO and Best Practices scores; this skill reads the Performance category only
@@ -71,4 +71,4 @@ A good result:
 
 - [SKILL.md](../../../packs/frontend/skills/web-performance-review/SKILL.md), the instructions the agent reads
 - [Its page on the site](https://sananthanarayan.github.io/skilldrop/skills/web-performance-review/)
-- Related: [accessibility-audit](use-accessibility-audit.md), [observability-plan](use-observability-plan.md), [rendering-strategy](use-rendering-strategy.md)
+- Related: [accessibility-audit](use-accessibility-audit.md), [bundle-size-review](use-bundle-size-review.md), [observability-plan](use-observability-plan.md), [rendering-strategy](use-rendering-strategy.md)

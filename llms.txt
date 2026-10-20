@@ -1,12 +1,12 @@
 # skilldrop
 
-> 114 portable skills for the artifacts knowledge work ships (ADRs, design docs,
+> 116 portable skills for the artifacts knowledge work ships (ADRs, design docs,
 > PRDs, runbooks, threat models, decks, postmortems), plus 11 loops that sequence them
 > behind gates. A loop orders skills; a skill never calls a skill, so every one of the
-> 114 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
+> 116 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.16.36.
+> Version 0.16.37.
 
 ## Start here
 
@@ -115,6 +115,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use brand-kit](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-brand-kit.md) *(how-to)*: Capture a brand once as a reusable brand.json
 - [Use brief-intake](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-brief-intake.md) *(how-to)*: Turn raw mess
 - [Use bug-triage](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-bug-triage.md) *(how-to)*: Turn a vague bug report (Slack message, support ticket, "it's broken on mobile sometimes") into an actionable ticket
+- [Use bundle-size-review](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-bundle-size-review.md) *(how-to)*: Find what makes a JavaScript bundle heavy and what can safely come out, from the bundler's stats file (webpack stats.json, an esbuild metafile, or the…
 - [Use business-case](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-business-case.md) *(how-to)*: Build a business case for a build/buy/defer investment decision
 - [Use capacity-cost-model](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-capacity-cost-model.md) *(how-to)*: Build a capacity and cost model for a service or feature
 - [Use cloud-cost-review](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-cloud-cost-review.md) *(how-to)*: Review actual cloud spend from a cost export (AWS CUR or Data Exports, GCP billing export, Azure cost details) and produce a ranked savings report
@@ -146,6 +147,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use information-architecture](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-information-architecture.md) *(how-to)*: Design the information architecture for a product or site
 - [Use interactive-diagram](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-interactive-diagram.md) *(how-to)*: Turn a codebase, a system description, a process or a database schema into one self-contained interactive HTML diagram (architecture, workflow, data flow, lifecycle…
 - [Use job-fit-analysis](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-job-fit-analysis.md) *(how-to)*: Compare a job posting with a resume and say honestly whether to apply
+- [Use judge-audit](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-judge-audit.md) *(how-to)*: Audit whether an LLM-as-judge, or a panel of judges, can be trusted for the decision its scores drive, before anyone acts on them
 - [Use launch-readiness](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-launch-readiness.md) *(how-to)*: Produce a go/no-go launch readiness report for a merged change before it goes live
 - [Use lean-canvas](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-lean-canvas.md) *(how-to)*: Turn a startup or internal-product idea into a lean canvas that finds what could kill it
 - [Use llm-eval-harness](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-llm-eval-harness.md) *(how-to)*: Design an evaluation harness for an LLM-powered feature
@@ -270,7 +272,7 @@ except `api-builder` requires `core`, which installs with it.
 - **sre-oncall** (8 skills, loops: operate, requires core): Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.
 - **stakeholder-comms** (4 skills, requires core): Non-technical audiences: audience profiling, exec summaries, decision logs, and guides. Decks live in the design pack.
 - **design** (4 skills, requires core): On-brand visual work: capture a brand once, then build real PowerPoint decks and print-ready marketing flyers in that brand, with logo, colours and fonts applied.
-- **ai-engineering** (14 skills, requires core): Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, and AI-usage reporting.
+- **ai-engineering** (15 skills, requires core): Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, and AI-usage reporting.
 - **api-builder** (4 skills): Skills for teams building on the Anthropic API — prompt caching, token budgeting, eval generation for skills, and tool-use schema writing.
 - **converters** (7 skills, requires core): Turn Markdown into Word, Excel and HTML files that people outside engineering can open, turn their files back into Markdown, and render diagrams to images. Standard-library Python scripts, with nothing to install.
 - **experience-design** (5 skills, requires core): The experience around a product: the structure people navigate, the content and interface words they read, the components they use, and the service behind it all.
@@ -279,7 +281,7 @@ except `api-builder` requires `core`, which installs with it.
 - **data-analytics** (2 skills, loops: measure, requires core): For analysts and the people who rely on their numbers: review SQL for the bugs that quietly inflate a figure, and spec dashboards around a decision instead of every chart that was easy to make.
 - **grc** (4 skills, loops: comply, requires core): Governance, risk and compliance drafts for compliance leads, DPOs and risk owners: a risk register with a checked heat map, a GDPR data protection impact assessment, a SOC 2 control-to-evidence map, and answers to a customer security questionnaire drawn from your own evidence, each prepared for a qualified person to review.
 - **infra-as-code** (2 skills, requires core): Terraform you can hand to another team and plans you can trust before apply: reusable modules with secure defaults, and a plan review that catches destroys, data loss, access widening and drift.
-- **frontend** (2 skills, requires core): For frontend engineers and the people who review their pages: read a Lighthouse report for what actually slows the page for real users, and choose how each route is rendered from what it needs.
+- **frontend** (3 skills, requires core): For frontend engineers and the people who review their pages: read a Lighthouse report for what actually slows the page, find what makes a JavaScript bundle heavy, and choose how each route is rendered from what it needs.
 - **skill-engineering** (2 skills, requires core): For people writing Agent Skills in their own repos: write a portable SKILL.md folder from a described task, then audit any skill for routing, portability, safety, structure and evals before you share it.
 - **career** (5 skills, loops: apply, requires core): Job applications, for any occupation: a shortlist of which of an employer's roles to go for, an honest check of your resume against the posting, a tailored resume and a cover letter that say nothing you didn't, the application form's answers drafted from your resume, and a script that lists every figure and name in a draft that your own resume doesn't contain.
 
@@ -287,7 +289,7 @@ except `api-builder` requires `core`, which installs with it.
 
 - **decide-what-to-build** (13 skills): Turn a direction into a committed, measurable plan: press releases, strategy frameworks, OKRs, business cases, requirements, PRDs, and the metrics that will say whether it worked.
 - **design-the-system** (17 skills): Commit the shape before the code: decision records, design docs, diagrams, API and data contracts, migration and threat models, and the design of any agentic parts.
-- **build-and-review-software** (22 skills): The loop around the code itself: supervised implementation, adversarial review panels, test plans, triage, pull request descriptions, a ranked technical-debt register, accessibility and static-analysis passes, and the policy files agents read.
+- **build-and-review-software** (24 skills): The loop around the code itself: supervised implementation, adversarial review panels, test plans, triage, pull request descriptions, a ranked technical-debt register, accessibility and static-analysis passes, and the policy files agents read.
 - **build-on-the-claude-api** (4 skills): Skills for teams building directly on the Anthropic API — prompt caching strategy, token budgeting, eval generation, and tool-use schema writing.
 - **run-and-recover-the-service** (11 skills): Operate what shipped: runbooks, observability design, release notes, incident communication, and the postmortem that closes the loop.
 - **explain-it-to-decision-makers** (7 skills): Get a non-technical audience to a decision: audience profiling, deck outlines and real decks, exec summaries, decision logs, and how-to guides.
@@ -315,7 +317,7 @@ except `api-builder` requires `core`, which installs with it.
 - [catalogue.json](https://sananthanarayan.github.io/skilldrop/catalogue.json): every skill, loop, pack and outcome as machine-readable JSON — name, description, tier, tags, related. Prefer this over scraping the site.
 - [model-routing.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/model-routing.json): the abstract tier per skill (light/standard/heavy) and the provider map that resolves a tier to a concrete model.
 - [catalogue.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/catalogue.json): pack display order and outcome membership; each pack's metadata is in `packs/<pack>/pack.json`.
-- All 114 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
+- All 116 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
 
 ## Optional
 

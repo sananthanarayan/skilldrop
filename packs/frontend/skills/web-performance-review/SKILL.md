@@ -8,8 +8,8 @@ description: Read a Lighthouse report or PageSpeed Insights result, with field d
 Reads a Lighthouse run the way a performance engineer does: real-user p75 numbers decide whether
 the page has a problem, and the one lab run explains why. The output names the element, the URL
 and the change, in the order that moves the failing vital most. Accessibility findings in the
-same report go to `accessibility-audit`. What is inside a heavy JavaScript bundle is a
-bundle analysis from the bundler's stats file, not this report. Choosing SSR, static or client rendering for a route is
+same report go to `accessibility-audit`. What is inside a heavy JavaScript bundle is
+`bundle-size-review`. Choosing SSR, static or client rendering for a route is
 `rendering-strategy`. Setting up RUM or alerting on the vitals is `observability-plan`.
 
 ## How to respond
@@ -90,7 +90,7 @@ bundle analysis from the bundler's stats file, not this report. Choosing SSR, st
 ## When NOT to use this skill
 
 - ❌ The accessibility findings in the same Lighthouse report: use `accessibility-audit`
-- ❌ What is in a JavaScript bundle and why it is heavy (source maps, stats files): that needs the bundler's stats file, not a Lighthouse report
+- ❌ What is in a JavaScript bundle and why it is heavy (source maps, stats files): use `bundle-size-review`
 - ❌ Choosing SSR, static, ISR or client rendering for routes: use `rendering-strategy`
 - ❌ Setting up RUM, web-vitals collection, dashboards or alerts: use `observability-plan`
 - ❌ Lighthouse SEO and Best Practices scores; this skill reads the Performance category only
