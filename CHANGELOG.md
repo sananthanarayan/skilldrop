@@ -8,6 +8,10 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.35 — 2026-10-20
+
+- **`file-to-markdown` keeps PDF table columns apart when they sit close together.** A right-aligned amount next to a left-aligned date used to merge into one cell ("1,137 2027-02-01"), because the PDF's text puts only one space between them. Columns are now told apart by where each word sits on the page, and a normal word space never splits a cell, even in a monospace font. A table that already came out right is unchanged. On a 60-row table exported from Word, every row now has its four columns.
+
 ## 0.16.34 — 2026-10-20
 
 - **`skilldrop search <words>`** finds skills, loops, agents and packs by what they're for, from the terminal and offline. It reads names, tags, packs, descriptions and the phrasings each skill's trigger evals route to it, so `skilldrop search why did our conversion drop` finds `hypothesis-comparison`. Every word must match, filler words are dropped, and if nothing matches every word it shows near matches and says so. Search a retired skill by name and you get its retirement note. `--kind`, `--limit` and `--json` refine it ([RFC-0056](docs/rfcs/0056-search-and-windows-ci.md)).
