@@ -18,15 +18,15 @@
 <rect x="659.4" y="124" width="116.6" height="20" rx="10" fill="#6d4aff" fill-opacity=".08" stroke="#6d4aff" stroke-opacity=".35"/><text x="667.4" y="138" class="chip" fill="#6d4aff">product-manager</text>
 <text x="92" y="166" class="h">Find the problem worth solving</text>
 <text x="92" y="190" class="muted"><tspan class="startl">Start here when</tspan> A request, a complaint or a strategy question arrives.</text>
-<text x="92.0" y="218" class="mono">requirements-interview / user-journey-map / strategy-analysis</text>
-<text x="543.5" y="218" class="arrow">→</text>
-<text x="560.5" y="218" class="mono">brief-intake</text>
-<text x="653.4" y="218" class="arrow">→</text>
-<text x="670.4" y="218" class="mono">prd-draft</text>
+<text x="92.0" y="218" class="mono">requirements-interview / user-journey-map / strategy-analysis / feedback-synthesis</text>
 <text x="97.0" y="246" class="arrow">→</text>
-<text x="114.0" y="246" class="mono">doc-critique</text>
+<text x="114.0" y="246" class="mono">brief-intake</text>
 <text x="206.8" y="246" class="arrow">→</text>
-<rect x="223.8" y="232" width="113.2" height="20" rx="10" class="gate"/><text x="233.8" y="246" class="gatet">G0 · you decide</text>
+<text x="223.8" y="246" class="mono">prd-draft</text>
+<text x="294.7" y="246" class="arrow">→</text>
+<text x="311.7" y="246" class="mono">doc-critique</text>
+<text x="404.6" y="246" class="arrow">→</text>
+<rect x="421.6" y="232" width="113.2" height="20" rx="10" class="gate"/><text x="431.6" y="246" class="gatet">G0 · you decide</text>
 <text x="92" y="274" class="ends"><tspan class="endsl">Ends with</tspan> a requirement a person ratified</text>
 <rect x="72" y="318" width="724" height="184" rx="12" class="card"/>
 <rect x="72" y="330" width="4" height="160" rx="2" fill="#2563eb"/>
@@ -52,11 +52,11 @@
 <rect x="706.3" y="536" width="69.7" height="20" rx="10" fill="#15803d" fill-opacity=".08" stroke="#15803d" stroke-opacity=".35"/><text x="714.3" y="550" class="chip" fill="#15803d">dev-team</text>
 <text x="92" y="578" class="h">Build it</text>
 <text x="92" y="602" class="muted"><tspan class="startl">Start here when</tspan> The work is clear enough to write down. Bug fixes start here.</text>
-<text x="92.0" y="630" class="mono">user-story-splitter / bug-triage</text>
-<text x="331.2" y="630" class="arrow">→</text>
-<text x="348.2" y="630" class="mono">feature-implement-loop</text>
-<text x="514.3" y="630" class="arrow">→</text>
-<text x="531.3" y="630" class="mono">pre-merge-review</text>
+<text x="92.0" y="630" class="mono">user-story-splitter / bug-triage / codebase-tour</text>
+<text x="448.4" y="630" class="arrow">→</text>
+<text x="465.4" y="630" class="mono">feature-implement-loop</text>
+<text x="631.4" y="630" class="arrow">→</text>
+<text x="648.4" y="630" class="mono">pre-merge-review</text>
 <text x="97.0" y="658" class="arrow">→</text>
 <rect x="114.0" y="644" width="150.4" height="20" rx="10" class="gate"/><text x="124.0" y="658" class="gatet">G2 · a script decides</text>
 <text x="269.4" y="658" class="arrow">→</text>

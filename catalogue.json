@@ -17,7 +17,8 @@
         "nfr-spec",
         "success-metrics",
         "user-story-splitter",
-        "user-journey-map"
+        "user-journey-map",
+        "feedback-synthesis"
       ]
     },
     "design-the-system": {
@@ -38,7 +39,8 @@
         "agent-loop-design",
         "subagent-design",
         "agent-budget",
-        "terraform-module"
+        "terraform-module",
+        "mcp-pairing"
       ]
     },
     "build-and-review-software": {
@@ -60,7 +62,9 @@
         "llm-eval-harness",
         "eval-harness-generator",
         "backlog-triage",
-        "tracker-brief-sync"
+        "tracker-brief-sync",
+        "dependency-upgrade-review",
+        "codebase-tour"
       ]
     },
     "build-on-the-claude-api": {

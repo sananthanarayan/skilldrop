@@ -13,7 +13,7 @@ script: no check can tell you that you solved the wrong problem well.
 
 | # | Stage | Type | Skills | Gate |
 |---|---|---|---|---|
-| 1 | `gather` | generate | [`requirements-interview`](../../skills/requirements-interview/SKILL.md), [`user-journey-map`](../../skills/user-journey-map/SKILL.md), [`strategy-analysis`](../../skills/strategy-analysis/SKILL.md) | — |
+| 1 | `gather` | generate | [`requirements-interview`](../../skills/requirements-interview/SKILL.md), [`user-journey-map`](../../skills/user-journey-map/SKILL.md), [`strategy-analysis`](../../skills/strategy-analysis/SKILL.md), [`feedback-synthesis`](../../skills/feedback-synthesis/SKILL.md) | — |
 | 2 | `structure` | generate | [`brief-intake`](../../../core/skills/brief-intake/SKILL.md) | — |
 | 3 | `specify` | generate | [`prd-draft`](../../skills/prd-draft/SKILL.md) | — |
 | 4 | `ratify` | gate | [`doc-critique`](../../../core/skills/doc-critique/SKILL.md) | **G0** human |
@@ -22,8 +22,9 @@ script: no check can tell you that you solved the wrong problem well.
 
 1. **Gather from whichever direction the signal arrives.** A stakeholder conversation →
    `requirements-interview`. An existing experience with known friction → `user-journey-map`.
-   An open strategic question → `strategy-analysis`. Run one; running all three on the same
-   input produces three views of the same thing and no more information.
+   An open strategic question → `strategy-analysis`. A pile of tickets, survey verbatims or
+   interview notes already collected → `feedback-synthesis`. Run one; running several on the
+   same input produces several views of the same thing and no more information.
 2. **Structure once.** `brief-intake` tags every field `[explicit]` / `[implied]` /
    `[inferred]` / `[missing]` with verbatim quotes. The tags are the deliverable — an
    untagged brief hides which parts are somebody's assumption.
@@ -75,7 +76,7 @@ which end in `BLOCKED`.
 
 ## Anti-patterns to avoid
 
-- ❌ **Running all three `gather` skills to be thorough.** Three lenses on one input is not three inputs; pick the one that matches where the signal came from.
+- ❌ **Running every `gather` skill to be thorough.** Three lenses on one input is not three inputs; pick the one that matches where the signal came from.
 - ❌ **Letting `prd-draft` fill a `[missing]` field.** That converts an open question into a fact nobody agreed to.
 - ❌ **Treating `doc-critique`'s `SHIP IT` as ratification.** The critique judges the document; G0 judges the problem.
 - ❌ **Returning `REVISE` to `specify`.** Re-writing the PRD from the same thin brief reproduces the same gaps in better prose.

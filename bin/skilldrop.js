@@ -71,8 +71,10 @@ Usage:
                                           in SKILL.md before you trust a catalog (RFC-0022)
   skilldrop new-skill <name> --pack <p>   scaffold a skill in the catalog you're in (for catalog authors;
                                           --tier light|standard|heavy, default standard)
-  skilldrop loop-stats [<file>] [--days N]  summarise the opt-in loop run log (SKILLDROP_LOOP_LOG):
-                                          which gates pass first time, loop back, or block. Local only.
+  skilldrop loop-stats [<file>...] [--days N] [--json | --html <out>]  summarise the opt-in loop
+                                          run log (SKILLDROP_LOOP_LOG): which gates pass first time, loop
+                                          back, or block. Several files (logs or others' --json) combine
+                                          into one view; --html writes a page that loads nothing. Local only.
   skilldrop init-catalogue <dir> [--pack <name>]  start a private catalogue for your team's skills
   skilldrop package <dir> [--pack a,b] [--skills x,y] [--agents]  copy a vetted subset of a catalogue
                                           into a standalone one to host internally (writes MIRROR.json)
@@ -147,7 +149,7 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--pack" || a === "--ide" || a === "--dest" || a === "--from" || a === "--panel" || a === "--profile" || a === "--tier" || a === "--skills" || a === "--days" ||
-        a === "--policy" || a === "--merge" || a === "--label" || a === "--last") out.flags[a.slice(2)] = argv[++i];
+        a === "--policy" || a === "--merge" || a === "--label" || a === "--last" || a === "--html") out.flags[a.slice(2)] = argv[++i];
     else if (a.startsWith("--")) out.flags[a.slice(2)] = true;
     else out._.push(a);
   }
@@ -1789,47 +1791,172 @@ function newSkill(args) {
 
 /* loop-stats: summarise the opt-in run log loops append to when SKILLDROP_LOOP_LOG is set.
    Local only — the file is the user's, nothing is sent anywhere. Answers the questions a team
-   asks of its loops: which gates pass first time, which keep looping back, which block. */
+   asks of its loops: which gates pass first time, which keep looping back, which block.
+   Several inputs are combined: each is a run log (JSONL) or another person's `--json` summary,
+   so a team can pool its numbers by passing files around, never through a service. */
+const LOOP_CLASSES = ["pass", "conditional", "revise", "redirect", "blocked", "unknown"];
+
+function isoWeek(ts) {
+  const d = new Date(ts);
+  if (isNaN(d)) return null;
+  const t = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+  t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));            // the week's Thursday
+  const y = t.getUTCFullYear();
+  const wk = Math.ceil(((t - Date.UTC(y, 0, 1)) / 864e5 + 1) / 7);
+  return `${y}-W${String(wk).padStart(2, "0")}`;
+}
+
 function loopStats(args) {
-  const file = args._[0] || process.env.SKILLDROP_LOOP_LOG || path.join(".skilldrop", "loop-log.jsonl");
-  const raw = readIfPresent(file, null);
-  if (raw === null)
-    die(`no run log at ${file}.\n       Turn it on: export SKILLDROP_LOOP_LOG="$PWD/.skilldrop/loop-log.jsonl" — each loop then appends one line per gate verdict.`);
+  const inputs = args._.length ? args._ : [process.env.SKILLDROP_LOOP_LOG || path.join(".skilldrop", "loop-log.jsonl")];
   const days = Number(args.flags.days) || 0;
   const since = days ? Date.now() - days * 864e5 : 0;
-  const rows = [], bad = [];
-  raw.split(/\r?\n/).forEach((line, i) => {
-    if (!line.trim()) return;
-    try {
-      const r = JSON.parse(line);
-      if (!r.loop || !r.verdict) throw new Error("missing loop or verdict");
-      if (since && Date.parse(r.ts) < since) return;
-      rows.push(r);
-    } catch (e) { bad.push(i + 1); }
-  });
   const terms = (() => { try { return readJSON(path.join(ROOT, "contracts", "terminals.json")); } catch (e) { return {}; } })();
   // Verdict classes come from the shared vocabulary (RFC-0028), so a new verdict word is
   // classified the same way here as in the loops.
   const classOf = (v) => ((terms.verdicts || {})[v] || {}).class || (/BLOCK/.test(v) ? "blocked" : "unknown");
   const by = {};
-  for (const r of rows) {
-    const k = `${r.loop}  ${r.gate || "-"} (${r.stage || "?"})`;
-    const g = by[k] = by[k] || { n: 0, verdicts: {}, firstPass: 0, firsts: 0, blocked: 0, rounds: [] };
-    g.n++; g.verdicts[r.verdict] = (g.verdicts[r.verdict] || 0) + 1;
-    const cls = classOf(r.verdict);
-    if (Number(r.round) === 1) { g.firsts++; if (cls === "pass" || cls === "conditional") g.firstPass++; }
-    if (cls === "blocked") g.blocked++;
-    if (r.round) g.rounds.push(Number(r.round));
+  let entries = 0, skipped = 0, summaries = 0;
+  const gateOf = (k, r) => by[k] = by[k] || { loop: r.loop, gate: r.gate || null, stage: r.stage || null, n: 0,
+    verdicts: {}, firstPass: 0, firsts: 0, blocked: 0, maxRound: 0, rounds: {}, weeks: {} };
+  const keyOf = (r) => `${r.loop}  ${r.gate || "-"} (${r.stage || "?"})`;
+
+  for (const file of inputs) {
+    const raw = readIfPresent(file, null);
+    if (raw === null)
+      die(`no run log at ${file}.\n       Turn it on: export SKILLDROP_LOOP_LOG="$PWD/.skilldrop/loop-log.jsonl" — each loop then appends one line per gate verdict.`);
+    let summary = null;
+    try { const o = JSON.parse(raw); if (o && typeof o === "object" && o.gates) summary = o; } catch (e) { /* a run log */ }
+    if (summary) {
+      // Someone else's `loop-stats --json`: add its counts in. Its own --days already applied.
+      summaries++;
+      entries += Number(summary.entries) || 0; skipped += Number(summary.skipped) || 0;
+      for (const [k, s] of Object.entries(summary.gates)) {
+        const m = /^(\S+)\s+(\S+)\s+\((.*)\)$/.exec(k) || [];
+        const g = gateOf(k, { loop: s.loop || m[1] || k, gate: s.gate || (m[2] !== "-" ? m[2] : null), stage: s.stage || m[3] });
+        g.n += Number(s.n) || 0; g.firstPass += Number(s.firstPass) || 0; g.firsts += Number(s.firsts) || 0;
+        g.blocked += Number(s.blocked) || 0;
+        for (const [v, n] of Object.entries(s.verdicts || {})) g.verdicts[v] = (g.verdicts[v] || 0) + Number(n);
+        // 0.16.29 and earlier wrote `rounds` as a list of round numbers; later, as counts.
+        const rounds = Array.isArray(s.rounds) ? s.rounds.reduce((a, r) => (a[r] = (a[r] || 0) + 1, a), {}) : s.rounds || {};
+        for (const [r, n] of Object.entries(rounds)) g.rounds[r] = (g.rounds[r] || 0) + Number(n);
+        g.maxRound = Math.max(g.maxRound, Number(s.maxRound) || 0, ...Object.keys(rounds).map(Number));
+        for (const [w, cls] of Object.entries(s.weeks || {})) {
+          const into = g.weeks[w] = g.weeks[w] || {};
+          for (const [c, n] of Object.entries(cls)) into[c] = (into[c] || 0) + Number(n);
+        }
+      }
+      continue;
+    }
+    raw.split(/\r?\n/).forEach((line) => {
+      if (!line.trim()) return;
+      let r;
+      try {
+        r = JSON.parse(line);
+        if (!r.loop || !r.verdict) throw new Error("missing loop or verdict");
+      } catch (e) { skipped++; return; }
+      if (since && Date.parse(r.ts) < since) return;
+      entries++;
+      const g = gateOf(keyOf(r), r);
+      g.n++; g.verdicts[r.verdict] = (g.verdicts[r.verdict] || 0) + 1;
+      const cls = classOf(r.verdict);
+      if (Number(r.round) === 1) { g.firsts++; if (cls === "pass" || cls === "conditional") g.firstPass++; }
+      if (cls === "blocked") g.blocked++;
+      if (r.round) { g.rounds[r.round] = (g.rounds[r.round] || 0) + 1; g.maxRound = Math.max(g.maxRound, Number(r.round)); }
+      const w = isoWeek(r.ts);
+      if (w) { const into = g.weeks[w] = g.weeks[w] || {}; into[cls] = (into[cls] || 0) + 1; }
+    });
   }
-  if (args.flags.json) return emitJSON({ file, entries: rows.length, skipped: bad.length, gates: by });
-  console.log(`${rows.length} gate verdict(s) in ${file}${days ? ` from the last ${days} days` : ""}\n`);
+  const sources = inputs.length;
+  if (args.flags.json)
+    return emitJSON({ sources, entries, skipped, ...(days ? { days } : {}), gates: by });
+  if (args.flags.html) {
+    const out = typeof args.flags.html === "string" ? args.flags.html : "loop-stats.html";
+    fs.writeFileSync(out, loopStatsHtml(by, { sources, entries, days, classOf }));
+    console.log(`wrote ${out}: ${entries} gate verdict(s) from ${sources} file(s). It loads nothing from the network; open it in any browser.`);
+    return;
+  }
+  const from = sources === 1 ? inputs[0] : `${sources} files`;
+  console.log(`${entries} gate verdict(s) in ${from}${days ? ` from the last ${days} days` : ""}\n`);
   for (const [k, g] of Object.entries(by).sort()) {
     const mix = Object.entries(g.verdicts).sort((a, b) => b[1] - a[1]).map(([v, n]) => `${v} ${n}`).join(", ");
     const fp = g.firsts ? `${Math.round(100 * g.firstPass / g.firsts)}% pass first time` : "no first-round entries";
-    const maxRound = g.rounds.length ? Math.max(...g.rounds) : 0;
-    console.log(`${k}\n  ${g.n} verdict(s): ${mix}\n  ${fp} · ${g.blocked} blocked · longest run ${maxRound} round(s)`);
+    console.log(`${k}\n  ${g.n} verdict(s): ${mix}\n  ${fp} · ${g.blocked} blocked · longest run ${g.maxRound} round(s)`);
   }
-  if (bad.length) console.log(`\n${bad.length} line(s) skipped as unreadable: ${bad.slice(0, 10).join(", ")}${bad.length > 10 ? "…" : ""}`);
+  if (summaries && days) console.log(`\n--days applies to run logs only; the ${summaries} summary file(s) were counted as written.`);
+  if (skipped) console.log(`\n${skipped} line(s) skipped as unreadable.`);
+}
+
+/* The dashboard: one self-contained page, no script, and a policy that lets it load nothing,
+   so it can be opened from an email or a shared drive and sent on without leaking anything. */
+function loopStatsHtml(by, { sources, entries, days, classOf }) {
+  const esc = (x) => String(x).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  const label = { pass: "passed", conditional: "passed with conditions", revise: "sent back",
+                  redirect: "redirected", blocked: "blocked", unknown: "other" };
+  const allWeeks = [...new Set(Object.values(by).flatMap((g) => Object.keys(g.weeks)))].sort().slice(-12);
+  const bar = (counts, total) => LOOP_CLASSES.filter((c) => counts[c]).map((c) =>
+    `<span class="seg ${c}" style="width:${(100 * counts[c] / total).toFixed(2)}%" title="${esc(`${counts[c]} ${label[c]}`)}"></span>`).join("");
+  const loops = {};
+  for (const [k, g] of Object.entries(by)) (loops[g.loop] = loops[g.loop] || []).push([k, g]);
+  const sections = Object.keys(loops).sort().map((loop) => {
+    const rows = loops[loop].sort((a, b) => String(a[1].gate).localeCompare(String(b[1].gate))).map(([, g]) => {
+      const byClass = {};
+      for (const [v, n] of Object.entries(g.verdicts)) byClass[classOf(v)] = (byClass[classOf(v)] || 0) + n;
+      const fp = g.firsts ? Math.round(100 * g.firstPass / g.firsts) : null;
+      const mix = Object.entries(g.verdicts).sort((a, b) => b[1] - a[1]).map(([v, n]) => `${esc(v)} ${n}`).join(", ");
+      const peak = Math.max(1, ...allWeeks.map((w) => Object.values(g.weeks[w] || {}).reduce((a, b) => a + b, 0)));
+      const spark = allWeeks.map((w) => {
+        const c = g.weeks[w] || {}, t = Object.values(c).reduce((a, b) => a + b, 0);
+        return `<span class="wk" title="${esc(`${w}: ${t} verdict(s)`)}"><span class="col" style="height:${(100 * t / peak).toFixed(0)}%">${t ? bar(c, t).replace(/width:/g, "height:") : ""}</span></span>`;
+      }).join("");
+      return `<tr><th scope="row">${esc(g.gate || "-")}<small>${esc(g.stage || "")}</small></th><td class="num">${g.n}</td>` +
+        `<td class="num">${fp === null ? "–" : fp + "%"}</td><td class="num">${g.blocked}</td><td class="num">${g.maxRound}</td>` +
+        `<td><div class="mix" role="img" aria-label="${esc(mix)}">${bar(byClass, g.n)}</div><small>${mix}</small></td>` +
+        `<td><div class="spark" role="img" aria-label="verdicts per week">${spark}</div></td></tr>`;
+    }).join("\n");
+    return `<section><h2>${esc(loop)}</h2><table><thead><tr><th>Gate</th><th>Verdicts</th><th>Pass first time</th>` +
+      `<th>Blocked</th><th>Longest run</th><th>Mix</th><th>Per week</th></tr></thead><tbody>\n${rows}\n</tbody></table></section>`;
+  }).join("\n");
+  const legend = LOOP_CLASSES.filter((c) => c !== "unknown").map((c) => `<span><i class="seg ${c}"></i>${label[c]}</span>`).join("");
+  const weeks = allWeeks.length ? `${allWeeks[0]} to ${allWeeks[allWeeks.length - 1]}` : "no dated entries";
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Loop gates: where work gets stuck</title>
+<style>
+:root{color-scheme:light dark;--bg:#fafaf9;--fg:#17171a;--muted:#5c5c58;--line:#e4e4e0;--card:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#16161b;--fg:#ececf1;--muted:#a3a3ad;--line:#2f2f38;--card:#1d1d23}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:2rem 1.2rem}
+h1{font-size:1.6rem;margin:0 0 .3rem}p.sub{color:var(--muted);margin:0 0 1.2rem}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1rem 1.2rem;margin:0 0 1rem;overflow-x:auto}
+h2{font-size:1.1rem;margin:0 0 .6rem;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+table{border-collapse:collapse;width:100%;table-layout:fixed;min-width:820px}
+thead th:nth-child(1){width:9%}thead th:nth-child(2),thead th:nth-child(4),thead th:nth-child(5){width:9%}thead th:nth-child(3){width:11%}thead th:nth-child(7){width:17%}th,td{text-align:left;padding:.45rem .5rem;border-top:1px solid var(--line);vertical-align:top}
+thead th{border-top:0;font-size:.78rem;color:var(--muted);font-weight:600}
+th small,td small{display:block;color:var(--muted);font-size:.78rem;font-weight:400}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mix{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--line)}
+.seg{display:block}.pass{background:#15803d}.conditional{background:#65a30d}.revise{background:#d97706}
+.redirect{background:#7c3aed}.blocked{background:#b91c1c}.unknown{background:#78716c}
+.spark{display:flex;align-items:flex-end;gap:2px;height:36px;}
+.wk{flex:1;height:100%;display:flex;align-items:flex-end}.col{display:flex;flex-direction:column-reverse;width:100%;min-height:1px;background:var(--line)}
+.legend{display:flex;flex-wrap:wrap;gap:.4rem 1rem;margin:0 0 1rem;color:var(--muted);font-size:.85rem}
+.legend i{display:inline-block;width:.8rem;height:.8rem;border-radius:2px;margin-right:.35rem;vertical-align:-1px}
+ul{margin:.3rem 0 0;padding-left:1.2rem}
+</style></head><body><main>
+<h1>Loop gates: where work gets stuck</h1>
+<p class="sub">${entries} gate verdict(s) from ${sources} file(s)${days ? `, the last ${days} days` : ""} · weeks shown: ${esc(weeks)} · generated ${esc(new Date().toISOString().slice(0, 10))} by skilldrop loop-stats. Nothing here came from or goes to a server.</p>
+<div class="legend">${legend}</div>
+${sections || "<section><p>No gate verdicts yet.</p></section>"}
+<section><h2>Reading it</h2><ul>
+<li><b>A gate that rarely passes first time</b> usually points upstream: look at what the stage before it hands over.</li>
+<li><b>Frequent blocked</b> means a missing input. The loop's output names what was missing.</li>
+<li><b>A gate that always passes</b> may not be checking anything. Read a few of its reviews.</li>
+<li>Don't rank people by these numbers. A hard change loops more than an easy one.</li>
+</ul></section>
+</main></body></html>
+`;
 }
 
 /* init-catalogue <dir>: start a private catalogue (an internal mirror or a team's own skills)

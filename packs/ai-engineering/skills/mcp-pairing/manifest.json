@@ -1,0 +1,17 @@
+{
+  "name": "mcp-pairing",
+  "version": "0.1.0",
+  "description": "Recommend which MCP servers to connect for a loop, workflow or task, stage by stage, with the narrowest access that works — what outside context or action each stage needs, the server that provides it (only ones the user named or the vendor officially publishes), the scopes to grant (read-only by default, never write on a review or gate stage), what it must not be able to do, the export-file fallback that keeps the stage running without it, and which stages need no server at all. Use when the user asks \"which MCP servers should we hook up for this loop\", \"what should our agent connect to\", \"what token scopes does this stage need\", \"is this MCP setup too broad\", or wants to wire GitHub, GitLab, Jira, Linear, Slack, Sentry, Grafana or a database into an agent workflow.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": ["agent-loop-design", "agent-threat-model", "ai-usage-policy", "subagent-design"],
+  "handoff": [{
+    "to": "agent-threat-model",
+    "when": "the pairing still puts private data, untrusted content and any way to send data out in one session, or before the setup is connected at work",
+    "purpose": "Attack the finished capability surface path by path and break a leg on every path that can leak data.",
+    "fallback": "If agent-threat-model is absent, list each stage's session with three marks — private data, untrusted content, egress (write, network, rendered output) — and split or drop any session that holds all three."
+  }],
+  "tags": ["mcp", "least-privilege", "tool-permissions", "agentic", "prompt-injection"],
+  "model": { "tier": "standard", "rationale": "Matching a loop's stages to the context each needs and the narrowest access that provides it is bounded judgment over a short checklist." }
+}

@@ -21,10 +21,13 @@ What each one declares in its manifest: the packages to install, the environment
 | [`backlog-triage`](../../packs/trackers/skills/backlog-triage/SKILL.md) | trackers | — | — | — | — | named-paths |
 | [`brand-kit`](../../packs/design/skills/brand-kit/SKILL.md) | design | — | — | — | — | none |
 | [`cloud-cost-review`](../../packs/sre-oncall/skills/cloud-cost-review/SKILL.md) | sre-oncall | — | — | — | — | named-paths |
+| [`codebase-tour`](../../packs/dev-team/skills/codebase-tour/SKILL.md) | dev-team | — | — | — | — | none |
 | [`content-design`](../../packs/experience-design/skills/content-design/SKILL.md) | experience-design | — | — | — | — | none |
 | [`cover-letter`](../../packs/career/skills/cover-letter/SKILL.md) | career | — | — | — | — | named-paths |
 | [`deck-builder`](../../packs/design/skills/deck-builder/SKILL.md) | design | `python-pptx==1.0.2` | — | — | — | named-paths |
 | [`delivery-metrics-report`](../../packs/sre-oncall/skills/delivery-metrics-report/SKILL.md) | sre-oncall | — | — | — | — | named-paths |
+| [`dependency-upgrade-review`](../../packs/dev-team/skills/dependency-upgrade-review/SKILL.md) | dev-team | — | — | — | — | named-paths |
+| [`feedback-synthesis`](../../packs/product-manager/skills/feedback-synthesis/SKILL.md) | product-manager | — | — | — | — | named-paths |
 | [`figma-diagrams`](../../packs/solution-architect/skills/figma-diagrams/SKILL.md) | solution-architect | `requests==2.34.2` | `FIGMA_TOKEN` | `api.figma.com` | — | named-paths |
 | [`file-to-markdown`](../../packs/converters/skills/file-to-markdown/SKILL.md) | converters | — | — | — | `pdftotext` | named-paths |
 | [`hypothesis-comparison`](../../packs/research/skills/hypothesis-comparison/SKILL.md) | research | — | — | — | — | named-paths |

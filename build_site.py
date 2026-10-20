@@ -1556,6 +1556,7 @@ def outputs(skills, packs, outcomes, version, releases):
             f"  <url><loc>{SITE_URL}catalogue/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>\n"
             f"  <url><loc>{SITE_URL}docs/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>\n"
             f"  <url><loc>{SITE_URL}packs/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>\n"
+            f"  <url><loc>{SITE_URL}packs/compare/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>\n"
             + "".join(f"  <url><loc>{SITE_URL}packs/{p['name']}/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>\n" for p in packs)
             + f"  <url><loc>{SITE_URL}changelog/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>\n"
             + "".join(f"  <url><loc>{SITE_URL}changelog/{r['version']}/</loc><lastmod>{r['date']}</lastmod><priority>0.4</priority></url>\n"

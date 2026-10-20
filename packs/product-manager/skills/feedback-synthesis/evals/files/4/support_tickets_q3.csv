@@ -1,0 +1,49 @@
+ticket_id,created_at,account_id,account_name,plan,platform,priority,subject,description
+TW-4010,2026-07-01,ACC-1007,Bramblegate Cafe,Starter,Web,Low,Password reset email not received,"Requested a reset twice, nothing in inbox or spam."
+TW-4012,2026-07-02,ACC-1042,Brightfen Logistics,Business,Web,High,CSV export times out,"Trying to export all expense claims for June (about 6,000 lines) and the page spins for a couple of minutes then shows 'Request timed out'. Need this for month-end."
+TW-4015,2026-07-02,ACC-1011,Kettlewood Bakery,Starter,Web,Normal,Feature request: Excel export of invoices,Every month I download everything and match it against my bank statement by hand because customers pay in two or three chunks and the invoice just says 'Open' until the full amount lands. An Excel export would help.
+TW-4019,2026-07-03,ACC-1042,Brightfen Logistics,Business,Web,High,Re: CSV export times out,Still happening today. Tried Chrome and Edge. Same timeout.
+TW-4023,2026-07-06,ACC-1015,Brindle Courier Co,Starter,Android,Normal,Receipt scan reads wrong amount,Scanned a fuel receipt for 18.40 and it came through as 1840.00. Had to fix it by hand.
+TW-4027,2026-07-07,ACC-1023,Pellbrook Plumbing,Starter,Web,Normal,Please add bulk edit,"When a client pays half up front I have to edit the invoice, delete the line, and make a new invoice for the balance. With bulk edit I could at least fix them all at once."
+TW-4033,2026-07-08,ACC-1042,Brightfen Logistics,Business,Web,Urgent,URGENT export broken again,Our finance team cannot close the month. Export times out every single time. This is the third ticket.
+TW-4036,2026-07-09,ACC-1170,Pemberton Architects,Business,Web,Normal,Approval emails arriving late,Managers get the 'claim awaiting approval' email three or four hours after the claim is submitted.
+TW-4040,2026-07-10,ACC-1035,Marrowind Yoga,Starter,iOS,Normal,Can't mark invoice partially paid,Students pay for a 10-class pass in two instalments. There is no way to record the first payment without marking the whole invoice paid.
+TW-4044,2026-07-13,ACC-1031,Ellery Print Works,Starter,Web,Low,How do I add my logo to invoices?,Can't find where to upload a logo.
+TW-4047,2026-07-14,ACC-1048,Ovenden Electrical,Business,Android,Normal,Scanner mixing up totals,The scanner keeps picking up the VAT line instead of the total.
+TW-4051,2026-07-15,ACC-1042,Brightfen Logistics,Business,Web,High,Export still failing,Your workaround of exporting one week at a time works but it takes our clerk an hour to stitch the files together.
+TW-4055,2026-07-17,ACC-1058,Tidewell Landscaping,Starter,Web,Low,Add a notes field to payments,I'd like a notes box on each payment so I can write down which bank transfer covered which part of an invoice. Right now I keep a separate spreadsheet.
+TW-4058,2026-07-20,ACC-1074,Stonecrop Gardens,Starter,Web,Low,Change card on file,"Our card expired, how do I update billing details?"
+TW-4060,2026-07-20,ACC-1063,Lark & Loom,Starter,Android,Normal,OCR ignores decimal comma,"Receipts from our supplier in France use a comma for decimals. 12,50 becomes 1250."
+TW-4066,2026-07-22,ACC-1107,Harrow Lane Studio,Business,Web,Normal,Report download slow,Downloading the annual expenses report took ages and eventually failed. Smaller date ranges work fine.
+TW-4070,2026-07-24,ACC-1066,Corvane Photography,Starter,Web,Normal,Deposit payments show invoice as unpaid,"Wedding clients pay a 30% deposit. After I record it, the invoice still shows the full amount as unpaid on the client portal and clients email me confused."
+TW-4074,2026-07-27,ACC-1099,Fairlow Consulting,Business,Web,Low,Where is the VAT number field?,Need our VAT number to appear on invoices.
+TW-4078,2026-07-29,ACC-1042,Brightfen Logistics,Business,Web,Normal,Expense report export timeout,Timed out again on the July export. Please escalate.
+TW-4083,2026-07-30,ACC-1188,Ravelston Schools Trust,Enterprise,Web,Normal,Approval notification delay,Approval notifications are delayed by hours. Our heads of department approve in batches at the end of the day so they miss the cut.
+TW-4086,2026-07-31,ACC-1112,Kinsale Bike Repair,Starter,iOS,Low,Locked out after password change,Changed my password and now the iPhone app won't accept it.
+TW-4088,2026-07-31,ACC-1079,Ashgrove Tutors,Starter,Web,Normal,Request: integration with my bank,I spend Sunday nights ticking off payments against invoices because parents pay termly fees in bits. A bank feed would save me hours.
+TW-4092,2026-08-03,ACC-1048,Ovenden Electrical,Business,Android,High,Scanner still wrong - staff giving up,"Following up on my earlier ticket. Engineers have stopped using the scanner and are typing receipts in manually, which defeats the point."
+TW-4096,2026-08-03,ACC-1091,Fenwick & Rye Catering,Starter,Web,High,Overdue reminder sent to client who already paid deposit,Your automatic overdue reminder went to a client who paid a deposit last week. They were annoyed and I looked unprofessional. The system doesn't know about part payments.
+TW-4099,2026-08-04,ACC-1135,Oriel Events,Business,Web,Low,API docs link broken,The link to the API reference in the developer page gives a 404.
+TW-4102,2026-08-04,ACC-1042,Brightfen Logistics,Business,Web,High,Export timeouts - need ETA,Can someone give us an ETA on the export fix? We have raised this many times.
+TW-4108,2026-08-10,ACC-1084,Greyfriar Movers,Business,Android,Normal,Receipt amounts wrong after app update,Since the last Android update the scanned amounts are often off by a factor of 100.
+TW-4111,2026-08-12,ACC-1199,Calder Robotics,Business,Web,Low,Delayed approval emails,"Approval request emails come through late, sometimes the next morning."
+TW-4115,2026-08-13,ACC-1107,Harrow Lane Studio,Business,Web,Normal,Balance due wrong on statement,Customer statement shows the full invoice total as outstanding even though they paid two of three instalments. I had to send a manual PDF instead.
+TW-4118,2026-08-14,ACC-1163,Tamsin Wood Interiors,Starter,Web,Low,Dark mode?,Any plans for a dark mode? I do my books late at night.
+TW-4121,2026-08-18,ACC-1219,Quillmoor Accounting,Enterprise,Web,Normal,Export timeout on large date range,"Exporting a full year of claims times out. Not urgent, we can do it by quarter."
+TW-4124,2026-08-19,ACC-1177,Hexley Data Labs,Business,Web,Low,API rate limits,What are the rate limits on the expenses endpoint?
+TW-4127,2026-08-21,ACC-1007,Bramblegate Cafe,Starter,Web,Low,Logo upload,Where do I put a logo on my invoice template?
+TW-4130,2026-08-24,ACC-1230,Northgate Clinics Group,Enterprise,Web,Urgent,SSO login failing for entire organisation,"Since our identity provider rotated its signing certificate this morning, every user gets 'SAML assertion invalid'. All 140 staff are locked out and cannot submit expenses before the payroll cutoff on Friday. We had to roll back the certificate on our side to get in."
+TW-4135,2026-08-26,ACC-1121,Hollins Tree Care,Starter,Android,Normal,Scan picks up wrong number,It read the card number digits as the amount on a hardware store receipt.
+TW-4138,2026-08-27,ACC-1208,Morrow & Vane Legal,Enterprise,Web,Normal,VAT number on invoices,How do we show our VAT registration number on invoices?
+TW-4140,2026-08-31,ACC-1042,Brightfen Logistics,Business,Web,High,August export failing,Same timeout on the August export. Splitting by week again.
+TW-4144,2026-09-02,ACC-1203,Wyncote Dental,Business,Web,Normal,Approver not notified,Practice manager says she only got the approval email the next day.
+TW-4149,2026-09-04,ACC-1128,Penhallow Surf School,Starter,Web,Low,Cancel subscription,"Closing the surf school for winter, please cancel at end of term."
+TW-4152,2026-09-08,ACC-1142,Saltmarsh Joinery,Business,Web,Normal,Excel export please,Our bookkeeper needs to see what's been paid against each invoice when clients pay in instalments. Could you add an Excel export?
+TW-4157,2026-09-10,ACC-1094,Ludgate Coffee Roasters,Business,Web,Low,Update billing card,"New company card, how do I switch?"
+TW-4160,2026-09-14,ACC-1156,Mosswell Vets,Business,Android,Normal,Receipt scanner unreliable,"About half our scanned receipts need correcting. Our two iPhone users say theirs is fine, it seems to be the Android phones."
+TW-4163,2026-09-16,ACC-1146,Orchard Row Nursery,Starter,Web,Low,Password reset link expired,The reset link says expired as soon as I click it.
+TW-4166,2026-09-18,ACC-1182,Whitlock Physio,Business,Web,Low,Thank you,Just wanted to say the new invoice templates look great. No issue.
+TW-4168,2026-09-21,ACC-1244,Varrick Freight,Enterprise,Web,Urgent,Nobody can log in via SSO,After our scheduled IdP certificate renewal no one in the company can sign in. Drivers cannot log fuel receipts and our admins cannot approve anything. There is no non-SSO fallback for our account. Please treat as a P1.
+TW-4172,2026-09-24,ACC-1219,Quillmoor Accounting,Enterprise,Web,Normal,Approval emails slow,"Partners are getting approval emails hours late. In-app list is up to date, only email is slow."
+TW-4175,2026-09-27,ACC-1031,Ellery Print Works,Starter,Web,Low,unsubscribe,Please stop sending me the newsletter.
+TW-4177,2026-09-29,ACC-1042,Brightfen Logistics,Business,Web,Urgent,Export STILL broken - considering alternatives,Quarter end and the export times out. We are evaluating other tools if this is not fixed.

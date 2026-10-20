@@ -6,12 +6,15 @@ is what's next. Each item says why it matters, roughly how big it is, and what i
 so you can pick one up without re-deriving the context. Sizes are rough: **S** is an hour or
 two, **M** a day, **L** several days.
 
-Last reviewed 2026-10-20, after 0.16.29. Organisation governance (AST09) shipped in 0.16.27
+Last reviewed 2026-10-20, after 0.16.30. Organisation governance (AST09) shipped in 0.16.27
 ([RFC-0050](../rfcs/0050-org-governance.md)), declared containment (AST06) in 0.16.28
 ([RFC-0051](../rfcs/0051-declared-containment.md)), and the `research`, `comply` and `measure`
 loops with a tutorial for each pack added in 0.14.0 in 0.16.29
 ([RFC-0052](../rfcs/0052-research-comply-measure-loops.md)). The light and heavy tier benchmark
-ran in 0.16.21, and every skill now has held-out evals beside its own.
+ran in 0.16.21, and every skill now has held-out evals beside its own. 0.16.30 added
+`dependency-upgrade-review`, `feedback-synthesis`, `codebase-tour` and `mcp-pairing`, a
+compare-packs page, a how-to per skill, and team totals and an HTML dashboard for
+`loop-stats`.
 
 ## Distribution
 
@@ -46,18 +49,5 @@ ran in 0.16.21, and every skill now has held-out evals beside its own.
 
 | Idea | Why | Size |
 |---|---|---|
-| **`dependency-upgrade-review`** | A merge verdict on a Dependabot or Renovate PR: what changed, whether the pinned commit matches the release tag, whether CI exercised it, how to roll back. Done by hand for PR #24. | M |
-| **`rollout-plan` / `rollback-plan`** | Feature-flag and canary stages with the metrics that decide each step, and how to undo a release, including data and schemas. Partly covered by `migration-plan` and `launch-readiness`. | M |
-| **`feedback-synthesis`** | Turn interviews, support tickets or NPS comments into themes with evidence: a gap in the `discover` loop. | M |
-| **`codebase-tour`** | Onboard someone to an unfamiliar repo before they implement anything: a gap in the `build` loop. | M |
-| **`refactor-plan`** | Work that is neither a feature nor a bug. `tech-debt-register` (0.16.4) records the debt; nothing yet plans the refactor that pays it down. | M |
-| **`mcp-pairing`** | Recommend which MCP servers suit a loop. The [MCP guide](../../guides/how-to/use-with-mcp-servers.md) covers this as docs; a skill would tailor it. | S |
-
-## Docs and site
-
-| Idea | Why | Size |
-|---|---|---|
-| **More docs depth** | agent-ready-repo has about 270 doc pages; skilldrop has about 70. Per-skill how-tos are the obvious next layer. | L |
-| **Compare packs** | A page that sets two packs side by side for someone choosing between them. | S |
-| **Loop run-log dashboard** | A local HTML view of `skilldrop loop-stats --json`, for a team retrospective. | M |
-| **Team aggregation of loop stats** | Combine several people's `loop-stats --json` files into one view, still without sending anything anywhere. | S |
+| **`rollout-plan`** | Feature-flag and canary stages with the metrics that decide each step, how long each must run, and what turning the flag off doesn't undo. Drafted in 0.16.30 and not admitted: judges preferred the plain agent's practical ramp to its statistics-first reply ([RFC-0053](../rfcs/0053-six-skills-for-the-lifecycle-gaps.md)). Being revised. | M |
+| **`refactor-plan`** | Plan the refactor that pays down a `tech-debt-register` item. Drafted in 0.16.30 and not admitted: it met no more checks than the plain agent and wrote documents nobody asked for ([RFC-0053](../rfcs/0053-six-skills-for-the-lifecycle-gaps.md)). Being revised. | M |
