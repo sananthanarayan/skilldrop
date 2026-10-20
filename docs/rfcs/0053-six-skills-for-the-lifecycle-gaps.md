@@ -127,3 +127,31 @@ trials, the same two judges:
 The new evals clear the bar with both judges. Evals 4 and 5 are shown for reference only:
 the revisions read their judges' reasons, so they are no longer a fair test, and the next
 revision of either skill needs evals of its own.
+
+## Revision: `dependency-upgrade-review` (0.16.32)
+
+It was admitted at the edge in 0.16.30, with each judge preferring it in 2 of 4 pairs. The
+judges' reasons showed the problem. The plain agent won with a short reply: three fixes and
+an offer to make them. The skill found the same blockers, then buried them under a table, an
+empty rollback section and a note about a pin the PR never touched.
+
+The revision changes the reply and adds three checks:
+- **The reply** leads with the verdict and the deciding reasons. Each blocker says what
+  breaks, where, why CI missed it, and the fix.
+- **Each changed API is traced to its callers**: a retry loop that a new exception makes
+  dead, a changed return value that is unpacked.
+- **Runtime floors are checked** against the Docker image, CI and the runners.
+- **Pins are compared with each other**: the script now flags one tag pinned to two SHAs.
+
+Measured on two new held-out evals (6 and 7), written blind from the description, two trials,
+the same two judges:
+
+| Evals | Pairs won, judge 1 | Judge 2 | Assertions met, skill | Without |
+|---|---|---|---|---|
+| 6 and 7, new | 4 of 4 | 4 of 4 | 59% | 38% |
+| 4 and 5, re-run | 1 of 4 | 2 of 4 | 69% | 44% |
+
+The new evals clear the bar with both judges. On the re-run of 4 and 5 it met more checks
+than before (69%, up from 59%), but judge 1 preferred it less often. Those evals shaped the
+revision, so they are not the test, but the drop is recorded rather than hidden: the next
+revision should look at why the shorter reply loses on eval 4.

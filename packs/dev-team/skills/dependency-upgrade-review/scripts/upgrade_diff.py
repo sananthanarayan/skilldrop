@@ -161,6 +161,7 @@ def host_of(url):
 class Report:
     def __init__(self):
         self.changes, self.flags, self.files, self.unattributed = [], [], [], {}
+        self.sha_pins = {}  # (repo, tag) -> {sha: [files]}, from added `uses:` lines
 
     def change(self, path, eco, where, name, old, new, note=None):
         if old == new:
@@ -256,6 +257,12 @@ def merge_blocks(rep, path, eco, hunks, key_fn, field_res, name_fn, reset_re=Non
                     rep.flag("source", path, f"{label}: {f} moved from {oh} to {nh}")
                 elif nh and not o and f != "index" and nh not in DEFAULT_HOSTS:
                     rep.flag("source", path, f"{label}: new package comes from {nh}, not the default registry")
+            for f in ("node", "python-versions"):
+                orv, nrv = of.get(f, (None,))[0], nf.get(f, (None,))[0]
+                if o and nrv and orv != nrv:
+                    rt = "Node" if f == "node" else "Python"
+                    rep.flag("runtime", path, f"{label}: requires {rt} {nrv} (was {orv or 'unstated'}); check every "
+                                              f"place it installs and runs (base images, CI versions, runners)")
             ol, nl = of.get("license", (None,))[0], nf.get("license", (None,))[0]
             if ol and nl and ol != nl:
                 rep.flag("licence", path, f"{label}: licence changed from {ol} to {nl}")
@@ -317,7 +324,7 @@ def npm_lock_name(key):
 
 
 NPM_FIELDS = {f: re.compile(rf'^\s*"{f}":\s*"?([^",]+)"?,?\s*$') for f in
-              ("version", "resolved", "license", "hasInstallScript", "dev", "optional", "gypfile")}
+              ("version", "resolved", "license", "hasInstallScript", "dev", "optional", "gypfile", "node")}
 
 
 def h_package_lock(rep, path, hunks):
@@ -360,7 +367,8 @@ def h_pnpm_lock(rep, path, hunks):
 
 TOML_PKG_FIELDS = {"version": re.compile(r'^version\s*=\s*"([^"]+)"'),
                    "source": re.compile(r'^source\s*=\s*"([^"]+)"'),
-                   "url": re.compile(r'^(?:url|source\s*=\s*\{\s*(?:registry|git|url))\s*=\s*"([^"]+)"')}
+                   "url": re.compile(r'^(?:url|source\s*=\s*\{\s*(?:registry|git|url))\s*=\s*"([^"]+)"'),
+                   "python-versions": re.compile(r'^python-versions\s*=\s*"([^"]+)"')}
 
 
 def h_toml_lock(eco):
@@ -527,6 +535,7 @@ def h_workflow(rep, path, hunks):
             if n and SHA40.fullmatch(n[0]):
                 tag_ = re.match(r"^(v?[\w.\-]+)", n[1]).group(1) if n[1] else None
                 if tag_:
+                    rep.sha_pins.setdefault((repo, tag_), {}).setdefault(n[0], []).append(path)
                     rep.flag("pin", path, f"{name}@{n[0]} claims {tag_}. UNVERIFIED until the tag resolves to this commit: "
                                           f"`git ls-remote https://github.com/{repo} refs/tags/{tag_} 'refs/tags/{tag_}^{{}}'` "
                                           f"(the `^{{}}` line is the commit for an annotated tag; it must equal {n[0]})")
@@ -591,9 +600,16 @@ def analyse(files, title):
         for r in rep.changes:
             short = r["name"].split("/")[-1].lower()
             r["in_title"] = r["name"].lower() in t or (len(short) > 3 and re.search(rf"\b{re.escape(short)}\b", t) is not None)
+    for (repo, tag_), shas in rep.sha_pins.items():
+        if len(shas) > 1:
+            where = "; ".join(f"{s} in {', '.join(dict.fromkeys(ps))}" for s, ps in shas.items())
+            rep.flag("pin-conflict", next(iter(shas.values()))[0],
+                     f"{repo} {tag_} is pinned to {len(shas)} different commits ({where}). A tag points to one "
+                     f"commit, so at most one of these is {tag_}; find which with "
+                     f"`git ls-remote https://github.com/{repo} refs/tags/{tag_} 'refs/tags/{tag_}^{{}}'`")
     reasons_stop, reasons_check = [], []
     for fl in rep.flags:
-        if fl["kind"] in ("install-script", "source"):
+        if fl["kind"] in ("install-script", "source", "pin-conflict"):
             reasons_stop.append(f"{fl['kind']}: {fl['text']}")
         elif fl["kind"] == "pin":
             reasons_check.append("pin: " + fl["text"].split(". ")[0])
@@ -662,9 +678,11 @@ def render_md(rep, floor, stop, check, title):
         out += ["", f"## Beyond the title ({len(beyond)})", ""]
         out += [f"- `{r['name']}` {r['kind']}: {r['old'] or '—'} → {r['new'] or '—'} ({r['file']})" for r in beyond] or ["None."]
     labels = (("install-script", "Install scripts"), ("native", "Native code"), ("source", "Sources and registries"),
-              ("licence", "Licences"), ("pin", "Pins (verify every SHA; the script cannot)"))
+              ("licence", "Licences"), ("runtime", "Runtime requirements"), ("pin", "Pins (verify every SHA; the script cannot)"))
     for kind, heading in labels:
         rows = [f for f in rep.flags if f["kind"] == kind]
+        if kind == "pin":
+            rows = [f for f in rep.flags if f["kind"] == "pin-conflict"] + rows
         out += ["", f"## {heading} ({len(rows)})", ""]
         out += [f"- `{f['file']}`: {f['text']}" for f in rows] or ["None seen in the diff."]
     if rep.unattributed:

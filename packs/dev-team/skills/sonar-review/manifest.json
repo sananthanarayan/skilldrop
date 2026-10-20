@@ -33,5 +33,17 @@
   "model": {
     "tier": "standard",
     "rationale": "Formats Sonar API findings into a report. The hard analysis is Sonar's; this is synthesis. Escalates on very large diffs."
+  },
+  "permissions": {
+    "network": [
+      "sonarcloud.io"
+    ],
+    "commands": [
+      "sonar-scanner",
+      "git",
+      "curl"
+    ],
+    "files": "none",
+    "notes": "No scripts. Its instructions run sonar-scanner and query the Sonar API with curl, using SONAR_TOKEN from the environment, against sonarcloud.io or the self-hosted SonarQube URL the user configures."
   }
 }

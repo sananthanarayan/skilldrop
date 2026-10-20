@@ -37,5 +37,16 @@
   "model": {
     "tier": "standard",
     "rationale": "Structured generation against fixed module conventions and a secure-defaults checklist; the judgment is bounded to choosing defaults and validation rules for a described need."
+  },
+  "permissions": {
+    "network": [
+      "registry.terraform.io",
+      "releases.hashicorp.com"
+    ],
+    "commands": [
+      "terraform"
+    ],
+    "files": "none",
+    "notes": "No scripts. Its instructions run `terraform fmt`, `terraform init -backend=false` and `terraform validate` on the module it writes. `init` downloads the providers from the Terraform registry; none of the commands contacts a cloud account."
   }
 }

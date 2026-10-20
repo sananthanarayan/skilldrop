@@ -52,7 +52,9 @@ env vars. This is what makes the skill portable across IDEs.
 ## Scripts
 
 A skill with scripts declares what they do in `manifest.json` `permissions`: hosts contacted,
-programs run, and where files are written (see [AGENTS.md](../../AGENTS.md)). The scripts go in
+programs run, and where files are written (see [AGENTS.md](../../AGENTS.md)). A skill without
+scripts declares the same block when its instructions run a program or reach a host: what
+its fenced shell blocks start is checked against `commands` and `network` (RFC-0054). The scripts go in
 `scripts/` and are referenced with a path relative to the skill folder. Don't hard-code
 `${CLAUDE_SKILL_DIR}` alone; show both paths so non–Claude-Code users aren't stuck.
 

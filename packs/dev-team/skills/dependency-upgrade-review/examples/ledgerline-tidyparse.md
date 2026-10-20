@@ -67,25 +67,34 @@ No install scripts, sources, licences or pins appear. The floor says only that t
 
 ## Review (what the agent hands back)
 
-**MERGE.** A two-release patch bump whose only behaviour change, the new 10 MB line limit in 2.2.2, raises an error the import code already handles, and CI runs that code.
+**MERGE.** Two patch releases; the only behaviour change, 2.2.2's new 10 MB line limit, raises an error the import code already handles, and the PR's tests run that code.
 
-🟨 Notes
+- Both releases read. 2.2.1 fixes quoted newlines splitting rows, covered by `test_quoted_newline_stays_one_row` (`tests/test_ingest.py:9`). 2.2.2 is a security fix: lines over 10 MB raise `RowTooLongError`, a subclass of `ParseError`.
+- `git grep -n "tidyparse" -- '*.py'` finds one call, `app/ingest.py:14`, inside `except tidyparse.ParseError` (`app/ingest.py:15`), so the new error becomes `StatementRejected` like any malformed file.
+- `ci.yml` runs `pytest -q` on the PR and `tests/test_ingest.py:3` imports `import_statement`, so the changed code ran.
 
-- Both releases read. 2.2.1 fixes quoted newlines splitting rows, which `test_quoted_newline_stays_one_row` (`tests/test_ingest.py:9`) covers. 2.2.2 is a security fix: lines over 10 MB now raise `RowTooLongError`, a subclass of `ParseError`.
-- Search: `git grep -n "tidyparse" -- '*.py'` finds one call, `app/ingest.py:14`, inside `except tidyparse.ParseError` (`app/ingest.py:15`). The new error is caught there and becomes `StatementRejected`, the same path as any malformed file.
-- CI: `ci.yml` runs `pytest -q` on the PR, and `tests/test_ingest.py:3` imports `import_statement`, so the changed code ran. No test feeds a 10 MB line; that is the library's limit, not a change in this repo's behaviour.
-- Beyond the title: `charset-sniff` 1.4.0 → 1.4.1, a transitive patch, listed and not read.
-- No new packages, install scripts, registry changes or pins.
+Also in the lockfile: `charset-sniff` 1.4.0 → 1.4.1 (transitive patch). No new packages, install scripts, sources, runtime changes or pins.
 
-| Package | Old → New | Class | Direct? |
-|---|---|---|---|
-| tidyparse | 2.2.0 → 2.2.2 | patch | direct |
-| charset-sniff | 1.4.0 → 1.4.1 | patch | transitive |
+Rollback: `git revert` the merge commit, or `poetry add tidyparse@2.2.0` and commit `pyproject.toml` and `poetry.lock`; that reopens the 2.2.2 memory issue, so treat it as a stopgap.
 
-Rollback: `git revert` the merge commit, or `poetry add tidyparse@2.2.0` and commit `pyproject.toml` and `poetry.lock`. Nothing persists to undo, but rolling back reopens the 2.2.2 memory issue, so pin back to 2.2.0 only as a stopgap.
-
-To confirm: nothing.
+About 150 words. No package table: two packages fit in a line. No "To confirm": nothing is open.
 
 ## Why this is MERGE and not MERGE AFTER CHECKS
 
 Every check in the verdict rule is closed with evidence in the reply: both releases read, the one changed behaviour searched and found handled, the calling code run by a PR test, no pins, no install-time code, no new source. Remove any one of those (no repo to search, a release with no notes, a test that does not import `app/ingest.py`) and the verdict drops to MERGE AFTER CHECKS with that item as the check.
+
+## The same shape when it blocks
+
+Suppose instead the PR moved tidyparse to 3.0.0 and the notes (invented for this illustration) said 3.0.0 requires Python 3.11 and `parse_rows()` now returns a `RowSet` instead of a list. The reply keeps the order and stays short:
+
+> **DO NOT MERGE.** 3.0.0 needs Python 3.11 and the production image runs 3.10, and the import code indexes a result that is no longer a list.
+>
+> 🟥 1. `Dockerfile:1` builds on `python:3.10-slim`; CI runs 3.12 (`ci.yml:12`), so the PR passed and the image build fails at install. Move the image to 3.11 in this PR.
+> 🟥 2. `app/ingest.py:17` does `rows[0]` on what is now a `RowSet`; no test reads the first row, so CI missed it. Use `rows.first()`.
+>
+> Also in the lockfile: `charset-sniff` 1.4.0 → 1.4.1.
+> Rollback: `git revert` the merge commit and rebuild the image.
+>
+> I can make both changes on this branch.
+
+The lead names both blockers; each blocker says what breaks, where, why CI missed it and the fix; nothing is in the reply that does not change the decision.

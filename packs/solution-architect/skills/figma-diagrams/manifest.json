@@ -28,7 +28,18 @@
     "design",
     "api"
   ],
-  "permissions": {"network": ["api.figma.com"], "commands": [], "files": "named-paths", "notes": "Reads FIGMA_TOKEN from the environment to call the Figma REST API."},
+  "permissions": {
+    "network": [
+      "api.figma.com",
+      "pypi.org",
+      "files.pythonhosted.org"
+    ],
+    "commands": [
+      "pip"
+    ],
+    "files": "named-paths",
+    "notes": "Reads FIGMA_TOKEN from the environment to call the Figma REST API. Its instructions install the pinned requirements once with `python3 -m pip install -r requirements.txt`, which reaches PyPI."
+  },
   "model": {
     "tier": "standard",
     "rationale": "API calls + spec generation. Bounded transformation."

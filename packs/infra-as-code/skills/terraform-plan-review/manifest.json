@@ -40,7 +40,14 @@
     "iam",
     "drift"
   ],
-  "permissions": {"network": [], "commands": [], "files": "named-paths", "notes": "Reads a plan JSON, which can hold secrets in clear text; the script never prints attribute values."},
+  "permissions": {
+    "network": [],
+    "commands": [
+      "terraform"
+    ],
+    "files": "named-paths",
+    "notes": "Reads a plan JSON, which can hold secrets in clear text; the script never prints attribute values. Its instructions run `terraform show -json` to produce that plan JSON."
+  },
   "model": {
     "tier": "heavy",
     "rationale": "Adversarial review of a destructive change: judging which replacements lose data, which access changes widen exposure, and what is out of scope needs careful reasoning; a missed destroy costs far more than the model."
