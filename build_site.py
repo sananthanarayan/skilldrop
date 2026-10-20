@@ -137,6 +137,7 @@ PROOF_SKILL = "launch-readiness"
 # lands deep never loses the way back. Hrefs are relative to the site root; site_nav()
 # prefixes them for the page's depth. The home page's in-page sections are reached by scrolling.
 NAV = [
+    ("Get started", "start/", False),
     ("Packs", "packs/", False),
     ("Skills", "catalogue/", False),
     ("Loops", "loops/", False),
@@ -1327,7 +1328,8 @@ a {{ color:var(--accent-700); }}
     <h1>{esc(PITCH['hero_h1'])}</h1>
     <p class="lede">{esc(PITCH['hero_lede'])}</p>
     <div class="cta-row">
-      <a class="cta cta--primary" href="packs/">Find your pack &rarr;</a>
+      <a class="cta cta--primary" href="start/">Get started &rarr;</a>
+      <a class="cta cta--ghost" href="packs/">Find your pack</a>
       <a class="cta cta--ghost" href="#proof">See what a skill produces</a>
     </div>
     <div class="promises">{promises_html}</div>
@@ -1554,9 +1556,12 @@ def outputs(skills, packs, outcomes, version, releases):
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
             f"  <url><loc>{SITE_URL}</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>\n"
             f"  <url><loc>{SITE_URL}catalogue/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>\n"
+            f"  <url><loc>{SITE_URL}start/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>\n"
             f"  <url><loc>{SITE_URL}docs/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>\n"
-            f"  <url><loc>{SITE_URL}packs/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>\n"
-            f"  <url><loc>{SITE_URL}packs/compare/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>\n"
+            + "".join(f"  <url><loc>{SITE_URL}docs/{k}/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>\n"
+                      for k, gs in collect_guides().items() if gs)
+            + f"  <url><loc>{SITE_URL}packs/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>\n"
+            + f"  <url><loc>{SITE_URL}packs/compare/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>\n"
             + "".join(f"  <url><loc>{SITE_URL}packs/{p['name']}/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>\n" for p in packs)
             + f"  <url><loc>{SITE_URL}changelog/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>\n"
             + "".join(f"  <url><loc>{SITE_URL}changelog/{r['version']}/</loc><lastmod>{r['date']}</lastmod><priority>0.4</priority></url>\n"

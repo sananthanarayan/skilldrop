@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """build_pages.py — the site's generated inner pages (RFC-0032, RFC-0035).
 
-  build/packs/index.html          every pack, grouped by the outcome it serves
+  build/start/index.html          get started: install, choose the work, ask, check the result
+  build/packs/index.html          every pack, grouped by the outcome it serves, then by role
   build/packs/<pack>/index.html   one pack: at a glance, one install command, what to try first
   build/skills/<skill>/index.html one skill: what it makes, a prompt to try, its quality bar
   build/skills/index.html         redirect to the searchable catalogue
@@ -139,6 +140,19 @@ PAGE_CSS = """
 .cl h2 a { color:inherit; text-decoration:none; }
 .cl h2 a:hover { text-decoration:underline; }
 .cl__date { color:var(--fg-muted); font-weight:400; font-size:.9em; }
+.pk__roles { list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:0 1.6rem; }
+.pk__roles li { border-bottom:1px solid var(--border); padding:.55rem 0; display:flex; flex-wrap:wrap; justify-content:space-between; gap:.2rem .8rem; font-size:.92rem; }
+.pk__roles b { font-weight:600; }
+.pk__or { margin:2.6rem 0 -.6rem; font-size:.78rem !important; text-transform:uppercase; letter-spacing:.08em; color:var(--fg-muted); }
+.tb { margin:.6rem 0 1rem; }
+.tb > input { position:absolute; opacity:0; width:1px; height:1px; }
+.tb > label { display:inline-block; cursor:pointer; font-size:.88rem; font-weight:600; padding:.45rem .85rem; margin:0 .3rem .4rem 0;
+  border:1px solid var(--border); border-radius:999px; background:var(--card); color:var(--fg-muted); }
+.tb > input:checked + label { background:var(--accent-10); border-color:var(--accent-700); color:var(--fg); }
+.tb > input:focus-visible + label { outline:2px solid var(--accent); outline-offset:2px; }
+.tb__panels { border:1px solid var(--border); border-radius:var(--r); padding:.4rem 1.1rem .9rem; background:var(--card); }
+.tb__panel { display:none; }
+.tb__panel .pk__cmd, .tb__panel pre { background:var(--surface); }
 .cl__pager { display:flex; justify-content:space-between; margin-top:2.4rem; padding-top:1rem; border-top:1px solid var(--border); }
 """
 
@@ -233,7 +247,7 @@ def glance(pack, total, own_loops, outcome_counts):
 <div><dt>When to use it</dt><dd>{md(pack['description'])}</dd></div>
 <div><dt>Covers</dt><dd>{covers}</dd></div>
 <div><dt>Where you decide</dt><dd>{decide}</dd></div>
-<div><dt>Size</dt><dd>{size}</dd></div>
+<div><dt>Size</dt><dd>{size}{f'<br>{esc(pack["journey"]["time"])} a session' if pack.get("journey", {}).get("time") else ''}</dd></div>
 </dl>"""
 
 
@@ -317,6 +331,131 @@ def journey_section(j, by_name):
 </section>"""
 
 
+# Who reaches for which pack. Every pack but core (which comes with each of them) must be
+# placed here, so a new pack can't go missing from "Start with your role".
+ROLES = [
+    ("Product manager", ["product-manager", "trackers"]),
+    ("Software engineer", ["dev-team", "api-builder"]),
+    ("Frontend engineer", ["frontend"]),
+    ("Solution architect", ["solution-architect"]),
+    ("SRE or on-call engineer", ["sre-oncall"]),
+    ("Platform or infrastructure engineer", ["infra-as-code"]),
+    ("Designer", ["experience-design", "design"]),
+    ("Data analyst", ["data-analytics"]),
+    ("Researcher", ["research"]),
+    ("Compliance, risk or privacy lead", ["grc"]),
+    ("AI engineer", ["ai-engineering", "skill-engineering"]),
+    ("Writing for leaders or customers", ["stakeholder-comms", "converters"]),
+    ("Applying for a job", ["career"]),
+]
+
+
+def roles_section(packs, root=""):
+    placed = {p for _, ps in ROLES for p in ps}
+    missing = sorted(set(packs) - placed - {"core"})
+    unknown = sorted(placed - set(packs))
+    if missing or unknown:
+        raise SystemExit(f"build_pages.py: ROLES is out of date: missing {missing}, unknown {unknown}")
+    rows = "".join(
+        f'<li><b>{esc(role)}</b><span>' + " · ".join(
+            f'<a href="{root}{esc(n)}/">{esc(packs[n].get("display_name", n))}</a>' for n in ps) + "</span></li>"
+        for role, ps in ROLES)
+    return f'<section class="pk__group" aria-labelledby="roles"><h2 id="roles">Start with your role</h2><ul class="pk__roles">{rows}</ul></section>'
+
+
+# The starting jobs the get-started page offers, each answered by one pack's first value.
+START_JOBS = [
+    ("Build and review code", "dev-team"),
+    ("Decide what to build", "product-manager"),
+    ("Design the system", "solution-architect"),
+    ("Run the service", "sre-oncall"),
+    ("Trust the numbers", "data-analytics"),
+    ("Finish one document", "core"),
+]
+
+
+def tabs(group, items):
+    """Tabs from radio buttons and CSS alone, so they work with scripting off and arrow keys
+    move between them. items: [(id, label, panel_html)]; the first is selected."""
+    radios = "".join(
+        f'<input type="radio" name="{group}" id="{group}-{i}"{" checked" if n == 0 else ""}>'
+        f'<label for="{group}-{i}">{esc(label)}</label>' for n, (i, label, _) in enumerate(items))
+    panels = "".join(f'<div class="tb__panel" id="{group}-{i}-panel">{body}</div>' for i, _, body in items)
+    rules = "".join(f"#{group}-{i}:checked ~ .tb__panels #{group}-{i}-panel {{ display:block; }}" for i, _, _ in items)
+    return f'<style>{rules}</style><div class="tb">{radios}<div class="tb__panels">{panels}</div></div>'
+
+
+def start_page(packs, loop_by_name):
+    """Get started in four steps: install, choose the work, ask, then check the result and
+    where you decide. Every command and prompt comes from pack.json, so it can't drift."""
+    install = tabs("via", [
+        ("cli", "Any agent, with the CLI",
+         "<p>Needs Node 16.7 or later. Installs one pack into Claude Code's user folder; add <code>--ide cursor</code>, "
+         "<code>--ide copilot</code>, <code>--ide kiro</code> or <code>--ide codex</code> for another tool.</p>"
+         + copyable("npx skilldrop-cli install --pack core", label="Copy command")
+         + "<p>Add <code>--dry-run</code> first to see every file it would write.</p>"),
+        ("plugin", "Claude Code plugin",
+         "<p>Add the catalogue once, then install the plugin for a pack:</p>"
+         + copyable("/plugin marketplace add sananthanarayan/skilldrop", label="Copy command")
+         + copyable("/plugin install core@skilldrop", label="Copy command")),
+        ("copy", "No CLI: copy a folder",
+         "<p>A skill is a plain folder. Copying it is the whole install:</p>"
+         + copyable("git clone https://github.com/sananthanarayan/skilldrop && cp -R skilldrop/packs/core/skills/doc-critique ~/.claude/skills/", label="Copy command")),
+    ])
+    jobs = []
+    for label, n in START_JOBS:
+        p = packs[n]
+        fv, j = p["first-value"], p.get("journey", {})
+        jobs.append((n, label, f"""<p><b><a href="../packs/{esc(n)}/">{esc(p.get('display_name', n))}</a>:</b> {esc(fv['starter-task'])}.{f" About {esc(j['time'])}." if j.get('time') else ''}</p>
+{copyable(f"npx skilldrop-cli install --pack {n}", label="Copy command")}
+<p>Then paste this into your agent:</p>
+{copyable(fv['starter-prompt'], tag="pre", cls="pk__prompt", label="Copy prompt")}
+<p class="pk__total"><b>How to tell it worked:</b> {md(fv['verification'])}</p>"""))
+    more = " · ".join(f'<a href="../packs/{esc(n)}/#start">{esc(p.get("display_name", n))}</a>'
+                      for n, p in packs.items() if n not in dict((b, a) for a, b in START_JOBS))
+    asks = "".join(f"<li>{esc(packs[n]['first-value']['starter-prompt'])}</li>" for n in ("research", "grc", "converters") if n in packs)
+    human = sorted({st["gate"]["id"] for l in loop_by_name.values() for st in l["stages"]
+                    if st.get("gate") and st["gate"]["kind"] == "human"}, key=lambda g: [int(x) for x in re.findall(r"\d+", g)])
+    body = f"""<main class="inner pk" id="main" data-pagefind-body>
+<h1 class="pk__title">Get started</h1>
+<p class="pk__lede">Install the skills for the work in front of you, ask for that work in your own words, and check what comes back.</p>
+<p>A skill is a folder of instructions your agent reads when your request matches it: a <code>SKILL.md</code>, sometimes a standard-library Python script, and the evals that check it. Installing one copies files you can read, diff and edit, and runs nothing. A skill that needs a command or a network host names it in its manifest.</p>
+
+<h2 id="install">Step 1: install</h2>
+{install}
+
+<h2 id="work">Step 2: choose your starting work</h2>
+<p>Each pack's first task is chosen so you can judge the result in minutes.</p>
+{tabs("job", jobs)}
+<p class="pk__total">Other packs, each with its own first task: {more}. Not sure which? <a href="../packs/#roles">Start with your role</a> or <a href="../packs/compare/">compare two packs</a>.</p>
+
+<h2 id="ask">Step 3: make the first request</h2>
+<p>Ask in plain language. Your agent picks the skill from what you ask for, so there is no command to remember. You can also name a skill, or type <code>/skill-name</code> in Claude Code. Other first requests that work:</p>
+<ul>{asks}</ul>
+<p>Looking for a skill by what it does? <code>npx skilldrop-cli search review my sql</code> lists the best matches.</p>
+
+<h2 id="check">Step 4: check the result and where you decide</h2>
+<ul class="pk__bar">
+<li><b>A review ends with a verdict</b>, such as <code>SHIP IT</code>, <code>SHIP WITH CHANGES</code> or <code>MAJOR REWRITE</code>, and each finding points to the part of the work it is about.</li>
+<li><b>A draft marks what it couldn't confirm.</b> Read those marks before anyone relies on the draft.</li>
+<li><b>A loop stops at its gates.</b> A script, a review panel or you decide each one. The gates that need a person ({', '.join(esc(g) for g in human)}) are never passed for you; with no one there, the loop stops and says who it needs.</li>
+<li><b>Every skill ships with its evals.</b> <a href="../evals/">How skills are checked</a> shows how each one is measured against the agent without it.</li>
+</ul>
+
+<h2 id="next">Continue</h2>
+<ul class="pk__bar">
+<li><a href="../docs/tutorial/follow-a-change-through-the-loops.html">Follow one change through every loop</a>, from idea to operating it.</li>
+<li><a href="../docs/explanation/operating-model.html">The operating model</a>: the five stages, the packs in each, and where you decide.</li>
+<li><a href="../docs/how-to/install-per-ide.html">Install into Cursor, Copilot, Kiro or Codex</a>, and <a href="../docs/reference/install-options.html">every install option</a>.</li>
+<li><a href="../catalogue/">Browse every skill</a> or <a href="../loops/">every loop</a>.</li>
+<li><a href="../docs/how-to/upgrade-skills.html">Keep installed skills current</a>.</li>
+</ul>
+</main>"""
+    crumbs = breadcrumbs_ld([("skilldrop", SITE_URL), ("Get started", f"{SITE_URL}start/")])
+    return shell("Get started", "Install skilldrop, choose your starting work, make a first request and check the result.",
+                 f"{SITE_URL}start/", 1, body, current="start/", extra_head=crumbs)
+
+
 def index_page(packs, outcomes, home_of):
     """Packs grouped by the job in front of you, then the full list. A newcomer usually knows
     the task ("decide what to build") before they know which pack is theirs."""
@@ -340,7 +479,9 @@ def index_page(packs, outcomes, home_of):
         for n, p in packs.items())
     body = f"""<main class="inner pk" id="main">
 <h1 class="pk__title">Packs</h1>
-<p class="pk__lede">Start from the job in front of you. Each pack installs with one command, and every role pack brings <a href="core/">core</a> with it. The number beside a pack is how many of that job's skills it holds. Choosing between two? <a href="compare/">Compare them side by side</a>.</p>
+<p class="pk__lede">Start from your role or the job in front of you. Each pack installs with one command, and every role pack brings <a href="core/">core</a> with it. The number beside a pack is how many of that job's skills it holds. Choosing between two? <a href="compare/">Compare them side by side</a>.</p>
+{roles_section(packs)}
+<h2 class="pk__or">Or start from the job</h2>
 {''.join(groups)}
 <h2>Every pack</h2>
 <ul class="pk__list">{items}</ul>
@@ -1067,6 +1208,7 @@ def render():
     for name, pack in packs.items():
         out[f"packs/{name}/index.html"] = pack_page(name, pack, packs, by_name, loop_by_name, outcome_of)
     out["packs/compare/index.html"] = compare_page(packs, by_name, loop_by_name, outcome_of)
+    out["start/index.html"] = start_page(packs, loop_by_name)
     for s in skills:
         out[f"skills/{s['name']}/index.html"] = skill_page(s, by_name, packs, outcome_of)
         for f, _, text in live_examples(s["name"]):

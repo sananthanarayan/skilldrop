@@ -9,6 +9,11 @@
 # *user's* machine, not in CI — a merged bump only reaches people who reinstall the skill.
 #
 # No npm ecosystem: the package has zero dependencies.
+#
+# Security updates ignore this file. Package manifests under packs/*/skills/*/evals/files/ are
+# fixtures: an agent under test reads them as data, and nothing installs or runs them. Their
+# old versions are part of the scenario (the stats files and assertions are written for them),
+# so a security PR against one is closed and its alert dismissed as "not used", not merged.
 version: 2
 updates:
   - package-ecosystem: github-actions
