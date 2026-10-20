@@ -6,7 +6,7 @@ is what's next. Each item says why it matters, roughly how big it is, and what i
 so you can pick one up without re-deriving the context. Sizes are rough: **S** is an hour or
 two, **M** a day, **L** several days.
 
-Last reviewed 2026-10-20, after 0.16.30. Organisation governance (AST09) shipped in 0.16.27
+Last reviewed 2026-10-20, after 0.16.31. Organisation governance (AST09) shipped in 0.16.27
 ([RFC-0050](../rfcs/0050-org-governance.md)), declared containment (AST06) in 0.16.28
 ([RFC-0051](../rfcs/0051-declared-containment.md)), and the `research`, `comply` and `measure`
 loops with a tutorial for each pack added in 0.14.0 in 0.16.29
@@ -14,7 +14,7 @@ loops with a tutorial for each pack added in 0.14.0 in 0.16.29
 ran in 0.16.21, and every skill now has held-out evals beside its own. 0.16.30 added
 `dependency-upgrade-review`, `feedback-synthesis`, `codebase-tour` and `mcp-pairing`, a
 compare-packs page, a how-to per skill, and team totals and an HTML dashboard for
-`loop-stats`.
+`loop-stats`. 0.16.31 added `rollout-plan` and `refactor-plan` after a revision.
 
 ## Distribution
 
@@ -44,10 +44,3 @@ compare-packs page, a how-to per skill, and team totals and an HTML dashboard fo
 | **Open the converters' output in real Word and Excel** | The .docx and .xlsx files are checked in Quick Look only. | S | Someone with Office |
 | **OCR for scanned PDFs** | `file-to-markdown` stops at a PDF with no text layer. Tesseract could add a text layer first. | M | An optional system dependency |
 | **Tables split across PDF pages** | A table that starts at the foot of one page loses its header row to that page. | S | — |
-
-## New skills and loops
-
-| Idea | Why | Size |
-|---|---|---|
-| **`rollout-plan`** | Feature-flag and canary stages with the metrics that decide each step, how long each must run, and what turning the flag off doesn't undo. Drafted in 0.16.30 and not admitted: judges preferred the plain agent's practical ramp to its statistics-first reply ([RFC-0053](../rfcs/0053-six-skills-for-the-lifecycle-gaps.md)). Being revised. | M |
-| **`refactor-plan`** | Plan the refactor that pays down a `tech-debt-register` item. Drafted in 0.16.30 and not admitted: it met no more checks than the plain agent and wrote documents nobody asked for ([RFC-0053](../rfcs/0053-six-skills-for-the-lifecycle-gaps.md)). Being revised. | M |

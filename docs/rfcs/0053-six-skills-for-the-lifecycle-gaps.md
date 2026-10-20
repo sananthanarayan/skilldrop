@@ -1,7 +1,7 @@
 ---
 rfc: 0053
 title: Six skills for the gaps between the loops
-status: accepted
+status: implemented
 date: 2026-10-20
 author: sanjay-ananth
 ---
@@ -77,7 +77,7 @@ trials. A skill that fails is not shipped; RFC-0046 retired four that added only
 
 ## Decision
 
-Accepted. Four skills are admitted and ship in 0.16.30; two failed and are being revised.
+Accepted. Four skills were admitted and shipped in 0.16.30. The other two failed, were revised, and were admitted in 0.16.31 (below).
 
 Held-out evals, two per skill written by a writer who saw only the description, two trials,
 two judges (`claude-sonnet-5-5`, `claude-opus-5-5`), on `claude-sonnet-5`:
@@ -102,4 +102,28 @@ exactly, so its next revision needs evals of its own.
 - **`refactor-plan`** met no more checks than the plain agent. It wrote long documents
   nobody had asked for, and once put off its characterisation tests until an open PR merged.
 
-Both are being revised and will be measured on fresh held-out evals before they ship.
+## Revision: `rollout-plan` and `refactor-plan` (0.16.31)
+
+Both were revised from the judges' reasons:
+- **`rollout-plan`** now answers the question in its first lines and builds the ladder
+  around the binding constraint in the input: a partner cap, a billing cycle, a shadow run,
+  or volume too low for percentages. Its arithmetic becomes one sentence on what it means
+  for the plan, and a deadline gets dates.
+- **`refactor-plan`** now matches the size of the ask, so a chat question gets a chat-sized
+  plan. Its steps end at the structure the stated goal needs, and each is labelled refactor
+  or behaviour change. Characterisation tests go first on the incident-prone code; an open
+  PR moves them to a new file but never delays them.
+
+Measured on two new held-out evals each (6 and 7), written blind from the description, two
+trials, the same two judges:
+
+| Skill | Evals | Pairs won, judge 1 | Judge 2 | Assertions met, skill | Without |
+|---|---|---|---|---|---|
+| `rollout-plan` | 6 and 7, new | 4 of 4 | 4 of 4 | 53% | 34% |
+| `refactor-plan` | 6 and 7, new | 4 of 4 | 4 of 4 | 59% | 47% |
+| `rollout-plan` | 4 and 5, re-run | 3 of 4 | 1 of 4 | 66% | 38% |
+| `refactor-plan` | 4 and 5, re-run | 4 of 4 | 4 of 4 | 75% | 66% |
+
+The new evals clear the bar with both judges. Evals 4 and 5 are shown for reference only:
+the revisions read their judges' reasons, so they are no longer a fair test, and the next
+revision of either skill needs evals of its own.

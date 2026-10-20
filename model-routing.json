@@ -374,6 +374,10 @@
       "tier": "standard",
       "rationale": "Structural analysis of prompt with threshold arithmetic and pattern matching — above light, no need for heavy."
     },
+    "refactor-plan": {
+      "tier": "standard",
+      "rationale": "Sequencing behaviour-preserving steps follows known patterns (characterise, parallel change, strangle); escalate via ambiguous-input for contested rewrites."
+    },
     "release-notes": {
       "tier": "standard",
       "rationale": "Classifies commits and rewrites them for a reader. The audience translation needs judgment; escalate via large-input on very long ranges."
@@ -401,6 +405,10 @@
     "role-shortlist": {
       "tier": "standard",
       "rationale": "Reads many postings against one resume and sorts them. Each comparison is bounded; the rule (no posting read, no verdict) is mechanical."
+    },
+    "rollout-plan": {
+      "tier": "standard",
+      "rationale": "Plan synthesis on a strong template; the arithmetic of how long each exposure step must run is done by its script, not the model."
     },
     "runbook-generator": {
       "tier": "standard",

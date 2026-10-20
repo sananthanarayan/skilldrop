@@ -14,7 +14,7 @@ Build-and-ship: story splitting, implementation with adversarial review, test pl
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack dev-team` |
-| Skills | 17 plus 4 from core |
+| Skills | 19 plus 4 from core |
 | Loops | build, release |
 | How-to | [Use the Dev team pack](../../how-to/packs/use-the-dev-team-pack.md) |
 
@@ -304,6 +304,36 @@ Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/dev-team/skills/pre-mer
 - One lens is enough — a pure bug pass is [`devils-advocate`](../../../packs/dev-team/skills/devils-advocate/SKILL.md) standalone; a pure doc pass is `doc-critique`.
 - An open design decision ("Postgres or Dynamo?") — that's `council-review`.
 
+### `refactor-plan`
+
+Plan paying down one piece of technical debt as a refactor that serves the goal it is blocking — characterisation tests on the riskiest behaviour first, then small steps each merged to main with main releasable after every one, pure refactors kept apart from the behaviour changes the goal needs, a scope fence, a stop point, a technique per step (extract, branch by abstraction, parallel change, strangler fig, mikado) and the clashes with in-flight feature work.
+
+Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/dev-team/skills/refactor-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/refactor-plan/)
+
+**Use it when** the user asks for a refactor plan, how to untangle, break up, replace or clean up a module without a rewrite, how to pay down a tech-debt item, "how do we refactor X without stopping feature work", "how do we get off X without a big bang", or wants a strangler-fig or mikado plan.
+
+**A good result:**
+
+- **The first two lines give the approach and the first step.** A chat question gets a chat-sized plan; a document only when asked or large.
+- **Every step serves the stated goal,** and the last step reaches the structure that goal needs.
+- **Every step is labelled refactor or behaviour change;** behaviour changes stand alone, after the refactor that makes them safe.
+- **Characterisation tests come first, on the incident-prone behaviour,** and no open PR leaves that behaviour unpinned.
+- **Caller contracts, copies outside the module and real test coverage are reported** from the files, cited `file:function`.
+- **Every in-flight clash has a decision,** and a must-land feature PR is never blocked.
+- **The scope fence and stop point exist;** new findings go to the register.
+- **Every file, function, metric and number is from the input.** Unknowns are checks to run.
+
+**Hands off to:** `feature-implement-loop` when the plan is agreed and a step is ready to build; `tech-debt-register` when planning or a step turns up debt outside the scope fence, or the stop point is reached.
+
+**Not for:**
+
+- Listing or ranking the debt in the first place — `tech-debt-register`
+- Moving data, changing a schema or switching platforms with a backfill — `migration-plan`
+- Writing the code for one of the steps — `feature-implement-loop`
+- Deciding the target architecture or recording why — `adr-generator` or `design-doc`
+- Reviewing a refactor PR that already exists — `pre-merge-review`
+- Splitting a feature into user stories — `user-story-splitter`
+
 ### `release-notes`
 
 Write release notes from a git log, a list of merged PRs or rough notes about what changed — for the audience and in the format the user names (a customer changelog page, an email, an in-app "what's new", store text, a CHANGELOG.md entry). Says nothing the input doesn't, writes a vague change only as far as it was described, puts breaking changes and anything the reader must do first, and keeps internal noise and working notes out of the text.
@@ -327,6 +357,39 @@ Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/dev-team/skills/release
 - Reviewing the changes for quality or risk — that's `devils-advocate` / `sonar-review`
 - A narrative about *why* the release matters strategically — feed the notes to `exec-summary`
 - Writing commit messages going forward — this skill reads history, it doesn't write it
+
+### `rollout-plan`
+
+Plan the progressive release of a code change behind a feature flag or canary — the exposure ladder (internal, beta cohort, 1%, 5%, 25%, 50%, 100%, or what the traffic supports), and for each step who is exposed, decision and guardrail metrics with a baseline and a threshold against a control cohort, the minimum traffic and time before the numbers mean anything, a promote / hold / roll back rule set in advance, who watches and what aborts automatically; then what turning the flag off does not undo, and who removes the flag by when.
+
+Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/dev-team/skills/rollout-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/rollout-plan/)
+
+**Use it when** the user asks for a rollout plan, canary plan, ramp schedule, progressive delivery or percentage rollout, "how long should the canary run", "when do we go from 5% to 25%", or how to turn on a flagged feature safely.
+
+**Needs:** Python 3 for its scripts (standard library only).
+
+**A good result:**
+
+- **The first two lines answer the user's question** in plain words, with the input fact that settles it.
+- **The binding constraint is named** and the ladder visibly follows it (cap, cycle, deadline, segment, shadow, volume).
+- **Every threshold is testable**: metric, baseline, limit against the flag-off control; counts where volumes are small.
+- **Every number traces** to the input, to arithmetic on it, or to a one-line `[assumption]`.
+- **A deadline in the input gets a dated ladder** that shows whether it is met.
+- **Promote, hold, roll back and abort are written before the step**, with a watcher, a sign-off where one is needed, and an override role.
+- **The not-undone list covers what this change sends, writes or charges**, with handling for each.
+- **The flag has an owner and a removal date.**
+- **The reply is shorter than the plan it replaces would be at full length**; "To confirm" is never longer than the ladder.
+
+**Hands off to:** `migration-plan` when the change also alters a schema, backfills data, swaps a datastore or dual-writes; `launch-readiness` when the rollout plan is written and someone must decide whether the change may go live at all.
+
+**Not for:**
+
+- Schema changes, backfills, datastore or provider swaps, dual-writes: `migration-plan`
+- "Are we ready to launch?" go/no-go: `launch-readiness`
+- SLOs, alerts and dashboards for the service: `observability-plan`
+- Defining what success means for the feature: `success-metrics`
+- The on-call procedure for the service as a whole: `runbook-generator`
+- A change with no flag, canary or staged deploy: there is nothing to ramp; plan the gate first
 
 ### `sonar-onboard`
 
@@ -470,7 +533,7 @@ Take merged code to live users through a planned, reversible rollout — plan th
 
 | Stage | Skills | Gate |
 |---|---|---|
-| plan | `migration-plan` | — |
+| plan | `migration-plan`, `rollout-plan` | — |
 | ready | `launch-readiness` | G3 review: PROCEED / PROCEED WITH CONDITIONS / REVISE / BLOCKED |
 | announce | `release-notes` | — |
 | go | `council-review` | G3.1 human: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / BLOCKED |
