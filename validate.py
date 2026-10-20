@@ -179,14 +179,14 @@ def check_guides():
     if not index_txt:
         fail("guides", "no guides/README.md — the index is how a guide gets found")
     for g in sorted(glob.glob(os.path.join(gdir, "**", "*.md"), recursive=True)):
-        rel = os.path.relpath(g, ROOT)
+        rel = os.path.relpath(g, ROOT).replace(os.sep, "/")
         if os.path.basename(g) == "README.md":
             continue
         fm = frontmatter(open(g, encoding="utf-8").read())
         fields = dict(re.findall(r"^([a-z-]+):\s*(.+?)\s*$", fm, re.M))
         for e in check_schema(fields, schema("guide.schema.json")):
             fail(rel, f"frontmatter {e}")
-        if os.path.relpath(g, gdir) not in index_txt:
+        if os.path.relpath(g, gdir).replace(os.sep, "/") not in index_txt:
             fail(rel, "not linked from guides/README.md — an unindexed guide is unfindable")
         # The page standard (RFC-0044, AGENTS.md § Writing a guide). Generated pack guides
         # (packs/ and skills/) take their words from SKILL.md and pack.json, which have their own voice rules.
@@ -597,7 +597,7 @@ def main():
         # an orphaned reference.md/lens/rubric is invisible to a reader and drifts unnoticed.
         for g in MATERIAL:
             for sup in glob.glob(os.path.join(p, g)):
-                rel = os.path.relpath(sup, p)
+                rel = os.path.relpath(sup, p).replace(os.sep, "/")
                 if os.path.basename(sup) not in md and rel not in md:
                     fail(d, f"{rel} exists but SKILL.md never links it (reference it, or remove it)")
 

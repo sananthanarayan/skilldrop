@@ -91,7 +91,7 @@ def render():
     for g in sorted(glob.glob(os.path.join(ROOT, "guides", "**", "*.md"), recursive=True)):
         if os.path.basename(g) == "README.md":
             continue
-        rel = os.path.relpath(g, ROOT)
+        rel = os.path.relpath(g, ROOT).replace(os.sep, "/")  # a URL path on every OS
         L.append(f"- [{_fm(g, 'title')}]({RAW}/{rel}) *({_fm(g, 'kind')})*: {_fm(g, 'summary')}")
     L.append("")
 

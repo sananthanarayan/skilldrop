@@ -58,7 +58,7 @@ Name the skill instead of a pack:
 npx skilldrop-cli install prfaq
 ```
 
-Add `--with-related` to also take the skills it hands work to; `npx skilldrop-cli list` names every skill.
+Add `--with-related` to also take the skills it hands work to. To find one by what it's for, `npx skilldrop-cli search review my sql` lists the best matches, and `list` names every skill.
 
 ## Install a loop
 
