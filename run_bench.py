@@ -154,7 +154,7 @@ def cli_cost(r):
 def cli_messages(model, system, user):
     """A single turn for the judge: system prompt replaced, no tools, no settings, empty directory."""
     with tempfile.TemporaryDirectory() as d:
-        open(os.path.join(d, "system.txt"), "w").write(system)
+        open(os.path.join(d, "system.txt"), "w", encoding="utf-8").write(system)
         return cli_run(["--model", model, "--system-prompt-file", "system.txt", "--tools", "",
                         "--setting-sources", ""], user, d, 900)
 
@@ -231,7 +231,7 @@ def cli_agent(model, system, user, skill=None, files=None):
             shutil.copytree(catalog.skill_dir(skill), dest, ignore=shutil.ignore_patterns("evals", "__pycache__"))
             env["CLAUDE_SKILL_DIR"] = dest
         sysfile = os.path.join(side, "system.txt")
-        open(sysfile, "w").write(system)
+        open(sysfile, "w", encoding="utf-8").write(system)
         text, resp = cli_run(["--model", model, "--append-system-prompt-file", sysfile, "--restricted",
                               "--tools", "Read,Write,Edit,Glob,Grep,Bash", "--permission-mode", "acceptEdits",
                               "--settings", CLI_SANDBOX, "--max-budget-usd", "3"], user, ws, 900, env)
@@ -287,7 +287,7 @@ def call(kind, model, system, user, trial, max_tokens, budget, skill=None, files
     the API's usage block, the cost at this model's rate, and whether it came from the cache."""
     path = cache_path(kind, model, system, user, trial, files)
     if os.path.exists(path):
-        return dict(json.load(open(path)), cached=True)
+        return dict(json.load(open(path, encoding="utf-8")), cached=True)
     budget.check()
     start = time.time()
     if BACKEND == "claude-cli":
@@ -304,7 +304,7 @@ def call(kind, model, system, user, trial, max_tokens, budget, skill=None, files
     budget.add(rec["cost"])
     os.makedirs(os.path.dirname(path), exist_ok=True)
     tmp = "%s.%d.tmp" % (path, threading.get_ident())
-    with open(tmp, "w") as f:
+    with open(tmp, "w", encoding="utf-8") as f:
         json.dump(rec, f)
     os.replace(tmp, path)  # atomic: another worker never reads a half-written record
     return dict(rec, cached=False)
@@ -350,7 +350,7 @@ def arm_systems(skill, md):
 def run_unit(unit, judge_model, budget):
     s, e, model, trial = unit
     row = {"skill": s, "eval": e.get("id"), "model": model, "trial": trial, "arms": {}}
-    md = open(os.path.join(catalog.skill_dir(s), "SKILL.md")).read()
+    md = open(os.path.join(catalog.skill_dir(s), "SKILL.md"), encoding="utf-8").read()
     try:
         for arm, system in arm_systems(s, md):
             gen = call("gen", model, system, e["prompt"], trial, 16000, budget, s if arm == "skill" else None,
@@ -500,7 +500,7 @@ def summarize(rows, floor, models, labels, tolerance):
                 "cost_skill": mean([r["arms"]["skill"]["cost"] for r in mine]),
                 "cost_baseline": mean([r["arms"]["baseline"]["cost"] for r in mine])})
     if len(models) > 1:
-        tiers = json.load(open(os.path.join(ROOT, "model-routing.json")))["skills"]
+        tiers = json.load(open(os.path.join(ROOT, "model-routing.json"), encoding="utf-8"))["skills"]
         cost = {m: sum(price(m)) for m in models}
         per = {m: {} for m in models}
         for m in models:
@@ -610,7 +610,7 @@ def report(summary, judge_model, trials, spent, scripted):
 # --------------------------------------------------------------------------- main
 
 def resolve_models(spec):
-    routing = json.load(open(os.path.join(ROOT, "model-routing.json")))
+    routing = json.load(open(os.path.join(ROOT, "model-routing.json"), encoding="utf-8"))
     tiers = routing["providers"][routing["active_provider"]]["models"]
     models, labels = [], {}
     for name in [x.strip() for x in spec.split(",") if x.strip()]:
@@ -628,7 +628,7 @@ def estimate(units, floor_units, judge_model):
     total, fresh = 0.0, 0
     jin, jout = price(judge_model)
     for s, e, model, trial in units:
-        md = open(os.path.join(catalog.skill_dir(s), "SKILL.md")).read()
+        md = open(os.path.join(catalog.skill_dir(s), "SKILL.md"), encoding="utf-8").read()
         pin, pout = price(model)
         for _, system in arm_systems(s, md):
             fresh += not os.path.exists(cache_path("gen", model, system, e["prompt"], trial, fixtures(s, e.get("id"))))
@@ -726,20 +726,20 @@ def main():
     os.makedirs(a.out, exist_ok=True)
     json.dump({"backend": BACKEND, "judge_model": a.judge_model, "models": models, "trials": a.trials, "spent": budget.spent,
                "summary": summary, "floor": floor, "runs": rows},
-              open(os.path.join(a.out, "results.json"), "w"), indent=2)
-    open(os.path.join(a.out, "report.md"), "w").write(md)
+              open(os.path.join(a.out, "results.json"), "w", encoding="utf-8"), indent=2)
+    open(os.path.join(a.out, "report.md"), "w", encoding="utf-8").write(md)
     if a.publish:
         if privacy.scan_text(json.dumps(summary), pats):
             sys.exit("not publishing: the summary contains your name, email or organization (RFC-0049)")
         os.makedirs(os.path.dirname(os.path.abspath(a.publish)), exist_ok=True)
-        with open(a.publish, "w") as f:
+        with open(a.publish, "w", encoding="utf-8") as f:
             json.dump({"date": time.strftime("%Y-%m-%d"), "backend": BACKEND, "judge_model": a.judge_model,
                        "trials": a.trials, "scripted": sorted(scripted), **summary}, f, indent=1)
             f.write("\n")
     print(md)
     step = os.environ.get("GITHUB_STEP_SUMMARY")
     if step:
-        with open(step, "a") as f:
+        with open(step, "a", encoding="utf-8") as f:
             f.write(md)
     if budget.spent >= a.budget:
         print(f"stopped at the ${a.budget:.2f} budget; rerun with a higher --budget to finish (cached calls are free)")

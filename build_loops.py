@@ -87,10 +87,10 @@ def render(spec, terminals):
 
 
 def build():
-    terminals = json.load(open(os.path.join(ROOT, "contracts", "terminals.json")))
+    terminals = json.load(open(os.path.join(ROOT, "contracts", "terminals.json"), encoding="utf-8"))
     specs = {}
     for d, ldir in catalog.loops().items():
-        specs[d] = json.load(open(os.path.join(ldir, "loop.json")))
+        specs[d] = json.load(open(os.path.join(ldir, "loop.json"), encoding="utf-8"))
     return {name: render(spec, terminals) for name, spec in specs.items()}
 
 
@@ -349,7 +349,7 @@ def operating_model_svg(specs, homes, pack_order, dark=False):
 def build_svg():
     specs, homes = {}, {}
     for name, ldir in catalog.loops().items():
-        specs[name] = json.load(open(os.path.join(ldir, "loop.json")))
+        specs[name] = json.load(open(os.path.join(ldir, "loop.json"), encoding="utf-8"))
         homes[name] = os.path.basename(os.path.dirname(os.path.dirname(ldir)))
     missing = sorted(set(specs) - set(LIFECYCLE) - set(OUTSIDE))
     gone = sorted((set(LIFECYCLE) | set(OUTSIDE)) - set(specs))

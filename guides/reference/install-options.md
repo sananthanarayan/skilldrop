@@ -27,6 +27,7 @@ npx skilldrop-cli install --panel review                # the whole review fleet
 npx skilldrop-cli outdated && npx skilldrop-cli update  # skills improve; files you edited are kept, new copy as <file>.upstream
 npx skilldrop-cli list | skilldrop info <skill> | skilldrop info --pack <name> | skilldrop packs | skilldrop uninstall <skill>
 npx skilldrop-cli list --json                            # machine-readable: list/info/packs/agents/outdated (RFC-0021)
+npx skilldrop-cli search <words> [--kind skill|loop|agent|pack] [--limit N] [--json]   # by what it's for (RFC-0056)
 ```
 
 ## Install flags
@@ -46,7 +47,7 @@ npx skilldrop-cli list --json                            # machine-readable: lis
 | `--project`, `--local`, `--ide <tool>`, `--dest <dir>` | Pick the target; see [Install targets and dependencies](install-targets.md). |
 | `--with-hooks` | Also wires any hooks a skill declares; see [Wire a skill to an event](../how-to/wire-a-hook.md). |
 | `--dry-run` | Prints what `install`, `update` or `uninstall` would change, and changes nothing. |
-| `--json` | Machine-readable output for `list`, `info`, `packs`, `agents`, `outdated` and `doctor`. |
+| `--json` | Machine-readable output for `list`, `search`, `info`, `packs`, `agents`, `outdated` and `doctor`. |
 
 ## The Claude Code plugin marketplace
 

@@ -212,7 +212,7 @@ def load_template(name: str, script_dir: Path) -> str:
     p = script_dir.parent / "templates" / name
     if not p.exists():
         raise SystemExit(f"error: template not found: {p}")
-    return p.read_text()
+    return p.read_text(encoding="utf-8")
 
 
 # --------------------------------------------------------------------- views
@@ -427,7 +427,7 @@ def main(argv) -> int:
 
     out_path = Path(args.out).expanduser().resolve() if args.out else input_path.with_suffix(".report.md")
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(out)
+    out_path.write_text(out, encoding="utf-8")
     print(f"wrote {out_path} ({len(events)} events, {len(per_user)} users, view={args.view})")
     return 0
 

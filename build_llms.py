@@ -32,7 +32,7 @@ def _fm(path, key):
 
 
 def render():
-    pkg = json.load(open(os.path.join(ROOT, "package.json")))
+    pkg = json.load(open(os.path.join(ROOT, "package.json"), encoding="utf-8"))
     packs, outcomes = catalog.packs(), catalog.outcomes()
     skills = sorted(catalog.skills())
     loop_dirs = catalog.loops()
@@ -67,7 +67,7 @@ def render():
              "mistake is to unwind), which is also what decides who may sign off. One wrapper applies\n"
              "to any generator.\n")
     for n in loops:
-        spec = json.load(open(os.path.join(loop_dirs[n], "loop.json")))
+        spec = json.load(open(os.path.join(loop_dirs[n], "loop.json"), encoding="utf-8"))
         stages = " -> ".join(st["id"] for st in spec["stages"])
         gates = ", ".join(f"{st['gate']['id']} ({st['gate']['kind']})"
                           for st in spec["stages"] if st.get("gate")) or "none"
@@ -79,7 +79,7 @@ def render():
     L.append("Closed schemas — an unknown key is a failure, not an extension point. Checked by a\n"
              "stdlib JSON Schema subset in validate.py, never by a dependency.\n")
     for f in sorted(os.listdir(os.path.join(ROOT, "contracts"))):
-        c = json.load(open(os.path.join(ROOT, "contracts", f))).get("$comment", "")
+        c = json.load(open(os.path.join(ROOT, "contracts", f), encoding="utf-8")).get("$comment", "")
         # Drop the leading "RFC-0028." / "RFC-0012 / RFC-0029." provenance prefix — the
         # sentence after it is the one that says what the contract is for.
         body = re.sub(r"^(?:RFC-\d+\s*(?:/\s*RFC-\d+\s*)*)[.\u2014-]\s*", "", c).strip()
@@ -91,7 +91,7 @@ def render():
     for g in sorted(glob.glob(os.path.join(ROOT, "guides", "**", "*.md"), recursive=True)):
         if os.path.basename(g) == "README.md":
             continue
-        rel = os.path.relpath(g, ROOT)
+        rel = os.path.relpath(g, ROOT).replace(os.sep, "/")  # a URL path on every OS
         L.append(f"- [{_fm(g, 'title')}]({RAW}/{rel}) *({_fm(g, 'kind')})*: {_fm(g, 'summary')}")
     L.append("")
 

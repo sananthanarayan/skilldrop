@@ -37,6 +37,8 @@ const HELP = `skilldrop — portable AI-agent skills for Claude Code, Cursor, Ki
 
 Usage:
   skilldrop list [--from <src>]           all skills in a catalog (name, version, tier)
+  skilldrop search <words...> [--kind skill|loop|agent|pack] [--limit N] [--json]
+                                          find skills, loops, agents and packs by what they're for
   skilldrop info <skill> [--from <src>]   description, related, packs, deps
   skilldrop info --pack <name>            a pack's skills, loops, and what to try first (RFC-0032)
   skilldrop packs [--from <src>]          role-based packs
@@ -149,7 +151,8 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--pack" || a === "--ide" || a === "--dest" || a === "--from" || a === "--panel" || a === "--profile" || a === "--tier" || a === "--skills" || a === "--days" ||
-        a === "--policy" || a === "--merge" || a === "--label" || a === "--last" || a === "--html") out.flags[a.slice(2)] = argv[++i];
+        a === "--policy" || a === "--merge" || a === "--label" || a === "--last" || a === "--html" ||
+        a === "--kind" || a === "--limit") out.flags[a.slice(2)] = argv[++i];
     else if (a.startsWith("--")) out.flags[a.slice(2)] = true;
     else out._.push(a);
   }
@@ -2410,6 +2413,105 @@ function list(args) {
   console.log(`\n${rows.length} skills in catalog '${cat.source}'. Details: skilldrop info <skill>`);
 }
 
+/* search <words> (RFC-0056): find a skill, loop, agent or pack by what it is for, from the
+   terminal and offline. Every word must match (by prefix, so "deploy" finds "deployment");
+   a name match outweighs a tag, a tag a pack or outcome, and those the description or the
+   phrasings the skill's trigger evals route to it. Filler words are dropped. When no
+   entry matches every word, entries that match some are shown, and the reply says so. */
+function search(args) {
+  // Words that say nothing about what a skill does ("why did my…") are dropped, unless they
+  // are all there is.
+  const STOP = new Set(("a an and are as at be but by can could did do does for from get got had has have help how i in " +
+    "into is it its me my need of on or our please should so that the their them this to us want was we were what when " +
+    "where which who why will with would you your").split(" "));
+  const raw = args._.join(" ").toLowerCase().split(/[^a-z0-9]+/).filter((w) => w.length > 1);
+  const words = raw.filter((w) => !STOP.has(w)).length ? raw.filter((w) => !STOP.has(w)) : raw;
+  if (!words.length) die("usage: skilldrop search <words...> [--kind skill|loop|agent|pack] [--limit N] [--json] [--from <src>]");
+  const cat = resolveCatalog(args.flags.from);
+  const kinds = ["skill", "loop", "agent", "pack"];
+  const want = args.flags.kind;
+  if (want && !kinds.includes(want)) die(`--kind takes one of ${kinds.join(", ")}`);
+  const limit = Math.max(1, Number(args.flags.limit) || 10);
+  const toks = (x) => String(x || "").toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  const idx = cat.dir ? path.join(cat.dir, "catalogue.json") : null;
+  const outcomes = idx && fs.existsSync(idx) ? (readJSON(idx).outcomes || {}) : {};
+  const outcomeOf = {};
+  for (const [o, d] of Object.entries(outcomes)) for (const sk of d.skills || []) (outcomeOf[sk] = outcomeOf[sk] || []).push(o);
+  const ps = packsOf(cat) || {};
+  const packOf = {};
+  for (const [pn, pd] of Object.entries(ps)) for (const sk of pd.skills || []) if (!packOf[sk]) packOf[sk] = pn;
+  const entries = [];
+  const add = (kind, name, description, fields) => entries.push({ kind, name, description: description || "", fields });
+  for (const sk of skillsIn(cat)) {
+    let m = {};
+    try { m = manifestOf(cat, sk); } catch (e) { /* listed with what we have */ }
+    // The phrasings the skill's own trigger evals say should route to it: how people ask.
+    let asks = [];
+    try {
+      const q = path.join(skillDir(cat, sk), "evals", "eval_queries.json");
+      if (fs.existsSync(q)) asks = readJSON(q).filter((r) => r && r.should_trigger).map((r) => r.query);
+    } catch (e) { /* no phrasings, still searchable by its description */ }
+    add("skill", sk, m.description, { name: toks(sk), tags: toks((m.tags || []).join(" ")),
+      group: toks([packOf[sk], ...(outcomeOf[sk] || [])].join(" ")), text: toks(m.description), asks: toks(asks.join(" ")) });
+  }
+  for (const l of loopsIn(cat)) {
+    let spec = {};
+    try { spec = loopSpec(cat, l); } catch (e) { /* skip unreadable */ }
+    add("loop", l, spec.description, { name: toks(l), tags: toks((spec.stages || []).map((st) => st.id).join(" ")),
+      group: toks((spec.stages || []).flatMap((st) => st.skills || []).join(" ")), text: toks(spec.description) });
+  }
+  for (const a of agentsIn(cat)) {
+    let meta = {};
+    try { meta = agentMeta(cat, a); } catch (e) { /* skip unreadable */ }
+    add("agent", a, meta.description, { name: toks(a), tags: [], group: [], text: toks(meta.description) });
+  }
+  for (const [pn, pd] of Object.entries(ps))
+    add("pack", pn, pd.description, { name: toks(pn + " " + (pd.display_name || "")), tags: toks((pd.keywords || []).join(" ")),
+      group: toks((pd.skills || []).join(" ")), text: toks(pd.description) });
+  const WEIGHT = { name: 6, tags: 3, group: 2, text: 1, asks: 1 };
+  const stem = (w) => (w.length > 4 && w.endsWith("s") ? w.slice(0, -1) : w);
+  const score = (e) => {
+    let total = 0, hit = 0;
+    for (const w of words.map(stem)) {
+      let best = 0;
+      for (const [f, list] of Object.entries(e.fields))
+        for (const t of list)
+          if (t === w || t.startsWith(w)) best = Math.max(best, WEIGHT[f] * (t === w ? 1.5 : 1));
+      if (best) { total += best; hit++; }
+    }
+    return { total, hit };
+  };
+  let ranked = entries.filter((e) => !want || e.kind === want).map((e) => Object.assign(e, score(e)));
+  const all = ranked.filter((e) => e.hit === words.length);
+  const partial = !all.length;
+  ranked = (partial ? ranked.filter((e) => e.hit > 0) : all)
+    .sort((a, b) => b.hit - a.hit || b.total - a.total || a.name.localeCompare(b.name));
+  const shown = ranked.slice(0, limit);
+  // A retired skill searched for by name gets its note, not silence (RFC-0046).
+  const retired = [...new Set([args._.join("-"), ...args._].map((n) => String(n).toLowerCase()))]
+    .map((n) => retiredNote(cat, n)).filter(Boolean);
+  if (args.flags.json)
+    return emitJSON({ catalog: cat.source, query: words, matched: partial ? "some words" : "every word", total: ranked.length,
+      results: shown.map((e) => ({ kind: e.kind, name: e.name, pack: e.kind === "skill" ? packOf[e.name] || null : null,
+                                   description: e.description, score: Math.round(e.total * 10) / 10 })), retired });
+  for (const r of retired) console.log(`${r}\n`);
+  if (!ranked.length) {
+    console.log(`Nothing in catalog '${cat.source}' matches "${words.join(" ")}". Try fewer or different words, or: skilldrop list`);
+    return;
+  }
+  if (partial) console.log(`No entry matches every word of "${words.join(" ")}"; these match some:\n`);
+  const first = (d) => { const t = d.split(" Use when")[0].replace(/\s+/g, " ").trim(); return t.length > 150 ? t.slice(0, 147).replace(/\s+\S*$/, "") + "…" : t; };
+  for (const e of shown) {
+    const where = e.kind === "skill" ? (packOf[e.name] ? `skill, ${packOf[e.name]} pack` : "skill") : e.kind;
+    console.log(`${e.name}  (${where})\n  ${first(e.description)}`);
+  }
+  const more = ranked.length - shown.length;
+  const top = shown[0];
+  const how = { skill: `skilldrop info ${top.name}  ·  skilldrop install ${top.name}`, loop: `skilldrop install --loop ${top.name}`,
+                agent: `skilldrop install --agent ${top.name}`, pack: `skilldrop info --pack ${top.name}  ·  skilldrop install --pack ${top.name}` }[top.kind];
+  console.log(`\n${ranked.length} match${ranked.length === 1 ? "" : "es"}${more > 0 ? `, showing ${shown.length} (--limit to see more)` : ""}. Next: ${how}`);
+}
+
 /* RFC-0032: what to try first after installing a pack, how to tell it worked, what to do
    if it didn't — the same first-value block the pack's site page renders. */
 function firstValueLines(p) {
@@ -2666,7 +2768,7 @@ function bootstrap() {
 
 const args = parseArgs(process.argv.slice(2));
 const cmd = args._.shift();
-const commands = { list, info, packs: listPacks, profiles: listProfiles, agents: listAgents, loops: listLoops, install, update, outdated, uninstall, diff, doctor, "new-skill": newSkill, "loop-stats": loopStats, "init-catalogue": initCatalogue, package: packageCatalogue, validate: validateCmd, scan, bootstrap,
+const commands = { list, search, info, packs: listPacks, profiles: listProfiles, agents: listAgents, loops: listLoops, install, update, outdated, uninstall, diff, doctor, "new-skill": newSkill, "loop-stats": loopStats, "init-catalogue": initCatalogue, package: packageCatalogue, validate: validateCmd, scan, bootstrap,
                    inventory, audit: auditCmd, "verify-mirror": verifyMirrorCmd };
 if (args.flags.version || cmd === "version") console.log(readJSON(path.join(ROOT, "package.json")).version);
 else if (!cmd || cmd === "help" || args.flags.help) console.log(HELP);

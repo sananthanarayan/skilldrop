@@ -8,6 +8,14 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.34 — 2026-10-20
+
+- **`skilldrop search <words>`** finds skills, loops, agents and packs by what they're for, from the terminal and offline. It reads names, tags, packs, descriptions and the phrasings each skill's trigger evals route to it, so `skilldrop search why did our conversion drop` finds `hypothesis-comparison`. Every word must match, filler words are dropped, and if nothing matches every word it shows near matches and says so. Search a retired skill by name and you get its retirement note. `--kind`, `--limit` and `--json` refine it ([RFC-0056](docs/rfcs/0056-search-and-windows-ci.md)).
+- **The CLI is tested on Windows, macOS and Linux** on every pull request: installs into folders and git repos, `--project`, `--local`, agents, loops, containment, policies, mirrors and a skill's own Python script. Every check passed on Windows the first time.
+- **Fixed for Windows:**
+  - **Five skills' scripts could fail on Windows.** They read files with Windows' default encoding and stopped at the first non-ASCII character. They now read and write UTF-8: `brand-kit`, `marketing-flyer`, `deck-builder`, `ai-usage-report` and `pre-merge-review`. Run `skilldrop update` to get the fix.
+  - **`validate.py` now runs on Windows**, so contributors can lint a clone there, and it rejects any script that reads text without an encoding.
+
 ## 0.16.33 — 2026-10-20
 
 - **Eval results now build a history.** The evals workflow runs the trigger queries every week and, from this release, the acceptance assertions every month under a dollar budget ($20 unless you set `EVALS_MONTHLY_BUDGET`). Each run's counts are appended to an `eval-history` branch, and the *How skills are checked* page draws them week by week: trigger accuracy over time, the skills whose routing changed since the last run, and what each monthly run graded and spent. It starts once the repository has an `ANTHROPIC_API_KEY` secret ([RFC-0055](docs/rfcs/0055-eval-history-branch.md)).

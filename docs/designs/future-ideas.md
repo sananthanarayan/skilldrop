@@ -6,7 +6,7 @@ is what's next. Each item says why it matters, roughly how big it is, and what i
 so you can pick one up without re-deriving the context. Sizes are rough: **S** is an hour or
 two, **M** a day, **L** several days.
 
-Last reviewed 2026-10-20, after 0.16.33. Organisation governance (AST09) shipped in 0.16.27
+Last reviewed 2026-10-20, after 0.16.34. Organisation governance (AST09) shipped in 0.16.27
 ([RFC-0050](../rfcs/0050-org-governance.md)), declared containment (AST06) in 0.16.28
 ([RFC-0051](../rfcs/0051-declared-containment.md)), and the `research`, `comply` and `measure`
 loops with a tutorial for each pack added in 0.14.0 in 0.16.29
@@ -17,7 +17,8 @@ compare-packs page, a how-to per skill, and team totals and an HTML dashboard fo
 `loop-stats`. 0.16.31 added `rollout-plan` and `refactor-plan` after a revision. 0.16.32 checks what a skill's
 instructions run against its `permissions` and scans agents ([RFC-0054](../rfcs/0054-instruction-permissions-and-agent-scan.md)). 0.16.33 built the
 eval trend and monthly assertion run, OCR for scanned PDFs, joined PDF tables across pages, and
-checked the converters' output in Word and Excel.
+checked the converters' output in Word and Excel. 0.16.34 added `skilldrop search` and ran the CLI
+on Windows in CI ([RFC-0056](../rfcs/0056-search-and-windows-ci.md)).
 
 ## Distribution
 
@@ -25,8 +26,6 @@ checked the converters' output in Word and Excel.
 |---|---|---|---|
 | **`skilldrop install <skill>@<version>`** | Install a specific skill version from the catalogue's history, not just the latest or a commit pin. | M | Version-to-commit lookup, from git tags |
 | **IDE auto-detection and `--ide all`** | Install into every tool found in the repo (`.cursor/`, `.kiro/`, `.github/`, `.agents/`) in one command. Listed as design-only in the CLI design doc. | M | — |
-| **`skilldrop search <words>`** | Search descriptions from the terminal. The site has search; the CLI doesn't. Also design-only. | S | — |
-| **Windows CI** | The CLI has never run in CI on Windows. Paths, `git` calls and file permissions are the likely breaks. | M | — |
 
 ## Security (from the OWASP gaps)
 
