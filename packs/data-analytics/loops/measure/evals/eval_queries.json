@@ -1,0 +1,9 @@
+[
+  {"query": "we need a weekly revenue dashboard for the regional leads, and the numbers have to be right", "should_trigger": true},
+  {"query": "run the measure loop on the support KPI dashboard request", "should_trigger": true},
+  {"query": "make sure these numbers are right before the BI team builds the exec dashboard", "should_trigger": true},
+  {"query": "finance and sales disagree on active customers and it's going on the board dashboard", "should_trigger": true},
+  {"query": "is this SQL query right?", "should_trigger": false},
+  {"query": "what charts should go on our marketing dashboard?", "should_trigger": false},
+  {"query": "define the success metric for the new onboarding flow", "should_trigger": false}
+]

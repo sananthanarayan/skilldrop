@@ -29,11 +29,14 @@ Plus one **wrapper**, which is not a lifecycle stage but the two passes either s
 |---|---|---|---|
 | [`ship-a-draft`](../../packs/core/loops/ship-a-draft/LOOP.md) | raw notes, a transcript, a ticket | **G5** review — `doc-critique`'s verdict | a stakeholder-ready artifact |
 
-And one loop outside the delivery lifecycle, for a person and not a team:
+And four loops outside the delivery lifecycle, each for one job that runs alongside it:
 
 | Loop | Takes | Gate | Produces | Mistake costs |
 |---|---|---|---|---|
 | [`apply`](../../packs/career/loops/apply/LOOP.md) | a job posting and a resume | **G6** human — the candidate decides to apply; **G6.1** human — the candidate confirms every line is true | a tailored resume and cover letter, ready to send | a claim the candidate cannot back at interview |
+| [`research`](../../packs/research/loops/research/LOOP.md) | a question that turns on why something happened, and the sources | **G7** review — does diagnostic evidence separate the leading explanation? | an answer with its confidence, tied to the decision it serves | a decision made on a favourite theory |
+| [`comply`](../../packs/grc/loops/comply/LOOP.md) | a change that carries risk: a launch, a vendor, new personal data | **G8** mechanical — the register's own script; **G8.1** human — the risk owner signs | a register, a DPIA and an evidence map that agree, signed by the owner | a risk accepted on a control that doesn't exist |
+| [`measure`](../../packs/data-analytics/loops/measure/LOOP.md) | a dashboard request and the SQL behind its numbers | **G9** review — every query reviewed; **G9.1** human — each metric's owner confirms its definition | a dashboard spec whose numbers are defined and reviewed | a wrong number made to look settled by a chart |
 
 Every gate emits a verdict from one shared vocabulary ([`contracts/terminals.json`](../../contracts/terminals.json)) in five classes — pass, conditional, revise, redirect, blocked — so `READY`, `PROCEED` and `SHIP IT` are recognisably the same kind of answer. The diagrams below render on GitHub; their Mermaid sources live in [`docs/loops/`](../../docs/loops) for re-rendering.
 
@@ -274,3 +277,103 @@ flowchart LR
 ```
 
 <!-- loop:apply:end -->
+
+## `research` — a why question to an answer the evidence carries
+
+A plan that fixes what would change the decision before any source is read, a synthesis with every claim cited, and rival explanations ranked by how little evidence contradicts them. The gate **sends the work back** for the one observation that would tell the leaders apart.
+
+<!-- loop:research:start -->
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    plan["plan<br/><small>research-plan</small>"]:::gen
+    synthesise["synthesise<br/><small>source-synthesis</small>"]:::gen
+    compare["compare<br/><small>hypothesis-comparison</small>"]:::review
+    G7{"G7 · review"}:::gate
+    DONE(["complete"]):::ship
+
+    plan --> synthesise
+    synthesise --> compare
+    compare --> G7
+    G7 == "PROCEED" ==> DONE
+
+    G7 -- "REVISE (max 3)" --> synthesise
+```
+
+<!-- loop:research:end -->
+
+## `comply` — a risky change to a risk position its owner signed
+
+A risk register, a DPIA when personal data is processed, and the evidence behind every control the ratings rely on, made to agree: a control with no evidence gives no credit. The register's **own script** checks it, then the **owner** signs.
+
+<!-- loop:comply:start -->
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    register["register<br/><small>risk-register</small>"]:::gen
+    assess["assess<br/><small>dpia</small>"]:::gen
+    evidence["evidence<br/><small>soc2-evidence-map</small>"]:::gen
+    check["check<br/><small>risk-register</small>"]:::review
+    sign-off["sign-off<br/><small>doc-critique</small>"]:::gate
+    G8{"G8 · mechanical"}:::gate
+    G8_1{"G8.1 · human"}:::gate
+    DONE(["complete"]):::ship
+
+    register --> assess
+    assess --> evidence
+    evidence --> check
+    check --> G8
+    G8 == "READY" ==> sign-off
+    sign-off --> G8_1
+    G8_1 == "PROCEED" ==> DONE
+
+    G8 -- "NOT READY (max 3)" --> register
+    G8_1 -- "REVISE (max 3)" --> register
+```
+
+<!-- loop:comply:end -->
+
+## `measure` — a dashboard request to numbers people can defend
+
+The spec runs first, so only the queries behind charts that serve the decision get reviewed. A fixed query goes back through the spec, because the fix moves the number, and each metric's **owner** confirms its definition before anything is built.
+
+<!-- loop:measure:start -->
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    spec["spec<br/><small>dashboard-spec</small>"]:::gen
+    review["review<br/><small>sql-review</small>"]:::review
+    sign-off["sign-off<br/><small>doc-critique</small>"]:::gate
+    G9{"G9 · review"}:::gate
+    G9_1{"G9.1 · human"}:::gate
+    DONE(["complete"]):::ship
+
+    spec --> review
+    review --> G9
+    G9 == "READY" ==> sign-off
+    sign-off --> G9_1
+    G9_1 == "PROCEED" ==> DONE
+
+    G9 -- "NOT READY (max 3)" --> spec
+    G9_1 -- "REVISE (max 3)" --> spec
+```
+
+<!-- loop:measure:end -->

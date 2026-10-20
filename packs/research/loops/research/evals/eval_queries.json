@@ -1,0 +1,9 @@
+[
+  {"query": "research why our trial-to-paid conversion dropped in September", "should_trigger": true},
+  {"query": "run the research loop on what's causing the rise in support tickets", "should_trigger": true},
+  {"query": "find out which explanation the evidence supports for the churn spike, so I can decide what to fix", "should_trigger": true},
+  {"query": "I need a decision-ready answer on why the pilot underperformed", "should_trigger": true},
+  {"query": "summarise these three papers for me", "should_trigger": false},
+  {"query": "help me scope a research plan for entering the German market", "should_trigger": false},
+  {"query": "build an ACH matrix from this evidence list", "should_trigger": false}
+]

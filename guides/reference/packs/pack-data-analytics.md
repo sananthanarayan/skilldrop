@@ -14,7 +14,7 @@ For analysts and the people who rely on their numbers: review SQL for the bugs t
 |---|---|
 | Install | `npx skilldrop-cli install --pack data-analytics` |
 | Skills | 2 plus 4 from core |
-| Loops | none |
+| Loops | measure |
 | How-to | [Use the Data and analytics pack](../../how-to/packs/use-the-data-analytics-pack.md) |
 
 ## Skills
@@ -73,6 +73,20 @@ Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/data-analytics/skills/sql-
 - Designing tables, keys and indexes from access patterns — this reviews queries against a schema, not the schema
 - Agreeing a dataset's schema, quality SLAs and change policy with its consumers — that's `data-contract`
 - General application code review, including SQL built in application code for security — that's `pre-merge-review`
+
+## Loops
+
+### `measure`
+
+Take a dashboard request to a spec a BI developer can build on numbers people can defend: the decision it serves and one chart per question, every metric defined, the SQL behind each metric reviewed for the bugs that quietly inflate a figure, and the metric owner's sign-off on each definition before anything is built.
+
+| Stage | Skills | Gate |
+|---|---|---|
+| spec | `dashboard-spec` | — |
+| review | `sql-review` | G9 review: READY / NOT READY / BLOCKED |
+| sign-off | `doc-critique` | G9.1 human: PROCEED / PROCEED WITH CONDITIONS / REVISE / BLOCKED |
+
+Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/data-analytics/loops/measure/LOOP.md)
 
 ## Included from core
 

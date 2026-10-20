@@ -1,0 +1,54 @@
+{
+  "$comment": "RFC-0052. A change to a risk position its owner has signed. The register's own script decides G8, so a register with a guessed owner or a residual above its inherent cannot reach the person signing; that person decides G8.1, because accepting a risk is theirs alone.",
+  "name": "comply",
+  "version": "0.1.0",
+  "description": "Take a change that carries risk (a launch, a new vendor, a new use of personal data) to a risk position its owner has signed: a risk register scored inherent and residual, a DPIA when personal data is processed, the evidence behind every control the ratings rely on, a script that checks the register, and a sign-off only the named owner can give. Use when the user says \"get this ready for risk sign-off\", \"run the comply loop\", \"what do we need before we can launch this\", or needs a register, a DPIA and audit evidence that agree with each other.",
+  "entrypoint": "LOOP.md",
+  "kind": "loop",
+  "cap": 3,
+  "stages": [
+    {
+      "id": "register",
+      "type": "generate",
+      "intent": "Write the change's risks as cause, event and consequence, scored inherent and residual on a stated scale, each with a named owner and a treatment.",
+      "skills": ["risk-register"]
+    },
+    {
+      "id": "assess",
+      "type": "generate",
+      "intent": "Screen for a DPIA and, where one is needed, score the harm to people; each risk to people left at medium or high gets its own row in the register.",
+      "skills": ["dpia"]
+    },
+    {
+      "id": "evidence",
+      "type": "generate",
+      "intent": "For every control the residual ratings and the DPIA's measures rely on, name the evidence that it operates today, and mark the gaps.",
+      "skills": ["soc2-evidence-map"]
+    },
+    {
+      "id": "check",
+      "type": "verify",
+      "intent": "Run the register's own check, after evidence gaps have put residual ratings back where the evidence leaves them.",
+      "skills": ["risk-register"],
+      "gate": {
+        "id": "G8",
+        "kind": "mechanical",
+        "script": "packs/grc/skills/risk-register/scripts/check_register.py",
+        "verdicts": ["READY", "NOT READY", "BLOCKED"],
+        "revise_to": "register"
+      }
+    },
+    {
+      "id": "sign-off",
+      "type": "gate",
+      "intent": "The named owner accepts each residual risk, or doesn't. The critique informs that decision; it does not make it.",
+      "skills": ["doc-critique"],
+      "gate": {
+        "id": "G8.1",
+        "kind": "human",
+        "verdicts": ["PROCEED", "PROCEED WITH CONDITIONS", "REVISE", "RECONSIDER", "BLOCKED"],
+        "revise_to": "register"
+      }
+    }
+  ]
+}

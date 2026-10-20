@@ -63,6 +63,16 @@ A session takes about An hour to plan and an hour to synthesise, plus however lo
 
 You end with: A decision-led plan, a synthesis that keeps what the sources say apart from everything else, and, for why-questions, a ranked set of explanations with the next test to run.
 
+## 4. Run it as a loop
+
+A loop runs the skills in order and stops at each gate for a verdict. Install and start one:
+
+```bash
+npx skilldrop-cli install --loop --pack research
+```
+
+- **research**: Take a question that turns on why something happened to an answer the evidence can carry: a plan tied to the decision it serves, a synthesis of the sources with every claim cited, and rival explanations ranked by how little evidence contradicts them, with a gate that sends the work back for the observation that would tell the leaders apart. Say "run the research loop on this". Stages: plan → synthesise → compare [G7].
+
 ## Next
 
 - [Every skill in the Research pack](../../reference/packs/pack-research.md): what each one makes, needs and hands off to

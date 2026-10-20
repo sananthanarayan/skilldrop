@@ -8,6 +8,14 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.29 — 2026-10-20
+
+- **Three new loops, for jobs that run alongside delivery** ([RFC-0052](docs/rfcs/0052-research-comply-measure-loops.md)):
+  - **`research`** takes a question about why something happened to an answer the evidence can carry. The plan fixes what would change the decision before any source is read. Its gate (G7) passes only when the evidence separates the leading explanation from the runner-up; otherwise it sends the work back for the one observation that would. `npx skilldrop-cli install --loop research`.
+  - **`comply`** takes a risky change (a launch, a vendor, new personal data) to a risk position its owner signs. The DPIA's risks to people join the register. A control the evidence map can't evidence gives a rating no credit. The register's own script decides G8, and only the named owner signs at G8.1.
+  - **`measure`** takes a dashboard request to numbers people can defend. The spec cuts charts before any SQL is read. A query that fails review goes back through the spec, because the fix moves the number. Each metric's owner confirms its definition at G9.1, and an undefined metric is never filled in for them.
+- **A hand-written tutorial for each pack added in 0.14.0**, each worked on one example from start to finish, with output from real runs: [converters](guides/tutorial/one-draft-every-format.md), [experience-design](guides/tutorial/page-to-service.md), [research](guides/tutorial/why-question-to-evidence.md), [trackers](guides/tutorial/prd-to-honest-tracker.md), [data-analytics](guides/tutorial/dashboard-request-to-defensible-numbers.md), [grc](guides/tutorial/risky-change-to-signed-risk.md), [infra-as-code](guides/tutorial/module-to-safe-apply.md) and [skill-engineering](guides/tutorial/write-and-review-a-skill.md).
+
 ## 0.16.28 — 2026-10-19
 
 - **Contain what a skill can reach.** `skilldrop install <skill> --project --contain` turns on Claude Code's strict sandbox for that project, sized to what the skills declare: shell commands, and everything they start, write only inside the project and reach only the hosts the skills say they need. It only ever tightens your settings, never loosens or widens them, keeps the file out of git, and refuses a skill that says it writes anywhere on disk. It also says plainly what the sandbox doesn't cover (Claude Code's file and web tools, MCP servers, hooks) and how to close that ([RFC-0051](docs/rfcs/0051-declared-containment.md), [how-to](guides/how-to/contain-skills.md)).

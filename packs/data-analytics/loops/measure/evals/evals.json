@@ -1,0 +1,28 @@
+{
+  "loop_name": "measure",
+  "evals": [
+    {
+      "id": "spec-first-then-review",
+      "prompt": "Run the measure loop. Regional sales leads want a dashboard to decide each Monday where to send the two floating account managers. They asked for: weekly revenue by region, revenue all time, website sessions, active customers, average deal size by region, and a map. Revenue's query is in revenue.sql (Postgres; one row per region per week; customers.customer_id is unique and an order has many order_items). Nobody has written down what 'active customer' means; sales counts anyone with an open opportunity, finance counts anyone invoiced in 90 days.",
+      "assertions": [
+        "Runs dashboard-spec first and writes the decision statement before reviewing any SQL",
+        "Cuts all-time revenue, website sessions and the map with reasons",
+        "Marks active customers as undefined and does not choose between the sales and finance definitions",
+        "Reviews revenue.sql and flags the order_items join as multiplying revenue",
+        "Reports G9 as NOT READY and returns to spec with the corrected query as the metric's source",
+        "Lists verification queries that show how much the revenue number changes",
+        "Stops at G9.1 asking the metric owners to confirm; does not confirm a definition itself"
+      ]
+    },
+    {
+      "id": "owner-rejects-the-definition",
+      "prompt": "Continuing the measure loop. The revenue owner, finance, says the corrected query is right but revenue must be booked in New York time and exclude refunded orders. The query uses UTC and doesn't look at refunds.",
+      "assertions": [
+        "Treats this as G9.1 REVISE and returns to spec with finance's definition",
+        "Updates the revenue metric's definition in the spec to New York time and excluding refunded orders",
+        "Reviews the changed query again at G9 before returning to sign-off",
+        "Counts the return under the cap of 3"
+      ]
+    }
+  ]
+}

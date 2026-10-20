@@ -59,7 +59,7 @@ This is where a loop is won or lost. A gate that cannot fail is decoration.
 
 - **`id`** is repo-unique (`G2`, `G2.1`) — a gate is a place people point at in review. It reads
   in lifecycle order: the whole number is the loop's place (`discover` G0 through `operate` G4;
-  G5 and G6 are the loops outside the lifecycle), and a decimal is a second gate in the same
+  G5 and up are the loops outside it, in the order they were added), and a decimal is a second gate in the same
   loop (RFC-0044).
 - **`kind`**: `mechanical` needs a real `script` whose exit code decides; `review` and `human`
   must **not** have one.

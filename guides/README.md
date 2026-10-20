@@ -22,6 +22,14 @@ New here? Start with the [operating model](explanation/operating-model.md): the 
 - [Solution architect workflow](tutorial/solution-architect-workflow.md) — brief → diagrams → ADRs → design doc → threat model → council gate
 - [Product manager workflow](tutorial/product-manager-workflow.md) — signal → PR/FAQ → OKRs → PRD → metrics → critique gate
 - [AI engineering workflow](tutorial/ai-engineering-workflow.md) — use-case triage → readiness → loop design → threat model → evals → usage report
+- [A why question to an answer the evidence carries](tutorial/why-question-to-evidence.md) — the research loop: plan → cited synthesis → rival explanations → evidence-strength gate
+- [From a risky change to a risk position its owner signs](tutorial/risky-change-to-signed-risk.md) — the comply loop: register → DPIA → evidence map → script check → owner sign-off
+- [From a dashboard request to numbers people can defend](tutorial/dashboard-request-to-defensible-numbers.md) — the measure loop: spec and cut list → SQL review → metric owner sign-off
+- [From an agreed PRD to a tracker that stays honest](tutorial/prd-to-honest-tracker.md) — PRD → Jira import → backlog triage → weekly status from counts → drift check
+- [From a Terraform module to a plan you can safely apply](tutorial/module-to-safe-apply.md) — a module with secure defaults, then a plan review that catches a hidden database replace
+- [Write a skill your whole team can install, then review one before you trust it](tutorial/write-and-review-a-skill.md) — skill-author → lint against siblings → review a teammate's unsafe skill
+- [One Markdown draft, every reader's format](tutorial/one-draft-every-format.md) — Markdown → Word, Excel and HTML, a diagram checked, and a reply brought back, with what each drops
+- [From an unreadable page to a service people can use](tutorial/page-to-service.md) — rewrite a council page from user needs, write the form's words, and blueprint the service behind it
 
 ## how-to
 
