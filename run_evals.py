@@ -61,11 +61,11 @@ METER = Meter()
 
 def load(skill, name):
     p = os.path.join(catalog.skill_dir(skill), "evals", name)
-    return json.load(open(p)) if os.path.exists(p) else None
+    return json.load(open(p, encoding="utf-8")) if os.path.exists(p) else None
 
 
 def description(skill):
-    return json.load(open(os.path.join(catalog.skill_dir(skill), "manifest.json")))["description"]
+    return json.load(open(os.path.join(catalog.skill_dir(skill), "manifest.json"), encoding="utf-8"))["description"]
 
 
 def router_prompt(all_skills):
@@ -137,7 +137,7 @@ def assertions(skills, skill_model, judge_model, workers):
     jobs = []
     for s in skills:
         doc = load(s, "evals.json") or {}
-        md = open(os.path.join(catalog.skill_dir(s), "SKILL.md")).read()
+        md = open(os.path.join(catalog.skill_dir(s), "SKILL.md"), encoding="utf-8").read()
         for e in doc.get("evals", []):
             jobs.append((s, md, e))
     # A different order each month, so a run the budget cuts short still reaches every skill
@@ -263,19 +263,19 @@ def main():
     act = [] if a.no_activation else activation(skills, all_skills, a.model, a.workers)
     asr = assertions(skills, a.skill_model, a.judge_model, a.workers) if a.assertions else []
     json.dump({"router_model": a.model, "activation": act, "assertions": asr, "spent": round(METER.spent, 4),
-               "budget": a.budget}, open(a.out, "w"), indent=2)
+               "budget": a.budget}, open(a.out, "w", encoding="utf-8"), indent=2)
     if a.summary:
         kind = "assertions" if asr and not act else "activation" if act and not asr else "both"
         models = {"router": a.model} if act else {}
         if asr:
             models.update({"skill": a.skill_model, "judge": a.judge_model})
-        json.dump(summarise(act, asr, models, kind, "partial" if a.skills else "all"), open(a.summary, "w"),
+        json.dump(summarise(act, asr, models, kind, "partial" if a.skills else "all"), open(a.summary, "w", encoding="utf-8"),
                   separators=(",", ":"))
     md = report(act, asr, a.model) + (f"\nSpent ${METER.spent:.2f}" + (f" of a ${a.budget:.2f} budget" if a.budget else "") + " at list price.\n")
     print(md)
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:
-        with open(summary, "a") as f:
+        with open(summary, "a", encoding="utf-8") as f:
             f.write(md)
     return 0
 

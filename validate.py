@@ -272,13 +272,47 @@ GATE_KINDS = {"mechanical", "review", "human"}
 GATE_ID = re.compile(r"^G[0-9]+(\.[0-9]+)?$")
 
 
+def check_text_encoding():
+    """RFC-0056: every text file a repo or skill script opens names its encoding. Without one,
+    Python on Windows reads with the locale's code page (cp1252), and the first em-dash in a
+    SKILL.md stops the script there, though it runs fine on macOS and Linux. Found by the Windows
+    CI job; checked here so it can't come back. A file this Python can't parse (newer syntax) is
+    skipped, not failed: CI parses it on a newer interpreter."""
+    import ast
+    files = glob.glob(os.path.join(ROOT, "*.py")) + glob.glob(os.path.join(ROOT, "packs", "**", "*.py"), recursive=True)
+    for f in sorted(files):
+        rel = os.path.relpath(f, ROOT).replace(os.sep, "/")
+        if "/evals/files/" in rel or "/examples/inputs/" in rel:
+            continue
+        try:
+            tree = ast.parse(open(f, encoding="utf-8").read())
+        except SyntaxError:
+            continue
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call):
+                continue
+            fn = node.func
+            is_open = isinstance(fn, ast.Name) and fn.id == "open"
+            is_path = isinstance(fn, ast.Attribute) and fn.attr in ("read_text", "write_text")
+            if not (is_open or is_path) or any(k.arg in ("encoding", None) for k in node.keywords):
+                continue
+            if is_open:
+                mode = node.args[1] if len(node.args) >= 2 else next((k.value for k in node.keywords if k.arg == "mode"), None)
+                if mode is not None and not isinstance(mode, ast.Constant):
+                    continue
+                if mode is not None and "b" in str(mode.value):
+                    continue
+            fail(rel, f"line {node.lineno}: {'open()' if is_open else fn.attr + '()'} reads or writes text without "
+                      f'encoding="utf-8"; on Windows that is cp1252, which fails on the first non-ASCII character')
+
+
 def check_loops(dir_set):
     """RFC-0028 — loops/ is the third primitive. A loop sequences skills; it never contains one.
     These checks exist because a loop that names a renamed skill, or a gate that can only say
     yes, is worse than no loop at all: it looks like governance and enforces nothing."""
     if not LOOP_PATH:
         return set()
-    terminals = json.load(open(os.path.join(ROOT, "contracts", "terminals.json")))
+    terminals = json.load(open(os.path.join(ROOT, "contracts", "terminals.json"), encoding="utf-8"))
     vclass = {v: m["class"] for v, m in terminals["verdicts"].items()}
     names, seen_gates = set(), {}
 
@@ -290,7 +324,7 @@ def check_loops(dir_set):
             fail(where, "a skill folder already has this name — a loop installs into the "
                         "same namespace (LOOP.md projects to SKILL.md), so the two collide")
         try:
-            spec = json.load(open(os.path.join(p, "loop.json")))
+            spec = json.load(open(os.path.join(p, "loop.json"), encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as e:
             fail(where, f"loop.json unreadable: {e}")
             continue
@@ -321,7 +355,7 @@ def check_loops(dir_set):
         ev = os.path.join(p, "evals", "evals.json")
         if os.path.exists(ev):
             try:
-                doc = json.load(open(ev))
+                doc = json.load(open(ev, encoding="utf-8"))
             except json.JSONDecodeError as e:
                 fail(where, f"evals/evals.json is not valid JSON: {e}")
             else:
@@ -336,7 +370,7 @@ def check_loops(dir_set):
         eq = os.path.join(p, "evals", "eval_queries.json")
         if os.path.exists(eq):
             try:
-                rows = json.load(open(eq))
+                rows = json.load(open(eq, encoding="utf-8"))
             except json.JSONDecodeError as e:
                 fail(where, f"evals/eval_queries.json is not valid JSON: {e}")
             else:
@@ -416,7 +450,7 @@ def frontmatter(md_text):
 
 
 def main():
-    routing = json.load(open(os.path.join(ROOT, "model-routing.json")))["skills"]
+    routing = json.load(open(os.path.join(ROOT, "model-routing.json"), encoding="utf-8"))["skills"]
     loop_dirs = set(LOOP_PATH)
     skill_dirs = sorted(SKILL_PATH)
     dir_set = set(skill_dirs)
@@ -424,12 +458,12 @@ def main():
     for d in skill_dirs:
         p = SKILL_PATH[d]
         try:
-            manifest = json.load(open(os.path.join(p, "manifest.json")))
+            manifest = json.load(open(os.path.join(p, "manifest.json"), encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as e:
             fail(d, f"manifest.json unreadable: {e}")
             continue
         try:
-            md = open(os.path.join(p, "SKILL.md")).read()
+            md = open(os.path.join(p, "SKILL.md"), encoding="utf-8").read()
         except OSError:
             fail(d, "SKILL.md missing")
             continue
@@ -523,7 +557,7 @@ def main():
                         f"trigger queries (`skilldrop new-skill` scaffolds both)")
         if os.path.exists(evals_path):
             try:
-                ev = json.load(open(evals_path))
+                ev = json.load(open(evals_path, encoding="utf-8"))
                 if ev.get("skill_name") != d:
                     fail(d, f"evals.json skill_name={ev.get('skill_name')} != {d}")
                 if not ev.get("evals") or any(not e.get("prompt") or not e.get("assertions") for e in ev["evals"]):
@@ -532,7 +566,7 @@ def main():
                 fail(d, f"evals.json invalid JSON: {e}")
         if os.path.exists(queries_path):
             try:
-                qs = json.load(open(queries_path))
+                qs = json.load(open(queries_path, encoding="utf-8"))
                 flags = {q.get("should_trigger") for q in qs}
                 if flags != {True, False}:
                     fail(d, "eval_queries.json needs both should_trigger true and false rows")
@@ -600,7 +634,7 @@ def main():
     index_doc = catalog.index()
     # RFC-0050: the example policy satisfies the contract (the CLI's validate checks it too)
     try:
-        for e in check_schema(json.load(open(os.path.join(ROOT, "contracts", "policy.example.json"))), schema("policy.schema.json")):
+        for e in check_schema(json.load(open(os.path.join(ROOT, "contracts", "policy.example.json"), encoding="utf-8")), schema("policy.schema.json")):
             fail("contracts/policy.example.json", e)
     except (OSError, ValueError) as e:
         fail("contracts/policy.example.json", f"unreadable: {e}")
@@ -727,7 +761,7 @@ def main():
     # The npm package is the bundled catalog: whatever the CLI reads from its own root has to
     # ship in package.json `files`, or `npx skilldrop-cli` works from a clone and breaks from
     # the registry. profiles.json was missing until 0.13.4, so --profile failed only for npx users.
-    shipped = set(json.load(open(os.path.join(ROOT, "package.json"))).get("files", []))
+    shipped = set(json.load(open(os.path.join(ROOT, "package.json"), encoding="utf-8")).get("files", []))
     for needed in ("bin/", "packs/", "agents/", "contracts/", "catalogue.json", "profiles.json", "model-routing.json"):
         if needed not in shipped:
             fail("package.json", f"`files` must include {needed!r} — the bundled CLI reads it at runtime")
@@ -752,6 +786,7 @@ def main():
 
     agent_names = check_agents(skill_dirs)
     check_guides()
+    check_text_encoding()
     loop_names = check_loops(dir_set)
 
     # The site regenerates its counts from the manifests; README prose does not.
@@ -829,7 +864,7 @@ def main():
     # bring a lockfile and the npm ecosystem in .github/dependabot.yml with it. And the package
     # runs no code at install: an install-time lifecycle script would run on every user's
     # machine during `npm install`, against SECURITY.md's "install copies files".
-    pkg = json.load(open(os.path.join(ROOT, "package.json")))
+    pkg = json.load(open(os.path.join(ROOT, "package.json"), encoding="utf-8"))
     deps = [k for k in ("dependencies", "devDependencies", "optionalDependencies", "peerDependencies",
                         "bundleDependencies", "bundledDependencies") if pkg.get(k)]
     if deps:

@@ -42,7 +42,7 @@ def main(argv):
     path = Path(argv[0]).expanduser().resolve()
     base = path.parent
     try:
-        brand = json.loads(path.read_text())
+        brand = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as e:
         print(f"FAIL cannot read {path}: {e}")
         return 1

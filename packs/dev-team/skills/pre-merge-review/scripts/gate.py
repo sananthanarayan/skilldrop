@@ -43,7 +43,7 @@ def detect(root):
 
     if has("package.json"):
         try:
-            scripts = json.load(open(os.path.join(root, "package.json"))).get("scripts", {})
+            scripts = json.load(open(os.path.join(root, "package.json"), encoding="utf-8")).get("scripts", {})
         except (OSError, json.JSONDecodeError):
             scripts = {}
         if "lint" in scripts:

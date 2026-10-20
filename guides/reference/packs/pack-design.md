@@ -23,7 +23,7 @@ On-brand visual work: capture a brand once, then build real PowerPoint decks and
 
 Capture a brand once as a reusable brand.json — logo files (and an on-dark version), colour roles as hex codes, heading and body fonts, voice, imagery rules, a PowerPoint template, contact details and the legal footer — plus a one-page BRAND.md, with text contrast checked and every value traced to where it came from.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/design/skills/brand-kit/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/brand-kit/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/design/skills/brand-kit/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/brand-kit/)
 
 **Use it when** the user wants decks, flyers or documents in their branding, says "use our brand", "here's our logo and colours", "set up our brand kit", or hands over brand guidelines.
 
@@ -50,7 +50,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/design/skills/brand-kit
 
 Generate a real PowerPoint (.pptx) file from content, audience, and either a brand template or a color palette — with charts, tables and images, not only bullets. Slide count, density and layout are tuned to the audience: execs, boards, technical reviewers, sales prospects, investors, internal teams.
 
-Tier **standard** · v0.3.2 · [SKILL.md](../../../packs/design/skills/deck-builder/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/deck-builder/)
+Tier **standard** · v0.3.3 · [SKILL.md](../../../packs/design/skills/deck-builder/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/deck-builder/)
 
 **Use it when** the user wants an actual editable .pptx rather than an outline, wants their corporate template or brand colours applied, or says "build the deck", "make it a pptx", "use our template".
 
@@ -74,7 +74,7 @@ Tier **standard** · v0.3.2 · [SKILL.md](../../../packs/design/skills/deck-buil
 
 Generate a print-ready, on-brand marketing flyer — event, launch, open day, offer, hiring — as one self-contained HTML file (Letter, A4, A5, or square and story sizes for social) that saves to PDF, built from the user's own logo, colours, fonts and content, with one call to action, a short headline, contrast checked, and no invented dates, prices or contact details.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/design/skills/marketing-flyer/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/marketing-flyer/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/design/skills/marketing-flyer/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/marketing-flyer/)
 
 **Use it when** the user wants a flyer, poster, one-pager, handout, leaflet or event announcement "in our branding", or says "make a flyer for…".
 

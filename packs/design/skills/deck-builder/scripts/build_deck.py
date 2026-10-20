@@ -161,7 +161,7 @@ def resolve_palette(p, script_dir: Path) -> dict:
         if not palettes_path.exists():
             warn(f"palettes file missing at {palettes_path}; using defaults")
             return DEFAULT_PALETTE
-        all_palettes = json.loads(palettes_path.read_text())
+        all_palettes = json.loads(palettes_path.read_text(encoding="utf-8"))
         if p not in all_palettes:
             warn(f"palette {p!r} not found; using defaults")
             return DEFAULT_PALETTE
@@ -965,7 +965,7 @@ def load_brand(ref, base: Path):
         warn(f"brand file not found: {path}; building without it")
         return {}, base
     try:
-        return json.loads(path.read_text()), path.parent
+        return json.loads(path.read_text(encoding="utf-8")), path.parent
     except json.JSONDecodeError as e:
         warn(f"brand file {path} is not valid JSON ({e}); building without it")
         return {}, base
@@ -1024,7 +1024,7 @@ def place_logo(slide, c: "Canvas", palette: dict, logical: str) -> None:
 
 
 def build(spec_path: Path, out_path: Path, script_dir: Path, *, strict: bool, brand_ref=None) -> None:
-    spec = json.loads(spec_path.read_text())
+    spec = json.loads(spec_path.read_text(encoding="utf-8"))
     spec_dir = spec_path.parent
     brand, brand_dir = load_brand(brand_ref or spec.get("brand"), spec_dir)
     if brand:

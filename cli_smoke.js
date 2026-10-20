@@ -128,7 +128,7 @@ check("install an agent", () => {
 check("--contain plans the sandbox from declared permissions", () => {
   const repo = gitRepo("repo-contain");
   const out = run(["install", "sonar-review", "--project", "--contain", "--dry-run"], { cwd: repo });
-  expect(out.includes("sonarcloud.io") && out.includes("sandbox.enabled"), "containment plan missing the declared host");
+  expect(/allowedDomains: sonarcloud\.io(\s|$)/m.test(out) && out.includes("sandbox.enabled"), "containment plan missing the declared host");
   expect(!exists(repo, ".claude", "skills", "sonar-review"), "--dry-run wrote files");
 });
 

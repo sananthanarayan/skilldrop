@@ -260,7 +260,7 @@ def main(argv=None):
     if args.text is not None:
         text = args.text
     elif args.input is not None:
-        text = args.input.read_text(errors="replace")
+        text = args.input.read_text(errors="replace", encoding="utf-8")
     elif not sys.stdin.isatty():
         text = sys.stdin.read()
     else:

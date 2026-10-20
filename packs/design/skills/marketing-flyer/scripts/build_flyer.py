@@ -79,7 +79,7 @@ def data_uri(path, label):
 
 def load_json(path):
     try:
-        return json.loads(Path(path).read_text())
+        return json.loads(Path(path).read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as e:
         die(f"cannot read {path}: {e}")
 
