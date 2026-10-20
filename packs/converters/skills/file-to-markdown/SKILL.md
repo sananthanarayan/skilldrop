@@ -47,12 +47,16 @@ or a rewrite that goes back out through `md-to-docx` or `md-to-html`.
    | `.csv` / `.tsv` | One table, delimiter detected |
    | `.json` | An array of objects becomes a table; an object becomes a key/value table plus a table per array |
    | `.txt` / `.md` | Passed through |
-   | `.pdf` | Through `pdftotext`. Tables from aligned columns, lists from indentation, short standalone lines as `###` headings (guessed, and said so); pages with side-by-side columns are read in column order with nothing inferred. No images |
+   | `.pdf` | Through `pdftotext`. Tables from aligned columns, lists from indentation, short standalone lines as `###` headings (guessed, and said so); a table that runs onto the next page is joined into one, without the header the PDF repeats; pages with side-by-side columns are read in column order with nothing inferred. Scanned pages are read by OCR when `tesseract` is installed. No images |
 
 3. **PDF without `pdftotext`.** The script stops with install steps (`brew install poppler`
    on macOS, `sudo apt install poppler-utils` on Debian/Ubuntu). Pass those on; don't try to
-   read the PDF bytes yourself. A PDF with no text layer is a scan and needs OCR, which this
-   skill does not do.
+   read the PDF bytes yourself. A page with no text layer is a scan. The script reads it by
+   OCR when `tesseract` is installed (`brew install tesseract`, `sudo apt install tesseract-ocr`),
+   and otherwise stops with those steps. For a scan that isn't in English, pass `--ocr-lang`
+   with tesseract's code (`deu`, `fra`, `eng+fra`). OCR misreads characters, so the reply says
+   which pages were OCR'd and asks the user to check every number, name and date in them
+   against the PDF.
 
 4. **Old binary formats** (`.doc`, `.ppt`, `.xls`, `.rtf`, `.pages`, `.key`): the script
    refuses and names the format to save as. On macOS, `textutil -convert docx file.doc`
@@ -73,7 +77,7 @@ missing, emit `BLOCKED: need <the file | pdftotext on PATH>` and stop.
 
 ## Useful references in this skill
 
-- [`scripts/to_markdown.py`](scripts/to_markdown.py): the converter (stdlib only; `pdftotext` optional for PDF)
+- [`scripts/to_markdown.py`](scripts/to_markdown.py): the converter (stdlib only; `pdftotext` optional for PDF, `tesseract` for scanned pages)
 - [`examples/mixed-inputs.md`](examples/mixed-inputs.md): a Word brief, a deck, a workbook and a web page converted, with the real Markdown and stderr report
 
 ## Quality bar

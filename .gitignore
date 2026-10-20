@@ -64,3 +64,4 @@ renders/
 
 # privacy.py: extra terms a maintainer protects, never committed (RFC-0049)
 /.skilldrop-private
+.eval-history/

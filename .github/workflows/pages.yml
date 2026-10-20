@@ -31,6 +31,16 @@ jobs:
         run: python3 build_docs.py # stdlib only — walks guides/, renders markdown, writes build/docs/
       - name: Generate the catalogue page
         run: python3 build_catalogue.py # stdlib only — writes build/catalogue/index.html
+      - name: Fetch the eval history
+        # Counts-only summaries the evals workflow appends to the eval-history branch (RFC-0055).
+        # The branch may not exist yet (no API key, or no run so far); the page then says so.
+        run: |
+          set -euo pipefail
+          mkdir -p .eval-history
+          if git fetch --depth=1 "https://github.com/${GITHUB_REPOSITORY}.git" eval-history 2>/dev/null; then
+            git archive FETCH_HEAD runs 2>/dev/null | tar -x -C .eval-history || true
+          fi
+          echo "eval runs: $(find .eval-history -name '*.json' -type f | wc -l)"
       - name: Generate the pack, skill and changelog pages
         run: python3 build_pages.py # stdlib only — writes build/packs/, build/skills/, build/changelog/
       - name: Index the built site for full-text search

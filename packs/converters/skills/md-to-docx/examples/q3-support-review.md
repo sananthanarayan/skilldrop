@@ -66,6 +66,13 @@ has a shaded header row and right-aligned numbers, and the 480 × 240 px chart (
 DPI) is centred at 3.3 × 1.7 in. The numbered proposals run 1 to 3, the "support dashboard" and
 "the alias section" links are blue and underlined, and the quote is indented and italic.
 
+**Opened in Microsoft Word** for Mac 16.114 (2026-10-20), through AppleScript: it opened with
+no repair prompt, the first paragraph has the built-in Heading 1 style, and it holds one table
+and one inline picture. Word's own PDF export of it shows the nested bullets, both task boxes,
+the table with its numbers right-aligned, the code block and the quote, embeds the chart at
+480 × 240, and carries both links as live link annotations: the dashboard URL and the jump to
+"Retiring the alias".
+
 ---
 
 ## Reply to the user

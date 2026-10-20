@@ -2,7 +2,8 @@
 """Convert a document into clean Markdown that another skill can read.
 
 Stdlib only, Python 3.9+. Handles .docx, .pptx, .xlsx, .html/.htm, .csv/.tsv,
-.json, .txt/.md, and .pdf (through `pdftotext` when it is installed).
+.json, .txt/.md, and .pdf (through `pdftotext` when it is installed). A PDF page with no
+text layer (a scan) is read by OCR when `tesseract` and `pdftoppm` are installed.
 Everything the conversion could not carry (images, charts, comments, formulas,
 tracked changes) is counted and reported on stderr, so nobody mistakes the
 Markdown for the whole document.
@@ -12,6 +13,7 @@ Usage:
     python3 to_markdown.py deck.pptx -o deck.md
     python3 to_markdown.py model.xlsx -o model.md --max-rows 200
     python3 to_markdown.py page.html -o -          # write to stdout
+    python3 to_markdown.py scan.pdf -o scan.md --ocr-lang deu   # OCR a German scan
 """
 
 import argparse
@@ -22,6 +24,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import zipfile
 from collections import OrderedDict
 from datetime import datetime, timedelta
@@ -1122,8 +1125,9 @@ def _pdf_page_md(page, rep):
                     region.append(line); rows += 1; cols |= _col_starts(line); j += 1
                 elif line.strip() and _col_starts(line) and _col_starts(line) <= _near(cols):
                     region.append(line); j += 1
-                elif not line.strip() and j + 1 < n and lines[j + 1].strip() and (
-                        len(_cells(lines[j + 1])) >= 2 or _col_starts(lines[j + 1]) <= _near(cols)):
+                elif not line.strip() and j + 1 < n and len(_cells(lines[j + 1])) >= 2:
+                    # After a blank line only a full row continues the table. A one-cell line
+                    # there ("End of report.") is the next paragraph, not a wrapped cell.
                     j += 1
                 else:
                     break
@@ -1193,7 +1197,83 @@ def _pdf_page_md(page, rep):
     return out
 
 
-def pdf_to_md(path, rep):
+_FURNITURE = re.compile(r"^\s*(page\s+)?\d{1,4}(\s*(of|/)\s*\d{1,4})?\s*$|^\s*[-–—]\s*\d{1,4}\s*[-–—]\s*$", re.I)
+
+
+def _join_split_tables(pages, rep):
+    """A table that runs off the foot of one page continues at the top of the next, where it
+    would otherwise start a second table whose first data row reads as its header. When a page
+    ends in a table and the next page's first rows (after page numbers and any running header)
+    have the same number of cells, those rows are moved up to finish the table. A header row
+    the PDF repeats on the new page is dropped. Returns the pages, rewritten."""
+    pages = [p.split("\n") for p in pages]
+    first_lines = [next((l.strip() for l in p if l.strip()), "") for p in pages]
+    running = {t for t in first_lines if t and first_lines.count(t) > 1}  # a header on several pages
+    holder = None
+    for k in range(len(pages) - 1):
+        a_idx = k if holder is None else holder
+        a, b = pages[a_idx], pages[k + 1]
+        # the last table row on the holder page, before trailing page furniture
+        end = len(a) - 1
+        while end >= 0 and (not a[end].strip() or _FURNITURE.match(a[end])):
+            end -= 1
+        holder = None
+        if end < 0 or len(_cells(a[end])) < 2:
+            continue
+        width = len(_cells(a[end]))
+        start = end
+        while start - 1 >= 0 and (len(_cells(a[start - 1])) == width or
+                                  (not a[start - 1].strip() and start - 2 >= 0 and len(_cells(a[start - 2])) == width)):
+            start -= 1
+        header = " ".join(a[start].split())
+        # the first content on the next page, past page numbers and a running header
+        i = 0
+        while i < len(b) and (not b[i].strip() or _FURNITURE.match(b[i]) or b[i].strip() in running):
+            i += 1
+        if i >= len(b) or len(_cells(b[i])) != width:
+            continue
+        j = i
+        rows = []
+        while j < len(b) and (len(_cells(b[j])) == width or
+                              (not b[j].strip() and j + 1 < len(b) and len(_cells(b[j + 1])) == width)):
+            if b[j].strip():
+                rows.append(b[j])
+            j += 1
+        dropped = bool(rows) and " ".join(rows[0].split()) == header
+        if dropped:
+            rows = rows[1:]
+        if not rows:
+            continue
+        a[end + 1:end + 1] = rows
+        del b[i:j]
+        rep.notes.append("a table continued from page %d onto page %d was joined into one%s" % (
+            a_idx + 1, k + 2, ", and the header row repeated on page %d was dropped" % (k + 2) if dropped else ""))
+        rep.keep("pdf tables joined across pages", 1)
+        if not any(l.strip() and not _FURNITURE.match(l) and l.strip() not in running for l in b):
+            holder = a_idx  # the whole page was table: the next page may continue it too
+    return ["\n".join(p) for p in pages]
+
+
+def _ocr_page(path, n, ppm, tess, lang):
+    """Page n of the PDF as text, by rendering it at 300 dpi and reading it with tesseract.
+    Page segmentation mode 6 reads a uniform block and keeps the spacing between words, which
+    is what the table and list inference reads columns from."""
+    with tempfile.TemporaryDirectory(prefix="to-md-ocr-") as tmp:
+        stem = str(Path(tmp) / "page")
+        r = subprocess.run([ppm, "-r", "300", "-png", "-f", str(n), "-l", str(n), str(path), stem],
+                           stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+        pngs = sorted(Path(tmp).glob("page*.png"))
+        if r.returncode != 0 or not pngs:
+            sys.exit("error: pdftoppm could not render page %d: %s" % (n, r.stderr.decode("utf-8", "replace").strip()))
+        r = subprocess.run([tess, str(pngs[0]), "stdout", "-l", lang, "--psm", "6",
+                            "-c", "preserve_interword_spaces=1"],
+                           stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+        if r.returncode != 0:
+            sys.exit("error: tesseract failed on page %d: %s" % (n, r.stderr.decode("utf-8", "replace").strip()))
+        return r.stdout.decode("utf-8", "replace").replace("\f", "")
+
+
+def pdf_to_md(path, rep, ocr=True, ocr_lang="eng"):
     exe = shutil.which("pdftotext")
     if not exe:
         sys.exit("error: reading PDF needs `pdftotext` (part of Poppler), which is not on PATH.\n"
@@ -1211,9 +1291,33 @@ def pdf_to_md(path, rep):
         return pages[:-1] if pages and not pages[-1].strip() else pages
 
     layout, reading = run(["-layout"]), run([])
-    if not "".join(layout).strip():
-        sys.exit("error: %s has no text layer (probably scanned). It needs OCR first; "
-                 "this script does not do OCR." % path)
+    blank = [n for n, p in enumerate(layout, 1) if not p.strip()]
+    if blank and ocr is not False:
+        tess, ppm = shutil.which("tesseract"), shutil.which("pdftoppm")
+        if not (tess and ppm):
+            if len(blank) == len(layout):
+                sys.exit("error: %s has no text layer (probably scanned), so it needs OCR, which uses "
+                         "`tesseract`%s.\n"
+                         "  macOS:          brew install tesseract   (pdftoppm comes with poppler)\n"
+                         "  Debian/Ubuntu:  sudo apt install tesseract-ocr poppler-utils\n"
+                         "  Windows:        install Tesseract (UB Mannheim build) and add it to PATH\n"
+                         "Then rerun. Add --ocr-lang deu (or another installed language) for a non-English scan."
+                         % (path, "" if ppm else " and `pdftoppm`"))
+            rep.notes.append("page(s) %s have no text layer and were left empty: install tesseract to read them by OCR"
+                             % ", ".join(map(str, blank)))
+        else:
+            for n in blank:
+                text = _ocr_page(path, n, ppm, tess, ocr_lang)
+                layout[n - 1] = text
+                if n <= len(reading):
+                    reading[n - 1] = text
+            rep.keep("pages read by OCR", len(blank))
+            rep.notes.append("page(s) %s are scanned, so their text was read by OCR (tesseract, language %s, 300 dpi). "
+                             "OCR misreads characters: check every number, name and date against the PDF"
+                             % (", ".join(map(str, blank)), ocr_lang))
+    elif blank and len(blank) == len(layout):
+        sys.exit("error: %s has no text layer (probably scanned), and --no-ocr was given." % path)
+    layout = _join_split_tables(layout, rep)
     out, plain_pages = [], []
     for n, page in enumerate(layout, 1):
         out += ["<!-- page %d -->" % n, ""]
@@ -1250,7 +1354,12 @@ def main(argv=None):
     ap.add_argument("-o", "--output", required=True, help="Markdown file to write, or - for stdout")
     ap.add_argument("--max-rows", type=int, default=0,
                     help="xlsx only: keep at most this many data rows per sheet (0 = all)")
+    ap.add_argument("--ocr-lang", default="eng",
+                    help="pdf only: tesseract language for scanned pages, e.g. eng, deu, fra, eng+fra (default eng)")
+    ap.add_argument("--no-ocr", action="store_true", help="pdf only: never run OCR on scanned pages")
     a = ap.parse_args(argv)
+    if not re.fullmatch(r"[A-Za-z_]{3,}(\+[A-Za-z_]{3,})*", a.ocr_lang):
+        sys.exit("error: --ocr-lang takes tesseract language codes such as eng or eng+fra")
 
     path = Path(a.input)
     if not path.is_file():
@@ -1267,7 +1376,8 @@ def main(argv=None):
             md += "\n"
     elif ext in HANDLERS:
         fn = HANDLERS[ext]
-        md = fn(path, rep, a.max_rows) if fn is xlsx_to_md else fn(path, rep)
+        md = (fn(path, rep, a.max_rows) if fn is xlsx_to_md else
+              fn(path, rep, ocr=not a.no_ocr, ocr_lang=a.ocr_lang) if fn is pdf_to_md else fn(path, rep))
     else:
         sys.exit("error: unsupported file type %r. Supported: %s, .txt, .md"
                  % (ext, ", ".join(sorted(HANDLERS))))

@@ -36,6 +36,8 @@ from build_catalogue import CSS
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
 PAGE_CSS = """
+.trend { margin:1rem 0; color:var(--accent,#6d4aff); } .trend svg { width:100%; max-width:560px; height:auto; display:block; }
+.trend circle { fill:currentColor; } .trend__l { font-size:11px; fill:var(--muted,#666); } .trend figcaption { color:var(--muted,#666); font-size:.85rem; }
 .pk { padding-block:2.2rem 3.5rem; }
 .pk__title { font-size:clamp(1.6rem,3vw,2.1rem); letter-spacing:-.02em; margin:0 0 .4rem; }
 .pk__crumb { font-size:.82rem; color:var(--fg-muted); margin:0 0 .6rem; }
@@ -589,6 +591,90 @@ def retired_section(bench):
 <tbody>{rows}</tbody></table></div>"""
 
 
+EVAL_HISTORY = os.environ.get("EVAL_HISTORY", os.path.join(ROOT, ".eval-history"))
+
+
+def eval_runs():
+    """The counts-only summaries the evals workflow appends to the eval-history branch
+    (RFC-0055), oldest first. The site build fetches the branch into .eval-history/."""
+    d = os.path.join(EVAL_HISTORY, "runs")
+    runs = []
+    if os.path.isdir(d):
+        for f in sorted(os.listdir(d)):
+            if f.endswith(".json"):
+                try:
+                    r = json.load(open(os.path.join(d, f), encoding="utf-8"))
+                except (OSError, ValueError):
+                    continue
+                if isinstance(r, dict) and r.get("date"):
+                    runs.append(r)
+    return sorted(runs, key=lambda r: r["date"])
+
+
+def _pct(pair):
+    n, d = (pair or [0, 0])
+    return f"{100 * n / d:.0f}%" if d else "–"
+
+
+def trend_section(runs):
+    weekly = [r for r in runs if r.get("activation") and r.get("scope", "all") == "all"]
+    monthly = [r for r in runs if r.get("assertions") and r.get("scope", "all") == "all"]
+    if not weekly and not monthly:
+        return ('<h2 id="trend">Week by week</h2><p>No scheduled run yet. The weekly trigger check and the monthly '
+                'assertion run start once the repository has an <code>ANTHROPIC_API_KEY</code> secret; each run then '
+                'adds a point here.</p>')
+    parts = ['<h2 id="trend">Week by week</h2>']
+    if weekly:
+        last = weekly[-12:]
+        pts = [(r["date"], 100 * r["activation"]["passed"] / r["activation"]["total"]) for r in last if r["activation"]["total"]]
+        if len(pts) >= 2:
+            w, h, pad = 560, 140, 28
+            lo = max(0, min(v for _, v in pts) - 5)
+            hi = min(100, max(v for _, v in pts) + 5)
+            span = (hi - lo) or 1
+            xy = [(pad + i * (w - 2 * pad) / (len(pts) - 1), h - pad - (v - lo) / span * (h - 2 * pad)) for i, (_, v) in enumerate(pts)]
+            line = " ".join(f"{x:.1f},{y:.1f}" for x, y in xy)
+            dots = "".join(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="3"><title>{esc(d)}: {v:.0f}%</title></circle>'
+                           for (x, y), (d, v) in zip(xy, pts))
+            parts.append(f'<figure class="trend"><svg viewBox="0 0 {w} {h}" role="img" aria-labelledby="trend-t">'
+                         f'<title id="trend-t">Share of trigger queries routed as intended, {esc(pts[0][0])} to {esc(pts[-1][0])}: '
+                         f'{pts[0][1]:.0f}% to {pts[-1][1]:.0f}%</title>'
+                         f'<text x="{pad}" y="16" class="trend__l">{hi:.0f}%</text><text x="{pad}" y="{h - 8}" class="trend__l">{lo:.0f}%</text>'
+                         f'<polyline points="{line}" fill="none" stroke="currentColor" stroke-width="2"/>{dots}</svg>'
+                         '<figcaption>Trigger queries routed as intended, per weekly run.</figcaption></figure>')
+        rows = "".join(
+            f'<tr><td>{esc(r["date"])}</td><td>{_pct([r["activation"]["passed"], r["activation"]["total"]])}</td>'
+            f'<td>{_pct(r["activation"].get("triggers"))}</td><td>{_pct(r["activation"].get("quiet"))}</td>'
+            f'<td><code>{esc((r.get("models") or {}).get("router", "?"))}</code></td></tr>' for r in reversed(last))
+        parts.append('<div class="tbl"><table><thead><tr><th>Run</th><th>Routed as intended</th><th>Picked when it should be</th>'
+                     f'<th>Left alone when it should be</th><th>Router model</th></tr></thead><tbody>{rows}</tbody></table></div>')
+        if len(weekly) >= 2:
+            a, b = weekly[-2]["activation"].get("by_skill", {}), weekly[-1]["activation"].get("by_skill", {})
+            moved = []
+            for sk in sorted(set(a) & set(b)):
+                pa, pb = a[sk], b[sk]
+                if pa[1] and pb[1] and pa[0] / pa[1] != pb[0] / pb[1]:
+                    moved.append((pb[0] / pb[1] - pa[0] / pa[1], sk, pa, pb))
+            if moved:
+                items = "".join(f'<li><a href="../skills/{esc(sk)}/"><code>{esc(sk)}</code></a>: {pa[0]}/{pa[1]} → {pb[0]}/{pb[1]}</li>'
+                                for _, sk, pa, pb in sorted(moved))
+                parts.append(f'<p>Moved since the run before ({len(moved)}), falls first:</p><ul>{items}</ul>')
+            else:
+                parts.append("<p>No skill's routing changed since the run before.</p>")
+    if monthly:
+        rows = "".join(
+            f'<tr><td>{esc(r["date"])}</td><td>{_pct([r["assertions"]["met"], r["assertions"]["total"]])}</td>'
+            f'<td>{r["assertions"].get("evals", 0)}</td><td>{r["assertions"].get("skipped", 0)}</td>'
+            f'<td>{"$%.2f" % r.get("spent", 0)}{(" of $%.0f" % r["budget"]) if r.get("budget") else ""}</td></tr>'
+            for r in reversed(monthly[-12:]))
+        parts.append('<h3>Monthly assertion runs</h3><p>Each eval\'s prompt run through its skill and graded against its assertions, '
+                     'under a dollar budget. When the budget runs out first, the rest wait: the order changes each month, so '
+                     'every skill is reached over a few months.</p>'
+                     '<div class="tbl"><table><thead><tr><th>Run</th><th>Assertions met</th><th>Evals graded</th>'
+                     f'<th>Left for next month</th><th>Spent</th></tr></thead><tbody>{rows}</tbody></table></div>')
+    return "\n".join(parts)
+
+
 def evals_page(skills):
     bench = json.load(open(BENCH, encoding="utf-8")) if os.path.exists(BENCH) else None
     measured = {r["skill"]: r for r in (bench or {}).get("skills", [])}  # first model listed wins
@@ -620,8 +706,9 @@ def evals_page(skills):
 <div><dt>Trigger queries</dt><dd>{tot_q}</dd></div>
 <div><dt>Run</dt><dd>{("Benchmarked " + esc(bench["date"]) + ", by hand") if bench else "By hand"}</dd></div>
 </dl>
-<p><code>validate.py</code> fails any skill without both files, on every pull request. The acceptance evals are run by hand with <code>run_bench.py</code>, as agent sessions with and without each skill; the latest result is below. A <a href="{REPO_URL}/actions/workflows/evals.yml">weekly workflow</a> for the trigger queries asks a model which skill it would load and reports the misses; it is switched off until the repository has an API key. A miss is a prompt to look at the description, not a gate. Run them yourself with <code>python3 run_evals.py</code> and an <code>ANTHROPIC_API_KEY</code>.</p>
+<p><code>validate.py</code> fails any skill without both files, on every pull request. The acceptance evals are run by hand with <code>run_bench.py</code>, as agent sessions with and without each skill; the latest result is below. A <a href="{REPO_URL}/actions/workflows/evals.yml">scheduled workflow</a> asks a model each week which skill it would load for every trigger query, and once a month runs the acceptance evals under a budget; it is switched off until the repository has an API key. A miss is a prompt to look at the description, not a gate. Run them yourself with <code>python3 run_evals.py</code> and an <code>ANTHROPIC_API_KEY</code>.</p>
 {bench_section(bench) if bench else ""}
+{trend_section(eval_runs())}
 <h2 id="every-skill">Every skill</h2>
 <div class="tbl"><table>
 <thead><tr><th>Skill</th><th>Pack</th><th>Evals</th><th>Assertions</th>{"<th>Met with skill</th><th>Without</th><th>Blind judge preferred</th>" if bench else ""}<th>Should / shouldn't trigger</th><th>Source</th></tr></thead>
