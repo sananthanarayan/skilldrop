@@ -1424,9 +1424,10 @@ function installProfile(args) {
 function starNote(flags) {
   if (!process.stdout.isTTY || process.env.CI || process.env.SKILLDROP_NO_STAR || flags.json) return;
   const marker = path.join(os.homedir(), ".config", "skilldrop", "star-shown");
-  if (fs.existsSync(marker)) return;
   try {
     fs.mkdirSync(path.dirname(marker), { recursive: true });
+    // "wx" creates the marker only if it doesn't exist, in one step: an existing marker (the
+    // line was shown before) or an unwritable folder both throw, and nothing is shown.
     fs.writeFileSync(marker, new Date().toISOString().slice(0, 10) + "\n", { flag: "wx" });
   } catch (e) { return; }
   console.log("\nIf skilldrop saves you time, a star helps other people find it: https://github.com/sananthanarayan/skilldrop" +

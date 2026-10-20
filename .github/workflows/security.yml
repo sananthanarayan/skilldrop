@@ -36,7 +36,7 @@ jobs:
           tar -xzf gitleaks.tgz gitleaks
           tar -xzf actionlint.tgz actionlint
           echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
-          python3 -m pip install --quiet --user --require-hashes --only-binary :all: -r .github/tools/requirements.txt
+          python3 -m pip install --quiet --user --require-hashes --only-binary :all: -r "$GITHUB_WORKSPACE/.github/tools/requirements.txt"
 
       - name: Secrets (gitleaks)
         run: gitleaks git --config .gitleaks.toml --redact --no-banner .
