@@ -40,7 +40,7 @@ jobs:
           if git fetch --depth=1 "https://github.com/${GITHUB_REPOSITORY}.git" eval-history 2>/dev/null; then
             git archive FETCH_HEAD runs 2>/dev/null | tar -x -C .eval-history || true
           fi
-          ls .eval-history/runs 2>/dev/null | wc -l | xargs echo "eval runs:"
+          echo "eval runs: $(find .eval-history -name '*.json' -type f | wc -l)"
       - name: Generate the pack, skill and changelog pages
         run: python3 build_pages.py # stdlib only — writes build/packs/, build/skills/, build/changelog/
       - name: Index the built site for full-text search
