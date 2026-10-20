@@ -67,6 +67,16 @@ Bring:
 
 You end with: A risk register you can keep up to date, a DPIA draft ready for the DPO, and an evidence map that tells each control owner what to collect before the audit.
 
+## 4. Run it as a loop
+
+A loop runs the skills in order and stops at each gate for a verdict. Install and start one:
+
+```bash
+npx skilldrop-cli install --loop --pack grc
+```
+
+- **comply**: Take a change that carries risk (a launch, a new vendor, a new use of personal data) to a risk position its owner has signed: a risk register scored inherent and residual, a DPIA when personal data is processed, the evidence behind every control the ratings rely on, a script that checks the register, and a sign-off only the named owner can give. Say "run the comply loop on this". Stages: register → assess → evidence → check [G8] → sign-off [G8.1].
+
 ## Next
 
 - [Every skill in the Governance, risk and compliance pack](../../reference/packs/pack-grc.md): what each one makes, needs and hands off to

@@ -14,7 +14,7 @@ Take a question from vague to answered: plan the research around the decision it
 |---|---|
 | Install | `npx skilldrop-cli install --pack research` |
 | Skills | 3 plus 4 from core |
-| Loops | none |
+| Loops | research |
 | How-to | [Use the Research pack](../../how-to/packs/use-the-research-pack.md) |
 
 ## Skills
@@ -108,6 +108,20 @@ Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/research/skills/source-
 - Pulling decisions and action items out of meeting notes — `decision-log`
 - A market or competitor analysis with a framework — `strategy-analysis`
 - Reviewing a document someone else wrote — `doc-critique`
+
+## Loops
+
+### `research`
+
+Take a question that turns on why something happened to an answer the evidence can carry: a plan tied to the decision it serves, a synthesis of the sources with every claim cited, and rival explanations ranked by how little evidence contradicts them, with a gate that sends the work back for the observation that would tell the leaders apart.
+
+| Stage | Skills | Gate |
+|---|---|---|
+| plan | `research-plan` | — |
+| synthesise | `source-synthesis` | — |
+| compare | `hypothesis-comparison` | G7 review: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / BLOCKED |
+
+Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/research/loops/research/LOOP.md)
 
 ## Included from core
 

@@ -68,6 +68,16 @@ Bring:
 
 You end with: Reviewed SQL whose number you can defend, and a dashboard spec a BI developer can build without guessing.
 
+## 4. Run it as a loop
+
+A loop runs the skills in order and stops at each gate for a verdict. Install and start one:
+
+```bash
+npx skilldrop-cli install --loop --pack data-analytics
+```
+
+- **measure**: Take a dashboard request to a spec a BI developer can build on numbers people can defend: the decision it serves and one chart per question, every metric defined, the SQL behind each metric reviewed for the bugs that quietly inflate a figure, and the metric owner's sign-off on each definition before anything is built. Say "run the measure loop on this". Stages: spec → review [G9] → sign-off [G9.1].
+
 ## Next
 
 - [Every skill in the Data and analytics pack](../../reference/packs/pack-data-analytics.md): what each one makes, needs and hands off to

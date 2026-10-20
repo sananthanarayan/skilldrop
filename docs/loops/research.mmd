@@ -1,0 +1,19 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    plan["plan<br/><small>research-plan</small>"]:::gen
+    synthesise["synthesise<br/><small>source-synthesis</small>"]:::gen
+    compare["compare<br/><small>hypothesis-comparison</small>"]:::review
+    G7{"G7 · review"}:::gate
+    DONE(["complete"]):::ship
+
+    plan --> synthesise
+    synthesise --> compare
+    compare --> G7
+    G7 == "PROCEED" ==> DONE
+
+    G7 -- "REVISE (max 3)" --> synthesise

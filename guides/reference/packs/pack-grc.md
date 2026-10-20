@@ -14,7 +14,7 @@ Governance, risk and compliance drafts for compliance leads, DPOs and risk owner
 |---|---|
 | Install | `npx skilldrop-cli install --pack grc` |
 | Skills | 4 plus 4 from core |
-| Loops | none |
+| Loops | comply |
 | How-to | [Use the Governance, risk and compliance pack](../../how-to/packs/use-the-grc-pack.md) |
 
 ## Skills
@@ -128,6 +128,22 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/grc/skills/soc2-evidenc
 - A GDPR assessment of one processing activity: use `dpia`
 - Writing the security or reliability targets for a service: use `nfr-spec`
 - A policy for staff use of AI tools: use `ai-usage-policy`
+
+## Loops
+
+### `comply`
+
+Take a change that carries risk (a launch, a new vendor, a new use of personal data) to a risk position its owner has signed: a risk register scored inherent and residual, a DPIA when personal data is processed, the evidence behind every control the ratings rely on, a script that checks the register, and a sign-off only the named owner can give.
+
+| Stage | Skills | Gate |
+|---|---|---|
+| register | `risk-register` | — |
+| assess | `dpia` | — |
+| evidence | `soc2-evidence-map` | — |
+| check | `risk-register` | G8 mechanical: READY / NOT READY / BLOCKED |
+| sign-off | `doc-critique` | G8.1 human: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / BLOCKED |
+
+Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/grc/loops/comply/LOOP.md)
 
 ## Included from core
 

@@ -1,0 +1,39 @@
+{
+  "loop_name": "research",
+  "evals": [
+    {
+      "id": "plans-before-reading",
+      "prompt": "Run the research loop: why did our trial-to-paid conversion drop from 14% to 9% in September? I've put the sources in sources/ (a product analytics export, the September release notes, 12 sales call notes, and a competitor's pricing page). The growth lead decides by 1 November whether to roll back the new onboarding flow.",
+      "assertions": [
+        "Runs research-plan first and writes, before synthesising, what finding would change the roll-back decision",
+        "States the stopping rule before reading the sources",
+        "The synthesis cites every claim to a listed source and location",
+        "The comparison includes a measurement hypothesis (tracking or definition change) alongside the onboarding flow and the competitor's pricing",
+        "Every evidence row in the matrix cites a listed source or is marked [assumption]",
+        "Ends with a G7 verdict from PROCEED, PROCEED WITH CONDITIONS, REVISE, RECONSIDER or BLOCKED, and the reasons for it",
+        "The reply leads with the explanation the evidence favours and what it means for the roll-back, not with the matrix"
+      ]
+    },
+    {
+      "id": "revise-brings-the-discriminating-observation",
+      "prompt": "Continuing the research loop. The comparison left H1 (the new onboarding flow) and H3 (the competitor's price cut on 4 September) tied, and named as discriminating: conversion for trials that started before the onboarding release on 11 September. I've added that cohort export as sources/cohorts.csv.",
+      "assertions": [
+        "Treats the tie as G7 REVISE and returns to synthesise, not to plan",
+        "Adds the cohort export as a new numbered source and re-synthesises with it cited",
+        "Re-runs the comparison with the new evidence row rated across every hypothesis",
+        "Counts this as round 2 under the cap of 3",
+        "Does not add further sources that both H1 and H3 predict equally"
+      ]
+    },
+    {
+      "id": "blocked-without-a-decision",
+      "prompt": "Run the research loop on why remote work is good. Non-interactive, no follow-up questions.",
+      "assertions": [
+        "Emits BLOCKED: need the decision this research informs, who makes it, and by when",
+        "Does not run source-synthesis or hypothesis-comparison",
+        "Does not invent a decision or gather sources",
+        "Says in plain words what it will produce once it has the decision"
+      ]
+    }
+  ]
+}

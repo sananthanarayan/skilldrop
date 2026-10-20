@@ -122,6 +122,12 @@ OUTSIDE = {
                      "a document ready for its reader"),
     "apply":        ("Apply for a job", "One person, one job posting, one resume.",
                      "an application ready to send"),
+    "research":     ("Answer a why question", "A decision turns on which explanation is true.",
+                     "an answer the evidence carries"),
+    "comply":       ("Sign off a risky change", "A launch, a vendor or new personal data.",
+                     "a risk position its owner signed"),
+    "measure":      ("Trust a dashboard's numbers", "Someone asks for a dashboard.",
+                     "a spec with signed-off metrics"),
 }
 COLOUR = {"discover": "#6d4aff", "design": "#2563eb", "build": "#15803d", "release": "#be185d",
           "operate": "#0e7490"}
@@ -274,16 +280,19 @@ def operating_model_svg(specs, homes, pack_order, dark=False):
     body.append(f'<text x="{CARD_X}" y="{y}" class="section">OUTSIDE THE LIFECYCLE</text>')
     y += 14
     half = (CARD_W - 16) / 2
-    tallest = 0
-    for i, (name, copy) in enumerate(OUTSIDE.items()):
-        part, h = _card(name, specs[name], homes[name], copy, neutral, CARD_X + i * (half + 16), y, half,
-                        dashed=True)
-        body += part
-        tallest = max(tallest, h)
-        gates = ", ".join(f'{g["id"]} where {WHO[g["kind"]]}' for g in
-                          (st["gate"] for st in specs[name]["stages"] if "gate" in st))
-        desc.append(f"Outside the lifecycle, {name}, in the {homes[name]} pack: {copy[0]}. Gates: {gates}.")
-    y += tallest + 34
+    outside = list(OUTSIDE.items())
+    for r in range(0, len(outside), 2):  # two cards a row, each row as tall as its taller card
+        tallest = 0
+        for i, (name, copy) in enumerate(outside[r:r + 2]):
+            part, h = _card(name, specs[name], homes[name], copy, neutral, CARD_X + i * (half + 16), y, half,
+                            dashed=True)
+            body += part
+            tallest = max(tallest, h)
+            gates = ", ".join(f'{g["id"]} where {WHO[g["kind"]]}' for g in
+                              (st["gate"] for st in specs[name]["stages"] if "gate" in st))
+            desc.append(f"Outside the lifecycle, {name}, in the {homes[name]} pack: {copy[0]}. Gates: {gates}.")
+        y += tallest + 16
+    y += 18
 
     looped = set(homes.values())
     anystage = [p for p in pack_order if p not in looped]

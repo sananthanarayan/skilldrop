@@ -1,0 +1,9 @@
+[
+  {"query": "get the new payroll vendor ready for risk sign-off", "should_trigger": true},
+  {"query": "run the comply loop on our launch of in-store facial recognition", "should_trigger": true},
+  {"query": "what do we need before we can launch this feature that profiles customers?", "should_trigger": true},
+  {"query": "I need a risk register, a DPIA and the audit evidence for this change, and they have to agree", "should_trigger": true},
+  {"query": "score these five risks on a 5x5", "should_trigger": false},
+  {"query": "do we need a DPIA for the new CRM?", "should_trigger": false},
+  {"query": "fill in this customer's security questionnaire", "should_trigger": false}
+]

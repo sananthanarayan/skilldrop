@@ -6,9 +6,12 @@ is what's next. Each item says why it matters, roughly how big it is, and what i
 so you can pick one up without re-deriving the context. Sizes are rough: **S** is an hour or
 two, **M** a day, **L** several days.
 
-Last reviewed 2026-10-19, after 0.16.27. Organisation governance (AST09) shipped in 0.16.27
-([RFC-0050](../rfcs/0050-org-governance.md)) and declared containment (AST06) in 0.16.28
-([RFC-0051](../rfcs/0051-declared-containment.md)).
+Last reviewed 2026-10-20, after 0.16.29. Organisation governance (AST09) shipped in 0.16.27
+([RFC-0050](../rfcs/0050-org-governance.md)), declared containment (AST06) in 0.16.28
+([RFC-0051](../rfcs/0051-declared-containment.md)), and the `research`, `comply` and `measure`
+loops with a tutorial for each pack added in 0.14.0 in 0.16.29
+([RFC-0052](../rfcs/0052-research-comply-measure-loops.md)). The light and heavy tier benchmark
+ran in 0.16.21, and every skill now has held-out evals beside its own.
 
 ## Distribution
 
@@ -34,8 +37,6 @@ Last reviewed 2026-10-19, after 0.16.27. Organisation governance (AST09) shipped
 |---|---|---|---|
 | **Turn on the weekly evals** | The workflow exists but skips without an `ANTHROPIC_API_KEY` secret. | S | You adding the secret |
 | **Eval trend on the site** | Publish each weekly run's results to the *How skills are checked* page, so trigger accuracy is visible over time. | M | Weekly evals running |
-| **Benchmark on the light and heavy tiers** | `run_bench.py` (RFC-0040) has run on the standard tier only. Running all three shows where a cheaper model is enough, per skill. | S | Claude Code usage to spare |
-| **Three or more evals per skill** | 57 of 100 skills have one acceptance eval, so a per-skill benchmark number is an anecdote. | L | Authoring time |
 | **Monthly assertion evals** | Run the acceptance assertions on a schedule, not only by hand. They cost more than trigger checks. | S | Weekly evals running; a budget |
 | **Open the converters' output in real Word and Excel** | The .docx and .xlsx files are checked in Quick Look only. | S | Someone with Office |
 | **OCR for scanned PDFs** | `file-to-markdown` stops at a PDF with no text layer. Tesseract could add a text layer first. | M | An optional system dependency |
@@ -51,10 +52,6 @@ Last reviewed 2026-10-19, after 0.16.27. Organisation governance (AST09) shipped
 | **`codebase-tour`** | Onboard someone to an unfamiliar repo before they implement anything: a gap in the `build` loop. | M |
 | **`refactor-plan`** | Work that is neither a feature nor a bug. `tech-debt-register` (0.16.4) records the debt; nothing yet plans the refactor that pays it down. | M |
 | **`mcp-pairing`** | Recommend which MCP servers suit a loop. The [MCP guide](../../guides/how-to/use-with-mcp-servers.md) covers this as docs; a skill would tailor it. | S |
-| **A `research` loop** | plan → synthesise → compare hypotheses, with a gate on evidence strength. All three skills exist. | S |
-| **A `comply` loop for GRC** | risk register → DPIA → evidence map → a sign-off gate. | S |
-| **A `measure` loop for data** | metric definition → SQL review → dashboard spec. | S |
-| **Hand-written tutorials for the new packs** | The eight packs added in 0.14.0 have generated how-to and reference pages but no end-to-end tutorial like the original five packs. | M each |
 
 ## Docs and site
 

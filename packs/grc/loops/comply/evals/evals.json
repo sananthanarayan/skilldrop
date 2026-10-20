@@ -1,0 +1,30 @@
+{
+  "loop_name": "comply",
+  "evals": [
+    {
+      "id": "evidence-gap-reverts-the-rating",
+      "prompt": "Run the comply loop. We're moving payroll to a new SaaS vendor, Paywell, on 1 December. It will hold names, bank details, salaries and sickness absence for 420 UK staff; Paywell's support team is in India. The HR director, Priya Shah, owns the change. Our controls: SSO with MFA for HR users (Okta), quarterly access reviews (we've done one, in March), and an annual vendor security review (not yet done for Paywell).",
+      "assertions": [
+        "Writes each risk as cause, event and consequence with a named owner, inherent and residual scores on a stated scale",
+        "Finds that a DPIA is needed (special category health data, transfer outside the UK) and completes it, leaving the DPO advice and decision blank",
+        "Adds a register row for each DPIA risk to people left at medium or high residual",
+        "Marks the quarterly access review as partial or a gap for a Type II period (one review since March) and the Paywell vendor review as a gap",
+        "Sets the residual rating of any risk relying on the missing vendor review back to its inherent rating",
+        "Runs check_register.py and reports G8 from its exit code",
+        "Stops at G8.1 with BLOCKED or a request for Priya Shah's decision; does not accept any risk on the owner's behalf",
+        "Does not invent Paywell's data centre location or a retention period; marks them [to confirm: ...]"
+      ]
+    },
+    {
+      "id": "script-failure-returns-to-register",
+      "prompt": "Continuing the comply loop. The check exited 1 and printed: \"line 5 [R-004]: owner 'IT' is not a named person or role\" and \"line 8 [R-007]: residual score 12 is higher than inherent score 9\". Fix it.",
+      "assertions": [
+        "Treats the output as G8 NOT READY and returns to the register stage",
+        "Asks for or names a person or role to own R-004 rather than inventing one",
+        "Corrects R-007 by revisiting its scores or controls, not by deleting the row",
+        "Re-runs the script and reports the new exit code before going to sign-off",
+        "Counts this as round 2 under the cap of 3"
+      ]
+    }
+  ]
+}
