@@ -8,6 +8,10 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.39 — 2026-10-20
+
+- **Eval fixtures no longer raise Dependabot alerts.** A fixture's fake `package.json`, `go.mod`, `pyproject.toml` or CI workflow is now stored as `<name>.fixture`. GitHub no longer reads its pins as the repo's own dependencies, which had produced 33 alerts and six security PRs against code nothing installs or runs. `run_bench.py` gives each file its real name in the run's workspace, and `validate.py` fails on a fixture dependency file that keeps its real name ([RFC-0058](docs/rfcs/0058-fixture-dependency-files.md)).
+
 ## 0.16.38 — 2026-10-20
 
 - **A [Get started](https://sananthanarayan.github.io/skilldrop/start/) page** takes a newcomer through four steps:

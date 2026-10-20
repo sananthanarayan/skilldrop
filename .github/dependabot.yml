@@ -10,10 +10,9 @@
 #
 # No npm ecosystem: the package has zero dependencies.
 #
-# Security updates ignore this file. Package manifests under packs/*/skills/*/evals/files/ are
-# fixtures: an agent under test reads them as data, and nothing installs or runs them. Their
-# old versions are part of the scenario (the stats files and assertions are written for them),
-# so a security PR against one is closed and its alert dismissed as "not used", not merged.
+# Eval fixtures hold no live dependency files: a fake project's package.json or go.mod is
+# stored as package.json.fixture, so the dependency graph never reads its pins as ours
+# (RFC-0058; validate.py enforces it, run_bench.py restores the name for a run).
 version: 2
 updates:
   - package-ecosystem: github-actions
