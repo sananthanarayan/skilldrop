@@ -8,6 +8,22 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.38 — 2026-10-20
+
+- **A [Get started](https://sananthanarayan.github.io/skilldrop/start/) page** takes a newcomer through four steps:
+  - install with the CLI, the Claude Code plugin or a copied folder;
+  - choose the work in front of you, with the install command and a first prompt for each choice;
+  - make the first request in plain words;
+  - check the verdict and where you decide.
+
+  It is first in the site's navigation and on the home page.
+- **The packs page opens with "Start with your role"**: thirteen roles, each pointing to its packs. Every pack must be placed under a role, so the site build fails if a new pack is missing from the list.
+- **The docs have a copy button on every code block.**
+- **Each kind of guide has an index page.** Tutorials, how-tos, reference and explanation each list their guides, and the kind in a guide's header links back to that list.
+- **Each tutorial card says how long the tutorial takes,** where the tutorial itself says so.
+- **The contributing guide is in the docs**, published from `CONTRIBUTING.md` so the two can't disagree.
+- **A pack page shows how long a session takes** beside the pack's size, when the pack's journey says so.
+
 ## 0.16.37 — 2026-10-20
 
 - **`bundle-size-review`**, in the `frontend` pack, finds what makes a JavaScript bundle heavy from webpack, esbuild or Vite stats. Before reaching a conclusion, it reads your repository: the browser targets, the bundler config, the installed versions, and the files that import each heavy package. It reports exact byte sizes for what each entry loads before first render, the import chain behind each heavy module, duplicates, and polyfills your browser targets don't need. Given before and after stats, it shows what grew and which per-entry budget would have caught it.

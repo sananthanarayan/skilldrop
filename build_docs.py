@@ -36,6 +36,12 @@ KIND_LABELS = {
 START = [("explanation", "operating-model"), ("how-to", "install"), ("how-to", "install-per-ide"),
          ("tutorial", "follow-a-change-through-the-loops")]
 
+# Files outside guides/ that the portal also publishes: (repo path, kind, title, summary).
+OUTSIDE_GUIDES = [
+    ("CONTRIBUTING.md", "explanation", "Contributing",
+     "How to add or change a skill, a pack, a loop or a subagent, what an RFC is needed for, and the checks a pull request must pass."),
+]
+
 KIND_TAGLINES = {
     "tutorial":    "Learn by doing something real.",
     "how-to":      "I have a goal — what are the steps?",
@@ -173,6 +179,17 @@ a{color:var(--accent-700);}
   color:var(--fg);background:var(--card);border:1px solid var(--border);
   border-radius:6px;outline:none;}
 #docs-search:focus{border-color:var(--accent-700);box-shadow:0 0 0 3px var(--accent-10);}
+/* reading aids: tutorial length, section lists, code copy */
+.doc-card p.doc-time{margin:-.1rem 0 .5rem;font-size:.75rem;font-weight:600;color:var(--accent-700);}
+.kind-section h2 a{color:inherit;text-decoration:none;}
+.kind-section h2 a:hover{text-decoration:underline;}
+.doc-list{padding-left:1.1rem;font-size:.9rem;}
+.doc-list li{margin:.35rem 0;}
+.code-wrap{position:relative;}
+.code-copy{position:absolute;top:.4rem;right:.4rem;cursor:pointer;font:600 .72rem/1 inherit;
+  color:var(--accent-700);background:var(--card);border:1px solid var(--border);border-radius:4px;padding:.35rem .55rem;}
+.code-copy:hover{border-color:var(--accent-700);}
+.code-copy:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
 """.strip()
 
 # ── Frontmatter parser ────────────────────────────────────────────────────────
@@ -492,6 +509,11 @@ def collect_guides():
                 # are grouped, so 2 × N pack pages don't bury the hand-written guides.
                 "group":    os.path.basename(dirpath) if os.path.basename(dirpath) in ("packs", "skills") else "",
             })
+    # Repo files published into the portal as they are, so the site's copy can't drift.
+    for rel, kind, title, summary in OUTSIDE_GUIDES:
+        by_kind[kind].append({"title": title, "summary": summary, "kind": kind, "stage": "",
+                              "slug": os.path.splitext(os.path.basename(rel))[0].lower(), "rel_path": rel,
+                              "abs_path": os.path.join(ROOT, rel), "group": ""})
     return by_kind
 
 # ── HTML page builders ────────────────────────────────────────────────────────
@@ -535,8 +557,32 @@ def _page(title, header_html, body_html, depth=2, desc="", url="", extra_head=""
 <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1/prism.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
 {mermaid}
+{COPY_CODE_JS if "<pre><code" in body_html else ""}
 </body>
 </html>"""
+
+# A copy button on every code block. The button is added by script, so with scripting off
+# there is no button that does nothing; the code stays selectable either way.
+COPY_CODE_JS = """<script>
+document.querySelectorAll('.content pre > code').forEach(function (code) {
+  var pre = code.parentNode, wrap = document.createElement('div'), b = document.createElement('button');
+  wrap.className = 'code-wrap'; pre.parentNode.insertBefore(wrap, pre); wrap.appendChild(pre);
+  b.type = 'button'; b.className = 'code-copy'; b.textContent = 'Copy'; b.setAttribute('aria-label', 'Copy this code');
+  b.addEventListener('click', function () {
+    var t = code.innerText, say = function (m) { b.textContent = m; setTimeout(function () { b.textContent = 'Copy'; }, 1500); };
+    var legacy = function () {
+      var a = document.createElement('textarea'); a.value = t; a.setAttribute('readonly', '');
+      a.style.position = 'absolute'; a.style.left = '-9999px'; document.body.appendChild(a); a.select();
+      var ok = false; try { ok = document.execCommand('copy'); } catch (e) {} document.body.removeChild(a);
+      say(ok ? 'Copied' : 'Select & copy');
+    };
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(function () { say('Copied'); }, legacy);
+    else legacy();
+  });
+  wrap.appendChild(b);
+});
+</script>"""
+
 
 def _groups(by_kind):
     """The sidebar's order (RFC-0044): Start here, then one group per lifecycle stage (its loop's
@@ -624,14 +670,15 @@ def build_guide_page(guide, by_kind, out_dir):
     _, body_md = parse_frontmatter(text)
     # The page header already shows the frontmatter title; drop the body's own "# Title".
     body_md = re.sub(r"\A\s*# [^\n]*\n", "", body_md)
-    body_html = render_md(body_md, src=os.path.relpath(guide["abs_path"], ROOT).replace(os.sep, "/"))
+    src = os.path.relpath(guide["abs_path"], ROOT).replace(os.sep, "/")
+    body_html = render_md(body_md, src=src, docs_base=None if src.startswith("guides/") else "../")
     sidebar = _sidebar_html(by_kind, guide["kind"], guide["slug"], depth=2)
     header = (
         '<header class="doc-header">'
         '<a href="../../index.html">skilldrop</a>'
         '<span class="sep">·</span>'
         '<a href="../index.html">docs</a>'
-        f'<span class="sep">·</span><span>{_esc(KIND_LABELS[guide["kind"]])}</span>'
+        f'<span class="sep">·</span><a href="index.html">{_esc(KIND_LABELS[guide["kind"]])}</a>'
         "</header>"
     )
     # Reading aids: an "On this page" rail from the h2/h3 headings, previous/next in sidebar
@@ -667,7 +714,7 @@ def build_guide_page(guide, by_kind, out_dir):
     from build_site import SITE_URL, breadcrumbs_ld, ld
     url = f"{SITE_URL}docs/{guide['kind']}/{guide['slug']}.html"
     meta = (breadcrumbs_ld([("skilldrop", SITE_URL), ("Docs", f"{SITE_URL}docs/"),
-                            (KIND_LABELS[guide["kind"]], f"{SITE_URL}docs/"), (guide["title"], url)])
+                            (KIND_LABELS[guide["kind"]], f"{SITE_URL}docs/{guide['kind']}/"), (guide["title"], url)])
             + ld({"@context": "https://schema.org", "@type": "TechArticle", "headline": guide["title"],
                   "description": guide["summary"], "url": url, "inLanguage": "en"}))
     page_html = _page(f'{guide["title"]} — skilldrop docs', header, page_body,
@@ -675,6 +722,51 @@ def build_guide_page(guide, by_kind, out_dir):
     out_path = os.path.join(out_dir, guide["kind"], f'{guide["slug"]}.html')
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     return out_path, page_html
+
+_DURATION = re.compile(r"^In about ([a-z -]+?) you'll", re.M)
+
+
+def duration(guide):
+    """How long a tutorial says it takes, from its own first line ("In about twenty minutes
+    you'll…"). None when the guide doesn't say, rather than a guess."""
+    if guide["kind"] != "tutorial":
+        return None
+    m = _DURATION.search(open(guide["abs_path"], encoding="utf-8").read())
+    return f"About {m.group(1)}" if m else None
+
+
+def _card(g, href):
+    d = duration(g)
+    return (f'<div class="doc-card" data-slug="{_esc(g["slug"])}" data-kind="{_esc(g["kind"])}">'
+            f'<h3>{_esc(g["title"])}</h3>'
+            + (f'<p class="doc-time">{_esc(d)}</p>' if d else "")
+            + f'<p>{_esc(g["summary"])}</p>'
+            f'<a class="read" href="{href}">Read &rarr;</a></div>')
+
+
+def build_section_index(kind, by_kind):
+    """docs/<kind>/index.html: every guide of one kind, so the URL a reader trims to (and the
+    kind in each guide's header) lands on a page instead of a 404."""
+    guides = by_kind.get(kind, [])
+    header = ('<header class="doc-header"><a href="../../index.html">skilldrop</a><span class="sep">·</span>'
+              f'<a href="../index.html">docs</a><span class="sep">·</span><span>{_esc(KIND_LABELS[kind])}</span></header>')
+    cards = "".join(_card(g, f'{g["slug"]}.html') for g in guides if not g.get("group"))
+    grouped = ""
+    for gname, glabel in (("packs", "Per pack"), ("skills", "Per skill")):
+        gs = [g for g in guides if g.get("group") == gname]
+        if gs:
+            grouped += (f'<h2>{glabel} ({len(gs)})</h2><ul class="doc-list">'
+                        + "".join(f'<li><a href="{g["slug"]}.html">{_esc(g["title"])}</a> — {_esc(g["summary"])}</li>' for g in gs)
+                        + "</ul>")
+    content = (f'<main class="content" id="main"><h1>{_esc(KIND_LABELS[kind])}</h1>'
+               f'<p class="summary">{_esc(KIND_TAGLINES[kind])}</p>'
+               f'<div class="doc-cards">{cards}</div>{grouped}</main>')
+    from build_site import SITE_URL
+    page = _page(f"{KIND_LABELS[kind]} — skilldrop docs", header,
+                 f'<div class="layout">{_sidebar_html(by_kind, None, None, depth=2)}{content}</div>',
+                 desc=f"Every skilldrop {KIND_LABELS[kind].lower()} guide. {KIND_TAGLINES[kind]}", url=f"{SITE_URL}docs/{kind}/")
+    return f"{kind}/index.html", page
+
 
 def build_portal_index(by_kind, out_dir):
     header = (
@@ -716,14 +808,7 @@ def build_portal_index(by_kind, out_dir):
             continue
         label = KIND_LABELS[kind]
         tagline = KIND_TAGLINES[kind]
-        cards = "".join(
-            f'<div class="doc-card" data-slug="{_esc(g["slug"])}" data-kind="{_esc(g["kind"])}">'
-            f'<h3>{_esc(g["title"])}</h3>'
-            f'<p>{_esc(g["summary"])}</p>'
-            f'<a class="read" href="{g["kind"]}/{g["slug"]}.html">Read &rarr;</a>'
-            f'</div>'
-            for g in guides if not g.get("group")
-        )
+        cards = "".join(_card(g, f'{g["kind"]}/{g["slug"]}.html') for g in guides if not g.get("group"))
         grouped = [g for g in guides if g.get("group")]
         if grouped:
             cards += (f'<div class="doc-card doc-card--packs" data-kind="{_esc(kind)}"><h3>Per pack</h3>'
@@ -731,7 +816,7 @@ def build_portal_index(by_kind, out_dir):
                                           for g in grouped) + '</p></div>')
         cards_html.append(
             f'<section class="kind-section">'
-            f'<h2>{_esc(label)}</h2>'
+            f'<h2><a href="{kind}/">{_esc(label)}</a></h2>'
             f'<p class="kind-tagline">{_esc(tagline)}</p>'
             f'<div class="doc-cards">{cards}</div>'
             f'</section>'
@@ -771,6 +856,7 @@ def build_portal_index(by_kind, out_dir):
         '<h1>Documentation</h1>'
         '<p>Start with the operating model, then follow your work through the five stages. '
         'Every guide is also listed below by kind: tutorials to learn by doing, how-tos for a goal.</p>'
+        '<p>New here? <a href="../start/">Get started in four steps</a>: install, choose your starting work, ask, then check the result.</p>'
         '</div>'
         '<div class="search-wrap">'
         '<input id="docs-search" type="search" placeholder="Search guides…" autocomplete="off" aria-label="Search guides">'
@@ -819,6 +905,10 @@ def render_all(out_dir):
                 "url":     f"{guide['kind']}/{guide['slug']}.html",
                 "body":    body_plain,
             })
+    for kind in KINDS:
+        if by_kind.get(kind):
+            rel, page = build_section_index(kind, by_kind)
+            pages[rel] = page
     # Portal index
     idx_path, idx_html = build_portal_index(by_kind, out_dir)
     pages["index.html"] = idx_html
