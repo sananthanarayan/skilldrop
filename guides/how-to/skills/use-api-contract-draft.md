@@ -54,6 +54,7 @@ A good result:
 
 - Documenting an API that already exists — that's `guide-builder` (reference archetype)
 - Choosing REST vs GraphQL vs gRPC — this skill starts after that choice is made
+- An event, message or webhook contract — that's `event-contract-draft`
 - Reviewing a contract someone else drafted — `doc-critique` or `council-review`
 - Generating server/client code from the spec — hand the frozen contract to the codegen tool
 
@@ -61,4 +62,4 @@ A good result:
 
 - [SKILL.md](../../../packs/solution-architect/skills/api-contract-draft/SKILL.md), the instructions the agent reads
 - [Its page on the site](https://sananthanarayan.github.io/skilldrop/skills/api-contract-draft/)
-- Related: [council-review](use-council-review.md), [doc-critique](use-doc-critique.md), [guide-builder](use-guide-builder.md), [user-story-splitter](use-user-story-splitter.md)
+- Related: [council-review](use-council-review.md), [doc-critique](use-doc-critique.md), [guide-builder](use-guide-builder.md), [user-story-splitter](use-user-story-splitter.md), [event-contract-draft](use-event-contract-draft.md)

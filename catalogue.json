@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0034. The catalogue index: pack display order and the outcome browse axis (RFC-0026). Pack metadata lives in packs/<pack>/pack.json; membership is the folders — a skill is in a pack because it sits at packs/<pack>/skills/<name>/.",
   "version": "1.0.0",
-  "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "api-builder", "converters", "experience-design", "research", "trackers", "data-analytics", "grc", "infra-as-code", "skill-engineering", "career"],
+  "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "api-builder", "converters", "experience-design", "research", "trackers", "data-analytics", "grc", "infra-as-code", "frontend", "skill-engineering", "career"],
   "outcomes": {
     "decide-what-to-build": {
       "for": "Product managers · founders · strategists",
@@ -18,7 +18,8 @@
         "success-metrics",
         "user-story-splitter",
         "user-journey-map",
-        "feedback-synthesis"
+        "feedback-synthesis",
+        "lean-canvas"
       ]
     },
     "design-the-system": {
@@ -40,7 +41,8 @@
         "subagent-design",
         "agent-budget",
         "terraform-module",
-        "mcp-pairing"
+        "mcp-pairing",
+        "event-contract-draft"
       ]
     },
     "build-and-review-software": {
@@ -65,7 +67,10 @@
         "tracker-brief-sync",
         "dependency-upgrade-review",
         "codebase-tour",
-        "refactor-plan"
+        "refactor-plan",
+        "behaviour-equivalence",
+        "rendering-strategy",
+        "web-performance-review"
       ]
     },
     "build-on-the-claude-api": {
@@ -91,7 +96,8 @@
         "cloud-cost-review",
         "delivery-metrics-report",
         "terraform-plan-review",
-        "rollout-plan"
+        "rollout-plan",
+        "slo-spec"
       ]
     },
     "explain-it-to-decision-makers": {
@@ -116,7 +122,9 @@
         "ai-adoption-rollout",
         "ai-usage-policy",
         "agent-adoption-stage",
-        "ai-usage-report"
+        "ai-usage-report",
+        "agent-config-review",
+        "agent-incident-response"
       ]
     },
     "create-on-brand-collateral": {
@@ -140,7 +148,9 @@
         "md-to-docx",
         "md-to-html",
         "md-to-xlsx",
-        "mermaid-render"
+        "mermaid-render",
+        "md-to-pptx",
+        "md-to-confluence"
       ]
     },
     "design-the-experience": {

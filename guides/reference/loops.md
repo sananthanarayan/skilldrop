@@ -29,7 +29,7 @@ Plus one **wrapper**, which is not a lifecycle stage but the two passes either s
 |---|---|---|---|
 | [`ship-a-draft`](../../packs/core/loops/ship-a-draft/LOOP.md) | raw notes, a transcript, a ticket | **G5** review — `doc-critique`'s verdict | a stakeholder-ready artifact |
 
-And four loops outside the delivery lifecycle, each for one job that runs alongside it:
+And five loops outside the delivery lifecycle, each for one job that runs alongside it:
 
 | Loop | Takes | Gate | Produces | Mistake costs |
 |---|---|---|---|---|
@@ -37,6 +37,7 @@ And four loops outside the delivery lifecycle, each for one job that runs alongs
 | [`research`](../../packs/research/loops/research/LOOP.md) | a question that turns on why something happened, and the sources | **G7** review — does diagnostic evidence separate the leading explanation? | an answer with its confidence, tied to the decision it serves | a decision made on a favourite theory |
 | [`comply`](../../packs/grc/loops/comply/LOOP.md) | a change that carries risk: a launch, a vendor, new personal data | **G8** mechanical — the register's own script; **G8.1** human — the risk owner signs | a register, a DPIA and an evidence map that agree, signed by the owner | a risk accepted on a control that doesn't exist |
 | [`measure`](../../packs/data-analytics/loops/measure/LOOP.md) | a dashboard request and the SQL behind its numbers | **G9** review — every query reviewed; **G9.1** human — each metric's owner confirms its definition | a dashboard spec whose numbers are defined and reviewed | a wrong number made to look settled by a chart |
+| [`modernize`](../../packs/dev-team/loops/modernize/LOOP.md) | a legacy component to rewrite or move | **G10** mechanical — the new component matches recordings of the old; **G10.1** human — the cutover | a replacement that behaves the same, cut over by a person | a migration that changes behaviour nobody approved |
 
 Every gate emits a verdict from one shared vocabulary ([`contracts/terminals.json`](../../contracts/terminals.json)) in five classes — pass, conditional, revise, redirect, blocked — so `READY`, `PROCEED` and `SHIP IT` are recognisably the same kind of answer. The diagrams below render on GitHub; their Mermaid sources live in [`docs/loops/`](../../docs/loops) for re-rendering.
 
@@ -377,3 +378,42 @@ flowchart LR
 ```
 
 <!-- loop:measure:end -->
+
+## `modernize` — a legacy component replaced without changing what it does
+
+The old system's behaviour is recorded **before** anything is rebuilt, so the evidence can't be shaped by the new code. A script compares the new component against the recordings, and a **person** decides the cutover, knowing what the recordings don't cover.
+
+<!-- loop:modernize:start -->
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    survey["survey<br/><small>codebase-tour</small>"]:::gen
+    plan["plan<br/><small>refactor-plan·migration-plan</small>"]:::gen
+    capture["capture<br/><small>behaviour-equivalence</small>"]:::gen
+    rebuild["rebuild<br/><small>feature-implement-loop</small>"]:::gen
+    prove["prove<br/><small>behaviour-equivalence</small>"]:::review
+    cutover["cutover<br/><small>launch-readiness</small>"]:::gate
+    G10{"G10 · mechanical"}:::gate
+    G10_1{"G10.1 · human"}:::gate
+    DONE(["complete"]):::ship
+
+    survey --> plan
+    plan --> capture
+    capture --> rebuild
+    rebuild --> prove
+    prove --> G10
+    G10 == "READY" ==> cutover
+    cutover --> G10_1
+    G10_1 == "PROCEED" ==> DONE
+
+    G10 -- "NOT READY (max 3)" --> rebuild
+    G10_1 -- "REVISE (max 3)" --> capture
+```
+
+<!-- loop:modernize:end -->

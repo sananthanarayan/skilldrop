@@ -1,0 +1,10 @@
+{
+  "rules": [
+    {"path": "body.quoted_at", "rule": "ignore", "reason": "wall-clock time of the call"},
+    {"path": "body.quote_id", "rule": "regex", "pattern": "^Q-[0-9a-f]{8}$", "replace": "Q-<id>", "reason": "random per call"},
+    {"path": "body.lines", "rule": "sort", "by": "sku", "reason": "line order is not part of the contract"},
+    {"path": "body.lines[].vat_minor", "rule": "tolerance", "abs": 1, "reason": "penny rounding noise between Decimal implementations"},
+    {"path": "body.vat_minor", "rule": "tolerance", "abs": 1, "reason": "penny rounding noise"},
+    {"path": "body.total_minor", "rule": "tolerance", "abs": 1, "reason": "penny rounding noise"}
+  ]
+}

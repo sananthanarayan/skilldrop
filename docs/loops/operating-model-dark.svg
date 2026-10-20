@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 2050" width="820" height="2050" role="img" aria-labelledby="om-title om-desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 2180" width="820" height="2180" role="img" aria-labelledby="om-title om-desc">
 <title id="om-title">How work moves through skilldrop</title>
-<desc id="om-desc">Five lifecycle loops, in order. Stage 1, discover, in the product-manager pack: Find the problem worth solving. Start here when a request, a complaint or a strategy question arrives. Gates: G0 where you decide. Ends with a requirement a person ratified. Stage 2, design, in the solution-architect pack: Decide how to build it. Start here when the problem is agreed, but not the approach. Gates: G1 where a review panel decides. Ends with a recorded decision (ADR). Stage 3, build, in the dev-team pack: Build it. Start here when the work is clear enough to write down. Bug fixes start here. Gates: G2 where a script decides, G2.1 where you decide. Ends with merged code. Stage 4, release, in the dev-team pack: Ship it. Start here when a merged change needs to reach users safely. Gates: G3 where a review panel decides, G3.1 where you decide. Ends with a live, reversible rollout. Stage 5, operate, in the sre-oncall pack: Run it. Start here when the service is live, or something just broke. Gates: G4 where you decide. Ends with a postmortem and runbook changes. Outside the lifecycle, ship-a-draft, in the core pack: Wrap any draft. Gates: G5 where a review panel decides. Outside the lifecycle, apply, in the career pack: Apply for a job. Gates: G6 where you decide, G6.1 where you decide. Outside the lifecycle, research, in the research pack: Answer a why question. Gates: G7 where a review panel decides. Outside the lifecycle, comply, in the grc pack: Sign off a risky change. Gates: G8 where a script decides, G8.1 where you decide. Outside the lifecycle, measure, in the data-analytics pack: Trust a dashboard's numbers. Gates: G9 where a review panel decides, G9.1 where you decide. Packs for any stage: stakeholder-comms, design, ai-engineering, api-builder, converters, experience-design, trackers, infra-as-code, skill-engineering.</desc>
+<desc id="om-desc">Five lifecycle loops, in order. Stage 1, discover, in the product-manager pack: Find the problem worth solving. Start here when a request, a complaint or a strategy question arrives. Gates: G0 where you decide. Ends with a requirement a person ratified. Stage 2, design, in the solution-architect pack: Decide how to build it. Start here when the problem is agreed, but not the approach. Gates: G1 where a review panel decides. Ends with a recorded decision (ADR). Stage 3, build, in the dev-team pack: Build it. Start here when the work is clear enough to write down. Bug fixes start here. Gates: G2 where a script decides, G2.1 where you decide. Ends with merged code. Stage 4, release, in the dev-team pack: Ship it. Start here when a merged change needs to reach users safely. Gates: G3 where a review panel decides, G3.1 where you decide. Ends with a live, reversible rollout. Stage 5, operate, in the sre-oncall pack: Run it. Start here when the service is live, or something just broke. Gates: G4 where you decide. Ends with a postmortem and runbook changes. Outside the lifecycle, ship-a-draft, in the core pack: Wrap any draft. Gates: G5 where a review panel decides. Outside the lifecycle, apply, in the career pack: Apply for a job. Gates: G6 where you decide, G6.1 where you decide. Outside the lifecycle, research, in the research pack: Answer a why question. Gates: G7 where a review panel decides. Outside the lifecycle, comply, in the grc pack: Sign off a risky change. Gates: G8 where a script decides, G8.1 where you decide. Outside the lifecycle, measure, in the data-analytics pack: Trust a dashboard's numbers. Gates: G9 where a review panel decides, G9.1 where you decide. Outside the lifecycle, modernize, in the dev-team pack: Replace legacy code safely. Gates: G10 where a script decides, G10.1 where you decide. Packs for any stage: stakeholder-comms, design, ai-engineering, api-builder, converters, experience-design, trackers, infra-as-code, frontend, skill-engineering.</desc>
 <style>.s,text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;}.title{font-size:24px;font-weight:700;fill:#ececf1;}.sub{font-size:14px;fill:#a3a3ad;}.label{font-size:11px;font-weight:700;letter-spacing:.08em;}.h{font-size:19px;font-weight:700;fill:#ececf1;}.muted{font-size:13px;fill:#b3b3bc;}.mono,.chip{font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;font-size:12px;fill:#d4d4dc;}.chip{font-size:11px;}.arrow{font-size:13px;fill:#6b6b75;}.gate{fill:#FBE3A2;stroke:#D9971E;stroke-width:1.2;}.gatet{font-size:11.5px;font-weight:700;fill:#6B4500;}.ends{font-size:13px;fill:#ececf1;}.endsl,.startl{font-weight:700;}.startl{fill:#d0d0d8;}.card{fill:#1d1d23;stroke:#2f2f38;}.dashed{fill:#18181d;stroke:#4a4a55;stroke-dasharray:5 4;}.rail{stroke:#34344a;stroke-width:3;}.num{font-size:13px;font-weight:700;fill:#fff;text-anchor:middle;}.section{font-size:11px;font-weight:700;letter-spacing:.08em;fill:#a3a3ad;}.pack{fill:#1d1d23;stroke:#3a3a44;}.foot{font-size:11.5px;fill:#8a8a94;}</style>
-<rect width="820" height="2050" rx="16" fill="#16161b"/>
+<rect width="820" height="2180" rx="16" fill="#16161b"/>
 <text x="22" y="48" class="title">How work moves through skilldrop</text>
 <text x="22" y="74" class="sub">Start at the stage your work is in. Each loop stops at its gold gates, where a script,</text>
 <text x="22" y="94" class="sub">a review panel or you decide whether the work moves on.</text>
@@ -184,15 +184,38 @@
 <text x="206.8" y="1846" class="arrow">→</text>
 <rect x="223.8" y="1832" width="125.6" height="20" rx="10" class="gate"/><text x="233.8" y="1846" class="gatet">G9.1 · you decide</text>
 <text x="92.0" y="1874" class="ends"><tspan class="endsl">Ends with</tspan> a spec with signed-off metrics</text>
-<text x="72" y="1930" class="section">PACKS FOR ANY STAGE</text>
-<rect x="72.0" y="1944" width="144.4" height="24" rx="12" class="pack"/><text x="82.0" y="1960" class="mono">stakeholder-comms</text>
-<rect x="224.4" y="1944" width="63.9" height="24" rx="12" class="pack"/><text x="234.4" y="1960" class="mono">design</text>
-<rect x="296.4" y="1944" width="122.5" height="24" rx="12" class="pack"/><text x="306.4" y="1960" class="mono">ai-engineering</text>
-<rect x="426.8" y="1944" width="100.5" height="24" rx="12" class="pack"/><text x="436.8" y="1960" class="mono">api-builder</text>
-<rect x="535.4" y="1944" width="93.2" height="24" rx="12" class="pack"/><text x="545.4" y="1960" class="mono">converters</text>
-<rect x="636.6" y="1944" width="144.4" height="24" rx="12" class="pack"/><text x="646.6" y="1960" class="mono">experience-design</text>
-<rect x="72.0" y="1976" width="78.6" height="24" rx="12" class="pack"/><text x="82.0" y="1992" class="mono">trackers</text>
-<rect x="158.6" y="1976" width="115.2" height="24" rx="12" class="pack"/><text x="168.6" y="1992" class="mono">infra-as-code</text>
-<rect x="281.7" y="1976" width="144.4" height="24" rx="12" class="pack"/><text x="291.7" y="1992" class="mono">skill-engineering</text>
-<text x="72" y="2028" class="foot">Generated from each loop.json by build_loops.py. Codes like G3 are what a loop prints when it stops at a gate.</text>
+<rect x="442.0" y="1684" width="354.0" height="342" rx="12" class="card dashed"/>
+<text x="462.0" y="1710" class="label" fill="#b5b0ab">MODERNIZE</text>
+<rect x="706.3" y="1696" width="69.7" height="20" rx="10" fill="#b5b0ab" fill-opacity=".08" stroke="#b5b0ab" stroke-opacity=".35"/><text x="714.3" y="1710" class="chip" fill="#b5b0ab">dev-team</text>
+<text x="462.0" y="1738" class="h">Replace legacy code safely</text>
+<text x="462.0" y="1762" class="muted"><tspan class="startl">Start here when</tspan> A legacy component is being</text>
+<text x="462.0" y="1780" class="muted">rewritten or moved.</text>
+<text x="462.0" y="1808" class="mono">codebase-tour</text>
+<text x="467.0" y="1836" class="arrow">→</text>
+<text x="484.0" y="1836" class="mono">refactor-plan / migration-plan</text>
+<text x="467.0" y="1864" class="arrow">→</text>
+<text x="484.0" y="1864" class="mono">behaviour-equivalence</text>
+<text x="467.0" y="1892" class="arrow">→</text>
+<text x="484.0" y="1892" class="mono">feature-implement-loop</text>
+<text x="467.0" y="1920" class="arrow">→</text>
+<text x="484.0" y="1920" class="mono">behaviour-equivalence</text>
+<text x="467.0" y="1948" class="arrow">→</text>
+<rect x="484.0" y="1934" width="156.6" height="20" rx="10" class="gate"/><text x="494.0" y="1948" class="gatet">G10 · a script decides</text>
+<text x="467.0" y="1976" class="arrow">→</text>
+<text x="484.0" y="1976" class="mono">launch-readiness</text>
+<text x="606.1" y="1976" class="arrow">→</text>
+<rect x="623.1" y="1962" width="131.8" height="20" rx="10" class="gate"/><text x="633.1" y="1976" class="gatet">G10.1 · you decide</text>
+<text x="462.0" y="2004" class="ends"><tspan class="endsl">Ends with</tspan> a cutover a person accepted</text>
+<text x="72" y="2060" class="section">PACKS FOR ANY STAGE</text>
+<rect x="72.0" y="2074" width="144.4" height="24" rx="12" class="pack"/><text x="82.0" y="2090" class="mono">stakeholder-comms</text>
+<rect x="224.4" y="2074" width="63.9" height="24" rx="12" class="pack"/><text x="234.4" y="2090" class="mono">design</text>
+<rect x="296.4" y="2074" width="122.5" height="24" rx="12" class="pack"/><text x="306.4" y="2090" class="mono">ai-engineering</text>
+<rect x="426.8" y="2074" width="100.5" height="24" rx="12" class="pack"/><text x="436.8" y="2090" class="mono">api-builder</text>
+<rect x="535.4" y="2074" width="93.2" height="24" rx="12" class="pack"/><text x="545.4" y="2090" class="mono">converters</text>
+<rect x="636.6" y="2074" width="144.4" height="24" rx="12" class="pack"/><text x="646.6" y="2090" class="mono">experience-design</text>
+<rect x="72.0" y="2106" width="78.6" height="24" rx="12" class="pack"/><text x="82.0" y="2122" class="mono">trackers</text>
+<rect x="158.6" y="2106" width="115.2" height="24" rx="12" class="pack"/><text x="168.6" y="2122" class="mono">infra-as-code</text>
+<rect x="281.7" y="2106" width="78.6" height="24" rx="12" class="pack"/><text x="291.7" y="2122" class="mono">frontend</text>
+<rect x="368.3" y="2106" width="144.4" height="24" rx="12" class="pack"/><text x="378.3" y="2122" class="mono">skill-engineering</text>
+<text x="72" y="2158" class="foot">Generated from each loop.json by build_loops.py. Codes like G3 are what a loop prints when it stops at a gate.</text>
 </svg>

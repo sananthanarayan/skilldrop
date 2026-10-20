@@ -1,5 +1,9 @@
 [
   {
+    "query": "turn this Outlook .msg email into markdown so I can paste it into the ticket",
+    "should_trigger": true
+  },
+  {
     "query": "Convert this Word doc to markdown",
     "should_trigger": true
   },

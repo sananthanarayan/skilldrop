@@ -1,0 +1,16 @@
+# copy of ~/.ssh/config (Sam's laptop)
+
+Host github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519
+
+Host bastion
+  HostName bastion.kestrel-prod.example
+  User sam
+  IdentityFile ~/.ssh/id_ed25519
+
+Host build-01
+  HostName 10.40.2.11
+  User deploy
+  ProxyJump bastion
+  IdentityFile ~/.ssh/id_ed25519

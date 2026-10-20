@@ -14,7 +14,7 @@ Design-phase artifacts: diagrams, decision records, design docs, contracts, sche
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack solution-architect` |
-| Skills | 10 plus 4 from core |
+| Skills | 11 plus 4 from core |
 | Loops | design |
 | How-to | [Use the Solution architect pack](../../how-to/packs/use-the-solution-architect-pack.md) |
 
@@ -40,7 +40,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/solution-architect/skil
 
 Draft an OpenAPI 3.1 contract from a feature brief or story — resource-oriented paths, a full error catalog (RFC 9457), pagination/idempotency/versioning decided not deferred, examples on every operation, plus a decisions log so review argues choices instead of YAML.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/solution-architect/skills/api-contract-draft/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/api-contract-draft/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/solution-architect/skills/api-contract-draft/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/api-contract-draft/)
 
 **Use it when** the user wants to design an API, draft an OpenAPI/Swagger spec, define request/response shapes, or agree a contract between frontend/backend or two teams before code.
 
@@ -57,6 +57,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/solution-architect/skil
 
 - Documenting an API that already exists — that's `guide-builder` (reference archetype)
 - Choosing REST vs GraphQL vs gRPC — this skill starts after that choice is made
+- An event, message or webhook contract — that's `event-contract-draft`
 - Reviewing a contract someone else drafted — `doc-critique` or `council-review`
 - Generating server/client code from the spec — hand the frozen contract to the codegen tool
 
@@ -118,6 +119,36 @@ Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/solution-architect/skil
 - **Rollout criteria are concrete.** "We'll monitor closely" is not a criterion. "Roll forward to 100% if p99 < 80ms for 48h after 10% rollout" is.
 
 **Hands off to:** `architecture-diagrams` when the design is written and needs rendering.
+
+### `event-contract-draft`
+
+Draft the contract for an event or message interface (Kafka topics, SNS/SQS, EventBridge, Pub/Sub, RabbitMQ, webhooks) as an AsyncAPI 3.0 document plus a short decisions page — past-tense event names, a required envelope with event id for deduplication, the partition key and the ordering it does and doesn't give, at-least-once delivery and how consumers stay idempotent, data minimisation with PII marked, additive-only versioning with dated deprecation, and retention, replay and dead-letter handling.
+
+Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skills/event-contract-draft/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/event-contract-draft/)
+
+**Use it when** the user wants to define events, design a Kafka topic or message schema, write an AsyncAPI spec, agree what a producer publishes and what consumers must do, or version an event safely.
+
+**Needs:** Python 3 for its scripts (standard library only).
+
+**A good result:**
+
+- **Every event name is a past-tense fact** in the producer's domain, one type per schema.
+- **Every message has the full envelope, required**, with a stable event id for deduplication.
+- **Every channel names its key, the order it gives and the order it doesn't.** No global order.
+- **Each consumer's idempotency is stated**: dedupe on id, revision check, or a natural key.
+- **Every field has a consumer**; personal data that stays is marked; nothing "just in case".
+- **Breaking changes go through a new field or version** with a deprecation date that came from the input or is listed as open.
+- **Retention, replay and dead-letter are stated per channel**, with the DLQ owner named or open.
+- **The check result is reported only if it ran**, and the document has no FAIL.
+- **Nothing invented**: no team names, dates, volumes or retention the input didn't give, except as `[assumption]`.
+
+**Hands off to:** `data-contract` when an analytics team or a trained model reads the topic as a dataset.
+
+**Not for:**
+
+- A request/response HTTP API — `api-contract-draft`
+- A table, dataset or analytics stream's schema, freshness and quality SLAs — `data-contract`
+- Deciding whether the system should be event-driven at all, or its components — `design-doc`
 
 ### `figma-diagrams`
 

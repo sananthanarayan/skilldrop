@@ -14,7 +14,7 @@ Operate the service: runbooks, observability design, incident communications, po
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack sre-oncall` |
-| Skills | 7 plus 4 from core |
+| Skills | 8 plus 4 from core |
 | Loops | operate |
 | How-to | [Use the SRE / on-call pack](../../how-to/packs/use-the-sre-oncall-pack.md) |
 
@@ -197,6 +197,36 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/sre-oncall/skills/runbo
 - **Every alert listed has a response.** A "what to do when this alert fires" section that doesn't cover all the alerts is worse than no section.
 - **Rollback is one command, or three steps max.** If rollback is complicated, write a script and link to it.
 - **No "TBD" left in the doc when it's published.** Move TBDs to a "known gaps" section so they're explicit, not hidden.
+
+### `slo-spec`
+
+Define service level objectives for a service from its critical user journeys — each SLI a good-events / valid-events ratio with both sides defined and measured where the user feels it, a target set from user need and history (checked against dependency SLOs), the error budget computed in minutes and bad requests at current traffic, multi-window burn-rate alerts with the budget consumed when each fires, low-traffic handling, and an error-budget policy with owners.
+
+Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/sre-oncall/skills/slo-spec/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/slo-spec/)
+
+**Use it when** the user asks to "define SLOs", "write our SLIs", "how much error budget do we have", "what burn-rate alerts should page", "is 99.99% realistic", or "write an error-budget policy".
+
+**Needs:** Python 3 for its scripts (standard library only).
+
+**A good result:**
+
+- **2–4 journeys, each with an SLI written as good / valid events,** both sides defined, including what's excluded from valid.
+- **The measurement point is named and can see what the user waits for** — including queue time on async paths.
+- **No target is 100%, none is five nines without a reason in the input,** and none sits above the hard dependencies' combined SLO without naming the redundancy it needs.
+- **Every budget is in minutes and bad requests at stated traffic,** matching the script output.
+- **Alerts are burn-rate rows with long and short windows,** each with the trip rate, the budget consumed at fire and the time to exhaustion.
+- **Low-traffic journeys are flagged with the count that makes them noisy** and get a different method, with the reason.
+- **The policy names owners, thresholds, the freeze rule, the exception route and the dependency case.**
+- **Nothing in it is invented:** traffic, history, dependency SLOs and people all come from the input or are tagged `[assumption]`.
+
+**Hands off to:** `observability-plan` when the SLIs are agreed and the telemetry to produce them doesn't exist yet; `runbook-generator` when the burn-rate alerts are defined and each page needs a procedure.
+
+**Not for:**
+
+- The full set of non-functional targets for a design — latency, durability, privacy, cost — that's `nfr-spec`
+- What to instrument, metrics/logs/traces split, cardinality, dashboards — that's `observability-plan`
+- The step-by-step procedure when an alert fires — that's `runbook-generator`
+- Deployment frequency, change fail rate, lead time — that's `delivery-metrics-report`
 
 ## Loops
 

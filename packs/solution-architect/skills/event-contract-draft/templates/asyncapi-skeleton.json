@@ -1,0 +1,144 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Billing events",
+    "version": "1.0.0",
+    "description": "Events the billing service publishes about invoices.\n\nConsumers must: (1) deduplicate on eventId, because delivery is at-least-once; (2) ignore fields they do not recognise; (3) drop an event whose invoiceRevision is lower than the last one applied for that invoice; (4) never depend on order across different invoices.\n\nVersioning: within a version only optional fields are added. A breaking change (rename, removal, type or meaning change, a new required field) ships as a new event version on a new channel, published alongside the old one until the old one's x-sunset date."
+  },
+  "defaultContentType": "application/json",
+  "servers": {
+    "production": {
+      "host": "kafka.example.internal:9092",
+      "protocol": "kafka",
+      "description": "Placeholder host; replace with the real bootstrap servers."
+    }
+  },
+  "channels": {
+    "invoiceLifecycleV1": {
+      "address": "billing.invoice-lifecycle.v1",
+      "description": "Every state change of an invoice, in the order it happened for that invoice.",
+      "x-partition-key": "invoiceId",
+      "x-ordering": "Ordered per invoiceId: all events for one invoice arrive in the order billing published them. No order across invoices and no global order. Retries can redeliver an earlier event; consumers compare invoiceRevision.",
+      "x-delivery": "at-least-once; duplicates happen on producer retry and consumer rebalance",
+      "x-retention": "7 days",
+      "x-replay": "Consumers can reset their offset to any point inside the retention window.",
+      "x-dead-letter": "A consumer moves a message it cannot process after 5 attempts to <consumer>.billing.invoice-lifecycle.v1.dlq; the consuming team owns and watches its own DLQ.",
+      "messages": {
+        "InvoiceIssued": { "$ref": "#/components/messages/InvoiceIssued" },
+        "InvoicePaid": { "$ref": "#/components/messages/InvoicePaid" }
+      }
+    }
+  },
+  "operations": {
+    "publishInvoiceLifecycle": {
+      "action": "send",
+      "channel": { "$ref": "#/channels/invoiceLifecycleV1" },
+      "messages": [
+        { "$ref": "#/channels/invoiceLifecycleV1/messages/InvoiceIssued" },
+        { "$ref": "#/channels/invoiceLifecycleV1/messages/InvoicePaid" }
+      ]
+    }
+  },
+  "components": {
+    "messages": {
+      "InvoiceIssued": {
+        "name": "InvoiceIssued",
+        "title": "Invoice issued",
+        "summary": "An invoice was issued to a customer.",
+        "description": "Event-carried state: the full invoice as issued, so consumers need no call back to billing.",
+        "x-event-style": "event-carried-state",
+        "bindings": { "kafka": { "key": { "type": "string", "description": "invoiceId" } } },
+        "payload": {
+          "allOf": [
+            { "$ref": "#/components/schemas/Envelope" },
+            {
+              "type": "object",
+              "required": ["data"],
+              "properties": {
+                "eventType": { "type": "string", "const": "InvoiceIssued" },
+                "data": { "$ref": "#/components/schemas/InvoiceIssuedData" }
+              }
+            }
+          ]
+        },
+        "examples": [
+          {
+            "name": "issued",
+            "payload": {
+              "eventId": "5b0c6f4e-2a91-4f3e-9d7c-1e8a2b3c4d5e",
+              "eventType": "InvoiceIssued",
+              "eventVersion": 1,
+              "occurredAt": "2026-10-19T14:03:11Z",
+              "producer": "billing-service",
+              "correlationId": "c2f1a9d0-7b3e-4c55-8a10-2d9e6f7a8b90",
+              "causationId": "0d4e8f12-6a7b-4c3d-9e2f-1a0b9c8d7e6f",
+              "data": {
+                "invoiceId": "inv_4T7Q",
+                "invoiceRevision": 1,
+                "customerId": "cus_31F8",
+                "totalMinor": 4250,
+                "currency": "GBP"
+              }
+            }
+          }
+        ]
+      },
+      "InvoicePaid": {
+        "name": "InvoicePaid",
+        "title": "Invoice paid",
+        "summary": "An invoice was paid in full.",
+        "description": "Notification: ids and the amount paid only; fetch the invoice from the billing API for anything else.",
+        "x-event-style": "notification",
+        "bindings": { "kafka": { "key": { "type": "string", "description": "invoiceId" } } },
+        "payload": {
+          "allOf": [
+            { "$ref": "#/components/schemas/Envelope" },
+            {
+              "type": "object",
+              "required": ["data"],
+              "properties": {
+                "eventType": { "type": "string", "const": "InvoicePaid" },
+                "data": {
+                  "type": "object",
+                  "required": ["invoiceId", "invoiceRevision", "paidMinor", "currency"],
+                  "properties": {
+                    "invoiceId": { "type": "string" },
+                    "invoiceRevision": { "type": "integer", "minimum": 1, "description": "Increases by 1 on every change to this invoice." },
+                    "paidMinor": { "type": "integer", "minimum": 0, "description": "Amount paid in minor units (pence)." },
+                    "currency": { "type": "string", "pattern": "^[A-Z]{3}$" }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "schemas": {
+      "Envelope": {
+        "type": "object",
+        "required": ["eventId", "eventType", "eventVersion", "occurredAt", "producer", "correlationId"],
+        "properties": {
+          "eventId": { "type": "string", "format": "uuid", "description": "Unique per event; the same on every redelivery. Consumers deduplicate on it." },
+          "eventType": { "type": "string", "description": "Past-tense event name; one per message schema." },
+          "eventVersion": { "type": "integer", "minimum": 1, "description": "Major version of this event type's schema." },
+          "occurredAt": { "type": "string", "format": "date-time", "description": "When the fact happened, UTC, RFC 3339 with Z." },
+          "producer": { "type": "string", "description": "The service that owns the fact." },
+          "correlationId": { "type": "string", "description": "Shared by every event and request in one business flow." },
+          "causationId": { "type": "string", "description": "eventId (or request id) of what directly caused this event." }
+        }
+      },
+      "InvoiceIssuedData": {
+        "type": "object",
+        "required": ["invoiceId", "invoiceRevision", "customerId", "totalMinor", "currency"],
+        "properties": {
+          "invoiceId": { "type": "string" },
+          "invoiceRevision": { "type": "integer", "minimum": 1, "description": "Increases by 1 on every change to this invoice." },
+          "customerId": { "type": "string", "description": "Opaque id; no name or contact details on the event." },
+          "totalMinor": { "type": "integer", "minimum": 0, "description": "Invoice total in minor units (pence)." },
+          "currency": { "type": "string", "pattern": "^[A-Z]{3}$" }
+        }
+      }
+    }
+  }
+}

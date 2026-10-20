@@ -1,0 +1,14 @@
+[
+  {"query": "I just realised Claude Code committed my Anthropic API key to the repo an hour ago. What do I do?", "should_trigger": true},
+  {"query": "our agent ran git push --force on main and a week of commits is gone, help", "should_trigger": true},
+  {"query": "We installed an MCP server that turns out to be malicious. What do we do now?", "should_trigger": true},
+  {"query": "Woke up to a $3k OpenAI bill from our agent running overnight, what should I do first", "should_trigger": true},
+  {"query": "The agent platform we store our API keys in just announced a breach. Next steps?", "should_trigger": true},
+  {"query": "I think our coding agent got prompt-injected by a GitHub issue and posted secrets in a comment", "should_trigger": true},
+  {"query": "Threat-model our support agent before launch: can it be prompt-injected into leaking customer data?", "should_trigger": false},
+  {"query": "Set a token and spend budget so our agent loop can't run away", "should_trigger": false},
+  {"query": "Draft the status page update for the API key leak we're dealing with", "should_trigger": false},
+  {"query": "Write the blameless postmortem for last week's leaked GitHub token", "should_trigger": false},
+  {"query": "Write a runbook for rotating our API keys every quarter", "should_trigger": false},
+  {"query": "Is our .claude/settings.json allow list too permissive before we give the agent our prod repo?", "should_trigger": false}
+]

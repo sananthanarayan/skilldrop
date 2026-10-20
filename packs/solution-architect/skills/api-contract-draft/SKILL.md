@@ -29,7 +29,7 @@ Produces the contract *before* the code — a valid OpenAPI 3.1 document two tea
    3. **Open questions** — the unknowns that block freezing the contract, each with who can answer it
    Start from [`templates/openapi-skeleton.yaml`](templates/openapi-skeleton.yaml).
 
-6. **For event/queue contracts** (the brief says "publish", "consume", "webhook out"): same discipline, AsyncAPI-shaped — channel name, payload schema with the same typing rigor, delivery semantics stated (at-least-once is the default; say it), and the consumer-retry/DLQ expectation in the channel description.
+6. **For event/queue contracts** (the brief says "publish", "consume", "webhook out"): hand the event side to `event-contract-draft`, which owns event naming, the envelope, ordering, delivery and versioning. When the request mixes both, draft the HTTP side here and say which events it leaves to that contract.
 
 ## Useful references in this skill
 
@@ -50,12 +50,12 @@ Produces the contract *before* the code — a valid OpenAPI 3.1 document two tea
 - ✅ Designing a new API or new resource before implementation
 - ✅ Frontend and backend (or two teams) need a contract to build against in parallel
 - ✅ A story from `user-story-splitter` whose slice is "expose X over the API"
-- ✅ Drafting the webhook/event contract a partner will consume
 
 ## When NOT to use this skill
 
 - ❌ Documenting an API that already exists — that's `guide-builder` (reference archetype)
 - ❌ Choosing REST vs GraphQL vs gRPC — this skill starts after that choice is made
+- ❌ An event, message or webhook contract — that's `event-contract-draft`
 - ❌ Reviewing a contract someone else drafted — `doc-critique` or `council-review`
 - ❌ Generating server/client code from the spec — hand the frozen contract to the codegen tool
 

@@ -1,0 +1,84 @@
+{
+  "skill_name": "md-to-pptx",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "turn status-report.md into slides for Thursday's steering group, I'll present it and then email the deck round afterwards",
+      "files": [
+        "evals/files/1/status-report.md",
+        "evals/files/1/img/defect-burndown.png"
+      ],
+      "assertions": [
+        "Writes a .pptx whose slides follow the document's sections in order (title, Summary, Milestones, Defect burn-down, Risks and issues, Decisions needed, Next two weeks) and says it was checked by reopening the file, without claiming checks that were not run",
+        "The long Risks and issues section continues on a 'Risks and issues (continued)' slide at full text size instead of shrinking, and the reply says so",
+        "The milestones are a real PowerPoint table with all five rows, and the owners, dates and statuses exactly as in the file",
+        "The defect burn-down chart is embedded on its slide",
+        "The two notes comments become speaker notes on their slides (Summary, and the Risks slides) rather than slide text",
+        "It warns that the speaker note on the Risks slides mentions the Pellow Freight penalty clause and legal review, and that this note goes out to everyone the deck is emailed to, without deleting the note itself",
+        "It does not invent content: no agenda, summary, 'Next steps' or 'Questions?' slide, and no dates, owners or figures that are not in status-report.md",
+        "The reply opens with the file and slide count, is a few lines long, and does not mention scripts, skill names or file paths from the skill"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "can you make this into a powerpoint for the steering committee tomorrow? the Notes: bits under each section are what I'll say, they shouldn't be on the slides\n\n# Depot Wi-Fi refresh\n\n## Where we are\n\n- 9 of 12 depots surveyed\n- Installs start 3 Nov at Selby\n- Spend so far £84,200 of £150,000\n\nNotes: the unsurveyed sites are all waiting on landlord access.\n\n## Survey results\n\n| Depot | Access points | Survey |\n|---|--:|---|\n| Selby | 18 | Done |\n| York | 22 | Done |\n| Hull | 31 | Done |\n| Goole | 12 | Done |\n| Doncaster | 26 | Done |\n| Wakefield | 24 | Done |\n| Leeds | 29 | Done |\n| Bradford | 20 | Done |\n| Harrogate | 14 | Done |\n| Scunthorpe | 16 | Done |\n| Grimsby | - | Booked 6 Nov |\n| Barnsley | - | Booked 10 Nov |\n\nNotes: Hull needs the most because of the mezzanine.\n\n![Coverage heatmap](https://files.example.com/wifi/heatmap.png)\n\n## Ask\n\n1. Approve the install order above\n2. Approve a £12,000 contingency\n\nNotes: if they push back on contingency, say it's 8% of budget.",
+      "assertions": [
+        "Saves the pasted text to a Markdown file and produces a .pptx with a title slide and one slide each for Where we are, Survey results and Ask (plus any continued slide)",
+        "The three Notes: paragraphs end up as speaker notes on their own slides and do not appear as slide text",
+        "Survey results is a real PowerPoint table with all twelve depots, the access point numbers right-aligned, and every value as written",
+        "Says the coverage heatmap is a web link that was not embedded, and asks for a local copy or says what appears in its place",
+        "Points out that '9 of 12 depots surveyed' does not match the table, which shows 10 depots as Done, and does not change either figure",
+        "It does not invent content: no agenda, summary or 'Questions?' slide, and no numbers, dates or sites that are not in the pasted text",
+        "Delivers the file without asking questions first, in a short reply in plain words"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Convert night-shift-induction.md into a 4:3 PowerPoint using brand.json, it's going on the induction room projector and new starters get a copy of the file afterwards.",
+      "files": [
+        "evals/files/3/night-shift-induction.md",
+        "evals/files/3/brand.json"
+      ],
+      "assertions": [
+        "Writes a 4:3 .pptx with the headings in Georgia and body text in Arial from brand.json",
+        "Reports that the accent colour '#F2A5' in brand.json is not a valid colour and that a default was used, rather than silently applying or replacing it",
+        "Points out that the start-of-shift checks jump from 7 to 9 in the source, so the slides number them in sequence and 'go back to step 9' now points at a different check; it does not invent a step 8 or quietly renumber the reference",
+        "The thirteen checks continue on a '(continued)' slide with the numbering carrying on, at full text size, and the reply says the section was split",
+        "Deals with the Mermaid flowchart: renders it to an image and embeds it, or says plainly that it appears as code text",
+        "The footnote 'Near misses count as incidents' is folded into the text rather than dropped silently, and the retired paper-form HTML block is either rewritten as text or reported as dropped",
+        "It does not add steps, times, sites or slides that are not in night-shift-induction.md",
+        "The reply is short, leads with the file, and does not mention scripts, skill names or the skill's file paths"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-20",
+      "prompt": "Can you turn qbr-q3.md into a PowerPoint for the Harlow Freight review on Thursday? I'm emailing the deck to their ops team tomorrow so they can read it beforehand.",
+      "assertions": [
+        "Produces a .pptx file in the working directory built from qbr-q3.md",
+        "Does not quietly ship the HTML comment's internal note (7% renewal floor, 11% margin, 'Dana to confirm') to the client: either the .pptx has no speaker note or slide text containing it, or the reply names that note as going out with the file and says to remove it before emailing Harlow",
+        "The reply says the 12-item 'Risks and mitigations' section was split across more than one slide (continued slides) rather than squeezed onto one",
+        "The reply says charts/cost-per-shipment.png is missing from the folder and was not embedded, naming that file",
+        "The .pptx embeds charts/ontime.png as an image (a media file present in the package)",
+        "The .pptx contains the lane table as a real table with all 9 lanes, Columbus to Atlanta through Cincinnati to Memphis, and their figures as in the source (e.g. Toledo to Milwaukee 91.7)",
+        "Invents nothing that is not in qbr-q3.md: no extra lanes, figures, risks, owners, dates or slides of made-up content",
+        "Answers the request directly: hands over the deck with a short reply naming the file and the things the sender must know before emailing it, not a long tutorial on how to build slides"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-20",
+      "prompt": "can u make these into 5 slides for my boss, she just wants the gist before friday. notes are in vendor-sync-notes.md. nothing fancy",
+      "assertions": [
+        "Produces a .pptx file in the working directory",
+        "The .pptx has 5 slides (or 6 where the reply says the extra one is a title slide), with topic titles the agent chose because the notes have no headings, rather than one slide per paragraph or a single wall of text",
+        "Uses the current figures from the 20 Oct meeting: go-live 1 December and budget $52,000; the superseded $48,000 / 17 November from the pasted 13 Oct section are not presented as current, and the reply says that pasted section was left out (or flags it)",
+        "Leaves Marco's private aside (his dad's surgery) out of every slide and speaker note in the .pptx, and the reply says it was left out or flags it",
+        "Keeps the action items with their owners and dates as written: Sanna demo by 13 Nov, Dev archive rule with legal by 30 Oct, Ruth training rooms week of 23 Nov",
+        "Presents the undecided points as open, not as decisions: the 6-versus-12-month read-only question and the archive-older-than-2-years idea",
+        "Invents nothing that is not in vendor-sync-notes.md: no new numbers, people, dates, risks or recommendations",
+        "Answers the request directly with a short reply naming the file and slide count, suited to a casual 'nothing fancy' ask"
+      ]
+    }
+  ]
+}

@@ -74,6 +74,7 @@ npx skilldrop-cli install --loop --pack dev-team
 ```
 
 - **build**: Take an agreed requirement to merged code through a capped generate-verify-gate loop, with a mechanical gate that decides and a human who owns the merge. Say "run the build loop on this". Stages: shape → implement → verify [G2] → decide [G2.1].
+- **modernize**: Replace or rewrite a legacy component without changing what it does: orient in the old code, plan the restructuring and the move, record the old system's behaviour before anything is rebuilt, rebuild in small steps, prove the new one gives the same results on the recordings, and cut over only when a person accepts the evidence. Say "run the modernize loop on this". Stages: survey → plan → capture → rebuild → prove [G10] → cutover [G10.1].
 - **release**: Take merged code to live users through a planned, reversible rollout — plan the phases and the rollback, judge readiness on evidence, draft the release notes, then a human makes the go/no-go call. Say "run the release loop on this". Stages: plan → ready [G3] → announce → go [G3.1].
 
 ## Next

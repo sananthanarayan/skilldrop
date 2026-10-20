@@ -1,6 +1,6 @@
 ---
 name: file-to-markdown
-description: Convert a Word document, PowerPoint deck, Excel workbook, web page, CSV, JSON, text file or PDF into clean Markdown that keeps headings, lists, tables, links, bold and italic, slide titles and speaker notes, and reports everything it dropped (images, charts, comments, formulas, tracked changes), so the content can be read, reviewed or fed to another skill. Use when the user hands over a .docx, .pptx, .xlsx, .html, .csv, .json or .pdf and says "read this", "turn this into markdown", "extract the text", or wants it critiqued or briefed.
+description: Convert a Word document, PowerPoint deck, Excel workbook, web page, CSV, JSON, text file, email (.eml or Outlook .msg) or PDF into clean Markdown that keeps headings, lists, tables, links, bold and italic, slide titles and speaker notes, and reports everything it dropped (images, charts, comments, formulas, tracked changes), so the content can be read, reviewed or fed to another skill. Use when the user hands over a .docx, .pptx, .xlsx, .html, .csv, .json, .eml, .msg or .pdf and says "read this", "turn this into markdown", "extract the text", or wants it critiqued or briefed.
 ---
 
 # file-to-markdown
@@ -46,6 +46,7 @@ or a rewrite that goes back out through `md-to-docx` or `md-to-html`.
    | `.html` | Headings, lists, tables, links, code blocks, quotes; scripts, styles and nav menus dropped |
    | `.csv` / `.tsv` | One table, delimiter detected |
    | `.json` | An array of objects becomes a table; an object becomes a key/value table plus a table per array |
+   | `.eml` / `.msg` | Subject as the title; From, To, Cc and the sent time as a table; the plain-text body (the HTML body only when there is no text one); attachments listed by name and size, not converted. Outlook `.msg` is read directly, with nothing to install |
    | `.txt` / `.md` | Passed through |
    | `.pdf` | Through `pdftotext`. Tables from aligned columns (told apart by where each word sits on the page, so two columns set close together don't merge), lists from indentation, short standalone lines as `###` headings (guessed, and said so); a table that runs onto the next page is joined into one, without the header the PDF repeats; pages with side-by-side columns are read in column order with nothing inferred. Scanned pages are read by OCR when `tesseract` is installed. No images |
 

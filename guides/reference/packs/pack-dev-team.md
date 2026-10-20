@@ -14,8 +14,8 @@ Build-and-ship: story splitting, implementation with adversarial review, test pl
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack dev-team` |
-| Skills | 19 plus 4 from core |
-| Loops | build, release |
+| Skills | 20 plus 4 from core |
+| Loops | build, modernize, release |
 | How-to | [Use the Dev team pack](../../how-to/packs/use-the-dev-team-pack.md) |
 
 ## Skills
@@ -69,6 +69,36 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/dev-team/skills/agents-
 - Explaining what the project *is* — that's the README
 - Operating a running service — that's `runbook-generator`
 - Reviewing an existing document's prose quality — that's `doc-critique`, which takes documents; this one takes a repository
+
+### `behaviour-equivalence`
+
+Prove that a rewritten, migrated or refactored component behaves the same as the old one with a golden-master comparison — record inputs and outputs at a boundary (HTTP, function calls, batch files, DB writes, events) from production-shaped traffic and edge cases, run the old system twice to find its nondeterminism, normalise narrowly field by field, replay against the new one, triage every difference as defect, intended change (with a named approver) or missing normalisation, and give a verdict of EQUIVALENT, EQUIVALENT EXCEPT LISTED CHANGES, NOT EQUIVALENT or NOT PROVEN.
+
+Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/behaviour-equivalence/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/behaviour-equivalence/)
+
+**Use it when** the user asks "does the new one behave the same as the old one", "can we sign off the rewrite", "are these diffs just noise", wants a golden-master, approval or shadow-traffic comparison, a parity check between old and new outputs, or says "prove behaviour equivalence".
+
+**Needs:** Python 3 for its scripts (standard library only).
+
+**A good result:**
+
+- **The first line is one of the four verdicts** with the reason in plain words.
+- **Every difference is classified** as defect, intended change or missing normalisation; none is left as "minor".
+- **Every normalisation rule names one field and a reason,** and the field varied old-vs-old.
+- **Money is compared exactly in minor units;** any float tolerance is per field with a reason.
+- **Error behaviour and side effects are compared,** not only return values.
+- **Coverage is stated by input class,** and the verdict covers only the recorded classes.
+- **Intended changes name an approver from the input,** or stay unresolved.
+- **Every case id, value, count and cause is from the input or the script output.**
+
+**Hands off to:** `migration-plan` when the verdict is EQUIVALENT or EQUIVALENT EXCEPT LISTED CHANGES and traffic or data still has to move.
+
+**Not for:**
+
+- Planning the refactor or rewrite steps themselves — `refactor-plan`
+- Phasing a data or platform migration, backfill and cutover — `migration-plan`
+- A test plan for a new feature or changed behaviour — `test-plan-generator`
+- Getting oriented in the old codebase before starting — `codebase-tour`
 
 ### `bug-triage`
 
@@ -528,6 +558,21 @@ Take an agreed requirement to merged code through a capped generate-verify-gate 
 | decide | `council-review` | G2.1 human: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / SPLIT / BLOCKED |
 
 Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/dev-team/loops/build/LOOP.md)
+
+### `modernize`
+
+Replace or rewrite a legacy component without changing what it does: orient in the old code, plan the restructuring and the move, record the old system's behaviour before anything is rebuilt, rebuild in small steps, prove the new one gives the same results on the recordings, and cut over only when a person accepts the evidence.
+
+| Stage | Skills | Gate |
+|---|---|---|
+| survey | `codebase-tour` | — |
+| plan | `refactor-plan`, `migration-plan` | — |
+| capture | `behaviour-equivalence` | — |
+| rebuild | `feature-implement-loop` | — |
+| prove | `behaviour-equivalence` | G10 mechanical: READY / NOT READY / BLOCKED |
+| cutover | `launch-readiness` | G10.1 human: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / BLOCKED |
+
+Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/dev-team/loops/modernize/LOOP.md)
 
 ### `release`
 

@@ -2,7 +2,7 @@
 """Convert a document into clean Markdown that another skill can read.
 
 Stdlib only, Python 3.9+. Handles .docx, .pptx, .xlsx, .html/.htm, .csv/.tsv,
-.json, .txt/.md, and .pdf (through `pdftotext` when it is installed). A PDF page with no
+.json, .txt/.md, .eml and Outlook .msg email, and .pdf (through `pdftotext` when it is installed). A PDF page with no
 text layer (a scan) is read by OCR when `tesseract` and `pdftoppm` are installed.
 Everything the conversion could not carry (images, charts, comments, formulas,
 tracked changes) is counted and reported on stderr, so nobody mistakes the
@@ -972,6 +972,256 @@ def html_to_md(path, rep):
     return parser.result()
 
 
+def _html_text_to_md(text, rep):
+    """HTML already decoded to text (an email body) -> Markdown, through the same parser."""
+    skipped = len(re.findall(r"<(script|style)\b", text, re.I))
+    if skipped:
+        rep.drop("scripts/styles", skipped)
+    parser = HTMLToMD(rep)
+    parser.feed(text)
+    parser.close()
+    return parser.result()
+
+
+# ---------------------------------------------------------------- email (.eml, .msg)
+
+def _email_md(subject, rows, body_md, attachments, rep, note=None):
+    """One email as Markdown: subject as the title, the headers as a table, the body, and the
+    attachments listed by name and size, since their content is not converted."""
+    out = ["# " + md_escape(subject or "(no subject)"), "", "| | |", "|---|---|"]
+    for k, v in rows:
+        if v:
+            out.append("| %s | %s |" % (k, cell_text(md_escape(v))))
+    out += ["", body_md.strip() or "_(no text body)_", ""]
+    if attachments:
+        out += ["## Attachments", ""]
+        for name, size in attachments:
+            out.append("- %s (%s)" % (md_escape(name or "unnamed"), _human_size(size)))
+        out.append("")
+        rep.drop("attachments (listed, not converted)", len(attachments))
+    if note:
+        rep.notes.append(note)
+    rep.keep("emails", 1)
+    return "\n".join(out).rstrip() + "\n"
+
+
+def _email_text(text):
+    """A plain-text email body as Markdown. Bullets and `> ` quoted replies already read as
+    Markdown lists and quotes, so only a leading `#` (which would become a heading) and a
+    line of `=` or `-` under text (which would turn that text into one) are escaped."""
+    out = []
+    for line in text.replace("\r\n", "\n").split("\n"):
+        if line.lstrip().startswith("#"):
+            line = line.replace("#", "\\#", 1)
+        elif re.fullmatch(r"\s*(=+|-{2,})\s*", line) and out and out[-1].strip():
+            line = "\\" + line.strip()
+        out.append(line)
+    return "\n".join(out)
+
+
+def _human_size(n):
+    if n is None:
+        return "size unknown"
+    for unit in ("bytes", "KB", "MB", "GB"):
+        if n < 1024 or unit == "GB":
+            return ("%d %s" % (n, unit)) if unit == "bytes" else ("%.1f %s" % (n, unit))
+        n /= 1024.0
+
+
+def eml_to_md(path, rep):
+    """An RFC 5322 message (.eml): the plain-text part when there is one, else the HTML part."""
+    import email
+    from email import policy
+    msg = email.message_from_bytes(path.read_bytes(), policy=policy.default)
+    rows = [("From", str(msg.get("From", ""))), ("To", str(msg.get("To", ""))), ("Cc", str(msg.get("Cc", ""))),
+            ("Date", str(msg.get("Date", "")))]
+    plain = msg.get_body(preferencelist=("plain",))
+    html = msg.get_body(preferencelist=("html",))
+    if plain is not None:
+        body = _email_text(plain.get_content())
+        if html is not None:
+            rep.drop("HTML alternative (the plain-text part was used)", 1)
+    elif html is not None:
+        body = _html_text_to_md(html.get_content(), rep)
+    else:
+        body = ""
+    attachments = []
+    for part in msg.iter_attachments():
+        payload = part.get_payload(decode=True)
+        name = part.get_filename() or ("forwarded message" if part.get_content_type() == "message/rfc822" else None)
+        attachments.append((name, len(payload) if payload is not None else None))
+    return _email_md(str(msg.get("Subject", "")), rows, body, attachments, rep)
+
+
+class _CFB:
+    """A minimal, read-only reader for the Compound File Binary format Outlook saves .msg in.
+    Bounded on every loop and offset, so a malformed file stops with an error, never a hang."""
+    MAGIC = b"\xD0\xCF\x11\xE0\xA1\xB1\x1A\xE1"
+
+    def __init__(self, data):
+        import struct
+        self.struct = struct
+        if data[:8] != self.MAGIC or len(data) < 512:
+            raise ValueError("not an Outlook .msg file (no compound-file header)")
+        self.d = data
+        self.ss = 1 << struct.unpack_from("<H", data, 30)[0]
+        self.mss = 1 << struct.unpack_from("<H", data, 32)[0]
+        if self.ss not in (512, 4096) or self.mss != 64:
+            raise ValueError("unsupported compound-file sector size")
+        nfat, dir_start = struct.unpack_from("<I", data, 44)[0], struct.unpack_from("<I", data, 48)[0]
+        self.cutoff = struct.unpack_from("<I", data, 56)[0]
+        minifat_start, nminifat, difat_start, ndifat = struct.unpack_from("<IIII", data, 60)
+        difat = list(struct.unpack_from("<109I", data, 76))
+        per = self.ss // 4
+        s, guard = difat_start, 0
+        while ndifat and s < 0xFFFFFFFA and guard < 10000:
+            vals = struct.unpack("<%dI" % per, self._sector(s))
+            difat += vals[:-1]
+            s, guard, ndifat = vals[-1], guard + 1, ndifat - 1
+        self.fat = []
+        for fs in difat[:nfat]:
+            if fs < 0xFFFFFFFA:
+                self.fat += struct.unpack("<%dI" % per, self._sector(fs))
+        raw = self._chain(dir_start)
+        self.entries = []
+        for i in range(0, len(raw) - 127, 128):
+            e = raw[i:i + 128]
+            nlen = struct.unpack_from("<H", e, 64)[0]
+            name = e[:max(0, min(nlen, 64) - 2)].decode("utf-16-le", "replace")
+            kind = e[66]
+            left, right, child = struct.unpack_from("<III", e, 68)
+            start = struct.unpack_from("<I", e, 116)[0]
+            size = struct.unpack_from("<I", e, 120)[0]  # the high half is zero for version 3 files
+            self.entries.append({"name": name, "kind": kind, "left": left, "right": right, "child": child,
+                                 "start": start, "size": size})
+        if not self.entries or self.entries[0]["kind"] != 5:
+            raise ValueError("compound file has no root entry")
+        root = self.entries[0]
+        self.ministream = self._chain(root["start"])[:root["size"]] if root["start"] < 0xFFFFFFFA else b""
+        mf = self._chain(minifat_start) if nminifat else b""
+        self.minifat = list(struct.unpack("<%dI" % (len(mf) // 4), mf[:len(mf) // 4 * 4]))
+
+    def _sector(self, n):
+        off = (n + 1) * self.ss
+        if off + self.ss > len(self.d):
+            raise ValueError("compound file is truncated or corrupt")
+        return self.d[off:off + self.ss]
+
+    def _chain(self, start, mini=False):
+        fat, out, n, seen = (self.minifat if mini else self.fat), [], start, 0
+        while n < 0xFFFFFFFA:
+            if n >= len(fat) or seen > 1000000:
+                raise ValueError("compound file has a broken sector chain")
+            if mini:
+                off = n * self.mss
+                out.append(self.ministream[off:off + self.mss])
+            else:
+                out.append(self._sector(n))
+            n, seen = fat[n], seen + 1
+        return b"".join(out)
+
+    def children(self, idx):
+        """The entries directly inside storage `idx`, by name."""
+        out, stack, seen = {}, [self.entries[idx]["child"]], set()
+        while stack:
+            i = stack.pop()
+            if i >= len(self.entries) or i in seen:
+                continue
+            seen.add(i)
+            e = self.entries[i]
+            out[e["name"]] = i
+            stack += [e["left"], e["right"]]
+        return out
+
+    def read(self, i):
+        e = self.entries[i]
+        if e["size"] < self.cutoff:
+            return self._chain(e["start"], mini=True)[:e["size"]]
+        return self._chain(e["start"])[:e["size"]]
+
+
+def _msg_props(cfb, idx):
+    """The string and binary properties of one .msg storage, by four-hex-digit property id."""
+    out = {}
+    for name, i in cfb.children(idx).items():
+        m = re.match(r"__substg1\.0_([0-9A-Fa-f]{4})([0-9A-Fa-f]{4})$", name)
+        if not m or cfb.entries[i]["kind"] != 2:
+            continue
+        pid, ptype = m.group(1).upper(), m.group(2).upper()
+        data = cfb.read(i)
+        if ptype == "001F":
+            out[pid] = data.decode("utf-16-le", "replace").rstrip("\x00")
+        elif ptype == "001E":
+            out[pid] = data.decode("cp1252", "replace").rstrip("\x00")
+        elif ptype == "0102":
+            out.setdefault(pid + ":bin", data)
+    return out
+
+
+def _msg_fixed(cfb, idx, header):
+    """Fixed-size properties (times, integers) from a storage's __properties_version1.0."""
+    import struct
+    from datetime import datetime as _dt
+    stream = cfb.children(idx).get("__properties_version1.0")
+    if stream is None:
+        return {}
+    data, out = cfb.read(stream), {}
+    for off in range(header, len(data) - 15, 16):
+        tag, = struct.unpack_from("<I", data, off)
+        ptype, pid = tag & 0xFFFF, "%04X" % (tag >> 16)
+        if ptype == 0x0040:
+            ft, = struct.unpack_from("<Q", data, off + 8)
+            if ft:
+                out[pid] = _dt(1601, 1, 1) + timedelta(microseconds=ft // 10)
+        elif ptype == 0x0003:
+            out[pid] = struct.unpack_from("<i", data, off + 8)[0]
+    return out
+
+
+def msg_to_md(path, rep):
+    """An Outlook message (.msg): subject, sender, recipients, sent time, the text body (or the
+    HTML body when there is no text one), and attachments listed by name and size."""
+    try:
+        cfb = _CFB(path.read_bytes())
+    except ValueError as e:
+        sys.exit("error: %s: %s" % (path, e))
+    props = _msg_props(cfb, 0)
+    fixed = _msg_fixed(cfb, 0, 32)
+    to, cc = [], []
+    for name, i in sorted(cfb.children(0).items()):
+        if name.startswith("__recip_version1.0_"):
+            rp, rf = _msg_props(cfb, i), _msg_fixed(cfb, i, 8)
+            who = rp.get("3001", "")
+            addr = rp.get("39FE") or rp.get("3003", "")
+            label = ("%s <%s>" % (who, addr)) if who and addr and addr not in who else (who or addr)
+            (cc if rf.get("0C15") == 2 else to).append(label)
+    sender = props.get("0C1A", "")
+    saddr = props.get("5D01") or props.get("0C1F") or props.get("0065", "")
+    sent = fixed.get("0039") or fixed.get("0E06")
+    rows = [("From", ("%s <%s>" % (sender, saddr)) if sender and saddr else (sender or saddr)),
+            ("To", "; ".join(to) or props.get("0E04", "")), ("Cc", "; ".join(cc) or props.get("0E03", "")),
+            ("Date", sent.strftime("%Y-%m-%d %H:%M UTC") if sent else "")]
+    note = None
+    if props.get("1000"):
+        body = _email_text(props["1000"])
+    elif props.get("1013") or props.get("1013:bin"):
+        html = props.get("1013") or props["1013:bin"].decode("utf-8", "replace")
+        body = _html_text_to_md(html, rep)
+    else:
+        body = ""
+        if props.get("1009:bin"):
+            note = "the message body is stored only as compressed RTF, which is not converted"
+            rep.drop("RTF body", 1)
+    attachments = []
+    for name, i in sorted(cfb.children(0).items()):
+        if name.startswith("__attach_version1.0_"):
+            ap, kids = _msg_props(cfb, i), cfb.children(i)
+            data = ap.get("3701:bin")
+            fname = ap.get("3707") or ap.get("3704") or ("embedded message" if "__substg1.0_3701000D" in kids else None)
+            attachments.append((fname, len(data) if data is not None else None))
+    return _email_md(props.get("0037", ""), rows, body, attachments, rep, note)
+
+
 # ---------------------------------------------------------------- csv / json / txt / pdf
 
 def read_text(path, rep):
@@ -1425,7 +1675,7 @@ def pdf_to_md(path, rep, ocr=True, ocr_lang="eng"):
 HANDLERS = {
     ".docx": docx_to_md, ".pptx": pptx_to_md, ".xlsx": xlsx_to_md, ".xlsm": xlsx_to_md,
     ".html": html_to_md, ".htm": html_to_md, ".csv": csv_to_md, ".tsv": csv_to_md,
-    ".json": json_to_md, ".pdf": pdf_to_md,
+    ".json": json_to_md, ".pdf": pdf_to_md, ".eml": eml_to_md, ".msg": msg_to_md,
 }
 LEGACY = {".doc": ".docx", ".ppt": ".pptx", ".xls": ".xlsx", ".rtf": ".docx", ".odt": ".docx",
           ".pages": ".docx", ".key": ".pptx", ".numbers": ".xlsx"}
@@ -1433,7 +1683,7 @@ LEGACY = {".doc": ".docx", ".ppt": ".pptx", ".xls": ".xlsx", ".rtf": ".docx", ".
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Convert a document to Markdown for another skill to read.")
-    ap.add_argument("input", help=".docx .pptx .xlsx .html .csv .tsv .json .txt .md .pdf")
+    ap.add_argument("input", help=".docx .pptx .xlsx .html .csv .tsv .json .txt .md .eml .msg .pdf")
     ap.add_argument("-o", "--output", required=True, help="Markdown file to write, or - for stdout")
     ap.add_argument("--max-rows", type=int, default=0,
                     help="xlsx only: keep at most this many data rows per sheet (0 = all)")

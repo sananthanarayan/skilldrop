@@ -1,0 +1,19 @@
+# nightly-triage: labels and summarises new issues in the tracker every night
+# runs on the shared ops runner (runner-ops-02)
+name: nightly-triage
+schedule: "0 2 * * *"        # 02:00 UTC daily
+image: internal/triage-agent:1.4
+
+agent:
+  model: model-medium
+  max_turns: 0               # 0 = unlimited
+  retry_on_rate_limit: true  # retry immediately, no backoff
+  tools:
+    - issue_tracker.read
+    - issue_tracker.label
+    - issue_tracker.comment
+
+env:
+  TRACKER_URL: https://tracker.example.internal
+  # same key as support-bot, ask in #ops before changing
+  PROVIDER_API_KEY: sk-EXAMPLE-0000
