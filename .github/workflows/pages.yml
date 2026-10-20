@@ -45,9 +45,13 @@ jobs:
         run: python3 build_pages.py # stdlib only — writes build/packs/, build/skills/, build/changelog/
       - name: Index the built site for full-text search
         # Pagefind reads the HTML and writes build/pagefind/, which the nav's search dialog loads.
-        # A build-time tool only: nothing is added to package.json or the published package, and
-        # the version is pinned. The site still searches names and summaries without it.
-        run: npx --yes pagefind@1.5.2 --site build
+        # A build-time tool only: nothing is added to package.json or the published package. It
+        # installs from .github/tools/package-lock.json, so every byte is checked against a hash,
+        # and with --ignore-scripts nothing it ships runs at install. The site still searches
+        # names and summaries without it.
+        run: |
+          npm ci --prefix .github/tools --ignore-scripts --no-audit --no-fund
+          .github/tools/node_modules/.bin/pagefind --site build
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:

@@ -4,7 +4,18 @@
 
 **Do not open a public issue.** Use GitHub's [private vulnerability reporting](https://github.com/sananthanarayan/skilldrop/security/advisories/new) — it creates a private advisory only the maintainer can see.
 
-Expect an acknowledgement within 7 days. If a fix ships, the advisory is published with credit unless you ask otherwise.
+Expect an acknowledgement within 7 days. Disclosure is coordinated with you: the advisory and the fix are published together, normally within 90 days of your report, with credit unless you ask otherwise.
+
+## Verifying a release
+
+Every release from 0.16.40 on is published to npm with provenance, and its GitHub Release carries the same tarball, a Sigstore-signed build provenance for it, and a CycloneDX SBOM:
+
+```bash
+npm audit signatures                     # in a project that installed skilldrop-cli
+gh attestation verify skilldrop-cli-<version>.tgz --repo sananthanarayan/skilldrop
+```
+
+The repo's supply-chain practices are scored weekly by [OpenSSF Scorecard](https://scorecard.dev/viewer/?uri=github.com/sananthanarayan/skilldrop).
 
 ## What counts as a vulnerability here
 

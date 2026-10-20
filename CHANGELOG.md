@@ -8,6 +8,23 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.40 — 2026-10-20
+
+- **Every release can be verified.** Each GitHub Release now carries:
+  - the exact tarball published to npm;
+  - a Sigstore-signed build provenance for it (`gh attestation verify skilldrop-cli-<version>.tgz --repo sananthanarayan/skilldrop`);
+  - a CycloneDX SBOM.
+
+  Its notes are this changelog entry, and its title is the pull request's ([RFC-0059](docs/rfcs/0059-signed-releases-and-scorecard.md)).
+- **The repo is scored by [OpenSSF Scorecard](https://scorecard.dev/viewer/?uri=github.com/sananthanarayan/skilldrop)** every week and after every merge, with a badge on the README.
+  - CI's own tools now install from hash-locked files.
+  - Every workflow is read-only at the top level.
+- **The README leads with the evidence:**
+  - one real request answered with and without a skill, and the blind judge's verdict;
+  - the last run's numbers;
+  - the skills that were retired for losing.
+- **The CLI asks for a GitHub star once.** The line prints after your first successful install, at an interactive terminal only, never in CI, a pipe or `--json`. Set `SKILLDROP_NO_STAR=1` to turn it off. Nothing is sent anywhere.
+
 ## 0.16.39 — 2026-10-20
 
 - **Eval fixtures no longer raise Dependabot alerts.** A fixture's fake `package.json`, `go.mod`, `pyproject.toml` or CI workflow is now stored as `<name>.fixture`. GitHub no longer reads its pins as the repo's own dependencies, which had produced 33 alerts and six security PRs against code nothing installs or runs. `run_bench.py` gives each file its real name in the run's workspace, and `validate.py` fails on a fixture dependency file that keeps its real name ([RFC-0058](docs/rfcs/0058-fixture-dependency-files.md)).

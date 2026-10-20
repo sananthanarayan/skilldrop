@@ -1,0 +1,8 @@
+{
+  "name": "skilldrop-build-tools",
+  "private": true,
+  "description": "Build-time tools for the site, locked by hash so CI installs exactly these bytes. Not part of the published package.",
+  "devDependencies": {
+    "pagefind": "1.5.2"
+  }
+}

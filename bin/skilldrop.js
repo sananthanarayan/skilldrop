@@ -119,6 +119,7 @@ Organisation policy (RFC-0050):
 
 Options:
   --dry-run          install | update | uninstall | new-skill: print what would change, change nothing
+  SKILLDROP_NO_STAR=1  don't print the one-time line asking for a GitHub star after the first install
   --yes              skip the confirmation uninstall and update --force ask for at a terminal
                      (scripts and CI are never asked)
   --agent            operate on subagents instead of skills. Targets:
@@ -1415,7 +1416,30 @@ function installProfile(args) {
   console.log(`\nProfile '${name}' installed.`);
 }
 
+/* One line, once per machine, after the first install that succeeds: a star is how other people
+   find the catalogue. Only at an interactive terminal — never in CI, a pipe or --json output —
+   and SKILLDROP_NO_STAR=1 turns it off. The only thing written is the marker that stops it
+   showing again; nothing is sent anywhere. If the marker can't be written, nothing is shown,
+   so it can never repeat. */
+function starNote(flags) {
+  if (!process.stdout.isTTY || process.env.CI || process.env.SKILLDROP_NO_STAR || flags.json) return;
+  const marker = path.join(os.homedir(), ".config", "skilldrop", "star-shown");
+  if (fs.existsSync(marker)) return;
+  try {
+    fs.mkdirSync(path.dirname(marker), { recursive: true });
+    fs.writeFileSync(marker, new Date().toISOString().slice(0, 10) + "\n", { flag: "wx" });
+  } catch (e) { return; }
+  console.log("\nIf skilldrop saves you time, a star helps other people find it: https://github.com/sananthanarayan/skilldrop" +
+              "\n  (shown once; SKILLDROP_NO_STAR=1 turns it off)");
+}
+
 function install(args) {
+  const done = installUnits(args);
+  if (!args.flags["dry-run"]) starNote(args.flags);
+  return done;
+}
+
+function installUnits(args) {
   if (args.flags["dry-run"] && (args.flags.panel || args.flags.profile || args.flags.loop || args.flags.agent))
     die("--dry-run covers skill installs, update and uninstall. To preview a panel, profile, loop or agent,\n" +
         "       read what it contains first: skilldrop profiles | loops | agents --json");

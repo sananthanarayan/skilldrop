@@ -90,6 +90,15 @@ check("install, diff, update and uninstall a skill with --dest", () => {
   expect(!exists(d, "sql-review"), "uninstall left the folder");
 });
 
+check("the one-time star line never reaches a pipe or CI", () => {
+  // spawnSync's stdout is a pipe, as in a script or CI, so the line must not print and no
+  // marker may be written (the marker is what would stop it showing at a real terminal later).
+  const d = dir("dest-star");
+  const out = run(["install", "brief-intake", "--dest", d], { env: { CI: "" } });
+  expect(!out.includes("a star helps"), "the star line printed to a pipe");
+  expect(!exists(HOME, ".config", "skilldrop", "star-shown"), "a pipe install wrote the star marker");
+});
+
 check("install a pack and a loop", () => {
   const d = dir("dest-b");
   run(["install", "--pack", "data-analytics", "--dest", d]);
