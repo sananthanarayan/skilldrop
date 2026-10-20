@@ -1,5 +1,5 @@
 {
-  "description": "For frontend engineers and the people who review their pages: read a Lighthouse report for what actually slows the page for real users, and choose how each route is rendered from what it needs.",
+  "description": "For frontend engineers and the people who review their pages: read a Lighthouse report for what actually slows the page, find what makes a JavaScript bundle heavy, and choose how each route is rendered from what it needs.",
   "display_name": "Frontend",
   "keywords": [
     "frontend",
@@ -28,9 +28,10 @@
     "recovery": "If the reply leads with the lab score or a generic checklist, ask for it by name (\"use web-performance-review\") and include the PageSpeed Insights JSON, which carries the field data."
   },
   "journey": {
-    "when": "A page is slow, or you're deciding how a new app's routes should be rendered.",
+    "when": "A page is slow, a bundle grew, or you're deciding how a new app's routes should be rendered.",
     "you_bring": [
       "a Lighthouse or PageSpeed Insights JSON, with field data if you have it",
+      "the bundler's stats file (webpack stats.json, an esbuild metafile or the Vite visualizer JSON)",
       "the app's routes, how fresh each one's data must be, and the framework"
     ],
     "steps": [
@@ -41,13 +42,18 @@
         "decide": "Which routes change rendering mode first."
       },
       {
+        "skill": "bundle-size-review",
+        "you_do": "Hand over the stats file, and the one before the change if a PR made it grow.",
+        "you_get": "The compressed JavaScript each entry loads before first render, what pulls in each heavy module, duplicates, and what can safely come out."
+      },
+      {
         "skill": "web-performance-review",
         "you_do": "Hand over the Lighthouse or PageSpeed Insights JSON, with field data.",
         "you_get": "Which vital fails for real users, why, and the fixes ranked by how much each moves it.",
         "decide": "Which fix ships first, and how you'll measure it in the field."
       }
     ],
-    "you_end_with": "Pages rendered the way their data needs, and fixes chosen by what real users feel."
+    "you_end_with": "Pages rendered the way their data needs, a bundle with nothing heavy in the first load that doesn't need to be, and fixes chosen by what real users feel."
   },
   "requires": [
     "core"

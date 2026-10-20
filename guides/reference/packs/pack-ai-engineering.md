@@ -13,7 +13,7 @@ Adopt and build AI systems: readiness assessment, use-case triage, rollout and a
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack ai-engineering` |
-| Skills | 14 plus 4 from core |
+| Skills | 15 plus 4 from core |
 | Loops | none |
 | How-to | [Use the AI engineering pack](../../how-to/packs/use-the-ai-engineering-pack.md) |
 
@@ -310,6 +310,36 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/a
 - Pricing one option properly (build vs buy, Option 0, cost layers) — that's `business-case`.
 - Planning the human rollout of a chosen use case — that's [`ai-adoption-rollout`](../../../packs/ai-engineering/skills/ai-adoption-rollout/SKILL.md).
 - Writing requirements for the thing you picked — that's `prd-draft`.
+
+### `judge-audit`
+
+Audit whether an LLM-as-judge, or a panel of judges, can be trusted for the decision its scores drive, before anyone acts on them — above all whether the judge errs differently on the variants being compared (prompt v1 vs v2, model A vs B, short vs long inputs), plus chance-corrected and weighted agreement with expert labels, precision and recall on a rare class, each run reported separately with the items that flipped, position and length bias, and confidence intervals, checked against the user's own gate or criterion and ending in a direct answer (ship or not, which judge to use).
+
+Tier **standard** · v0.3.0 · [SKILL.md](../../../packs/ai-engineering/skills/judge-audit/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/judge-audit/)
+
+**Use it when** the user asks "can we trust our LLM judge", "is our grader reliable enough to gate releases", "the grader says v2 is better, can we ship it", "which is the cheapest judge we can switch to", "our two judges agree 90%, is that good", "can we turn on auto-remove", "check our judge for position bias", or has a file of judge scores and wants to know whether to act on them.
+
+**Needs:** Python 3 for its scripts (standard library only).
+
+**A good result:**
+
+- **The first line answers the question asked:** ship or not, which judge, which arm it favours.
+- **The criterion is the user's;** with none, no invented pass mark decides anything.
+- **Statistics are stratified by the compared variable** before any pooled figure is quoted.
+- **Ordinal scores get weighted kappa, named as quadratic or linear.**
+- **A rare class gets its count, confusion, recall and precision with intervals,** not accuracy.
+- **Each run is reported on its own, with the flips,** joined on item id.
+- **Every number matches the output for the subset and run it is labelled with,** n included.
+- **What the data cannot measure is named,** never estimated.
+
+**Hands off to:** `llm-eval-harness` when the verdict is DO NOT RELY ON IT and the judge, its rubric or its labelled set has to be rebuilt.
+
+**Not for:**
+
+- Designing the eval set, grading methods and pass bar for an LLM feature — `llm-eval-harness`
+- Generating eval cases for a skill's `evals/` folder — `eval-harness-generator`
+- Measuring how much teams use AI tools — `ai-usage-report`
+- Inter-rater reliability for humans only, with no model in the loop — the statistics transfer, but the bias checks here assume a model
 
 ### `llm-eval-harness`
 

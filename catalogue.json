@@ -70,7 +70,9 @@
         "refactor-plan",
         "behaviour-equivalence",
         "rendering-strategy",
-        "web-performance-review"
+        "web-performance-review",
+        "bundle-size-review",
+        "judge-audit"
       ]
     },
     "build-on-the-claude-api": {

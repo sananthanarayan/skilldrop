@@ -23,6 +23,7 @@ What each one declares in its manifest: the packages to install, the environment
 | [`backlog-triage`](../../packs/trackers/skills/backlog-triage/SKILL.md) | trackers | — | — | — | — | named-paths |
 | [`behaviour-equivalence`](../../packs/dev-team/skills/behaviour-equivalence/SKILL.md) | dev-team | — | — | — | — | named-paths |
 | [`brand-kit`](../../packs/design/skills/brand-kit/SKILL.md) | design | — | — | — | — | none |
+| [`bundle-size-review`](../../packs/frontend/skills/bundle-size-review/SKILL.md) | frontend | — | — | `registry.npmjs.org` | `npx`, `npm`, `pnpm`, `yarn` | named-paths |
 | [`cloud-cost-review`](../../packs/sre-oncall/skills/cloud-cost-review/SKILL.md) | sre-oncall | — | — | — | — | named-paths |
 | [`codebase-tour`](../../packs/dev-team/skills/codebase-tour/SKILL.md) | dev-team | — | — | — | — | none |
 | [`content-design`](../../packs/experience-design/skills/content-design/SKILL.md) | experience-design | — | — | — | — | none |
@@ -36,6 +37,7 @@ What each one declares in its manifest: the packages to install, the environment
 | [`file-to-markdown`](../../packs/converters/skills/file-to-markdown/SKILL.md) | converters | — | — | — | `pdftotext`, `pdftoppm`, `tesseract` | named-paths |
 | [`hypothesis-comparison`](../../packs/research/skills/hypothesis-comparison/SKILL.md) | research | — | — | — | — | named-paths |
 | [`interactive-diagram`](../../packs/solution-architect/skills/interactive-diagram/SKILL.md) | solution-architect | — | — | — | — | project |
+| [`judge-audit`](../../packs/ai-engineering/skills/judge-audit/SKILL.md) | ai-engineering | — | — | — | — | named-paths |
 | [`lean-canvas`](../../packs/product-manager/skills/lean-canvas/SKILL.md) | product-manager | — | — | — | — | named-paths |
 | [`marketing-flyer`](../../packs/design/skills/marketing-flyer/SKILL.md) | design | — | — | — | `google-chrome`, `chromium`, `chrome` | named-paths |
 | [`md-to-confluence`](../../packs/converters/skills/md-to-confluence/SKILL.md) | converters | — | `CONFLUENCE_EMAIL (optional)`, `CONFLUENCE_API_TOKEN (optional)`, `CONFLUENCE_PAT (optional)` | `*.atlassian.net` | — | named-paths |

@@ -190,6 +190,10 @@
       "tier": "standard",
       "rationale": "Extraction plus judgment calls (severity vs priority, hypothesis ranking) — same shape as brief-intake: above light, below heavy."
     },
+    "bundle-size-review": {
+      "tier": "standard",
+      "rationale": "Sizes, duplicates and what pulls each module in are computed from the bundler's stats file by its script; the judgment is which removal is safe."
+    },
     "business-case": {
       "tier": "heavy",
       "rationale": "Weighted multi-option judgment with a committal recommendation — cheaper models mis-weight costs, inflate benefits, and miss the flip-assumption. Never downgrade."
@@ -313,6 +317,10 @@
     "job-fit-analysis": {
       "tier": "standard",
       "rationale": "Matches a posting's requirements to resume lines and reports the gaps. The rule is mechanical: no line in the resume, no credit."
+    },
+    "judge-audit": {
+      "tier": "standard",
+      "rationale": "The agreement and stability statistics are computed by its script; the model's work is reading them against the decision the judge serves."
     },
     "launch-readiness": {
       "tier": "standard",

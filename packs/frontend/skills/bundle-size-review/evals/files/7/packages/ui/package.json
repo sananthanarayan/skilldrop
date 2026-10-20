@@ -1,0 +1,20 @@
+{
+  "name": "@quillmark/ui",
+  "version": "2.4.0",
+  "description": "Quillmark shared React components",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && cp src/*.css dist/"
+  },
+  "dependencies": {
+    "@tanstack/table-core": "8.20.5",
+    "chart.js": "4.4.4",
+    "dayjs": "1.11.13"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
