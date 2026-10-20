@@ -1,12 +1,12 @@
 # skilldrop
 
-> 102 portable skills for the artifacts knowledge work ships (ADRs, design docs,
+> 104 portable skills for the artifacts knowledge work ships (ADRs, design docs,
 > PRDs, runbooks, threat models, decks, postmortems), plus 10 loops that sequence them
 > behind gates. A loop orders skills; a skill never calls a skill, so every one of the
-> 102 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
+> 104 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.16.30.
+> Version 0.16.31.
 
 ## Start here
 
@@ -159,6 +159,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use pre-merge-review](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-pre-merge-review.md) *(how-to)*: Gate an existing change for merge
 - [Use prfaq](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-prfaq.md) *(how-to)*: Write an Amazon-style PR/FAQ
 - [Use prompt-caching-advisor](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-prompt-caching-advisor.md) *(how-to)*: Analyzes a prompt or conversation structure and identifies the highest-value cache breakpoints
+- [Use refactor-plan](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-refactor-plan.md) *(how-to)*: Plan paying down one piece of technical debt as a refactor that serves the goal it is blocking
 - [Use release-notes](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-release-notes.md) *(how-to)*: Write release notes from a git log, a list of merged PRs or rough notes about what changed
 - [Use requirements-interview](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-requirements-interview.md) *(how-to)*: Generate per-stakeholder interview kits for feature discovery
 - [Use research-plan](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-research-plan.md) *(how-to)*: Turn a vague research question into a research plan
@@ -166,6 +167,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use reverse-architecture](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-reverse-architecture.md) *(how-to)*: Reverse-engineer a system's architecture from what already exists
 - [Use risk-register](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-risk-register.md) *(how-to)*: Build or update an enterprise or project risk register
 - [Use role-shortlist](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-role-shortlist.md) *(how-to)*: Read every open role on an employer's careers page, a job-board export or a folder of saved postings, and say which ones one person should apply for
+- [Use rollout-plan](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-rollout-plan.md) *(how-to)*: Plan the progressive release of a code change behind a feature flag or canary
 - [Use runbook-generator](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-runbook-generator.md) *(how-to)*: Generate an operational runbook for a service
 - [Use security-questionnaire-response](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-security-questionnaire-response.md) *(how-to)*: Answer a customer's security questionnaire from your own evidence
 - [Use service-blueprint](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-service-blueprint.md) *(how-to)*: Build a service blueprint
@@ -251,7 +253,7 @@ except `api-builder` requires `core`, which installs with it.
 - **core** (4 skills, loops: ship-a-draft): The cross-role toolkit every pack builds on: structured intake, document critique, the review council, and output hygiene, plus the ship-a-draft wrapper. Installed automatically with every role pack.
 - **solution-architect** (10 skills, loops: design, requires core): Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.
 - **product-manager** (9 skills, loops: discover, requires core): Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, and success measurement.
-- **dev-team** (17 skills, loops: build, release, requires core): Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, pull request descriptions, a ranked technical-debt register, migrations, launch readiness, release notes, agent-policy files, and code-quality gates.
+- **dev-team** (19 skills, loops: build, release, requires core): Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, pull request descriptions, a ranked technical-debt register, migrations, launch readiness, release notes, agent-policy files, and code-quality gates.
 - **sre-oncall** (7 skills, loops: operate, requires core): Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.
 - **stakeholder-comms** (4 skills, requires core): Non-technical audiences: audience profiling, exec summaries, decision logs, and guides. Decks live in the design pack.
 - **design** (4 skills, requires core): On-brand visual work: capture a brand once, then build real PowerPoint decks and print-ready marketing flyers in that brand, with logo, colours and fonts applied.
@@ -271,9 +273,9 @@ except `api-builder` requires `core`, which installs with it.
 
 - **decide-what-to-build** (12 skills): Turn a direction into a committed, measurable plan: press releases, strategy frameworks, OKRs, business cases, requirements, PRDs, and the metrics that will say whether it worked.
 - **design-the-system** (16 skills): Commit the shape before the code: decision records, design docs, diagrams, API and data contracts, migration and threat models, and the design of any agentic parts.
-- **build-and-review-software** (18 skills): The loop around the code itself: supervised implementation, adversarial review panels, test plans, triage, pull request descriptions, a ranked technical-debt register, accessibility and static-analysis passes, and the policy files agents read.
+- **build-and-review-software** (19 skills): The loop around the code itself: supervised implementation, adversarial review panels, test plans, triage, pull request descriptions, a ranked technical-debt register, accessibility and static-analysis passes, and the policy files agents read.
 - **build-on-the-claude-api** (4 skills): Skills for teams building directly on the Anthropic API — prompt caching strategy, token budgeting, eval generation, and tool-use schema writing.
-- **run-and-recover-the-service** (9 skills): Operate what shipped: runbooks, observability design, release notes, incident communication, and the postmortem that closes the loop.
+- **run-and-recover-the-service** (10 skills): Operate what shipped: runbooks, observability design, release notes, incident communication, and the postmortem that closes the loop.
 - **explain-it-to-decision-makers** (7 skills): Get a non-technical audience to a decision: audience profiling, deck outlines and real decks, exec summaries, decision logs, and how-to guides.
 - **govern-ai-use** (6 skills): Adopt AI deliberately and prove what it is doing: readiness assessment, use-case triage, rollout plans, acceptable-use policy, adoption staging, and usage reporting.
 - **create-on-brand-collateral** (4 skills): Make collateral that looks like it came from your team: capture the brand once, then build decks and print-ready flyers with your logo, colours and fonts.
@@ -296,7 +298,7 @@ except `api-builder` requires `core`, which installs with it.
 - [catalogue.json](https://sananthanarayan.github.io/skilldrop/catalogue.json): every skill, loop, pack and outcome as machine-readable JSON — name, description, tier, tags, related. Prefer this over scraping the site.
 - [model-routing.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/model-routing.json): the abstract tier per skill (light/standard/heavy) and the provider map that resolves a tier to a concrete model.
 - [catalogue.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/catalogue.json): pack display order and outcome membership; each pack's metadata is in `packs/<pack>/pack.json`.
-- All 102 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
+- All 104 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
 
 ## Optional
 

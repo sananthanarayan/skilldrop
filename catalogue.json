@@ -64,7 +64,8 @@
         "backlog-triage",
         "tracker-brief-sync",
         "dependency-upgrade-review",
-        "codebase-tour"
+        "codebase-tour",
+        "refactor-plan"
       ]
     },
     "build-on-the-claude-api": {
@@ -89,7 +90,8 @@
         "launch-readiness",
         "cloud-cost-review",
         "delivery-metrics-report",
-        "terraform-plan-review"
+        "terraform-plan-review",
+        "rollout-plan"
       ]
     },
     "explain-it-to-decision-makers": {

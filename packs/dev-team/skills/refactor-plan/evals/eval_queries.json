@@ -1,0 +1,46 @@
+[
+  {
+    "query": "This 1,800-line OrderService is where every change goes wrong; plan how we untangle it without stopping feature work",
+    "should_trigger": true
+  },
+  {
+    "query": "TD-04 got approved for this quarter. Plan the refactor as small PRs we can ship one at a time",
+    "should_trigger": true
+  },
+  {
+    "query": "How do we break billing's dependency on the web package without a big-bang rewrite?",
+    "should_trigger": true
+  },
+  {
+    "query": "Give me a strangler-fig plan for replacing our legacy report builder module piece by piece",
+    "should_trigger": true
+  },
+  {
+    "query": "We want to stop calling the SMTP client from 14 places — plan the refactor with characterisation tests first",
+    "should_trigger": true
+  },
+  {
+    "query": "Go through our TODOs and incident notes and tell me which tech debt to pay down this quarter",
+    "should_trigger": false
+  },
+  {
+    "query": "Plan the cutover from MySQL to Postgres with a backfill and no downtime",
+    "should_trigger": false
+  },
+  {
+    "query": "Implement step 2 of the refactor plan: move calculate_tax into its own module with tests",
+    "should_trigger": false
+  },
+  {
+    "query": "Write an ADR for splitting the monolith into an orders service and a billing service",
+    "should_trigger": false
+  },
+  {
+    "query": "Review this refactoring PR before I merge it",
+    "should_trigger": false
+  },
+  {
+    "query": "Split the gift-card checkout epic into user stories",
+    "should_trigger": false
+  }
+]

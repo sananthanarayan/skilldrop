@@ -41,6 +41,7 @@ What each one declares in its manifest: the packages to install, the environment
 | [`pre-merge-review`](../../packs/dev-team/skills/pre-merge-review/SKILL.md) | dev-team | — | — | — | `git`, `ruff`, `mypy`, `pytest`, `*` | project |
 | [`resume-tailor`](../../packs/career/skills/resume-tailor/SKILL.md) | career | — | — | — | — | named-paths |
 | [`risk-register`](../../packs/grc/skills/risk-register/SKILL.md) | grc | — | — | — | — | named-paths |
+| [`rollout-plan`](../../packs/dev-team/skills/rollout-plan/SKILL.md) | dev-team | — | — | — | — | none |
 | [`skill-review`](../../packs/skill-engineering/skills/skill-review/SKILL.md) | skill-engineering | — | — | — | — | named-paths |
 | [`source-synthesis`](../../packs/research/skills/source-synthesis/SKILL.md) | research | — | — | — | — | named-paths |
 | [`sql-review`](../../packs/data-analytics/skills/sql-review/SKILL.md) | data-analytics | — | — | — | — | named-paths |

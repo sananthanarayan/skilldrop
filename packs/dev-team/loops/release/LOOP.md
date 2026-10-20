@@ -14,17 +14,19 @@ being folded into either neighbour.
 
 | # | Stage | Type | Skills | Gate |
 |---|---|---|---|---|
-| 1 | `plan` | generate | [`migration-plan`](../../skills/migration-plan/SKILL.md) | — |
+| 1 | `plan` | generate | [`migration-plan`](../../skills/migration-plan/SKILL.md), [`rollout-plan`](../../skills/rollout-plan/SKILL.md) | — |
 | 2 | `ready` | verify | [`launch-readiness`](../../skills/launch-readiness/SKILL.md) | **G3** review |
 | 3 | `announce` | generate | [`release-notes`](../../skills/release-notes/SKILL.md) | — |
 | 4 | `go` | gate | [`council-review`](../../../core/skills/council-review/SKILL.md) | **G3.1** human |
 
 ## How to run this loop
 
-1. **Plan the rollout and the way back.** `migration-plan` sets out the phases, a tested
-   rollback for each one, and at most one named point of no return. For a code-only change
-   behind a flag, the plan can be short: the flag, the stages and how to turn it off. It still
-   has to exist.
+1. **Plan the rollout and the way back.** A change to data, a schema or a platform →
+   `migration-plan`: the phases, a tested rollback for each, and at most one named point of
+   no return. A code change released behind a flag or a canary → `rollout-plan`: the exposure
+   steps, the metric and threshold that decide each one, how long each must run to detect a
+   regression, and what turning the flag off doesn't undo. A change that does both gets both.
+   The plan can be short, but it has to exist.
 2. **Judge readiness at G3.** `launch-readiness` lists the change's own failure modes, then
    checks rollback, detection, response, measured targets, data and privacy, comms and
    exposure, each with evidence. `REVISE` returns to `plan`, and the report names which gap to

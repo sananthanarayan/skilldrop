@@ -1,0 +1,106 @@
+{
+  "skill_name": "refactor-plan",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "This 1,800-line OrderService is where every change goes wrong; plan how we untangle it without stopping feature work. The code is order_service.py, the register row is debt-register-row.md, coverage is in test-coverage.txt, and what's in flight is in-flight-prs.md.",
+      "assertions": [
+        "Opens with the approach and the first step in its first lines, and states the target with its baseline taken from the register row (9 of the last 12 order PRs touching order_service.py, or the 3.1-day against 1.2-day review time) and a checkable stop point",
+        "Characterisation tests come before any step that touches calculate_tax, refund or send_confirmation_email (0% coverage), and they pin the per-line tax rounding and the zero-price negative-quantity lines as they behave today rather than fixing them",
+        "No step is a rewrite or a long-lived branch: every step is one PR merged to main, and moves are separated from changes",
+        "Each step says what changes, why (naming the technique where it matters), which tests verify it, and whether it is a pure refactor or a behaviour change; any step that adds a flag or an abstraction says which side is live for rollback",
+        "Names the clash with #481 (apply_discounts, charge_payment) and #486 (send_confirmation_email) and decides how each is handled (land first, wait, fold in, route through the new seam, or a short freeze window), rather than moving that code under the open PRs; characterisation tests are not delayed by either PR",
+        "The scope fence keeps the confirmation-email-on-failed-payment behaviour (INC-715) and the rounding out of the refactor as behaviour changes, and says new findings go to the debt register",
+        "Says the plan can stop after any step with the code better than before, and gives a reason the first real step goes first (for example the planned partial refunds or the in-flight gift-card work)",
+        "Does not invent modules, metrics or numbers not in the input; every file and function cited exists in the four files",
+        "Answers at the size of the ask: the plan is in the reply as a numbered sequence of steps of a line or two each, not a long multi-section document, since no document was requested"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our Django app reads settings straight from os.environ in about 40 places and every test has to monkeypatch the environment. I want a plan to move everything behind one settings object. While we're at it, let's rename all the env vars to a consistent APP_ prefix.",
+      "assertions": [
+        "Produces the plan without asking questions first, with its assumptions tagged [assumption] at the top",
+        "Pulls the env var rename out of the refactor as a behaviour change, and either sends it to its own later parallel change (read both names, then drop the old) or to a separate ticket, instead of folding it into the steps",
+        "Uses 'about 40 direct os.environ reads' as the baseline and does not invent other measured numbers such as test times or file counts; anything else to measure is marked not measured",
+        "Introduces the settings object first and moves call sites over in batches of one PR each, so main stays releasable between batches",
+        "Characterisation tests pin how values are parsed today (defaults when unset, how strings like 'false' or '0' are read) before call sites move",
+        "The stop point is zero direct os.environ reads outside the settings object, enforced by a check in CI or a test",
+        "Does not invent file names, module names or settings that the prompt did not mention"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We want the nightly batch worker to import billing directly, but billing imports from web all over the place. imports.txt has the import graph and register.md has the debt row (TD-11). Plan the refactor. Also, invoices.total_cents should become a decimal column, so fold that in too.",
+      "assertions": [
+        "Builds the order from imports.txt as a prerequisite graph (mikado-style or explicit dependency order): the goal, the import edges blocking it, and which edges change cleanly first, with the reason",
+        "States the target as the count of billing-to-web imports in imports.txt (seven) going to zero, or the four in invoices.py and dunning.py that block the worker as the first milestone, with the final stop point enforced by an import check in CI",
+        "Puts characterisation tests for billing/proration.py before any step that changes it, because the register row says it has no tests, and relies on tests/billing/ for invoices and dunning",
+        "Sequences the edges that block worker/nightly.py (in billing/invoices.py and billing/dunning.py) before the proration and tax edges the worker doesn't need, and says the plan can stop with the worker unblocked and the code better",
+        "Pulls the invoices.total_cents column change out of the refactor as a schema change with data to migrate, to be planned separately as a migration, and does not fold it into any step",
+        "Every step cites the specific import line or file from imports.txt it removes, and states its rollback",
+        "Does not invent modules, functions, metrics or numbers beyond imports.txt and register.md"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-20",
+      "prompt": "I'm tech lead on the billing squad. I want a proper refactor plan for DEBT-14 in docs/tech-debt-register.md, i.e. build_invoice in src/billing/invoice.py. Goal: adding a tax region or a pricing rule should stop being a week of fear. No rewrite, and we can't freeze feature work; open PRs are in docs/open-prs.md. Callers I know about are preview_invoice in the same file and src/partners/statement.py; the only billing tests we have are tests/billing/test_payments.py. Please write the plan to docs/refactor-plan-debt-14.md so I can take it to planning on Thursday.",
+      "assertions": [
+        "Spots that src/partners/statement.py depends on build_invoice mutating the caller-supplied line_items list (it reads the appended tax line back from its own `lines` list, not from the returned invoice), and the plan either keeps that side effect working or moves that caller off it in its own step before the mutation is removed. It does not quietly make build_invoice pure.",
+        "Spots that reports/monthly_revenue.py has its own copied TAX_RATES and tax logic, which has already drifted (no US-TX, no EU reverse-charge rule). The plan puts it explicitly inside or outside the scope fence, and does not claim the refactor removes duplicated tax logic if the report is left out.",
+        "Puts characterisation tests for build_invoice first, before any extraction, and says they must cover the existing branches (short-period proration, annual anniversary month, included seats/annual add-on discount, usage tiers, each coupon type including expiry, tax-exempt and reverse charge, non-GBP conversion, credit notes, rounding). They pin current output, float-rounding quirks included. Notes that test_payments.py gives no coverage of invoice.py.",
+        "Deals with the clash with PR #412 (tax block and TAX_RATES, committed to customers for 1 Nov): it sequences the tax-block work after #412 merges, or otherwise avoids conflicting edits to that block while #412 is open. It also mentions draft PR #420 touching the add-ons block.",
+        "Keeps DEBT-15 (float to Decimal money) and any change to rounding or tax results out of scope as separate work, and states that every step preserves behaviour, i.e. invoice output is unchanged.",
+        "Breaks the work into small, separately mergeable PRs, each leaving main releasable. Each step names a specific technique that fits it, e.g. extract function per section (plan, add-ons, usage, coupons, tax, currency, credit note), or parallel change / expand-contract for the line_items parameter or the signature with 9 parameters.",
+        "Sets a measurable target with a baseline taken from the files (e.g. build_invoice is about 165 lines with 9 parameters and 0 tests; or the register's '2 incidents in Q3' / 'most of a sprint per tax region') or marked as 'to measure'. It also defines an explicit stop point where the refactor is finished.",
+        "Invents no facts: no made-up cyclomatic-complexity numbers, coverage percentages, incident counts, team sizes or dates beyond those in the inputs, and no claims that callers, modules or tests exist beyond those shown. New modules it proposes are clearly labelled as proposed. Unknowns, such as other callers of build_invoice, appear as checks to run (e.g. grep for build_invoice and line_items=), not as stated facts."
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-20",
+      "prompt": "ok so we're moving off the old smtp relay to the new email provider, relay contract ends end of Q1. LegacyMailer has to die but i really dont want a big bang, peak season is coming and #88 needs to land. how do we do this?? stuff is in src/notify, see open-prs.txt and ci-notes.md. we'll write the new provider client ourselves, its just an HTTP API",
+      "assertions": [
+        "Flags that LegacyMailer.send returns true even when sending fails (the catch block returns true), and that src/orders/onOrderShipped.ts has a retryQueue branch on !sent that has never fired as a result. Warns that a new client which honestly returns false (or throws) would change behaviour, with possible retries or duplicate emails. Keeps the current semantics at the seam and treats surfacing errors as a separate, deliberate change.",
+        "Finds that scripts/nightly-digest.js has its own copy of the SMTP send and renderer, bypasses LegacyMailer, and skips the suppression list. Brings it into the plan, since the relay can't be switched off while it exists, and does not treat deleting legacyMailer.ts as finishing the migration.",
+        "Proposes an incremental migration through a seam (branch by abstraction and/or strangler fig): an interface the callers depend on, the new HTTP-provider implementation behind it, a per-template or per-caller switch via flag/config with a quick rollback, and legacy code deleted only once traffic on it is zero.",
+        "Lists the LegacyMailer behaviours that need characterisation tests before the swap: comma-splitting and lowercasing recipients, suppression-file filtering (and returning true when all recipients are suppressed), bccOps, per-template subjects including the 'there' fallback, missing vars rendering as empty, sendBulk's sequential 200ms pacing. Notes the existing test only covers render().",
+        "Handles each in-flight PR that matters: #88 (adds a template and subject inside legacyMailer.ts; must land for peak) is allowed to land first or is accommodated, not blocked. #91 (rewrites loadTemplate/templates to MJML) is flagged as a clash with the template-rendering step. #93 (new mailer.send caller for magic_link) is told to go through the new seam.",
+        "Sizes and sequences the steps against ci-notes.md (about 38 min e2e that flakes about 1 in 6, manual prod approval, about 2 deploys a week) and the end-of-Q1 deadline. Each step is its own small PR leaving main releasable. Includes a measurable target and stop point, e.g. templates or call sites still on the relay going from a baseline counted in the files to 0, or relay send volume reaching 0, before the contract ends.",
+        "Invents no facts: no named email vendor or specific API endpoints, no email volumes, error rates, team size or calendar dates beyond 'end of Q1', and no claim of call sites beyond those in the files. Unknowns (other callers of mailer, the provider's suppression handling, which templates are highest volume) are raised as questions or checks.",
+        "Delivers a usable plan in this reply despite the vague request, asking at most a few targeted questions, and recommends neither a big-bang cutover nor a feature freeze."
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-20",
+      "prompt": "I need a refactor plan for InvoiceService in billing-service (billing-service/src/main/kotlin/billing/InvoiceService.kt). It's become a god class: JPA queries, native SQL and all our invoice rules (totals, tax, late fees, payment state) in one place. ADR-007 (docs/adr-007-persistence.md) commits us to moving off Hibernate to jOOQ in Q1, and I want the business rules pulled out before that starts so the ORM swap really is persistence-only. We can't freeze feature work on this service; what's open right now is in docs/open-prs.md. The existing tests are in billing-service/src/test/kotlin/billing/. Please write the plan as a sequence of PRs I can hand to the team.",
+      "assertions": [
+        "Flags that DunningJob.run() mutates invoices returned by findOverdue (status, dunningLevel, lastDunnedOn) without saving them, relying on Hibernate dirty checking inside @Transactional, and makes the plan handle it (an explicit save step or a test pinning that the changes persist) before findOverdue moves behind a non-JPA interface or the ORM changes.",
+        "Notices that InvoicePdfRenderer.taxFor is a copy of computeLineTax but rounds HALF_UP instead of HALF_EVEN, and does not silently merge the two as a behaviour-preserving step: it either fences the renderer out of scope or raises the mismatch as a decision for finance/the team (ADR-007 says tax rules are not to change).",
+        "Puts characterisation tests ahead of moving the untested logic, naming at least applyLateFees (grace days, exemption, the daysLate/30 multiplier, only raising the fee) and per-line tax rounding, since the existing tests only cover createInvoice; and says these tests should not need a database once the rules are extracted, or explains how they move from @SpringBootTest to plain unit tests.",
+        "Sequences around PR #412: does not start moving applyLateFees until #412 (approved, expected to merge this week) has landed, or explicitly rebases onto it; and names PR #415 (credit notes, changes void, about 3 weeks out) as a clash to coordinate with, e.g. by agreeing where issueCreditNote should live.",
+        "Sets a target taken from ADR-007's precondition, such as: invoice rule code has no jakarta.persistence imports and no EntityManager dependency, with the baseline read from the current file and a stop point at that precondition; the jOOQ migration itself is explicitly outside the scope fence, as are tax and late-fee rule changes.",
+        "Each step is a separate, small PR that leaves main releasable and behaviour unchanged, and each names a concrete technique that fits it (e.g. extract a pure InvoiceCalculator / late-fee policy, introduce a repository port in front of the EntityManager queries as branch by abstraction, parallel change for the findOverdue callers). It does not propose a rewrite or a long-lived branch.",
+        "Treats markPaid's native customer balance update (Customer.balance is mapped read-only) as persistence that has to stay atomic with the invoice save, and keeps it on the persistence side rather than moving it into the rules code.",
+        "Invents no modules, files, metrics, dates or numbers that are not in the provided files (no made-up coverage percentages, line counts, team sizes or PR numbers); anything new it proposes, such as a class name, is clearly labelled as a proposal."
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-20",
+      "prompt": "web/src/components/CheckoutPanel.tsx is a nightmare. what's the plan? we ship nov 3 btw, open stuff is in notes/open-work.md",
+      "assertions": [
+        "The answer is short and easy to scan, matching a casual one-line question: a brief plan of a handful of steps, not a long formal document with many sections, and it does not ask a string of clarifying questions before giving a plan.",
+        "Respects the release: nothing beyond adding tests or trivial, zero-risk changes goes into CheckoutPanel before the 30 Oct code freeze / 3 Nov v4.8 release, and the structural refactor starts after release (or the plan explains why a specific step is safe to land before freeze).",
+        "Puts gift cards PR #231 (in v4.8, rewrites the totals block and submit(), expected merge by 28 Oct) ahead of any refactor of the same code, so the refactor does not conflict with it; and mentions #236 (address autocomplete, parked until after release) as touching the address section the plan would move.",
+        "Spots that MiniCart.tsx duplicates the totals maths but differs from CheckoutPanel (it rounds the discount per line instead of on the subtotal, and its free-shipping test is >= 5000 where CheckoutPanel uses > 5000), links this to WEB-512's 1p mismatch, and treats unifying them as a deliberate behaviour change needing a decision on which is correct, not a behaviour-preserving step.",
+        "Spots that OrderReview.tsx reads the 'checkout_draft' localStorage entry that CheckoutPanel writes (including total), and keeps that contract unchanged (or pins it with a test) when draft or totals logic is moved into a hook or module.",
+        "Asks for characterisation tests before moving logic, because the only existing test is a single snapshot: at least totals with a promo and the free-shipping threshold, and the draft write, as plain tests on behaviour rather than more snapshots.",
+        "Gives a target and stop point tied to something real in the input, for example WEB-530 (pay-by-bank in Q1 needs the payment step to stop assuming card fields) or pulling the totals and validation into pure functions, and says what is out of scope (e.g. not a redesign of the checkout flow).",
+        "Invents no files, metrics, dates or numbers not in the provided files; any count it quotes (e.g. how many useState calls there are or the file's length) matches the actual file, and proposed new hooks or modules are clearly labelled as proposals."
+      ]
+    }
+  ]
+}

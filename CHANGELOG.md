@@ -8,6 +8,12 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.31 — 2026-10-20
+
+- **`rollout-plan`** plans turning on a flagged or canaried change. It answers your question first, then builds the ramp around what actually limits it: a partner's daily cap, a billing cycle, a shadow run, or traffic too low for percentages to mean anything. Each step has a threshold measured against the flag-off group and a rule set in advance, and the plan says how long the step must run to catch a regression and what turning the flag off doesn't undo. It's an option in the `release` loop's first stage, beside `migration-plan`.
+- **`refactor-plan`** plans paying down one piece of technical debt in small steps, each its own PR, with main releasable after every one. Characterisation tests go first on the code that has caused incidents. Each step is labelled refactor or behaviour change, and the plan ends at the structure your goal needs. A question asked in chat gets a plan sized for chat.
+- Both failed their first measurement in 0.16.30, were revised from the judges' reasons, and were then preferred to plain Claude Code in every pair on new held-out evals ([RFC-0053](docs/rfcs/0053-six-skills-for-the-lifecycle-gaps.md)).
+
 ## 0.16.30 — 2026-10-20
 
 - **Four new skills**, each admitted on held-out evals written by someone who saw only its description ([RFC-0053](docs/rfcs/0053-six-skills-for-the-lifecycle-gaps.md)):

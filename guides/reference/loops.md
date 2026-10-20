@@ -157,7 +157,7 @@ flowchart LR
     classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
     classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
 
-    plan["plan<br/><small>migration-plan</small>"]:::gen
+    plan["plan<br/><small>migration-plan·rollout-plan</small>"]:::gen
     ready["ready<br/><small>launch-readiness</small>"]:::review
     announce["announce<br/><small>release-notes</small>"]:::gen
     go["go<br/><small>council-review</small>"]:::gate
