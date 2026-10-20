@@ -1,0 +1,60 @@
+{
+  "name": "agent-config-review",
+  "version": "0.1.0",
+  "description": "Review a coding agent's configuration for access broader than the work needs and give a verdict — SAFE AS CONFIGURED, TIGHTEN BEFORE USE or DO NOT USE — reading what actually wins across every scope (Claude Code user, project, local and managed settings; permission allow/deny/ask lists, defaultMode, sandbox, hooks, plugins, env; .mcp.json; subagent tool lists; Codex sandbox_mode and approval_policy and the profile in use; Cursor and Copilot agent settings), with each finding's file and line, what it lets happen in plain words, and the exact replacement config. Use when the user asks \"is this Claude Code / Codex / Cursor setup safe\", \"review our .claude/settings.json\", \"audit our agent permissions\", \"is Bash(npm:*) OK in the allow list\", \"check this repo's agent config before we open it\", or wants an agent's permissions tightened before use.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "agent-incident-response",
+    "agent-threat-model",
+    "ai-usage-policy",
+    "mcp-pairing",
+    "subagent-design"
+  ],
+  "handoff": [
+    {
+      "to": "agent-threat-model",
+      "when": "the configuration puts untrusted content, private data and a way to send data out in one session",
+      "purpose": "Attack the agent's design path by path and break a leg on every path that can leak data.",
+      "fallback": "If agent-threat-model is absent, list each session's three marks — untrusted content, private data, a way out (shell, write tools, network) — and split or drop anything that holds all three with nothing asking."
+    },
+    {
+      "to": "mcp-pairing",
+      "when": "the servers themselves are the wrong ones for the work, not just configured too widely",
+      "purpose": "Choose which servers each stage of the work connects to, read-only by default.",
+      "fallback": "If mcp-pairing is absent, cut every server the work doesn't name, make the rest read-only, and give each its own narrowly scoped credential."
+    },
+    {
+      "to": "agent-incident-response",
+      "when": "the review finds signs the exposure was already used: a token in a pushed or public repo, a hook or server that already ran downloaded code",
+      "purpose": "Revoke, stop and scope in the order that limits damage before the config is cleaned up.",
+      "fallback": "If agent-incident-response is absent, revoke the credential at its issuer first, stop every session and job that holds it, keep the logs, then fix the config."
+    }
+  ],
+  "tags": [
+    "agentic",
+    "least-privilege",
+    "tool-permissions",
+    "security",
+    "configuration"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [
+      "git"
+    ],
+    "files": "named-paths",
+    "notes": "The script reads only the folders and files passed to it (agent settings, MCP configs, subagent files, and any file named with --also) to list what they grant; secret-shaped values are masked in its output, which goes to stdout or the path given with -o. No network. The instructions name one git command, to untrack a personal settings file."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "Reading settings, hooks and MCP config against a fixed checklist of over-broad grants; bounded judgment with a verdict that follows from the findings."
+  }
+}

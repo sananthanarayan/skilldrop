@@ -8,6 +8,27 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.36 — 2026-10-20
+
+- **Ten new skills.** Each was preferred by blind judges to plain Claude Code on held-out evals ([RFC-0057](docs/rfcs/0057-standing-out-and-closing-gaps.md)).
+  - **`behaviour-equivalence`** proves that a rewrite or migration behaves like the old code. It records the old system first and runs it twice to see what varies on its own, normalises one field at a time with a reason, and makes you classify every remaining difference. Its script does the diff.
+  - **`event-contract-draft`** writes an AsyncAPI 3.0 event or message contract: event names, an id for deduplication, the partition key and the ordering it does and doesn't give, idempotent consumers, minimal personal data, and safe versioning. `api-contract-draft` now hands event contracts to it.
+  - **`slo-spec`** writes SLOs from your user journeys. Its script turns the error budget into minutes and bad requests and works out burn-rate paging alerts, and it checks each target against what your dependencies allow.
+  - **`lean-canvas`** finds what could kill an idea: every box tagged as evidence or assumption, the riskiest assumption first with the cheapest test to disprove it, and the unit economics computed.
+  - **`agent-config-review`** checks a Claude Code, Codex or Cursor setup for more access than the work needs, reading every settings scope plus hooks, MCP servers and subagents, and gives the exact config to replace each problem.
+  - **`agent-incident-response`** covers the first hour after an agent leaks a key, deletes something or runs up a bill. It answers your question first, revokes the key before anyone touches git, and gives exact recovery steps.
+  - **A new `frontend` pack:**
+    - **`web-performance-review`** reads a Lighthouse or PageSpeed Insights report for what slows the page for real users, ranked by how much each fix moves the failing Core Web Vital.
+    - **`rendering-strategy`** decides, route by route, whether each page is static, revalidated, server-rendered or client-rendered.
+  - **`md-to-pptx`** turns Markdown into PowerPoint with nothing to install. Long sections split onto "continued" slides, and the reply names any speaker note that would go out with the file.
+  - **`md-to-confluence`** turns Markdown into a Confluence page, and publishes it only after showing which page and version it will overwrite.
+- **A `modernize` loop** for replacing legacy code. It records the old component's behaviour before anything is rebuilt, a script compares the new one against those recordings (G10), and a person decides the cutover (G10.1).
+- **`file-to-markdown` reads email:** `.eml`, and Outlook `.msg` with nothing to install. You get the subject, sender, recipients, sent time and body, with attachments listed by name and size.
+- **Three new review agents:**
+  - **`test-reviewer`:** would these tests catch the bug?
+  - **`docs-reviewer`:** do the docs still match the change?
+  - **`finding-adjudicator`:** checks a review panel's findings against the code and returns one ranked list.
+
 ## 0.16.35 — 2026-10-20
 
 - **`file-to-markdown` keeps PDF table columns apart when they sit close together.** A right-aligned amount next to a left-aligned date used to merge into one cell ("1,137 2027-02-01"), because the PDF's text puts only one space between them. Columns are now told apart by where each word sits on the page, and a normal word space never splits a cell, even in a monospace font. A table that already came out right is unchanged. On a 60-row table exported from Word, every row now has its four columns.

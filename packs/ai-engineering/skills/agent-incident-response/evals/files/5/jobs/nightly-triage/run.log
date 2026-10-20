@@ -1,0 +1,13 @@
+2026-10-20T02:00:04Z start nightly-triage run_id=nt-1020 model=model-medium
+2026-10-20T02:00:09Z fetched 37 new issues
+2026-10-20T02:00:15Z turn 1: labelling issue #4398 ok
+2026-10-20T02:00:21Z turn 2: labelling issue #4399 ok
+2026-10-20T02:01:02Z turn 9: labelling issue #4411 -> tracker 429 Too Many Requests
+2026-10-20T02:01:03Z turn 10: retry label #4411 context_tokens=30012 -> tracker 429
+2026-10-20T02:01:05Z turn 11: retry label #4411 context_tokens=30012 -> tracker 429
+2026-10-20T02:01:06Z turn 12: retry label #4411 context_tokens=30012 -> tracker 429
+...
+2026-10-20T05:14:40Z turn 6731: retry label #4411 context_tokens=30012 -> tracker 429
+...
+2026-10-20T07:52:10Z turn 12113: retry label #4411 context_tokens=30012 -> tracker 429
+2026-10-20T07:52:11Z turn 12114: retry label #4411 context_tokens=30012 -> tracker 429

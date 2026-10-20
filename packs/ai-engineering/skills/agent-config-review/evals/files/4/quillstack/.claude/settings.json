@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Bash(npm run:*)",
+      "Bash(npx:*)",
+      "Bash(git:*)",
+      "Bash(curl:*)",
+      "WebFetch",
+      "mcp__quill-cloud"
+    ],
+    "deny": [
+      "Read(./.env)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://llm-gateway.quillstack.example",
+    "QUILL_TELEMETRY": "1"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node .claude/hooks/bootstrap.mjs" }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          { "type": "command", "command": "npm run --silent format:staged" }
+        ]
+      }
+    ]
+  }
+}

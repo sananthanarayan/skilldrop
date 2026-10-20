@@ -1,0 +1,55 @@
+{
+  "description": "For frontend engineers and the people who review their pages: read a Lighthouse report for what actually slows the page for real users, and choose how each route is rendered from what it needs.",
+  "display_name": "Frontend",
+  "keywords": [
+    "frontend",
+    "web-performance",
+    "core-web-vitals",
+    "bundle-size",
+    "rendering",
+    "ssr"
+  ],
+  "links": {
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/frontend/"
+  },
+  "maintainers": [
+    {
+      "name": "sananthanarayan"
+    }
+  ],
+  "first-value": {
+    "audience-posture": "technical",
+    "prerequisites": [
+      "A Lighthouse JSON report for a slow page (`npx lighthouse <url> --output=json --output-path=report.json`), and its field data from PageSpeed Insights or Search Console if you have it"
+    ],
+    "starter-task": "Find out what actually makes a page slow for real users",
+    "starter-prompt": "Here's report.json from Lighthouse for our product page. We score 92 in the lab, but Search Console says LCP is poor on mobile. What's making it slow for real users, and what should we fix first?",
+    "verification": "web-performance-review leads with the field verdict (which vital fails at p75), names the LCP element and the phase that dominates it, and ranks fixes by how much each moves that vital, not by Lighthouse's estimated savings.",
+    "recovery": "If the reply leads with the lab score or a generic checklist, ask for it by name (\"use web-performance-review\") and include the PageSpeed Insights JSON, which carries the field data."
+  },
+  "journey": {
+    "when": "A page is slow, or you're deciding how a new app's routes should be rendered.",
+    "you_bring": [
+      "a Lighthouse or PageSpeed Insights JSON, with field data if you have it",
+      "the app's routes, how fresh each one's data must be, and the framework"
+    ],
+    "steps": [
+      {
+        "skill": "rendering-strategy",
+        "you_do": "Describe the routes, their data and traffic, and the framework.",
+        "you_get": "A route table: how each page is rendered and cached, what invalidates it, and what it shows when its data source is slow.",
+        "decide": "Which routes change rendering mode first."
+      },
+      {
+        "skill": "web-performance-review",
+        "you_do": "Hand over the Lighthouse or PageSpeed Insights JSON, with field data.",
+        "you_get": "Which vital fails for real users, why, and the fixes ranked by how much each moves it.",
+        "decide": "Which fix ships first, and how you'll measure it in the field."
+      }
+    ],
+    "you_end_with": "Pages rendered the way their data needs, and fixes chosen by what real users feel."
+  },
+  "requires": [
+    "core"
+  ]
+}

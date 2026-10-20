@@ -61,6 +61,7 @@ A good result:
 
 ## Where a loop runs it
 
+- Stage `cutover` of the [`modernize` loop](../../../packs/dev-team/loops/modernize/LOOP.md), where gate G10.1 decides
 - Stage `ready` of the [`release` loop](../../../packs/dev-team/loops/release/LOOP.md), where gate G3 decides
 
 ## Next

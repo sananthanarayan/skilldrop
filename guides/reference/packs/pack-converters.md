@@ -13,7 +13,7 @@ Turn Markdown into Word, Excel and HTML files that people outside engineering ca
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack converters` |
-| Skills | 5 plus 4 from core |
+| Skills | 7 plus 4 from core |
 | Loops | none |
 | How-to | [Use the Converters pack](../../how-to/packs/use-the-converters-pack.md) |
 
@@ -21,11 +21,11 @@ Turn Markdown into Word, Excel and HTML files that people outside engineering ca
 
 ### `file-to-markdown`
 
-Convert a Word document, PowerPoint deck, Excel workbook, web page, CSV, JSON, text file or PDF into clean Markdown that keeps headings, lists, tables, links, bold and italic, slide titles and speaker notes, and reports everything it dropped (images, charts, comments, formulas, tracked changes), so the content can be read, reviewed or fed to another skill.
+Convert a Word document, PowerPoint deck, Excel workbook, web page, CSV, JSON, text file, email (.eml or Outlook .msg) or PDF into clean Markdown that keeps headings, lists, tables, links, bold and italic, slide titles and speaker notes, and reports everything it dropped (images, charts, comments, formulas, tracked changes), so the content can be read, reviewed or fed to another skill.
 
-Tier **light** · v0.2.1 · [SKILL.md](../../../packs/converters/skills/file-to-markdown/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/file-to-markdown/)
+Tier **light** · v0.3.0 · [SKILL.md](../../../packs/converters/skills/file-to-markdown/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/file-to-markdown/)
 
-**Use it when** the user hands over a .docx, .pptx, .xlsx, .html, .csv, .json or .pdf and says "read this", "turn this into markdown", "extract the text", or wants it critiqued or briefed.
+**Use it when** the user hands over a .docx, .pptx, .xlsx, .html, .csv, .json, .eml, .msg or .pdf and says "read this", "turn this into markdown", "extract the text", or wants it critiqued or briefed.
 
 **Needs:** Python 3 for its scripts (standard library only).
 
@@ -47,6 +47,35 @@ Tier **light** · v0.2.1 · [SKILL.md](../../../packs/converters/skills/file-to-
 - Markdown tables into a workbook; use `md-to-xlsx`
 - Messy notes, a Slack thread or a transcript that are already text; use `brief-intake` directly
 - A document that is already Markdown and needs reviewing; use `doc-critique` directly
+
+### `md-to-confluence`
+
+Turn a Markdown runbook, design note or guide into a Confluence page: storage-format XHTML with real code blocks, tables, tasks, info and warning panels, images as attachments and an optional contents macro, a warning for everything dropped, and an optional publish that first shows which page it will create or overwrite and at what version, refuses stale or wrong-space overwrites, and takes credentials only from the environment.
+
+Tier **light** · v0.1.0 · [SKILL.md](../../../packs/converters/skills/md-to-confluence/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/md-to-confluence/)
+
+**Use it when** the user says "put this in Confluence", "publish this markdown to the wiki", "update the Confluence page with this", "convert to Confluence storage format", or names a Confluence space for a Markdown file.
+
+**Needs:** Python 3 for its scripts (standard library only).
+
+**A good result:**
+
+- **The right page, said out loud.** Every publish is preceded by the page id, title, space, current version and last editor from a live check, and a yes.
+- **No silent overwrite.** Updates carry `--expected-version`; a newer version stops the run.
+- **Nothing lost silently.** Each `WARN` is fixed in the source or named in the reply; rollback steps in HTML are rewritten, not dropped.
+- **Images are listed by attachment name**, with any missing file or name clash called out before publishing.
+- **Code survives byte for byte**, including a `]]>` inside it; the script checks the page is well-formed.
+- **Tokens never appear** in a command, a file or the reply.
+- **Facts untouched.** Restructuring Markdown never changes a command, threshold, name or date.
+
+**Hands off to:** `mermaid-render` when the Markdown has Mermaid diagrams.
+
+**Not for:**
+
+- A Word file to edit with tracked changes; use `md-to-docx`
+- A standalone web page or an HTML attachment for email; use `md-to-html`
+- Jira epics and issues from a PRD; use `tracker-brief-sync`
+- Writing the runbook itself; use `runbook-generator`, then convert
 
 ### `md-to-docx`
 
@@ -105,6 +134,37 @@ Tier **light** · v0.1.1 · [SKILL.md](../../../packs/converters/skills/md-to-ht
 - A designed one-page flyer or poster; use `marketing-flyer`
 - Only diagrams, as SVG or PNG files; use `mermaid-render`
 - Writing the document in the first place; use `guide-builder` or the relevant generator, then convert
+
+### `md-to-pptx`
+
+Turn an existing Markdown document (a status report, runbook, review or notes) into a PowerPoint deck (.pptx) that opens without a repair prompt, with nothing to install. Each heading becomes a slide, lists keep their nesting, tables become real PowerPoint tables, images are embedded, and comments become speaker notes. A section too long for one slide is split onto "continued" slides instead of shrinking the text, and the reply names every split, everything dropped, and any speaker note that would go out with the file.
+
+Tier **light** · v0.1.0 · [SKILL.md](../../../packs/converters/skills/md-to-pptx/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/md-to-pptx/)
+
+**Use it when** the user says "turn this markdown into slides", "make this report a PowerPoint", "convert the .md to pptx", "I need this as a deck for Thursday", or "export these notes to PowerPoint".
+
+**Needs:** Python 3 for its scripts (standard library only).
+
+**A good result:**
+
+- **The slides follow the headings.** The printed outline matches the document's `##` headings one for one, plus "(continued)" slides.
+- **No text below its set size.** Overflow is split onto continued slides, and every split is named in the reply.
+- **Tables are tables.** A pipe table becomes a PowerPoint table the user can edit, not a picture or tab-separated text, and a split table repeats its header row.
+- **Nothing is lost silently.** Every `WARN` is fixed and gone on rerun, or reported in plain words.
+- **Notes were read.** Any note that would embarrass the sender if forwarded is quoted back by slide number.
+- **Facts are untouched.** No number, name, date or list order changed, and no slide added that the document lacks.
+- **Mismatches are named, not fixed.** A count or total the document contradicts is quoted back with both figures.
+- **The file checks out.** The `checked:` line is in the run, and no check is claimed that wasn't run.
+
+**Hands off to:** `mermaid-render` when the Markdown contains Mermaid diagram blocks; `deck-builder` when the user wants the deck redesigned for an audience (charts, layouts, a narrative) rather than converted as written.
+
+**Not for:**
+
+- Designing a persuasive deck for an audience, with charts, layouts and a narrative; use `deck-builder`
+- Planning what each slide should say before any document exists; use `slide-outliner`
+- A Word document to edit and track changes in; use `md-to-docx`
+- A web page or a file to open in a browser; use `md-to-html`
+- A `.pptx` back to Markdown; use `file-to-markdown`
 
 ### `md-to-xlsx`
 

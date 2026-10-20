@@ -114,6 +114,14 @@
       "tier": "standard",
       "rationale": "Quantitative spec synthesis against a fixed tier vocabulary and degradation ladder. Cap-setting judgment is bounded by the 3-5x rule; escalate via ambiguous-input when the workflow itself is undefined."
     },
+    "agent-config-review": {
+      "tier": "standard",
+      "rationale": "Reading settings, hooks and MCP config against a fixed checklist of over-broad grants; bounded judgment with a verdict that follows from the findings."
+    },
+    "agent-incident-response": {
+      "tier": "standard",
+      "rationale": "A time-ordered containment checklist for a leaked credential or a runaway agent; the order is fixed, the judgment is in scoping what was reachable."
+    },
     "agent-loop-design": {
       "tier": "standard",
       "rationale": "Design synthesis against a fixed state-machine pattern and exit-criteria catalog. The gate-placement judgment is bounded by the blast-radius rule; escalate via ambiguous-input when the task itself is contested."
@@ -165,6 +173,10 @@
     "backlog-triage": {
       "tier": "standard",
       "rationale": "A script does the counting; the model confirms duplicates by reading, judges readiness and writes a reasoned ordering. Bounded judgment over structured data."
+    },
+    "behaviour-equivalence": {
+      "tier": "standard",
+      "rationale": "Designing a golden-master comparison is structured: what to record, what to normalise, and what counts as a difference; the diffing is done by its script."
     },
     "brand-kit": {
       "tier": "standard",
@@ -254,6 +266,10 @@
       "tier": "standard",
       "rationale": "Reads a SKILL.md and synthesizes eval cases — requires understanding of skill intent but not heavy reasoning."
     },
+    "event-contract-draft": {
+      "tier": "standard",
+      "rationale": "Contract drafting against the AsyncAPI shape with fixed rules on ordering, delivery and versioning; mid tier is enough."
+    },
     "exec-summary": {
       "tier": "standard",
       "rationale": "Compression to one page. Needs to keep the right signal; escalate on very long source docs."
@@ -302,6 +318,10 @@
       "tier": "standard",
       "rationale": "Checks evidence against a fixed checklist. Bounded synthesis, not adversarial review."
     },
+    "lean-canvas": {
+      "tier": "standard",
+      "rationale": "Filling the canvas is structured; the value is in ranking assumptions by risk and naming the cheapest test that could kill the riskiest one."
+    },
     "llm-eval-harness": {
       "tier": "standard",
       "rationale": "Methodology synthesis against a fixed decision tree and pitfall catalog. Grading-method and metric choices need judgment but are bounded; escalate via ambiguous-input on novel task types."
@@ -314,6 +334,10 @@
       "tier": "standard",
       "rationale": "Matching a loop's stages to the context each needs and the narrowest access that provides it is bounded judgment over a short checklist."
     },
+    "md-to-confluence": {
+      "tier": "light",
+      "rationale": "Mechanical conversion to Confluence storage format done by its script, with an optional publish; the model checks what was dropped and what will be overwritten."
+    },
     "md-to-docx": {
       "tier": "standard",
       "rationale": "A stdlib script does the conversion; the model restructures the Markdown so it converts cleanly (heading levels, footnotes, HTML), reads each warning and explains the losses. Bounded editing, no open-ended generation."
@@ -321,6 +345,10 @@
     "md-to-html": {
       "tier": "light",
       "rationale": "A deterministic stdlib script does the conversion; the model picks options, fixes a few unsupported Markdown constructs and relays the script's warnings. Little judgment."
+    },
+    "md-to-pptx": {
+      "tier": "light",
+      "rationale": "Mechanical conversion done by its script; the model only checks the outline maps to slides and reports what was dropped."
     },
     "md-to-xlsx": {
       "tier": "standard",
@@ -382,6 +410,10 @@
       "tier": "standard",
       "rationale": "Classifies commits and rewrites them for a reader. The audience translation needs judgment; escalate via large-input on very long ranges."
     },
+    "rendering-strategy": {
+      "tier": "standard",
+      "rationale": "Choosing static, server, client or incremental rendering per route follows fixed trade-offs (freshness, personalisation, SEO, cost); bounded judgment."
+    },
     "requirements-interview": {
       "tier": "standard",
       "rationale": "Question banks are rubric-shaped, but ranking by design impact and deriving falsification conditions for the specific feature is synthesis — above light."
@@ -433,6 +465,10 @@
     "slide-outliner": {
       "tier": "standard",
       "rationale": "Outlines a deck to a time budget. Structuring, not deep reasoning."
+    },
+    "slo-spec": {
+      "tier": "standard",
+      "rationale": "SLI choice is bounded judgment over user journeys; error-budget and burn-rate arithmetic is done by its script."
     },
     "soc2-evidence-map": {
       "tier": "standard",
@@ -513,6 +549,10 @@
     "ux-writing": {
       "tier": "standard",
       "rationale": "Short-form writing to fixed slot rules and character budgets, plus a terminology consistency pass. Bounded generation with clear checks."
+    },
+    "web-performance-review": {
+      "tier": "standard",
+      "rationale": "The metrics, opportunities and the elements behind them are read out of the Lighthouse report by its script; the model ranks fixes by what moves the user-facing numbers."
     }
   }
 }

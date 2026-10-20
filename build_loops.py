@@ -128,6 +128,8 @@ OUTSIDE = {
                      "a risk position its owner signed"),
     "measure":      ("Trust a dashboard's numbers", "Someone asks for a dashboard.",
                      "a spec with signed-off metrics"),
+    "modernize":    ("Replace legacy code safely", "A legacy component is being rewritten or moved.",
+                     "a cutover a person accepted"),
 }
 COLOUR = {"discover": "#6d4aff", "design": "#2563eb", "build": "#15803d", "release": "#be185d",
           "operate": "#0e7490"}

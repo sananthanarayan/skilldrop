@@ -1,0 +1,34 @@
+{
+  "name": "lean-canvas",
+  "version": "0.1.0",
+  "description": "Turn a startup or internal-product idea into a lean canvas that finds what could kill it — the nine boxes filled only from what the user said, each entry tagged evidence-backed (with its source) or assumption, the assumptions ranked by how likely each is wrong times how badly the idea fails if it is, the cheapest test with a pass/fail line set in advance for the top ones, a computed unit-economics check when price and costs are given, and a plain call when the idea should change before anything is built. Use when the user says \"lean canvas\", \"help me think through my startup idea\", \"what are the riskiest assumptions\", \"how do I validate this idea\", \"is this idea worth building\", or \"poke holes in my business model\".",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": ["business-case", "feedback-synthesis", "prfaq", "strategy-analysis", "success-metrics"],
+  "handoff": [
+    {
+      "to": "feedback-synthesis",
+      "when": "the problem interviews from the top test have been run and the notes are in",
+      "purpose": "Count how many distinct interviewees raised the problem unprompted, against the pass/fail line set before the test.",
+      "fallback": "If feedback-synthesis is absent, count distinct interviewees who described a recent instance before the problem was named, compare the count with the pre-set line, and say which canvas box changes."
+    },
+    {
+      "to": "business-case",
+      "when": "the riskiest assumptions have passed their tests and the idea needs money or headcount approved",
+      "purpose": "Turn the tested canvas into a costed invest/defer decision with do-nothing as the baseline.",
+      "fallback": "If business-case is absent, state the ask, the cost, the tested assumptions and the one that would flip the decision in five lines."
+    }
+  ],
+  "tags": ["lean-canvas", "startup", "assumptions", "validation", "unit-economics"],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "The script reads numbers from flags, a JSON file the user names, or stdin, and writes only to an -o path the user names."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "Filling the canvas is structured; the value is in ranking assumptions by risk and naming the cheapest test that could kill the riskiest one."
+  }
+}

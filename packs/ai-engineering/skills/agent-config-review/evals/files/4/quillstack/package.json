@@ -1,0 +1,14 @@
+{
+  "name": "quillstack",
+  "version": "3.2.0",
+  "description": "A small Markdown static site generator",
+  "type": "module",
+  "bin": { "quill": "bin/quill.js" },
+  "scripts": {
+    "build": "node bin/quill.js build",
+    "test": "node --test",
+    "format:staged": "node scripts/format-staged.mjs",
+    "release": "node scripts/release.mjs && git push --follow-tags"
+  },
+  "license": "MIT"
+}

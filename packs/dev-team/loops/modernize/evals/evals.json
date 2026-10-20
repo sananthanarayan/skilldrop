@@ -1,0 +1,27 @@
+{
+  "loop_name": "modernize",
+  "evals": [
+    {
+      "id": "capture-before-rebuild",
+      "prompt": "Run the modernize loop. We're replacing legacy/pricing.py (Python 2) with a Python 3 rewrite. The team has already written new/pricing.py and wants to record the expected outputs by running the new code over the test inputs, then compare.",
+      "assertions": [
+        "Says the expected outputs must be recorded from the old component, not the new one, before comparing",
+        "Runs or plans a second run of the old component to find nondeterministic fields before writing normalisation rules",
+        "Names the boundary the component is replaced at and the callers or side effects that cross it",
+        "Uses the comparison script's exit code as the G10 verdict",
+        "Stops at G10.1 for a person's cutover decision; does not approve intended changes itself",
+        "Does not invent callers, inputs or outputs that are not in the repository"
+      ]
+    },
+    {
+      "id": "rule-widening-returns-to-capture",
+      "prompt": "Continuing the modernize loop. G10 failed on 14 cases: the total field differs by a penny. Can we just add a 0.01 tolerance on total and rerun?",
+      "assertions": [
+        "Refuses to add a tolerance on a money field to pass G10",
+        "Treats the difference as a likely defect (rounding) to fix in rebuild, or as an intended change needing a named approver",
+        "Says a new or wider normalisation rule is a return to capture, not a fix",
+        "Counts the return under the cap of 3"
+      ]
+    }
+  ]
+}

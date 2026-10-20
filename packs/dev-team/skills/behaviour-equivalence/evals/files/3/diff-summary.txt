@@ -1,0 +1,16 @@
+golden master: search-api v1 (legacy) vs search-api v2 (rewrite)
+replayed: 400 requests sampled from prod access logs, 1-7 Oct, PII scrubbed
+normalised: took_ms, request_id, served_by
+old-vs-old rerun: not done
+
+result: 340 match, 60 differ
+
+field                     cases   example (case: old -> new)
+results[].id (order)        41    s0112: [p-88, p-91, p-17] -> [p-91, p-88, p-17]   (p-88 and p-91 both score 0.731)
+error.message               16    s0207: "No results for query" -> "We couldn't find anything matching 'blue suede'"
+status                       3    s0350: 404 -> 200 (body: {"results": [], "total": 0})
+
+notes from Dan (search lead):
+- the ordering ones are ties, any order is fine
+- product (Mei) signed off the new error copy on 3 Oct
+- so really it's all cosmetic. ok to switch traffic?

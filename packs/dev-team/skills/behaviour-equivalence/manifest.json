@@ -1,0 +1,33 @@
+{
+  "name": "behaviour-equivalence",
+  "version": "0.1.0",
+  "description": "Prove that a rewritten, migrated or refactored component behaves the same as the old one with a golden-master comparison — record inputs and outputs at a boundary (HTTP, function calls, batch files, DB writes, events) from production-shaped traffic and edge cases, run the old system twice to find its nondeterminism, normalise narrowly field by field, replay against the new one, triage every difference as defect, intended change (with a named approver) or missing normalisation, and give a verdict of EQUIVALENT, EQUIVALENT EXCEPT LISTED CHANGES, NOT EQUIVALENT or NOT PROVEN. Use when the user asks \"does the new one behave the same as the old one\", \"can we sign off the rewrite\", \"are these diffs just noise\", wants a golden-master, approval or shadow-traffic comparison, a parity check between old and new outputs, or says \"prove behaviour equivalence\".",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": [
+    "codebase-tour",
+    "migration-plan",
+    "refactor-plan",
+    "test-plan-generator"
+  ],
+  "handoff": [
+    {
+      "to": "migration-plan",
+      "when": "the verdict is EQUIVALENT or EQUIVALENT EXCEPT LISTED CHANGES and traffic or data still has to move",
+      "purpose": "Use the parity verdict as the gate evidence for the cutover phases.",
+      "fallback": "If migration-plan is absent, state the cutover gate inline: the verdict, the cases it covers, and the rerun that must stay clean before each traffic step."
+    }
+  ],
+  "tags": ["testing", "golden-master", "legacy-code", "migration", "verification"],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "golden_diff.py reads the old and new recordings and the rules files it is given, and writes a report only to the -o path."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "Designing a golden-master comparison is structured: what to record, what to normalise, and what counts as a difference; the diffing is done by its script."
+  }
+}

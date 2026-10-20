@@ -848,6 +848,11 @@ def main():
     md_files |= set(glob.glob(os.path.join(ROOT, "docs", "**", "*.md"), recursive=True))
     md_files |= {os.path.join(ROOT, f) for f in LINK_DOCS if os.path.exists(os.path.join(ROOT, f))}
     for mf in sorted(md_files):
+        # Eval fixtures and example inputs are material a skill is tested on: a broken image or
+        # link in one is often the thing the eval plants for the skill to catch, so it isn't ours.
+        relmf = os.path.relpath(mf, ROOT).replace(os.sep, "/")
+        if "/evals/files/" in relmf or "/examples/inputs/" in relmf:
+            continue
         d0 = os.path.dirname(mf)
         for line in strip_fences(open(mf, encoding="utf-8").read()).splitlines():
             if "{" in line or "}" in line:  # a template/placeholder line — not a real link

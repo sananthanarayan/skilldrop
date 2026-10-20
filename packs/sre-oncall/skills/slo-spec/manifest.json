@@ -1,0 +1,34 @@
+{
+  "name": "slo-spec",
+  "version": "0.1.0",
+  "description": "Define service level objectives for a service from its critical user journeys — each SLI a good-events / valid-events ratio with both sides defined and measured where the user feels it, a target set from user need and history (checked against dependency SLOs), the error budget computed in minutes and bad requests at current traffic, multi-window burn-rate alerts with the budget consumed when each fires, low-traffic handling, and an error-budget policy with owners. Use when the user asks to \"define SLOs\", \"write our SLIs\", \"how much error budget do we have\", \"what burn-rate alerts should page\", \"is 99.99% realistic\", or \"write an error-budget policy\".",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": ["delivery-metrics-report", "nfr-spec", "observability-plan", "runbook-generator"],
+  "handoff": [
+    {
+      "to": "observability-plan",
+      "when": "the SLIs are agreed and the telemetry to produce them doesn't exist yet",
+      "purpose": "Design the instrumentation, logs, traces and dashboards behind the SLIs.",
+      "fallback": "If observability-plan is absent, list per SLI the event source, the measurement point and the counter it needs, inline."
+    },
+    {
+      "to": "runbook-generator",
+      "when": "the burn-rate alerts are defined and each page needs a procedure",
+      "purpose": "Write the steps on-call follows when each alert fires.",
+      "fallback": "If runbook-generator is absent, write the first three checks for each paging alert inline."
+    }
+  ],
+  "tags": ["slo", "sli", "error-budget", "burn-rate", "sre"],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "slo_math.py does arithmetic only; it reads an optional --batch JSON file or stdin and writes only the -o path the user names."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "SLI choice is bounded judgment over user journeys; error-budget and burn-rate arithmetic is done by its script."
+  }
+}

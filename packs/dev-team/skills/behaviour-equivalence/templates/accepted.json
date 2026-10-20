@@ -1,0 +1,10 @@
+{
+  "accepted": [
+    {
+      "path": "body.error.message",
+      "cases": ["<case id>"],
+      "approver": "<person or role named in the input>",
+      "reason": "<what changed on purpose, and where it was agreed>"
+    }
+  ]
+}

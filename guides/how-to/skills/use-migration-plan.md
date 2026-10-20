@@ -59,6 +59,7 @@ A good result:
 
 ## Where a loop runs it
 
+- Stage `plan` of the [`modernize` loop](../../../packs/dev-team/loops/modernize/LOOP.md)
 - Stage `plan` of the [`release` loop](../../../packs/dev-team/loops/release/LOOP.md)
 
 ## Next

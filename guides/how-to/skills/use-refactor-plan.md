@@ -66,6 +66,10 @@ A good result:
 - Reviewing a refactor PR that already exists — `pre-merge-review`
 - Splitting a feature into user stories — `user-story-splitter`
 
+## Where a loop runs it
+
+- Stage `plan` of the [`modernize` loop](../../../packs/dev-team/loops/modernize/LOOP.md)
+
 ## Next
 
 - [SKILL.md](../../../packs/dev-team/skills/refactor-plan/SKILL.md), the instructions the agent reads

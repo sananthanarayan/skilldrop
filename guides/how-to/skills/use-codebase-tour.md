@@ -71,6 +71,7 @@ A good result:
 ## Where a loop runs it
 
 - Stage `shape` of the [`build` loop](../../../packs/dev-team/loops/build/LOOP.md)
+- Stage `survey` of the [`modernize` loop](../../../packs/dev-team/loops/modernize/LOOP.md)
 
 ## Next
 

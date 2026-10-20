@@ -1,0 +1,9 @@
+[
+  {"query": "we're rewriting our COBOL billing batch job in Java, how do we do it without breaking anything", "should_trigger": true},
+  {"query": "run the modernize loop on the legacy pricing service", "should_trigger": true},
+  {"query": "port this Python 2 module to Python 3 and prove it still behaves the same", "should_trigger": true},
+  {"query": "we're moving the orders module out of the monolith into its own service; plan it end to end", "should_trigger": true},
+  {"query": "do the new and old outputs match? here are both files", "should_trigger": false},
+  {"query": "plan how to untangle this 2,000-line class without stopping feature work", "should_trigger": false},
+  {"query": "plan the schema migration for the users table with a backfill", "should_trigger": false}
+]

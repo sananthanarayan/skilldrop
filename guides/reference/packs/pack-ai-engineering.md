@@ -13,7 +13,7 @@ Adopt and build AI systems: readiness assessment, use-case triage, rollout and a
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack ai-engineering` |
-| Skills | 12 plus 4 from core |
+| Skills | 14 plus 4 from core |
 | Loops | none |
 | How-to | [Use the AI engineering pack](../../how-to/packs/use-the-ai-engineering-pack.md) |
 
@@ -71,6 +71,67 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/ai-engineering/skills/a
 - Choosing a model tier for a single skilldrop skill — that's `model-routing.json`'s table, already decided
 - Designing the loop or the fan-out itself — `agent-loop-design` / `subagent-design`; this skill prices what they draw
 - Negotiating provider contracts or rate limits — procurement, not a spec
+
+### `agent-config-review`
+
+Review a coding agent's configuration for access broader than the work needs and give a verdict — SAFE AS CONFIGURED, TIGHTEN BEFORE USE or DO NOT USE — reading what actually wins across every scope (Claude Code user, project, local and managed settings; permission allow/deny/ask lists, defaultMode, sandbox, hooks, plugins, env; .mcp.json; subagent tool lists; Codex sandbox_mode and approval_policy and the profile in use; Cursor and Copilot agent settings), with each finding's file and line, what it lets happen in plain words, and the exact replacement config.
+
+Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/agent-config-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/agent-config-review/)
+
+**Use it when** the user asks "is this Claude Code / Codex / Cursor setup safe", "review our .claude/settings.json", "audit our agent permissions", "is Bash(npm:*) OK in the allow list", "check this repo's agent config before we open it", or wants an agent's permissions tightened before use.
+
+**Needs:** Python 3 for its scripts (standard library only).
+
+**A good result:**
+
+- **The first line is the verdict** and names the worst finding in plain words.
+- **The effective setting is reviewed,** with the winning scope named; scopes not read are listed under "To confirm".
+- **Every finding has `file:line`, its effect in one sentence, and replacement config** that can be pasted.
+- **Every wildcard allow entry is read as what it can run,** and the deny list is tested against it.
+- **Every hook and command-running setting is quoted and judged;** none is waved through as "tooling".
+- **Every literal secret says rotate,** masked in the reply, never quoted whole.
+- **No invented facts:** no package version, publisher, host, scope or script name the input didn't contain; replacement allow entries use only commands the input shows.
+- **No claim about what wasn't read:** plugins, git history, user or managed scopes are "To confirm".
+
+**Hands off to:** `agent-threat-model` when the configuration puts untrusted content, private data and a way to send data out in one session; `mcp-pairing` when the servers themselves are the wrong ones for the work, not just configured too widely; `agent-incident-response` when the review finds signs the exposure was already used: a token in a pushed or public repo, a hook or server that already ran downloaded code.
+
+**Not for:**
+
+- Choosing which MCP servers and token scopes a workflow should have — `mcp-pairing`
+- Threat-modelling an agent's design for prompt injection and exfiltration paths — `agent-threat-model`
+- Deciding what each subagent should be told and given in a new design — `subagent-design`
+- Writing the organisation's rules for AI tools and data — `ai-usage-policy`
+- A token already leaked or an agent already did damage — `agent-incident-response`; review the config after containment
+
+### `agent-incident-response`
+
+Plan the first hour after something went wrong with an AI coding agent or its tooling — a leaked or stolen API key, a destructive command (a dropped table, a force-push), a runaway bill, a malicious MCP server or skill, an agent prompt-injected into sending data out. It answers the person's actual question first, reads their logs for what they didn't mention, splits a bill from the usage export, gives the exact recovery for what was destroyed, revokes at the provider before cleanup when the evidence says the credential is in someone else's hands, and lays out the first 15 minutes, the next hour and who to tell.
+
+Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/ai-engineering/skills/agent-incident-response/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/agent-incident-response/)
+
+**Use it when** the user says "I leaked my API key", "the agent committed a secret", "the agent deleted / force-pushed / dropped something", "is the table gone for good", "huge bill overnight", "we installed a malicious MCP server", "our agent platform was breached", or "what do I do now".
+
+**Needs:** Python 3 for its scripts (standard library only).
+
+**A good result:**
+
+- **The first line answers the question asked;** the second names the kind of incident and its evidence.
+- **Every figure and time matches the files,** sums computed, times in UTC as written.
+- **What the person didn't mention is found:** the second table, caller or repo, the live process.
+- **Recovery is exact:** SHAs, the restore point, the deadline, the caveats, an owner on each action.
+- **An exposed credential is revoked before cleanup,** every one the thing held, with sharing services warned.
+- **Nothing invented:** no environment facts, URLs, figures or attacker actions not in the files.
+
+**Hands off to:** `postmortem-generator` when the credential is revoked, the agent is contained and the incident's 'is it over' test passes; `incident-comms` when customers or users may be affected and need an update.
+
+**Not for:**
+
+- Designing an agent's controls before anything has gone wrong — `agent-threat-model`
+- Setting token, spend or loop limits ahead of time — `agent-budget`
+- Reviewing an agent's settings, permissions or MCP config when nothing has gone wrong — `agent-config-review`
+- Writing the customer status page or stakeholder update — `incident-comms`
+- The blameless write-up once it's contained — `postmortem-generator`
+- A standing procedure for credential rotation or on-call — `runbook-generator`
 
 ### `agent-loop-design`
 

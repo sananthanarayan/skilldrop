@@ -61,6 +61,7 @@ A good result:
 ## Where a loop runs it
 
 - Stage `implement` of the [`build` loop](../../../packs/dev-team/loops/build/LOOP.md)
+- Stage `rebuild` of the [`modernize` loop](../../../packs/dev-team/loops/modernize/LOOP.md)
 
 ## Next
 
