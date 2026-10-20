@@ -6,7 +6,7 @@ is what's next. Each item says why it matters, roughly how big it is, and what i
 so you can pick one up without re-deriving the context. Sizes are rough: **S** is an hour or
 two, **M** a day, **L** several days.
 
-Last reviewed 2026-10-20, after 0.16.31. Organisation governance (AST09) shipped in 0.16.27
+Last reviewed 2026-10-20, after 0.16.32. Organisation governance (AST09) shipped in 0.16.27
 ([RFC-0050](../rfcs/0050-org-governance.md)), declared containment (AST06) in 0.16.28
 ([RFC-0051](../rfcs/0051-declared-containment.md)), and the `research`, `comply` and `measure`
 loops with a tutorial for each pack added in 0.14.0 in 0.16.29
@@ -14,7 +14,8 @@ loops with a tutorial for each pack added in 0.14.0 in 0.16.29
 ran in 0.16.21, and every skill now has held-out evals beside its own. 0.16.30 added
 `dependency-upgrade-review`, `feedback-synthesis`, `codebase-tour` and `mcp-pairing`, a
 compare-packs page, a how-to per skill, and team totals and an HTML dashboard for
-`loop-stats`. 0.16.31 added `rollout-plan` and `refactor-plan` after a revision.
+`loop-stats`. 0.16.31 added `rollout-plan` and `refactor-plan` after a revision. 0.16.32 checks what a skill's
+instructions run against its `permissions` and scans agents ([RFC-0054](../rfcs/0054-instruction-permissions-and-agent-scan.md)).
 
 ## Distribution
 
@@ -30,9 +31,7 @@ compare-packs page, a how-to per skill, and team totals and an HTML dashboard fo
 | Idea | Why | Size | Depends on |
 |---|---|---|---|
 | **Signed catalogues** | Commit pins stop a moved tag but don't prove who wrote the commit (AST02). Verify a signature (Sigstore or git commit signing) before install. | L | A key-distribution decision, ideally without adding dependencies |
-| **Permissions for instruction-only skills** | A skill with no scripts can still tell the agent to run commands or fetch URLs, and today it declares nothing. Extend `permissions` to the instructions themselves. | M | Design: how to check prose against a declaration |
 | **Opt-in semantic scan** | The scan is pattern matching (AST08). An opt-in `scan --deep` could have a model read each skill against the OWASP list. | M | An API key; kept off by default to stay offline |
-| **Scan agents, not just skills** | `skilldrop scan` covers skills; subagent files aren't scanned. | S | — |
 
 ## Quality and evals
 

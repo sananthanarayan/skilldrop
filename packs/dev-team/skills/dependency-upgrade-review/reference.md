@@ -1,6 +1,6 @@
 # dependency-upgrade-review reference
 
-Long-form material for the steps in `SKILL.md`: what each ecosystem's diff shows, where the risky signals live, how to list the releases between two versions, how to verify a pin, and how to roll back.
+Long-form material for the steps in `SKILL.md`: what each ecosystem's diff shows, where the risky signals live, how to list the releases between two versions, how to trace a behaviour change to its callers, where runtime floors bite, how to verify a pin, and how to roll back.
 
 ## Reading a lockfile diff, by ecosystem
 
@@ -44,6 +44,36 @@ What to pull from each release, in this order:
 3. **Deprecations:** still works, removed later. A deprecated call the repo makes is a 🟧, not a 🟥.
 4. **Licence:** a changed `license` field or a LICENSE file change. Moves between permissive licences (MIT, BSD, Apache-2.0, ISC) are a note. A move to a copyleft licence (GPL, AGPL, MPL at file level, LGPL) or a source-available licence (BUSL, SSPL, Elastic, "Commons Clause") needs a sign-off from whoever owns licence policy before merge.
 
+## Tracing a behaviour change to its callers
+
+A search hit is where the review starts. Read the calling function and write what it does under the new version.
+
+| Change in the notes | What to look for in the caller | What breaks |
+|---|---|---|
+| Returns `None` / `-1` / `false` → raises | `if result is None`, `== -1`, `if not ok` branches; retry loops and fallbacks built on them | The branch never runs; the first failure escapes as an exception and the retry or fallback is dead code |
+| Raises → returns a sentinel | `try` / `except` around the call | The error is swallowed; the code carries on with the sentinel |
+| Exception class renamed or re-parented | `except OldError`, `catch (e instanceof OldError)` | The handler stops catching it |
+| Tuple or dict → object | `a, b = f(...)`, `result["key"]` | Unpacking or key access fails at runtime |
+| Changed default | Every call that does not pass the option | Each one gets the new behaviour silently |
+| Module or function removed | Imports at the top of a file, and imports inside functions | A top-level import fails at startup and in tests; an import inside a function fails only when that function runs |
+
+Name the fix in the repo's code, and any migration aid an intermediate release ships (an opt-in flag that turns on the new behaviour early). Moving to that release first lets the code change land and be tested before the major.
+
+## Runtime floors
+
+A release that drops a runtime version breaks wherever the old runtime still runs, and CI usually runs a newer one.
+
+| Floor raised in | Compare with |
+|---|---|
+| Release notes ("requires Python 3.10"), `python_requires`, `python-versions` in `poetry.lock`, `requires-python` in `uv.lock` | Dockerfile `FROM`, `setup-python` version and matrix, `.python-version`, the Python the lockfile was compiled on |
+| `engines.node` in `package-lock.json` or `package.json` | `.nvmrc`, `setup-node` / toolchain version, Dockerfile `FROM`, `engine-strict` in `.npmrc` |
+| `go` directive in `go.mod`, `toolchain` line | `setup-go` version, Dockerfile builder image |
+| `rust-version` (MSRV) in a crate | `rust-toolchain.toml`, CI toolchain |
+| Wheels or prebuilt binaries only for some versions or platforms | Every image and runner that installs it; elsewhere it builds from source and needs a compiler or toolchain |
+| An action's runtime (`node20` → `node24`) | Self-hosted runner versions; GitHub-hosted runners update themselves |
+
+A lockfile generated on a newer runtime than production can resolve versions production cannot install. `pip install --require-hashes` and `npm ci` fail at build time, not at review time.
+
 ## Verifying a pin
 
 ```bash
@@ -57,6 +87,7 @@ git ls-remote https://github.com/<owner>/<repo> refs/tags/<tag> 'refs/tags/<tag>
 - A SHA with no `# vX.Y.Z` comment: list the tags (`git ls-remote --tags https://github.com/<owner>/<repo>`) and find the SHA. No tag points to it means it is not a release.
 - Tag-only pin (`uses: owner/repo@v3`): the maintainer, or anyone who takes over the account, can point `v3` at new code after review. Pin to the commit the `^{}` line returns and keep the tag as a comment.
 - Branch pin (`@main`): every run gets whatever was pushed last. A PR that introduces one is DO NOT MERGE.
+- Two SHAs for one tag: when the same `owner/repo` and `# vX.Y.Z` comment appear with different SHAs across workflow files, at most one is the tag's commit. Run the command once and compare both; until then, the PR is DO NOT MERGE. Read the PR's commit list: a bot writes every pin the same way, so a pin that differs from the bot's usually came from a hand-made commit.
 
 Stakes come from the job, not the action: look at `permissions:` (`contents: write`, `id-token: write`, `packages: write`), the `secrets.*` it receives, and the `environment:` it runs in.
 
@@ -70,6 +101,10 @@ Stakes come from the job, not the action: look at `permissions:` (`contents: wri
 | A build or publish step (bundler, packager, uploader) not in the PR workflow | No |
 | A source file no test imports | No |
 | A test that imports the file but never hits the changed behaviour (a default, an edge case the notes name) | Not the part that changed |
+| A test that mocks the dependency with the old contract (a fake that returns a value where the new version raises) | No; it tests the old behaviour |
+| An import inside a function no test calls | No; it never fails at import or collection |
+| An install script, when the PR job installs with `--ignore-scripts` and the release job does not | No; it first runs in the release job, with that job's secrets and permissions |
+| A runtime older than the one CI uses (production image, self-hosted runner) | No |
 
 Ways to exercise an unrun path before merge: a `workflow_dispatch` dry run on the PR branch, a release to a test index (TestPyPI, a scratch npm scope), or a test that covers the changed behaviour, added in the same PR.
 

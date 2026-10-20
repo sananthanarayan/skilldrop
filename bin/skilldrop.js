@@ -66,7 +66,7 @@ Usage:
   skilldrop uninstall --agent <name...>   remove subagents
   skilldrop uninstall --loop <name...>    remove loops (stage skills are left in place)
   skilldrop validate [--from <src>]       structural check of a catalog (for catalog authors)
-  skilldrop scan [<skill...>] [--from <src>]  supply-chain scan — flag network/exec/credential
+  skilldrop scan [<skill...>] [--agent] [--from <src>]  supply-chain scan of skills and agents — flag network/exec/credential
                                           patterns in scripts and injection-shaped instructions
                                           in SKILL.md before you trust a catalog (RFC-0022)
   skilldrop new-skill <name> --pack <p>   scaffold a skill in the catalog you're in (for catalog authors;
@@ -440,11 +440,11 @@ function gate(cat, names) {
 
 /* RFC-0050: the worst scan finding per skill, for a policy's scan.max. Eval fixtures and
    example inputs (⚪) never count. */
-function worstFindings(cat, names) {
+function worstFindings(cat, names, scanner = scanSkill) {
   const out = {};
   for (const s of names) {
     let w;
-    for (const f of scanSkill(cat, s)) if (!f.fixture && (!w || gov.SEVERITY[f.sev] > gov.SEVERITY[w])) w = f.sev;
+    for (const f of scanner(cat, s)) if (!f.fixture && (!w || gov.SEVERITY[f.sev] > gov.SEVERITY[w])) w = f.sev;
     if (w) out[s] = w;
   }
   return out;
@@ -455,7 +455,8 @@ function enforcePolicy(flags, cat, names, kind) {
   const policy = gov.load(flags);
   gov.prepare(policy);  // an audit log that can't be written stops the install before it starts
   if (!policy || !names.length) return policy;
-  const worst = kind === "skill" && policy.scan && policy.scan.max !== undefined ? worstFindings(cat, names) : {};
+  const worst = policy.scan && policy.scan.max !== undefined && (kind === "skill" || kind === "agent")
+    ? worstFindings(cat, names, kind === "agent" ? scanAgent : scanSkill) : {};
   const problems = gov.check(policy, { source: cat.source, pinned: cat.pinned, names, worst, kind });
   if (problems.length) {
     for (const pr of problems) console.error(`refused ${pr.name}: ${pr.why}`);
@@ -614,10 +615,73 @@ function permissionsOf(cat, s) {
   if (cat.shape === "apm") return null;
   try { return manifestOf(cat, s).permissions || null; } catch (e) { return null; }
 }
+/* RFC-0054: what a skill's instructions tell the agent to run. A skill with no scripts still
+   reaches the shell and the network through the agent, so its fenced shell blocks are read the
+   way a reviewer would: the program each command starts, and the hosts it names. Shell builtins,
+   keywords and the text tools every agent already has are left out, as are interpreters running
+   the skill's own scripts/ (those are covered by the script rules). Prose outside a fenced shell
+   block is not parsed: an instruction to run something belongs in one, where a reader sees it. */
+const SHELL_LANGS = new Set(["bash", "sh", "shell", "console", "zsh"]);
+const NOT_A_PROGRAM = new Set(("cd echo export set unset true false test printf read source exit return then fi do done " +
+  "for if elif else while until case esac in function local shift wait time eval exec alias type command " +
+  "mkdir ls cat cp mv rm touch head tail grep egrep sed awk sort uniq wc tr cut xargs tee diff find jq less more " +
+  "pwd basename dirname date sleep env which chmod ln realpath mktemp yes seq").split(" "));
+const INTERPRETERS = new Set(["python", "python3", "node", "bash", "sh", "zsh", "deno", "bun"]);
+function instructedRuns(dir) {
+  const files = ["SKILL.md", "reference.md"].map((f) => path.join(dir, f)).filter((f) => fs.existsSync(f));
+  const refs = path.join(dir, "references");
+  if (fs.existsSync(refs)) for (const f of fs.readdirSync(refs)) if (f.endsWith(".md")) files.push(path.join(refs, f));
+  const commands = new Map(), hosts = new Map();
+  for (const f of files) {
+    const lines = fs.readFileSync(f, "utf8").split(/\r?\n/);
+    let lang = null;
+    lines.forEach((raw, i) => {
+      const fence = raw.match(/^\s*```+\s*([\w-]*)/);
+      if (fence) { lang = lang === null ? fence[1].toLowerCase() : null; return; }
+      if (lang === null || !SHELL_LANGS.has(lang)) return;
+      const where = { file: path.relative(dir, f), line: i + 1, text: raw.trim().slice(0, 120) };
+      const line = raw.replace(/(^|\s)#.*$/, "").replace(/^\s*\$\s+/, "").trim();
+      if (!line) return;
+      for (const h of line.matchAll(/https?:\/\/([a-z0-9][a-z0-9.-]*\.[a-z]{2,})/gi))
+        if (!hosts.has(h[1].toLowerCase())) hosts.set(h[1].toLowerCase(), where);
+      // Quoted text is an argument (a grep pattern, a message), never a command, so blank it
+      // before splitting on | ; && — otherwise `grep 'a|b'` reads as a command named b.
+      const bare = line.replace(/'[^']*'|"(?:[^"\\]|\\.)*"/g, (q) => (/scripts\/|CLAUDE_SKILL_DIR/.test(q) ? q.slice(1, -1) : " X "));
+      for (let part of bare.replace(/\$\(/g, " ; ").replace(/[`()]/g, " ").split(/&&|\|\||\||;/)) {
+        let w = part.trim().split(/\s+/).filter(Boolean);
+        while (w.length && /^[A-Za-z_][A-Za-z0-9_]*=/.test(w[0])) w.shift();
+        if (w[0] === "sudo" || w[0] === "nohup") w.shift();
+        const c = w[0];
+        if (!c || !/^[a-z][\w.+-]*$/.test(c) || NOT_A_PROGRAM.has(c)) continue;
+        if (INTERPRETERS.has(c) && w.slice(1).some((x) => /(^|\/)scripts\//.test(x) || /CLAUDE_SKILL_DIR/.test(x))) continue;
+        const prog = INTERPRETERS.has(c) && w[1] === "-m" && /^[a-z][\w.-]*$/.test(w[2] || "") ? w[2] : c;  // python3 -m pip -> pip
+        if (!commands.has(prog)) commands.set(prog, where);
+      }
+    });
+  }
+  return { commands, hosts };
+}
+
 function permissionGaps(cat, s, findings) {
   const dir = skillDir(cat, s);
-  if (!dir || !fs.existsSync(path.join(dir, "scripts"))) return [];
+  if (!dir) return [];
+  const scripted = fs.existsSync(path.join(dir, "scripts"));
   const perm = permissionsOf(cat, s);
+  const told = cat.shape === "apm" ? { commands: new Map(), hosts: new Map() } : instructedRuns(dir);
+  const instructionGaps = () => {
+    const out = [];
+    const cmds = (perm && perm.commands) || [], net = (perm && perm.network) || [];
+    for (const [c, w] of told.commands)
+      if (!cmds.includes("*") && !cmds.includes(c))
+        out.push({ sev: "🟨", id: "undeclared-instructed-command", owasp: ["AST03", "AST10"], ...w,
+                   why: `the instructions tell the agent to run \`${c}\`, but the manifest's permissions.commands doesn't list it` });
+    for (const [h, w] of told.hosts)
+      if (!net.includes(h))
+        out.push({ sev: "🟨", id: "undeclared-instructed-network", owasp: ["AST03", "AST10"], ...w,
+                   why: `the instructions tell the agent to reach ${h}, but the manifest's permissions.network doesn't list it` });
+    return out;
+  };
+  if (!scripted) return instructionGaps();
   if (!perm)
     return [{ sev: "🟨", id: "no-permissions", owasp: ["AST03", "AST10"], file: "manifest.json", line: 0,
               why: "ships scripts but declares no permissions (network, commands, files) — nothing to check them against",
@@ -633,7 +697,7 @@ function permissionGaps(cat, s, findings) {
     if (f.id === "broad-fs" && perm.files !== "anywhere")
       gap("undeclared-files", f, `writes outside its own paths, but the manifest declares files: "${perm.files}"`);
   }
-  return gaps;
+  return gaps.concat(instructionGaps());
 }
 function permissionSummary(perm) {
   if (!perm) return "no permissions declared";
@@ -643,35 +707,82 @@ function permissionSummary(perm) {
   return `${net} · ${cmds} · ${files}`;
 }
 
-function printScan(cat, names, { compact = false } = {}) {
+/* RFC-0054: an agent is a system prompt the tool adopts whole, with the tools its frontmatter
+   grants, so it gets the prose rules a SKILL.md gets plus the checks only an agent needs. */
+function scanAgent(cat, a) {
+  const file = agentPath(cat, a);
+  const findings = [];
+  if (!file || !fs.existsSync(file)) return findings;
+  const rel = path.basename(file);
+  const text = fs.readFileSync(file, "utf8");
+  text.split(/\r?\n/).forEach((line, i) => {
+    if (line.length > 400) return;
+    for (const r of PROSE_RULES)
+      if (r.re.test(line)) findings.push({ sev: r.sev, id: r.id, why: r.why, owasp: r.owasp, file: rel, line: i + 1, text: line.trim().slice(0, 120) });
+  });
+  const fmEnd = text.startsWith("---") ? text.indexOf("\n---", 3) : -1;
+  const fm = fmEnd > 0 ? text.slice(0, fmEnd) : "";
+  const lineOf = (re) => { const i = fm.split("\n").findIndex((l) => re.test(l)); return i < 0 ? 1 : i + 1; };
+  const at = (re) => ({ file: rel, line: lineOf(re), text: (fm.split("\n")[lineOf(re) - 1] || "").trim().slice(0, 120) });
+  const tools = (fm.match(/^tools:\s*(.*)$/m) || [null, null])[1];
+  const list = tools === null ? null : tools.replace(/[[\]"']/g, "").split(",").map((t) => t.trim()).filter(Boolean);
+  if (list === null)
+    findings.push({ sev: "🟧", id: "agent-all-tools", owasp: ["AST03", "LLM06"], ...at(/^name:/),
+                    why: "has no `tools:` list, so it inherits every tool the session has, including any MCP server's" });
+  else {
+    const reads = list.filter((t) => /^(WebFetch|WebSearch)$/.test(t) || /^mcp__/.test(t));
+    const acts = list.filter((t) => /^(Bash|Write|Edit|NotebookEdit)$/.test(t));
+    if (reads.length && acts.length)
+      findings.push({ sev: "🟧", id: "agent-untrusted-and-act", owasp: ["AST03", "LLM01", "LLM06"], ...at(/^tools:/),
+                      why: `reads content from outside (${reads.join(", ")}) and can act on it (${acts.join(", ")}) in the same context: an injected instruction in what it reads can run` });
+  }
+  if (/^permissionMode:\s*(bypassPermissions|acceptEdits)/m.test(fm))
+    findings.push({ sev: "🟥", id: "agent-skips-approval", owasp: ["AST03", "LLM06"], ...at(/^permissionMode:/),
+                    why: "sets a permission mode that skips the user's approval for its actions" });
+  if (/^hooks:/m.test(fm))
+    findings.push({ sev: "🟧", id: "agent-hooks", owasp: ["AST03", "AST01"], ...at(/^hooks:/),
+                    why: "defines hooks: commands that run on events, outside the conversation the user reads" });
+  const order = { "🟥": 0, "🟧": 1, "🟨": 2, "⚪": 3 };
+  return findings.sort((x, y) => order[x.sev] - order[y.sev]);
+}
+
+function printScan(cat, names, { compact = false, scanner = scanSkill, kind = "" } = {}) {
   let total = 0, worst = null;
   for (const s of names) {
-    const f = scanSkill(cat, s);
+    const f = scanner(cat, s);
     if (!f.length) continue;
     total += f.length;
     if (!worst || f[0].sev === "🟥") worst = worst === "🟥" ? worst : f[0].sev;
-    console.log(`\n${s}`);
+    console.log(`\n${kind === "agent" ? "agent " : ""}${s}`);
     for (const x of (compact ? f.slice(0, 3) : f))
       console.log(`  ${x.sev} ${x.id} — ${x.why}  [${x.owasp.join(", ")}]\n     ${x.file}:${x.line}  ${x.text}`);
-    if (compact && f.length > 3) console.log(`     … ${f.length - 3} more (skilldrop scan ${s} --from ${cat.source})`);
+    if (compact && f.length > 3) console.log(`     … ${f.length - 3} more (skilldrop scan ${kind === "agent" ? "--agent " : ""}${s} --from ${cat.source})`);
   }
   return { total, worst };
 }
 
 function scan(args) {
   const cat = resolveCatalog(args.flags.from);
-  const names = args._.length ? args._.slice() : skillsIn(cat);
+  // `scan` alone covers every skill and agent; `scan <skills>` the named skills;
+  // `scan --agent [names]` agents only (--agents works too) (an agent may share a skill's name).
+  const agentsOnly = !!(args.flags.agent || args.flags.agents);
+  const names = agentsOnly ? [] : (args._.length ? args._.slice() : skillsIn(cat));
+  const agents = agentsOnly ? (args._.length ? args._.slice() : agentsIn(cat)) : (args._.length ? [] : agentsIn(cat));
   for (const s of names) if (!skillExists(cat, s)) die(`unknown skill '${s}' in catalog '${cat.source}'`);
+  for (const a of agents) if (!agentsIn(cat).includes(a)) die(`unknown agent '${a}' in catalog '${cat.source}'`);
 
   if (args.flags.json) {
     const out = names.map((s) => ({ skill: s, findings: scanSkill(cat, s) })).filter((r) => r.findings.length);
+    const aout = agents.map((a) => ({ agent: a, findings: scanAgent(cat, a) })).filter((r) => r.findings.length);
     return emitJSON({
-      catalog: cat.source, scanned: names.length,
-      flagged: out.length, findingCount: out.reduce((n, r) => n + r.findings.length, 0), skills: out,
+      catalog: cat.source, scanned: names.length, agentsScanned: agents.length,
+      flagged: out.length + aout.length,
+      findingCount: out.reduce((n, r) => n + r.findings.length, 0) + aout.reduce((n, r) => n + r.findings.length, 0),
+      skills: out, agents: aout,
     });
   }
-  console.log(`Scanning ${names.length} skill(s) in catalog '${cat.source}' for supply-chain patterns…`);
-  const { total } = printScan(cat, names);
+  console.log(`Scanning ${names.length} skill(s)${agents.length ? ` and ${agents.length} agent(s)` : ""} in catalog '${cat.source}' for supply-chain patterns…`);
+  const total = printScan(cat, names).total + printScan(cat, agents, { scanner: scanAgent, kind: "agent" }).total;
   if (!total) {
     console.log("\nNo flagged patterns found.");
   } else {
@@ -1373,9 +1484,9 @@ function install(args) {
     console.log(`\nWARNING: third-party catalog '${cat.source}'. Skills are instructions your AI agent will follow — review each installed SKILL.md under ${dest} before first use. Install copied files only; nothing was executed.`);
     // Supply-chain scan (RFC-0022): surface risky patterns at the moment of trust. Reports only —
     // the files are already copied, and a match is a prompt to read, not a verdict.
-    const scripted = names.filter((s) => fs.existsSync(path.join(skillDir(cat, s), "scripts")));
+    const scripted = names.filter((s) => fs.existsSync(path.join(skillDir(cat, s), "scripts")) || permissionsOf(cat, s));
     if (scripted.length) {
-      console.log(`\nWhat the scripts declare they do (RFC-0039):`);
+      console.log(`\nWhat each skill declares it runs and reaches (RFC-0039, RFC-0054):`);
       for (const s of scripted) console.log(`  ${s}: ${permissionSummary(permissionsOf(cat, s))}`);
     }
     const { total } = printScan(cat, names, { compact: true });
@@ -2255,8 +2366,12 @@ function installAgents(args) {
   if (ide === "copilot") console.log("Invoke with: copilot --agent <name>");
   if (ide === "codex") console.log("sandbox_mode is left unset, so each agent inherits the parent session's permissions.");
   if (ide === "antigravity") console.log("Emitted with `subagent: true` so invoke_subagent can reach them.");
-  if (cat.source !== BUNDLED)
+  if (cat.source !== BUNDLED) {
     console.log(`\nWARNING: third-party catalog '${cat.source}'. An agent is a system prompt your tool will adopt — read it before first use. Install copied files only; nothing was executed.`);
+    const { total } = printScan(cat, names, { compact: true, scanner: scanAgent, kind: "agent" });
+    console.log(total ? `\n${total} pattern(s) worth reading before you trust these agents. Full detail: skilldrop scan --agent --from ${cat.source}`
+                      : "\nSupply-chain scan: no flagged patterns.");
+  }
 }
 
 function uninstallAgents(args) {

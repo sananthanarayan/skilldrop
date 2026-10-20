@@ -8,6 +8,18 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.32 — 2026-10-20
+
+- **A skill's instructions are now held to its `permissions`.** A skill without scripts can still tell your agent to run `terraform init` or `curl` a host. The scan now reads every fenced shell block in a skill's instructions, and `skilldrop validate` fails one that runs a program or reaches a host it doesn't declare. `--contain` lets shell commands reach only the declared hosts, so they now include the ones instructions need. Six bundled skills declare what their instructions run: `sonar-review`, `terraform-module`, `terraform-plan-review`, `mermaid-render`, `figma-diagrams` and `dependency-upgrade-review` ([RFC-0054](docs/rfcs/0054-instruction-permissions-and-agent-scan.md)).
+- **`skilldrop scan` checks agents too.** It applies the same rules it uses on skills, plus four of its own:
+  - an agent with no `tools:` list, which inherits every tool;
+  - one that reads from the web or an MCP server and can run commands or edit files in the same context;
+  - a permission mode that skips your approval;
+  - hooks in its frontmatter.
+
+  `scan --agent` scans agents only. Installing agents from a third-party catalogue shows the findings, and a policy's `scan.max` now refuses agents above its limit too.
+- **`dependency-upgrade-review` leads with the verdict and what decides it.** Each blocker says what breaks, where, why CI missed it, and how to fix it. The review now traces changed APIs to their callers, checks runtime floors against the image and CI, and flags one tag pinned to two SHAs. On new held-out evals, both judges preferred it to plain Claude Code in every pair ([RFC-0053](docs/rfcs/0053-six-skills-for-the-lifecycle-gaps.md)).
+
 ## 0.16.31 — 2026-10-20
 
 - **`rollout-plan`** plans turning on a flagged or canaried change. It answers your question first, then builds the ramp around what actually limits it: a partner's daily cap, a billing cycle, a shadow run, or traffic too low for percentages to mean anything. Each step has a threshold measured against the flag-off group and a rule set in advance, and the plan says how long the step must run to catch a regression and what turning the flag off doesn't undo. It's an option in the `release` loop's first stage, beside `migration-plan`.

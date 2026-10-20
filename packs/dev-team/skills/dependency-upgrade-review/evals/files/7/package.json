@@ -1,0 +1,25 @@
+{
+  "name": "@ledgerly/invoice-widgets",
+  "version": "3.12.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "lint": "lintwright . --max-warnings 0",
+    "format:check": "prettyquill --check .",
+    "typecheck": "tsc --noEmit",
+    "test": "vellum run",
+    "build": "bundlecrate src/index.ts --out dist",
+    "test:dist": "vellum run --config vellum.dist.config.js"
+  },
+  "devDependencies": {
+    "bundlecrate": "6.1.0",
+    "lintwright": "4.3.1",
+    "prettyquill": "3.1.4",
+    "tsforge-types": "1.4.2",
+    "vellum-test": "2.8.0"
+  }
+}

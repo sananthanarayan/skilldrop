@@ -26,9 +26,9 @@ What each one declares in its manifest: the packages to install, the environment
 | [`cover-letter`](../../packs/career/skills/cover-letter/SKILL.md) | career | — | — | — | — | named-paths |
 | [`deck-builder`](../../packs/design/skills/deck-builder/SKILL.md) | design | `python-pptx==1.0.2` | — | — | — | named-paths |
 | [`delivery-metrics-report`](../../packs/sre-oncall/skills/delivery-metrics-report/SKILL.md) | sre-oncall | — | — | — | — | named-paths |
-| [`dependency-upgrade-review`](../../packs/dev-team/skills/dependency-upgrade-review/SKILL.md) | dev-team | — | — | — | — | named-paths |
+| [`dependency-upgrade-review`](../../packs/dev-team/skills/dependency-upgrade-review/SKILL.md) | dev-team | — | — | `github.com`, `api.github.com`, `registry.npmjs.org`, `pypi.org`, `proxy.golang.org` | `git`, `gh`, `npm`, `pip`, `go` | named-paths |
 | [`feedback-synthesis`](../../packs/product-manager/skills/feedback-synthesis/SKILL.md) | product-manager | — | — | — | — | named-paths |
-| [`figma-diagrams`](../../packs/solution-architect/skills/figma-diagrams/SKILL.md) | solution-architect | `requests==2.34.2` | `FIGMA_TOKEN` | `api.figma.com` | — | named-paths |
+| [`figma-diagrams`](../../packs/solution-architect/skills/figma-diagrams/SKILL.md) | solution-architect | `requests==2.34.2` | `FIGMA_TOKEN` | `api.figma.com`, `pypi.org`, `files.pythonhosted.org` | `pip` | named-paths |
 | [`file-to-markdown`](../../packs/converters/skills/file-to-markdown/SKILL.md) | converters | — | — | — | `pdftotext` | named-paths |
 | [`hypothesis-comparison`](../../packs/research/skills/hypothesis-comparison/SKILL.md) | research | — | — | — | — | named-paths |
 | [`interactive-diagram`](../../packs/solution-architect/skills/interactive-diagram/SKILL.md) | solution-architect | — | — | — | — | project |
@@ -36,7 +36,7 @@ What each one declares in its manifest: the packages to install, the environment
 | [`md-to-docx`](../../packs/converters/skills/md-to-docx/SKILL.md) | converters | — | — | — | — | named-paths |
 | [`md-to-html`](../../packs/converters/skills/md-to-html/SKILL.md) | converters | — | — | — | — | named-paths |
 | [`md-to-xlsx`](../../packs/converters/skills/md-to-xlsx/SKILL.md) | converters | — | — | — | — | named-paths |
-| [`mermaid-render`](../../packs/converters/skills/mermaid-render/SKILL.md) | converters | — | — | — | `mmdc` | named-paths |
+| [`mermaid-render`](../../packs/converters/skills/mermaid-render/SKILL.md) | converters | — | — | `registry.npmjs.org` | `mmdc`, `npm` | named-paths |
 | [`output-hygiene`](../../packs/core/skills/output-hygiene/SKILL.md) | core | — | — | — | — | named-paths |
 | [`pre-merge-review`](../../packs/dev-team/skills/pre-merge-review/SKILL.md) | dev-team | — | — | — | `git`, `ruff`, `mypy`, `pytest`, `*` | project |
 | [`resume-tailor`](../../packs/career/skills/resume-tailor/SKILL.md) | career | — | — | — | — | named-paths |
@@ -46,7 +46,7 @@ What each one declares in its manifest: the packages to install, the environment
 | [`source-synthesis`](../../packs/research/skills/source-synthesis/SKILL.md) | research | — | — | — | — | named-paths |
 | [`sql-review`](../../packs/data-analytics/skills/sql-review/SKILL.md) | data-analytics | — | — | — | — | named-paths |
 | [`team-status-report`](../../packs/trackers/skills/team-status-report/SKILL.md) | trackers | — | — | — | — | named-paths |
-| [`terraform-plan-review`](../../packs/infra-as-code/skills/terraform-plan-review/SKILL.md) | infra-as-code | — | — | — | — | named-paths |
+| [`terraform-plan-review`](../../packs/infra-as-code/skills/terraform-plan-review/SKILL.md) | infra-as-code | — | — | — | `terraform` | named-paths |
 | [`tracker-brief-sync`](../../packs/trackers/skills/tracker-brief-sync/SKILL.md) | trackers | — | — | — | — | named-paths |
 <!-- scripts:end -->
 
