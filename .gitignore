@@ -65,3 +65,6 @@ renders/
 # privacy.py: extra terms a maintainer protects, never committed (RFC-0049)
 /.skilldrop-private
 .eval-history/
+
+# CI tool installs (.github/tools, RFC-0059) — installed in CI, never committed
+/.github/tools/node_modules/

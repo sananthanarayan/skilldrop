@@ -8,7 +8,8 @@
 # cannot install itself unreviewed onto a user's machine. Note these installs happen on the
 # *user's* machine, not in CI — a merged bump only reaches people who reinstall the skill.
 #
-# No npm ecosystem: the package has zero dependencies.
+# npm: only for .github/tools, the hash-locked build tools CI installs (pagefind). The
+# published package has zero dependencies, so it needs no npm updates of its own.
 #
 # Eval fixtures hold no live dependency files: a fake project's package.json or go.mod is
 # stored as package.json.fixture, so the dependency graph never reads its pins as ours
@@ -41,6 +42,26 @@ updates:
   # for anyone on an older interpreter — review the release notes before merging.
   - package-ecosystem: pip
     directory: /packs/solution-architect/skills/figma-diagrams
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: "chore"
+    labels:
+      - dependencies
+
+  # CI's own tools, locked by hash (.github/tools): pagefind for the site, zizmor for the
+  # workflow audit. Dependabot rewrites the version and the hashes together.
+  - package-ecosystem: npm
+    directory: /.github/tools
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: "chore"
+    labels:
+      - dependencies
+
+  - package-ecosystem: pip
+    directory: /.github/tools
     schedule:
       interval: monthly
     commit-message:

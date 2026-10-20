@@ -17,9 +17,10 @@ on:
   push:
     branches: [main]
 
-# Least privilege: the only elevated scope is the write needed to push the generated branch.
+# Least privilege: read-only by default; the one job re-grants the write it needs to push the
+# generated branch.
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: plugins
@@ -28,6 +29,8 @@ concurrency:
 jobs:
   plugins:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # push the generated plugins branch
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1  # zizmor: ignore[artipacked] this job pushes with the job token, so it keeps credentials
       - name: Guard the committed marketplace against drift

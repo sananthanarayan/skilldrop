@@ -42,8 +42,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: release # only main may use it; the registry rejects a publish from outside it
     permissions:
-      id-token: write # OIDC trusted publishing + --provenance
-      contents: write # push the v<version> tag after a successful publish
+      id-token: write # OIDC trusted publishing + --provenance, and the release attestation
+      contents: write # push the v<version> tag and cut the Release after a successful publish
+      attestations: write # record the build provenance of the tarball attached to the Release
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1  # zizmor: ignore[artipacked] this job pushes with the job token, so it keeps credentials
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -51,8 +52,15 @@ jobs:
           node-version: 24 # ships an OIDC-capable npm 11.x natively
           registry-url: https://registry.npmjs.org
       - name: Ensure npm supports OIDC trusted publishing (>= 11.5.1)
-        run: npm install -g npm@11.21.0 && npm --version  # zizmor: ignore[adhoc-packages] pinned exact version; a global CLI install has no lockfile
+        # Node 24's own npm is new enough, so nothing is installed: an unpinned global npm
+        # would be one more thing that could change under the publish step.
+        run: |
+          v=$(npm --version)
+          node -e 'const [a,b,c]=process.argv[1].split(".").map(Number); process.exit(a>11||(a===11&&(b>5||(b===5&&c>=1)))?0:1)' "$v" \
+            || { echo "::error::npm $v is older than 11.5.1, which OIDC trusted publishing needs"; exit 1; }
+          echo "npm $v"
       - name: Publish if version is new
+        id: publish
         run: |
           set -o pipefail  # the publish below is piped through tee; its exit code must survive
           LOCAL=$(node -p "require('./package.json').version")
@@ -68,8 +76,13 @@ jobs:
             echo "::notice title=skilldrop-cli@$LOCAL awaiting approval::v$LOCAL is tagged but the registry shows $PUBLISHED. It is staged on npm: approve it with 'npm stage list skilldrop-cli' then 'npm stage approve <id>'."
             exit 0
           fi
+          # Pack once and publish that file, so the tarball attached to the Release below is
+          # byte for byte the one on npm.
+          TGZ="$RUNNER_TEMP/skilldrop-cli-$LOCAL.tgz"
+          npm pack --pack-destination "$RUNNER_TEMP" >/dev/null
+          test -f "$TGZ"
           echo "publishing skilldrop-cli@$LOCAL (registry has $PUBLISHED)"
-          if ! npm publish --provenance 2>&1 | tee /tmp/publish.log; then
+          if ! npm publish "$TGZ" --provenance 2>&1 | tee /tmp/publish.log; then
             if grep -q "previously staged version" /tmp/publish.log; then
               echo "::notice title=skilldrop-cli@$LOCAL already staged::approve it with 'npm stage approve <id>'."
             else
@@ -87,14 +100,20 @@ jobs:
             echo "tagged v$LOCAL"
           fi
 
-          # A tag is a pointer; a Release is the page people actually read. Cut one from the
-          # same commit, using its message body as the notes — commit messages here are already
-          # written as changelog entries, so there is nothing to duplicate or let drift.
+          # A tag is a pointer; a Release is the page people actually read. Its notes are this
+          # version's CHANGELOG entry, which build_site.py already requires, so they say what a
+          # user can now do. Its title is the pull request's, not the merge commit's subject.
           if gh release view "v$LOCAL" >/dev/null 2>&1; then
             echo "release v$LOCAL already exists — skipping"
           else
+            SUBJECT=$(git log -1 --pretty=%s)
+            case "$SUBJECT" in
+              "Merge pull request "*) SUBJECT=$(git log -1 --pretty=%b | sed '/^[[:space:]]*$/d' | head -n 1) ;;
+            esac
+            SUBJECT=$(printf '%s' "$SUBJECT" | sed -E 's/ \(?[0-9]+\.[0-9]+\.[0-9]+\)?$//')
             {
-              git log -1 --pretty=%b | sed '/^Co-Authored-By:/d' | sed -e :a -e '/^\n*$/{$d;N;ba' -e '}'
+              awk -v v="$LOCAL" 'index($0, "## " v " ") == 1 { on = 1; next } /^## / && on { exit } on' CHANGELOG.md \
+                | sed '/./,$!d' | sed -e :a -e '/^\n*$/{$d;N;ba' -e '}'
               echo
               echo "---"
               echo
@@ -102,13 +121,44 @@ jobs:
               echo "npx skilldrop-cli@$LOCAL install --pack solution-architect"
               echo "\`\`\`"
               echo
-              echo "[skilldrop-cli@$LOCAL on npm](https://www.npmjs.com/package/skilldrop-cli/v/$LOCAL) — published with provenance."
+              echo "[skilldrop-cli@$LOCAL on npm](https://www.npmjs.com/package/skilldrop-cli/v/$LOCAL), published with provenance."
+              echo "The attached \`skilldrop-cli-$LOCAL.tgz\` is that same file. Check its signed build provenance with"
+              echo "\`gh attestation verify skilldrop-cli-$LOCAL.tgz --repo sananthanarayan/skilldrop\`; its SBOM is \`skilldrop-cli-$LOCAL.cdx.json\`."
             } > /tmp/notes.md
             gh release create "v$LOCAL" \
-              --title "v$LOCAL — $(git log -1 --pretty=%s | sed 's/ (\?[0-9]\+\.[0-9]\+\.[0-9]\+)\?$//')" \
+              --title "v$LOCAL — $SUBJECT" \
               --notes-file /tmp/notes.md \
               --verify-tag
             echo "released v$LOCAL"
+            {
+              echo "released=true"
+              echo "version=$LOCAL"
+              echo "tgz=$TGZ"
+            } >> "$GITHUB_OUTPUT"
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Signed-Releases: the Release carries the published tarball, a Sigstore-signed build
+      # provenance for it (also recorded as a GitHub attestation), and an SBOM.
+      - name: Attest the tarball's build provenance
+        id: attest
+        if: steps.publish.outputs.released == 'true'
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: ${{ steps.publish.outputs.tgz }}
+      - name: Attach the tarball, its provenance and an SBOM to the Release
+        if: steps.publish.outputs.released == 'true'
+        run: |
+          set -euo pipefail
+          SBOM="$RUNNER_TEMP/skilldrop-cli-$VERSION.cdx.json"
+          npm sbom --sbom-format cyclonedx --omit dev > "$SBOM.raw"
+          # npm names the root component after the checkout folder; name it after the package.
+          node -e 'const fs=require("fs"),[f,o]=process.argv.slice(1),b=JSON.parse(fs.readFileSync(f,"utf8"));b.metadata.component.name="skilldrop-cli";fs.writeFileSync(o,JSON.stringify(b,null,2)+"\n")' "$SBOM.raw" "$SBOM"
+          cp "$BUNDLE" "$TGZ.sigstore.json"
+          gh release upload "v$VERSION" "$TGZ" "$TGZ.sigstore.json" "$SBOM" --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.publish.outputs.version }}
+          TGZ: ${{ steps.publish.outputs.tgz }}
+          BUNDLE: ${{ steps.attest.outputs.bundle-path }}

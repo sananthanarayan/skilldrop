@@ -49,6 +49,11 @@ npx skilldrop-cli search <words> [--kind skill|loop|agent|pack] [--limit N] [--j
 | `--dry-run` | Prints what `install`, `update` or `uninstall` would change, and changes nothing. |
 | `--json` | Machine-readable output for `list`, `search`, `info`, `packs`, `agents`, `outdated` and `doctor`. |
 
+After the first install that succeeds at an interactive terminal, the CLI prints one line
+asking for a GitHub star, and writes `~/.config/skilldrop/star-shown` so the line never shows
+again. It doesn't print in CI, in a pipe or with `--json`, and nothing is sent anywhere. Set
+`SKILLDROP_NO_STAR=1` to turn it off before it ever shows.
+
 ## The Claude Code plugin marketplace
 
 skilldrop is also a **Claude Code plugin marketplace**: one marketplace with one plugin for the whole catalogue plus one per pack, and no npm step. Add it once:

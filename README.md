@@ -1,19 +1,56 @@
 # skilldrop
 
 [![npm](https://img.shields.io/npm/v/skilldrop-cli)](https://www.npmjs.com/package/skilldrop-cli)
+[![CLI on Linux, macOS and Windows](https://github.com/sananthanarayan/skilldrop/actions/workflows/cli.yml/badge.svg?branch=main)](https://github.com/sananthanarayan/skilldrop/actions/workflows/cli.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/sananthanarayan/skilldrop/badge)](https://scorecard.dev/viewer/?uri=github.com/sananthanarayan/skilldrop)
 [![license](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](LICENSE)
 
-**Portable AI-agent skills, measured against the agent without them.** They cover the deliverables knowledge workers actually ship: ADRs, design docs, PRDs, runbooks, threat models, decks, postmortems and adversarial reviews. Each one is a folder you copy into Claude Code, Cursor, Kiro, Codex, Antigravity or Copilot.
+**Agent skills that are measured against the agent without them, and retired when they lose.** Skills for the work people ship: ADRs, PRDs, runbooks, threat models, decks, SQL reviews, DPIAs and Terraform plan reviews. Each one is a folder you copy into Claude Code, Cursor, Kiro, Codex, Antigravity or Copilot.
 
-```text
-messy input → a skill with a quality bar → a gate that can say no → your decision
+```bash
+npx skilldrop-cli install --pack dev-team     # or product-manager, solution-architect, sre-oncall …
 ```
 
-Every skill is run as a real agent session twice, once with the skill and once without, and the results are published either way. [See the numbers and how they were measured](https://sananthanarayan.github.io/skilldrop/evals/).
+## The same request, with and without a skill
 
-[Browse the packs](https://sananthanarayan.github.io/skilldrop/packs/) · [Search all skills](https://sananthanarayan.github.io/skilldrop/catalogue/) · [Docs](https://sananthanarayan.github.io/skilldrop/docs/) · [Install options](guides/how-to/install.md) · [Contribute](CONTRIBUTING.md)
+From a held-out eval, written blind from the skill's description:
 
-## Choose your role
+> *"We're taking ClaimLens to the investment committee on Thursday… Can you build a lean canvas for it and set out our riskiest assumptions and how we'd test them?"*
+
+| Plain Claude Code | With [`lean-canvas`](https://sananthanarayan.github.io/skilldrop/skills/lean-canvas/) |
+|---|---|
+| Finds the corrected break-even (~225 seats), then recommends *"scope the ask to Claims-only Phase 1"*. | *"Corrected, break-even is 225 seats — more than all three departments combined (215), so full rollout still doesn't cover running costs at £40/seat."* |
+
+The blind judge picked the skill's answer: *"A misses this and recommends a Claims-only phase that cannot break even."*
+
+## The receipts
+
+Every skill runs as a real agent session twice: once with the skill, once without. The results are [published either way](https://sananthanarayan.github.io/skilldrop/evals/). In the last full run (5 October 2026: 100 skills, 209 evals, `claude-sonnet-5`):
+
+- **With a skill, answers met 75% of their checks; without one, 44%.** The checks were written by each skill's author, so the fairer number is the next one.
+- **Two blind judges preferred the skill's answer in 61% of pairs** (95% interval 55–68%). Each judge saw only the request and both answers, in shuffled order.
+- **4 skills that didn't beat the plain agent were [retired](https://sananthanarayan.github.io/skilldrop/evals/#retired)**, and they're listed. Each new skill has to win on held-out evals before it ships.
+
+[Get started](https://sananthanarayan.github.io/skilldrop/start/) · [Browse the packs](https://sananthanarayan.github.io/skilldrop/packs/) · [Search all skills](https://sananthanarayan.github.io/skilldrop/catalogue/) · [Docs](https://sananthanarayan.github.io/skilldrop/docs/) · [Contribute](CONTRIBUTING.md)
+
+## Start in one command
+
+```bash
+npx skilldrop-cli install --pack dev-team
+```
+
+The install prints a starter prompt for the pack. For `dev-team`, ask your agent:
+
+```text
+Is this branch safe to merge? Run a pre-merge review on the current diff.
+```
+
+A good result runs your lint, typecheck and tests through a gate script, then a reviewer panel, and ends with `READY` or `NOT READY`. To see any pack's starter, run `npx skilldrop-cli info --pack <name>`.
+
+In Claude Code you can use the plugin marketplace instead: run `/plugin marketplace add sananthanarayan/skilldrop`, then `/plugin install dev-team@skilldrop`. [Every install route](guides/how-to/install.md) covers single skills, other IDEs, loops, reviewer subagents, profiles and updates.
+
+<details>
+<summary><b>Choose your role:</b> 19 packs, from product management and architecture to SRE, GRC and job applications</summary>
 
 Install one pack. Every role pack also brings `core` (intake, critique, review council, output hygiene). Each pack page has a starter prompt to paste and says what a good result looks like.
 
@@ -37,21 +74,7 @@ Install one pack. Every role pack also brings `core` (intake, critique, review c
 - **Applying for a job:** `career` — an honest fit check against the posting, a tailored resume and cover letter that claim nothing you didn't, and the application form's answers. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/career/)
 - **Everyone:** `core` on its own. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/core/)
 
-## Start in one command
-
-```bash
-npx skilldrop-cli install --pack dev-team
-```
-
-The install prints a starter prompt for the pack. For `dev-team`, ask your agent:
-
-```text
-Is this branch safe to merge? Run a pre-merge review on the current diff.
-```
-
-A good result runs your lint, typecheck and tests through a gate script, then a reviewer panel, and ends with `READY` or `NOT READY`. To see any pack's starter, run `npx skilldrop-cli info --pack <name>`.
-
-In Claude Code you can use the plugin marketplace instead: run `/plugin marketplace add sananthanarayan/skilldrop`, then `/plugin install dev-team@skilldrop`. [Every install route](guides/how-to/install.md) covers single skills, other IDEs, loops, reviewer subagents, profiles and updates.
+</details>
 
 ## How it works
 
