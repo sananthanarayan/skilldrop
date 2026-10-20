@@ -58,6 +58,11 @@ directory and no network. Your settings, plugins and MCP servers are not loaded.
 gets the skill's folder; the other arm is plain Claude Code. An eval whose prompt names input
 files gets them from `evals/files/<eval id>/`, in both arms.
 
+A dependency file in a fixture, such as `package.json`, `go.mod`, `pyproject.toml` or a CI
+workflow, is stored as `<name>.fixture` and copied in under its real name. Under its real
+name, GitHub would read the fake project's pins as the repo's own and raise security alerts
+against code nothing runs. `validate.py` fails on one that isn't renamed.
+
 Because there is no network, a skill that has to install a dependency or call an API can't
 finish, and will score worse than it would on your machine.
 

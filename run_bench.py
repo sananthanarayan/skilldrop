@@ -205,13 +205,34 @@ def fixtures(skill, eval_id):
     return d if os.path.isdir(d) else None
 
 
+FIXTURE = ".fixture"
+
+
+def workspace_name(rel):
+    """A dependency file in a fixture (package.json, go.mod, a CI workflow) is kept in the repo
+    as <name>.fixture, so GitHub's dependency graph never reads a fake project's pins as ours
+    and raises alerts against code nothing runs (validate.py enforces it). The run sees the
+    real name."""
+    return rel[:-len(FIXTURE)] if rel.endswith(FIXTURE) else rel
+
+
+def copy_fixtures(src, dest):
+    for base, _, files in os.walk(src):
+        for name in files:
+            rel = os.path.relpath(os.path.join(base, name), src)
+            out = os.path.join(dest, workspace_name(rel))
+            os.makedirs(os.path.dirname(out), exist_ok=True)
+            shutil.copy2(os.path.join(base, name), out)
+
+
 def digest(d):
+    """Hashes the names a run sees, so renaming a file to <name>.fixture keeps its cache."""
     h = hashlib.sha256()
     for base, dirs, files in os.walk(d):
         dirs.sort()
-        for name in sorted(files):
+        for name in sorted(files, key=lambda n: workspace_name(n)):
             path = os.path.join(base, name)
-            h.update(os.path.relpath(path, d).encode() + b"\0" + open(path, "rb").read())
+            h.update(workspace_name(os.path.relpath(path, d)).encode() + b"\0" + open(path, "rb").read())
     return h.hexdigest()[:16]
 
 
@@ -225,7 +246,7 @@ def cli_agent(model, system, user, skill=None, files=None):
         ws = os.path.realpath(ws)
         env = dict(os.environ)
         if files:
-            shutil.copytree(files, ws, dirs_exist_ok=True)
+            copy_fixtures(files, ws)
         if skill:
             dest = os.path.join(ws, "skills", skill)
             shutil.copytree(catalog.skill_dir(skill), dest, ignore=shutil.ignore_patterns("evals", "__pycache__"))
