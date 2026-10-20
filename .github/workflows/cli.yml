@@ -1,0 +1,47 @@
+# Run the CLI the way a user does, on Linux, macOS and Windows (RFC-0056).
+#
+# cli_smoke.js installs, diffs, updates and uninstalls skills, packs, loops and agents in
+# throwaway folders and git repos, with a throwaway home, and checks the files each step
+# leaves. The CLI was written on macOS; Windows paths, CRLF checkouts, git calls and file
+# permissions are where it would break, and only running it there finds out. validate.py
+# runs on each OS too, since contributors clone on all three.
+#
+# Uses the Node and Python each runner ships with, so there is no setup action to pin.
+name: cli
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cli-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Versions
+        run: |
+          node --version
+          git --version
+      - name: CLI smoke test
+        run: node cli_smoke.js
+      - name: Repo lint (Windows)
+        if: runner.os == 'Windows'
+        run: python validate.py
+      - name: Repo lint (Linux, macOS)
+        if: runner.os != 'Windows'
+        run: python3 validate.py
