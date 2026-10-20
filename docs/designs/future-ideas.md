@@ -6,7 +6,7 @@ is what's next. Each item says why it matters, roughly how big it is, and what i
 so you can pick one up without re-deriving the context. Sizes are rough: **S** is an hour or
 two, **M** a day, **L** several days.
 
-Last reviewed 2026-10-20, after 0.16.32. Organisation governance (AST09) shipped in 0.16.27
+Last reviewed 2026-10-20, after 0.16.33. Organisation governance (AST09) shipped in 0.16.27
 ([RFC-0050](../rfcs/0050-org-governance.md)), declared containment (AST06) in 0.16.28
 ([RFC-0051](../rfcs/0051-declared-containment.md)), and the `research`, `comply` and `measure`
 loops with a tutorial for each pack added in 0.14.0 in 0.16.29
@@ -15,7 +15,9 @@ ran in 0.16.21, and every skill now has held-out evals beside its own. 0.16.30 a
 `dependency-upgrade-review`, `feedback-synthesis`, `codebase-tour` and `mcp-pairing`, a
 compare-packs page, a how-to per skill, and team totals and an HTML dashboard for
 `loop-stats`. 0.16.31 added `rollout-plan` and `refactor-plan` after a revision. 0.16.32 checks what a skill's
-instructions run against its `permissions` and scans agents ([RFC-0054](../rfcs/0054-instruction-permissions-and-agent-scan.md)).
+instructions run against its `permissions` and scans agents ([RFC-0054](../rfcs/0054-instruction-permissions-and-agent-scan.md)). 0.16.33 built the
+eval trend and monthly assertion run, OCR for scanned PDFs, joined PDF tables across pages, and
+checked the converters' output in Word and Excel.
 
 ## Distribution
 
@@ -37,9 +39,5 @@ instructions run against its `permissions` and scans agents ([RFC-0054](../rfcs/
 
 | Idea | Why | Size | Depends on |
 |---|---|---|---|
-| **Turn on the weekly evals** | The workflow exists but skips without an `ANTHROPIC_API_KEY` secret. | S | You adding the secret |
-| **Eval trend on the site** | Publish each weekly run's results to the *How skills are checked* page, so trigger accuracy is visible over time. | M | Weekly evals running |
-| **Monthly assertion evals** | Run the acceptance assertions on a schedule, not only by hand. They cost more than trigger checks. | S | Weekly evals running; a budget |
-| **Open the converters' output in real Word and Excel** | The .docx and .xlsx files are checked in Quick Look only. | S | Someone with Office |
-| **OCR for scanned PDFs** | `file-to-markdown` stops at a PDF with no text layer. Tesseract could add a text layer first. | M | An optional system dependency |
-| **Tables split across PDF pages** | A table that starts at the foot of one page loses its header row to that page. | S | — |
+| **Turn on the weekly evals** | The workflow, the monthly assertion run and the trend on the site are all built ([RFC-0055](../rfcs/0055-eval-history-branch.md)); they skip without an `ANTHROPIC_API_KEY` secret. Set `EVALS_MONTHLY_BUDGET` to change the monthly cap from $20. | S | You adding the secret |
+| **PDF columns closer than two spaces** | `file-to-markdown` splits PDF table columns on two or more spaces, so a right-aligned number column next to a left-aligned one (Word's "Spend" and "Renewal") merges into one cell. Reading column positions from `pdftotext -bbox` would separate them. | M | — |

@@ -78,8 +78,9 @@ node bin/skilldrop.js verify-mirror <dir>                        # a mirror stil
 python3 build_pack_guides.py
 python3 build_pack_guides.py --check
 
-# Evals against a live model (needs ANTHROPIC_API_KEY; report-only, also weekly in CI)
-python3 run_evals.py [--skills a,b] [--assertions]
+# Evals against a live model (needs ANTHROPIC_API_KEY; report-only; in CI weekly for trigger
+# queries and monthly for assertions under a budget, with counts appended to eval-history)
+python3 run_evals.py [--skills a,b] [--assertions] [--budget USD] [--summary FILE]
 
 # Benchmark: each eval with the skill and without it, with cost (RFC-0040). Paid; capped by --budget.
 python3 run_bench.py --dry-run                                    # call count and rough cost; spends nothing
@@ -270,7 +271,7 @@ The folder name is the slug used for `/`-invocation: kebab-case, descriptive, us
 - `evals/evals.json` — `{ "skill_name": …, "evals": [ { "id", "prompt", "assertions": [ … ] } ] }`. At least one realistic prompt; assertions are the checkable statements a passing output satisfies (they should restate the skill's own `Quality bar` as verifiable claims about one concrete output).
 - `evals/eval_queries.json` — `[ { "query": …, "should_trigger": true|false } ]`. 4+ phrases that should invoke the skill and 3+ near-misses that should route to a sibling skill instead. The `false` rows are the discipline: they force the `description` to draw a real boundary against sibling skills.
 
-**Every skill ships evals** (full coverage since 0.13.8; `validate.py` fails a skill without both files). The `should_trigger: false` rows are where the care goes: each one is a real near-miss that belongs to a **named sibling**, taken from the skill's "When NOT to use" section and its `related` list — "help me present this" (`exec-summary` / `slide-outliner` / `deck-builder` / `audience-profile`), "define the contract" (`api-contract-draft` / `data-contract`), "review this" (`devils-advocate` / `doc-critique` / `council-review` / `sonar-review`). Don't invent a collision to fill the file: a no-trigger row nobody would actually type documents nothing. Assertions come from the skill's own Quality bar, and every skill that handles facts gets a "does not invent X not in the prompt" assertion. The weekly [evals workflow](.github/workflows/evals.yml) runs the trigger queries against a live model and reports the results.
+**Every skill ships evals** (full coverage since 0.13.8; `validate.py` fails a skill without both files). The `should_trigger: false` rows are where the care goes: each one is a real near-miss that belongs to a **named sibling**, taken from the skill's "When NOT to use" section and its `related` list — "help me present this" (`exec-summary` / `slide-outliner` / `deck-builder` / `audience-profile`), "define the contract" (`api-contract-draft` / `data-contract`), "review this" (`devils-advocate` / `doc-critique` / `council-review` / `sonar-review`). Don't invent a collision to fill the file: a no-trigger row nobody would actually type documents nothing. Assertions come from the skill's own Quality bar, and every skill that handles facts gets a "does not invent X not in the prompt" assertion. The [evals workflow](.github/workflows/evals.yml) runs the trigger queries against a live model every week and the assertions every month under a dollar budget, reports the results, and appends counts to the `eval-history` branch that the site's trend reads (RFC-0055).
 
 **5. Update the skill catalogue.** Add a row to [`guides/reference/skill-catalogue.md`](guides/reference/skill-catalogue.md) (under the right category), and to **Installing dependencies** in [`guides/reference/install-targets.md`](guides/reference/install-targets.md) if the skill has runtime deps.
 

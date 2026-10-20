@@ -12,17 +12,24 @@ Two kinds, matching the two files every skill ships:
               the eval prompt is the request, and a judge model checks each assertion
               against the output. Costs a generation plus a judgement per eval.
 
-Writes a JSON result file and a markdown report (to $GITHUB_STEP_SUMMARY in Actions).
+Writes a JSON result file and a markdown report (to $GITHUB_STEP_SUMMARY in Actions), and
+with --summary a small counts-only file the site's trend reads (no queries, outputs or
+reasons). --budget is a hard stop in dollars: once spent, no new call starts, and the rest is
+reported as skipped. Assertion evals run in an order that changes each month, so a capped run
+covers a different part of the catalogue each time.
 With no ANTHROPIC_API_KEY it prints a notice and exits 0, so forks and PRs stay green.
 
   python3 run_evals.py                          # activation, every skill
   python3 run_evals.py --skills doc-critique,adr-generator --assertions
 """
 import argparse
+import datetime
+import hashlib
 import json
 import os
 import re
 import sys
+import threading
 from concurrent.futures import ThreadPoolExecutor
 
 import catalog
@@ -31,6 +38,25 @@ from anthropic_api import APIError, api_key, messages
 ROUTER_MODEL = "claude-haiku-4-5-20251001"
 SKILL_MODEL = "claude-sonnet-5-5"
 JUDGE_MODEL = "claude-sonnet-5-5"
+
+
+class Meter:
+    """Dollars spent so far, from each call's usage block at list price, and a hard stop."""
+    def __init__(self, budget=None):
+        self.budget, self.spent, self.lock = budget, 0.0, threading.Lock()
+
+    def charge(self, model, usage):
+        from run_bench import cost_of, price  # run_bench imports this module; import late
+        if not usage or not price(model):
+            return
+        with self.lock:
+            self.spent += cost_of(model, usage)
+
+    def exhausted(self):
+        return self.budget is not None and self.spent >= self.budget
+
+
+METER = Meter()
 
 
 def load(skill, name):
@@ -51,7 +77,8 @@ def router_prompt(all_skills):
 
 
 def route(system, query, model):
-    text, _ = messages(model, system, query, max_tokens=20, cache_system=True)
+    text, usage = messages(model, system, query, max_tokens=20, cache_system=True)
+    METER.charge(model, usage)
     return text.strip().strip("`").split()[0].lower() if text.strip() else "none"
 
 
@@ -61,6 +88,8 @@ def activation(skills, all_skills, model, workers):
 
     def run(job):
         s, q = job
+        if METER.exhausted():
+            return {"skill": s, "query": q["query"], "should_trigger": q["should_trigger"], "skipped": "budget"}
         try:
             picked = route(system, q["query"], model)
         except APIError as e:
@@ -90,6 +119,8 @@ def grade(judge_model, output, asserts, send=None):
     verdict, meta = (send or messages)(judge_model, JUDGE_SYSTEM,
                                        f"<output>\n{output}\n</output>\n\n<assertions>\n{numbered}\n</assertions>",
                                        max_tokens=2000)
+    if send is None:
+        METER.charge(judge_model, meta)
     start = verdict.find("[")  # the first JSON array; a judge may add prose after it
     try:
         grades = json.JSONDecoder().raw_decode(verdict[start:])[0] if start >= 0 else []
@@ -109,11 +140,18 @@ def assertions(skills, skill_model, judge_model, workers):
         md = open(os.path.join(catalog.skill_dir(s), "SKILL.md")).read()
         for e in doc.get("evals", []):
             jobs.append((s, md, e))
+    # A different order each month, so a run the budget cuts short still reaches every skill
+    # over a few months instead of always the same alphabetical first half.
+    month = datetime.date.today().strftime("%Y-%m")
+    jobs.sort(key=lambda j: hashlib.sha256(f"{month}:{j[0]}:{j[2].get('id')}".encode()).hexdigest())
 
     def run(job):
         s, md, e = job
+        if METER.exhausted():
+            return {"skill": s, "id": e.get("id"), "skipped": "budget"}
         try:
-            out, _ = messages(skill_model, skill_system(md), e["prompt"], max_tokens=8000)
+            out, usage = messages(skill_model, skill_system(md), e["prompt"], max_tokens=8000)
+            METER.charge(skill_model, usage)
             rows, _ = grade(judge_model, out, e["assertions"])
         except (APIError, json.JSONDecodeError) as err:
             return {"skill": s, "id": e.get("id"), "error": str(err)}
@@ -132,13 +170,15 @@ def report(act, asr, model):
     if act:
         done = [r for r in act if "pass" in r]
         errs = [r for r in act if "error" in r]
+        skipped = [r for r in act if "skipped" in r]
         pos = [r for r in done if r["should_trigger"]]
         neg = [r for r in done if not r["should_trigger"]]
         lines += [f"## Activation — {model}", "",
                   f"**{sum(r['pass'] for r in done)}/{len(done)} queries routed as intended** · "
                   f"triggers when it should: {pct(sum(r['pass'] for r in pos), len(pos))} · "
                   f"stays quiet when it should: {pct(sum(r['pass'] for r in neg), len(neg))}"
-                  + (f" · {len(errs)} API error(s)" if errs else ""), ""]
+                  + (f" · {len(errs)} API error(s)" if errs else "")
+                  + (f" · {len(skipped)} skipped at the budget" if skipped else ""), ""]
         misses = [r for r in done if not r["pass"]]
         if misses:
             lines += ["| Skill | Query | Expected | Model picked |", "|---|---|---|---|"]
@@ -150,8 +190,11 @@ def report(act, asr, model):
         graded = [r for r in asr if "assertions" in r]
         total = sum(len(r["assertions"]) for r in graded)
         passed = sum(a["pass"] for r in graded for a in r["assertions"])
+        skipped = [r for r in asr if "skipped" in r]
+        errors = len(asr) - len(graded) - len(skipped)
         lines += ["## Assertions", "", f"**{passed}/{total} assertions met** across {len(graded)} eval(s)"
-                  + (f" · {len(asr) - len(graded)} error(s)" if len(graded) < len(asr) else ""), "",
+                  + (f" · {errors} error(s)" if errors else "")
+                  + (f" · {len(skipped)} skipped at the budget" if skipped else ""), "",
                   "| Skill | Eval | Met | Missed |", "|---|---|---|---|"]
         for r in sorted(graded, key=lambda r: r["skill"]):
             miss = [a["assertion"] for a in r["assertions"] if not a["pass"]]
@@ -161,6 +204,35 @@ def report(act, asr, model):
     lines.append("A miss is a prompt to look, not a verdict: models vary run to run, and the router here "
                  "approximates how each tool picks a skill.")
     return "\n".join(lines) + "\n"
+
+
+def summarise(act, asr, models, kind, scope="all"):
+    """Counts only, for the trend on the site: no query text, outputs or judge reasons."""
+    out = {"date": datetime.date.today().isoformat(), "kind": kind, "scope": scope, "models": models,
+           "spent": round(METER.spent, 2), "budget": METER.budget}
+    if act:
+        done = [r for r in act if "pass" in r]
+        by = {}
+        for r in done:
+            b = by.setdefault(r["skill"], [0, 0])
+            b[0] += r["pass"]; b[1] += 1
+        pos = [r for r in done if r["should_trigger"]]
+        neg = [r for r in done if not r["should_trigger"]]
+        out["activation"] = {"passed": sum(r["pass"] for r in done), "total": len(done),
+                             "triggers": [sum(r["pass"] for r in pos), len(pos)],
+                             "quiet": [sum(r["pass"] for r in neg), len(neg)],
+                             "skipped": sum(1 for r in act if "skipped" in r),
+                             "errors": sum(1 for r in act if "error" in r), "by_skill": by}
+    if asr:
+        graded = [r for r in asr if "assertions" in r]
+        by = {}
+        for r in graded:
+            b = by.setdefault(r["skill"], [0, 0])
+            b[0] += sum(a["pass"] for a in r["assertions"]); b[1] += len(r["assertions"])
+        out["assertions"] = {"met": sum(v[0] for v in by.values()), "total": sum(v[1] for v in by.values()),
+                             "evals": len(graded), "skipped": sum(1 for r in asr if "skipped" in r),
+                             "by_skill": by}
+    return out
 
 
 def main():
@@ -173,7 +245,10 @@ def main():
     ap.add_argument("--judge-model", default=JUDGE_MODEL)
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--out", default="evals-results.json")
+    ap.add_argument("--summary", metavar="FILE", help="also write a counts-only summary for the site's trend")
+    ap.add_argument("--budget", type=float, help="hard stop in US dollars at list price; no new call starts after it")
     a = ap.parse_args()
+    METER.budget = a.budget
 
     if not api_key():
         print("::notice::ANTHROPIC_API_KEY is not set — skipping the eval run. "
@@ -187,8 +262,16 @@ def main():
 
     act = [] if a.no_activation else activation(skills, all_skills, a.model, a.workers)
     asr = assertions(skills, a.skill_model, a.judge_model, a.workers) if a.assertions else []
-    json.dump({"router_model": a.model, "activation": act, "assertions": asr}, open(a.out, "w"), indent=2)
-    md = report(act, asr, a.model)
+    json.dump({"router_model": a.model, "activation": act, "assertions": asr, "spent": round(METER.spent, 4),
+               "budget": a.budget}, open(a.out, "w"), indent=2)
+    if a.summary:
+        kind = "assertions" if asr and not act else "activation" if act and not asr else "both"
+        models = {"router": a.model} if act else {}
+        if asr:
+            models.update({"skill": a.skill_model, "judge": a.judge_model})
+        json.dump(summarise(act, asr, models, kind, "partial" if a.skills else "all"), open(a.summary, "w"),
+                  separators=(",", ":"))
+    md = report(act, asr, a.model) + (f"\nSpent ${METER.spent:.2f}" + (f" of a ${a.budget:.2f} budget" if a.budget else "") + " at list price.\n")
     print(md)
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:

@@ -8,6 +8,13 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.33 — 2026-10-20
+
+- **Eval results now build a history.** The evals workflow runs the trigger queries every week and, from this release, the acceptance assertions every month under a dollar budget ($20 unless you set `EVALS_MONTHLY_BUDGET`). Each run's counts are appended to an `eval-history` branch, and the *How skills are checked* page draws them week by week: trigger accuracy over time, the skills whose routing changed since the last run, and what each monthly run graded and spent. It starts once the repository has an `ANTHROPIC_API_KEY` secret ([RFC-0055](docs/rfcs/0055-eval-history-branch.md)).
+- **`run_evals.py --budget`** stops starting new calls once the dollar cap is reached, and `--summary` writes the counts-only file the history keeps.
+- **`file-to-markdown` reads scanned PDFs** when `tesseract` is installed. Each page with no text layer is read by OCR (`--ocr-lang` for other languages), and the reply says which pages were OCR'd so you check their numbers and names. A table that runs onto the next page now comes out as one table, without the header the PDF repeats, and a paragraph after a table is no longer pulled into it.
+- **The converters' output checked in real Office.** Word for Mac 16.114 opens the `md-to-docx` example with no repair prompt and keeps its headings, table, image and links in its own PDF export. Excel 16.114 reads the `md-to-xlsx` example's amounts, percentages, dates and TRUE/FALSE as real values, with filters on and the header frozen.
+
 ## 0.16.32 — 2026-10-20
 
 - **A skill's instructions are now held to its `permissions`.** A skill without scripts can still tell your agent to run `terraform init` or `curl` a host. The scan now reads every fenced shell block in a skill's instructions, and `skilldrop validate` fails one that runs a program or reaches a host it doesn't declare. `--contain` lets shell commands reach only the declared hosts, so they now include the ones instructions need. Six bundled skills declare what their instructions run: `sonar-review`, `terraform-module`, `terraform-plan-review`, `mermaid-render`, `figma-diagrams` and `dependency-upgrade-review` ([RFC-0054](docs/rfcs/0054-instruction-permissions-and-agent-scan.md)).

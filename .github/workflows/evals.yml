@@ -1,11 +1,24 @@
-# Weekly skill evals against a live model — report-only, never a merge gate.
+# Skill evals against a live model — report-only, never a merge gate.
 # Needs an ANTHROPIC_API_KEY repository secret; without it the run prints a notice and passes.
-# Activation (trigger queries) runs every week; assertion evals are opt-in from the Run button.
+#
+# Two schedules:
+#   weekly   activation (trigger queries): does each skill get picked when it should, and not
+#            when it shouldn't. Cheap: one short call per query.
+#   monthly  assertion evals: each eval's prompt run through its skill and graded by a judge.
+#            Costs a generation and a judgement per eval, so it runs under a dollar budget
+#            (repository variable EVALS_MONTHLY_BUDGET, default 20) and covers a different part
+#            of the catalogue each month when the budget runs out first.
+# Calls already in flight when the budget is reached still finish, so a run can end a few
+# cents over it.
+#
+# Each run's counts-only summary is appended to the eval-history branch by a separate job that
+# has write access and no API key; the site reads that branch to draw the trend (RFC-0055).
 name: evals
 
 on:
   schedule:
-    - cron: "17 6 * * 1"  # Mondays 06:17 UTC
+    - cron: "17 6 * * 1"   # weekly activation, Mondays 06:17 UTC
+    - cron: "41 7 1 * *"   # monthly assertions, the 1st at 07:41 UTC
   workflow_dispatch:
     inputs:
       skills:
@@ -16,6 +29,10 @@ on:
         description: "Also run evals.json assertions (a generation + a judgement per eval)"
         type: boolean
         default: false
+      budget:
+        description: "Dollar cap for this run (blank = no cap for activation, the monthly budget for assertions)"
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -27,23 +44,38 @@ concurrency:
 jobs:
   evals:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
+    outputs:
+      summary: ${{ steps.run.outputs.summary }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Run evals
+        id: run
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SKILLS: ${{ inputs.skills }}
           ASSERTIONS: ${{ inputs.assertions }}
+          BUDGET: ${{ inputs.budget }}
+          SCHEDULE: ${{ github.event.schedule }}
+          MONTHLY_BUDGET: ${{ vars.EVALS_MONTHLY_BUDGET || '20' }}
         run: |
           set -euo pipefail
           args=()
           if [ -n "${SKILLS:-}" ]; then args+=(--skills "$SKILLS"); fi
-          if [ "${ASSERTIONS:-false}" = "true" ]; then args+=(--assertions); fi
-          python3 run_evals.py --out evals-results.json "${args[@]}"
+          if [ "${SCHEDULE:-}" = "41 7 1 * *" ]; then
+            args+=(--assertions --no-activation --budget "$MONTHLY_BUDGET")
+          elif [ "${ASSERTIONS:-false}" = "true" ]; then
+            args+=(--assertions --budget "${BUDGET:-$MONTHLY_BUDGET}")
+          elif [ -n "${BUDGET:-}" ]; then
+            args+=(--budget "$BUDGET")
+          fi
+          python3 run_evals.py --out evals-results.json --summary evals-summary.json "${args[@]}"
+          if [ -f evals-summary.json ]; then
+            echo "summary=$(base64 -w0 evals-summary.json)" >> "$GITHUB_OUTPUT"
+          fi
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: hashFiles('evals-results.json') != ''
@@ -51,3 +83,53 @@ jobs:
           name: evals-results
           path: evals-results.json
           retention-days: 90
+
+  # Appends the summary to eval-history. Kept apart from the job above so the token that can
+  # push never shares a job with the API key. The branch is append-only and holds counts only.
+  history:
+    needs: evals
+    if: needs.evals.outputs.summary != '' && (github.event_name == 'schedule' || github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1  # zizmor: ignore[artipacked] this job pushes with the job token, so it keeps credentials
+        with:
+          fetch-depth: 1
+      - name: Append the run to eval-history
+        env:
+          SUMMARY: ${{ needs.evals.outputs.summary }}
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+        run: |
+          set -euo pipefail
+          branch=eval-history
+          echo "$SUMMARY" | base64 -d > "$RUNNER_TEMP/summary.json"
+          python3 - "$RUNNER_TEMP/summary.json" <<'PY'
+          import json, sys
+          s = json.load(open(sys.argv[1]))
+          assert set(s) <= {"date", "kind", "scope", "models", "spent", "budget", "activation", "assertions"}, "unexpected keys"
+          PY
+          name="runs/$(date -u +%Y-%m-%dT%H%M%SZ)-${GITHUB_RUN_ID}.json"
+          # Build the commit with plumbing on a separate index, so main's checkout is untouched.
+          export GIT_INDEX_FILE="$RUNNER_TEMP/history-index"
+          rm -f "$GIT_INDEX_FILE"
+          parent=""
+          if git fetch --depth=1 origin "$branch" 2>/dev/null; then
+            parent=$(git rev-parse FETCH_HEAD)
+            git read-tree "$parent"
+          else
+            git read-tree --empty
+          fi
+          blob=$(git hash-object -w "$RUNNER_TEMP/summary.json")
+          git update-index --add --cacheinfo 100644 "$blob" "$name"
+          tree=$(git write-tree)
+          if [ -n "$parent" ]; then
+            commit=$(git commit-tree "$tree" -p "$parent" -m "eval run ${GITHUB_RUN_ID} (counts only)")
+          else
+            commit=$(git commit-tree "$tree" -m "eval history starts (counts only, RFC-0055)")
+          fi
+          git push origin "$commit:refs/heads/$branch"
+          echo "appended $name to $branch"

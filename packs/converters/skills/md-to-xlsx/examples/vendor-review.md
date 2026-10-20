@@ -76,7 +76,12 @@ all well-formed. Row 2 of the first sheet reads back as:
 
 The frozen pane is `ySplit="1"` and the autofilter is `A1:G5`. A Quick Look preview shows
 `$1,240,500.00`, `12.5%` and `2027-03-31` as formatted values. Quick Look leaves boolean cells
-blank, which is a limitation of the previewer. Excel and LibreOffice show them as TRUE/FALSE.
+blank, which is a limitation of the previewer.
+
+**Opened in Microsoft Excel** for Mac 16.114 (2026-10-20), read through AppleScript without
+saving: three sheets; D2 is the number 1240500 shown as `$1,240,500.00`, E2 the number 0.125
+shown as `12.5%`, F2 a date shown as `2027-03-31`, G2 the boolean `TRUE`, and A2 the text
+`00412` with its zeros. The first sheet has its filter on and its header row frozen.
 
 ---
 
