@@ -8,6 +8,14 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.43 — 2026-10-21
+
+- **Every skill script has unit tests:** 1,317 tests for the 48 scripts in 43 skills, run on Linux, macOS and Windows on every pull request. Every new script needs tests: `validate.py` fails a skill whose scripts have none. Run them with `python3 -m unittest discover -s tests -t .`. They use only the standard library and run offline ([RFC-0060](docs/rfcs/0060-skill-script-unit-tests.md)).
+- **Two Windows bugs, found by running the tests on Windows, are fixed:**
+  - `tracker-brief-sync` 0.1.1 wrote its Jira and CSV imports with a blank row between every issue;
+  - `interactive-diagram` 0.2.3 crashed when the output file was on a different drive from the current folder.
+- **Writing the tests found 60 bugs in 34 skills.** Each is recorded as a known failure and fixed in a follow-up release. About 25 give a wrong result, such as AWS spot compute always reported as $0, or a sprint filter that also matches a later sprint. The rest crash on input they should reject with a clear message.
+
 ## 0.16.42 — 2026-10-21
 
 - **skilldrop's site is reviewed by its own skills**, and the [reviews are published](https://sananthanarayan.github.io/skilldrop/docs/explanation/own-skills-on-own-site.html) ([RFC-0061](docs/rfcs/0061-own-skills-on-own-site.md)).

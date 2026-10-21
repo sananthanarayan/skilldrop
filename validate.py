@@ -894,6 +894,22 @@ def main():
             fail("package.json", f"scripts.{hook} would run on every user's machine during `npm install` — the package "
                                  "must run no code at install (SECURITY.md)")
 
+    # RFC-0060: every skill script has unit tests. A skill's scripts are tested in
+    # tests/test_<skill>.py, which must name each script it covers, so a new script can't land
+    # untested and a renamed one can't leave its tests pointing at nothing.
+    for name in skill_dirs:
+        scripts = sorted(os.path.basename(f) for f in glob.glob(os.path.join(SKILL_PATH[name], "scripts", "*.py")))
+        if not scripts:
+            continue
+        tfile = os.path.join(ROOT, "tests", f"test_{name.replace('-', '_')}.py")
+        if not os.path.exists(tfile):
+            fail("tests", f"{name} has scripts ({', '.join(scripts)}) but no tests/test_{name.replace('-', '_')}.py")
+            continue
+        ttext = open(tfile, encoding="utf-8").read()
+        for sc in scripts:
+            if sc not in ttext:
+                fail("tests", f"tests/test_{name.replace('-', '_')}.py doesn't test {name}/scripts/{sc}")
+
     # A fixture's dependency files (a fake project's package.json, go.mod, CI workflow) are kept
     # as <name>.fixture. Under their real names GitHub's dependency graph reads them as this
     # repo's, and every old pin a scenario needs becomes a security alert and a Dependabot PR

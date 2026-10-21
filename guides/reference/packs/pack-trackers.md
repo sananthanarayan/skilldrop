@@ -78,7 +78,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/trackers/skills/team-st
 
 Turn a brief or PRD (such as prd-draft output) into tracker-ready epics and issues — title, description, acceptance criteria, labels and a link back to the doc section — as a CSV for Jira, a mapped CSV for other importers, or gh commands for GitHub; and in reverse, report drift between the doc and the tracker (issues with no section, sections with no issue, issues for Won't-have requirements).
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/trackers/skills/tracker-brief-sync/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/tracker-brief-sync/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/trackers/skills/tracker-brief-sync/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/tracker-brief-sync/)
 
 **Use it when** the user wants to load a PRD into Jira, Linear or GitHub, says "create tickets from this brief", or asks "does the tracker still match the PRD?".
 

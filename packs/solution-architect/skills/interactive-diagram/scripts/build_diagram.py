@@ -2498,6 +2498,17 @@ def load(path):
         return json.load(fh)
 
 
+
+def shown(path):
+    """The output path for the reply's first line: relative when it is under the current folder,
+    absolute otherwise. On Windows a path on another drive has no relative form at all."""
+    full = os.path.abspath(path)
+    try:
+        rel = os.path.relpath(full)
+    except ValueError:
+        return full
+    return full if rel.startswith("..") else rel
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("spec", help="diagram spec (JSON)")
@@ -2569,7 +2580,7 @@ def main(argv=None):
         receipt["output"] = os.path.abspath(a.out)
         receipt["bytes"] = len(out.encode("utf-8"))
         receipt["edges"] = len([e for e in spec["edges"] if not e.get("tree")]) or len(spec["edges"])
-        shown_path = os.path.relpath(os.path.abspath(a.out)) if not os.path.relpath(os.path.abspath(a.out)).startswith("..") else os.path.abspath(a.out)
+        shown_path = shown(a.out)
         receipt["reply_first_line"] = "[%s](%s)" % (spec["title"].replace("]", ")"), shown_path)
         receipt["findings"] = spec.get("_findings", [])
         if a.mermaid:

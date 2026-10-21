@@ -1,6 +1,6 @@
 {
   "name": "tracker-brief-sync",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Turn a brief or PRD (such as prd-draft output) into tracker-ready epics and issues — title, description, acceptance criteria, labels and a link back to the doc section — as a CSV for Jira, a mapped CSV for other importers, or gh commands for GitHub; and in reverse, report drift between the doc and the tracker (issues with no section, sections with no issue, issues for Won't-have requirements). Use when the user wants to load a PRD into Jira, Linear or GitHub, says \"create tickets from this brief\", or asks \"does the tracker still match the PRD?\".",
   "entrypoint": "SKILL.md",
   "deps": {
