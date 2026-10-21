@@ -386,6 +386,44 @@ class OutsideReferencesTest(unittest.TestCase):
             self.assertEqual(recs(g)["ADR-0001"]["governs"], ["services/orders/"])
 
 
+class RevisionTest(unittest.TestCase):
+    def test_a_renamed_folder_is_reported_as_moved_not_gone(self):
+        with workdir() as d:
+            repo(d, {"services/ledger/app.py": "pass\n",
+                     "docs/adr/0001-a.md": adr("A", "Accepted", "Runs in `services/ledger-sync/`.")})
+            code, g = graph(d)
+            self.assertEqual(code, 0)
+            self.assertEqual(found(g, "problem"), [])
+            self.assertIn("services/ledger-sync (perhaps now services/ledger)", " ".join(found(g, "warning")))
+
+    def test_a_folder_with_no_successor_is_gone(self):
+        with workdir() as d:
+            repo(d, {"services/orders/app.py": "pass\n",
+                     "docs/adr/0001-a.md": adr("A", "Accepted", "Runs in `services/thumbnailer/`.")})
+            code, g = graph(d)
+            self.assertEqual(code, 1)
+            self.assertEqual(found(g, "problem"), ["ADR-0001 is accepted but points at code that is gone: services/thumbnailer"])
+
+    def test_a_guide_citing_a_superseded_record_is_flagged(self):
+        with workdir() as d:
+            repo(d, {"docs/adr/0001-a.md": adr("A", "Superseded by ADR-0002"),
+                     "docs/adr/0002-b.md": adr("B", "Accepted", "Supersedes ADR-0001."),
+                     "docs/onboarding.md": "# Start here\n\nWe lock jobs as ADR-0001 says.\n",
+                     "README.md": "See ADR-0002.\n"})
+            code, g = graph(d)
+            self.assertIn("ADR-0001 is cited by docs/onboarding.md, which may still describe it as current: ADR-0002 supersedes it",
+                          found(g, "warning"))
+            self.assertEqual(sorted(x["path"] for x in g["docs"]), ["README.md", "docs/onboarding.md"])
+
+    def test_extends_and_narrows_count_as_amends(self):
+        for verb in ("Extends", "Narrows", "Refines"):
+            with workdir() as d:
+                repo(d, {"docs/adr/0001-a.md": adr("A", "Accepted"),
+                         "docs/adr/0002-b.md": adr("B", "Accepted", "%s ADR-0001." % verb)})
+                code, g = graph(d)
+                self.assertEqual(recs(g)["ADR-0002"]["amends"], ["ADR-0001"], verb)
+
+
 class WhyTest(unittest.TestCase):
     def fixture(self, d):
         repo(d, {"src/auth/session.py": "pass\n", "src/other.py": "pass\n",
@@ -463,12 +501,12 @@ class OutputTest(unittest.TestCase):
             code, out, err = run(SKILL, SCRIPT, "--root", d, "--json", "-o", os.path.join(d, "g.json"))
             self.assertEqual((code, out), (0, ""))
             g = json.loads(read(os.path.join(d, "g.json")))
-            self.assertEqual(set(g), {"root", "records", "findings", "notes", "query"})
+            self.assertEqual(set(g), {"root", "records", "docs", "findings", "notes", "query"})
             self.assertIsNone(g["query"])
             self.assertEqual(set(g["records"][0]), {
                 "id", "title", "status", "status_text", "date", "path", "supersedes", "superseded_by", "amends",
                 "cites", "governs", "missing_paths", "commits", "cited_by", "successors",
-                "successors_only_claimed_by_successor"})
+                "successors_only_claimed_by_successor", "moved"})
             self.assertEqual(g["records"][0]["path"], "docs/adr/0001-a.md")
 
     def test_findings_json_and_markdown_put_problems_first(self):

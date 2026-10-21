@@ -42,7 +42,7 @@ IETF_KEYWORD_RFCS = {"RFC-2119", "RFC-8174"}
 ID_RE = re.compile(r"\b(ADR|RFC|DR|DD)[ _-]?0*(\d{1,5})\b", re.I)
 SUPERSEDES_RE = re.compile(r"\b(supersedes|replaces)\b[:\s]*((?:\[?(?:ADR|RFC|DR|DD)[ _-]?\d+\]?(?:\([^)]*\))?[\s,and&]*)+)", re.I)
 SUPERSEDED_BY_RE = re.compile(r"\b(superseded|replaced)\s+by\b[:\s]*((?:\[?(?:ADR|RFC|DR|DD)[ _-]?\d+\]?(?:\([^)]*\))?[\s,and&]*)+)", re.I)
-AMENDS_RE = re.compile(r"\bamends\b[:\s]*((?:\[?(?:ADR|RFC|DR|DD)[ _-]?\d+\]?(?:\([^)]*\))?[\s,and&]*)+)", re.I)
+AMENDS_RE = re.compile(r"\b(?:amends|extends|refines|narrows|overrides|modifies)\b[:\s]*((?:\[?(?:ADR|RFC|DR|DD)[ _-]?\d+\]?(?:\([^)]*\))?[\s,and&]*)+)", re.I)
 LINK_RE = re.compile(r"\[[^\]]*\]\(([^)\s#]+)(?:#[^)]*)?\)")
 CODE_RE = re.compile(r"`([^`\s]{2,200})`")
 DATE_RE = re.compile(r"\b(\d{4}-\d{2}-\d{2})\b")
@@ -226,6 +226,22 @@ def resolve_links(records, root):
         r["cites"] = sorted(set(c for c in r["cites"] if c != r["id"]))
 
 
+def moved_to(root, missing):
+    """Where a missing path may have gone: an existing sibling with a close name
+    (services/ledger-sync -> services/ledger), so a rename isn't reported as code that is gone."""
+    import difflib
+    parent, name = os.path.split(missing.rstrip("/"))
+    base = os.path.join(root, parent) if parent else root
+    if not os.path.isdir(base):
+        return []
+    names = [n for n in os.listdir(base) if not n.startswith(".")]
+    stem = name.split(".")[0]
+    close = difflib.get_close_matches(name, names, n=2, cutoff=0.6)
+    close += [n for n in names if n not in close and len(stem) >= 4 and (n.startswith(stem) or stem.startswith(n.split(".")[0]))
+              and len(n.split(".")[0]) >= 3]
+    return [(parent + "/" if parent else "") + n for n in close[:2]]
+
+
 def resolve_paths(records, root, record_paths):
     top = {n for n in os.listdir(root) if not n.startswith(".")}
     for r in records:
@@ -249,6 +265,7 @@ def resolve_paths(records, root, record_paths):
                 r["missing_paths"].append(t.rstrip("/"))
         r["governs"] = sorted(set(r["governs"]))
         r["missing_paths"] = sorted(set(r["missing_paths"]))
+        r["moved"] = {m: moved_to(root, m) for m in r["missing_paths"] if moved_to(root, m)}
 
 
 def git_commits(root, records, limit):
@@ -271,6 +288,31 @@ def git_commits(root, records, limit):
             if rid in known and len(known[rid]["commits"]) < 20:
                 known[rid]["commits"].append({"sha": sha, "date": date, "subject": subject[:120]})
     return None
+
+
+SKIP_DIRS = {".git", "node_modules", "vendor", "dist", "build", ".venv", "venv", "__pycache__", "target"}
+
+
+def other_docs(root, record_paths, limit=2000):
+    """Markdown outside the record folders (READMEs, onboarding guides) and the record ids each
+    cites, so a guide that still teaches a superseded decision is found."""
+    found = []
+    for base, dirs, names in os.walk(root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS and not d.startswith("."))
+        for n in sorted(names):
+            if not n.lower().endswith((".md", ".markdown")):
+                continue
+            rel = os.path.relpath(os.path.join(base, n), root).replace(os.sep, "/")
+            if rel in record_paths:
+                continue
+            text, _ = read(os.path.join(base, n))
+            if text:
+                cited = sorted(set(ids_in(text)))
+                if cited:
+                    found.append((rel, cited))
+            if len(found) >= limit:
+                return found
+    return found
 
 
 def check(records):
@@ -314,8 +356,13 @@ def check(records):
             if c not in by_id and c.split("-")[0] in kinds and c not in IETF_KEYWORD_RFCS:
                 out.append(("warning", r["id"], "refers to %s, which isn't among the records" % c))
         if r["status"] in CURRENT and r["missing_paths"]:
-            out.append(("problem", r["id"], "is %s but points at code that is gone: %s"
-                        % (r["status"], ", ".join(r["missing_paths"]))))
+            gone = [m for m in r["missing_paths"] if m not in r.get("moved", {})]
+            maybe = ["%s (perhaps now %s)" % (m, " or ".join(r["moved"][m])) for m in r["missing_paths"] if m in r.get("moved", {})]
+            if gone:
+                out.append(("problem", r["id"], "is %s but points at code that is gone: %s" % (r["status"], ", ".join(gone))))
+            if maybe:
+                out.append(("warning", r["id"], "is %s but names a path that has moved or been renamed: %s; "
+                            "update the record if that is where it went" % (r["status"], ", ".join(maybe))))
     # a current record that leans on one that has since been superseded
     for r in records:
         if r["status"] not in CURRENT or r["id"] in succ:
@@ -532,6 +579,14 @@ def _main(argv=None):
         claimed = [o["id"] for o in records if r["id"] in o["supersedes"]]
         r["successors"] = sorted(set(r["superseded_by"]) | set(claimed))
         r["successors_only_claimed_by_successor"] = sorted(set(claimed) - set(r["superseded_by"]))
+    # Guides and READMEs that still cite a superseded decision may still teach it.
+    by_id = {r["id"]: r for r in records}
+    docs = other_docs(root, {r["path"] for r in records})
+    for rel, cited in docs:
+        for c in cited:
+            if c in by_id and by_id[c]["successors"]:
+                findings.append(("warning", c, "is cited by %s, which may still describe it as current: %s supersedes it"
+                                 % (rel, ", ".join(by_id[c]["successors"]))))
 
     query = None
     if a.why:
@@ -549,7 +604,7 @@ def _main(argv=None):
         with open(a.mermaid, "w", encoding="utf-8") as fh:
             fh.write(mermaid(records))
     if a.json:
-        text = json.dumps({"root": root, "records": records,
+        text = json.dumps({"root": root, "records": records, "docs": [{"path": p, "cites": c} for p, c in docs],
                            "findings": [{"severity": s, "record": i, "message": m} for s, i, m in findings],
                            "notes": notes, "query": query}, indent=1, default=str) + "\n"
     else:

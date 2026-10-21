@@ -51,6 +51,11 @@ A good result:
 - **"No recorded decision" is said when it's true**, and any reading of the code is labelled as inferred.
 - **Every problem names its record id and the exact fix.** Problems come before warnings.
 - **Two current records on the same path are raised as a possible conflict**, not silently resolved by date.
+- **The deciding record is checked against the code it governs**, with the line quoted, and drift is reported with both sides.
+- **Related records are read before they're called unrelated:** amendments, and rules for the same concern elsewhere in the codebase.
+- **A moved path is reported as moved, with its new location; only a path with no successor is "gone".**
+- **A mid-rollout pair of records is a missing cross-reference, not a contradiction.**
+- **The reply fits the size asked for, and never mentions a script, a graph or a tool.**
 - **Statuses, links and governed paths come from the script's output**, or are marked as read by hand when it couldn't run.
 - **No invented records, ids, dates, paths or commits.**
 

@@ -24,10 +24,11 @@ Every `.md` file in them, recursively, is a record, except:
 | date | frontmatter `date`, `created`, `decided` or `accepted`; else a `Date:` line; else the first ISO date in the first 15 lines |
 | supersedes | frontmatter `supersedes` or `replaces`; text "Supersedes ADR-3" or "Replaces RFC 12" |
 | superseded by | frontmatter `superseded_by` or `replaced_by`; text "Superseded by ADR-9", including in the Status line |
-| amends | frontmatter `amends`; text "Amends ADR-4" |
+| amends | frontmatter `amends`; text "Amends ADR-4", or "Extends", "Refines", "Narrows", "Overrides" or "Modifies" followed by an id |
 | cites | every id mentioned (`ADR-4`, `ADR 0004`, `RFC-12`), and every Markdown link to another record file |
 | governs | each path named in backticks or linked, that exists under `--root`: a file, or a folder (shown with a trailing `/`). `src/auth/*` counts as `src/auth` |
 | missing paths | a path that looks like the repository's (its first part is a top-level folder that exists) but doesn't exist |
+| moved | for a missing path, an existing sibling with a close name (`services/ledger-sync` → `services/ledger`), where the code may have gone |
 | commits | with `--git`: commits whose subject or body mentions the id, newest first, up to 20 |
 
 **Statuses, normalised:**
@@ -50,7 +51,9 @@ unknown word is `unrecognised`.
 |---|---|---|
 | problem | A record another record supersedes is still marked accepted, proposed or with no status | Set its Status to `Superseded by <id>` |
 | problem | A record is superseded by an id that doesn't exist | Correct the id, or write the missing record |
-| problem | A current record names a path that is gone | Update the path if the code moved; deprecate the record if the decision died |
+| problem | A current record names a path that is gone, with no close-named sibling | Deprecate the record if the decision died, or find where the code went |
+| warning | A current record names a path that has moved or been renamed | Update the path in the record |
+| warning | A guide or README outside the record folders cites a superseded record | Update the guide: it may still teach the old decision |
 | problem | Two records share an id | Renumber one, and fix the references to it |
 | problem | A supersession cycle | Break it: one record must be the current one |
 | warning | "Superseded by X", but X doesn't say it supersedes this record | Add "Supersedes <id>" to X |
@@ -78,8 +81,10 @@ A file that isn't UTF-8 is skipped, with a note in the report.
     "date": "2025-03-02", "path": "docs/adr/0004-….md",
     "supersedes": [], "superseded_by": [], "amends": [], "cites": [], "cited_by": [],
     "governs": ["services/orders/"], "missing_paths": [], "commits": [],
-    "successors": ["ADR-0009"], "successors_only_claimed_by_successor": ["ADR-0009"]
+    "successors": ["ADR-0009"], "successors_only_claimed_by_successor": ["ADR-0009"],
+    "moved": {"services/kafka-bridge": ["services/bridge"]}
   }],
+  "docs": [{"path": "docs/onboarding.md", "cites": ["ADR-0004"]}],
   "findings": [{"severity": "problem", "record": "ADR-0004", "message": "…"}],
   "notes": [],
   "query": null
