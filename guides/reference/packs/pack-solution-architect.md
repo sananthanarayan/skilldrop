@@ -96,11 +96,13 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skil
 - **"No recorded decision" is said when it's true**, and any reading of the code is labelled as inferred.
 - **Every problem names its record id and the exact fix.** Problems come before warnings.
 - **Two current records on the same path are raised as a possible conflict**, not silently resolved by date.
-- **The deciding record is checked against the code it governs**, with the line quoted, and drift is reported with both sides.
+- **The deciding record is checked against the code it governs, claim by claim,** with the line quoted, and drift is reported with both sides. A line number is given only when read from the file.
+- **Every script finding in the reply has been confirmed by reading;** one that doesn't hold is dropped.
+- **A removal or change question lists every use of the thing in the code,** recorded or not.
 - **Related records are read before they're called unrelated:** amendments, and rules for the same concern elsewhere in the codebase.
 - **A moved path is reported as moved, with its new location; only a path with no successor is "gone".**
 - **A mid-rollout pair of records is a missing cross-reference, not a contradiction.**
-- **The reply fits the size asked for, and never mentions a script, a graph or a tool.**
+- **The reply fits the size asked for (a stated limit is obeyed exactly), and never mentions a script, a graph or a tool.**
 - **Statuses, links and governed paths come from the script's output**, or are marked as read by hand when it couldn't run.
 - **No invented records, ids, dates, paths or commits.**
 

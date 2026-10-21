@@ -101,6 +101,65 @@
         "Answers the three questions directly and in order, matching 'don't need an essay': a few short answers, each with the record it comes from. It is not a full decision-graph dump or an audit of every record.",
         "Invents nothing not in the files: no message volumes, commit hashes, people, dates or record numbers beyond those present. Anything that would need git history (e.g. when the retention changed) is offered as a command to run, not stated as fact."
       ]
+    },
+    {
+      "id": 8,
+      "held_out": "2026-10-21",
+      "prompt": "Quarterly architecture review is Thursday. Our ADRs are in docs/adr and there's an RFC folder too. Before the meeting I need a list of the decisions the code no longer follows, so for each one we can decide whether to fix the code or write a superseding ADR. Code and config are all in this repo.",
+      "assertions": [
+        "Answers the question directly with a list of the decisions the code no longer follows. The list includes ADR-0004 (migration 0009_fx_entries.sql adds fx_amount NUMERIC(18,4) and fx_rate, and models/entry.py types fx_amount as Decimal, against the integer *_minor BIGINT rule), ADR-0005 (config/http.yaml sets timeout_seconds 30 and max_retries 5 where the ADR says 5 seconds and 3 retries, and retry_methods retries every POST, not only idempotent ones), and ADR-0006 (api/openapi.yaml and clients/generated/ do not exist; the interface is api/ledger.proto served over gRPC).",
+        "Does not report the Kafka config as code breaking ADR-0003. It sees that ADR-0007 supersedes ADR-0003 but ADR-0003 still says Accepted with no back-link, and says the fix is to mark ADR-0003 Superseded by ADR-0007, not to change the code.",
+        "Points out that the move from OpenAPI to gRPC (api/ledger.proto, services/ledger/api/server.py, generated stubs in services/ledger/api/gen/) was never recorded in any ADR, and recommends a new ADR that supersedes ADR-0006.",
+        "Points out that ADR-0008 cites ADR-0011 for tracing, and no ADR-0011 exists in docs/adr.",
+        "Does not count RFC-012 as a decision the code breaks, because its State is Draft. It may note that the code already implements it (services/ledger/api/idempotency.py, migration 0008_idempotency_keys.sql, a 24-hour TTL), so the RFC should be accepted as an ADR or its status brought up to date.",
+        "Says which decisions still hold, or at least does not list them as drift: ADR-0002 (PostgreSQL with numbered SQL migrations), ADR-0007 (config/messaging.yaml uses Kafka topic ledger.entry-events keyed by account_id), and ADR-0008 (services/ledger/logging.py emits the fields it names).",
+        "Is shaped for a review meeting: a compact table or list with one row per finding, giving the record, the evidence (file and value), and whether the fix is a code change or a record change (supersede, amend, mark superseded, write a new record). No long essay.",
+        "Invents nothing that is not in the files: no ADR numbers, file paths, config values, dates, authors or commit hashes beyond those in the repo. There is no git history in the folder, so it does not claim which commits implemented or broke a decision. If it suggests a git check, it gives that as a command for the user to run."
+      ]
+    },
+    {
+      "id": 9,
+      "held_out": "2026-10-21",
+      "prompt": "hey can i just rip out redis? pretty sure we only use it for the session cache and we're moving sessions to jwt anyway (theres an rfc for it somewhere in docs). is there anything we decided that depends on it? dont want to get blocked in review",
+      "assertions": [
+        "Answers the question up front: no, Redis cannot be removed now, because more than sessions depends on it. It gives the reasons straight after.",
+        "Identifies decision 002 (accepted, 2023-11-20) as a current decision that needs Redis: the public API rate limiter in src/middleware/rateLimit.ts is a token bucket shared across containers, 600 requests per minute per API key.",
+        "Points out that 001 says 'Superseded by 003' but 003 is still only Proposed and not yet reviewed, so the supersession has not taken effect. Sessions on Redis (src/session/store.ts, connect-redis) is still what the code does and still the decision in force.",
+        "Points out that the JWT proposal itself (003, open question 1) plans to keep the revocation denylist in Redis, so moving to JWT as written would not remove the need for Redis.",
+        "Catches that decision 004 says the catalogue cache is in-process LRU and explicitly not in Redis, but src/catalog/cache.ts reads and writes the catalogue in Redis. The code has drifted from the record. Removing Redis would break the catalogue cache, and the record needs updating or the code needs reverting.",
+        "Identifies the BullMQ job queues in src/jobs/queue.ts and src/jobs/worker.ts (email and order-export, and the worker service in docker-compose.yml) as a Redis dependency with no decision record, and suggests recording it.",
+        "Notes that decision 002 refers to DR-007 for Redis availability and failover, and that no DR-007 exists in docs/decisions.",
+        "Stays proportionate to a casual question and invents nothing: it leads with the answer, gives a short list of what would break and the next steps (for example, get 003 reviewed and decide revocation storage, decide what replaces the limiter and the queue), and names no files, decisions, numbers or libraries that are not in the repo."
+      ]
+    },
+    {
+      "id": 10,
+      "held_out": "2026-10-21",
+      "prompt": "I'm doing the security review of billing-api ahead of our PCI audit. Two things I need to understand from the decision records in this repo: (1) why billing-api authenticates internal callers the way it does, and (2) where its secrets come from. Is what the code does today still the agreed approach, or has the decision moved on? Please cite the specific ADRs and the files so I can put them in my findings.",
+      "assertions": [
+        "Identifies that billing-api currently authenticates internal callers with HMAC-SHA256 shared-key signatures (services/billing-api/auth/__init__.py wires require_internal_caller to hmac_verify.require_hmac_signature), which is the approach of ADR-0004.",
+        "States that ADR-0011 (Accepted, 2025-06-20, mutual TLS via the Ironbark CA) supersedes ADR-0004, so HMAC is no longer the agreed approach and billing-api has not been migrated, while ledger-worker has (services/ledger-worker/auth/mtls.py).",
+        "Points out that ADR-0004 still says 'Status: Accepted' even though ADR-0011 supersedes it, which breaks the update rule in ADR-0001 and leaves two Accepted records governing services/billing-api/auth/; recommends marking ADR-0004 'Superseded by ADR-0011'.",
+        "Flags that hmac_verify.py reads the shared key from the environment variable BILLING_LEDGER_HMAC_KEY, which violates ADR-0007 (secrets come only from Vault agent files under /vault/secrets/, never from environment variables), even though config/settings.py follows ADR-0007 for the database and processor secrets.",
+        "Notes that ADR-0011 defers certificate rotation to ADR-0013, which does not exist in docs/adr/, so rotation is an unrecorded decision worth raising in the review.",
+        "Says the git history was not available or not checked (no commits are present to show when or whether the mTLS migration was started) and, where useful, gives the git command to run instead of inventing commit details.",
+        "Answers the reviewer's two questions directly near the top (how auth works and why, where secrets come from, and whether each is still agreed) before any wider map of the records, citing ADR numbers and file paths for each finding.",
+        "Invents nothing not in the files: no ADR numbers, dates, commits, environment variables, CA names or file paths beyond those present (ADR-0001, 0004, 0007, 0011; the reference to ADR-0013 is reported as missing, not described)."
+      ]
+    },
+    {
+      "id": 11,
+      "held_out": "2026-10-21",
+      "prompt": "adding gift_message to orders - anything already decided about the order model I should know first? 2 lines max pls",
+      "assertions": [
+        "Gives an answer of at most two lines (or two short sentences), with no extra map of all the decision records, headings or long caveats.",
+        "Says gift_message should go as a key in the orders.attributes JSON column (added to ORDER_ATTRIBUTE_KEYS in app/models/order.py) under DR-014, not as a new typed column with a migration.",
+        "Gives DR-014's exception: if gift_message will be filtered, joined, indexed or reported on, it must be a typed column instead, per DR-005.",
+        "Does not tell the engineer to follow DR-005's 'typed columns only, no JSON' rule as if it were the whole current position; treats DR-014 (Accepted, 2024-02-08) as having amended it.",
+        "If DR-016 is mentioned, describes it as only Proposed (moving attributes to an order_attributes table, not agreed) and does not present it as the current decision.",
+        "Answers the actual question (what was decided that affects adding this field) directly in the first line, without asking a clarifying question first.",
+        "Invents nothing not in the files: no decision IDs, column names, attribute keys, dates or migration numbers beyond those present (for example, no claimed existing gift_message key or a made-up migration 0013)."
+      ]
     }
   ]
 }

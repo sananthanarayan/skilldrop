@@ -33,34 +33,38 @@ the code itself is `reverse-architecture`.
    ```
    `--git` adds the commits whose messages mention each record. A path counts as governed when a record names it in backticks or links to it, and it exists. Without the script, do the same by hand and say the links were found by reading, not computed.
 
+   **The script's findings are leads, not answers.** Confirm each one by reading the records and the code before you report it, and drop the ones that don't hold. Two records "governing the same path" often don't clash at all: say so only when their decisions actually conflict, and quote both.
+
 2. **Answer "why" from the current record, and show the chain.** Say which decision governs the thing now, with its id, title, status and date, and the reason as the record states it. Then name what it replaced, if anything.
    - ✅ *"Order events moved from Kafka to SQS in ADR-0009 (accepted 2026-02-10): 'one fewer system to run, and the volume fits SQS'. ADR-0004 chose Kafka in 2025 and is still marked Accepted, so anyone reading it alone gets the wrong answer."*
    - ❌ *"You use Kafka for order events (ADR-0004), which gives you durability and ordering."* That reads the superseded record and adds a rationale that isn't in it.
 
 3. **Trust the newest record only when the chain agrees.** A record superseded by another is history, even when its own Status line still says Accepted. The script lists each such one-sided supersession as a problem. Say which record a reader should rely on and why.
 
-4. **Check the deciding record against the code.** Open the files it governs and confirm the code still does what it says, quoting the line: ✅ *"`scheduler/jobs.py` line 18 still opens a database transaction per job, as ADR-0012 says."* Report drift as a finding with both sides: ✅ *"ADR-0015 promises 30 days of audit-log retention; `ops/logging.yaml` sets `retention_days: 14`."* When the record describes a phased change (a migration, a dual-write, a rollout), say which phase the code is in. While it's mid-rollout, the old decision still holds for the parts not yet moved: that is a missing cross-reference, not a contradiction.
+4. **Check the deciding record against the code.** Open the files it governs and check each thing the record requires (every "must", every named field, check, limit or setting), not only its headline. Confirm or contradict each with the code, quoting the line: ✅ *"`scheduler/jobs.py` line 18 still opens a database transaction per job, as ADR-0012 says."* Report drift as a finding with both sides: ✅ *"ADR-0015 promises 30 days of audit-log retention; `ops/logging.yaml` sets `retention_days: 14`."* When the record describes a phased change (a migration, a dual-write, a rollout), say which phase the code is in. While it's mid-rollout, the old decision still holds for the parts not yet moved: that is a missing cross-reference, not a contradiction.
 
-5. **Find the decisions that bear on it, not only the ones that name its path.** Read any record that amends, extends or narrows the governing one, and any that sets a rule for the same concern across the codebase (error handling, data access, logging, authentication), even when it names a different folder. A shared-library rule governs a change that creates a shared library. Before you call a related record unrelated, read it.
+5. **For "can I remove or change X?", search the code for every use of X,** not only the records: imports, client constructors, config keys, environment variables and container definitions. A use that no record covers is still a dependency: list it as "in use, no recorded decision", with its file. The records tell you why; only the code tells you everything that would break.
 
-6. **Report what is no longer true, worst first.** Problems before warnings:
+6. **Find the decisions that bear on it, not only the ones that name its path.** Read any record that amends, extends or narrows the governing one, and any that sets a rule for the same concern across the codebase (error handling, data access, logging, authentication), even when it names a different folder. A shared-library rule governs a change that creates a shared library. Before you call a related record unrelated, read it.
+
+7. **Report what is no longer true, worst first.** Problems before warnings:
    - **Supersession recorded on one side only:** "ADR-0004 still says Accepted". Fix it by marking it "Superseded by ADR-0009".
    - **A current decision pointing at code that is gone:** the record names a folder or file that no longer exists. When the script suggests where it moved (a renamed sibling), or a README says so, report it as moved, not gone, and give the path to update. Only a path with no successor is gone; then the decision is dead, so deprecate it.
    - **A guide that still teaches a superseded decision:** an onboarding doc or a README that cites the old record, or describes its choice. Name the file and the line to change.
    - **Two current decisions governing the same path, neither superseding nor amending the other:** a possible conflict. Read both, quote the clash if there is one, and recommend which one supersedes or amends the other.
    - **A reference to a record that doesn't exist, a status that's missing or unrecognised, or a duplicate id.**
 
-7. **Give each fix as the exact edit.** The line to change in which record, such as changing `## Status` to `Superseded by ADR-0009`, linked to that record's file, or the new record that's needed and what it must decide. Don't rewrite records nobody asked about.
+8. **Give each fix as the exact edit.** The line to change in which record, such as changing `## Status` to `Superseded by ADR-0009`, linked to that record's file, or the new record that's needed and what it must decide. Don't rewrite records nobody asked about.
 
-8. **Say what the record can't tell.** Decisions made in chat or tickets and never written down, code that no record governs, and, without `--git`, whether anything was actually implemented. When a question has no record, say so, and suggest writing one only if the decision is still live.
+9. **Say what the record can't tell.** Decisions made in chat or tickets and never written down, code that no record governs, and, without `--git`, whether anything was actually implemented. When a question has no record, say so, and suggest writing one only if the decision is still live.
 
-9. **Write the reply in this order, at the size asked for:**
+10. **Write the reply in this order, at the size asked for:**
    - the answer, in two or three sentences, with the governing record's id;
    - the chain or the problems, as a short list, each with its record id and the fix;
    - what the records don't cover;
    - "To confirm", only for inputs that are missing.
 
-   Answer each question someone asked, in their order. When they say "keep it short" or "don't need an essay", give a few lines per question, and at most one line on record hygiene that doesn't change the answer. Give a table when they ask for a map, a list or something to paste; otherwise none. No closing offer or summary line.
+   Answer each question someone asked, in their order. A length they set is a limit: "two lines" is two lines, with the decision and the one thing they must not miss. When they say "keep it short" or "don't need an essay", give a few lines per question, and at most one line on record hygiene that doesn't change the answer. Give a table when they ask for a map, a list or something to paste; otherwise none. No closing offer or summary line.
 
 **Non-interactive runs** (subagent, CI, headless): with no records found, emit `BLOCKED: no decision records found; name the folder that holds the ADRs or RFCs`. Exit 1 from the full check means problems were found. Report them; never edit the records yourself.
 
@@ -77,11 +81,13 @@ the code itself is `reverse-architecture`.
 - **"No recorded decision" is said when it's true**, and any reading of the code is labelled as inferred.
 - **Every problem names its record id and the exact fix.** Problems come before warnings.
 - **Two current records on the same path are raised as a possible conflict**, not silently resolved by date.
-- **The deciding record is checked against the code it governs**, with the line quoted, and drift is reported with both sides.
+- **The deciding record is checked against the code it governs, claim by claim,** with the line quoted, and drift is reported with both sides. A line number is given only when read from the file.
+- **Every script finding in the reply has been confirmed by reading;** one that doesn't hold is dropped.
+- **A removal or change question lists every use of the thing in the code,** recorded or not.
 - **Related records are read before they're called unrelated:** amendments, and rules for the same concern elsewhere in the codebase.
 - **A moved path is reported as moved, with its new location; only a path with no successor is "gone".**
 - **A mid-rollout pair of records is a missing cross-reference, not a contradiction.**
-- **The reply fits the size asked for, and never mentions a script, a graph or a tool.**
+- **The reply fits the size asked for (a stated limit is obeyed exactly), and never mentions a script, a graph or a tool.**
 - **Statuses, links and governed paths come from the script's output**, or are marked as read by hand when it couldn't run.
 - **No invented records, ids, dates, paths or commits.**
 
@@ -106,6 +112,8 @@ the code itself is `reverse-architecture`.
 - ❌ **Supplying the reason.** "Kafka gives you ordering" is general knowledge, not the team's decision. If the record doesn't say why, say it doesn't.
 - ❌ **Resolving a conflict by date alone.** Two current records on the same path need a person to decide which wins; the newer one isn't automatically right.
 - ❌ **Listing every record.** Answer the question; the full table is for a map that was asked for.
+- ❌ **Passing on a script warning unread.** "Both govern the same path" is a prompt to read both, not a conflict.
+- ❌ **Answering "can I remove it?" from the records alone.** The uses nobody recorded are the ones that break.
 - ❌ **Taking the record's word for it.** A decision the code no longer follows is the most useful thing to find; read the files.
 - ❌ **"Gone" for a folder that was renamed.** Look for where it went before telling someone the decision is dead.
 - ❌ **Telling the reader how you found it.** "The script shows" or "the graph says" means nothing to them; say what the records and the code say.
