@@ -93,4 +93,37 @@ reported as conflicts. The conflict check now requires the exact same path.
 
 ## Decision
 
-Admission results, measured on held-out evals written blind from the description, go here.
+**Admitted on its third draft.** Each draft was measured on held-out evals written blind from
+the description, never reused, with two trials and two judges (`claude-sonnet-5-5`,
+`claude-opus-5-5`), on `claude-sonnet-5`. The bar is that both judges prefer the skill in at least
+half the pairs.
+
+| Draft | Evals | Pairs won, judge 1 | Judge 2 | Checks met, skill | Without | Spend |
+|---|---|---|---|---|---|---|
+| 1 | 4–7 | 3 of 8 | 3 of 8 | 63% | 60% | $2.80 |
+| 2 | 8–11 | 3 of 8 | 3 of 8 | 71% | 55% | $3.54 |
+| 3 | 12–15 | 4 of 8 | 5 of 8 | 70% | 45% | $3.99 |
+
+**What each revision changed, from the judges' reasons**
+- **After draft 1:**
+  - check the deciding record against the code it governs;
+  - read records that amend it, or that set a rule for the same concern elsewhere;
+  - read a mid-rollout pair as a missing cross-reference, not a contradiction;
+  - report a renamed folder as moved, with the script suggesting where it went;
+  - flag guides that still cite a superseded record;
+  - fit the size asked for;
+  - never mention the tooling.
+- **After draft 2:**
+  - treat the script's findings as leads to confirm, not as findings;
+  - check each claim in a current record, not only its headline;
+  - for "can I remove or change X?", search the code for every use, recorded or not;
+  - give line numbers only from reading the file;
+  - obey a stated length exactly.
+
+**On draft 3,** the skill's checks lift is +25 points, with a 95% interval of +3 to +53. It won
+every pair on the PR review and the storage map, where reading records against code mattered
+most. It lost three of four pairs on a service handover note, and three of four on whether a
+cache can be removed. There, the plain agent gave the more practical path.
+
+**Judge 1 clears the bar exactly, after three drafts,** so the next revision needs evals of its
+own. Benchmark spend was $10.33.

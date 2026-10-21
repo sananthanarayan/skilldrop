@@ -160,6 +160,66 @@
         "Answers the actual question (what was decided that affects adding this field) directly in the first line, without asking a clarifying question first.",
         "Invents nothing not in the files: no decision IDs, column names, attribute keys, dates or migration numbers beyond those present (for example, no claimed existing gift_message key or a made-up migration 0013)."
       ]
+    },
+    {
+      "id": 12,
+      "held_out": "2026-10-21",
+      "prompt": "we're handing parcelhook over to the Partner Eng team on 1 Nov. can you write me a short handover note for them: what we decided about it, what still holds, and what they should fix first. the ADRs are in docs/adr I think. keep it short, they'll read the code themselves",
+      "assertions": [
+        "Flags that ADR-0006 supersedes ADR-0003 but ADR-0003 still says 'Status: Accepted', and, from reading the code, that src/delivery/dispatcher.py still imports and calls redis_store.claim rather than pg_store.claim, so idempotency still runs on Redis (the INC-1874 duplicate risk ADR-0006 was written to remove) and pg_store.py is unused.",
+        "Flags that the retry behaviour no longer matches ADR-0004: config/delivery.yaml has max_attempts: 20 and base_delay_seconds: 10, retry.py uses a fixed delay (backoff turned off under the TODO for INC-2291), and after the last attempt the code calls mark_failed instead of publishing to parcelhook.dlq. It notes the risk ADR-0004 itself records, partners rate-limiting or blocking us.",
+        "Flags that ADR-0007 (SFTP export, src/export/sftp_export.py) is still Accepted but that file doesn't exist. The export now goes to S3 (src/export/s3_export.py, bucket corvane-parcelhook-exports in config/export.yaml) and no record covers that change.",
+        "Flags that ADR-0008 and ADR-0009 are both Accepted and both govern src/partners/, with neither superseding the other, and that the code (src/partners/loader.py reads the partners table every 60 seconds) follows ADR-0009. config/partners.yaml, with 2 partners, is a stale second source of truth.",
+        "Flags that ADR-0009 points to ADR-0011 for the admin API's auth model, and that no ADR-0011 exists in docs/adr.",
+        "Says which decisions still hold as written, at least ADR-0002 (delivery_attempts log) and ADR-0005 (HMAC-SHA256 over '{timestamp}.{body}' with the X-Parcelhook-Signature and X-Parcelhook-Timestamp headers), so the note covers what still holds and not only what's broken.",
+        "Gives a short, ordered 'fix first' list that puts the runtime risks (Redis idempotency in the dispatcher, the retry/DLQ drift) ahead of record cleanup (marking ADR-0003, ADR-0007 and ADR-0008 superseded, writing the missing S3 and ADR-0011 records). The note stays short as asked, roughly a page and not a per-file audit dump.",
+        "Invents nothing that isn't in the files: no commit hashes, authors, dates of implementation, incident details or partner counts beyond what the ADRs and code state. Anything that would need git history (e.g. when the dispatcher went back to Redis) is given as a command to run, such as git log on src/delivery/dispatcher.py, and not stated as fact."
+      ]
+    },
+    {
+      "id": 13,
+      "held_out": "2026-10-21",
+      "prompt": "Why is there a Redis cache in front of pricing in shopfront? Support keeps getting tickets about stale prices on the product page and I'd like to just rip it out. Is that safe, or did someone decide this for a reason?",
+      "assertions": [
+        "Answers the question directly near the top: the cache came from RFC-012 (2023-06-14) to protect the Halvorsen ERP, with its 40 requests/second limit and ~900 ms p95, and ripping it out as-is is not safe because checkout depends on it.",
+        "Notices from the code that RFC-012's reason no longer holds: shopfront/pricing/client.py calls pricing-svc (PRICING_SVC_URL) and there is no erp_client.py. RFC-012's own 'Revisit when' condition (the ERP rate limit no longer applying) appears to be met.",
+        "Points out that RFC-019 is still marked 'Proposed' although the code already does what it proposes, and that RFC-008 still says Accepted although RFC-019 supersedes it and the file it governs (shopfront/pricing/erp_client.py) is gone.",
+        "Identifies RFC-015 (checkout price lock, which amends RFC-012) as the dependency: shopfront/checkout/lock.py relies on the pricing cache, and price_for_charge reads from it. Removing the cache would break the 15-minute price lock unless a per-cart price snapshot replaces it first.",
+        "Catches the likely cause of the stale-price tickets from reading the code: lock.py calls cache.touch on the shared price:{sku} key with 900 seconds (15 * 60), so every cart entering checkout extends the cached price for every shopper on the product page. Popular SKUs can stay stale well past the 60-second TTL in config/cache.yaml.",
+        "Recommends a concrete path: fix or replace the checkout lock with a per-cart snapshot, then remove or shorten the cache (pricing-svc's quoted 35 ms p95 and lack of a rate limit come from a Proposed record and should be confirmed with the pricing team), and record the change in a new record that supersedes RFC-012 and updates RFC-015, RFC-019 and RFC-008.",
+        "Is sized for a short chat question: a few short paragraphs or a brief list, not a full decision-map report of every record.",
+        "Invents nothing that isn't in the files: no load-test numbers, owners, incidents, commit history or pricing-svc capacity beyond what RFC-012, RFC-015 and RFC-019 state. Anything that would need git history or the network (e.g. checking when client.py switched to pricing-svc) is given as a command to run."
+      ]
+    },
+    {
+      "id": 14,
+      "held_out": "2026-10-21",
+      "prompt": "reviewing tomas's PR #412, summary of the diff is in pr-summary.md. he says it's all in line with our RFCs (docs/rfcs/) and specifically cites RFC-0002 for the retry change. can you check which recorded decisions this actually touches or breaks? need to leave a review comment before standup so keep it tight",
+      "assertions": [
+        "Flags that the retry.ts change cites RFC-0002, which is marked superseded by RFC-0005, and that the fixed 2-second delay with 3 attempts contradicts RFC-0005's current policy (up to 4 attempts, exponential backoff with full jitter); it does not accept RFC-0002 as a valid justification.",
+        "Flags that removing the Idempotency-Key check and idempotencyStore calls from src/payments/charge.ts breaks RFC-0001 (accepted), noting that RFC-0001 itself says the retry layer only sees outbound processor retries and so cannot dedupe inbound client retries.",
+        "Notes that RFC-0006 (moving idempotency to the gateway) has status proposed, not accepted, so it cannot justify removing the charge-handler check; it does not treat RFC-0006 as current.",
+        "Flags that renaming amountMinor to a decimal `amount` field (e.g. 19.99) and dropping assertMinorUnits breaks RFC-0003's integer-minor-units rule for src/payments/.",
+        "Notes that renaming src/webhooks/sign.ts to src/webhooks/signature.ts does not change the signing decision of RFC-0004 but leaves RFC-0004's governed path and text pointing at a file that will no longer exist, and suggests updating RFC-0004 in the same PR rather than calling it a breaking change.",
+        "Does not claim the console.log-to-logger.info change in src/webhooks/send.ts touches any recorded decision.",
+        "Answers the reviewer's question directly with a short per-change verdict (breaks / touches / clean) that can be pasted as a review comment, rather than a full map of every RFC or a long essay.",
+        "Invents nothing not in the input: no RFC numbers beyond 0001-0006, no files, functions, thresholds or incident details that are not in pr-summary.md, docs/rfcs/ or src/."
+      ]
+    },
+    {
+      "id": 15,
+      "held_out": "2026-10-21",
+      "prompt": "I'm putting together the architecture review pack for Haulmark this Thursday and need a section on data storage. Can you go through our ADRs in doc/adr/ and give me a map of every decision we've made about where and how data is stored: what's current, what was replaced and by what, with dates. Make it something I can paste straight into the review doc (markdown is fine). If anything in the records looks off, call it out, but I mainly need the map.",
+      "assertions": [
+        "The map covers the storage-related ADRs 2, 3, 4, 6, 7, 8 and 9 with each one's status and date as recorded, and leaves out ADR 1 (recording decisions) and ADR 5 (React) or clearly marks them as not about storage.",
+        "Shows ADR 3 (Cassandra for telemetry, 2021-06-02) as replaced by ADR 8 (TimescaleDB, 2023-04-11), with the supersession recorded on both sides, and notes services/telemetry/store.py matches ADR 8.",
+        "Flags that ADR 9 says it supersedes ADR 4 (Redis sessions) but ADR 4's own Status still reads Accepted, so it is recorded on one side only; it presents ADR 4 as replaced in the map and recommends updating ADR 4's status.",
+        "Flags that ADR 2 (PostgreSQL for shipments) and ADR 7 (MongoDB for shipments) are both Accepted and both govern services/shipments/, and that the code (services/shipments/db.py, the JSONB custom_fields migration in migrations.sql, deploy/services.yaml) uses PostgreSQL only, so ADR 7 looks unimplemented or abandoned; it does not present MongoDB as the current shipment store.",
+        "Flags that ADR 6 (nightly archiving to object storage) is Accepted but names services/archiver/, which does not exist in the repository and is absent from deploy/services.yaml, so the record may no longer hold.",
+        "Flags that ADR 8 links to ADR 10 (telemetry retention and downsampling), which does not exist in doc/adr/.",
+        "Delivers the map itself as one pasteable markdown block (e.g. a table of ID, title, store, status, date, replaced by/replaces) with the issues in a short separate list, rather than a long narrative or per-file walkthrough; any check that needs git history (e.g. whether ADR 7 was ever implemented) is given as a command to run, not as a claimed result.",
+        "Invents nothing not in the input: no ADR numbers, dates, databases, services, sizes or commit details beyond what the files in doc/adr/, services/, deploy/ and web/ contain."
+      ]
     }
   ]
 }
