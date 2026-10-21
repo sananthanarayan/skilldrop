@@ -8,6 +8,27 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.44 — 2026-10-21
+
+- **The 60 bugs the unit tests found are fixed, in 35 skills.** Every known-failure marker is gone, and the tests prove each fix on Linux, macOS and Windows.
+- **Wrong results, now right:**
+  - `cloud-cost-review` counts AWS spot instances as compute. They were always $0.
+  - `team-status-report --sprint "Sprint 1"` no longer includes Sprint 14.
+  - `md-to-confluence` keeps a Markdown hard line break instead of joining two lines into one word.
+  - `bundle-size-review` reads `safari > 15.3` as 15.4, not 16, so a polyfill Safari still needs isn't called unneeded.
+  - `ai-usage-report` counts 1–31 May as 31 days.
+  - `sql-review` accepts `1.0 * count(x)` and a cast denominator, and catches a filter on an unaliased LEFT JOIN table.
+  - `risk-register` gives the right line number after a blank line.
+  - `skill-review` no longer counts a 500-line SKILL.md as 501.
+  - `source-synthesis` rejects `[S1:p4, S2:p7]` as malformed.
+  - `dependency-upgrade-review` reads Yarn Berry lockfiles, and no longer matches `ws` inside `aws-sdk`.
+  - `codebase-tour` reads tox commands that span lines.
+  - `backlog-triage` parses Jira timestamps on Python 3.9.
+  - `interactive-diagram` writes its timeline summary correctly.
+  - The career skills' claim check no longer flags "Wrote SQL for Northwind Traders" when every name is in the source, and still flags a title the source doesn't support.
+- **Inputs that used to crash with a traceback now fail with a one-line message** naming the file and the fix: a JSON list where an object belongs, a non-UTF-8 export, a header-only CSV, a missing config, or an out-of-range value. A UTF-8 file with a byte-order mark is now read normally. `behaviour-equivalence` reports a bad rules file as BLOCKED (exit 2), not NOT EQUIVALENT.
+- **The docs page loads faster:** median LCP on the live page went from 1.86 s to 0.98 s ([RFC-0061](docs/rfcs/0061-own-skills-on-own-site.md)).
+
 ## 0.16.43 — 2026-10-21
 
 - **Every skill script has unit tests:** 1,317 tests for the 48 scripts in 43 skills, run on Linux, macOS and Windows on every pull request. Every new script needs tests: `validate.py` fails a skill whose scripts have none. Run them with `python3 -m unittest discover -s tests -t .`. They use only the standard library and run offline ([RFC-0060](docs/rfcs/0060-skill-script-unit-tests.md)).

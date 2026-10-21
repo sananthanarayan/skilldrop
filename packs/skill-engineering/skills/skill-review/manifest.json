@@ -1,6 +1,6 @@
 {
   "name": "skill-review",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Audit an existing Agent Skill folder (SKILL.md plus its scripts, references and evals) for Claude Code, Codex, Copilot, Cursor, Kiro or Antigravity, and return a READY / FIX FIRST / REWRITE verdict with severity-tagged findings across five areas — whether a router would pick it and whether it collides with a sibling, portability, safety (mapped to the OWASP Agentic Skills Top 10), structure, and eval coverage — backed by a stdlib lint script for the mechanical checks. Use when the user says \"review this skill\", \"is my SKILL.md any good\", \"why doesn't my skill trigger\", \"is this skill safe to install\", or wants a skill checked before sharing or publishing it.",
   "entrypoint": "SKILL.md",
   "deps": {

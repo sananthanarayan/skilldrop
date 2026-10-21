@@ -71,8 +71,6 @@ class ClaimCheckResumeTest(unittest.TestCase):
     def test_sentence_opening_verb_is_not_a_name(self):
         self.assertEqual(self.found("- Built dashboards in Python\n- Managed vendor contracts\n"), [])
 
-    # BUG: only -ed/-ing openers are dropped, so "Wrote SQL for Northwind" is reported though every name is sourced
-    @unittest.expectedFailure
     def test_irregular_verb_before_sourced_names_is_not_a_finding(self):
         self.assertEqual(self.found("- Wrote SQL for Northwind Traders\n"), [])
 
@@ -104,12 +102,19 @@ class ClaimCheckResumeTest(unittest.TestCase):
         self.assertEqual(self.found("**Senior Director**, Northwind Traders, 2019-2024\n"),
                          [("combination", "Senior Director")])
 
-    # BUG: the docstring's own example is missed because "manager" is in the PLAIN stop list
-    @unittest.expectedFailure
     def test_senior_manager_from_senior_analyst_and_office_manager(self):
         source = "Senior Analyst, Fabrikam, 2020-2024\nReported to the Office Manager.\n"
         self.assertIn(("combination", "Senior Manager"),
                       self.found("Senior Manager, Fabrikam, 2020-2024\n", sources=(source,)))
+
+    def test_unsourced_title_joined_to_sourced_employer_is_flagged(self):
+        self.assertEqual(self.found("VP of Northwind Traders, 2019-2024\n"),
+                         [("name", "VP of Northwind Traders")])
+
+    def test_title_and_employer_the_source_has_are_not_flagged(self):
+        draft = "VP of Northwind Traders, 2019-2024\n"
+        self.assertEqual(self.found(draft, sources=("VP of Northwind Traders, 2019-2024\n",)), [])
+        self.assertEqual(self.found(draft, sources=(RESUME, "Promoted to VP in 2024.\n")), [])
 
     def test_a_second_source_counts(self):
         notes = "Also used Tableau for ad-hoc reports.\n"

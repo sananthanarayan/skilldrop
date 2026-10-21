@@ -242,8 +242,6 @@ class LintStructureTests(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertTrue(has(rep, "WARN", "structure", "past 500, split material"))
 
-    # BUG: line count is text.count("\n") + 1, so a file ending in a newline is counted one line long; a 500-line SKILL.md warns as 501
-    @unittest.expectedFailure
     def test_500_line_skill_md_is_counted_as_500_and_does_not_warn(self):
         head = skill_md()
         text = head + "filler\n" * (500 - head.count("\n"))
@@ -294,8 +292,6 @@ class LintEvalsTests(unittest.TestCase):
         self.assertTrue(has(rep, "WARN", "evals", "1 should-trigger queries"))
         self.assertTrue(has(rep, "WARN", "evals", "1 should-not-trigger queries"))
 
-    # BUG: a non-string prompt (e.g. "prompt": 12345) crashes with TypeError on len() instead of an evals ERROR
-    @unittest.expectedFailure
     def test_non_string_prompt_is_an_error_not_a_traceback(self):
         evals = {"skill_name": "demo-skill", "evals": [{"prompt": 12345, "assertions": ["a", "b", "c"]}]}
         with workdir() as d:

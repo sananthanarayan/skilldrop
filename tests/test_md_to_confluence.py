@@ -128,9 +128,6 @@ class ConvertTest(unittest.TestCase):
         self.assertIn("c | d", body)
         self.assertTrue(any("table row 1 has 3 cells, the header has 2; padded or cut" in w for w in ctx.warnings))
 
-    # BUG: a ragged-row warning names the table's last line (ctx.line after the whole table is read),
-    # not the line of the row that is short or long.
-    @unittest.expectedFailure
     def test_ragged_row_warning_names_its_own_line(self):
         _, _, ctx, _ = self.convert("| a | b |\n|---|---|\n| 1 | 2 | 3 |\n| 4 | 5 |\n")
         self.assertEqual(ctx.warnings, ["line 3: table row 1 has 3 cells, the header has 2; padded or cut"])
@@ -188,9 +185,6 @@ class ConvertTest(unittest.TestCase):
         parse(body)
         self.assertEqual(body, "<p>badchar &amp; kept</p>")
 
-    # BUG: a hard line break ("two spaces" or "\" before a newline) is deleted and the two lines are
-    # glued ("firstsecond"): the \x01 placeholder is removed by translate(XML_BAD) inside inline().
-    @unittest.expectedFailure
     def test_hard_line_break_becomes_br(self):
         body, _, _, _ = self.convert("first  \nsecond\n")
         self.assertEqual(body, "<p>first<br />second</p>")

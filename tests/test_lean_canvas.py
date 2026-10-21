@@ -103,9 +103,7 @@ class UnitEconomicsTest(unittest.TestCase):
         self.assertIn("churn must be a fraction", self.assertExits2(price=10, churn=150))
         self.assertIn("churn must be > 0", self.assertExits2(price=10, churn=0))
 
-    @unittest.expectedFailure
     def test_zero_market_with_zero_fixed_costs_does_not_crash(self):
-        # BUG: fixed=0 with market_customers=0 divides 0/0 for the market share (ZeroDivisionError).
         self.compute(price=10, variable_cost=2, fixed=0, market_customers=0)
 
 

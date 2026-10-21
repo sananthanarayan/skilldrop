@@ -23,7 +23,7 @@ Turn Markdown into Word, Excel and HTML files that people outside engineering ca
 
 Convert a Word document, PowerPoint deck, Excel workbook, web page, CSV, JSON, text file, email (.eml or Outlook .msg) or PDF into clean Markdown that keeps headings, lists, tables, links, bold and italic, slide titles and speaker notes, and reports everything it dropped (images, charts, comments, formulas, tracked changes), so the content can be read, reviewed or fed to another skill.
 
-Tier **light** · v0.3.0 · [SKILL.md](../../../packs/converters/skills/file-to-markdown/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/file-to-markdown/)
+Tier **light** · v0.3.1 · [SKILL.md](../../../packs/converters/skills/file-to-markdown/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/file-to-markdown/)
 
 **Use it when** the user hands over a .docx, .pptx, .xlsx, .html, .csv, .json, .eml, .msg or .pdf and says "read this", "turn this into markdown", "extract the text", or wants it critiqued or briefed.
 
@@ -52,7 +52,7 @@ Tier **light** · v0.3.0 · [SKILL.md](../../../packs/converters/skills/file-to-
 
 Turn a Markdown runbook, design note or guide into a Confluence page: storage-format XHTML with real code blocks, tables, tasks, info and warning panels, images as attachments and an optional contents macro, a warning for everything dropped, and an optional publish that first shows which page it will create or overwrite and at what version, refuses stale or wrong-space overwrites, and takes credentials only from the environment.
 
-Tier **light** · v0.1.0 · [SKILL.md](../../../packs/converters/skills/md-to-confluence/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/md-to-confluence/)
+Tier **light** · v0.1.1 · [SKILL.md](../../../packs/converters/skills/md-to-confluence/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/md-to-confluence/)
 
 **Use it when** the user says "put this in Confluence", "publish this markdown to the wiki", "update the Confluence page with this", "convert to Confluence storage format", or names a Confluence space for a Markdown file.
 
@@ -110,7 +110,7 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/converters/skills/md-to
 
 Turn a Markdown draft into one self-contained, print-friendly HTML file that survives being emailed or attached, with headings that have anchor links, tables, code, quotes, an optional table of contents, local images embedded, brand colours and fonts from a brand.json, Mermaid diagrams kept as text or drawn from a pinned CDN, and raw HTML escaped so nothing in the source runs.
 
-Tier **light** · v0.1.1 · [SKILL.md](../../../packs/converters/skills/md-to-html/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/md-to-html/)
+Tier **light** · v0.1.2 · [SKILL.md](../../../packs/converters/skills/md-to-html/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/md-to-html/)
 
 **Use it when** the user wants Markdown "as a web page", "as an HTML file I can send", "something people can open in a browser and print", or says "convert this to HTML".
 
@@ -139,7 +139,7 @@ Tier **light** · v0.1.1 · [SKILL.md](../../../packs/converters/skills/md-to-ht
 
 Turn an existing Markdown document (a status report, runbook, review or notes) into a PowerPoint deck (.pptx) that opens without a repair prompt, with nothing to install. Each heading becomes a slide, lists keep their nesting, tables become real PowerPoint tables, images are embedded, and comments become speaker notes. A section too long for one slide is split onto "continued" slides instead of shrinking the text, and the reply names every split, everything dropped, and any speaker note that would go out with the file.
 
-Tier **light** · v0.1.0 · [SKILL.md](../../../packs/converters/skills/md-to-pptx/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/md-to-pptx/)
+Tier **light** · v0.1.1 · [SKILL.md](../../../packs/converters/skills/md-to-pptx/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/md-to-pptx/)
 
 **Use it when** the user says "turn this markdown into slides", "make this report a PowerPoint", "convert the .md to pptx", "I need this as a deck for Thursday", or "export these notes to PowerPoint".
 
@@ -196,7 +196,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/converters/skills/md-to
 
 Check Mermaid diagrams for the mistakes that stop them rendering (unknown diagram type, unbalanced brackets or quotes, unquoted parentheses in labels, the word end as a node id, missing arrows, unclosed subgraphs or alt blocks) with line numbers and a fix for each, then render them to SVG, PNG or PDF with mermaid-cli, or to a standalone HTML page when it is not installed. Works on a .mmd file or every mermaid fence in a Markdown doc.
 
-Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/converters/skills/mermaid-render/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/mermaid-render/)
+Tier **standard** · v0.1.4 · [SKILL.md](../../../packs/converters/skills/mermaid-render/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/mermaid-render/)
 
 **Use it when** a diagram "won't render", the user says "check my mermaid", "export this diagram as SVG/PNG", or needs the diagrams in a doc as image files.
 

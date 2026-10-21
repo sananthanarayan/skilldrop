@@ -456,8 +456,6 @@ class TestTimeline(unittest.TestCase):
         s, _ = laid_out_timeline(self.LASTING)
         self.assertEqual(s["_findings"][1], "Longest quiet stretch: 10, between Backfill (0 to 30) and Vacuum (40).")
 
-    # BUG: timeline_findings uses the first event's whole "when" ("0 to 30"), so the span reads "From 0 to 30 to 45: 45."
-    @unittest.expectedFailure
     def test_span_sentence_starts_at_the_first_events_start_when_it_lasts(self):
         s, _ = laid_out_timeline(self.LASTING)
         self.assertEqual(s["_findings"][0], "From 0 to 45: 45.")
@@ -682,8 +680,6 @@ class TestCli(unittest.TestCase):
                 self.assertIn("cannot read", err)
                 self.assertNotIn("Traceback", err)
 
-    # BUG: a spec whose top level is a JSON array crashes in normalise() with AttributeError instead of exit 2
-    @unittest.expectedFailure
     def test_spec_that_is_not_an_object_exits_2(self):
         with workdir() as d:
             code, _, err = run(SKILL, SCRIPT, self.spec_file(d, [ARCH]), "--check")

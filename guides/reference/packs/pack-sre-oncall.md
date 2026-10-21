@@ -49,7 +49,7 @@ Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/sre-oncall/skills/capac
 
 Review actual cloud spend from a cost export (AWS CUR or Data Exports, GCP billing export, Azure cost details) and produce a ranked savings report — idle and unattached resources, oversized instances backed by utilisation evidence, storage tiering, data transfer hot spots, commitment coverage and untagged spend — each finding with a monthly saving computed from the bill, a confidence level and an ease rating.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/sre-oncall/skills/cloud-cost-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/cloud-cost-review/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/sre-oncall/skills/cloud-cost-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/cloud-cost-review/)
 
 **Use it when** the user shares a cost CSV and says "where are we wasting money", "review our AWS bill", "why did the cloud bill jump this month", "find savings in our GCP/Azure spend", or "should we buy savings plans".
 
@@ -79,7 +79,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/sre-oncall/skills/cloud
 
 Produce a delivery metrics report for one service from deployment, incident and pull-request exports — the DORA metrics (deployment frequency, change lead time, change fail rate, failed deployment recovery time) plus flow metrics (WIP, cycle time p50/p85, throughput), computed by a script with per-week trends and explicit data gaps, then interpreted for what changed and why.
 
-Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/sre-oncall/skills/delivery-metrics-report/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/delivery-metrics-report/)
+Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/sre-oncall/skills/delivery-metrics-report/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/delivery-metrics-report/)
 
 **Use it when** the user wants DORA metrics, says "how are we doing on the four keys", "what's our change failure rate", "compute lead time and deploy frequency from this CSV", or "build our delivery metrics report".
 

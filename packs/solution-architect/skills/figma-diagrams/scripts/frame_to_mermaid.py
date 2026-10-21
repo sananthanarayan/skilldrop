@@ -82,7 +82,7 @@ def main(argv: list[str]) -> int:
     node_id = argv[1]
 
     data = get(f"/v1/files/{file_key}/nodes", params={"ids": node_id})
-    node = data.get("nodes", {}).get(node_id, {}).get("document")
+    node = (data.get("nodes", {}).get(node_id) or {}).get("document")
     if not node:
         sys.stderr.write(f"error: node {node_id} not found in {file_key}\n")
         return 1

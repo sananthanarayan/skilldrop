@@ -155,7 +155,7 @@ def compute(inp: dict) -> tuple[list[str], list[str]]:
                         f"Break-even needs {be_whole:,} active customers but the stated market holds {int(market):,}."
                     )
                 else:
-                    share = be_whole / market * 100
+                    share = be_whole / market * 100 if market else 0.0  # 0 needed of a 0 market
                     lines.append(f"Break-even share of the stated market: {share:.1f}%")
                     if share >= 25:
                         flags.append(

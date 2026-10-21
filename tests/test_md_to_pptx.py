@@ -244,9 +244,6 @@ class HelpersTest(unittest.TestCase):
         self.assertEqual(self.m.wrapped_lines("one\n\ntwo", 10), 3)
         self.assertEqual(self.m.wrapped_lines("ab " + "x" * 25, 10), 4)
 
-    # BUG: a token longer than a line, at the start of a line, is counted one line short
-    # (25 chars at 10 per line is 3 lines, the estimate says 2), so long URLs can overflow a slide.
-    @unittest.expectedFailure
     def test_wrapped_lines_long_token_at_line_start(self):
         self.assertEqual(self.m.wrapped_lines("x" * 25, 10), 3)
 

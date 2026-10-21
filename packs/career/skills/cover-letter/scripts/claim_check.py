@@ -52,6 +52,12 @@ saturday sunday full part time application applying while although though becaus
 during after before however also please thank thanks between over across within having most each every one two three
 """.split())
 DATE_LINE = re.compile(r"^\s*(?:\d{1,2}(?:st|nd|rd|th)?\s+)?[A-Z][a-z]{2,8}\.?\s+(?:\d{1,2}(?:st|nd|rd|th)?,?\s+)?\d{4}\s*$")
+# Past tenses that don't end in -ed, so a sentence-opening "Wrote" reads as a verb like "Managed".
+IRREGULAR_PAST = set("""
+wrote rewrote built rebuilt ran drove grew won took undertook gave brought taught held upheld kept
+sold spoke began chose met oversaw cut put found understood spent sent dealt bought thought sought
+split withdrew became went got knew overcame made told paid stood broke
+""".split())
 # The joining words allowed inside a capitalised phrase: "Head of Geography".
 JOINERS = {"of", "and", "for", "the", "in", "at", "&", "de"}
 STOP = PLAIN | set("""
@@ -165,13 +171,27 @@ def phrases(line):
             continue
         # A sentence-opening verb in front of a name ("Led AWS migration") is dropped from the run.
         if len(r) > 1 and r[0][1] and not looks_named(r[0][0]) and r[0][0].lower() not in PLAIN:
-            r = r[1:] if r[0][0].lower().endswith(("ed", "ing")) else r
+            r = r[1:] if r[0][0].lower().endswith(("ed", "ing")) or r[0][0].lower() in IRREGULAR_PAST else r
         words = [w for w, _ in r]
         while words and words[-1].lower() in JOINERS:
             words.pop()
         if words:
             cleaned.append(words)
     return cleaned
+
+
+def separate_names(words, src_flat):
+    """True when a joiner only links names the source has whole: "SQL for Northwind Traders"."""
+    parts, part = [], []
+    for w in words + ["&"]:
+        if w.lower() in JOINERS:
+            if part:
+                parts.append(part)
+            part = []
+        else:
+            part.append(w)
+    return len(parts) > 1 and all((len(p) > 1 or looks_named(p[0]))
+                                  and " " + " ".join(key(w) for w in p) + " " in src_flat for p in parts)
 
 
 def check(draft, sources, posting):
@@ -202,9 +222,11 @@ def check(draft, sources, posting):
             missing = [w for w in content if key(w) not in src_names and w.lower() not in PLAIN]
             if missing:
                 add("name", " ".join(words), n, raw, all(key(w) in post_names for w in missing))
-            elif len(content) > 1 and all(w.lower() not in PLAIN for w in content):
+            elif (len(content) > 1 and any(w.lower() not in PLAIN for w in content)
+                  and all(w.lower() not in PLAIN or key(w) in src_names for w in content)):
+                # every word is sourced (a plain word like "Manager" only if the source has it)
                 flat = " ".join(key(w) for w in words if w != "&")
-                if " " + flat + " " not in src_flat:
+                if " " + flat + " " not in src_flat and not separate_names(words, src_flat):
                     add("combination", " ".join(words), n, raw)
         if posting:
             for w in WORD.findall(body):

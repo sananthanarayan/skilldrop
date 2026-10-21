@@ -167,8 +167,6 @@ class UpgradeDiffTest(unittest.TestCase):
         rep, _, _, _ = self.analyse(diff)
         self.assertEqual([(r["name"], r["old"], r["new"]) for r in rep.changes], [("lodash", "4.17.20", "4.17.21")])
 
-    # BUG: a Yarn Berry key such as "lodash@npm:^4.17.20": is not recognised, so the bump is unattributed
-    @unittest.expectedFailure
     def test_yarn_berry_lock_bump_is_read(self):
         diff = fdiff("yarn.lock", [' "lodash@npm:^4.17.20":', '-  version: 4.17.20', '+  version: 4.17.21'])
         rep, _, _, _ = self.analyse(diff)
@@ -300,8 +298,6 @@ class UpgradeDiffTest(unittest.TestCase):
         self.assertEqual({r["name"]: r["in_title"] for r in rep.changes},
                          {"tidyparse": True, "charset-normalizer": False})
 
-    # BUG: the full-name check is a plain substring, so "ws" counts as named in a title about "aws-sdk"
-    @unittest.expectedFailure
     def test_short_name_is_not_matched_inside_another_word(self):
         diff = fdiff("package.json", ['   "dependencies": {', '-    "ws": "^7.0.0",', '+    "ws": "^8.0.0",'])
         rep, _, _, _ = self.analyse(diff, "Bump aws-sdk from 2.0.0 to 3.0.0")

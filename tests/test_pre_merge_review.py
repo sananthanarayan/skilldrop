@@ -155,8 +155,6 @@ class GateCliTest(unittest.TestCase):
         self.assertIn("--config must hold a list", err)
         self.assertNotIn("Traceback", err)
 
-    # BUG: a missing or malformed --config file ends in a raw traceback, not a gate: message
-    @unittest.expectedFailure
     def test_missing_config_file_fails_without_traceback(self):
         with workdir() as d:
             code, _, err = run(SKILL, SCRIPT, "--root", d, "--config", os.path.join(d, "missing.json"))

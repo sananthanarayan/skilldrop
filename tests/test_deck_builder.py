@@ -228,8 +228,6 @@ class BrandTest(unittest.TestCase):
         self.assertEqual(brand, {})
         self.assertIn("not valid JSON", self.m.WARNINGS[0])
 
-    # BUG: load_brand joins base / "~/..." before expanduser(), so a spec's "brand": "~/x.json" is never found
-    @unittest.expectedFailure
     def test_load_brand_expands_home_in_spec_path(self):
         with workdir() as home, workdir() as specdir, self.quiet():
             write(os.path.join(home, "brand.json"), '{"name": "Fictional Co"}')
@@ -536,8 +534,6 @@ class MainArgsTest(unittest.TestCase):
         self.assertEqual(rc, 1)
         self.assertIn("error: spec has no slides", err)
 
-    # BUG: a malformed spec JSON escapes as a JSONDecodeError traceback instead of "error: ..." exit 1
-    @unittest.expectedFailure
     def test_malformed_spec_json_fails_with_clear_error(self):
         with workdir() as d:
             spec = write(os.path.join(d, "deck.json"), '{"slides": [}')
@@ -594,8 +590,6 @@ class CliWithoutPptxTest(unittest.TestCase):
         self.assertNotEqual(code, 0)
         self.assertIn("pptx", err)
 
-    # BUG: without python-pptx even --help dies with a ModuleNotFoundError traceback, not an install hint
-    @unittest.expectedFailure
     def test_missing_pptx_gives_install_hint_not_traceback(self):
         code, out, err = run(SKILL, SCRIPT, "--help")
         self.assertNotIn("Traceback", err)

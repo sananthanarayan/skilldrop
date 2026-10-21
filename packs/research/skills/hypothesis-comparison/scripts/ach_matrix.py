@@ -66,6 +66,9 @@ def load(path):
             fail("the CSV needs at least two hypothesis columns; ACH compares rivals")
         rows = []
         for i, raw in enumerate(reader, start=1):
+            if None in raw:
+                fail("row {}: more cells than the header has columns; put double quotes around any "
+                     "cell that contains a comma".format(i + 1))
             row = {(k or "").strip(): (v or "").strip() for k, v in raw.items()}
             lrow = {k.lower(): v for k, v in row.items()}
             ev = lrow.get("evidence", "")

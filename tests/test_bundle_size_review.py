@@ -549,8 +549,6 @@ class TestHelpers(unittest.TestCase):
         self.assertEqual(m.parse_browserslist(q), {"chrome": (100,), "safari": (15, 4)})
         self.assertIsNone(m.parse_browserslist(["> 0.5%", "last 2 versions", "not dead"]))
 
-    # BUG: "safari > 15.3" is read as Safari 16, so a polyfill Safari 15.4-15.6 lacks (toSorted) is called not needed
-    @unittest.expectedFailure
     def test_greater_than_with_minor_version_keeps_the_next_minor(self):
         self.assertLess(m.parse_browserslist(["safari > 15.3"])["safari"], (16,))
 

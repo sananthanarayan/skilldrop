@@ -210,8 +210,9 @@ def scan(text, ascii_mode=False, medium="markdown"):
     blocks = re.split(r"\n\s*\n", trimmed)
     if len(blocks) > 1 and CLOSER_OPENERS.match(blocks[-1].strip()):
         tail = blocks[-1]
-        idx = trimmed.rfind(tail)
-        findings.append(_finding("closer", "auto", trimmed.count("\n", 0, max(idx, 0)) + 1, 1,
+        # Findings describe the ORIGINAL text, so locate the closer there, not in `cleaned`.
+        idx = text.rfind(tail.lstrip("\n").split("\n")[0])
+        findings.append(_finding("closer", "auto", text.count("\n", 0, max(idx, 0)) + 1, 1,
                                  "trailing chat closer — addresses a chat partner, not a reader",
                                  " ".join(tail.split())[:80]))
         cleaned = "\n\n".join(blocks[:-1]).rstrip() + ("\n" if text.endswith("\n") else "")

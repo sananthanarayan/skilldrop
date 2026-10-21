@@ -164,7 +164,12 @@ def tox_nox(rel, name, lines, out, targets):
                 if sec.group(2):
                     targets["tox"].add(sec.group(2))
             elif env and re.match(r"^\s*commands\s*=", line):
-                cmd = line.split("=", 1)[1].strip()
+                cmds = [line.split("=", 1)[1].strip()]
+                for nxt in lines[i + 1:]:
+                    if not nxt.strip() or not nxt[0].isspace():
+                        break
+                    cmds.append(nxt.strip())
+                cmd = "; ".join(c for c in cmds if c and not c.startswith("#"))
                 out.append({"command": "tox -e %s" % env, "runs": cmd, "where": "%s:%d" % (rel, i + 1)})
     else:
         for i, line in enumerate(lines):

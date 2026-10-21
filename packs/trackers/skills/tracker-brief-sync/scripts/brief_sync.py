@@ -194,7 +194,7 @@ def parse_doc(path: Path, id_pattern: str, headings: bool) -> dict:
             continue
         if s.startswith("|"):
             cells = [c.strip().strip("*").strip() for c in s.strip("|").split("|")]
-            if cells and broad.match(cells[0]):
+            if cells and broad.match(cells[0]) and not headings:
                 moscow = ""
                 for c in cells[2:]:
                     if c.lower() in MOSCOW:

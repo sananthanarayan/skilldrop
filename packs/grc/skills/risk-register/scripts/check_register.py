@@ -144,6 +144,8 @@ def main(argv=None):
     try:
         if args.csv == "-":
             text = sys.stdin.read()
+            if text.startswith("\ufeff"):  # Excel's "CSV UTF-8" BOM, as the file path strips it
+                text = text[1:]
         else:
             with io.open(args.csv, "r", encoding="utf-8-sig", newline="") as fh:
                 text = fh.read()
@@ -169,7 +171,10 @@ def main(argv=None):
     seen_ids = {}
     total_rows = 0
 
-    for line_no, raw in enumerate(reader, start=2):
+    for raw in reader:
+        # reader.line_num counts blank lines and ends on this record's last line; step back over
+        # newlines inside quoted cells to the line the record starts on.
+        line_no = reader.line_num - sum(v.count("\n") for v in raw.values() if isinstance(v, str))
         row = dict((k.strip(), (v or "").strip()) for k, v in raw.items() if k is not None)
         if not any(row.values()):
             continue

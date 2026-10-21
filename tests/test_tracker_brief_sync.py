@@ -100,8 +100,6 @@ class ParseDocTests(unittest.TestCase):
             info = m.parse_doc(Path(write(os.path.join(d, "b.md"), doc)), r"R\d+", True)
         self.assertEqual(info["required"], ["checkout-flow", "receipts-email"])
 
-    # BUG: --headings still adds requirement-ID table rows as sections (the table branch ignores the flag).
-    @unittest.expectedFailure
     def test_headings_mode_ignores_table_ids(self):
         with workdir() as d:
             info = m.parse_doc(Path(write(os.path.join(d, "prd.md"), DOC)), r"R\d+", True)

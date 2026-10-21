@@ -263,7 +263,7 @@ def read_lines(path):
 
 
 def check_structure(rep, skill_dir, text):
-    n = text.count("\n") + 1
+    n = text.count("\n") + (1 if text and not text.endswith("\n") else 0)
     rep.facts["skill_md_lines"] = n
     if n > MAX_LINES:
         rep.add("WARN", "structure", "SKILL.md is %d lines; past %d, split material into reference files" % (n, MAX_LINES), "SKILL.md")
@@ -321,6 +321,9 @@ def check_evals(rep, skill_dir, name):
                 for i, e in enumerate(items, 1):
                     if not isinstance(e, dict) or not e.get("prompt"):
                         rep.add("ERROR", "evals", "eval #%d has no prompt" % i, "evals/evals.json")
+                        continue
+                    if not isinstance(e["prompt"], str):
+                        rep.add("ERROR", "evals", "eval #%d prompt is not a string; write it as the text a user would type" % i, "evals/evals.json")
                         continue
                     if not isinstance(e.get("assertions"), list) or not e["assertions"]:
                         rep.add("ERROR", "evals", "eval #%d has no assertions; nothing says what a passing output looks like" % i, "evals/evals.json")

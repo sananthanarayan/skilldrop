@@ -1,6 +1,6 @@
 {
   "name": "risk-register",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Build or update an enterprise or project risk register — each risk written as cause, event and consequence, scored for likelihood and impact on a defined scale, inherent and residual ratings, a named owner, a treatment (avoid, reduce, transfer, accept), controls, a due date and a review trigger — with a heat map, the top risks that need a decision, and a stdlib script that validates the register CSV and flags overdue reviews. Use when the user wants a risk register, a risk log, a RAID log's risk section, a heat map, or says \"what are our top risks\", \"update the risk register\", \"score these risks\".",
   "entrypoint": "SKILL.md",
   "deps": {

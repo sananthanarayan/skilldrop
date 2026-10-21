@@ -209,7 +209,9 @@ def inline(text, ctx):
     # Decode character references (&amp; &mdash; &#8212;) outside the stashed pieces, then escape
     # everything once. Only semicolon-terminated ones, so "?a=1&para=2" stays as typed.
     parts = re.split("(%s\\d+%s)" % (STASH_OPEN, STASH_CLOSE), text)
-    text = "".join(pt if k % 2 else ENTITY_RE.sub(lambda m: html.unescape(m.group(0)), pt).translate(XML_BAD)
+    # The decoded characters are cleaned of what XML can't hold; the source was cleaned already, and
+    # cleaning it again would delete the \x01 hard-break placeholder.
+    text = "".join(pt if k % 2 else ENTITY_RE.sub(lambda m: html.unescape(m.group(0)).translate(XML_BAD), pt)
                    for k, pt in enumerate(parts))
     text = emphasis(esc(text))
     pat = re.compile("%s(\\d+)%s" % (STASH_OPEN, STASH_CLOSE))
@@ -277,7 +279,7 @@ def code_macro(code, lang, ctx):
             "<ac:plain-text-body>%s</ac:plain-text-body></ac:structured-macro>" % (params, cdata(code)))
 
 
-def render_table(rows, aligns, ctx):
+def render_table(rows, aligns, ctx, row_lines):
     ctx.counts["tables"] += 1
     width = len(aligns)
 
@@ -290,6 +292,7 @@ def render_table(rows, aligns, ctx):
 
     out = ["<table><tbody>"]
     for r_i, r in enumerate(rows):
+        ctx.line = row_lines[r_i]  # warnings name the row's own line
         if len(r) != width:
             ctx.warn("table row %d has %d cells, the header has %d; padded or cut" % (r_i, len(r), width))
         r = (r + [""] * width)[:width]
@@ -356,13 +359,13 @@ def render_blocks(lines, ctx, tight=False):
                 c = c.strip()
                 aligns.append("center" if c.startswith(":") and c.endswith(":") else
                               "right" if c.endswith(":") else "left" if c.startswith(":") else None)
-            rows = [split_row(line)]
+            rows, row_lines = [split_row(line)], [ctx.line]
             i += 2
             while i < n and lines[i].strip() and "|" in lines[i]:
-                ctx.line = getattr(lines[i], "ln", 0)
                 rows.append(split_row(lines[i]))
+                row_lines.append(getattr(lines[i], "ln", 0))
                 i += 1
-            out.append(render_table(rows, aligns, ctx))
+            out.append(render_table(rows, aligns, ctx, row_lines))
             continue
 
         if QUOTE_RE.match(line):

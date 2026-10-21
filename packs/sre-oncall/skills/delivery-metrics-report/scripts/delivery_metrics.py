@@ -50,6 +50,8 @@ def parse_offset(text: str) -> timezone:
         return timezone.utc
     if not m:
         raise InputError("--assume-tz must look like +00:00, -05:00 or Z, got %r" % text)
+    if int(m.group(2)) > 23 or int(m.group(3)) > 59:
+        raise InputError("--assume-tz offset out of range (hours 00-23, minutes 00-59), got %r" % text)
     sign = 1 if m.group(1) == "+" else -1
     return timezone(sign * timedelta(hours=int(m.group(2)), minutes=int(m.group(3))))
 
@@ -179,6 +181,8 @@ def compute(args) -> dict:
     dep_rows = read_csv(Path(args.deployments), ["deploy_id", "service", "deployed_at", "status"], "deployments")
     inc_rows = read_csv(Path(args.incidents), ["incident_id", "service", "started_at", "resolved_at"], "incidents") if args.incidents else None
     pr_rows = read_csv(Path(args.prs), ["pr_id", "opened_at", "merged_at"], "prs") if args.prs else None
+    if pr_rows is not None and not pr_rows:
+        raise InputError("prs file %s has a header but no rows; add PR rows or drop --prs" % args.prs)
 
     services_seen = sorted({r["service"] for r in dep_rows if r["service"]})
     svc = args.service

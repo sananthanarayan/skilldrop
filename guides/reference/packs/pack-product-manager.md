@@ -82,7 +82,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/product-manager/skills/
 
 Turn a startup or internal-product idea into a lean canvas that finds what could kill it — the nine boxes filled only from what the user said, each entry tagged evidence-backed (with its source) or assumption, the assumptions ranked by how likely each is wrong times how badly the idea fails if it is, the cheapest test with a pass/fail line set in advance for the top ones, a computed unit-economics check when price and costs are given, and a plain call when the idea should change before anything is built.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/product-manager/skills/lean-canvas/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/lean-canvas/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/product-manager/skills/lean-canvas/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/lean-canvas/)
 
 **Use it when** the user says "lean canvas", "help me think through my startup idea", "what are the riskiest assumptions", "how do I validate this idea", "is this idea worth building", or "poke holes in my business model".
 

@@ -56,8 +56,6 @@ class BuildReportTest(unittest.TestCase):
         self.assertIn("# AI Usage Report — Platform", rep)
         self.assertIn("**Period:** 2026-05-01 → 2026-05-07", rep)
 
-    # BUG: a date-only --from/--to range is counted one day short (May 1-31 reports 30 days, one day reports 0)
-    @unittest.expectedFailure
     def test_date_only_range_counts_every_calendar_day(self):
         code, so, se, rep = self.build("events.csv", CSV, "--from", "2026-05-01", "--to", "2026-05-31")
         self.assertIn("(31 days)", rep)
@@ -197,16 +195,12 @@ class BuildReportTest(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIn("unsupported file type '.txt'", se)
 
-    # BUG: a malformed JSONL line crashes with a JSONDecodeError traceback instead of a clear error
-    @unittest.expectedFailure
     def test_malformed_jsonl_line_fails_clearly(self):
         text = '{"timestamp": "2026-05-04T09:00:00Z", "user": "ana", "tool": "cursor"}\n{not json\n'
         code, so, se, rep = self.build("events.jsonl", text, *WINDOW)
         self.assertNotEqual(code, 0)
         self.assertNotIn("Traceback", se)
 
-    # BUG: the schema says a missing required field (user) exits with an error; the script writes a 0-user report
-    @unittest.expectedFailure
     def test_missing_required_user_column_is_an_error(self):
         text = "timestamp,tool\n2026-05-04T09:00:00Z,cursor\n"
         code, so, se, rep = self.build("events.csv", text, *WINDOW)

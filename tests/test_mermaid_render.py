@@ -88,9 +88,6 @@ class LintTest(unittest.TestCase):
     def test_line_numbers_offset_by_first_line(self):
         self.assertEqual([ln for ln, _, _ in self.lint("flowchart TD\n  A -> B\n", 10)[1]], [11])
 
-    # BUG: `subgraph id [title]` (a space before the bracket, the form the Mermaid docs use) is
-    # flagged "a shape `[` with no node id before it", so lint blocks a diagram Mermaid accepts.
-    @unittest.expectedFailure
     def test_subgraph_id_space_title_is_valid(self):
         self.assertEqual(self.errors("flowchart TB\n  subgraph ide1 [one]\n    a1-->a2\n  end\n"), [])
 

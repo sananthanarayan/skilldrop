@@ -310,14 +310,10 @@ class TestCheckAsyncapi(unittest.TestCase):
 
     # malformed documents
 
-    # BUG: a structurally wrong document (channels is a list) crashes with AttributeError instead of a FAIL line
-    @unittest.expectedFailure
     def test_channels_given_as_a_list_is_a_failure_not_a_crash(self):
         rep = checked(doc(channels=["orders"]))
         self.assertTrue(rep.fails)
 
-    # BUG: info given as a string crashes with AttributeError ('str' has no .get) instead of a FAIL line
-    @unittest.expectedFailure
     def test_info_given_as_a_string_is_a_failure_not_a_crash(self):
         rep = checked(doc(info="Order events 1.0"))
         self.assertTrue(has(rep.fails, "info"))

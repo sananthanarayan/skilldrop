@@ -89,8 +89,6 @@ class StatusCountsTests(unittest.TestCase):
         self.assertEqual(data["plan_source"], "items in sprint 'CHK Sprint 14'")
         self.assertEqual(data["counts"]["planned"], 5)  # the cancelled CHK-8 is left out
 
-    # BUG: --sprint matches by substring, so "CHK Sprint 1" also plans every "CHK Sprint 14" item.
-    @unittest.expectedFailure
     def test_sprint_name_matches_whole_name_not_substring(self):
         with workdir() as d:
             _, _, _, data = status(d, EXPORT, "export.csv", "--sprint", "CHK Sprint 1")
@@ -206,8 +204,6 @@ class StatusCountsErrorTests(unittest.TestCase):
             self.assertEqual(code, 2)
             self.assertIn("does not exist", err)
 
-    # BUG: a non-UTF-8 export raises UnicodeDecodeError (not OSError), so it crashes with a traceback.
-    @unittest.expectedFailure
     def test_non_utf8_export_exits_2(self):
         with workdir() as d:
             path = os.path.join(d, "e.csv")

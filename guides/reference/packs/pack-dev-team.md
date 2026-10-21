@@ -74,7 +74,7 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/dev-team/skills/agents-
 
 Prove that a rewritten, migrated or refactored component behaves the same as the old one with a golden-master comparison — record inputs and outputs at a boundary (HTTP, function calls, batch files, DB writes, events) from production-shaped traffic and edge cases, run the old system twice to find its nondeterminism, normalise narrowly field by field, replay against the new one, triage every difference as defect, intended change (with a named approver) or missing normalisation, and give a verdict of EQUIVALENT, EQUIVALENT EXCEPT LISTED CHANGES, NOT EQUIVALENT or NOT PROVEN.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/behaviour-equivalence/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/behaviour-equivalence/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/dev-team/skills/behaviour-equivalence/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/behaviour-equivalence/)
 
 **Use it when** the user asks "does the new one behave the same as the old one", "can we sign off the rewrite", "are these diffs just noise", wants a golden-master, approval or shadow-traffic comparison, a parity check between old and new outputs, or says "prove behaviour equivalence".
 
@@ -130,7 +130,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/bug-tri
 
 Get a newcomer (a new engineer, or the agent itself) oriented in an unfamiliar repository before they make one specific change, with a short tour scoped to that change. It gives the install, run and test commands taken from CI, package scripts and the Makefile; the path the change touches, traced through the code with file:line citations; where the change goes; the conventions the code actually follows; the traps (generated files, a second copy of the logic, untested code, env vars, flags); and a first step that can be checked.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/codebase-tour/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/codebase-tour/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/dev-team/skills/codebase-tour/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/codebase-tour/)
 
 **Use it when** someone says "I'm new to this repo", "get me oriented", "where would I make this change", "walk me through the code for X", "onboard me before I start this ticket", or "how do I run and test this".
 
@@ -162,7 +162,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/codebas
 
 Give a merge verdict on a dependency-upgrade pull request (Dependabot, Renovate or a hand-made bump) across npm, pip, Go, Cargo and Maven lockfiles and GitHub Actions pins. Reads the release notes for every skipped version, lists what the lockfile changes beyond the PR title (transitive bumps, new and removed packages, install scripts, registry changes), checks each SHA pin against its release tag and against the PR's other pins, checks raised runtime floors against the images and runners that install it, says whether CI ran the changed code, traces what each caller of a changed API now does and writes the rollback. The reply leads with MERGE, MERGE AFTER CHECKS or DO NOT MERGE and the reasons that decide it.
 
-Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/dev-team/skills/dependency-upgrade-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/dependency-upgrade-review/)
+Tier **standard** · v0.2.1 · [SKILL.md](../../../packs/dev-team/skills/dependency-upgrade-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/dependency-upgrade-review/)
 
 **Use it when** the user says "review this Dependabot PR", "is this Renovate bump safe to merge", "can I merge this dependency upgrade", "check this lockfile diff", or "is this action SHA pin right".
 
@@ -316,7 +316,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/pr-desc
 
 Gate an existing change for merge — run one skill that fires the whole production-readiness pass. First a deterministic mechanical gate (lint + typecheck + tests, via a script whose exit code decides), then the three-reviewer panel dispatched in parallel — devils-advocate (correctness), security-reviewer (exploitability), code-quality (craft) — then a single READY / NOT READY verdict. Use before opening a PR or merging, when you want the full review fleet run on a diff you already have. Do NOT use to implement a feature from a spec (that's feature-implement-loop) or to review a document (that's doc-critique).
 
-Tier **standard** · v0.1.4 · [SKILL.md](../../../packs/dev-team/skills/pre-merge-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/pre-merge-review/)
+Tier **standard** · v0.1.5 · [SKILL.md](../../../packs/dev-team/skills/pre-merge-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/pre-merge-review/)
 
 **Needs:** Python 3 for its scripts (standard library only).
 
@@ -394,7 +394,7 @@ Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/dev-team/skills/release
 
 Plan the progressive release of a code change behind a feature flag or canary — the exposure ladder (internal, beta cohort, 1%, 5%, 25%, 50%, 100%, or what the traffic supports), and for each step who is exposed, decision and guardrail metrics with a baseline and a threshold against a control cohort, the minimum traffic and time before the numbers mean anything, a promote / hold / roll back rule set in advance, who watches and what aborts automatically; then what turning the flag off does not undo, and who removes the flag by when.
 
-Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/dev-team/skills/rollout-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/rollout-plan/)
+Tier **standard** · v0.2.1 · [SKILL.md](../../../packs/dev-team/skills/rollout-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/rollout-plan/)
 
 **Use it when** the user asks for a rollout plan, canary plan, ramp schedule, progressive delivery or percentage rollout, "how long should the canary run", "when do we go from 5% to 25%", or how to turn on a flagged feature safely.
 

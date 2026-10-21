@@ -78,13 +78,9 @@ class TestSqlLintRules(unittest.TestCase):
             with self.subTest(sql=sql):
                 self.assertEqual(lint(sql, "postgres"), [])
 
-    # BUG: "1.0 * count(x)" with spaces still warns; the guard only matches "1.0*" with no trailing space.
-    @unittest.expectedFailure
     def test_spaced_one_point_zero_multiplier_silences_integer_division(self):
         self.assertEqual(lint("select 1.0 * count(x) / count(*) from t", "postgres"), [])
 
-    # BUG: a ::float cast on the denominator still warns, though it makes the division float.
-    @unittest.expectedFailure
     def test_cast_denominator_silences_integer_division(self):
         self.assertEqual(lint("select count(x) / count(*)::float from t", "postgres"), [])
 
@@ -110,8 +106,6 @@ class TestSqlLintRules(unittest.TestCase):
         sql = "select a.id from a left join b bb on a.id = bb.a_id and bb.status = 'paid' where a.x = 1"
         self.assertEqual(lint(sql), [])
 
-    # BUG: an un-aliased LEFT JOIN table filtered in WHERE by its table name is not flagged.
-    @unittest.expectedFailure
     def test_where_filter_on_unaliased_left_join_table_warns(self):
         sql = "select a.id from a left join orders on a.id = orders.a_id where orders.status = 'paid'"
         self.assertIn("left-join-where-filter", rules(sql))

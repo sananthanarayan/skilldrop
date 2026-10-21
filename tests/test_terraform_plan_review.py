@@ -310,8 +310,6 @@ class PlanSummaryTest(unittest.TestCase):
     def test_resource_changes_not_a_list_exits_2(self):
         self.assert_rejected('{"format_version": "1.2", "resource_changes": {}}', "not a list")
 
-    # BUG: a non-UTF-8 plan (e.g. UTF-16 from PowerShell 5 `>`) raises UnicodeDecodeError, a traceback.
-    @unittest.expectedFailure
     def test_non_utf8_plan_exits_2_without_traceback(self):
         with workdir() as d:
             path = os.path.join(d, "utf16.json")

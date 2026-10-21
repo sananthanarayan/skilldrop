@@ -178,8 +178,6 @@ class MdToHtmlTest(unittest.TestCase):
         self.assertNotIn('<nav class="toc"', page)
         self.assertIn("--toc asked for, but the document has no level-2 or level-3 headings", se)
 
-    # BUG: a ### before the first ## gives <ul><ul> and a stray </li> in the table of contents
-    @unittest.expectedFailure
     def test_toc_is_well_formed_when_an_h3_comes_before_any_h2(self):
         with workdir() as d:
             _, page, _, _ = convert(d, "### Note\n\n## Setup\n", "--toc")
@@ -241,8 +239,6 @@ class MdToHtmlTest(unittest.TestCase):
         self.assertNotEqual(c2, 0)
         self.assertIn("brand file is not valid JSON", e2)
 
-    # BUG: a brand.json that is valid JSON but not an object (e.g. []) crashes with AttributeError
-    @unittest.expectedFailure
     def test_brand_file_that_is_not_an_object_fails_clearly(self):
         with workdir() as d:
             arr = write(os.path.join(d, "arr.json"), "[]")

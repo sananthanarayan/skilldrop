@@ -157,8 +157,6 @@ class CheckBrandCliTest(unittest.TestCase):
         self.assertEqual(code, 2)
         self.assertIn("Usage:", out)
 
-    # BUG: a brand.json saved as Windows-1252/Latin-1 raises UnicodeDecodeError (not caught) with a traceback.
-    @unittest.expectedFailure
     def test_non_utf8_brand_file_fails_clearly(self):
         with workdir() as d:
             path = os.path.join(d, "brand.json")
@@ -169,8 +167,6 @@ class CheckBrandCliTest(unittest.TestCase):
         self.assertIn("FAIL cannot read", out)
         self.assertNotIn("Traceback", err)
 
-    # BUG: a top-level JSON array crashes with AttributeError ('list' object has no attribute 'get').
-    @unittest.expectedFailure
     def test_non_object_brand_file_fails_clearly(self):
         with workdir() as d:
             code, out, err = run(SKILL, SCRIPT, write(os.path.join(d, "brand.json"), "[]"))
@@ -178,8 +174,6 @@ class CheckBrandCliTest(unittest.TestCase):
         self.assertIn("FAIL", out)
         self.assertNotIn("Traceback", err)
 
-    # BUG: a non-string colour value ({"primary": 123}) crashes in HEX.match with TypeError.
-    @unittest.expectedFailure
     def test_non_string_colour_fails_as_malformed_hex(self):
         code, out, err = self.check(with_changes(colors__primary=123))
         self.assertEqual(code, 1)

@@ -45,7 +45,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/career/skills/applicati
 
 Write a cover letter for one job from the person's resume and the posting: under a page, opening on the strongest evidence for the role, two or three specifics matched to what the employer asked for, and no enthusiasm, company facts or experience the person didn't supply. A script lists every figure and name in the letter that their own material doesn't contain. Works for any occupation and level.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/career/skills/cover-letter/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/cover-letter/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/career/skills/cover-letter/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/cover-letter/)
 
 **Use it when** the user says "write a cover letter for this job", "draft a covering letter", "write the cover note for my application", or needs an application email to go with a resume.
 
@@ -93,7 +93,7 @@ Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/career/skills/job-fit-a
 
 Tailor a resume or CV to one job posting without adding anything that isn't true: reorder, cut and reword what the person has already done so the posting's needs are answered first, keep every employer, title, date and number as it was, and report what the posting asks for that the resume cannot claim. A script lists every figure and name in the draft that the original doesn't contain. Works for any occupation and level.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/career/skills/resume-tailor/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/resume-tailor/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/career/skills/resume-tailor/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/resume-tailor/)
 
 **Use it when** the user says "tailor my resume for this job", "adapt my CV to this posting", "rewrite my resume for this role", or pastes a job description next to their resume.
 

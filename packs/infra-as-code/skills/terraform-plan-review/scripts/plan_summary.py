@@ -66,9 +66,11 @@ def die(msg):
 
 def load_plan(path):
     try:
-        raw = sys.stdin.read() if path == "-" else open(path, encoding="utf-8").read()
+        raw = sys.stdin.read() if path == "-" else open(path, encoding="utf-8-sig").read()
     except OSError as e:
         die(f"cannot read {path}: {e.strerror}")
+    except UnicodeDecodeError:
+        die(f"{path} is not UTF-8 text; save it as UTF-8 (e.g. terraform show -json tfplan | Out-File -Encoding utf8 plan.json) and retry")
     stripped = raw.lstrip()
     if not stripped:
         die("input is empty")

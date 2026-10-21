@@ -168,8 +168,6 @@ class CanaryMathCliTest(unittest.TestCase):
                 self.assertIn(fragment, err)
                 self.assertNotIn("Traceback", err)
 
-    # BUG: a non-finite --traffic passes the "> 0" check and crashes in math.ceil with a traceback.
-    @unittest.expectedFailure
     def test_non_finite_traffic_exits_2(self):
         code, _, err = run(SKILL, SCRIPT, "--baseline", "1%", "--detect-abs", "1pp", "--traffic", "nan")
         self.assertEqual(code, 2)

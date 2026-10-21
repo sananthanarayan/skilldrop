@@ -23,7 +23,7 @@ For frontend engineers and the people who review their pages: read a Lighthouse 
 
 Find what makes a JavaScript bundle heavy and what can safely come out, from the bundler's stats file (webpack stats.json, an esbuild metafile, or the rollup-plugin-visualizer raw-data JSON that Vite builds use) read together with the repo around it (package.json, .browserslistrc, the lockfile, the bundler config and the source files that import the heavy modules). Gives each entry's first-load JavaScript in the exact bytes the stats record, kept apart from lazy chunks; finds whole-library imports, CommonJS packages that can't be tree-shaken, packages bundled twice and polyfills the browser targets don't need; names the import chain that pulls each module in before suggesting a removal; and, given before and after stats, says what grew, why, whether it lands in the first load and which per-entry budget would have caught it.
 
-Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/frontend/skills/bundle-size-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/bundle-size-review/)
+Tier **standard** · v0.2.1 · [SKILL.md](../../../packs/frontend/skills/bundle-size-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/bundle-size-review/)
 
 **Use it when** the user says "why is our bundle so big", "what can we cut from the bundle", "review this stats.json", "why is lodash or moment in our bundle", "the bundle grew in this PR", or "set a bundle size budget".
 
@@ -84,7 +84,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/frontend/skills/renderi
 
 Read a Lighthouse report or PageSpeed Insights result, with field data when there is any (CrUX, PSI loadingExperience or RUM p75), and say what makes the page slow for real users and what to fix first, ranked by how much each fix moves LCP, INP and CLS at the 75th percentile. Names the LCP element and which LCP phase dominates, the elements that shift and why, the long tasks and third parties by main-thread time, and treats estimated savings as lab estimates that overlap.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/frontend/skills/web-performance-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/web-performance-review/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/frontend/skills/web-performance-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/web-performance-review/)
 
 **Use it when** the user shares a Lighthouse JSON or PSI result and asks "why is this page slow", "what should we fix first", "we score 92 but Search Console says LCP is poor", "did our change fix INP", "review this Lighthouse report", or "how do we pass Core Web Vitals".
 

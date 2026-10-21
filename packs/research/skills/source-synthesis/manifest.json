@@ -1,6 +1,6 @@
 {
   "name": "source-synthesis",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Answer a question from a set of sources the user supplied — papers, reports, articles, interview notes, emails — saying only what the material supports, labelling anything that comes from elsewhere where it appears, counting a source that repeats another once, and giving a labelled estimate when the user needs a figure the sources don't settle. Written in the length and format the user asked for; a full cited literature review only when that is the ask. Use when the user hands over several sources and asks to \"synthesise these\", \"what do these papers say\", \"pull together what we know\", \"literature review\", or \"where do the sources agree and disagree\".",
   "entrypoint": "SKILL.md",
   "deps": {

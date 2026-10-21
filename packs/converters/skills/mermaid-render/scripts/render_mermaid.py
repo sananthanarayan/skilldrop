@@ -188,7 +188,8 @@ def lint_flowchart(lines, issues):
             elif re.match(r'^"[^"]*"$', rest):
                 pass
             elif re.match(r"^[^\W][\w.-]*\s*[\[({>]", rest, re.U):
-                scan_nodes(rest, ln, issues)              # subgraph id[label]
+                # subgraph id[label], or id [label] as the Mermaid docs write it
+                scan_nodes(re.sub(r"^([^\W][\w.-]*)\s+", r"\1", rest, flags=re.U), ln, issues)
             elif re.search(r"[\[\](){}]", rest):
                 issues.append(Issue(ln, "error", "subgraph title has unquoted brackets; write "
                                     "subgraph id[\"%s\"]" % rest.replace('"', "'")))

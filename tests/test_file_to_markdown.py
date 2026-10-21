@@ -423,8 +423,6 @@ class ToMarkdownTest(unittest.TestCase):
         self.assertNotIn("Region", b)
         self.assertIn("header row repeated on page 2 was dropped", rep.notes[0])
 
-    # BUG: a table header repeated on 2+ continuation pages is taken for a running page header and left in
-    @unittest.expectedFailure
     def test_pdf_header_repeated_on_every_continuation_page_is_dropped(self):
         p1 = "Ticket report\n\nRegion      Tickets\nNorth       120\n"
         p2 = "Region      Tickets\nEast        40\n"

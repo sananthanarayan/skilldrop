@@ -2,7 +2,6 @@ import csv
 import io
 import json
 import os
-import sys
 import unittest
 
 from tests.support import load, run, workdir, write, read
@@ -123,9 +122,6 @@ class TriageBacklogTests(unittest.TestCase):
         self.assertEqual(m.parse_date("2026-09-25T10:00:00Z").isoformat(), "2026-09-25")
         self.assertIsNone(m.parse_date("soon"))
 
-    # BUG: on Python < 3.11 the Jira REST timestamp form (.000+0000) is unparseable, so staleness
-    # silently becomes "unknown" for every item from a Jira JSON export.
-    @(unittest.expectedFailure if sys.version_info < (3, 11) else (lambda f: f))
     def test_jira_rest_timestamp_parses(self):
         self.assertEqual(m.parse_date("2026-09-30T08:00:00.000+0000").isoformat(), "2026-09-30")
 
@@ -163,8 +159,6 @@ class TriageBacklogTests(unittest.TestCase):
                       "estimate, updated, description", report)
         self.assertIn("| Oversized | n/a |", report)
 
-    # BUG: with no owner column, every high-priority item is reported as "priority X but no owner".
-    @unittest.expectedFailure
     def test_no_owner_column_does_not_create_owner_conflicts(self):
         text = "Key,Summary,Priority\nK-1,Urgent fix,Highest\n"
         with workdir() as d:
@@ -172,9 +166,6 @@ class TriageBacklogTests(unittest.TestCase):
         self.assertIn("| No owner | n/a |", report)
         self.assertNotIn("but no owner", report)
 
-    # BUG: skipped checks (no owner / no description column) still write assign-owner and
-    # add-acceptance-criteria rows for every open item into the change list.
-    @unittest.expectedFailure
     def test_skipped_checks_write_no_change_rows(self):
         text = "Key,Summary\nK-1,Do a thing\nK-2,Write docs\n"
         with workdir() as d:
@@ -215,8 +206,6 @@ class TriageBacklogErrorTests(unittest.TestCase):
                 self.assertEqual(code, 2, args)
                 self.assertIn(msg, err, args)
 
-    # BUG: a non-UTF-8 export raises UnicodeDecodeError (not OSError), so it crashes with a traceback.
-    @unittest.expectedFailure
     def test_non_utf8_export_exits_2(self):
         with workdir() as d:
             path = os.path.join(d, "b.csv")

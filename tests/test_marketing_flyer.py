@@ -263,8 +263,6 @@ class BuildFlyerCliTests(unittest.TestCase):
             self.assertIn("cannot read", err)
             self.assertNotIn("Traceback", err)
 
-    # BUG: a string "image" path is accepted for embedding, then img.get("alt") raises AttributeError.
-    @unittest.expectedFailure
     def test_image_given_as_plain_path_string_builds(self):
         with workdir() as d:
             png_file(d)
@@ -272,15 +270,11 @@ class BuildFlyerCliTests(unittest.TestCase):
             self.assertEqual(code, 0, err)
             self.assertIn("data:image/png;base64,", html)
 
-    # BUG: a string "cta" (e.g. "Book now") crashes with AttributeError instead of failing clearly.
-    @unittest.expectedFailure
     def test_cta_given_as_string_does_not_traceback(self):
         with workdir() as d:
             _, _, err, _ = build(d, cta="Book now")
             self.assertNotIn("Traceback", err)
 
-    # BUG: a spec whose JSON is not an object (e.g. a list) crashes with AttributeError.
-    @unittest.expectedFailure
     def test_spec_that_is_not_an_object_fails_clearly(self):
         with workdir() as d:
             p = write(os.path.join(d, "list.json"), "[1, 2]")

@@ -225,7 +225,11 @@ class Linter:
             if mt.group(1) == "sum" and div.group(2) == "sum":
                 continue
             before = self.low[max(0, mt.start() - 15):mt.start()]
-            if re.search(r"(1\.0\s*\*|cast\s*\(\s*|::\s*\w*\s*)$", before) or rest.startswith("::"):
+            if re.search(r"(1\.0\s*\*\s*|cast\s*\(\s*|::\s*\w*\s*)$", before) or rest.startswith("::"):
+                continue
+            # A cast on the denominator (count(*)::float, nullif(...)::numeric) also makes it float.
+            dopen = end + (div.start(1) + div.group(1).index("(") if div.group(1) else div.end() - 1)
+            if self.low[skip_parens(self.low, dopen):].lstrip().startswith("::"):
                 continue
             sev = "warn" if (mt.group(1) == "count" and div.group(2) == "count") else "info"
             label = "COUNT / COUNT" if sev == "warn" else "SUM / COUNT"
@@ -320,12 +324,15 @@ class Linter:
         return spans
 
     def left_join_where(self) -> None:
-        pat = re.compile(r"\bleft\s+(?:outer\s+)?join\s+[\w`\".]+\s+(?:as\s+)?(\w+)")
+        pat = re.compile(r"\bleft\s+(?:outer\s+)?join\s+([\w`\".]+)\s+(?:as\s+)?(\w+)")
         aliases = set()
         for mt in pat.finditer(self.low):
-            a = mt.group(1)
+            a = mt.group(2)
             if a not in ("on", "using", "where"):
                 aliases.add(a)
+            else:
+                # No alias: WHERE refers to the table by its own (unqualified) name.
+                aliases.add(mt.group(1).split(".")[-1].strip("`\""))
         if not aliases:
             return
         for start, end in self.where_clauses():

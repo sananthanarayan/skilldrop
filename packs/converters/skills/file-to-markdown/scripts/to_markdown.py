@@ -1554,9 +1554,11 @@ def _join_split_tables(pages, rep):
                                   (not a[start - 1].strip() and start - 2 >= 0 and len(_cells(a[start - 2])) == width)):
             start -= 1
         header = " ".join(a[start].split())
-        # the first content on the next page, past page numbers and a running header
+        # the first content on the next page, past page numbers and a running header (a line
+        # that repeats the table's own header is the table's, not the page's)
         i = 0
-        while i < len(b) and (not b[i].strip() or _FURNITURE.match(b[i]) or b[i].strip() in running):
+        while i < len(b) and (not b[i].strip() or _FURNITURE.match(b[i]) or
+                              (b[i].strip() in running and " ".join(b[i].split()) != header)):
             i += 1
         if i >= len(b) or len(_cells(b[i])) != width:
             continue
