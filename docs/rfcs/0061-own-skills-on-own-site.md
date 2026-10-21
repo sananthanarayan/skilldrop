@@ -58,5 +58,6 @@ on each pull request.
 
 ## Decision
 
-Accepted and implemented in 0.16.42. The live docs page is re-measured after the deploy, and a
+Accepted and implemented in 0.16.42. Re-measured live after the deploy, with three runs each
+side on the same settings: the docs page's median LCP went from 1.86 s to 0.98 s. A
 screen-reader pass is listed on the page as still to do.
