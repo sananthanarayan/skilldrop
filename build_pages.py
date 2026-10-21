@@ -653,6 +653,7 @@ def checks_section(name, sdir):
     no = "".join(f"<li>{esc(q['query'])}</li>" for q in qs if not q.get("should_trigger"))
     n_a = sum(len(e.get("assertions", [])) for e in evs)
     return f"""<section aria-labelledby="checked"><h2 id="checked">How it's checked</h2>
+{measured_line(name)}
 <p class="pk__total">{n_a} assertion{'s' if n_a != 1 else ''} across {len(evs)} acceptance eval{'s' if len(evs) != 1 else ''}, and {len(qs)} trigger queries. <a href="../../evals/">Every skill's checks</a></p>
 <details class="pk__other"><summary>What the output must do</summary><ul class="pk__bar">{asserts}</ul></details>
 <details class="pk__other"><summary>When it should and shouldn't activate</summary>
@@ -661,6 +662,63 @@ def checks_section(name, sdir):
 
 
 BENCH = os.path.join(ROOT, "docs", "benchmarks", "latest.json")
+# Skills admitted since the last full run, with the held-out measurement each was admitted on.
+ADMISSIONS = os.path.join(ROOT, "docs", "benchmarks", "admissions.json")
+
+
+def rfc_url(num):
+    import glob
+    hits = glob.glob(os.path.join(ROOT, "docs", "rfcs", "%s-*.md" % num))
+    return f"{REPO_URL}/blob/main/docs/rfcs/{os.path.basename(hits[0])}" if hits else f"{REPO_URL}/tree/main/docs/rfcs"
+
+
+def admissions():
+    if not os.path.exists(ADMISSIONS):
+        return {}
+    return {r["skill"]: r for r in json.load(open(ADMISSIONS, encoding="utf-8"))["skills"]}
+
+
+def measured_line(name):
+    """One sentence on how this skill scored against plain Claude Code, from the last full run or,
+    for a skill admitted since, from its admission measurement."""
+    bench = json.load(open(BENCH, encoding="utf-8")) if os.path.exists(BENCH) else {}
+    full = {r["skill"]: r for r in reversed(bench.get("skills", []))}
+    if name in full:
+        r = full[name]
+        pref = r["preferred"]
+        said = ("preferred it" if pref > .5 else "preferred the agent without it" if pref < .5 else "had no preference")
+        return (f'<p class="pk__total"><b>Measured against plain Claude Code</b> ({esc(bench["date"])}): it met '
+                f'{100 * r["skill_met"]:.0f}% of its checks, against {100 * r["baseline_met"]:.0f}% without it, and a '
+                f'blind judge {said}. <a href="../../evals/">How skills are checked</a></p>')
+    a = admissions().get(name)
+    if a:
+        j1, j2 = a["judge1"], a["judge2"]
+        drafts = f", on its {['', '', 'second', 'third', 'fourth'][a['drafts']]} draft" if a["drafts"] > 1 else ""
+        return (f'<p class="pk__total"><b>Admitted against plain Claude Code</b>{drafts}: on held-out evals written '
+                f'blind from its description, two judges preferred it in {j1[0]} of {j1[1]} and {j2[0]} of {j2[1]} '
+                f'pairs, and it met {100 * a["skill_met"]:.0f}% of their checks, against {100 * a["baseline_met"]:.0f}% '
+                f'without it (<a href="{rfc_url(a["rfc"])}">RFC-{esc(a["rfc"])}</a>). '
+                f'<a href="../../evals/#admitted">How skills are checked</a></p>')
+    return ""
+
+
+def admitted_section(adm):
+    if not adm:
+        return ""
+    rows = "".join(
+        f'<tr><td><a href="../skills/{esc(a["skill"])}/"><code>{esc(a["skill"])}</code></a></td>'
+        f'<td>{esc(a["evals"])}</td><td>{a["judge1"][0]} of {a["judge1"][1]}</td><td>{a["judge2"][0]} of {a["judge2"][1]}</td>'
+        f'<td>{100 * a["skill_met"]:.0f}%</td><td>{100 * a["baseline_met"]:.0f}%</td>'
+        f'<td>{a["drafts"]}</td><td><a href="{rfc_url(a["rfc"])}">RFC-{esc(a["rfc"])}</a></td></tr>'
+        for a in sorted(adm.values(), key=lambda a: (a["rfc"], a["skill"])))
+    return f"""<section aria-labelledby="admitted"><h2 id="admitted">Admitted since the last full run ({len(adm)})</h2>
+<p>A new skill ships only if it beats plain Claude Code on <b>held-out evals</b>: requests written by someone who saw only the skill's description, never its instructions. Two judges compare the two answers blind, over two trials, and both must prefer the skill in at least half the pairs. A draft that fails is revised from the judges' reasons and measured again on evals it has never seen. These are the measurements each was admitted on. They join the table above at the next full run.</p>
+<div class="tbl"><table>
+<thead><tr><th>Skill</th><th>Held-out evals</th><th>Judge 1 preferred it</th><th>Judge 2</th><th>Checks met, with it</th><th>Without</th><th>Drafts</th><th>Record</th></tr></thead>
+<tbody>{rows}</tbody></table></div>
+</section>"""
+
+
 
 
 def bench_section(b):
@@ -821,6 +879,7 @@ def evals_page(skills):
     measured = {r["skill"]: r for r in (bench or {}).get("skills", [])}  # first model listed wins
     for r in reversed((bench or {}).get("skills", [])):
         measured[r["skill"]] = r
+    adm = {k: v for k, v in admissions().items() if k not in measured}
     rows, tot_e, tot_a, tot_q, covered = [], 0, 0, 0, 0
     for s in sorted(skills, key=lambda s: (s["packs"][0], s["name"])):
         sdir = catalog.skill_dir(s["name"])
@@ -831,10 +890,12 @@ def evals_page(skills):
         covered += bool(evs and qs)
         src = f"{REPO_URL}/tree/main/{s['path']}/evals"
         m = measured.get(s["name"])
+        a = adm.get(s["name"])
         got = "" if not bench else (
             f'<td>{100 * m["skill_met"]:.0f}%</td><td>{100 * m["baseline_met"]:.0f}%</td>'
             f'<td>{"skill" if m["preferred"] > .5 else "no skill" if m["preferred"] < .5 else "tie"}</td>'
-            if m else "<td>–</td><td>–</td><td>–</td>")
+            if m else (f'<td>{100 * a["skill_met"]:.0f}%*</td><td>{100 * a["baseline_met"]:.0f}%*</td><td>skill*</td>'
+                       if a else "<td>–</td><td>–</td><td>–</td>"))
         rows.append(f'<tr><td><a href="../skills/{esc(s["name"])}/#checked"><code>{esc(s["name"])}</code></a></td>'
                     f'<td>{esc(s["packs"][0])}</td><td>{len(evs)}</td><td>{n_a}</td>{got}'
                     f'<td>{pos} / {len(qs) - pos}</td><td><a href="{src}">files</a></td></tr>')
@@ -850,11 +911,13 @@ def evals_page(skills):
 <p><code>validate.py</code> fails any skill without both files, on every pull request. The acceptance evals are run by hand with <code>run_bench.py</code>, as agent sessions with and without each skill; the latest result is below. A <a href="{REPO_URL}/actions/workflows/evals.yml">scheduled workflow</a> asks a model each week which skill it would load for every trigger query, and once a month runs the acceptance evals under a budget; it is switched off until the repository has an API key. A miss is a prompt to look at the description, not a gate. Run them yourself with <code>python3 run_evals.py</code> and an <code>ANTHROPIC_API_KEY</code>.</p>
 <p>The site itself is checked with the catalogue's own skills: <a href="../docs/explanation/own-skills-on-own-site.html">its performance and accessibility reviews, and what was fixed</a>.</p>
 {bench_section(bench) if bench else ""}
+{admitted_section(adm)}
 {trend_section(eval_runs())}
 <h2 id="every-skill">Every skill</h2>
 <div class="tbl"><table>
 <thead><tr><th>Skill</th><th>Pack</th><th>Evals</th><th>Assertions</th>{"<th>Met with skill</th><th>Without</th><th>Blind judge preferred</th>" if bench else ""}<th>Should / shouldn't trigger</th><th>Source</th></tr></thead>
 <tbody>{''.join(rows)}</tbody></table></div>
+{'<p class="pk__total">* Measured at admission, on held-out evals; see <a href="#admitted">admitted since the last full run</a>.</p>' if adm else ''}
 {retired_section(bench)}
 </main>"""
     return shell("How skills are checked", "Every skilldrop skill's acceptance evals and trigger queries, and how they run.",

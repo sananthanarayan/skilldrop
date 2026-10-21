@@ -938,6 +938,20 @@ def main():
                 if alias:
                     stages.add(alias.lower())
 
+    # Every skill shows how it was measured: in the last full run (docs/benchmarks/latest.json) or,
+    # admitted since, in docs/benchmarks/admissions.json. A skill in neither would show no numbers.
+    bench_p = os.path.join(ROOT, "docs", "benchmarks", "latest.json")
+    adm_p = os.path.join(ROOT, "docs", "benchmarks", "admissions.json")
+    if os.path.exists(bench_p):
+        full = {r["skill"] for r in json.load(open(bench_p, encoding="utf-8")).get("skills", [])}
+        adm = {r["skill"] for r in json.load(open(adm_p, encoding="utf-8"))["skills"]} if os.path.exists(adm_p) else set()
+        for name in sorted(set(SKILL_PATH) - full - adm):
+            fail("benchmarks", f"{name} has no measurement: add its admission result to docs/benchmarks/admissions.json")
+        for name in sorted(adm - set(SKILL_PATH)):
+            fail("benchmarks", f"docs/benchmarks/admissions.json lists {name}, which isn't a skill")
+        for name in sorted(adm & full):
+            fail("benchmarks", f"{name} is in the full run now; remove it from docs/benchmarks/admissions.json")
+
     # RFC-0049: the maintainers' own identity (read from this machine, never committed) stays
     # out of the tree; matches are reported by kind, never printed
     import privacy

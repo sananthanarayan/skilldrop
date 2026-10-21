@@ -1,0 +1,341 @@
+{
+ "about": "Skills admitted since the last full benchmark run (docs/benchmarks/latest.json): the held-out measurement each was admitted on, as recorded in its RFC. Held-out evals are written blind from the skill's description; two trials; judges claude-sonnet-5-5 and claude-opus-5-5; model claude-sonnet-5. A skill leaves this file when a full run measures it.",
+ "skills": [
+  {
+   "skill": "role-shortlist",
+   "rfc": "0047",
+   "evals": "4–5",
+   "drafts": 1,
+   "judge1": [
+    3,
+    4
+   ],
+   "judge2": [
+    3,
+    4
+   ],
+   "skill_met": 0.89,
+   "baseline_met": 0.61
+  },
+  {
+   "skill": "interactive-diagram",
+   "rfc": "0048",
+   "evals": "10–11",
+   "drafts": 3,
+   "judge1": [
+    4,
+    4
+   ],
+   "judge2": [
+    2,
+    4
+   ],
+   "skill_met": 0.81,
+   "baseline_met": 0.44
+  },
+  {
+   "skill": "codebase-tour",
+   "rfc": "0053",
+   "evals": "4–5",
+   "drafts": 1,
+   "judge1": [
+    3,
+    4
+   ],
+   "judge2": [
+    3,
+    4
+   ],
+   "skill_met": 0.72,
+   "baseline_met": 0.31
+  },
+  {
+   "skill": "feedback-synthesis",
+   "rfc": "0053",
+   "evals": "4–5",
+   "drafts": 1,
+   "judge1": [
+    3,
+    4
+   ],
+   "judge2": [
+    2,
+    4
+   ],
+   "skill_met": 0.72,
+   "baseline_met": 0.47
+  },
+  {
+   "skill": "mcp-pairing",
+   "rfc": "0053",
+   "evals": "4–5",
+   "drafts": 1,
+   "judge1": [
+    2,
+    4
+   ],
+   "judge2": [
+    4,
+    4
+   ],
+   "skill_met": 0.94,
+   "baseline_met": 0.38
+  },
+  {
+   "skill": "rollout-plan",
+   "rfc": "0053",
+   "evals": "6–7",
+   "drafts": 2,
+   "judge1": [
+    4,
+    4
+   ],
+   "judge2": [
+    4,
+    4
+   ],
+   "skill_met": 0.53,
+   "baseline_met": 0.34
+  },
+  {
+   "skill": "refactor-plan",
+   "rfc": "0053",
+   "evals": "6–7",
+   "drafts": 2,
+   "judge1": [
+    4,
+    4
+   ],
+   "judge2": [
+    4,
+    4
+   ],
+   "skill_met": 0.59,
+   "baseline_met": 0.47
+  },
+  {
+   "skill": "dependency-upgrade-review",
+   "rfc": "0053",
+   "evals": "6–7",
+   "drafts": 2,
+   "judge1": [
+    4,
+    4
+   ],
+   "judge2": [
+    4,
+    4
+   ],
+   "skill_met": 0.59,
+   "baseline_met": 0.38
+  },
+  {
+   "skill": "slo-spec",
+   "rfc": "0057",
+   "evals": "4–5",
+   "drafts": 1,
+   "judge1": [
+    4,
+    4
+   ],
+   "judge2": [
+    4,
+    4
+   ],
+   "skill_met": 0.56,
+   "baseline_met": 0.53
+  },
+  {
+   "skill": "rendering-strategy",
+   "rfc": "0057",
+   "evals": "4–5",
+   "drafts": 1,
+   "judge1": [
+    4,
+    4
+   ],
+   "judge2": [
+    4,
+    4
+   ],
+   "skill_met": 0.75,
+   "baseline_met": 0.66
+  },
+  {
+   "skill": "web-performance-review",
+   "rfc": "0057",
+   "evals": "4–5",
+   "drafts": 1,
+   "judge1": [
+    3,
+    4
+   ],
+   "judge2": [
+    4,
+    4
+   ],
+   "skill_met": 0.44,
+   "baseline_met": 0.38
+  },
+  {
+   "skill": "behaviour-equivalence",
+   "rfc": "0057",
+   "evals": "4–5",
+   "drafts": 1,
+   "judge1": [
+    3,
+    4
+   ],
+   "judge2": [
+    3,
+    4
+   ],
+   "skill_met": 0.66,
+   "baseline_met": 0.53
+  },
+  {
+   "skill": "lean-canvas",
+   "rfc": "0057",
+   "evals": "4–5",
+   "drafts": 1,
+   "judge1": [
+    3,
+    4
+   ],
+   "judge2": [
+    3,
+    4
+   ],
+   "skill_met": 0.72,
+   "baseline_met": 0.41
+  },
+  {
+   "skill": "md-to-confluence",
+   "rfc": "0057",
+   "evals": "4–5",
+   "drafts": 1,
+   "judge1": [
+    3,
+    4
+   ],
+   "judge2": [
+    3,
+    4
+   ],
+   "skill_met": 0.59,
+   "baseline_met": 0.19
+  },
+  {
+   "skill": "agent-incident-response",
+   "rfc": "0057",
+   "evals": "6–7",
+   "drafts": 2,
+   "judge1": [
+    3,
+    4
+   ],
+   "judge2": [
+    3,
+    4
+   ],
+   "skill_met": 0.41,
+   "baseline_met": 0.31
+  },
+  {
+   "skill": "agent-config-review",
+   "rfc": "0057",
+   "evals": "4–5",
+   "drafts": 1,
+   "judge1": [
+    3,
+    4
+   ],
+   "judge2": [
+    2,
+    4
+   ],
+   "skill_met": 0.53,
+   "baseline_met": 0.44
+  },
+  {
+   "skill": "event-contract-draft",
+   "rfc": "0057",
+   "evals": "4–5",
+   "drafts": 1,
+   "judge1": [
+    2,
+    4
+   ],
+   "judge2": [
+    3,
+    4
+   ],
+   "skill_met": 0.5,
+   "baseline_met": 0.47
+  },
+  {
+   "skill": "md-to-pptx",
+   "rfc": "0057",
+   "evals": "4–5",
+   "drafts": 1,
+   "judge1": [
+    2,
+    4
+   ],
+   "judge2": [
+    2,
+    4
+   ],
+   "skill_met": 0.94,
+   "baseline_met": 0.69
+  },
+  {
+   "skill": "bundle-size-review",
+   "rfc": "0057",
+   "evals": "6–7",
+   "drafts": 2,
+   "judge1": [
+    3,
+    4
+   ],
+   "judge2": [
+    3,
+    4
+   ],
+   "skill_met": 0.31,
+   "baseline_met": 0.31
+  },
+  {
+   "skill": "judge-audit",
+   "rfc": "0057",
+   "evals": "8–9",
+   "drafts": 3,
+   "judge1": [
+    2,
+    4
+   ],
+   "judge2": [
+    2,
+    4
+   ],
+   "skill_met": 0.41,
+   "baseline_met": 0.19
+  },
+  {
+   "skill": "context-graph",
+   "rfc": "0063",
+   "evals": "12–15",
+   "drafts": 3,
+   "judge1": [
+    4,
+    8
+   ],
+   "judge2": [
+    5,
+    8
+   ],
+   "skill_met": 0.7,
+   "baseline_met": 0.45
+  }
+ ]
+}
