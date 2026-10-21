@@ -49,20 +49,20 @@ When a column is omitted, the report includes a *"Where signals are missing"* se
 
 ```csv
 timestamp,user,tool,session_id,output_consumed,consumed_at,outcome
-2026-05-21T09:14:23Z,alice@acme.com,claude-code,sess-001,1,2026-05-21T11:02:00Z,success
-2026-05-21T09:14:55Z,alice@acme.com,claude-code,sess-001,1,2026-05-21T11:02:00Z,success
-2026-05-21T09:18:02Z,alice@acme.com,deck-builder,sess-001,1,2026-05-21T14:30:00Z,success
-2026-05-21T10:01:11Z,bob@acme.com,cursor,sess-014,0,,success
-2026-05-21T10:01:30Z,bob@acme.com,cursor,sess-014,0,,success
-2026-05-21T14:22:08Z,carol@acme.com,claude-code,sess-029,1,2026-05-22T08:11:00Z,success
+2026-05-21T09:14:23Z,alice@acme.example,claude-code,sess-001,1,2026-05-21T11:02:00Z,success
+2026-05-21T09:14:55Z,alice@acme.example,claude-code,sess-001,1,2026-05-21T11:02:00Z,success
+2026-05-21T09:18:02Z,alice@acme.example,deck-builder,sess-001,1,2026-05-21T14:30:00Z,success
+2026-05-21T10:01:11Z,bob@acme.example,cursor,sess-014,0,,success
+2026-05-21T10:01:30Z,bob@acme.example,cursor,sess-014,0,,success
+2026-05-21T14:22:08Z,carol@acme.example,claude-code,sess-029,1,2026-05-22T08:11:00Z,success
 ```
 
 ## Example: JSONL
 
 ```jsonl
-{"timestamp": "2026-05-21T09:14:23Z", "user": "alice@acme.com", "tool": "claude-code", "session_id": "sess-001", "output_consumed": true, "outcome": "success"}
-{"timestamp": "2026-05-21T09:14:55Z", "user": "alice@acme.com", "tool": "claude-code", "session_id": "sess-001", "output_consumed": true, "outcome": "success"}
-{"timestamp": "2026-05-21T10:01:11Z", "user": "bob@acme.com", "tool": "cursor", "session_id": "sess-014", "output_consumed": false, "outcome": "success"}
+{"timestamp": "2026-05-21T09:14:23Z", "user": "alice@acme.example", "tool": "claude-code", "session_id": "sess-001", "output_consumed": true, "outcome": "success"}
+{"timestamp": "2026-05-21T09:14:55Z", "user": "alice@acme.example", "tool": "claude-code", "session_id": "sess-001", "output_consumed": true, "outcome": "success"}
+{"timestamp": "2026-05-21T10:01:11Z", "user": "bob@acme.example", "tool": "cursor", "session_id": "sess-014", "output_consumed": false, "outcome": "success"}
 ```
 
 ## A note on the `output_consumed` signal

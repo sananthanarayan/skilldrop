@@ -368,7 +368,7 @@ See `packs/design/skills/deck-builder/scripts/build_deck.py` for the reference p
 - [ ] Skill catalogue updated — a row in `guides/reference/skill-catalogue.md`, and in **Installing dependencies** (`guides/reference/install-targets.md`) if the skill has runtime deps. The README is a short router (RFC-0035); only a new *pack* needs a README line.
 - [ ] **Manual test pass** — installed the skill into a clean Claude Code session and ran it on a realistic input. Output meets the skill's own quality bar.
 - [ ] Scripts (if any) reference both `${CLAUDE_SKILL_DIR}/scripts/…` **and** a plain relative `scripts/…` so non-Claude IDEs can find them.
-- [ ] No secrets, no real customer data — placeholder values only.
+- [ ] No secrets, and nothing from a real employer, client or customer: every scenario, organisation, person, address and figure in an example, eval or test is made up. Use the reserved example domains (`example.com`, `*.example`, `*.example.internal`) for emails and hosts. `privacy.py` blocks your own employer's name on your machine, but a client's name is yours to keep out; add it to `.skilldrop-private` to have it blocked too.
 - [ ] Voice matches the established opinionated tone (see below).
 - [ ] **Model tier set** — new skill has a `model` block in `manifest.json` AND a matching entry in `model-routing.json`. The two agree.
 - [ ] **`related` synced** — every sibling skill referenced in `SKILL.md` is in the manifest's `related` list.

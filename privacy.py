@@ -9,8 +9,9 @@ run time, so the list of what to protect is never itself committed:
   - the signed-in Claude account (~/.claude.json: name, email, organization)
   - git config user.name and user.email, unless the email is a GitHub noreply address
   - the operating-system user name and home directory
+  - the organisation name in a work email's domain (example.co.uk -> example)
   - SKILLDROP_PRIVATE_TERMS (comma or newline separated) and .skilldrop-private (git-ignored,
-    one term per line): anything else, such as a second email or an employer's domain
+    one term per line): anything else, such as a second email or a client's name
 
 A match is reported by kind ("your account email") and never printed, so a CI log can't leak
 what it protects. The maintainer's name is allowed only in the files that publish it on
@@ -47,6 +48,12 @@ def _git(*args):
         return ""
 
 
+# Domain endings that aren't an organisation's name: generic and country top-level domains, and
+# the second-level parts some countries use (co.uk, com.au).
+_SUFFIXES = {"com", "org", "net", "edu", "gov", "mil", "int", "io", "co", "ac", "ltd", "plc", "biz", "info",
+             "uk", "us", "au", "nz", "ca", "in", "ie", "de", "fr", "nl", "es", "it", "jp", "sg", "za", "br", "mx"}
+
+
 def terms():
     """(term, kind) pairs to protect, read from this machine. Short or generic words are
     dropped so the check never fires on ordinary text."""
@@ -66,6 +73,13 @@ def terms():
         add(local, kind + " name")
         if domain and domain.lower() not in ("gmail.com", "outlook.com", "hotmail.com", "yahoo.com", "icloud.com", "proton.me"):
             add(domain, kind + " domain")
+            # The organisation's own name, from its domain (mail.example.co.uk -> example), so a
+            # bare mention such as a brand palette named after the employer is caught too.
+            labels = [l for l in domain.lower().split(".") if l]
+            while len(labels) > 1 and labels[-1] in _SUFFIXES:
+                labels.pop()
+            if labels and labels[-1] not in _SUFFIXES:
+                add(labels[-1], "organization")
         for part in re.split(r"[._+-]", local):
             if len(part) >= 5:
                 add(part, "name")
