@@ -1,0 +1,48 @@
+# skilldrop reviews its own pull requests with its own skill: pre-merge-review reads the diff
+# and writes its review to the job summary (RFC-0061). It reports and never blocks: lint,
+# build, scan, CodeQL and smoke stay the required checks, and the merge stays a person's call.
+#
+# Cost and secrets: it runs only when the ANTHROPIC_API_KEY secret exists, which also means it
+# never runs on a fork's pull request or a Dependabot one (neither gets the secret). Each run
+# is one model call capped at max-tokens. Until the secret is set, the job reports "skipped".
+name: skill review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: skill-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  pre-merge-review:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    env:
+      HAS_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+    steps:
+      - name: No API key, so no review
+        if: env.HAS_KEY != 'true'
+        run: echo "::notice::ANTHROPIC_API_KEY is not set for this run, so pre-merge-review was skipped."
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: env.HAS_KEY == 'true'
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Review the diff with pre-merge-review
+        if: env.HAS_KEY == 'true'
+        uses: ./
+        with:
+          skill: pre-merge-review
+          catalog: .
+          input: >-
+            Review this pull request's diff before merge. The gate script can't run here, so
+            review the diff itself: say whether it is safe to merge, and list each finding with
+            its file and line.
+          diff-base: origin/${{ github.base_ref }}
+          max-tokens: "6000"
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}

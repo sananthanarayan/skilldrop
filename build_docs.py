@@ -176,7 +176,7 @@ a{color:var(--accent-700);}
 /* search */
 .search-wrap{margin:1.5rem 0;}
 #docs-search{width:100%;max-width:520px;padding:.7rem 1rem;font-size:1rem;
-  color:var(--fg);background:var(--card);border:1px solid var(--border);
+  color:var(--fg);background:var(--card);border:1px solid var(--field-border,#85857f);
   border-radius:6px;outline:none;}
 #docs-search:focus{border-color:var(--accent-700);box-shadow:0 0 0 3px var(--accent-10);}
 /* reading aids: tutorial length, section lists, code copy */
@@ -542,7 +542,9 @@ def _page(title, header_html, body_html, depth=2, desc="", url="", extra_head=""
 {SHARED_CSS}
 {NAV_CSS}
 </style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-tomorrow.min.css">
+<!-- Code colouring only: loaded without blocking the first paint (it was most of the docs pages' LCP render delay). -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-tomorrow.min.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-tomorrow.min.css"></noscript>
 <style>
 /* Code keeps the Tomorrow theme's own dark background: its token colours are made for it,
    and on the page's light surface they were close to unreadable. */

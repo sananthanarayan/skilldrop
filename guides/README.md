@@ -134,6 +134,7 @@ One how-to for every skill: how to install it, the requests that route to it, wh
 - [Why loops](explanation/loops.md) — why sequencing is its own primitive, and why five loops
 - [Cost-aware model routing](../MODEL-ROUTING.md) — abstract tiers and the provider map
 - [What the benchmark showed](explanation/what-the-benchmark-showed.md) — the gain on skills' own checks, the blind preference, the held-out test that the revised skills failed, and what the winners share
+- [skilldrop, reviewed by its own skills](explanation/own-skills-on-own-site.md) — the site's performance and accessibility, checked with `web-performance-review` and `accessibility-audit`, the findings and the fixes, and `pre-merge-review` on pull requests
 - [Does the agent invent your resume?](explanation/resume-fabrication-comparison.md) — 14 resume and cover-letter requests with the career skills and without: what each added that the person never said
 
 Architecture and the enforcement model: [ARCHITECTURE.md](../ARCHITECTURE.md).

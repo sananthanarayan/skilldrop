@@ -444,7 +444,7 @@ _DARK_VARS = """
   --n-50:#111114; --n-100:#18181d; --n-200:#2b2b33; --n-600:#a3a3ad; --n-900:#ececf1;
   --surface:#111114; --surface-alt:#18181d; --fg:#ececf1; --fg-muted:#a3a3ad; --border:#2b2b33;
   --card:#1a1a20; --accent-700:#b4a2ff; --accent-10:rgba(164,140,255,.16);
-  --fg-2:#c9c9d1; --border-strong:#3d3d47;
+  --fg-2:#c9c9d1; --border-strong:#3d3d47; --field-border:#75757f;
 """
 _DARK_RULES = """
 .hero { background:linear-gradient(180deg,#16161b 0%,var(--surface) 100%); }
@@ -455,7 +455,9 @@ _DARK_RULES = """
 .only-dark { display:block; }
 """
 THEME_CSS = (
-    ":root { --fg-2:#3a3a3f; --border-strong:#c9c9c4; }\n"
+    # --field-border: a text field's edge at 3:1 or more against its background (WCAG 1.4.11),
+    # where --border is a 1.3:1 divider that is fine for cards but not for an input.
+    ":root { --fg-2:#3a3a3f; --border-strong:#c9c9c4; --field-border:#85857f; }\n"
     ".only-dark { display:none; }\n"
     ".nav__theme { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px;"
     " border-radius:999px; border:1px solid var(--border,#e4e4e0); background:none; color:var(--fg-2,#3a3a3f);"
@@ -1141,12 +1143,15 @@ a {{ color:var(--accent-700); }}
 .tabs__note {{ margin:.85rem 0 0; font-size:.87rem; color:var(--fg-muted); }}
 #itab0:checked~.tabs__labels label[for=itab0], #itab1:checked~.tabs__labels label[for=itab1],
 #itab2:checked~.tabs__labels label[for=itab2], #itab3:checked~.tabs__labels label[for=itab3]
-  {{ background:var(--accent); border-color:var(--accent); color:#0d0d0f; }}
+  {{ background:var(--accent-700); border-color:var(--accent-700); color:var(--surface); }}
 #itab0:checked~.tabs__panels .tabs__panel:nth-child(1),
 #itab1:checked~.tabs__panels .tabs__panel:nth-child(2),
 #itab2:checked~.tabs__panels .tabs__panel:nth-child(3),
 #itab3:checked~.tabs__panels .tabs__panel:nth-child(4) {{ display:block; }}
-.tabs__label:focus-within, .tabs__radio:focus-visible+.tabs__labels {{ outline:2px solid var(--accent); }}
+/* The radios sit before the labels' container, so each one outlines its own label. */
+#itab0:focus-visible~.tabs__labels label[for=itab0], #itab1:focus-visible~.tabs__labels label[for=itab1],
+#itab2:focus-visible~.tabs__labels label[for=itab2], #itab3:focus-visible~.tabs__labels label[for=itab3]
+  {{ outline:2px solid var(--accent); outline-offset:2px; }}
 
 /* packs */
 .grid-3 {{ display:grid; gap:1rem; list-style:none; margin:0; padding:0;
@@ -1229,7 +1234,7 @@ a {{ color:var(--accent-700); }}
   border-bottom:1px solid var(--border); padding:1rem 0; margin-bottom:1.2rem; }}
 #q {{
   width:100%; padding:.7rem .9rem; font-size:1rem; color:var(--fg); background:var(--card);
-  border:1px solid var(--border); border-radius:var(--r-sm);
+  border:1px solid var(--field-border,#85857f); border-radius:var(--r-sm);
 }}
 #q:focus {{ outline:2px solid var(--accent); outline-offset:1px; }}
 .chips {{ display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.7rem; align-items:center; }}
@@ -1266,7 +1271,7 @@ a {{ color:var(--accent-700); }}
   flex:0 0 auto; margin-right:.3rem; font-size:.62rem; text-transform:uppercase; letter-spacing:.07em;
   padding:2px 7px; border-radius:3px; white-space:nowrap; border:1px solid var(--border); color:var(--fg-muted);
 }}
-.tier--heavy {{ background:var(--accent); border-color:var(--accent); color:#0d0d0f; }}
+.tier--heavy {{ background:var(--accent-700); border-color:var(--accent-700); color:var(--surface); }}
 .tier--standard {{ background:var(--accent-10); border-color:transparent; color:var(--accent-700); }}
 @media (max-width:640px) {{
   .skill__link {{ flex-direction:column; gap:.2rem; }}

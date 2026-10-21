@@ -6,7 +6,7 @@
 > 116 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.16.41.
+> Version 0.16.42.
 
 ## Start here
 
@@ -54,6 +54,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 
 - [Why loops](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/loops.md) *(explanation)*: Why skilldrop sequences skills in a separate primitive instead of letting skills call each other, and why there are five lifecycle loops rather than three.
 - [Operating model](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/operating-model.md) *(explanation)*: Know which stage your work is in, which loop and pack help there, and where the agent stops for your decision.
+- [skilldrop, reviewed by its own skills](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/own-skills-on-own-site.md) *(explanation)*: The site's performance and accessibility, checked with the catalogue's own web-performance-review and accessibility-audit skills, the findings, and what was fixed. Pull requests are reviewed by pre-merge-review.
 - [Does the agent invent your resume?](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/resume-fabrication-comparison.md) *(explanation)*: The same 14 resume and cover-letter requests run with the career pack's skills and with plain Claude Code - how often each put something in the document that the person never said, and what kind of thing it was.
 - [What the benchmark showed](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/what-the-benchmark-showed.md) *(explanation)*: Five days of measuring skills against the agent without them - a large gain on the skills' own checks, no blind preference at first, a gain that did not survive new evals, and what the skills that do win have in common.
 - [Author a new loop](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/author-a-loop.md) *(how-to)*: How to add a loop — the closed loop.json contract, the three stage types, gate rules, and the checks that will reject a loop that only looks like governance.
@@ -322,5 +323,5 @@ except `api-builder` requires `core`, which installs with it.
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 59 RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 60 RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.
