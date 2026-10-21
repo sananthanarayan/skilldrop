@@ -552,6 +552,9 @@ def build_toc(headings):
 
 
 def convert(src_text, base_dir, brand_path=None, toc=False, mermaid="none", allow_html=False):
+    # \x00 and \x01 mark the converter's own placeholders (code spans, line breaks); a source
+    # that contains them would collide with those markers, and neither belongs in a document.
+    src_text = src_text.replace("\x00", "").replace("\x01", "")
     ctx = Ctx(base_dir, allow_html, mermaid)
     brand = load_brand(brand_path, ctx)
     lines = src_text.replace("\r\n", "\n").replace("\r", "\n").split("\n")

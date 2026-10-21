@@ -234,7 +234,10 @@ def main(argv=None) -> int:
 
     if not args.export.exists():
         die("{} does not exist".format(args.export))
-    rows = load_rows(args.export)
+    try:
+        rows = load_rows(args.export)
+    except csv.Error as e:  # e.g. a NUL byte, which Python before 3.11 rejects
+        die("{} is not a readable export: {}".format(args.export, e))
     if not rows:
         die("{} has no issues in it".format(args.export))
     headers = []

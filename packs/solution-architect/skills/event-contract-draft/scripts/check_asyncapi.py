@@ -113,9 +113,11 @@ class Report:
 
 def load(path):
     try:
-        text = sys.stdin.read() if path == "-" else Path(path).read_text(encoding="utf-8")
+        text = sys.stdin.read() if path == "-" else Path(path).read_text(encoding="utf-8-sig")
     except OSError as exc:
         raise SystemExit(f"error: cannot read {path}: {exc.strerror}")
+    except UnicodeDecodeError:
+        raise SystemExit(f"error: {path} is not UTF-8 text; save it as UTF-8")
     stripped = text.lstrip()
     if not stripped:
         raise SystemExit(f"error: {path} is empty")
@@ -484,7 +486,7 @@ def check(doc):
     return rep, counts
 
 
-def main(argv=None):
+def _main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("path", help="AsyncAPI 3.0 document as JSON, or - for stdin")
     parser.add_argument("-o", "--output", help="write the report to this path as well as stdout")
@@ -504,6 +506,16 @@ def main(argv=None):
         Path(args.output).write_text(text, encoding="utf-8")
     return 1 if rep.fails else 0
 
+
+
+def main(argv=None):
+    """Run, and turn an input that parses but has the wrong shape into one clear error."""
+    try:
+        return _main(argv)
+    except (KeyError, TypeError, AttributeError, IndexError, ValueError) as e:
+        print("error: couldn't read the input as an AsyncAPI document (%s: %s). If it is one, this is a bug: "
+              "please report it with the file." % (type(e).__name__, e), file=sys.stderr)
+        return 2
 
 if __name__ == "__main__":
     sys.exit(main())

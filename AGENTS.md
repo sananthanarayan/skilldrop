@@ -68,6 +68,7 @@ node bin/skilldrop.js validate [--from <src>]                    # structural ch
 node cli_smoke.js [name]                                         # run the CLI as a user does, in throwaway folders (RFC-0056); CI runs it on Linux, macOS and Windows
 python3 -m unittest discover -s tests -t .                       # every skill script's unit tests, stdlib only and offline (RFC-0060); CI runs them on all three OSes
 python3 -m unittest tests.test_<skill>                           # one skill's tests
+python3 tests/fuzz/fuzz.py --target <name> --iterations 2000     # fuzz one parsing script (RFC-0062); --list shows the targets, --replay FILE reproduces a crash
 node bin/skilldrop.js package <dir> [--pack a,b] [--skills x,y]  # vetted subset as a standalone catalogue + MIRROR.json
 node bin/skilldrop.js init-catalogue <dir> [--pack <name>]       # start a private catalogue
 node bin/skilldrop.js loop-stats [<file>] [--days N]             # summarise the opt-in loop run log (SKILLDROP_LOOP_LOG)

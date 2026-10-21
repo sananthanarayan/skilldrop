@@ -68,3 +68,7 @@ renders/
 
 # CI tool installs (.github/tools, RFC-0059) — installed in CI, never committed
 /.github/tools/node_modules/
+
+# Fuzzing (RFC-0062): crash inputs and the working corpus, written by tests/fuzz/fuzz.py
+/fuzz-crashes/
+/fuzz-corpus/

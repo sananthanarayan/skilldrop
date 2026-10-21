@@ -75,6 +75,8 @@ def load(path: Path, person_col: str, ignore: set, segments_wanted: list):
         text = path.read_text(encoding="utf-8-sig")
     except OSError as e:
         die(f"cannot read {path}: {e}")
+    except UnicodeDecodeError:
+        die(f"{path} is not UTF-8 text; save it as UTF-8 (in Excel: CSV UTF-8)")
     reader = csv.DictReader(text.splitlines())
     if not reader.fieldnames:
         die(f"{path} has no header row")
@@ -334,7 +336,10 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
 
     ignore = DEFAULT_IGNORE | {c.lower() for c in a.ignore}
-    rows, segs, warnings = load(a.csv, a.person_col, ignore, a.segment)
+    try:
+        rows, segs, warnings = load(a.csv, a.person_col, ignore, a.segment)
+    except csv.Error as e:  # e.g. a NUL byte, which Python before 3.11 rejects
+        die(f"{a.csv} is not a readable CSV: {e}")
     if not rows:
         die(f"{a.csv} has no feedback rows")
     label = a.person_label or ("person" if a.person_col == "person_id" else a.person_col.replace("_id", "").replace("_", " "))

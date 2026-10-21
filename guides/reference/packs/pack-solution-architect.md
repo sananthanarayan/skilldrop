@@ -124,7 +124,7 @@ Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/solution-architect/skil
 
 Draft the contract for an event or message interface (Kafka topics, SNS/SQS, EventBridge, Pub/Sub, RabbitMQ, webhooks) as an AsyncAPI 3.0 document plus a short decisions page — past-tense event names, a required envelope with event id for deduplication, the partition key and the ordering it does and doesn't give, at-least-once delivery and how consumers stay idempotent, data minimisation with PII marked, additive-only versioning with dated deprecation, and retention, replay and dead-letter handling.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/solution-architect/skills/event-contract-draft/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/event-contract-draft/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/solution-architect/skills/event-contract-draft/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/event-contract-draft/)
 
 **Use it when** the user wants to define events, design a Kafka topic or message schema, write an AsyncAPI spec, agree what a producer publishes and what consumers must do, or version an event safely.
 

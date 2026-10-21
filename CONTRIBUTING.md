@@ -71,6 +71,8 @@ All four run in CI on every push and PR. The last two run on Linux, macOS and Wi
 
 **A skill with a script needs its tests.** They go in `tests/test_<skill>.py` (hyphens become underscores), and must name every script in the skill's `scripts/` folder; `validate.py` fails otherwise. Use only the standard library and the helpers in [`tests/support.py`](tests/support.py), and keep them offline. If a test finds a bug you aren't fixing in the same change, mark it `@unittest.expectedFailure` with a `# BUG:` line; don't write the test to expect the wrong behaviour.
 
+**A script that parses a file a user hands it** (an export, a report, a config) should also get a fuzz target in [`tests/fuzz/targets.py`](tests/fuzz/targets.py): the command line, the exit codes that mean "handled", and one or two small valid seeds. `python3 tests/fuzz/fuzz.py --target <name> --iterations 2000` runs it anywhere; CI fuzzes it with Atheris ([RFC-0062](docs/rfcs/0062-fuzzing-the-skill-scripts.md)).
+
 Then:
 
 - **Manual test pass.** Install the skill into a clean Claude Code session and run it end-to-end on a realistic input. The output has to clear the skill's own quality bar. This is the check the linters cannot do, and it is not optional for a new or substantially changed skill.

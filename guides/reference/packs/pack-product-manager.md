@@ -49,7 +49,7 @@ Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/product-manager/skills/bus
 
 Turn raw customer feedback — interview notes, support tickets, NPS or CSAT verbatims, app-store reviews, sales-call notes — into ranked themes a product decision can rest on, each a problem statement rather than a feature request, counted by distinct people or accounts not mentions, with segments, severity kept separate from frequency, verbatim quotes with source IDs, what people value, where sources disagree, what the sample cannot tell, and the questions for the next interviews. A stdlib script computes the counts.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/product-manager/skills/feedback-synthesis/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/feedback-synthesis/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/product-manager/skills/feedback-synthesis/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/feedback-synthesis/)
 
 **Use it when** the user says "what are customers telling us", "synthesise this feedback", "find the themes in these tickets / reviews / NPS comments", "affinity map these interview notes", or "what should we fix first based on feedback".
 

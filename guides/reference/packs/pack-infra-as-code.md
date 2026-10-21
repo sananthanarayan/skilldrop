@@ -52,7 +52,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/infra-as-code/skills/te
 
 Review a terraform plan before apply, from the plan text or terraform show -json output. Flags every destroy and replace with the attribute forcing it, changes to stateful resources such as databases, buckets and volumes, IAM and security-group widening, drift nobody made in code, and changes outside the intended scope, then gives a SAFE TO APPLY, APPLY WITH CARE or DO NOT APPLY verdict with reasons.
 
-Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/infra-as-code/skills/terraform-plan-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/terraform-plan-review/)
+Tier **heavy** · v0.1.2 · [SKILL.md](../../../packs/infra-as-code/skills/terraform-plan-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/terraform-plan-review/)
 
 **Use it when** the user pastes a plan, says "review this terraform plan", "is this plan safe to apply", "why is terraform replacing my database", or "check the plan before I apply".
 

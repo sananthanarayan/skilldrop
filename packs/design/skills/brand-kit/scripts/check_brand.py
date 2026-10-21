@@ -35,7 +35,7 @@ def contrast(a, b):
     return (la + 0.05) / (lb + 0.05)
 
 
-def main(argv):
+def _main(argv):
     if len(argv) != 1:
         print(__doc__)
         return 2
@@ -115,6 +115,16 @@ def main(argv):
     print(f"{'FAILED' if fails else 'OK'}: {path.name} — {len(fails)} failure(s), {len(warns)} warning(s)")
     return 1 if fails else 0
 
+
+
+def main(argv):
+    """Run, and turn an input that parses but has the wrong shape into one clear error."""
+    try:
+        return _main(argv)
+    except (KeyError, TypeError, AttributeError, IndexError, ValueError) as e:
+        print("error: couldn't read the input as a brand file (%s: %s). If it is one, this is a bug: "
+              "please report it with the file." % (type(e).__name__, e), file=sys.stderr)
+        return 2
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))

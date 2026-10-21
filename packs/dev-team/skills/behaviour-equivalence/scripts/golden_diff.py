@@ -495,7 +495,7 @@ def render(rep, max_diffs):
     return "\n".join(out) + "\n"
 
 
-def main(argv=None):
+def _main(argv=None):
     ap = argparse.ArgumentParser(description="Golden-master diff of old vs new recorded outputs.")
     ap.add_argument("old", help="directory or JSONL file of the old system's outputs")
     ap.add_argument("new", help="directory or JSONL file of the new system's outputs")
@@ -521,6 +521,16 @@ def main(argv=None):
         sys.stdout.write(text)
     return 0 if rep["verdict"] != "NOT EQUIVALENT" else 1
 
+
+
+def main(argv=None):
+    """Run, and turn an input that parses but has the wrong shape into one clear error."""
+    try:
+        return _main(argv)
+    except (KeyError, TypeError, AttributeError, IndexError, ValueError) as e:
+        print("error: couldn't read the input as recordings and rules (%s: %s). If it is one, this is a bug: "
+              "please report it with the file." % (type(e).__name__, e), file=sys.stderr)
+        return 2
 
 if __name__ == "__main__":
     sys.exit(main())

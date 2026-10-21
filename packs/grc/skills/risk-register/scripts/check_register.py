@@ -152,8 +152,16 @@ def main(argv=None):
     except (IOError, OSError) as exc:
         print("error: cannot read %s: %s" % (args.csv, exc), file=sys.stderr)
         return 2
+    except UnicodeDecodeError:
+        print("error: %s is not UTF-8 text; save it as UTF-8 (in Excel: CSV UTF-8)" % args.csv, file=sys.stderr)
+        return 2
 
-    reader = csv.DictReader(io.StringIO(text))
+    try:  # parse once up front, so a malformed file is one clear error, not a traceback mid-loop
+        list(csv.reader(io.StringIO(text, newline="")))
+    except csv.Error as exc:
+        print("error: %s is not a readable CSV: %s" % (args.csv, exc), file=sys.stderr)
+        return 2
+    reader = csv.DictReader(io.StringIO(text, newline=""))
     if not reader.fieldnames:
         print("error: %s has no header row" % args.csv, file=sys.stderr)
         return 2
