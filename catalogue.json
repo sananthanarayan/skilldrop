@@ -42,6 +42,7 @@
         "agent-budget",
         "terraform-module",
         "mcp-pairing",
+        "context-graph",
         "event-contract-draft"
       ]
     },

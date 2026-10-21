@@ -1,0 +1,106 @@
+{
+  "skill_name": "context-graph",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm new on the platform team and someone told me we keep user sessions in Redis. Before I touch login I'd like to understand why. Our ADRs are in docs/adr and the auth code is in services/auth/. Why do we use Redis for sessions, and is that still the current decision?",
+      "assertions": [
+        "Answers the question first, in plain words: keeping sessions in Redis is no longer the current decision. ADR-0007 'Stateless signed session cookies' (accepted, 2025-11-04) supersedes ADR-0003 and moves sessions to signed, stateless cookies.",
+        "Does not present ADR-0003 as current even though its own Status line still says Accepted, and points out that the supersession is recorded only in ADR-0007.",
+        "Gives the original reason as history, from ADR-0003 (2024-05-14): Redis was already run for the page cache, and a shared store removed sticky sessions (nodes logging users out on scale-out or restart) without adding a new system.",
+        "Gives ADR-0007's different reason from the record: the 2025-08-19 Redis failover took 40 minutes and logged everyone out, and 'login should depend on nothing but the auth service and its signing key'. It also says a replica was considered and not chosen because it keeps the dependency.",
+        "Gives the exact fix: change ADR-0003's '## Status' from 'Accepted' to 'Superseded by ADR-0007' (a link to 0007-stateless-signed-session-cookies.md is fine).",
+        "Does not take ADR-0006 ('Sessions stay as described in ADR-0003 for now') as evidence that Redis is current: ADR-0006 is Rejected and predates ADR-0007. ADR-0005's 8-hour lifetime is described as amending ADR-0003 and carried over into ADR-0007 as the cookie expiry, not as a separate live Redis decision.",
+        "Notes that services/auth/redis_sessions.py still exists although ADR-0007 says it is removed once every client is on cookie sessions, so the records can't say whether the migration is finished. That is labelled as inferred from the code, or listed under 'To confirm', not stated as fact either way. It also says Redis stays in use for the page cache.",
+        "Invents nothing that is not in the files: no rationale such as 'Redis is fast' or 'JWTs scale better', and no record ids, dates, incidents, paths or commits beyond those in docs/adr and services/auth/."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Can you check whether our architecture decision records are still true? They're in docs/adr, 8 of them going back to 2023, and the code is in services/ and libs/. We have the quarterly architecture review on Thursday and I want to walk in knowing which ones are out of date or contradict each other, and what to change in each.",
+      "assertions": [
+        "Opens with the direct answer: which records are no longer true. ADR-0003 points at code that is gone, and ADR-0004 and ADR-0006 contradict each other on libs/money/. The answer comes before any table or full list of records.",
+        "Reports ADR-0003 'A separate thumbnail service' (accepted, 2023-09-11) as naming services/thumbnailer/, which doesn't exist. The fix is to update the path if the code moved or to mark the record Deprecated. Any suggestion that it moved to services/media/resize.py is labelled as inferred from the code, not stated as fact.",
+        "Raises ADR-0004 (accepted, 2024-01-15) and ADR-0006 (accepted, 2025-02-27) as a possible conflict on libs/money/ and quotes or closely paraphrases the clash: integer minor units with 'no floats and no Decimal anywhere in money code' against Decimal with four decimal places. Notes that ADR-0006 only says it 'builds on' ADR-0004 and neither supersedes nor amends it.",
+        "Does not settle the money conflict by date or by what libs/money/amount.py does. It says a person has to decide, and that the fix is a 'Supersedes ADR-0004' or 'Amends ADR-0004' line in ADR-0006 (or a new record), with the status of ADR-0004 updated to match. Noting that the code uses Decimal is fine only if it is labelled as inferred.",
+        "Reports that ADR-0005 refers to ADR-0011, which doesn't exist, and that the fix is to correct the reference or write the missing backoff record. Also reports that ADR-0007 has no status, and that the fix is to add a '## Status' section whose value the owner confirms (it is not assumed to be Accepted).",
+        "Does not present ADR-0002 and ADR-0005, which both govern services/worker/, as a contradiction: ADR-0005 adds a retry policy that ADR-0002 does not contradict. If it mentions the overlap, it says that reading both shows no clash.",
+        "Does not flag ADR-0008 for naming services/legacy-search/, which no longer exists, because ADR-0008 is Deprecated and that is expected. Problems (the gone code in ADR-0003) come before warnings, and every item names its record id and the exact edit.",
+        "Invents nothing that is not in the files: no record ids other than ADR-0001 to ADR-0008 and the missing ADR-0011, and no dates, owners, paths, incidents or reasons that the records don't contain."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "need to change the payment webhook retry stuff (services/payments/webhooks/retry.py), a merchant complained we give up too early. what decisions should i read before i touch it?? rfcs are somewhere under docs/rfcs. dont want to undo something someone decided on purpose",
+      "assertions": [
+        "Opens with the short reading list, most relevant first: RFC-0006 'Exponential backoff for webhook retries' (accepted, 2025-04-22), which names retry.py directly; RFC-0004 (accepted, 2024-11-19), which governs services/payments/webhooks/; and RFC-0002 (accepted, 2024-06-10), which governs services/payments/.",
+        "States RFC-0006's limits from the record: first retry after 2 seconds, doubling, capped at 10 minutes between attempts, at most 8 attempts, and no retry on a 4xx except 429. Gives its reason: during the 2025-03-06 incident fixed 30-second retries 'hammered their endpoint as it came back and knocked it over again'.",
+        "Catches that giving up early is a recorded, accepted consequence of RFC-0006 ('an event can now be given up on within about four minutes'). Changing the attempt count or the timing therefore changes a decision on purpose and needs a new RFC that amends or supersedes RFC-0006, not just a code edit.",
+        "Presents RFC-0003 (2024-08-01, every 30 seconds up to 100 times) only as history, superseded by RFC-0006, and never as an allowed setting to return to.",
+        "Does not list RFC-0005 as governing this file: it covers services/notifications/retry.py (email and SMS every 5 minutes for 24 hours), a different file with a similar name. If it mentions RFC-0005, it says so.",
+        "Includes RFC-0004's constraint: every retry of an event must resend the same Idempotency-Key. It also includes RFC-0002's: a change under services/payments/ needs a review from a payments engineer.",
+        "Mentions RFC-0007, if at all, as Proposed and not decided. It does not report RFC-0002, RFC-0004 and RFC-0006 as conflicting with each other: they cover nested scopes and don't clash.",
+        "Invents nothing that is not in the files: no retry numbers, incidents, owners, merchants, record ids or dates beyond those in docs/rfcs and services/."
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-21",
+      "prompt": "hey, first week on ledgerline. the onboarding doc says the nightly invoice run takes a redis lock so two workers don't double bill, and ADR-0004 says the same thing and it's marked accepted. but I can't find redis anywhere in the code?? why is it like this, what am I missing. also if there's a quick way to get the lay of the land on the ADRs that would help, I'm meant to read them all this week",
+      "assertions": [
+        "Answers the actual question up front: Redis is no longer used for the invoice-run lock because ADR-0007 (2024-02-20) superseded ADR-0004 and replaced it with a session-level Postgres advisory lock (pg_try_advisory_lock(727001)) in src/ledgerline/scheduler/lock.py.",
+        "Explains the why from the records themselves: ADR-0004 was a reaction to the 2023-04-27 double run that billed 41 customers twice; ADR-0007 removed Redis because it served only this one lock (a managed instance plus an on-call runbook), a January 2024 failover dropped the lock mid-run, and it restores the single-datastore intent of ADR-0002.",
+        "Points out that the supersession is recorded on one side only: ADR-0007 says 'Supersedes: ADR-0004' but ADR-0004 still reads 'Status: Accepted', which breaks ADR-0001's own rule; recommends changing ADR-0004's status to 'Superseded by ADR-0007'.",
+        "Flags that docs/onboarding.md is stale (last reviewed 2023-09-14, before ADR-0007) and still sends readers to ADR-0004, and that ADR-0004 names src/ledgerline/scheduler/redis_lock.py, which does not exist in the repo.",
+        "Checks the current decision against the code and confirms it holds: runner.py takes the lock on direct_connection() (DATABASE_DIRECT_URL, not PgBouncer), as ADR-0007 requires, and calls this out as the trap to avoid (a pooled connection would release the lock early).",
+        "Gives a short map of the five records present (0001, 0002, 0004, 0007, 0009) with status, date and what each governs, marks 0004 as superseded, and notes that ADR-0009 cites ADR-0005, which is not in docs/adr/.",
+        "Invents nothing that isn't in the files: no extra ADRs, commits, authors, dates, incidents or files. With no git history provided, it claims none, and gives any history check as a command to run (e.g. git log on docs/adr/ or a git log -S search for redis).",
+        "Is sized for a newcomer's casual question: the why takes a few sentences and the ADR map is a compact table or list, not a long audit report."
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-21",
+      "prompt": "I'm going to pull services/ingest/retry.ts and services/export/retry.ts into one shared lib/retry/ package and standardise everyone on fixed 1s backoff, 3 attempts. Export already does exactly that so it's the obvious common denominator, and ingest's jitter thing is overkill. Planning to open the PR this afternoon. Quick sanity check: is there anything in rfcs/ I'd be stepping on before I do this?",
+      "assertions": [
+        "Answers the question directly and first: yes, as planned the change contradicts recorded decisions, so it should not go in as a plain refactor PR without a new or updated RFC.",
+        "Identifies that RFC-0006 (status rejected, 2025-06-19) proposed essentially this same lib/retry/ extraction with a single default policy, and gives its reasons: export's billing API is not idempotent, and RFC-0001 keeps runtime code per service ('revisit only if RFC-0001 is superseded').",
+        "Identifies that RFC-0003 (accepted, governs services/ingest/retry.ts) requires exponential backoff with full jitter (base 200 ms, cap 30 s, 6 attempts) and bans fixed-interval retries in ingest, and that the proposed fixed 1 s retry is exactly what caused INC-114 (2025-02-27).",
+        "Corrects the premise that export 'already does exactly that': services/export/retry.ts retries only 503 responses that carry an Idempotency-Key header, so a uniform fixed 1 s / 3 attempt policy would either retry unsafe non-idempotent calls or drop that check.",
+        "Flags RFC-0008 (accepted, 2025-09-30): it governs lib/http/, which does not exist in the repo (its Q4 2025 rollout appears not to have happened), and its fixed 500 ms / 3 attempt policy contradicts RFC-0003, so two accepted records govern ingest's retry behaviour and that clash needs settling first.",
+        "Notes at least one record-integrity problem: RFC-0008 cites RFC-0007, which is not in rfcs/, and/or RFC-0008 says it amends RFC-0001 while RFC-0001 records no amendment and still names lib/types/ as the only shared package.",
+        "Gives a concrete way forward sized for a pre-PR check, e.g. write an RFC that explicitly revisits RFC-0006 and supersedes or amends RFC-0003 and RFC-0001 (and resolves RFC-0008), or keep per-service policies and share only plumbing. It stays a focused briefing, not a dump of every record.",
+        "Invents nothing that isn't in the files: no RFC contents, incidents, authors, commits or files beyond the fixture, and no claim of git history (none is provided). Any history or blame check is given as a command to run."
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-21",
+      "prompt": "We're about to reorganise harbourline — RFC-0010 merges services/billing and services/invoicing into services/revenue. I'm taking it to architecture review on Thursday and need an audit of our decision records first (docs/adr and docs/rfcs): which decisions govern the code that's moving, which of those are actually still current, and anything broken or contradictory in the records that we should fix as part of the move. Give me a table I can paste into the review doc, plus a short list of fixes.",
+      "assertions": [
+        "Identifies the records governing the code that moves: ADR-0002 and RFC-0009 (services/billing/), RFC-0003 and RFC-0007 (services/invoicing/ids/), and notes ADR-0001's rule about service folders under services/ is touched by the merge; says RFC-0010 itself is only Proposed (2026-09-30), not yet a current decision.",
+        "Flags the one-sided supersession: RFC-0007 (2024-03-01) says it supersedes RFC-0003, but RFC-0003 still reads Status: Accepted with no superseded-by note; so RFC-0007 is the current invoice-ID decision (ULIDs, which services/invoicing/ids/generator.py matches), and the fix is to mark RFC-0003 Superseded.",
+        "Flags that ADR-0002 (billing in Postgres, in-place updates) and RFC-0009 (append-only DynamoDB event store billing-events) are both Accepted, both govern services/billing/, and neither supersedes or amends the other; notes the code does both (store.py updates invoices_ledger, events.py writes billing-events), so which one holds after the merge has to be settled at the review.",
+        "Flags that RFC-0009 'builds on RFC-0012', and no RFC-0012 exists in docs/rfcs.",
+        "Flags that ADR-0004 governs services/ledger-sync/, which no longer exists, and uses services/ledger/README.md (renamed from ledger-sync, still nightly at 02:00 UTC) to recommend updating the path rather than calling the decision obsolete; may note ledger is outside the move.",
+        "Points out that RFC-0010's 'Records affected' lists only ADR-0002, leaving out RFC-0009, RFC-0007 (and RFC-0003), whose governed paths will point at deleted folders after the move unless RFC-0010 amends them or their paths are updated.",
+        "Gives what was asked in the right size: one pasteable table (record, status, date, governs, still current?) and a short, actionable fix list. It is not a long essay, and it does not pad the review with every ADR in the repo.",
+        "Invents nothing not in the files: no commit hashes, authors, dates, record IDs or services beyond those present. Since there is no git history in the folder, any claim about implementing commits is stated as a command to run (e.g. git log --follow -- services/billing) rather than asserted."
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-21",
+      "prompt": "hey — started on the fernwood team monday, trying to get my head round why things are the way they are. couple of qs: 1) why kafka and not just postgres listen/notify? feels like overkill 2) is the 'no ORMs' thing still a rule? i saw sqlalchemy in admin-console 3) someone in standup said we're moving off tenant sharding to region sharding — true? where was that decided? i think the design docs are in design/ and rfcs/. don't need an essay",
+      "assertions": [
+        "Answers question 1 from DD-002: Kafka was chosen because LISTEN/NOTIFY loses notifications when no listener is connected, has no replay, and caps payloads at 8000 bytes, while several independent consumers need to catch up after downtime; cites DD-002 (2022-06-02) rather than generic Kafka-vs-Postgres opinions.",
+        "Checks the record against the code and flags that DD-002 promises 7 days of retention, but pipelines/ingest/topics.yaml sets retention.ms 259200000 (3 days) on both ingest topics, so either the record or the config is out of date.",
+        "Answers question 2: the no-ORM rule (DD-003) still applies to services in general, but DD-011 (2024-05-08) amends it to allow SQLAlchemy in services/admin-console/ only, which explains what the newcomer saw; notes DD-003 itself does not mention the amendment.",
+        "Answers question 3: the rumour is not supported by the records. RFC 0004 (region sharding, P. Tamboli, 2025-02-14) was Withdrawn on 2025-03-20, and DD-006 (tenant sharding, Platform guild: O. Mensah, R. Vidal) is still current. The RFC's 'Supersedes: DD-006' header is not treated as having taken effect.",
+        "Mentions, briefly, that DD-002 refers to DD-007 for retention details and no DD-007 exists.",
+        "Answers the three questions directly and in order, matching 'don't need an essay': a few short answers, each with the record it comes from. It is not a full decision-graph dump or an audit of every record.",
+        "Invents nothing not in the files: no message volumes, commit hashes, people, dates or record numbers beyond those present. Anything that would need git history (e.g. when the retention changed) is offered as a command to run, not stated as fact."
+      ]
+    }
+  ]
+}

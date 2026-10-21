@@ -14,7 +14,7 @@ Design-phase artifacts: diagrams, decision records, design docs, contracts, sche
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack solution-architect` |
-| Skills | 11 plus 4 from core |
+| Skills | 12 plus 4 from core |
 | Loops | design |
 | How-to | [Use the Solution architect pack](../../how-to/packs/use-the-solution-architect-pack.md) |
 
@@ -78,6 +78,35 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skil
 - **Be valid syntax.** Mentally trace through the Mermaid/PlantUML once before responding. Common breakers: unescaped `(` `)` `<` `>` inside labels, missing `end` for subgraphs, mixing graph types.
 
 **Hands off to:** `figma-diagrams` when the diagram needs to live where designers work.
+
+### `context-graph`
+
+Map the decisions behind a codebase from its ADRs, RFCs and design records — each record's status and date, what supersedes or amends what, which records cite which, the files and folders each decision governs, and with git the commits that implemented it — then answer "why is it like this?" from the record and check the record is still true. Finds supersessions only one side records, current decisions pointing at code that is gone, two current decisions governing the same path, and references to records that don't exist.
+
+Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skills/context-graph/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/context-graph/)
+
+**Use it when** the user asks "why do we use X", "which decisions govern this file or service", "is this ADR still current", "are our ADRs out of date", "what was decided before I change this", wants a map of the architecture decisions, or is onboarding onto a codebase's history.
+
+**Needs:** Python 3 for its scripts (standard library only).
+
+**A good result:**
+
+- **The answer names the governing record by id, status and date**, and the rationale is quoted or closely paraphrased from that record. No reason is supplied that the record doesn't give.
+- **A superseded record is never presented as current**, including one whose own Status line wasn't updated.
+- **"No recorded decision" is said when it's true**, and any reading of the code is labelled as inferred.
+- **Every problem names its record id and the exact fix.** Problems come before warnings.
+- **Two current records on the same path are raised as a possible conflict**, not silently resolved by date.
+- **Statuses, links and governed paths come from the script's output**, or are marked as read by hand when it couldn't run.
+- **No invented records, ids, dates, paths or commits.**
+
+**Hands off to:** `adr-generator` when a decision is live but unrecorded, or a record needs superseding, deprecating or correcting.
+
+**Not for:**
+
+- Writing a new ADR or fixing one: use `adr-generator`
+- How the code works now, with no decision history: use `codebase-tour`
+- Recovering the architecture from code with no records: use `reverse-architecture`
+- A record of business or product decisions for stakeholders: use `decision-log`
 
 ### `data-contract`
 

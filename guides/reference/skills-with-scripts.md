@@ -27,6 +27,7 @@ What each one declares in its manifest: the packages to install, the environment
 | [`cloud-cost-review`](../../packs/sre-oncall/skills/cloud-cost-review/SKILL.md) | sre-oncall | — | — | — | — | named-paths |
 | [`codebase-tour`](../../packs/dev-team/skills/codebase-tour/SKILL.md) | dev-team | — | — | — | — | none |
 | [`content-design`](../../packs/experience-design/skills/content-design/SKILL.md) | experience-design | — | — | — | — | none |
+| [`context-graph`](../../packs/solution-architect/skills/context-graph/SKILL.md) | solution-architect | — | — | — | `git` | named-paths |
 | [`cover-letter`](../../packs/career/skills/cover-letter/SKILL.md) | career | — | — | — | — | named-paths |
 | [`deck-builder`](../../packs/design/skills/deck-builder/SKILL.md) | design | `python-pptx==1.0.2` | — | — | — | named-paths |
 | [`delivery-metrics-report`](../../packs/sre-oncall/skills/delivery-metrics-report/SKILL.md) | sre-oncall | — | — | — | — | named-paths |
