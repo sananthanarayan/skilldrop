@@ -364,9 +364,6 @@ class GoldenDiffBadInputTest(unittest.TestCase):
             code, _, err = run(SKILL, SCRIPT, a, a, "--rules", r)
         self.assertBlocked(code, err, "cannot read rules file")
 
-    # BUG: a plain-object rule whose spec is neither a string nor an object ({"a": 5}) raises
-    # TypeError and exits 1, which reads as NOT EQUIVALENT instead of bad input.
-    @unittest.expectedFailure
     def test_plain_object_rule_with_non_object_spec_exits_2(self):
         with workdir() as d:
             a = jsonl(os.path.join(d, "a.jsonl"), [{"case_id": "c1", "a": 1}])

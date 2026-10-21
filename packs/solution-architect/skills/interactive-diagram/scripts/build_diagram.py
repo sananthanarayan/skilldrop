@@ -1287,7 +1287,7 @@ def timeline_findings(spec, evs, kind):
     out = []
     order = sorted(evs, key=lambda e: e["_t"][0])
     if len(order) >= 2:
-        first = order[0]["when"]
+        first = order[0]["when"].split(" to ")[0]
         if kind.startswith("abs") and ":" in first and not re.match(r"^~?\d{2} [A-Z][a-z]{2} ", first):
             first = fmt_when(order[0]["_t"][0], kind, 86400) + " " + first  # one day: give its date once
         out.append("From %s to %s: %s." % (first, order[-1]["when"].split(" to ")[0], fmt_span(order[-1]["_t"][0] - order[0]["_t"][0], kind)))
@@ -2495,7 +2495,10 @@ def build_html(spec, svg, mermaid, issues, theme):
 
 def load(path):
     with open(path, encoding="utf-8") as fh:
-        return json.load(fh)
+        spec = json.load(fh)
+    if not isinstance(spec, dict):
+        raise ValueError("the spec must be a JSON object at the top level, not a %s" % type(spec).__name__)
+    return spec
 
 
 

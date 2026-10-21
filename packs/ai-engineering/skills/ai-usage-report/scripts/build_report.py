@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import math
 import sys
 from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
@@ -27,17 +28,26 @@ MIN_USERS_FOR_ROLLUP = 5
 
 def load_events(path: Path) -> list[dict]:
     suffix = path.suffix.lower()
-    if suffix == ".csv":
-        with path.open(newline="") as f:
-            return list(csv.DictReader(f))
-    if suffix in (".jsonl", ".ndjson"):
-        events = []
-        with path.open() as f:
-            for line in f:
-                s = line.strip()
-                if s:
-                    events.append(json.loads(s))
-        return events
+    try:
+        if suffix == ".csv":
+            with path.open(newline="", encoding="utf-8-sig") as f:
+                return list(csv.DictReader(f))
+        if suffix in (".jsonl", ".ndjson"):
+            events = []
+            with path.open(encoding="utf-8-sig") as f:
+                for n, line in enumerate(f, 1):
+                    s = line.strip()
+                    if s:
+                        try:
+                            event = json.loads(s)
+                        except ValueError as exc:
+                            raise SystemExit(f"error: {path.name} line {n} is not valid JSON ({exc.msg}); fix or remove that line")
+                        if not isinstance(event, dict):
+                            raise SystemExit(f"error: {path.name} line {n} is not a JSON object; each line must be one event object")
+                        events.append(event)
+            return events
+    except UnicodeDecodeError:
+        raise SystemExit(f"error: {path.name} is not UTF-8 text; save it as UTF-8 and re-run")
     raise SystemExit(f"error: unsupported file type {suffix!r} (use .csv or .jsonl)")
 
 
@@ -259,7 +269,7 @@ def render_per_user(per_user, tool_counter, signals, ctx, sort_for_effectiveness
         team_name=ctx["team_name"],
         start_date=ctx["start"].date().isoformat(),
         end_date=ctx["end"].date().isoformat(),
-        n_days=(ctx["end"] - ctx["start"]).days,
+        n_days=ctx["n_days"],
         n_users=len(per_user),
         n_invocations=total_invocations,
         n_distinct_tools=len(tool_counter),
@@ -281,7 +291,7 @@ def render_team_rollup(per_user, tool_counter, signals, ctx):
         )
 
     template = load_template("report-team-rollup.md", ctx["script_dir"])
-    n_days = max(1, (ctx["end"] - ctx["start"]).days)
+    n_days = max(1, ctx["n_days"])
 
     invocations_per_user_per_day = [
         d["invocations"] / n_days for d in per_user.values()
@@ -396,6 +406,11 @@ def main(argv) -> int:
     if not events:
         sys.stderr.write("error: input file has no events\n")
         return 1
+    missing = [k for k in ("timestamp", "user", "tool") if not any(k in e for e in events)]
+    if missing:
+        sys.stderr.write(f"error: input is missing required field(s): {', '.join(missing)} "
+                         f"(see templates/usage-event-schema.md)\n")
+        return 1
 
     signals = detect_signals(events)
     start, end = resolve_period(args.period, args.from_arg, args.to_arg)
@@ -411,6 +426,8 @@ def main(argv) -> int:
         "team_name": args.team_name,
         "start": start,
         "end": end,
+        # a partial day counts, so a date-only --to (pushed to 23:59:59) covers its whole day
+        "n_days": math.ceil((end - start).total_seconds() / 86400),
         "caveats_line": build_data_caveats_line(signals),
         "missing_section": build_missing_signals_section(signals),
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),

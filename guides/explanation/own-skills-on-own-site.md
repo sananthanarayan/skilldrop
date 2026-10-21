@@ -26,8 +26,9 @@ runs show no vital at risk. Across eight Lighthouse runs on six pages, LCP was 1
    `docs/how-to/install.html` is its summary paragraph (`main#main > p.summary`). 84% of its
    1.29 s LCP was render delay, waiting on the Prism theme stylesheet from jsDelivr. The
    stylesheet now loads without blocking, and a `<noscript>` copy keeps code coloured with
-   scripting off. On a local server, the median LCP of three runs fell to 0.9 s. That isn't
-   comparable with the live site, so the live page is re-measured after the change deploys.
+   scripting off. On the live page, with the same Lighthouse version and settings and three runs
+   each, the median LCP went from **1.86 s to 0.98 s**, and the performance score from 97–98 to
+   100.
 2. **Nothing else moves a vital.** The home page's LCP element is the nav wordmark
    (`a.nav__logo`, text), with 180 ms of TTFB and 397 ms of render delay in one run. The other
    findings were cache lifetimes and request chains, which save only lab load time and move

@@ -124,7 +124,7 @@ Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/solution-architect/skil
 
 Draft the contract for an event or message interface (Kafka topics, SNS/SQS, EventBridge, Pub/Sub, RabbitMQ, webhooks) as an AsyncAPI 3.0 document plus a short decisions page — past-tense event names, a required envelope with event id for deduplication, the partition key and the ordering it does and doesn't give, at-least-once delivery and how consumers stay idempotent, data minimisation with PII marked, additive-only versioning with dated deprecation, and retention, replay and dead-letter handling.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skills/event-contract-draft/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/event-contract-draft/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/solution-architect/skills/event-contract-draft/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/event-contract-draft/)
 
 **Use it when** the user wants to define events, design a Kafka topic or message schema, write an AsyncAPI spec, agree what a producer publishes and what consumers must do, or version an event safely.
 
@@ -154,7 +154,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skil
 
 Work with Figma and FigJam files via the Figma REST API — read existing file structure, list frames/pages, post comments, and produce FigJam-importable diagram specs.
 
-Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/solution-architect/skills/figma-diagrams/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/figma-diagrams/)
+Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/solution-architect/skills/figma-diagrams/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/figma-diagrams/)
 
 **Use it when** the user mentions a Figma URL, asks to inspect/audit a Figma file, wants to comment on a design programmatically, or wants their architecture diagram in Figma.
 
@@ -171,7 +171,7 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/solution-architect/skil
 
 Turn a codebase, a system description, a process or a database schema into one self-contained interactive HTML diagram (architecture, workflow, data flow, lifecycle, ERD, sequence, class, tree, timeline or waterfall) where every box and arrow cites the file and line or the words it came from, anything inferred is drawn dashed as an assumption, and each cited line is checked against the repository before the page is written. Laid out automatically, opens offline with no CDN, and exports SVG, PNG and Mermaid.
 
-Tier **standard** · v0.2.3 · [SKILL.md](../../../packs/solution-architect/skills/interactive-diagram/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/interactive-diagram/)
+Tier **standard** · v0.2.4 · [SKILL.md](../../../packs/solution-architect/skills/interactive-diagram/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/interactive-diagram/)
 
 **Use it when** the user asks to "visualize", "map" or "make an interactive diagram of" a repo, a request path, a pipeline, an approval process, a set of tables, an incident's events or a slow trace, or wants a diagram they can click through and share as one file.
 

@@ -64,7 +64,13 @@ def detect(root):
 
 
 def load_config(path):
-    data = json.load(open(path, encoding="utf-8"))
+    try:
+        with open(path, encoding="utf-8-sig") as f:
+            data = json.load(f)
+    except UnicodeDecodeError:
+        raise SystemExit(f"gate: --config {path} is not UTF-8 — save it as UTF-8 and retry")
+    except (OSError, ValueError) as exc:
+        raise SystemExit(f"gate: cannot read --config {path}: {exc}")
     cmds = data.get("commands") if isinstance(data, dict) else data
     if not isinstance(cmds, list) or not all(isinstance(c, str) for c in cmds):
         raise SystemExit("gate: --config must hold a list of command strings (or {\"commands\": [...]})")

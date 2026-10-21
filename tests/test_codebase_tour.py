@@ -243,8 +243,6 @@ class TestDocChecks(unittest.TestCase):
         self.assertEqual([(c["command"], c["where"]) for c in facts["commands"]],
                          [("make test", ".gitlab-ci.yml:3"), ("pytest -q", ".gitlab-ci.yml:4")])
 
-    # BUG: tox's multi-line `commands =` (value on the following indented lines) is recorded with runs "".
-    @unittest.expectedFailure
     def test_tox_multiline_commands_are_captured(self):
         with workdir() as d:
             write(os.path.join(d, "tox.ini"), "[testenv:unit]\ncommands =\n    pytest -q\n")

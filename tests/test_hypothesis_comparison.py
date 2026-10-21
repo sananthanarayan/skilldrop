@@ -147,9 +147,7 @@ class AchBadInputTest(unittest.TestCase):
     def test_duplicate_ids(self):
         self.fails("id,evidence,A,B\nE1,x,C,I\nE1,y,I,C\n", "duplicate evidence ids: E1")
 
-    @unittest.expectedFailure
     def test_row_with_extra_cells_fails_clearly(self):
-        # BUG: an unquoted comma in a row adds a cell; csv puts the extras in a list under key None and load() crashes on list.strip().
         self.fails("evidence,A,B\nslow, then fast,C,I\n", "row 2")
 
 

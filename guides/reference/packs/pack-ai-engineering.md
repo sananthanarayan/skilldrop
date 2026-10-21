@@ -76,7 +76,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/ai-engineering/skills/a
 
 Review a coding agent's configuration for access broader than the work needs and give a verdict — SAFE AS CONFIGURED, TIGHTEN BEFORE USE or DO NOT USE — reading what actually wins across every scope (Claude Code user, project, local and managed settings; permission allow/deny/ask lists, defaultMode, sandbox, hooks, plugins, env; .mcp.json; subagent tool lists; Codex sandbox_mode and approval_policy and the profile in use; Cursor and Copilot agent settings), with each finding's file and line, what it lets happen in plain words, and the exact replacement config.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/agent-config-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/agent-config-review/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/ai-engineering/skills/agent-config-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/agent-config-review/)
 
 **Use it when** the user asks "is this Claude Code / Codex / Cursor setup safe", "review our .claude/settings.json", "audit our agent permissions", "is Bash(npm:*) OK in the allow list", "check this repo's agent config before we open it", or wants an agent's permissions tightened before use.
 
@@ -264,7 +264,7 @@ Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/ai-engineering/skills/a
 
 Generate a per-user or team-level report on how AI tools are being used — volume, breadth, and effectiveness signals (e.g. whether AI outputs landed in shipped artifacts vs were generated and discarded). Consumes usage-event logs exported from an MCP server or other telemetry source.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/ai-engineering/skills/ai-usage-report/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/ai-usage-report/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/ai-engineering/skills/ai-usage-report/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/ai-usage-report/)
 
 **Use it when** a manager or team lead needs to understand AI adoption beyond raw counts — including spotting "AI theater" where people invoke AI to claim usage but don't act on the outputs.
 

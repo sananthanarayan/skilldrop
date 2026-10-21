@@ -258,8 +258,6 @@ class TestPostComment(FigmaCase):
         self.assertIn("could not resolve node 9:99", err)
         self.assertEqual([c["method"] for c in self.requests.calls], ["GET"])
 
-    # BUG: Figma answers {"nodes": {"<id>": null}} for an unknown id; .get(id, {}) returns None and .get("document") raises AttributeError
-    @unittest.expectedFailure
     def test_node_reported_as_null_by_figma_returns_1_and_posts_nothing(self):
         self.respond(FakeResponse(200, {"nodes": {"9:99": None}}))
         code, _, err = self.call_main("AbC123xyz", "Here", "--node-id", "9:99")
@@ -329,8 +327,6 @@ class TestFrameToMermaid(FigmaCase):
         self.assertIn("node 1:1 not found", err)
         self.assertEqual(out, "")
 
-    # BUG: Figma answers {"nodes": {"<id>": null}} for an unknown id; .get(node_id, {}) returns None and .get("document") raises AttributeError
-    @unittest.expectedFailure
     def test_node_reported_as_null_by_figma_returns_1(self):
         self.respond(FakeResponse(200, {"nodes": {"1:1": None}}))
         code, _, err = self.call_main("AbC123xyz", "1:1")

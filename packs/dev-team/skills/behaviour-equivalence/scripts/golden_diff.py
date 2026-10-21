@@ -143,7 +143,9 @@ def load_rules(path):
         items = raw["rules"]
     elif isinstance(raw, dict):
         items = []
-        for p, spec in raw.items():
+        for i, (p, spec) in enumerate(raw.items(), 1):
+            if not isinstance(spec, (str, dict)):
+                raise BadInput("rule {} ({}): spec must be a rule name or an object, got {!r}".format(i, p, spec))
             spec = {"rule": spec} if isinstance(spec, str) else dict(spec)
             spec["path"] = p
             items.append(spec)

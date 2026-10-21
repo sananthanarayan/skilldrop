@@ -34,13 +34,17 @@ import zipfile
 from dataclasses import dataclass
 from pathlib import Path
 
-from pptx import Presentation
-from pptx.chart.data import CategoryChartData
-from pptx.dml.color import RGBColor
-from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION
-from pptx.enum.shapes import MSO_SHAPE, PP_PLACEHOLDER
-from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
-from pptx.util import Emu, Inches, Pt
+try:
+    from pptx import Presentation
+    from pptx.chart.data import CategoryChartData
+    from pptx.dml.color import RGBColor
+    from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION
+    from pptx.enum.shapes import MSO_SHAPE, PP_PLACEHOLDER
+    from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
+    from pptx.util import Emu, Inches, Pt
+except ImportError:
+    sys.stderr.write("error: python-pptx is not installed; install it with: pip install python-pptx\n")
+    sys.exit(1)
 
 # The design canvas every hardcoded position below is expressed in. Real slide
 # geometry comes from Canvas, which scales these to the actual deck size.
@@ -960,7 +964,8 @@ def load_brand(ref, base: Path):
         return {}, base
     if isinstance(ref, dict):
         return ref, base
-    path = (base / ref).expanduser() if not Path(ref).is_absolute() else Path(ref)
+    path = Path(ref).expanduser()
+    path = path if path.is_absolute() else base / path
     if not path.exists():
         warn(f"brand file not found: {path}; building without it")
         return {}, base
@@ -1024,7 +1029,12 @@ def place_logo(slide, c: "Canvas", palette: dict, logical: str) -> None:
 
 
 def build(spec_path: Path, out_path: Path, script_dir: Path, *, strict: bool, brand_ref=None) -> None:
-    spec = json.loads(spec_path.read_text(encoding="utf-8"))
+    try:
+        spec = json.loads(spec_path.read_text(encoding="utf-8-sig"))
+    except json.JSONDecodeError as e:
+        die(f"spec {spec_path} is not valid JSON ({e}); fix it and re-run")
+    except UnicodeDecodeError:
+        die(f"spec {spec_path} is not UTF-8 text; save it as UTF-8 and re-run")
     spec_dir = spec_path.parent
     brand, brand_dir = load_brand(brand_ref or spec.get("brand"), spec_dir)
     if brand:

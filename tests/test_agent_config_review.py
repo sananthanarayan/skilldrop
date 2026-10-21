@@ -239,8 +239,6 @@ class AgentConfigScanTest(unittest.TestCase):
             rep = self.scan(d)
         self.assertEqual([f["text"] for f in rep.flags if f["kind"] == "unpinned-image"], ["ghcr.io/acme/server"])
 
-    # BUG: a host-path volume (`-v /data:/data`) before the image is taken as the image name
-    @unittest.expectedFailure
     def test_docker_volume_mount_not_mistaken_for_image(self):
         with workdir() as d:
             write(os.path.join(d, ".mcp.json"), json.dumps({"mcpServers": {

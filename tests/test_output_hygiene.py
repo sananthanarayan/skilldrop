@@ -125,8 +125,6 @@ class ScanProvenanceAndCloserTests(unittest.TestCase):
         text = "Let me know if you want more."
         self.assertEqual(m.scan(text), ([], text))
 
-    # BUG: the closer's line is counted after provenance lines are dropped, not in the original text.
-    @unittest.expectedFailure
     def test_closer_line_refers_to_original_text_after_dropped_trailer(self):
         text = "Intro\n\n" + TRAILER + "\n\nLet me know if you want more.\n"
         findings, _ = m.scan(text)

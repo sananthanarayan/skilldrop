@@ -161,8 +161,8 @@ def main():
     p2 = p1 + d if args.direction == "up" else p1 - d
     if not 0 < p2 < 1:
         fail("baseline plus the regression falls outside 0-100%")
-    if args.traffic <= 0:
-        fail("--traffic must be greater than zero")
+    if not math.isfinite(args.traffic) or args.traffic <= 0:
+        fail("--traffic must be a finite number greater than zero")
     if not 0 < args.alpha < 1 or not 0 < args.power < 1:
         fail("--alpha and --power must be between 0 and 1")
     if args.max_hours <= 0:

@@ -1,6 +1,6 @@
 {
   "name": "agent-config-review",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Review a coding agent's configuration for access broader than the work needs and give a verdict — SAFE AS CONFIGURED, TIGHTEN BEFORE USE or DO NOT USE — reading what actually wins across every scope (Claude Code user, project, local and managed settings; permission allow/deny/ask lists, defaultMode, sandbox, hooks, plugins, env; .mcp.json; subagent tool lists; Codex sandbox_mode and approval_policy and the profile in use; Cursor and Copilot agent settings), with each finding's file and line, what it lets happen in plain words, and the exact replacement config. Use when the user asks \"is this Claude Code / Codex / Cursor setup safe\", \"review our .claude/settings.json\", \"audit our agent permissions\", \"is Bash(npm:*) OK in the allow list\", \"check this repo's agent config before we open it\", or wants an agent's permissions tightened before use.",
   "entrypoint": "SKILL.md",
   "deps": {

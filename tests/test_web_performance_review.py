@@ -398,15 +398,11 @@ class LhSummaryTest(unittest.TestCase):
         self.assertEqual(code, 2)
         self.assertIn("pass one report, or two", err)
 
-    # BUG: a PSI response whose lighthouseResult has runtimeError is summarised (exit 0), not rejected.
-    @unittest.expectedFailure
     def test_psi_with_failed_lighthouse_run_exits_2(self):
         failed = {"lighthouseVersion": "12.0.0", "audits": {},
                   "runtimeError": {"code": "NO_FCP", "message": "The page did not paint any content."}}
         self.assert_rejected(json.dumps(psi(failed)), "Lighthouse run failed")
 
-    # BUG: a non-UTF-8 file (e.g. UTF-16 from PowerShell 5 `>`) raises UnicodeDecodeError, a traceback.
-    @unittest.expectedFailure
     def test_non_utf8_file_exits_2_without_traceback(self):
         with workdir() as d:
             path = os.path.join(d, "utf16.json")

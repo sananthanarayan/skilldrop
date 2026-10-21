@@ -1,6 +1,6 @@
 {
   "name": "md-to-confluence",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Turn a Markdown runbook, design note or guide into a Confluence page: storage-format XHTML with real code blocks, tables, tasks, info and warning panels, images as attachments and an optional contents macro, a warning for everything dropped, and an optional publish that first shows which page it will create or overwrite and at what version, refuses stale or wrong-space overwrites, and takes credentials only from the environment. Use when the user says \"put this in Confluence\", \"publish this markdown to the wiki\", \"update the Confluence page with this\", \"convert to Confluence storage format\", or names a Confluence space for a Markdown file.",
   "entrypoint": "SKILL.md",
   "deps": {

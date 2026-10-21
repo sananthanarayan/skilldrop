@@ -70,6 +70,27 @@ class ClaimCheckLetterTest(unittest.TestCase):
         self.assertEqual(self.check("As Charge Clinic lead I supervised nurses.\n", posting=None),
                          [("combination", "Charge Clinic", 1, False)])
 
+    def test_title_from_a_plain_word_the_source_has_is_a_combination(self):
+        """"Manager" is a plain word, but the source has it, so "Ward Manager" is built from real words."""
+        source = "Charge Nurse, Riverside Clinic, 2018-2025\nRan the Ward rota.\nReported to the Clinic Manager.\n"
+        self.assertEqual(self.check("Ward Manager, Riverside Clinic, 2018-2025\n", sources=(source,), posting=None),
+                         [("combination", "Ward Manager", 1, False)])
+        self.assertEqual(self.check("Dear Hiring Manager,\n", sources=(source,), posting=None), [])
+
+    def test_unsourced_title_joined_to_sourced_employer_is_flagged(self):
+        source = "Charge Nurse, Northwind Traders, 2018-2025\n"
+        self.assertEqual(self.check("I was VP of Northwind Traders.\n", sources=(source,), posting=None),
+                         [("name", "VP of Northwind Traders", 1, False)])
+
+    def test_title_and_employer_the_source_has_are_not_flagged(self):
+        letter = "I was VP of Northwind Traders.\n"
+        self.assertEqual(self.check(letter, sources=("VP of Northwind Traders, 2018-2025\n",), posting=None), [])
+        self.assertEqual(self.check(letter, sources=("Charge Nurse, Northwind Traders\nPromoted to VP in 2024.\n",),
+                                    posting=None), [])
+
+    def test_irregular_verb_before_sourced_name_is_not_a_finding(self):
+        self.assertEqual(self.check("Taught Meditech to new staff at Riverside Clinic.\n"), [])
+
     def test_curly_quotes_and_dashes_normalised(self):
         self.assertEqual(self.check("I’ve trained staff on Meditech — and supervised 9 nurses.\n"), [])
 

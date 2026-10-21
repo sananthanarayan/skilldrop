@@ -79,9 +79,14 @@ def data_uri(path, label):
 
 def load_json(path):
     try:
-        return json.loads(Path(path).read_text(encoding="utf-8"))
+        data = json.loads(Path(path).read_text(encoding="utf-8-sig"))
     except (OSError, json.JSONDecodeError) as e:
         die(f"cannot read {path}: {e}")
+    except UnicodeDecodeError:
+        die(f"cannot read {path}: it is not UTF-8 text; save it as UTF-8")
+    if not isinstance(data, dict):
+        die(f"cannot read {path}: expected a JSON object {{...}}, got a {type(data).__name__}")
+    return data
 
 
 def resolve(base, ref):
@@ -164,9 +169,13 @@ def build(spec_path, out_path, brand_ref=None):
     if isinstance(cta, list):
         warn("more than one call to action; a flyer gets one — using the first")
         cta = cta[0] if cta else None
+    if isinstance(cta, str):
+        cta = {"text": cta}
     if not cta:
         warn("no call to action — what should a reader do next?")
     img = spec.get("image") or {}
+    if isinstance(img, str):
+        img = {"path": img}
     hero = data_uri(resolve(base, img.get("path")), "image") if isinstance(img, dict) else data_uri(resolve(base, img), "image")
     if hero and isinstance(img, dict) and not img.get("alt"):
         warn("image has no alt text")

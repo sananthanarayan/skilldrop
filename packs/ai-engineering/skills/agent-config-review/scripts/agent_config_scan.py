@@ -528,7 +528,12 @@ def check_server(entry, s, lines, relpath, rep):
             rep.flag("unpinned-package", where, "{} {}".format(cmd, " ".join(args)),
                      "runs whatever `{}` the registry serves at start-up{}".format(pkg or "?", ", installed without asking (-y)" if "-y" in args or "--yes" in args else ""))
     if launcher in ("docker", "podman"):
-        image = next((a for a in args if "/" in a or ":" in a and not a.startswith("-")), "")
+        value_flags = ("-v", "--volume", "--mount", "-e", "--env", "--env-file", "-p", "--publish", "-w", "--workdir",
+                       "--name", "--network", "-u", "--user", "--entrypoint", "-l", "--label", "--platform", "-h",
+                       "--hostname", "--add-host")
+        skip = {i + 1 for i, a in enumerate(args) if a in value_flags}
+        image = next((a for i, a in enumerate(args)
+                      if i not in skip and not a.startswith("-") and ("/" in a or ":" in a)), "")
         if image and "@sha256:" not in image and (":" not in image.split("/")[-1] or image.endswith(":latest")):
             rep.flag("unpinned-image", where, image, "runs whatever image the tag points at today")
         if any(a in ("--privileged", "--network=host") or a.startswith("/:/") or a.startswith("-v/") for a in args):

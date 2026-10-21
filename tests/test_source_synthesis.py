@@ -76,8 +76,6 @@ class CitationsCliTests(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertEqual(rep["malformed"], [{"line": 3, "citation": "[S1, S2]"}])
 
-    # BUG: [S1:p4, S2:p7] passes as one S1 citation with location "p4, S2:p7"; S2 is then reported as never cited
-    @unittest.expectedFailure
     def test_comma_separated_parts_with_locations_are_malformed(self):
         code, rep, _ = check_json(draft("Both sources agree that output held steady [S1:p4, S2:p7].\n"))
         self.assertEqual(code, 1)

@@ -23,7 +23,7 @@ Take a question from vague to answered: plan the research around the decision it
 
 Compare rival explanations for an observation with analysis of competing hypotheses (ACH) — list the hypotheses and the evidence, build a consistency matrix (consistent / inconsistent / neutral), rank hypotheses by how little evidence contradicts them rather than how much supports them, name the diagnostic evidence and the linchpins, and say which next observation would tell the leaders apart.
 
-Tier **heavy** · v0.1.2 · [SKILL.md](../../../packs/research/skills/hypothesis-comparison/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/hypothesis-comparison/)
+Tier **heavy** · v0.1.3 · [SKILL.md](../../../packs/research/skills/hypothesis-comparison/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/hypothesis-comparison/)
 
 **Use it when** the user asks "why did X happen", "which explanation fits the evidence", "what's really causing this", wants to stop arguing over a favourite theory, or says "compare these hypotheses", "competing explanations", "ACH".
 
@@ -83,7 +83,7 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/research/skills/researc
 
 Answer a question from a set of sources the user supplied — papers, reports, articles, interview notes, emails — saying only what the material supports, labelling anything that comes from elsewhere where it appears, counting a source that repeats another once, and giving a labelled estimate when the user needs a figure the sources don't settle. Written in the length and format the user asked for; a full cited literature review only when that is the ask.
 
-Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/research/skills/source-synthesis/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/source-synthesis/)
+Tier **standard** · v0.2.1 · [SKILL.md](../../../packs/research/skills/source-synthesis/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/source-synthesis/)
 
 **Use it when** the user hands over several sources and asks to "synthesise these", "what do these papers say", "pull together what we know", "literature review", or "where do the sources agree and disagree".
 

@@ -28,7 +28,7 @@ def main(argv: list[str]) -> int:
 
     if args.node_id:
         nodes = get(f"/v1/files/{file_key}/nodes", params={"ids": args.node_id})
-        node = nodes.get("nodes", {}).get(args.node_id, {}).get("document", {})
+        node = (nodes.get("nodes", {}).get(args.node_id) or {}).get("document") or {}
         box = node.get("absoluteBoundingBox")
         if not box:
             sys.stderr.write(

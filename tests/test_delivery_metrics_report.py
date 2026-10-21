@@ -249,8 +249,6 @@ class DeliveryMetricsCliTests(unittest.TestCase):
         self.assertEqual(code, 2)
         self.assertIn("incidents line 2: resolved_at is before started_at", err)
 
-    # BUG: a PR export with a header and no rows crashes with IndexError on pr_rows[0].
-    @unittest.expectedFailure
     def test_header_only_prs_file_does_not_crash(self):
         with workdir() as d:
             prs = write(os.path.join(d, "p.csv"), "pr_id,opened_at,merged_at\n")
@@ -259,8 +257,6 @@ class DeliveryMetricsCliTests(unittest.TestCase):
         self.assertIn(code, (0, 2))
         self.assertNotIn("Traceback", err)
 
-    # BUG: --assume-tz=+25:00 passes the regex, then timezone() raises ValueError with a traceback.
-    @unittest.expectedFailure
     def test_out_of_range_assume_tz_exits_2(self):
         with workdir() as d:
             code, _, err = self.run_cli(d, "deploy_id,service,deployed_at,status\n"

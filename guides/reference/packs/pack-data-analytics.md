@@ -50,7 +50,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/data-analytics/skills/d
 
 Review a SQL query for correctness first and performance second — join fan-out inflating sums, NULL traps in filters and NOT IN, timezone and date-boundary errors, integer division, DISTINCT hiding a bad join, window-frame defaults, implicit casts, non-sargable predicates and missing partition filters — with each finding tied to a line, the wrong number it produces, and corrected SQL for the named dialect.
 
-Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/data-analytics/skills/sql-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/sql-review/)
+Tier **heavy** · v0.1.2 · [SKILL.md](../../../packs/data-analytics/skills/sql-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/sql-review/)
 
 **Use it when** the user pastes a query and asks "is this right", "review my SQL", "why is this number too high", "check this before it goes in the dashboard", or "make this query faster".
 

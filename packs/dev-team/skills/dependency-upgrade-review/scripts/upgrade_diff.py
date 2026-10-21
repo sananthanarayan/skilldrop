@@ -333,7 +333,7 @@ def h_package_lock(rep, path, hunks):
 
 def h_yarn_lock(rep, path, hunks):
     def key(text):
-        m = re.match(r'^"?((?:@[^@/\s"]+/)?[^@\s",]+)@[^:]*"?:\s*$', text)
+        m = re.match(r'^"?((?:@[^@/\s"]+/)?[^@\s",]+)@[^"]*"?:\s*$', text)
         return m.group(1) if m and not text.startswith((" ", "#")) else None
     fields = {"version": re.compile(r'^\s+version:?\s+"?([^"\s]+)"?'),
               "resolved": re.compile(r'^\s+resolved:?\s+"?([^"\s#]+)'),
@@ -599,7 +599,7 @@ def analyse(files, title):
         t = title.lower()
         for r in rep.changes:
             short = r["name"].split("/")[-1].lower()
-            r["in_title"] = r["name"].lower() in t or (len(short) > 3 and re.search(rf"\b{re.escape(short)}\b", t) is not None)
+            r["in_title"] = re.search(rf"(?<![\w@/.-]){re.escape(r['name'].lower())}(?![\w-])", t) is not None or (len(short) > 3 and re.search(rf"\b{re.escape(short)}\b", t) is not None)
     for (repo, tag_), shas in rep.sha_pins.items():
         if len(shas) > 1:
             where = "; ".join(f"{s} in {', '.join(dict.fromkeys(ps))}" for s, ps in shas.items())

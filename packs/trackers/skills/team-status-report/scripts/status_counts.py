@@ -96,6 +96,8 @@ def load_rows(path: Path) -> list:
         text = path.read_text(encoding="utf-8-sig")
     except OSError as e:
         die("cannot read {}: {}".format(path, e))
+    except UnicodeDecodeError:
+        die("{} is not UTF-8 text; save it as UTF-8 and retry".format(path))
     if suffix in (".csv", ".tsv"):
         delim = "\t" if suffix == ".tsv" else ","
         reader = csv.reader(io.StringIO(text, newline=""), delimiter=delim)
@@ -309,7 +311,9 @@ def main(argv=None) -> int:
         planned = [by_key[k] for k in keys if k in by_key]
         plan_source = "plan file {} ({} keys)".format(args.plan_file.name, len(keys))
     elif args.sprint:
-        planned = [it for it in items if args.sprint.lower() in it["sprint"].lower()]
+        # Whole-name match; repeated Sprint columns are joined with ", " (carried-over items).
+        want = args.sprint.strip().lower()
+        planned = [it for it in items if want in [x.strip().lower() for x in it["sprint"].split(",")]]
         plan_source = "items in sprint '{}'".format(args.sprint)
     elif "due" in mp:
         planned = [it for it in items if it["due"] and start <= it["due"] <= end]

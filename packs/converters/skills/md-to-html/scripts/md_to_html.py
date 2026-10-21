@@ -439,6 +439,9 @@ def load_brand(path, ctx):
         data = json.loads(p.read_text(encoding="utf-8"))
     except ValueError as e:
         sys.exit("error: brand file is not valid JSON: %s (%s)" % (path, e))
+    if not isinstance(data, dict):
+        sys.exit("error: brand file must hold a JSON object (brand-kit shape), not a %s: %s"
+                 % (type(data).__name__, path))
     colors = data.get("colors") or {}
     for key in ("primary", "secondary", "accent", "background", "text"):
         v = colors.get(key)
@@ -525,7 +528,11 @@ def build_toc(headings):
     out = ['<nav class="toc" aria-label="Contents"><p>Contents</p><ul>']
     depth = 2
     first = True
+    seen_h2 = False
     for lvl, hid, txt in items:
+        seen_h2 = seen_h2 or lvl == 2
+        if not seen_h2:
+            lvl = 2  # a ### before any ## has no parent to nest under: list it at the top level
         link = '<a href="#%s">%s</a>' % (hid, re.sub(r"<a [^>]*>|</a>", "", txt))
         if lvl > depth:
             out.append("<ul>")

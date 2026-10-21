@@ -376,7 +376,8 @@ def collect_messages(doc):
         if id(m) not in seen:
             seen[id(m)] = key
             out.append((m.get("name") or key, f"message {key}", m))
-    for cname, channel in (doc.get("channels") or {}).items():
+    channels = doc.get("channels") or {}
+    for cname, channel in (channels.items() if isinstance(channels, dict) else ()):
         ch = deref(doc, channel)
         for key, msg in (ch.get("messages") or {}).items():
             m = deref(doc, msg)
@@ -429,6 +430,9 @@ def check(doc):
     if not version.startswith("3."):
         rep.fail("asyncapi", f"version is '{version or 'missing'}'; this checks AsyncAPI 3.x")
     info = doc.get("info") or {}
+    if not isinstance(info, dict):
+        rep.fail("info", "must be an object with title and version")
+        info = {}
     for field in ("title", "version"):
         if not info.get(field):
             rep.fail("info", f"missing info.{field}")
@@ -437,7 +441,10 @@ def check(doc):
     check_refs(doc, doc, rep)
 
     channels = doc.get("channels") or {}
-    if not channels:
+    if not isinstance(channels, dict):
+        rep.fail("channels", "must be an object keyed by channel name, not a list")
+        channels = {}
+    elif not channels:
         rep.fail("channels", "no channels")
     for name, channel in channels.items():
         check_channel(doc, name, deref(doc, channel), rep)

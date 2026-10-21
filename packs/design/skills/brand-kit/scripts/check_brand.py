@@ -42,9 +42,15 @@ def main(argv):
     path = Path(argv[0]).expanduser().resolve()
     base = path.parent
     try:
-        brand = json.loads(path.read_text(encoding="utf-8"))
+        brand = json.loads(path.read_text(encoding="utf-8-sig"))
     except (OSError, json.JSONDecodeError) as e:
         print(f"FAIL cannot read {path}: {e}")
+        return 1
+    except UnicodeDecodeError:
+        print(f"FAIL cannot read {path}: it is not UTF-8 text; save it as UTF-8")
+        return 1
+    if not isinstance(brand, dict):
+        print(f"FAIL cannot read {path}: expected a JSON object like {{\"colors\": ...}}, got a {type(brand).__name__}")
         return 1
     fails, warns = [], []
 
@@ -53,23 +59,23 @@ def main(argv):
         v = colors.get(role)
         if not v:
             warns.append(f"colors.{role} is missing; the generators will derive it from the others")
-        elif not HEX.match(v):
+        elif not HEX.match(str(v)):
             fails.append(f"colors.{role} is {v!r}, not a 6-digit hex code like #1A2A6C")
     for x in colors.get("extra") or []:
         if not HEX.match(str(x.get("hex", ""))):
             fails.append(f"colors.extra {x.get('name', '?')!r} has hex {x.get('hex')!r}")
-    if HEX.match(colors.get("text", "")) and HEX.match(colors.get("background", "")):
+    if HEX.match(str(colors.get("text", ""))) and HEX.match(str(colors.get("background", ""))):
         r = contrast(colors["text"], colors["background"])
         if r < 4.5:
             fails.append(f"text on background contrast is {r:.2f}:1, below 4.5:1")
         print(f"  text on background   {r:5.2f}:1")
-    if HEX.match(colors.get("primary", "")):
+    if HEX.match(str(colors.get("primary", ""))):
         r = contrast("#FFFFFF", colors["primary"])
         msg = f"white text on primary is {r:.2f}:1"
         if r < 4.5:
             warns.append(msg + " — slide title bars and flyer bands will use dark text instead")
         print(f"  white on primary     {r:5.2f}:1")
-    if HEX.match(colors.get("accent", "")) and HEX.match(colors.get("background", "")):
+    if HEX.match(str(colors.get("accent", ""))) and HEX.match(str(colors.get("background", ""))):
         r = contrast(colors["accent"], colors["background"])
         if r < 3:
             warns.append(f"accent on background is {r:.2f}:1 — use the accent for shapes and rules, not text")

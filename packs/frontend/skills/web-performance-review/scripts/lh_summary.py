@@ -107,9 +107,11 @@ def die(msg):
 
 def load(path):
     try:
-        raw = sys.stdin.read() if path == "-" else open(path, encoding="utf-8").read()
+        raw = sys.stdin.read() if path == "-" else open(path, encoding="utf-8-sig").read()
     except OSError as exc:
         die(f"cannot read {path}: {exc.strerror}")
+    except UnicodeDecodeError:
+        die(f"{path} is not UTF-8 text; save it as UTF-8 and retry")
     try:
         return json.loads(raw)
     except json.JSONDecodeError as exc:
@@ -131,6 +133,9 @@ def classify(doc, path):
         lhr = doc.get("lighthouseResult")
         if lhr is not None and not isinstance(lhr, dict):
             die(f"{path}: lighthouseResult is not an object")
+        if lhr and lhr.get("runtimeError"):
+            err = lhr["runtimeError"]
+            die(f"{path}: Lighthouse run failed ({err.get('code')}: {err.get('message')})")
         return lhr, fields
     if "record" in doc and isinstance(doc["record"], dict):
         f = crux_field(doc["record"])

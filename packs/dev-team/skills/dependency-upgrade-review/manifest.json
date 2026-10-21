@@ -1,6 +1,6 @@
 {
   "name": "dependency-upgrade-review",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Give a merge verdict on a dependency-upgrade pull request (Dependabot, Renovate or a hand-made bump) across npm, pip, Go, Cargo and Maven lockfiles and GitHub Actions pins. Reads the release notes for every skipped version, lists what the lockfile changes beyond the PR title (transitive bumps, new and removed packages, install scripts, registry changes), checks each SHA pin against its release tag and against the PR's other pins, checks raised runtime floors against the images and runners that install it, says whether CI ran the changed code, traces what each caller of a changed API now does and writes the rollback. The reply leads with MERGE, MERGE AFTER CHECKS or DO NOT MERGE and the reasons that decide it. Use when the user says \"review this Dependabot PR\", \"is this Renovate bump safe to merge\", \"can I merge this dependency upgrade\", \"check this lockfile diff\", or \"is this action SHA pin right\".",
   "entrypoint": "SKILL.md",
   "deps": {

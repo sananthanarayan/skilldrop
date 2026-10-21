@@ -1023,7 +1023,7 @@ def parse_browserslist(queries):
         if len(m.groups()) == 3:
             v = ver_tuple(m.group(3))
             if m.group(2) == ">":
-                v = (v[0] + 1,)
+                v = v[:-1] + (v[-1] + 1,)
         else:
             v = ver_tuple(m.group(2))
         b = BROWSER_ALIAS[m.group(1)]

@@ -178,8 +178,6 @@ class CostSummaryAnalysisTests(unittest.TestCase):
         self.assertEqual(c["utilisation_estimate"], 0.954)  # 190.80 / 200
         self.assertEqual(a["hot_spots"]["nat_gateway"]["current"], 99.0)
 
-    # BUG: AWS spot usage types (SpotUsage:...) never match COMPUTE_RE, so compute_spot is always $0.
-    @unittest.expectedFailure
     def test_aws_spot_compute_is_counted(self):
         with workdir() as d:
             _, _, a = analyse_text(d, AWS_CUR)
@@ -290,8 +288,6 @@ class CostSummaryCliTests(unittest.TestCase):
                 self.assertEqual(code, 2, args)
                 self.assertIn(msg, err, args)
 
-    # BUG: a non-UTF-8 export (e.g. a cp1252 CSV saved by Excel) crashes with a UnicodeDecodeError traceback instead of exit 2.
-    @unittest.expectedFailure
     def test_non_utf8_export_exits_2(self):
         with workdir() as d:
             path = os.path.join(d, "latin1.csv")

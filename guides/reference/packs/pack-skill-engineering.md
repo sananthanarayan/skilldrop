@@ -50,7 +50,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/skill-engineering/skill
 
 Audit an existing Agent Skill folder (SKILL.md plus its scripts, references and evals) for Claude Code, Codex, Copilot, Cursor, Kiro or Antigravity, and return a READY / FIX FIRST / REWRITE verdict with severity-tagged findings across five areas — whether a router would pick it and whether it collides with a sibling, portability, safety (mapped to the OWASP Agentic Skills Top 10), structure, and eval coverage — backed by a stdlib lint script for the mechanical checks.
 
-Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/skill-engineering/skills/skill-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/skill-review/)
+Tier **heavy** · v0.1.2 · [SKILL.md](../../../packs/skill-engineering/skills/skill-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/skill-review/)
 
 **Use it when** the user says "review this skill", "is my SKILL.md any good", "why doesn't my skill trigger", "is this skill safe to install", or wants a skill checked before sharing or publishing it.
 

@@ -211,15 +211,11 @@ class CheckRegisterCliTests(unittest.TestCase):
             code, out, _ = run(SKILL, SCRIPT, src, "--as-of", "2026-10-01")
         self.assertEqual(code, 0, out)
 
-    # BUG: a UTF-8 BOM (Excel's "CSV UTF-8") is stripped from a file but not from stdin, so `-` reports "missing required column(s): id"
-    @unittest.expectedFailure
     def test_utf8_bom_on_stdin_is_read(self):
         code, out, err = run(SKILL, SCRIPT, "-", "--as-of", "2026-10-01",
                              stdin="﻿" + HEADER + "\n" + row() + "\n")
         self.assertEqual(code, 0, err)
 
-    # BUG: line numbers come from enumerate() over DictReader, which skips blank lines, so every row after a blank line is reported one line too early
-    @unittest.expectedFailure
     def test_line_numbers_count_blank_lines(self):
         code, out, _ = check(["", row(title="")])
         self.assertEqual(code, 1)

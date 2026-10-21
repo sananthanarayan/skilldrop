@@ -110,7 +110,7 @@ FORMATS = {
     },
 }
 
-COMPUTE_RE = re.compile(r"BoxUsage|DedicatedUsage|HostUsage|Fargate-(vCPU|GB)-Hours|Lambda-GB-Second|InstanceUsage|NodeUsage|"
+COMPUTE_RE = re.compile(r"BoxUsage|SpotUsage|DedicatedUsage|HostUsage|Fargate-(vCPU|GB)-Hours|Lambda-GB-Second|InstanceUsage|NodeUsage|"
                         r"Instance Core|Instance Ram|vCPU", re.I)
 GENERIC_COMPUTE_SERVICE_RE = re.compile(r"compute|virtual machine|\bvm\b|ec2|fargate|lambda|functions", re.I)
 HOTSPOTS = [
@@ -603,7 +603,10 @@ def main(argv=None):
             raise InputError("--month must be YYYY-MM, got %r" % args.month)
         if args.top < 1:
             raise InputError("--top must be at least 1")
-        fmt, used, rows = load(Path(args.csv), args.format)
+        try:
+            fmt, used, rows = load(Path(args.csv), args.format)
+        except UnicodeDecodeError:
+            raise InputError("%s is not UTF-8 text; save it as UTF-8 (CSV UTF-8) and retry" % args.csv)
         a = analyse(rows, args.tag, args.month, args.top, fmt)
     except InputError as e:
         print("error: %s" % e, file=sys.stderr)

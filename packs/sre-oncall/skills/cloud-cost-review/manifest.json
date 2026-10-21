@@ -1,6 +1,6 @@
 {
   "name": "cloud-cost-review",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Review actual cloud spend from a cost export (AWS CUR or Data Exports, GCP billing export, Azure cost details) and produce a ranked savings report — idle and unattached resources, oversized instances backed by utilisation evidence, storage tiering, data transfer hot spots, commitment coverage and untagged spend — each finding with a monthly saving computed from the bill, a confidence level and an ease rating. Use when the user shares a cost CSV and says \"where are we wasting money\", \"review our AWS bill\", \"why did the cloud bill jump this month\", \"find savings in our GCP/Azure spend\", or \"should we buy savings plans\".",
   "entrypoint": "SKILL.md",
   "deps": {

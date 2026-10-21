@@ -102,6 +102,8 @@ def load_rows(path: Path) -> list:
         text = path.read_text(encoding="utf-8-sig")
     except OSError as e:
         die("cannot read {}: {}".format(path, e))
+    except UnicodeDecodeError:
+        die("{} is not UTF-8 text; save it as UTF-8 and retry".format(path))
     if suffix in (".csv", ".tsv"):
         delim = "\t" if suffix == ".tsv" else ","
         reader = csv.reader(io.StringIO(text, newline=""), delimiter=delim)
@@ -175,6 +177,8 @@ def parse_date(s: str):
     if not s:
         return None
     s2 = s[:-1] + "+00:00" if s.endswith("Z") else s
+    # Python < 3.11 needs a colon in the offset (Jira REST writes +0000).
+    s2 = re.sub(r"(\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?[+-]\d{2})(\d{2})$", r"\1:\2", s2)
     try:
         return datetime.fromisoformat(s2).date()
     except ValueError:
@@ -283,8 +287,9 @@ def main(argv=None) -> int:
         })
     open_items = [it for it in items if not it["done"]]
 
-    no_owner = [it for it in open_items if not it["owner"] or it["owner"].lower() in ("unassigned", "none")]
-    no_ac = [it for it in open_items if not it["has_ac"]]
+    no_owner = [it for it in open_items if not it["owner"] or it["owner"].lower() in ("unassigned", "none")] \
+        if "owner" in mp else []
+    no_ac = [it for it in open_items if not it["has_ac"]] if ("description" in mp or "acceptance" in mp) else []
     no_date = [it for it in open_items if it["updated"] is None]
     stale = []
     for it in open_items:

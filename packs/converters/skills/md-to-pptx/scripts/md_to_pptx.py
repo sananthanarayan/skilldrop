@@ -714,12 +714,13 @@ def wrapped_lines(text, cpl):
         lines, cur = 1, 0
         for w in words:
             wl = len(w)
-            while wl > cpl:  # a very long token (URL) breaks mid-word
+            if wl > cpl:  # a very long token (URL) starts a fresh line and breaks mid-word
                 if cur:
                     lines += 1
-                lines += wl // cpl - (1 if cur == 0 else 0)
-                wl = wl % cpl
-                cur = 0
+                full, rest = divmod(wl, cpl)
+                lines += full - 1 + (1 if rest else 0)
+                cur = rest if rest else cpl
+                continue
             need = wl + (1 if cur else 0)
             if cur + need > cpl:
                 lines += 1

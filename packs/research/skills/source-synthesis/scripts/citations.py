@@ -44,6 +44,7 @@ SOURCE_LINE = re.compile(r"^\s*(?:[-*+]\s+)?\[?(S\d+)\]?\s*[:.)\]\-—–]\s*(\S
 BRACKET = re.compile(r"\[([^\[\]]+)\](?!\()")
 CITE_PART = re.compile(r"^\s*(S\d+)\s*(?::\s*(.*?))?\s*$")
 LOOKS_LIKE_CITE = re.compile(r"^\s*S\d+\b")
+COMMA_CITE = re.compile(r",\s*S\d+\s*(?::|,|$)")  # [S1:p4, S2:p7]: parts joined by a comma, not ";"
 OUTSIDE = re.compile(r"\[outside\]", re.IGNORECASE)
 NO_CITE = "<!-- no-cite -->"
 HEADING = re.compile(r"^\s{0,3}(#{1,6})\s+(.*?)\s*#*\s*$")
@@ -218,7 +219,7 @@ def main():
                     continue
                 for part in inner.split(";"):
                     pm = CITE_PART.match(part)
-                    if not pm:
+                    if not pm or COMMA_CITE.search(pm.group(2) or ""):
                         malformed.append((n, "[" + inner + "]"))
                         continue
                     sid, loc = pm.group(1), (pm.group(2) or "").strip()

@@ -1,6 +1,6 @@
 {
   "name": "codebase-tour",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Get a newcomer (a new engineer, or the agent itself) oriented in an unfamiliar repository before they make one specific change, with a short tour scoped to that change. It gives the install, run and test commands taken from CI, package scripts and the Makefile; the path the change touches, traced through the code with file:line citations; where the change goes; the conventions the code actually follows; the traps (generated files, a second copy of the logic, untested code, env vars, flags); and a first step that can be checked. Use when someone says \"I'm new to this repo\", \"get me oriented\", \"where would I make this change\", \"walk me through the code for X\", \"onboard me before I start this ticket\", or \"how do I run and test this\".",
   "entrypoint": "SKILL.md",
   "deps": {
