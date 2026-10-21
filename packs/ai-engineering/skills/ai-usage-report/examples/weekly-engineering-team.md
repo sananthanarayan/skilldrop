@@ -6,22 +6,22 @@ A small synthetic event log demonstrating the three views — including graceful
 
 ```csv
 timestamp,user,tool,session_id,output_consumed,consumed_at,outcome
-2026-05-19T09:14:23Z,alice@acme.com,claude-code,sess-001,1,2026-05-19T11:02:00Z,success
-2026-05-19T09:14:55Z,alice@acme.com,claude-code,sess-001,1,2026-05-19T11:02:00Z,success
-2026-05-19T09:18:02Z,alice@acme.com,deck-builder,sess-001,1,2026-05-19T14:30:00Z,success
-2026-05-19T10:01:11Z,bob@acme.com,cursor,sess-014,0,,success
-2026-05-19T10:01:30Z,bob@acme.com,cursor,sess-015,0,,success
-2026-05-19T10:02:11Z,bob@acme.com,cursor,sess-016,0,,success
-2026-05-19T10:03:11Z,bob@acme.com,cursor,sess-017,0,,success
-2026-05-19T10:04:11Z,bob@acme.com,cursor,sess-018,0,,success
-2026-05-20T14:22:08Z,carol@acme.com,claude-code,sess-029,1,2026-05-22T08:11:00Z,success
-2026-05-20T15:22:08Z,carol@acme.com,adr-generator,sess-029,1,2026-05-22T08:11:00Z,success
-2026-05-20T16:22:08Z,carol@acme.com,design-doc,sess-030,1,2026-05-22T08:11:00Z,success
-2026-05-19T11:14:23Z,dan@acme.com,claude-code,sess-101,1,2026-05-19T13:00:00Z,success
-2026-05-19T11:15:23Z,dan@acme.com,claude-code,sess-101,0,,success
-2026-05-20T08:14:23Z,eve@acme.com,claude-code,sess-201,1,2026-05-20T09:00:00Z,success
-2026-05-20T08:15:23Z,eve@acme.com,claude-code,sess-201,1,2026-05-20T09:00:00Z,success
-2026-05-20T08:16:23Z,eve@acme.com,cursor,sess-202,1,2026-05-20T10:00:00Z,success
+2026-05-19T09:14:23Z,alice@acme.example,claude-code,sess-001,1,2026-05-19T11:02:00Z,success
+2026-05-19T09:14:55Z,alice@acme.example,claude-code,sess-001,1,2026-05-19T11:02:00Z,success
+2026-05-19T09:18:02Z,alice@acme.example,deck-builder,sess-001,1,2026-05-19T14:30:00Z,success
+2026-05-19T10:01:11Z,bob@acme.example,cursor,sess-014,0,,success
+2026-05-19T10:01:30Z,bob@acme.example,cursor,sess-015,0,,success
+2026-05-19T10:02:11Z,bob@acme.example,cursor,sess-016,0,,success
+2026-05-19T10:03:11Z,bob@acme.example,cursor,sess-017,0,,success
+2026-05-19T10:04:11Z,bob@acme.example,cursor,sess-018,0,,success
+2026-05-20T14:22:08Z,carol@acme.example,claude-code,sess-029,1,2026-05-22T08:11:00Z,success
+2026-05-20T15:22:08Z,carol@acme.example,adr-generator,sess-029,1,2026-05-22T08:11:00Z,success
+2026-05-20T16:22:08Z,carol@acme.example,design-doc,sess-030,1,2026-05-22T08:11:00Z,success
+2026-05-19T11:14:23Z,dan@acme.example,claude-code,sess-101,1,2026-05-19T13:00:00Z,success
+2026-05-19T11:15:23Z,dan@acme.example,claude-code,sess-101,0,,success
+2026-05-20T08:14:23Z,eve@acme.example,claude-code,sess-201,1,2026-05-20T09:00:00Z,success
+2026-05-20T08:15:23Z,eve@acme.example,claude-code,sess-201,1,2026-05-20T09:00:00Z,success
+2026-05-20T08:16:23Z,eve@acme.example,cursor,sess-202,1,2026-05-20T10:00:00Z,success
 ```
 
 16 events, 5 users, 5 tools, period 2026-05-19 → 2026-05-20.
@@ -56,11 +56,11 @@ python3 scripts/build_report.py events.csv \
 
 | User | Invocations | Sessions | Avg / session | Distinct tools | Effectiveness rate | Single-shot rate |
 |---|---:|---:|---:|---:|---:|---:|
-| alice@acme.com | 3 | 1 | 3.0 | 2 | 100% | 0% |
-| bob@acme.com | 5 | 5 | 1.0 | 1 | 0% | 100% |
-| carol@acme.com | 3 | 2 | 1.5 | 3 | 100% | 50% |
-| dan@acme.com | 2 | 1 | 2.0 | 1 | 50% | 0% |
-| eve@acme.com | 3 | 2 | 1.5 | 2 | 100% | 50% |
+| alice@acme.example | 3 | 1 | 3.0 | 2 | 100% | 0% |
+| bob@acme.example | 5 | 5 | 1.0 | 1 | 0% | 100% |
+| carol@acme.example | 3 | 2 | 1.5 | 3 | 100% | 50% |
+| dan@acme.example | 2 | 1 | 2.0 | 1 | 50% | 0% |
+| eve@acme.example | 3 | 2 | 1.5 | 2 | 100% | 50% |
 ```
 
 **Reading the data:**
@@ -99,13 +99,13 @@ If the input is missing optional fields, columns drop silently to `—`:
 
 ```csv
 timestamp,user,tool
-2026-05-19T09:14:23Z,alice@acme.com,claude-code
-2026-05-19T09:14:55Z,alice@acme.com,claude-code
+2026-05-19T09:14:23Z,alice@acme.example,claude-code
+2026-05-19T09:14:55Z,alice@acme.example,claude-code
 ```
 
 ```markdown
 | User | Invocations | Sessions | Avg / session | Distinct tools | Effectiveness rate | Single-shot rate |
-| alice@acme.com | 2 | — | — | 1 | — | — |
+| alice@acme.example | 2 | — | — | 1 | — | — |
 ```
 
 The "Where signals are missing" section then explains *what* couldn't be computed and *why*.

@@ -25,7 +25,7 @@ The schema is the load-bearing piece — the report skill consumes it, the MCP s
 ```json
 {
   "timestamp": "2026-05-21T14:32:11Z",
-  "user": "alice@acme.com",
+  "user": "alice@acme.example",
   "tool": "claude-code"
 }
 ```
@@ -221,7 +221,7 @@ Default to SQLite. Migrate when you actually need to. Don't pick ClickHouse for 
 
 ## Open questions / risks
 
-- **Cross-tool identity.** If Alice is `alice@acme.com` in Claude Code and `alice-acme` in Cursor, the report shows two users. Need an identity-mapping table or a canonical resolver.
+- **Cross-tool identity.** If Alice is `alice@acme.example` in Claude Code and `alice-acme` in Cursor, the report shows two users. Need an identity-mapping table or a canonical resolver.
 - **Multi-IDE sessions.** A single task may span Claude Code + manual Cursor edits. `session_id` becomes blurry across tools. Probably accept it and don't try to unify.
 - **What counts as a shipped artifact?** Git is easy; Slack, Notion, Figma, decks are not. Either build connectors per surface or accept that effectiveness rates are biased toward git-shippable work.
 - **Goodhart's law.** Once teams know `output_consumed` is measured, expect adversarial behavior — pasting AI output into trivial commits to game the metric. The skill flags single-shot + low-effectiveness as a starting place for conversation specifically because the metric will get gamed.
