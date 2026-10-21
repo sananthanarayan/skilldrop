@@ -4,7 +4,8 @@
 # throwaway folders and git repos, with a throwaway home, and checks the files each step
 # leaves. The CLI was written on macOS; Windows paths, CRLF checkouts, git calls and file
 # permissions are where it would break, and only running it there finds out. validate.py
-# runs on each OS too, since contributors clone on all three.
+# runs on each OS too, since contributors clone on all three. So do the skill scripts' unit
+# tests (RFC-0060): users run those scripts on all three.
 #
 # Uses the Node and Python each runner ships with, so there is no setup action to pin.
 name: cli
@@ -45,3 +46,9 @@ jobs:
       - name: Repo lint (Linux, macOS)
         if: runner.os != 'Windows'
         run: python3 validate.py
+      - name: Skill script unit tests (Windows)
+        if: runner.os == 'Windows'
+        run: python -m unittest discover -s tests -t .
+      - name: Skill script unit tests (Linux, macOS)
+        if: runner.os != 'Windows'
+        run: python3 -m unittest discover -s tests -t .

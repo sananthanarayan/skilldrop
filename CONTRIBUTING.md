@@ -61,11 +61,15 @@ If you add a new invariant, teach `validate.py` to enforce it. A rule that only 
 ## Before you open the PR
 
 ```bash
-python3 validate.py                 # repo consistency lint (stdlib only)
-node bin/skilldrop.js validate      # catalog structural check
+python3 validate.py                          # repo consistency lint (stdlib only)
+node bin/skilldrop.js validate               # catalog structural check
+node cli_smoke.js                            # the CLI, run as a user runs it
+python3 -m unittest discover -s tests -t .   # the skill scripts' unit tests
 ```
 
-Both run in CI on every push and PR ([`.github/workflows/release.yml`](.github/workflows/release.yml)). There is no `make` target and no test runner — do not add references to one.
+All four run in CI on every push and PR. The last two run on Linux, macOS and Windows ([`.github/workflows/cli.yml`](.github/workflows/cli.yml)). There is no `make` target.
+
+**A skill with a script needs its tests.** They go in `tests/test_<skill>.py` (hyphens become underscores), and must name every script in the skill's `scripts/` folder; `validate.py` fails otherwise. Use only the standard library and the helpers in [`tests/support.py`](tests/support.py), and keep them offline. If a test finds a bug you aren't fixing in the same change, mark it `@unittest.expectedFailure` with a `# BUG:` line; don't write the test to expect the wrong behaviour.
 
 Then:
 
