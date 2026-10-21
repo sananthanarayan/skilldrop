@@ -73,13 +73,15 @@ INSKILL_REF = re.compile(r"(?<![\w/])((?:scripts|references|templates|lenses|rub
 CLAUDE_DIR_REF = re.compile(r"\$\{CLAUDE_SKILL_DIR\}/([\w./-]+)")
 MD_LINK = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
 FENCE = re.compile(r"^```.*?^```", re.M | re.S)
-# File names GitHub's dependency graph (and so Dependabot) reads as a project's dependencies.
+# File names GitHub's dependency graph (and so Dependabot) reads as a project's dependencies, and
+# the container files OpenSSF Scorecard checks for unpinned base images.
 DEPENDENCY_FILE = re.compile(
     r"^(package\.json|package-lock\.json|npm-shrinkwrap\.json|yarn\.lock|pnpm-lock\.yaml|bun\.lockb?"
     r"|[^/]*requirements[^/]*\.txt|pyproject\.toml|setup\.py|setup\.cfg|Pipfile|Pipfile\.lock|poetry\.lock|uv\.lock"
     r"|go\.mod|go\.sum|Cargo\.toml|Cargo\.lock|Gemfile|Gemfile\.lock|[^/]*\.gemspec|pom\.xml|build\.gradle(\.kts)?"
     r"|gradle\.lockfile|composer\.json|composer\.lock|[^/]*\.csproj|packages\.config|packages\.lock\.json"
-    r"|pubspec\.(yaml|lock)|mix\.(exs|lock)|Package\.(swift|resolved)|environment\.ya?ml|action\.ya?ml)$")
+    r"|pubspec\.(yaml|lock)|mix\.(exs|lock)|Package\.(swift|resolved)|environment\.ya?ml|action\.ya?ml"
+    r"|Dockerfile|Containerfile|[^/]*\.[Dd]ockerfile)$")
 MATERIAL = ("reference.md", "references/*.md", "lenses/*.md", "rubrics/*.md")  # AGENTS.md: link these from SKILL.md
 LINK_DOCS = ("README.md", "AGENTS.md", "CLAUDE.md", "CONTRIBUTING.md", "SECURITY.md",
              "MODEL-ROUTING.md", "ARCHITECTURE.md")

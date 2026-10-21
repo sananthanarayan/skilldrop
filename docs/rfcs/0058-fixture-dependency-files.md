@@ -40,6 +40,11 @@ read, and the run sees the real name.
 - **`validate.py` fails** on a dependency file under `evals/files/` or `examples/inputs/`
   that still has its real name. The message gives the name to use.
 
+**Later, container files too.** OpenSSF Scorecard's Pinned-Dependencies check reads every
+`Dockerfile` for a base image pinned by digest. A fixture's `FROM python:3.9-slim` was the
+check's only finding: there, the old base image is the scenario. So `Dockerfile`, `Containerfile`
+and `*.dockerfile` join the list, under the same `.fixture` rule.
+
 Once the manifests leave the default branch, GitHub closes the alerts raised against them.
 No fixture can raise a new one.
 
