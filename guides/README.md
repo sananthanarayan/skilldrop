@@ -42,6 +42,7 @@ New here? Start with the [operating model](explanation/operating-model.md): the 
 - [Publish your own catalogue](how-to/publish-a-catalogue.md) — make `skilldrop --from <you>` work
 - [Release a change](how-to/release-a-change.md) — the release loop: a rollout with a way back, a readiness check on evidence, and your go/no-go call
 - [Upgrade installed skills](how-to/upgrade-skills.md) — keep what you have installed current; files you edited are kept and the new version lands beside them as `.upstream`
+- [Verify a release](how-to/verify-a-release.md) — check a `skilldrop-cli` release came from this repository's release workflow, unchanged: npm provenance, the tarball's signed attestation, and its SBOM
 - [Benchmark skills against the agent without them](how-to/benchmark-skills.md) — each eval run with the skill and without it: the lift, a blind preference from two judges, and the cost
 - [Measure your loops](how-to/measure-your-loops.md) — the opt-in, local-only run log, and which gates pass first time
 - [Run a skill in CI](how-to/run-a-skill-in-ci.md) — the GitHub Action: a skill on every pull request, results in the job summary, optional fail on a verdict

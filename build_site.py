@@ -862,6 +862,53 @@ def terminal(lines):
 </div><div class="term__body">{body}</div></div>"""
 
 
+def trust_counts():
+    """Unit tests (test functions plus one per fuzz target) and fuzz targets, counted from the files,
+    so the home page can't overstate them."""
+    tests_dir = os.path.join(ROOT, "tests")
+    n_tests, n_fuzz = 0, 0
+    if os.path.isdir(tests_dir):
+        for f in sorted(os.listdir(tests_dir)):
+            if f.startswith("test_") and f.endswith(".py"):
+                n_tests += len(re.findall(r"^\s*def test_", open(os.path.join(tests_dir, f), encoding="utf-8").read(), re.M))
+        targets = os.path.join(tests_dir, "fuzz", "targets.py")
+        if os.path.exists(targets):
+            n_fuzz = len(re.findall(r'^\s*\("[a-z0-9-]+", "[a-z0-9-]+", "', open(targets, encoding="utf-8").read(), re.M))
+    return n_tests + n_fuzz, n_fuzz
+
+
+def trust_section(version):
+    """What an adopting team checks before trusting a tool, each with the evidence one click away."""
+    n_tests, n_fuzz = trust_counts()
+    major = version.split(".")[0]
+    rfc = lambda f: f"{REPO_URL}/blob/main/docs/rfcs/{f}"
+    items = [
+        (f"Stable since 1.0", f"Commands, flags, skill folders and names, scripts' exit codes and the Action's inputs follow semantic versioning: a break waits for {int(major) + 1}.0, after a deprecation.",
+         "docs/reference/versioning-and-stability.html", "What stays stable"),
+        ("Scored by OpenSSF Scorecard", "Every Action pinned to a commit, CodeQL, workflow and secret scanning on every pull request, and the score published each week.",
+         "https://scorecard.dev/viewer/?uri=github.com/sananthanarayan/skilldrop", "The scorecard"),
+        ("Releases you can verify", "Each release carries the exact npm tarball, a Sigstore-signed record of the build that made it, and an SBOM.",
+         "docs/how-to/verify-a-release.html", "Verify a release"),
+        (f"{n_tests:,} unit tests", "Every skill script is tested on Linux, macOS and Windows, and on Python 3.9, on every pull request. A new script can't land without tests.",
+         rfc("0060-skill-script-unit-tests.md"), "How they're run"),
+        (f"{n_fuzz} file parsers fuzzed", "The scripts that read your exports, reports and configs are fuzzed with Atheris on every change to them, and for longer each week.",
+         rfc("0062-fuzzing-the-skill-scripts.md"), "What it found"),
+        ("Checked with its own skills", "This site's accessibility and performance were reviewed with the catalogue's own skills, and every finding fixed.",
+         "docs/explanation/own-skills-on-own-site.html", "The reviews"),
+    ]
+    cards = "".join(
+        f'<li class="trust__item"><h3>{esc(t)}</h3><p>{esc(body)}</p><a href="{esc(href)}">{esc(link)} &rarr;</a></li>'
+        for t, body, href, link in items)
+    return f"""<section class="section section--alt" id="trust">
+  <div class="inner">
+    <p class="eyebrow">Built to be trusted</p>
+    <h2>What a team checks before it adopts a tool, with the evidence one click away.</h2>
+    <ul class="trust">{cards}</ul>
+  </div>
+</section>
+"""
+
+
 def measured_section():
     """The published benchmark summary (RFC-0040) as a short band under the problem statement.
     Generated from docs/benchmarks/latest.json, so the numbers cannot drift from the evals page."""
@@ -880,11 +927,18 @@ def measured_section():
         h2 = f" and {pc(h['win2'])}" if h.get("win2") is not None else ""
         verdict = (f"On the {h['evals']} evals written by someone who never read the skill, the two judges preferred it in "
                    f"{pc(h['win'])}{h2} of pairs, which is the better guide to a request the skill was not shaped around.")
+    retired = len(read_json(os.path.join(ROOT, "catalogue.json")).get("retired", {}))
+    adm_path = os.path.join(ROOT, "docs", "benchmarks", "admissions.json")
+    admitted = len(read_json(adm_path)["skills"]) if os.path.exists(adm_path) else 0
+    rule = (f" Skills that lose are retired: {retired} so far, each listed with what to use instead."
+            if retired else "")
+    rule += (f" A new skill ships only if two blind judges prefer it to the plain agent on evals written from its "
+             f"description alone; {admitted} have been admitted that way since this run." if admitted else "")
     return f"""<section class="section" id="measured">
   <div class="inner"><div class="narrow">
     <p class="eyebrow">Measured</p>
     <h2>Every skill is run against the agent without it.</h2>
-    <p class="lede" style="margin-bottom:0">Each acceptance eval runs twice as a real agent session, once with the skill and once without. With a skill the agent meets {pc(d['skill'])} of that skill's checks; without, {pc(d['baseline'])}. A blind judge that sees only the request and the two results preferred the skill's in {judges}. {verdict} <a href="evals/">See every skill's numbers and how they were measured &rarr;</a></p>
+    <p class="lede" style="margin-bottom:0">Each acceptance eval runs twice as a real agent session, once with the skill and once without. With a skill the agent meets {pc(d['skill'])} of that skill's checks; without, {pc(d['baseline'])}. A blind judge that sees only the request and the two results preferred the skill's in {judges}. {verdict}{rule} <a href="evals/">See every skill's numbers and how they were measured &rarr;</a></p>
   </div></div>
 </section>
 """
@@ -1043,6 +1097,14 @@ a {{ color:var(--accent-700); }}
 .cta--ghost {{ border-color:var(--border); color:var(--fg); background:var(--card); }}
 .cta--ghost:hover {{ border-color:var(--accent-700); color:var(--accent-700); }}
 .stats {{ display:flex; flex-wrap:wrap; gap:2.6rem; border-top:1px solid var(--w-06); padding-top:1.9rem; }}
+.trust {{ list-style:none; padding:0; margin:1.8rem 0 0; display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:var(--r); overflow:hidden; }}
+@media (max-width:900px) {{ .trust {{ grid-template-columns:repeat(2,1fr); }} }}
+@media (max-width:560px) {{ .trust {{ grid-template-columns:1fr; }} }}
+.trust__item {{ background:var(--card); padding:1.2rem 1.3rem 1.3rem; display:flex; flex-direction:column; }}
+.trust__item h3 {{ margin:0 0 .45rem; font-size:1.02rem; letter-spacing:-.01em; }}
+.trust__item p {{ margin:0 0 .9rem; color:var(--fg-muted); font-size:.92rem; line-height:1.55; flex:1; }}
+.trust__item a {{ font-size:.88rem; font-weight:600; color:var(--accent-700); text-decoration:none; }}
+.trust__item a:hover {{ text-decoration:underline; }}
 .promises {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:1.6rem 2.4rem; border-top:1px solid var(--border); padding-top:1.9rem; }}
 .promise__t {{ font-size:1.02rem; font-weight:700; letter-spacing:-.01em; color:var(--fg); }}
 .promise__l {{ font-size:.86rem; color:var(--fg-muted); margin-top:.25rem; }}
@@ -1351,6 +1413,7 @@ a {{ color:var(--accent-700); }}
 </section>
 
 {measured_section()}
+{trust_section(version)}
 <section class="section section--alt" id="proof">
   <div class="inner">
     <p class="eyebrow">See it work</p>
