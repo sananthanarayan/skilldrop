@@ -165,8 +165,8 @@ def main():
         fail("--traffic must be a finite number greater than zero")
     if not 0 < args.alpha < 1 or not 0 < args.power < 1:
         fail("--alpha and --power must be between 0 and 1")
-    if args.max_hours <= 0:
-        fail("--max-hours must be greater than zero")
+    if not math.isfinite(args.max_hours) or args.max_hours <= 0:
+        fail("--max-hours must be a finite number greater than zero")
     control = None
     if args.control_pct is not None:
         control = parse_rate(args.control_pct.rstrip("%") + "%", "--control-pct")

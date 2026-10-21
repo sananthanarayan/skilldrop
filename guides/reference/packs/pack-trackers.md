@@ -52,7 +52,7 @@ Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/trackers/skills/backlog
 
 Write a weekly team status report from tracker data (Jira, Linear or GitHub Projects, via CSV, JSON or an MCP tool) — shipped, in progress, blocked with the blocker and owner, slipped against plan, risks and asks — with every number computed from the data by a stdlib script, never estimated, and a RAG status that states the rule that set it.
 
-Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/trackers/skills/team-status-report/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/team-status-report/)
+Tier **standard** · v0.1.4 · [SKILL.md](../../../packs/trackers/skills/team-status-report/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/team-status-report/)
 
 **Use it when** the user wants a weekly status update, sprint report or stakeholder update from the tracker, or says "write this week's status report", "are we on track?".
 

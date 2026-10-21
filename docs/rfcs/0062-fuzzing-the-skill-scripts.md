@@ -92,7 +92,7 @@ on a valid file can still be traced.
   the worst bugs this round were hangs and memory blow-ups, not exceptions. The weekly job's
   timeout went from 45 to 75 minutes for the extra targets.
 
-**What they found**, all in `file-to-markdown`: 15 bugs, each now with a unit test. The fuzzer
+**What they found**, all in `file-to-markdown`: 16 bugs, each now with a unit test. The fuzzer
 found the damaged-file and email ones. Reading the parser around those crashes found the six below
 that exhaust resources: a time-limited fuzzer rarely builds the one exact value that triggers
 them.
@@ -105,7 +105,8 @@ them.
     columns that hold a value are kept now, with a note on the empty columns left out.
   - A huge Word `gridSpan`, HTML `colspan` or list level is capped at the format's own limit:
     63 columns, 1000 columns and level 8.
-- **Damaged files.** A corrupt zip member, a Word file with no body, or a cell reference that
+- **Damaged files.** A corrupt zip member, or one marked as encrypted (the first CI run's find:
+  Python's zipfile raises `RuntimeError` for it), a Word file with no body, or a cell reference that
   isn't one now gives a one-line error, or skips that cell. A damaged .docx, .pptx, .xlsx, .msg
   or .eml is reported as damaged, and the message asks for a report if the file opens normally
   in its own app.

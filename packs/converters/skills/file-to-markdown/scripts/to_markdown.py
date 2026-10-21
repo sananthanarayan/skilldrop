@@ -158,10 +158,20 @@ def span_of(value, cap):
 
 def open_zip(path, kind):
     try:
-        return zipfile.ZipFile(str(path))
+        z = zipfile.ZipFile(str(path))
     except zipfile.BadZipFile:
+        with open(str(path), "rb") as fh:
+            if fh.read(8) == b"\xD0\xCF\x11\xE0\xA1\xB1\x1A\xE1":
+                # Office saves a password-protected .docx/.pptx/.xlsx as a compound file holding
+                # the encrypted package, not as a zip
+                sys.exit("error: %s is password-protected (or an old binary Office file). Open it, remove "
+                         "the password or save it as %s, and rerun." % (path, kind))
         sys.exit("error: %s is not a valid %s file (not a zip package). If it is an old binary "
                  "Office file, save it as %s first." % (path, kind, kind))
+    if any(info.flag_bits & 0x1 for info in z.infolist()):
+        sys.exit("error: %s has encrypted parts, which Office never writes; it is damaged, or was "
+                 "zipped with a password by another tool" % path)
+    return z
 
 
 # ---------------------------------------------------------------- docx

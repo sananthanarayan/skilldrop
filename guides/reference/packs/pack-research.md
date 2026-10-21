@@ -23,7 +23,7 @@ Take a question from vague to answered: plan the research around the decision it
 
 Compare rival explanations for an observation with analysis of competing hypotheses (ACH) — list the hypotheses and the evidence, build a consistency matrix (consistent / inconsistent / neutral), rank hypotheses by how little evidence contradicts them rather than how much supports them, name the diagnostic evidence and the linchpins, and say which next observation would tell the leaders apart.
 
-Tier **heavy** · v0.1.4 · [SKILL.md](../../../packs/research/skills/hypothesis-comparison/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/hypothesis-comparison/)
+Tier **heavy** · v0.1.5 · [SKILL.md](../../../packs/research/skills/hypothesis-comparison/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/hypothesis-comparison/)
 
 **Use it when** the user asks "why did X happen", "which explanation fits the evidence", "what's really causing this", wants to stop arguing over a favourite theory, or says "compare these hypotheses", "competing explanations", "ACH".
 

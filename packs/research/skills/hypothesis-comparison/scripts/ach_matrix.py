@@ -34,6 +34,7 @@ Exit codes: 0 report written, 2 bad input.
 import argparse
 import csv
 import io
+import math
 import sys
 from pathlib import Path
 
@@ -71,28 +72,31 @@ def load(path):
             fail("the CSV needs at least two hypothesis columns; ACH compares rivals")
         rows = []
         for i, raw in enumerate(reader, start=1):
+            line = reader.line_num  # the file's line, which counts the blank lines csv skips
             if None in raw:
                 fail("row {}: more cells than the header has columns; put double quotes around any "
-                     "cell that contains a comma".format(i + 1))
+                     "cell that contains a comma".format(line))
             row = {(k or "").strip(): (v or "").strip() for k, v in raw.items()}
             lrow = {k.lower(): v for k, v in row.items()}
             ev = lrow.get("evidence", "")
             if not ev:
-                fail("row {}: the evidence cell is empty".format(i + 1))
+                fail("row {}: the evidence cell is empty".format(line))
             rid = lrow.get("id") or "E{}".format(i)
             w_raw = lrow.get("weight") or "1"
             try:
                 w = float(w_raw)
             except ValueError:
-                fail("row {} ({}): weight {!r} is not a number".format(i + 1, rid, w_raw))
+                fail("row {} ({}): weight {!r} is not a number".format(line, rid, w_raw))
+            if not math.isfinite(w):
+                fail("row {} ({}): weight {!r} is not a finite number".format(line, rid, w_raw))
             if w <= 0:
-                fail("row {} ({}): weight must be greater than 0".format(i + 1, rid))
+                fail("row {} ({}): weight must be greater than 0".format(line, rid))
             ratings = {}
             for h in hyps:
                 r = row.get(h, "").upper()
                 if r not in RATINGS:
                     fail("row {} ({}), column {!r}: rating {!r} is not one of CC, C, N, NA, I, II".format(
-                        i + 1, rid, h, row.get(h, "")))
+                        line, rid, h, row.get(h, "")))
                 ratings[h] = r
             rows.append({"id": rid, "evidence": ev, "weight": w, "ratings": ratings})
     if not rows:

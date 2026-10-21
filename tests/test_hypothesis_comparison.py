@@ -151,5 +151,14 @@ class AchBadInputTest(unittest.TestCase):
         self.fails("evidence,A,B\nslow, then fast,C,I\n", "row 2")
 
 
+    def test_row_number_is_the_file_line_after_a_blank_line(self):
+        self.fails("evidence,H1,H2\n\nE1 drop,C,X\n", "row 3 (E1), column 'H2'")
+
+    def test_non_finite_weight(self):
+        for w in ("nan", "inf"):
+            with self.subTest(w):
+                self.fails("evidence,weight,H1,H2\nE1,%s,C,I\n" % w, "is not a finite number")
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -174,5 +174,13 @@ class CanaryMathCliTest(unittest.TestCase):
         self.assertNotIn("Traceback", err)
 
 
+    def test_non_finite_max_hours_exits_2(self):
+        for value in ("nan", "inf"):
+            with self.subTest(value):
+                code, _, err = run(SKILL, SCRIPT, *BASE, "--max-hours", value)
+                self.assertEqual(code, 2)
+                self.assertIn("--max-hours must be a finite number", err)
+
+
 if __name__ == "__main__":
     unittest.main()

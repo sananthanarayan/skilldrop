@@ -570,6 +570,26 @@ class ToMarkdownTest(unittest.TestCase):
         self.assertIn("looks damaged or truncated", err)
         self.assertNotIn("Traceback", err)
 
+    def test_zip_with_an_encrypted_part_fails_clearly(self):
+        data = bytearray(seeds.xlsx())
+        at = data.index(b"PK\x01\x02")  # the first central-directory entry
+        data[at + 8] |= 0x1  # its "encrypted" flag, which Office never sets
+        with workdir() as d:
+            with open(os.path.join(d, "x.xlsx"), "wb") as f:
+                f.write(bytes(data))
+            code, _, err = to_md(d, "x.xlsx")
+        self.assertNotEqual(code, 0)
+        self.assertIn("has encrypted parts", err)
+        self.assertNotIn("Traceback", err)
+
+    def test_password_protected_office_file_says_so(self):
+        with workdir() as d:
+            with open(os.path.join(d, "x.docx"), "wb") as f:
+                f.write(b"\xD0\xCF\x11\xE0\xA1\xB1\x1A\xE1" + b"\x00" * 504)
+            code, _, err = to_md(d, "x.docx")
+        self.assertNotEqual(code, 0)
+        self.assertIn("is password-protected", err)
+
     def test_docx_without_a_body_fails_clearly(self):
         with workdir() as d:
             with open(os.path.join(d, "x.docx"), "wb") as f:

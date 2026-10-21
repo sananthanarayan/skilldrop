@@ -305,8 +305,11 @@ def main(argv=None) -> int:
     if args.plan_file:
         if not args.plan_file.exists():
             die("--plan-file {} does not exist".format(args.plan_file))
-        keys = [ln.strip() for ln in args.plan_file.read_text(encoding="utf-8").splitlines()
-                if ln.strip() and not ln.startswith("#")]
+        try:
+            plan_text = args.plan_file.read_text(encoding="utf-8-sig")
+        except UnicodeDecodeError:
+            die("--plan-file {} is not UTF-8 text; save it as UTF-8 and retry".format(args.plan_file))
+        keys = [ln.strip() for ln in plan_text.splitlines() if ln.strip() and not ln.startswith("#")]
         by_key = {it["key"]: it for it in items}
         missing = [k for k in keys if k not in by_key]
         if missing:

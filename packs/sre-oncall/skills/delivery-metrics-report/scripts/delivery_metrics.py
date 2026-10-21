@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import io
 import json
 import math
 import re
@@ -96,7 +97,12 @@ def parse_bool(raw, where: str):
 def read_csv(path: Path, required: list, label: str) -> list:
     if not path.exists():
         raise InputError("%s file not found: %s" % (label, path))
-    with path.open(newline="", encoding="utf-8-sig") as f:
+    try:
+        text = path.read_text(encoding="utf-8-sig")
+    except UnicodeDecodeError:
+        raise InputError("%s file %s is not UTF-8 text; save it as UTF-8 (in Excel: CSV UTF-8) and retry"
+                         % (label, path))
+    with io.StringIO(text, newline="") as f:
         reader = csv.DictReader(f)
         if not reader.fieldnames:
             raise InputError("%s file %s is empty or has no header row" % (label, path))
