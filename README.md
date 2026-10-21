@@ -31,7 +31,7 @@ Every skill runs as a real agent session twice: once with the skill, once withou
 - **Two blind judges preferred the skill's answer in 61% of pairs** (95% interval 55–68%). Each judge saw only the request and both answers, in shuffled order.
 - **4 skills that didn't beat the plain agent were [retired](https://sananthanarayan.github.io/skilldrop/evals/#retired)**, and they're listed. Each new skill has to win on held-out evals before it ships.
 
-[Get started](https://sananthanarayan.github.io/skilldrop/start/) · [Browse the packs](https://sananthanarayan.github.io/skilldrop/packs/) · [Search all skills](https://sananthanarayan.github.io/skilldrop/catalogue/) · [Docs](https://sananthanarayan.github.io/skilldrop/docs/) · [Contribute](CONTRIBUTING.md)
+[Get started](https://sananthanarayan.github.io/skilldrop/start/) · [Browse the packs](https://sananthanarayan.github.io/skilldrop/packs/) · [Search all skills](https://sananthanarayan.github.io/skilldrop/catalogue/) · [Docs](https://sananthanarayan.github.io/skilldrop/docs/) · [What stays stable in 1.x](guides/reference/versioning-and-stability.md) · [Contribute](CONTRIBUTING.md)
 
 ## Start in one command
 

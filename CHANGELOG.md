@@ -8,6 +8,14 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.0.0 — 2026-10-21
+
+- **skilldrop is 1.0, and it now says what stays stable.** From this release, versions follow Semantic Versioning for the CLI, a skill's folder and name, its scripts' documented flags and exit codes, loops, packs and profiles, the GitHub Action and the plugin names. A change that would break one of them waits for 2.0 ([what stays stable](https://sananthanarayan.github.io/skilldrop/docs/reference/versioning-and-stability.html), [RFC-0064](docs/rfcs/0064-one-point-oh-stability.md)).
+- **A skill's instructions and output keep improving in any release.** That's what the measurements are for. A skill that stops beating the plain agent is retired with a record naming what to use instead, and your installed copy keeps working.
+- **Deprecations come first,** in a minor release, with a changelog entry and a CLI warning, and keep working until the next major.
+- **Python 3.9 is now tested in CI.** It's the `python3` macOS ships, and the oldest Python the skills' scripts support.
+- **Nothing you use changes in this release.** 1.0 is the promise, made on 117 skills, 11 loops and 6 reviewer agents, every script unit-tested and the file parsers fuzzed.
+
 ## 0.16.46 — 2026-10-21
 
 - **`context-graph`, a new skill in `solution-architect`, answers "why is it like this?" from your decision records.** It reads ADRs, RFCs and design records in MADR, Nygard or frontmatter form, and builds the graph between them: what supersedes or amends what, which records cite which, the files and folders each decision governs, and, with `--git`, the commits behind each. It checks that graph against the code, and finds:

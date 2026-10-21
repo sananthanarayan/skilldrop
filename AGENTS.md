@@ -116,7 +116,11 @@ The Release that CI cuts takes its notes from this version's CHANGELOG entry and
 
 Every version bump lands with a matching entry at the top of [`CHANGELOG.md`](CHANGELOG.md) — `## <version> — <YYYY-MM-DD>` plus one bullet per user-visible change, saying what a user can now do rather than which files moved. This is mechanically enforced from an unusual direction: `build_site.py` refuses to render the site when the changelog's newest version disagrees with `package.json`, so an undocumented release cannot deploy.
 
-**Bump the third digit, one step at a time.** `0.9.0` → `0.9.1` → `0.9.2`. Never skip a number, and don't reach for a bigger bump because a release *feels* big. A **minor** release is a **third-digit** bump (`0.9.1` → `0.9.2`) — new skills, skill edits, pack changes, tier changes, docs, new CLI commands and flags, and bug fixes all ship this way. A **major** release is a **second-digit** bump (`0.9.x` → `0.10.0`) — a deliberate milestone the maintainer calls, not something a single feature triggers. `1.0.0` waits for an explicit stability commitment.
+**From 1.0.0, versions follow [Semantic Versioning](https://semver.org) for the surfaces in [RFC-0064](docs/rfcs/0064-one-point-oh-stability.md)** (the CLI, a skill's folder and name, its scripts' documented flags and exit codes, loops, packs, profiles, the GitHub Action and plugin names). Never skip a number.
+- **Patch** (`1.0.0` → `1.0.1`): fixes, and improvements to a skill's instructions or scripts that keep its documented flags and exit codes.
+- **Minor** (`1.0.1` → `1.1.0`): anything added (a skill, loop, pack, command, flag or field) and any deprecation. A skill's patch and minor numbers in its own `manifest.json` follow the same rule.
+- **Major** (`1.x` → `2.0.0`): a break in a covered surface. Deprecate first, in a minor release, with a CHANGELOG entry and a CLI warning; remove in the next major.
+- **Retiring a skill** (RFC-0046) is a minor release: it keeps a `catalogue.json` record naming what to use instead for at least one minor release, and installed copies keep working.
 
 ## File placement
 
