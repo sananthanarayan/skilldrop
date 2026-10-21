@@ -702,7 +702,7 @@ def cmp_md(c):
     return "\n".join(L)
 
 
-def main():
+def _main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("reports", nargs="+", help="Lighthouse JSON, PSI JSON or CrUX JSON path, or - for stdin (max 2)")
     ap.add_argument("--field", help="extra field data: a PSI response or CrUX API record JSON")
@@ -744,5 +744,15 @@ def main():
         print(text)
 
 
+
+def main():
+    """Run, and turn an input that parses but has the wrong shape into one clear error."""
+    try:
+        return _main()
+    except (KeyError, TypeError, AttributeError, IndexError, ValueError) as e:
+        print("error: couldn't read the input as a Lighthouse, PageSpeed Insights or CrUX report (%s: %s). If it is one, this is a bug: "
+              "please report it with the file." % (type(e).__name__, e), file=sys.stderr)
+        return 2
+
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

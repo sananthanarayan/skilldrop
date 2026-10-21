@@ -1576,7 +1576,7 @@ def to_jsonable(o):
     raise TypeError(type(o))
 
 
-def main(argv=None):
+def _main(argv=None):
     ap = argparse.ArgumentParser(description="Size a JS bundle from webpack stats, an esbuild metafile or rollup-plugin-visualizer raw data, and read the project files around it.")
     ap.add_argument("stats", nargs="?", help="stats file, or - for stdin")
     ap.add_argument("--compare", nargs=2, metavar=("BEFORE", "AFTER"), help="diff two stats files")
@@ -1630,6 +1630,16 @@ def main(argv=None):
         sys.stdout.write(text)
     return 1 if over else 0
 
+
+
+def main(argv=None):
+    """Run, and turn an input that parses but has the wrong shape into one clear error."""
+    try:
+        return _main(argv)
+    except (KeyError, TypeError, AttributeError, IndexError, ValueError) as e:
+        print("error: couldn't read the input as webpack, esbuild or Vite stats (%s: %s). If it is one, this is a bug: "
+              "please report it with the file." % (type(e).__name__, e), file=sys.stderr)
+        return 2
 
 if __name__ == "__main__":
     sys.exit(main())

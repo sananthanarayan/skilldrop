@@ -74,7 +74,7 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/dev-team/skills/agents-
 
 Prove that a rewritten, migrated or refactored component behaves the same as the old one with a golden-master comparison — record inputs and outputs at a boundary (HTTP, function calls, batch files, DB writes, events) from production-shaped traffic and edge cases, run the old system twice to find its nondeterminism, normalise narrowly field by field, replay against the new one, triage every difference as defect, intended change (with a named approver) or missing normalisation, and give a verdict of EQUIVALENT, EQUIVALENT EXCEPT LISTED CHANGES, NOT EQUIVALENT or NOT PROVEN.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/dev-team/skills/behaviour-equivalence/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/behaviour-equivalence/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/dev-team/skills/behaviour-equivalence/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/behaviour-equivalence/)
 
 **Use it when** the user asks "does the new one behave the same as the old one", "can we sign off the rewrite", "are these diffs just noise", wants a golden-master, approval or shadow-traffic comparison, a parity check between old and new outputs, or says "prove behaviour equivalence".
 

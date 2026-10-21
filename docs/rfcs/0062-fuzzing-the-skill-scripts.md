@@ -64,6 +64,19 @@ current.
 All now fail with a one-line message. After the fixes, every target ran 6,000 mutated inputs on
 both Python 3.9 and 3.14 without a crash.
 
+**What Atheris's first CI run then found** (20 seconds a target, coverage-guided)
+- **`md-to-html` crashed on NUL bytes in Markdown.** They collided with its own placeholder
+  markers.
+- **`web-performance-review` crashed on a numeric field given as a string.**
+- **`bundle-size-review` crashed on a list where a chunk id belongs.**
+
+**The fix for wrong-shape JSON.** Coverage-guided fuzzing keeps finding JSON that parses but has
+the wrong shape. So the six scripts that read JSON turn a `KeyError`, `TypeError`,
+`AttributeError`, `IndexError` or `ValueError` at their entry point into one error. It names
+what was expected, and says to report the file if it is genuine. The guard only changes how an
+unhandled error is reported: the message still names the exception and its text, so a real bug
+on a valid file can still be traced.
+
 ## Alternatives considered
 
 - **OSS-Fuzz or ClusterFuzzLite.** Both are built for compiled projects and need a Docker build.

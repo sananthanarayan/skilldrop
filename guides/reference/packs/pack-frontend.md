@@ -84,7 +84,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/frontend/skills/renderi
 
 Read a Lighthouse report or PageSpeed Insights result, with field data when there is any (CrUX, PSI loadingExperience or RUM p75), and say what makes the page slow for real users and what to fix first, ranked by how much each fix moves LCP, INP and CLS at the 75th percentile. Names the LCP element and which LCP phase dominates, the elements that shift and why, the long tasks and third parties by main-thread time, and treats estimated savings as lab estimates that overlap.
 
-Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/frontend/skills/web-performance-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/web-performance-review/)
+Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/frontend/skills/web-performance-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/web-performance-review/)
 
 **Use it when** the user shares a Lighthouse JSON or PSI result and asks "why is this page slow", "what should we fix first", "we score 92 but Search Console says LCP is poor", "did our change fix INP", "review this Lighthouse report", or "how do we pass Core Web Vitals".
 

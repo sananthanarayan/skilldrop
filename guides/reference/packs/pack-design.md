@@ -23,7 +23,7 @@ On-brand visual work: capture a brand once, then build real PowerPoint decks and
 
 Capture a brand once as a reusable brand.json — logo files (and an on-dark version), colour roles as hex codes, heading and body fonts, voice, imagery rules, a PowerPoint template, contact details and the legal footer — plus a one-page BRAND.md, with text contrast checked and every value traced to where it came from.
 
-Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/design/skills/brand-kit/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/brand-kit/)
+Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/design/skills/brand-kit/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/brand-kit/)
 
 **Use it when** the user wants decks, flyers or documents in their branding, says "use our brand", "here's our logo and colours", "set up our brand kit", or hands over brand guidelines.
 
