@@ -73,15 +73,13 @@ INSKILL_REF = re.compile(r"(?<![\w/])((?:scripts|references|templates|lenses|rub
 CLAUDE_DIR_REF = re.compile(r"\$\{CLAUDE_SKILL_DIR\}/([\w./-]+)")
 MD_LINK = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
 FENCE = re.compile(r"^```.*?^```", re.M | re.S)
-# File names GitHub's dependency graph (and so Dependabot) reads as a project's dependencies, and
-# the container files OpenSSF Scorecard checks for unpinned base images.
+# File names GitHub's dependency graph (and so Dependabot) reads as a project's dependencies.
 DEPENDENCY_FILE = re.compile(
     r"^(package\.json|package-lock\.json|npm-shrinkwrap\.json|yarn\.lock|pnpm-lock\.yaml|bun\.lockb?"
     r"|[^/]*requirements[^/]*\.txt|pyproject\.toml|setup\.py|setup\.cfg|Pipfile|Pipfile\.lock|poetry\.lock|uv\.lock"
     r"|go\.mod|go\.sum|Cargo\.toml|Cargo\.lock|Gemfile|Gemfile\.lock|[^/]*\.gemspec|pom\.xml|build\.gradle(\.kts)?"
     r"|gradle\.lockfile|composer\.json|composer\.lock|[^/]*\.csproj|packages\.config|packages\.lock\.json"
-    r"|pubspec\.(yaml|lock)|mix\.(exs|lock)|Package\.(swift|resolved)|environment\.ya?ml|action\.ya?ml"
-    r"|Dockerfile|Containerfile|[^/]*\.[Dd]ockerfile)$")
+    r"|pubspec\.(yaml|lock)|mix\.(exs|lock)|Package\.(swift|resolved)|environment\.ya?ml|action\.ya?ml)$")
 MATERIAL = ("reference.md", "references/*.md", "lenses/*.md", "rubrics/*.md")  # AGENTS.md: link these from SKILL.md
 LINK_DOCS = ("README.md", "AGENTS.md", "CLAUDE.md", "CONTRIBUTING.md", "SECURITY.md",
              "MODEL-ROUTING.md", "ARCHITECTURE.md")
@@ -921,6 +919,24 @@ def main():
                 DEPENDENCY_FILE.match(rel.rsplit("/", 1)[-1]) or re.search(r"/\.github/workflows/[^/]+\.ya?ml$", rel)):
             fail("fixtures", f"{rel}: a dependency file in a fixture must be named {rel.rsplit('/', 1)[-1]}.fixture "
                              "(git mv it); run_bench.py gives it its real name in the run's workspace")
+
+    # A fixture's Dockerfile pins its base images by digest. OpenSSF Scorecard reads every file
+    # with "dockerfile" in its name, whatever the suffix, so renaming can't hide one the way
+    # .fixture hides a manifest (RFC-0058). The digest keeps the scenario's image and tag, and
+    # nothing builds it, so it can't go stale in a way that matters.
+    for rel in subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True).stdout.splitlines():
+        if re.search(r"/(evals/files|examples/inputs)/", rel) and "dockerfile" in rel.rsplit("/", 1)[-1].lower():
+            stages = set()
+            for n, line in enumerate(open(os.path.join(ROOT, rel), encoding="utf-8").read().splitlines(), 1):
+                m = re.match(r"\s*FROM\s+(?:--platform=\S+\s+)?(\S+)(?:\s+AS\s+(\S+))?", line, re.I)
+                if not m:
+                    continue
+                image, alias = m.group(1), m.group(2)
+                if image.lower() != "scratch" and image.lower() not in stages and "@sha256:" not in image:
+                    fail("fixtures", f"{rel}:{n}: FROM {image} isn't pinned by digest; write it as "
+                                     f"{image}@sha256:<digest> (Scorecard reads every Dockerfile, fixtures too)")
+                if alias:
+                    stages.add(alias.lower())
 
     # RFC-0049: the maintainers' own identity (read from this machine, never committed) stays
     # out of the tree; matches are reported by kind, never printed
