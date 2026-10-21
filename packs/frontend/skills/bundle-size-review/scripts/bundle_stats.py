@@ -500,6 +500,8 @@ def load(path):
                 text = fh.read()
     except OSError as e:
         raise InputError("cannot read %s: %s" % (path, e))
+    except UnicodeDecodeError:
+        raise InputError("%s is not UTF-8 text; save it as UTF-8" % path)
     if not text.strip():
         raise InputError("%s is empty" % path)
     try:

@@ -113,9 +113,11 @@ class Report:
 
 def load(path):
     try:
-        text = sys.stdin.read() if path == "-" else Path(path).read_text(encoding="utf-8")
+        text = sys.stdin.read() if path == "-" else Path(path).read_text(encoding="utf-8-sig")
     except OSError as exc:
         raise SystemExit(f"error: cannot read {path}: {exc.strerror}")
+    except UnicodeDecodeError:
+        raise SystemExit(f"error: {path} is not UTF-8 text; save it as UTF-8")
     stripped = text.lstrip()
     if not stripped:
         raise SystemExit(f"error: {path} is empty")

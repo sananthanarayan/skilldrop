@@ -50,7 +50,8 @@ updates:
       - dependencies
 
   # CI's own tools, locked by hash (.github/tools): pagefind for the site, zizmor for the
-  # workflow audit. Dependabot rewrites the version and the hashes together.
+  # workflow audit, Atheris for fuzzing (requirements-fuzz.txt). Dependabot rewrites the version
+  # and the hashes together.
   - package-ecosystem: npm
     directory: /.github/tools
     schedule:

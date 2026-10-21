@@ -607,6 +607,8 @@ def main(argv=None):
             fmt, used, rows = load(Path(args.csv), args.format)
         except UnicodeDecodeError:
             raise InputError("%s is not UTF-8 text; save it as UTF-8 (CSV UTF-8) and retry" % args.csv)
+        except csv.Error as e:  # e.g. a NUL byte, which Python before 3.11 rejects
+            raise InputError("%s is not a readable CSV: %s" % (args.csv, e))
         a = analyse(rows, args.tag, args.month, args.top, fmt)
     except InputError as e:
         print("error: %s" % e, file=sys.stderr)

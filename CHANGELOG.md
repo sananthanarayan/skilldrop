@@ -8,6 +8,11 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.45 — 2026-10-21
+
+- **The scripts that read your files are fuzzed.** 15 scripts are fuzzed: SQL, Lighthouse and Terraform JSON, brand files, cost and tracker exports, risk registers, event contracts, bundle stats, research matrices and Markdown. Coverage-guided fuzzing with Atheris runs in CI on every change to a script, and for longer every week. The same targets run briefly in the unit tests on every OS ([RFC-0062](docs/rfcs/0062-fuzzing-the-skill-scripts.md)).
+- **The first runs found 11 more crashes, now fixed.** Five scripts crashed on a file that isn't UTF-8: `risk-register`, `event-contract-draft`, `bundle-size-review`, `feedback-synthesis` and `hypothesis-comparison`. `risk-register` also crashed on a stray carriage return. On Python 3.9, five CSV readers crashed on a NUL byte: `cloud-cost-review`, `backlog-triage`, `team-status-report`, `feedback-synthesis` and `hypothesis-comparison`. Each now fails with a one-line message, and every target then ran 6,000 mutated inputs on Python 3.9 and 3.14 without a crash.
+
 ## 0.16.44 — 2026-10-21
 
 - **The 60 bugs the unit tests found are fixed, in 35 skills.** Every known-failure marker is gone, and the tests prove each fix on Linux, macOS and Windows.

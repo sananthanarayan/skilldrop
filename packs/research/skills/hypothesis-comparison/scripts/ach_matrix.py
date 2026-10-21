@@ -33,6 +33,7 @@ Exit codes: 0 report written, 2 bad input.
 
 import argparse
 import csv
+import io
 import sys
 from pathlib import Path
 
@@ -53,7 +54,11 @@ def load(path):
     p = Path(path)
     if not p.is_file():
         fail("file not found: " + str(path))
-    with p.open(newline="", encoding="utf-8-sig") as f:
+    try:
+        text = p.read_text(encoding="utf-8-sig")
+    except UnicodeDecodeError:
+        fail("{} is not UTF-8 text; save it as UTF-8 (in Excel: CSV UTF-8)".format(path))
+    with io.StringIO(text, newline="") as f:
         reader = csv.DictReader(f)
         if not reader.fieldnames:
             fail("the CSV is empty")
@@ -123,7 +128,10 @@ def main():
     ap.add_argument("-o", "--output", help="write the report here instead of stdout")
     args = ap.parse_args()
 
-    hyps, rows = load(args.matrix)
+    try:
+        hyps, rows = load(args.matrix)
+    except csv.Error as e:  # e.g. a NUL byte, which Python before 3.11 rejects
+        fail("{} is not a readable CSV: {}".format(args.matrix, e))
     s = scores(hyps, rows)
     order = ranking(hyps, s)
     top = leaders(hyps, s)

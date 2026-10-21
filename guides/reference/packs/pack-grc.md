@@ -51,7 +51,7 @@ Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/grc/skills/dpia/SKILL.md) 
 
 Build or update an enterprise or project risk register — each risk written as cause, event and consequence, scored for likelihood and impact on a defined scale, inherent and residual ratings, a named owner, a treatment (avoid, reduce, transfer, accept), controls, a due date and a review trigger — with a heat map, the top risks that need a decision, and a stdlib script that validates the register CSV and flags overdue reviews.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/grc/skills/risk-register/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/risk-register/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/grc/skills/risk-register/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/risk-register/)
 
 **Use it when** the user wants a risk register, a risk log, a RAID log's risk section, a heat map, or says "what are our top risks", "update the risk register", "score these risks".
 

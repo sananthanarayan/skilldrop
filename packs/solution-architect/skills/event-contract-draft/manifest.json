@@ -1,6 +1,6 @@
 {
   "name": "event-contract-draft",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Draft the contract for an event or message interface (Kafka topics, SNS/SQS, EventBridge, Pub/Sub, RabbitMQ, webhooks) as an AsyncAPI 3.0 document plus a short decisions page — past-tense event names, a required envelope with event id for deduplication, the partition key and the ordering it does and doesn't give, at-least-once delivery and how consumers stay idempotent, data minimisation with PII marked, additive-only versioning with dated deprecation, and retention, replay and dead-letter handling. Use when the user wants to define events, design a Kafka topic or message schema, write an AsyncAPI spec, agree what a producer publishes and what consumers must do, or version an event safely.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },

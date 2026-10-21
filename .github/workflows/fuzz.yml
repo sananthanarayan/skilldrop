@@ -1,0 +1,58 @@
+# Fuzz the skill scripts that parse users' files (RFC-0062): SQL, Lighthouse and Terraform JSON,
+# brand files, cost and tracker exports, risk registers, event contracts, bundle stats.
+#
+# Coverage-guided with Atheris (libFuzzer for Python), which has Linux x86-64 wheels only, so
+# this runs on ubuntu. The same targets run briefly on every OS in the unit tests
+# (tests/test_fuzz_targets.py). A crash fails the job and uploads the input that caused it;
+# reproduce one locally with: python3 tests/fuzz/fuzz.py --target <name> --replay <file>
+name: fuzz
+
+on:
+  pull_request:
+    paths:
+      - "packs/*/skills/*/scripts/**"
+      - "tests/fuzz/**"
+      - "tests/support.py"
+      - ".github/tools/requirements-fuzz.txt"
+      - ".github/workflows/fuzz.yml"
+  push:
+    branches: [main]
+    paths:
+      - "packs/*/skills/*/scripts/**"
+      - "tests/fuzz/**"
+  schedule:
+    - cron: "17 5 * * 0" # weekly, longer runs
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fuzz-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fuzz:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      # 20 s a target on a pull request or push, 120 s on the weekly run: 15 targets.
+      SECONDS_PER_TARGET: ${{ github.event_name == 'schedule' && '120' || '20' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install Atheris, locked by hash
+        run: |
+          python3 --version
+          python3 -m pip install --quiet --user --require-hashes --only-binary :all: -r .github/tools/requirements-fuzz.txt
+      - name: Fuzz every target
+        run: python3 tests/fuzz/fuzz.py --all --seconds "$SECONDS_PER_TARGET"
+      - name: Keep the inputs that crashed
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: fuzz-crashes
+          path: fuzz-crashes/
+          if-no-files-found: ignore
+          retention-days: 14
