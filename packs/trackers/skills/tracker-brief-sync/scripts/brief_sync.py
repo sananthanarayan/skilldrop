@@ -334,11 +334,19 @@ def cmd_export(args) -> int:
                             it.get("parent") or "", by_id[it["parent"]]["title"] if it.get("parent") else "",
                             source_line(spec, it, doc_info)])
         text = out.getvalue()
+    # Written as built, with no newline translation: the CSV's rows end in \r\n, as CSV
+    # requires, and on Windows a text-mode write would turn each into \r\r\n, which an
+    # importer reads as a blank row between every issue.
     if args.output:
-        args.output.write_text(text, encoding="utf-8")
+        with open(args.output, "w", encoding="utf-8", newline="") as fh:
+            fh.write(text)
         n_epics = sum(1 for it in items if it["type"].lower() == "epic")
         sys.stderr.write("wrote {}: {} items ({} epics, {} others)\n".format(
             args.output, len(items), n_epics, len(items) - n_epics))
+    elif hasattr(sys.stdout, "buffer"):
+        sys.stdout.flush()
+        sys.stdout.buffer.write(text.encode("utf-8"))
+        sys.stdout.buffer.flush()
     else:
         sys.stdout.write(text)
     return 0

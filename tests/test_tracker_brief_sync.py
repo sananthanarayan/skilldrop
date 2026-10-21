@@ -3,10 +3,12 @@ import io
 import json
 import os
 import shlex
+import subprocess
+import sys
 import unittest
 from pathlib import Path
 
-from tests.support import load, run, workdir, write, read
+from tests.support import load, run, script_path, workdir, write, read
 
 SKILL, SCRIPT = "tracker-brief-sync", "brief_sync.py"
 m = load(SKILL, SCRIPT)
@@ -120,6 +122,23 @@ class ExportTests(unittest.TestCase):
         self.assertEqual(rows[2][4], "Guests check out with email.\n\nAcceptance criteria:\n- " + AC[0] +
                          "\n\nSource: prd.md#requirements (R1)")
         self.assertTrue(rows[1][4].endswith("Source: prd.md#goals (G1)"))
+
+    def test_csv_rows_end_in_one_crlf_in_a_file_and_on_stdout(self):
+        # A text-mode write on Windows turned each \r\n into \r\r\n: a blank row per issue.
+        with workdir() as d:
+            s = write(os.path.join(d, "spec.json"), spec())
+            doc_path = write(os.path.join(d, "prd.md"), DOC)
+            out = os.path.join(d, "out.csv")
+            code, _, err = run(SKILL, SCRIPT, "export", s, "--target", "jira", "--doc", doc_path, "-o", out)
+            self.assertEqual(code, 0, err)
+            with open(out, "rb") as fh:
+                raw = fh.read()
+            self.assertNotIn(b"\r\r\n", raw)
+            self.assertTrue(raw.startswith(b"Issue Id,") and b"\r\n" in raw)
+            r = subprocess.run([sys.executable, script_path(SKILL, SCRIPT), "export", s, "--target", "jira",
+                                "--doc", doc_path], capture_output=True)
+            self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertNotIn(b"\r\r\n", r.stdout)
 
     def test_doc_url_used_in_source_line(self):
         with workdir() as d:

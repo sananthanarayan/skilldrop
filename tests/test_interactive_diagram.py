@@ -747,5 +747,21 @@ class TestCli(unittest.TestCase):
         self.assertIn("cannot read", err)
 
 
+
+class TestShownPath(unittest.TestCase):
+    def test_a_path_on_another_drive_is_shown_absolute(self):
+        # Windows: os.path.relpath raises ValueError across drives (C: vs D:).
+        real = m.os.path.relpath
+        def other_drive(*a, **k):
+            raise ValueError("path is on mount 'C:', start on mount 'D:'")
+        m.os.path.relpath = other_drive
+        try:
+            self.assertEqual(m.shown("out/diagram.html"), os.path.abspath("out/diagram.html"))
+        finally:
+            m.os.path.relpath = real
+
+    def test_a_path_under_the_current_folder_is_shown_relative(self):
+        self.assertEqual(m.shown(os.path.join("out", "d.html")), os.path.join("out", "d.html"))
+
 if __name__ == "__main__":
     unittest.main()
