@@ -848,6 +848,7 @@ def evals_page(skills):
 <div><dt>Run</dt><dd>{("Benchmarked " + esc(bench["date"]) + ", by hand") if bench else "By hand"}</dd></div>
 </dl>
 <p><code>validate.py</code> fails any skill without both files, on every pull request. The acceptance evals are run by hand with <code>run_bench.py</code>, as agent sessions with and without each skill; the latest result is below. A <a href="{REPO_URL}/actions/workflows/evals.yml">scheduled workflow</a> asks a model each week which skill it would load for every trigger query, and once a month runs the acceptance evals under a budget; it is switched off until the repository has an API key. A miss is a prompt to look at the description, not a gate. Run them yourself with <code>python3 run_evals.py</code> and an <code>ANTHROPIC_API_KEY</code>.</p>
+<p>The site itself is checked with the catalogue's own skills: <a href="../docs/explanation/own-skills-on-own-site.html">its performance and accessibility reviews, and what was fixed</a>.</p>
 {bench_section(bench) if bench else ""}
 {trend_section(eval_runs())}
 <h2 id="every-skill">Every skill</h2>

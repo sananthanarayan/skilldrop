@@ -8,6 +8,18 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.42 — 2026-10-21
+
+- **skilldrop's site is reviewed by its own skills**, and the [reviews are published](https://sananthanarayan.github.io/skilldrop/docs/explanation/own-skills-on-own-site.html) ([RFC-0061](docs/rfcs/0061-own-skills-on-own-site.md)).
+  - **`accessibility-audit`** found three problems, now fixed:
+    - keyboard focus was invisible on three of the four install tabs on the home page;
+    - text on the accent colour was just under 4.5:1;
+    - search-field borders were too faint to find.
+
+    Every checked page now scores 100 on Lighthouse's accessibility checks.
+  - **`web-performance-review`** found no vital at risk in the lab: LCP 1.0–1.9 s, CLS 0, no blocking time. The docs pages no longer wait on the code-colouring stylesheet before they paint.
+- **Pull requests here are reviewed by `pre-merge-review`**, with the review posted to the check's summary. It reports and never blocks, and it runs only once the repository's API key is set.
+
 ## 0.16.41 — 2026-10-21
 
 - **The share card says what sets skilldrop apart.** The card that shows when the site or repo is linked in Slack, Teams or LinkedIn says that skills are run with and without themselves, that 4 were retired for losing, and that gates can say no. `validate.py` checks the retired count on the card against the catalogue, the same way it checks the other counts.
