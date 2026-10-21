@@ -808,8 +808,9 @@ def main():
         n_packs = len(catalog.pack_names())
         for claim, actual in ((r"(\d+) skills", len(skill_dirs)),
                               (r"(\d+) (?:role )?packs", n_packs),
-                              (r"(\d+) reviewer subagents", n_agents)):
-            m = re.search(claim, og_txt)
+                              (r"(\d+) reviewer subagents", n_agents),
+                              (r"(\d+) retired", len(index_doc.get("retired", {})))):
+            m = re.search(claim, re.sub(r"<[^>]+>", "", og_txt))
             if m and int(m.group(1)) != actual:
                 fail("assets/og.svg", f"says '{m.group(0)}' but {actual} are on disk "
                                       f"— update the SVG and re-render: rsvg-convert -w 1200 -h 630 "
