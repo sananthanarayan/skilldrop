@@ -11,8 +11,8 @@
 # npm: only for .github/tools, the hash-locked build tools CI installs (pagefind). The
 # published package has zero dependencies, so it needs no npm updates of its own.
 #
-# Eval fixtures hold no live dependency files: a fake project's package.json, go.mod or
-# Dockerfile is stored as package.json.fixture, so the dependency graph never reads its pins as ours
+# Eval fixtures hold no live dependency files: a fake project's package.json or go.mod is
+# stored as package.json.fixture, so the dependency graph never reads its pins as ours
 # (RFC-0058; validate.py enforces it, run_bench.py restores the name for a run).
 version: 2
 updates:

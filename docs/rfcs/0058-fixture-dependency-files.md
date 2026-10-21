@@ -40,10 +40,13 @@ read, and the run sees the real name.
 - **`validate.py` fails** on a dependency file under `evals/files/` or `examples/inputs/`
   that still has its real name. The message gives the name to use.
 
-**Later, container files too.** OpenSSF Scorecard's Pinned-Dependencies check reads every
-`Dockerfile` for a base image pinned by digest. A fixture's `FROM python:3.9-slim` was the
-check's only finding: there, the old base image is the scenario. So `Dockerfile`, `Containerfile`
-and `*.dockerfile` join the list, under the same `.fixture` rule.
+**Later, container files, which need a different answer.** OpenSSF Scorecard's
+Pinned-Dependencies check reads every file with "dockerfile" anywhere in its name, in any case,
+for base images pinned by digest. So the `.fixture` rename can't hide one: `Dockerfile.fixture`
+was flagged too. A fixture's Dockerfile instead pins each `FROM` by digest:
+`python:3.9-slim@sha256:…` keeps the scenario's image and tag, and nothing builds it, so the
+digest can't go stale in a way that matters. `validate.py` fails a fixture Dockerfile with an
+unpinned `FROM`. A `FROM` of `scratch` or of an earlier build stage needs no digest.
 
 Once the manifests leave the default branch, GitHub closes the alerts raised against them.
 No fixture can raise a new one.
