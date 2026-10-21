@@ -64,6 +64,7 @@ New here? Start with the [operating model](explanation/operating-model.md): the 
 - [Install options](reference/install-options.md) — every CLI install command and flag, the plugin marketplace's plugins and how they are built, and the reviewer subagents
 - [Install targets and dependencies](reference/install-targets.md) — where each target writes skills and subagents, by-hand steps per tool, what `--local` does, and per-skill dependency installs
 - [Updates and the install ledger](reference/update-and-ledger.md) — what outdated, update, diff and doctor compare and decide: the ledger, `.upstream` rules, flags, edge cases
+- [Versioning and what stays stable](reference/versioning-and-stability.md) — what 1.0.0 promises: the CLI, skill folders and names, scripts' flags and exit codes, loops, packs, the Action and plugin names; what each kind of release changes; deprecation and retirement
 - [The skilldrop GitHub Action](reference/ci-action.md) — every input and output of the Action, what it never runs, good fits, cost and privacy
 - [Benchmark options and report](reference/benchmark-options.md) — every `run_bench.py` flag, how each run is isolated, what it writes, and what each number in the report means
 - [MCP servers and skills](reference/mcp-servers.md) — which MCP servers pair with which skills and loops, config for each tool, security rules and troubleshooting

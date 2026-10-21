@@ -6,7 +6,7 @@
 > 117 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.16.46.
+> Version 1.0.0.
 
 ## Start here
 
@@ -246,6 +246,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [The skill contract](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/skill-contract.md) *(reference)*: What a new skill folder must contain — frontmatter, manifest, size, scripts, evals, catalogue entries — and what validate.py checks before it merges.
 - [Skills that ship scripts](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/skills-with-scripts.md) *(reference)*: Every skill that ships scripts and what each declares it needs — packages, environment variables, hosts, programs and files — and how to invoke a skill from Claude Code or any other IDE.
 - [Updates and the install ledger](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/update-and-ledger.md) *(reference)*: What outdated, update, diff and doctor compare and decide — the ledger file, how edited files become .upstream, every update flag, and the edge cases.
+- [Versioning and what stays stable](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/versioning-and-stability.md) *(reference)*: What skilldrop promises from 1.0.0 — the CLI, skill folders and names, scripts' flags and exit codes, loops, packs, the GitHub Action and plugin names — what each kind of release can change, and how deprecation and retirement work.
 - [From use-case to deployed agent — the AI engineering workflow](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/ai-engineering-workflow.md) *(tutorial)*: End-to-end AI adoption: triage the use case, assess org readiness, design the loop and agents, threat-model the system, build the evals, measure what shipped.
 - [From complaint to closed incident](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/complaint-to-closed-incident.md) *(tutorial)*: A user complaint triggers a full response cycle — discover what's broken, operate to fix it, and close the loop with a postmortem and runbook update. Uses the discover and operate loops.
 - [From a dashboard request to numbers people can defend](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/dashboard-request-to-defensible-numbers.md) *(tutorial)*: Run the measure loop on a real request. The spec cuts the charts that serve no decision, the SQL review catches a join that inflated revenue, and the loop stops for the metric owners instead of picking between two teams' definitions of an active customer.
@@ -324,5 +325,5 @@ except `api-builder` requires `core`, which installs with it.
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 63 RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 64 RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.
