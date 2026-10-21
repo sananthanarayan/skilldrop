@@ -16,7 +16,9 @@ import tempfile
 
 from tests.support import load
 
-# (name, skill, script, argv with {in} and {out}, input suffix, exit codes that mean "handled", seeds)
+# (name, skill, script, argv with {in}, {out} and {root}, input suffix, exit codes that mean "handled", seeds)
+# A suffix starting with "/" places the input inside a throwaway repository at that path, with a
+# sibling record and the folder it names, and {root} is that repository.
 TARGETS = [
     ("sql", "sql-review", "sql_lint.py", ["{in}", "--format", "json", "-o", "{out}"], ".sql", (0, 1, 2), [
         b"select a.id, count(*) / count(b.x) as r from a left join b on a.id = b.a_id\n"
@@ -86,6 +88,12 @@ TARGETS = [
     ("ach-matrix", "hypothesis-comparison", "ach_matrix.py", ["{in}", "-o", "{out}"], ".csv", (0, 1, 2), [
         b"evidence,credibility,H1 tracking bug,H2 real drop\nE1 drop only on Safari,high,C,I\nE2 support tickets flat,medium,C,I\n",
     ]),
+    ("context-graph", "context-graph", "context_graph.py", ["--root", "{root}", "--json", "-o", "{out}"],
+     "/docs/adr/0003-order-events.md", (0, 1, 2), [
+        b"---\nstatus: accepted\ndate: 2026-02-10\n---\n# Order events on SQS\n\nSupersedes ADR-0002. Published from "
+        b"`services/orders/`, see [ADR 1](0001-record.md) and RFC-0012.\n",
+        b"# ADR 3: Kafka\n\n## Status\n\nSuperseded by ADR-0009\n\nDate: 2025-01-02\n\nAmends ADR-0001. `src/x/*`\n",
+    ]),
     ("md-to-html", "md-to-html", "md_to_html.py", ["{in}", "-o", "{out}", "--toc"], ".md", (0, 1, 2), [
         b"### Note\n\n## Setup\n\nRun **this** `cmd` and see [docs](https://docs.example/).\n\n| a | b |\n|---|---|\n| 1 | 2 |\n"
         b"\n```python\nprint('x')\n```\n\n- [ ] task\n> quote\n",
@@ -105,12 +113,20 @@ def runner(name):
     mod = load(skill, script)
     takes_argv = bool(inspect.signature(mod.main).parameters)
     work = tempfile.mkdtemp(prefix="skilldrop-fuzz-")
-    src, out = os.path.join(work, "input" + suffix), os.path.join(work, "out")
+    out, repo = os.path.join(work, "out"), os.path.join(work, "repo")
+    if suffix.startswith("/"):
+        src = os.path.join(repo, *suffix.strip("/").split("/"))
+        os.makedirs(os.path.dirname(src), exist_ok=True)
+        os.makedirs(os.path.join(repo, "services", "orders"), exist_ok=True)
+        with open(os.path.join(os.path.dirname(src), "0001-record.md"), "w", encoding="utf-8") as fh:
+            fh.write("# ADR-0001: Record decisions\n\nStatus: Accepted\n")
+    else:
+        src = os.path.join(work, "input" + suffix)
 
     def one(data):
         with open(src, "wb") as fh:
             fh.write(data)
-        args = [a.replace("{in}", src).replace("{out}", out) for a in argv]
+        args = [a.replace("{in}", src).replace("{out}", out).replace("{root}", repo) for a in argv]
         saved = sys.argv
         sys.argv = [script] + args
         try:

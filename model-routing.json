@@ -270,6 +270,7 @@
       "tier": "standard",
       "rationale": "Reads a SKILL.md and synthesizes eval cases — requires understanding of skill intent but not heavy reasoning."
     },
+    "context-graph": {"tier": "standard", "rationale": "The decision graph and its consistency checks are computed by its script; the model quotes the governing record and writes the fixes."},
     "event-contract-draft": {
       "tier": "standard",
       "rationale": "Contract drafting against the AsyncAPI shape with fixed rules on ordering, delivery and versioning; mid tier is enough."

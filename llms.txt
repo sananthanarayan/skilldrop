@@ -1,12 +1,12 @@
 # skilldrop
 
-> 116 portable skills for the artifacts knowledge work ships (ADRs, design docs,
+> 117 portable skills for the artifacts knowledge work ships (ADRs, design docs,
 > PRDs, runbooks, threat models, decks, postmortems), plus 11 loops that sequence them
 > behind gates. A loop orders skills; a skill never calls a skill, so every one of the
-> 116 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
+> 117 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 0.16.45.
+> Version 0.16.46.
 
 ## Start here
 
@@ -122,6 +122,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use cloud-cost-review](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-cloud-cost-review.md) *(how-to)*: Review actual cloud spend from a cost export (AWS CUR or Data Exports, GCP billing export, Azure cost details) and produce a ranked savings report
 - [Use codebase-tour](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-codebase-tour.md) *(how-to)*: Get a newcomer (a new engineer, or the agent itself) oriented in an unfamiliar repository before they make one specific change, with a short tour scoped to that change
 - [Use content-design](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-content-design.md) *(how-to)*: Write a content spec for a page or journey from user needs
+- [Use context-graph](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-context-graph.md) *(how-to)*: Map the decisions behind a codebase from its ADRs, RFCs and design records
 - [Use council-review](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-council-review.md) *(how-to)*: Convene a council of distinct senior-engineer personas (Architect, Security, Operator/SRE, Pragmatist, User-Advocate, plus optional bench seats) to deliberate a…
 - [Use cover-letter](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-cover-letter.md) *(how-to)*: Write a cover letter for one job from the person's resume and the posting
 - [Use dashboard-spec](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-dashboard-spec.md) *(how-to)*: Spec a dashboard before anyone builds it
@@ -267,7 +268,7 @@ Each skill and loop sits in exactly one pack folder, `packs/<pack>/`. Every role
 except `api-builder` requires `core`, which installs with it.
 
 - **core** (4 skills, loops: ship-a-draft): The cross-role toolkit every pack builds on: structured intake, document critique, the review council, and output hygiene, plus the ship-a-draft wrapper. Installed automatically with every role pack.
-- **solution-architect** (11 skills, loops: design, requires core): Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.
+- **solution-architect** (12 skills, loops: design, requires core): Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.
 - **product-manager** (10 skills, loops: discover, requires core): Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, and success measurement.
 - **dev-team** (20 skills, loops: build, modernize, release, requires core): Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, pull request descriptions, a ranked technical-debt register, migrations, launch readiness, release notes, agent-policy files, and code-quality gates.
 - **sre-oncall** (8 skills, loops: operate, requires core): Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.
@@ -289,7 +290,7 @@ except `api-builder` requires `core`, which installs with it.
 ## Outcomes — browse by why you are here
 
 - **decide-what-to-build** (13 skills): Turn a direction into a committed, measurable plan: press releases, strategy frameworks, OKRs, business cases, requirements, PRDs, and the metrics that will say whether it worked.
-- **design-the-system** (17 skills): Commit the shape before the code: decision records, design docs, diagrams, API and data contracts, migration and threat models, and the design of any agentic parts.
+- **design-the-system** (18 skills): Commit the shape before the code: decision records, design docs, diagrams, API and data contracts, migration and threat models, and the design of any agentic parts.
 - **build-and-review-software** (24 skills): The loop around the code itself: supervised implementation, adversarial review panels, test plans, triage, pull request descriptions, a ranked technical-debt register, accessibility and static-analysis passes, and the policy files agents read.
 - **build-on-the-claude-api** (4 skills): Skills for teams building directly on the Anthropic API — prompt caching strategy, token budgeting, eval generation, and tool-use schema writing.
 - **run-and-recover-the-service** (11 skills): Operate what shipped: runbooks, observability design, release notes, incident communication, and the postmortem that closes the loop.
@@ -318,10 +319,10 @@ except `api-builder` requires `core`, which installs with it.
 - [catalogue.json](https://sananthanarayan.github.io/skilldrop/catalogue.json): every skill, loop, pack and outcome as machine-readable JSON — name, description, tier, tags, related. Prefer this over scraping the site.
 - [model-routing.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/model-routing.json): the abstract tier per skill (light/standard/heavy) and the provider map that resolves a tier to a concrete model.
 - [catalogue.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/catalogue.json): pack display order and outcome membership; each pack's metadata is in `packs/<pack>/pack.json`.
-- All 116 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
+- All 117 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
 
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 62 RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 63 RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.

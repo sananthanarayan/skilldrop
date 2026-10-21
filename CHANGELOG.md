@@ -8,6 +8,19 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.46 — 2026-10-21
+
+- **`context-graph`, a new skill in `solution-architect`, answers "why is it like this?" from your decision records.** It reads ADRs, RFCs and design records in MADR, Nygard or frontmatter form, and builds the graph between them: what supersedes or amends what, which records cite which, the files and folders each decision governs, and, with `--git`, the commits behind each. It checks that graph against the code, and finds:
+  - a supersession only one side records;
+  - a current decision naming code that is gone or has moved;
+  - a decision the code no longer follows;
+  - a guide still teaching a superseded decision;
+  - two current decisions on one path;
+  - a reference to a record that doesn't exist.
+
+  When nothing was written down, it says "no recorded decision" ([RFC-0063](docs/rfcs/0063-context-graph.md)).
+- **It was admitted on its third draft.** Blind judges preferred it to plain Claude Code in 4 and 5 of 8 pairs on new held-out evals, and it met 70% of their checks, against 45% without it.
+
 ## 0.16.45 — 2026-10-21
 
 - **The scripts that read your files are fuzzed.** 15 scripts are fuzzed: SQL, Lighthouse and Terraform JSON, brand files, cost and tracker exports, risk registers, event contracts, bundle stats, research matrices and Markdown. Coverage-guided fuzzing with Atheris runs in CI on every change to a script, and for longer every week. The same targets run briefly in the unit tests on every OS ([RFC-0062](docs/rfcs/0062-fuzzing-the-skill-scripts.md)).

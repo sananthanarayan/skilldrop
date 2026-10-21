@@ -1,0 +1,33 @@
+{
+  "name": "context-graph",
+  "version": "0.1.0",
+  "description": "Map the decisions behind a codebase from its ADRs, RFCs and design records — each record's status and date, what supersedes or amends what, which records cite which, the files and folders each decision governs, and with git the commits that implemented it — then answer \"why is it like this?\" from the record and check the record is still true. Finds supersessions only one side records, current decisions pointing at code that is gone, two current decisions governing the same path, and references to records that don't exist. Use when the user asks \"why do we use X\", \"which decisions govern this file or service\", \"is this ADR still current\", \"are our ADRs out of date\", \"what was decided before I change this\", wants a map of the architecture decisions, or is onboarding onto a codebase's history.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": [
+    "adr-generator",
+    "codebase-tour",
+    "reverse-architecture",
+    "decision-log"
+  ],
+  "handoff": [
+    {
+      "to": "adr-generator",
+      "when": "a decision is live but unrecorded, or a record needs superseding, deprecating or correcting",
+      "purpose": "Write the new or corrected record, with the supersession link the graph found missing.",
+      "fallback": "If adr-generator is absent, give the record's title, status line, the context in two sentences, the decision and its consequences, and the exact Superseded by line for the old record."
+    }
+  ],
+  "tags": ["architecture", "adr", "decision-records", "onboarding", "documentation"],
+  "permissions": {
+    "network": [],
+    "commands": ["git"],
+    "files": "named-paths",
+    "notes": "context_graph.py reads the decision-record folders under --root and checks whether the paths they name exist. With --git it runs `git log` read-only. It writes only to the -o and --mermaid paths."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "The graph and its checks are computed by the script; the model reads records, quotes the rationale and writes the fixes."
+  }
+}
