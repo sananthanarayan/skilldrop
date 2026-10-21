@@ -8,6 +8,10 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 0.16.41 — 2026-10-21
+
+- **The share card says what sets skilldrop apart.** The card that shows when the site or repo is linked in Slack, Teams or LinkedIn says that skills are run with and without themselves, that 4 were retired for losing, and that gates can say no. `validate.py` checks the retired count on the card against the catalogue, the same way it checks the other counts.
+
 ## 0.16.40 — 2026-10-20
 
 - **Every release can be verified.** Each GitHub Release now carries:
