@@ -35,7 +35,7 @@ R = `https://github.com/sananthanarayan/skilldrop/blob/main`, S = `https://sanan
 | `repo_interim` | Met | Every merged pull request is in `main` between releases |
 | `repo_distributed` | Met | git |
 | `version_unique` | Met | Each release has its own version: R/package.json, R/CHANGELOG.md |
-| `version_semver` | Met | SemVer: R/AGENTS.md "Releasing" |
+| `version_semver` | Met | SemVer since 1.0.0: R/guides/reference/versioning-and-stability.md, R/docs/rfcs/0064-one-point-oh-stability.md |
 | `version_tags` | Met | A `v<version>` tag for each release: https://github.com/sananthanarayan/skilldrop/tags |
 | `release_notes` | Met | R/CHANGELOG.md; each GitHub Release's notes are its changelog entry |
 | `release_notes_vulns` | N/A | No release has fixed a publicly known vulnerability with a CVE |
@@ -63,9 +63,9 @@ R = `https://github.com/sananthanarayan/skilldrop/blob/main`, S = `https://sanan
 | `test` | Met | `python3 -m unittest discover -s tests -t .` (the skill scripts), `node cli_smoke.js` (the CLI), `python3 validate.py`: R/CONTRIBUTING.md |
 | `test_invocation` | Met | `unittest` discovery, the standard runner for Python |
 | `test_most` | Met | Every skill script has a test file, enforced by validate.py: R/docs/rfcs/0060-skill-script-unit-tests.md |
-| `test_continuous_integration` | Met | Linux, macOS and Windows on every pull request: R/.github/workflows/cli.yml |
+| `test_continuous_integration` | Met | Linux, macOS and Windows on every pull request, plus Python 3.9: R/.github/workflows/cli.yml |
 | `test_policy` | Met | R/CONTRIBUTING.md: "A skill with a script needs its tests", enforced by validate.py |
-| `tests_are_added` | Met | Pull request #82 added tests for every script; each new skill adds evals |
+| `tests_are_added` | Met | Pull request #82 added tests for every script; #86 added `context-graph` with 52 tests, evals and a fuzz target |
 | `tests_documented_added` | Met | R/CONTRIBUTING.md "Before you open the PR"; R/.github/pull_request_template.md |
 | `warnings` | Met | validate.py (repo lint), actionlint and zizmor (workflows), CodeQL (JavaScript and Python): R/.github/workflows/security.yml, R/.github/workflows/codeql.yml |
 | `warnings_fixed` | Met | Each runs as a required check on every pull request; a finding blocks the merge |
@@ -100,10 +100,10 @@ R = `https://github.com/sananthanarayan/skilldrop/blob/main`, S = `https://sanan
 | `static_analysis_common_vulnerabilities` | Met | CodeQL security queries; zizmor for GitHub Actions injection and permissions |
 | `static_analysis_fixed` | Met | CodeQL findings are fixed before merge; for example the file-system race fixed in pull request #78 |
 | `static_analysis_often` | Met | Every pull request and every push to `main` |
-| `dynamic_analysis` | Met | Atheris fuzzing of the skill scripts' parsers in CI (RFC-0062). Answer Unmet until that pull request is merged |
+| `dynamic_analysis` | Met | Atheris fuzzing of 16 parsing scripts on every pull request that touches one, and weekly: R/.github/workflows/fuzz.yml, R/docs/rfcs/0062-fuzzing-the-skill-scripts.md |
 | `dynamic_analysis_unsafe` | N/A | JavaScript and Python are memory-safe |
 | `dynamic_analysis_enable_assertions` | Met | The fuzz targets assert each parser either succeeds or fails with its documented error |
-| `dynamic_analysis_fixed` | Met | Crashes found by fuzzing are fixed before merge |
+| `dynamic_analysis_fixed` | Met | Crashes found by fuzzing are fixed before merge: pull request #85 fixed the 14 its first runs found |
 
 ## After the badge
 
