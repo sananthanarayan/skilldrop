@@ -26,6 +26,7 @@ import subprocess
 import sys
 import tempfile
 import zipfile
+import zlib
 from collections import OrderedDict
 from datetime import datetime, timedelta
 from html.parser import HTMLParser
@@ -148,12 +149,29 @@ def truthy(el, attr=W + "val"):
     return v is None or v not in ("0", "false", "off", "none")
 
 
+def span_of(value, cap):
+    """A cell's column span, from 1 to the format's own limit (Word: 63 columns; HTML: colspan
+    1000), so a damaged or hostile value can't make a row of a billion cells."""
+    v = (value or "1").strip()
+    return min(int(v), cap) if v.isascii() and v.isdigit() and int(v) > 0 else 1
+
+
 def open_zip(path, kind):
     try:
-        return zipfile.ZipFile(str(path))
+        z = zipfile.ZipFile(str(path))
     except zipfile.BadZipFile:
+        with open(str(path), "rb") as fh:
+            if fh.read(8) == b"\xD0\xCF\x11\xE0\xA1\xB1\x1A\xE1":
+                # Office saves a password-protected .docx/.pptx/.xlsx as a compound file holding
+                # the encrypted package, not as a zip
+                sys.exit("error: %s is password-protected (or an old binary Office file). Open it, remove "
+                         "the password or save it as %s, and rerun." % (path, kind))
         sys.exit("error: %s is not a valid %s file (not a zip package). If it is an old binary "
                  "Office file, save it as %s first." % (path, kind, kind))
+    if any(info.flag_bits & 0x1 for info in z.infolist()):
+        sys.exit("error: %s has encrypted parts, which Office never writes; it is damaged, or was "
+                 "zipped with a password by another tool" % path)
+    return z
 
 
 # ---------------------------------------------------------------- docx
@@ -210,6 +228,9 @@ def docx_to_md(path, rep):
                 break
 
     body = ET.fromstring(z.read("word/document.xml")).find(W + "body")
+    if body is None:
+        sys.exit("error: %s has no document body (word/document.xml has no w:body in the WordprocessingML "
+                 "namespace); it is not a Word document, or it is damaged" % path)
 
     def para_segments(p, in_table=False):
         segs = []
@@ -312,7 +333,7 @@ def docx_to_md(path, rep):
                 return ("decimal", 0)
             return None
         fmt = num_fmt.get(num_id, {}).get(ilvl, "bullet")
-        return (fmt, int(ilvl))
+        return (fmt, min(max(int(ilvl), 0), 8))  # Word's list levels are 0 to 8
 
     def table_md(tbl):
         rows = []
@@ -332,7 +353,7 @@ def docx_to_md(path, rep):
                         text = ""
                 row.append(text)
                 if tcpr is not None and tcpr.find(W + "gridSpan") is not None:
-                    row.extend([""] * (int(tcpr.find(W + "gridSpan").get(W + "val", "1")) - 1))
+                    row.extend([""] * (span_of(tcpr.find(W + "gridSpan").get(W + "val"), 63) - 1))
             rows.append(row)
         if len(list(tbl.iter(W + "tbl"))) > 1:
             rep.notes.append("a nested table was flattened into its parent cell")
@@ -523,7 +544,7 @@ def pptx_to_md(path, rep):
             if not text:
                 continue
             ppr = p.find(A + "pPr")
-            lvl = int(ppr.get("lvl", "0")) if ppr is not None else 0
+            lvl = min(max(int(ppr.get("lvl", "0")), 0), 8) if ppr is not None else 0  # PowerPoint's are 0 to 8
             bullet = is_body
             if ppr is not None:
                 if ppr.find(A + "buNone") is not None:
@@ -618,12 +639,16 @@ def pptx_to_md(path, rep):
 BUILTIN_DATE_FMTS = set(range(14, 23)) | {45, 46, 47}
 
 
-def col_index(ref):
-    letters = re.match(r"([A-Z]+)", ref).group(1)
+def cell_ref(ref):
+    """(row, column) from a cell reference such as B7 or $B$7, counting from 0; None for anything
+    else, so a damaged reference skips that cell rather than the sheet."""
+    m = re.fullmatch(r"\$?([A-Za-z]{1,3})\$?(\d{1,7})", ref.strip())
+    if not m or int(m.group(2)) < 1:
+        return None
     n = 0
-    for ch in letters:
+    for ch in m.group(1).upper():
         n = n * 26 + (ord(ch) - 64)
-    return n - 1
+    return int(m.group(2)) - 1, n - 1
 
 
 def xlsx_to_md(path, rep, max_rows=0):
@@ -678,8 +703,10 @@ def xlsx_to_md(path, rep, max_rows=0):
             ref = c.get("r")
             if not ref:
                 continue
-            row = int(re.search(r"(\d+)$", ref).group(1)) - 1
-            col = col_index(ref)
+            rc = cell_ref(ref)
+            if rc is None:
+                continue
+            row, col = rc
             t = c.get("t", "n")
             v = c.find(S + "v")
             if c.find(S + "f") is not None:
@@ -717,13 +744,14 @@ def xlsx_to_md(path, rep, max_rows=0):
             out.append("*(empty sheet)*")
             out.append("")
             continue
+        # Only the rows and columns that hold a value: one stray cell at ZZZ999999 must not
+        # build a grid of a million empty rows.
         rows_used = sorted({r for r, _ in grid})
         cols_used = sorted({c for _, c in grid})
-        c0, c1 = cols_used[0], cols_used[-1]
-        table = []
-        for r in range(rows_used[0], rows_used[-1] + 1):
-            table.append([grid.get((r, c), "") for c in range(c0, c1 + 1)])
-        table = [r for r in table if any(r)]
+        gaps = cols_used[-1] - cols_used[0] + 1 - len(cols_used)
+        if gaps:
+            rep.notes.append("sheet '%s': %d empty column(s) left out" % (name, gaps))
+        table = [[grid.get((r, c), "") for c in cols_used] for r in rows_used]
         if max_rows and len(table) > max_rows + 1:
             rep.notes.append("sheet '%s' cut to %d of %d data rows (--max-rows)"
                              % (name, max_rows, len(table) - 1))
@@ -860,8 +888,7 @@ class HTMLToMD(HTMLParser):
             if not self.table:
                 self.table.append([])
             self.cell = []
-            span = int(a.get("colspan") or "1") if (a.get("colspan") or "1").isdigit() else 1
-            self._span = span
+            self._span = span_of(a.get("colspan"), 1000)
 
     def handle_endtag(self, tag):
         if tag in self.SKIP:
@@ -1028,29 +1055,60 @@ def _human_size(n):
         n /= 1024.0
 
 
+def _part_text(part):
+    """A text part's content. A charset Python doesn't know (a typo, or a vendor's own label) is
+    read as UTF-8 with replacement characters, as html_to_md does, rather than lost."""
+    try:
+        return part.get_content()
+    except LookupError:
+        return (part.get_payload(decode=True) or b"").decode("utf-8", "replace")
+
+
+def _unescape(text):
+    """The email package keeps undecodable header bytes as surrogates, which can't be written as
+    UTF-8. Read them as UTF-8, with a replacement character for any that aren't."""
+    return text.encode("utf-8", "surrogateescape").decode("utf-8", "replace")
+
+
+def _header(msg, name):
+    """A header's decoded value, or its raw text when it won't parse: Python 3.9's email package
+    raises on a malformed date or address that later versions keep."""
+    try:
+        return _unescape(str(msg.get(name, "")))
+    except (TypeError, ValueError, IndexError, AttributeError, OverflowError):
+        return _unescape(next((" ".join(str(v).split()) for k, v in msg.raw_items() if k.lower() == name.lower()), ""))
+
+
 def eml_to_md(path, rep):
     """An RFC 5322 message (.eml): the plain-text part when there is one, else the HTML part."""
     import email
     from email import policy
     msg = email.message_from_bytes(path.read_bytes(), policy=policy.default)
-    rows = [("From", str(msg.get("From", ""))), ("To", str(msg.get("To", ""))), ("Cc", str(msg.get("Cc", ""))),
-            ("Date", str(msg.get("Date", "")))]
-    plain = msg.get_body(preferencelist=("plain",))
-    html = msg.get_body(preferencelist=("html",))
+    rows = [(h, _header(msg, h)) for h in ("From", "To", "Cc", "Date")]
+    try:
+        plain = msg.get_body(preferencelist=("plain",))
+        html = msg.get_body(preferencelist=("html",))
+        parts = list(msg.iter_attachments())
+    except (AttributeError, TypeError, KeyError):
+        # Python 3.9 fails inside get_body on a multipart message whose boundary never appears.
+        # Read it as one text body, which is what the raw message holds.
+        raw = msg.get_payload()
+        rep.notes.append("the message's MIME parts could not be separated, so its body is the raw text")
+        return _email_md(_header(msg, "Subject"), rows, _email_text(_unescape(raw) if isinstance(raw, str) else ""), [], rep)
     if plain is not None:
-        body = _email_text(plain.get_content())
+        body = _email_text(_part_text(plain))
         if html is not None:
             rep.drop("HTML alternative (the plain-text part was used)", 1)
     elif html is not None:
-        body = _html_text_to_md(html.get_content(), rep)
+        body = _html_text_to_md(_part_text(html), rep)
     else:
         body = ""
     attachments = []
-    for part in msg.iter_attachments():
+    for part in parts:
         payload = part.get_payload(decode=True)
         name = part.get_filename() or ("forwarded message" if part.get_content_type() == "message/rfc822" else None)
         attachments.append((name, len(payload) if payload is not None else None))
-    return _email_md(str(msg.get("Subject", "")), rows, body, attachments, rep)
+    return _email_md(_header(msg, "Subject"), rows, body, attachments, rep)
 
 
 class _CFB:
@@ -1073,14 +1131,20 @@ class _CFB:
         minifat_start, nminifat, difat_start, ndifat = struct.unpack_from("<IIII", data, 60)
         difat = list(struct.unpack_from("<109I", data, 76))
         per = self.ss // 4
-        s, guard = difat_start, 0
-        while ndifat and s < 0xFFFFFFFA and guard < 10000:
+        # A FAT never needs more sectors than it takes to map the file, and lists each one once:
+        # a repeated or looping list would otherwise build a table far larger than the file.
+        nsect = len(data) // self.ss - 1
+        need = -(-nsect // per)
+        s, seen = difat_start, set()
+        while ndifat and s < 0xFFFFFFFA and s not in seen and len(seen) < need:
+            seen.add(s)
             vals = struct.unpack("<%dI" % per, self._sector(s))
             difat += vals[:-1]
-            s, guard, ndifat = vals[-1], guard + 1, ndifat - 1
-        self.fat = []
-        for fs in difat[:nfat]:
-            if fs < 0xFFFFFFFA:
+            s, ndifat = vals[-1], ndifat - 1
+        self.fat, used = [], set()
+        for fs in difat[:min(nfat, need)]:
+            if fs < 0xFFFFFFFA and fs not in used:
+                used.add(fs)
                 self.fat += struct.unpack("<%dI" % per, self._sector(fs))
         raw = self._chain(dir_start)
         self.entries = []
@@ -1108,16 +1172,17 @@ class _CFB:
         return self.d[off:off + self.ss]
 
     def _chain(self, start, mini=False):
-        fat, out, n, seen = (self.minifat if mini else self.fat), [], start, 0
+        fat, out, n, seen = (self.minifat if mini else self.fat), [], start, set()
         while n < 0xFFFFFFFA:
-            if n >= len(fat) or seen > 1000000:
+            if n >= len(fat) or n in seen:  # off the table, or a loop: each sector is read once
                 raise ValueError("compound file has a broken sector chain")
+            seen.add(n)
             if mini:
                 off = n * self.mss
                 out.append(self.ministream[off:off + self.mss])
             else:
                 out.append(self._sector(n))
-            n, seen = fat[n], seen + 1
+            n = fat[n]
         return b"".join(out)
 
     def children(self, idx):
@@ -1171,8 +1236,11 @@ def _msg_fixed(cfb, idx, header):
         ptype, pid = tag & 0xFFFF, "%04X" % (tag >> 16)
         if ptype == 0x0040:
             ft, = struct.unpack_from("<Q", data, off + 8)
-            if ft:
-                out[pid] = _dt(1601, 1, 1) + timedelta(microseconds=ft // 10)
+            try:
+                if ft:
+                    out[pid] = _dt(1601, 1, 1) + timedelta(microseconds=ft // 10)
+            except OverflowError:
+                pass  # a time past the year 9999 is a placeholder or damage; the message has no date
         elif ptype == 0x0003:
             out[pid] = struct.unpack_from("<i", data, off + 8)[0]
     return out
@@ -1679,6 +1747,9 @@ HANDLERS = {
     ".html": html_to_md, ".htm": html_to_md, ".csv": csv_to_md, ".tsv": csv_to_md,
     ".json": json_to_md, ".pdf": pdf_to_md, ".eml": eml_to_md, ".msg": msg_to_md,
 }
+# What a damaged or truncated file raises from the zip, XML, compound-file and email layers.
+DAMAGED = (zipfile.BadZipFile, zipfile.LargeZipFile, zlib.error, EOFError, ET.ParseError, ValueError, LookupError,
+           KeyError, IndexError, NotImplementedError, OSError)
 LEGACY = {".doc": ".docx", ".ppt": ".pptx", ".xls": ".xlsx", ".rtf": ".docx", ".odt": ".docx",
           ".pages": ".docx", ".key": ".pptx", ".numbers": ".xlsx"}
 
@@ -1711,8 +1782,15 @@ def main(argv=None):
             md += "\n"
     elif ext in HANDLERS:
         fn = HANDLERS[ext]
-        md = (fn(path, rep, a.max_rows) if fn is xlsx_to_md else
-              fn(path, rep, ocr=not a.no_ocr, ocr_lang=a.ocr_lang) if fn is pdf_to_md else fn(path, rep))
+        try:
+            md = (fn(path, rep, a.max_rows) if fn is xlsx_to_md else
+                  fn(path, rep, ocr=not a.no_ocr, ocr_lang=a.ocr_lang) if fn is pdf_to_md else fn(path, rep))
+        except DAMAGED as e:
+            if ext not in (".docx", ".pptx", ".xlsx", ".xlsm", ".msg", ".eml"):
+                raise
+            # A file that opens in its own app is a bug here; one that doesn't is damaged.
+            sys.exit("error: %s looks damaged or truncated, so it could not be read as %s (%s: %s). If it "
+                     "opens normally in its own app, please report it." % (path, ext, type(e).__name__, e))
     else:
         sys.exit("error: unsupported file type %r. Supported: %s, .txt, .md"
                  % (ext, ", ".join(sorted(HANDLERS))))

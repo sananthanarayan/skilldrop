@@ -8,6 +8,19 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.0.1 — 2026-10-21
+
+- **`file-to-markdown`'s Office and Outlook readers are now fuzzed, and 16 bugs are fixed.** The fuzzer found 10. Reading the parser around them found 6 more, all hangs or memory blow-ups, which a time-limited fuzzer rarely reaches. The .msg reader is a hand-written binary parser, so it now has a valid Outlook message to start from. Each Office format is fuzzed twice: as a whole file, and with only its XML part changing inside a valid package, so the mutations get past the zip checksum.
+  - **Small files could hang it or fill memory.** A 2.5 KB .msg whose sector chain looped back on itself took 657 MB before it failed; it now stops at the first repeated sector. A spreadsheet with one value at `ZZZ999999` built a grid of a million empty rows, and now keeps only the rows and columns that hold a value. A .msg that listed one FAT sector many times, a Word table cell spanning a billion columns, an HTML `colspan` the same size, or a list nested 99 million levels deep are now capped at what each format allows.
+  - **Damaged files now fail with a one-line message, not a traceback.** That covers a corrupt or truncated .docx, .pptx, .xlsx, .msg or .eml, a package with a part marked as encrypted, a Word file with no body, and a cell reference that isn't one, which is now skipped. A password-protected Office file is now named as one, with the fix: remove the password and rerun.
+  - **Emails read on more inputs.** An unknown charset is read as UTF-8, as the HTML reader already did. A raw UTF-8 header keeps its text. A sent time past the year 9999 is left out. On Python 3.9, a date or MIME boundary that won't parse no longer stops the conversion.
+  - **The fuzzer also runs the converters both ways.** Markdown goes to .docx, .xlsx or .pptx and back through `file-to-markdown`, so every file one writes must be one the other reads. `md-to-confluence` is fuzzed too. All 28 targets then ran 4,000 mutated inputs on Python 3.9 and 3.14 without a crash, and in CI an input that takes over 10 seconds now counts as one ([RFC-0062](docs/rfcs/0062-fuzzing-the-skill-scripts.md)).
+
+- **Four smaller fixes:**
+  - `delivery-metrics-report` and `team-status-report --plan-file` now fail with a one-line message on a file that isn't UTF-8, where they used to show a traceback.
+  - `rollout-plan` rejects `--max-hours nan` or `inf`, which used to print "within nan h".
+  - `hypothesis-comparison` gives an error's real line number after a blank line, and rejects a weight of `nan` or `inf`.
+
 ## 1.0.0 — 2026-10-21
 
 - **skilldrop is 1.0, and it now says what stays stable.** From this release, versions follow Semantic Versioning for the CLI, a skill's folder and name, its scripts' documented flags and exit codes, loops, packs and profiles, the GitHub Action and the plugin names. A change that would break one of them waits for 2.0 ([what stays stable](https://sananthanarayan.github.io/skilldrop/docs/reference/versioning-and-stability.html), [RFC-0064](docs/rfcs/0064-one-point-oh-stability.md)).

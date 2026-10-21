@@ -265,5 +265,16 @@ class DeliveryMetricsCliTests(unittest.TestCase):
         self.assertNotIn("Traceback", err)
 
 
+    def test_non_utf8_deployments_file_exits_2(self):
+        with workdir() as d:
+            path = os.path.join(d, "deploys.csv")
+            with open(path, "wb") as f:
+                f.write("deploy_id,service,deployed_at,status\na1,caf\u00e9,2026-07-06T10:00:00Z,success\n".encode("latin-1"))
+            code, _, err = run(SKILL, SCRIPT, "--deployments", path)
+        self.assertEqual(code, 2)
+        self.assertIn("is not UTF-8 text", err)
+        self.assertNotIn("Traceback", err)
+
+
 if __name__ == "__main__":
     unittest.main()

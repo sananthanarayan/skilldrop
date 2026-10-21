@@ -394,7 +394,7 @@ Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/dev-team/skills/release
 
 Plan the progressive release of a code change behind a feature flag or canary — the exposure ladder (internal, beta cohort, 1%, 5%, 25%, 50%, 100%, or what the traffic supports), and for each step who is exposed, decision and guardrail metrics with a baseline and a threshold against a control cohort, the minimum traffic and time before the numbers mean anything, a promote / hold / roll back rule set in advance, who watches and what aborts automatically; then what turning the flag off does not undo, and who removes the flag by when.
 
-Tier **standard** · v0.2.1 · [SKILL.md](../../../packs/dev-team/skills/rollout-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/rollout-plan/)
+Tier **standard** · v0.2.2 · [SKILL.md](../../../packs/dev-team/skills/rollout-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/rollout-plan/)
 
 **Use it when** the user asks for a rollout plan, canary plan, ramp schedule, progressive delivery or percentage rollout, "how long should the canary run", "when do we go from 5% to 25%", or how to turn on a flagged feature safely.
 

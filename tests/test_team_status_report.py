@@ -214,5 +214,17 @@ class StatusCountsErrorTests(unittest.TestCase):
         self.assertNotIn("Traceback", err)
 
 
+    def test_non_utf8_plan_file_exits_2(self):
+        with workdir() as d:
+            plan = os.path.join(d, "plan.txt")
+            with open(plan, "wb") as f:
+                f.write("CHK-1\nCHK-\u00e9\n".encode("latin-1"))
+            code, err, _, _ = status(d, EXPORT, "export.csv", "--plan-file", plan)
+        self.assertEqual(code, 2)
+        self.assertIn("--plan-file", err)
+        self.assertIn("is not UTF-8 text", err)
+        self.assertNotIn("Traceback", err)
+
+
 if __name__ == "__main__":
     unittest.main()

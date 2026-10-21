@@ -1,9 +1,11 @@
 import os
 import shutil
+import struct
 import unittest
 import zipfile
 from email.message import EmailMessage
 
+from tests.fuzz import seeds
 from tests.support import load, read, run, workdir, write
 
 SKILL, SCRIPT = "file-to-markdown", "to_markdown.py"
@@ -394,6 +396,79 @@ class ToMarkdownTest(unittest.TestCase):
         self.assertIn("not an Outlook .msg file", err)
         self.assertNotIn("Traceback", err)
 
+    def _msg(self, d, data):
+        with open(os.path.join(d, "m.msg"), "wb") as f:
+            f.write(data)
+        return to_md(d, "m.msg")
+
+    def test_msg_subject_sender_recipient_date_body_and_attachment(self):
+        with workdir() as d:
+            code, md, err = self._msg(d, seeds.outlook_msg())
+        self.assertEqual(code, 0, err)
+        self.assertTrue(md.startswith("# Quarterly figures\n"), md)
+        self.assertIn("| From | Avery Example \\<avery@example.com> |", md)
+        self.assertIn("| To | Robin Example \\<robin@example.com> |", md)
+        self.assertIn("| Date | 2022-06-18 04:26 UTC |", md)
+        self.assertIn("Hello,\nthe figures are attached.\nThanks", md)
+        self.assertIn("- figures.csv (22 bytes)", md)
+
+    def test_msg_with_a_looping_sector_chain_fails_fast_without_a_traceback(self):
+        data = bytearray(seeds.outlook_msg())
+        struct.pack_into("<I", data, 512 + 4, 1)  # the directory's sector names itself as the next one
+        with workdir() as d:
+            code, _, err = self._msg(d, bytes(data))
+        self.assertNotEqual(code, 0)
+        self.assertIn("broken sector chain", err)
+        self.assertNotIn("Traceback", err)
+
+    def test_msg_fat_listing_one_sector_many_times_is_read_once(self):
+        data = bytearray(seeds.outlook_msg())
+        struct.pack_into("<I", data, 44, 109)
+        struct.pack_into("<109I", data, 76, *([0] * 109))
+        cfb = self.m._CFB(bytes(data))
+        self.assertEqual(len(cfb.fat), 128)
+
+    def test_msg_sent_time_past_year_9999_is_left_out(self):
+        data = seeds.outlook_msg()
+        good = struct.pack("<Q", 133000000000000000)
+        self.assertEqual(data.count(good), 1)
+        with workdir() as d:
+            code, md, err = self._msg(d, data.replace(good, struct.pack("<Q", 2 ** 64 - 1)))
+        self.assertEqual(code, 0, err)
+        self.assertNotIn("| Date |", md)
+
+    def _eml(self, raw):
+        with workdir() as d:
+            with open(os.path.join(d, "m.eml"), "wb") as f:
+                f.write(raw)
+            return to_md(d, "m.eml")
+
+    def test_eml_with_raw_utf8_in_a_header_keeps_the_text(self):
+        code, md, err = self._eml(b"Subject: Caf\xc3\xa9 rota\r\nFrom: Z\xc3\xbc <z@example.test>\r\n\r\nHi\r\n")
+        self.assertEqual(code, 0, err)
+        self.assertTrue(md.startswith("# Caf\u00e9 rota\n"), md)
+
+    def test_eml_with_a_date_that_will_not_parse_keeps_its_text(self):
+        # Python 3.9's email package raises on this; later versions keep it as text
+        code, md, err = self._eml(b"Subject: Hi\r\nDate: Sat, 18 Jun 2022 04:999999999999999999999:00 +0000\r\n\r\nHi\r\n")
+        self.assertEqual(code, 0, err)
+        self.assertIn("Hi", md)
+
+    def test_eml_multipart_whose_boundary_never_appears_is_read_without_a_traceback(self):
+        code, md, err = self._eml(b"Subject: Hi\r\nContent-Type: multipart/mixed; boundary=\"zz\"\r\n\r\n--b1\r\n"
+                                  b"Content-Type: text/plain\r\n\r\nHello there\r\n--b1--\r\n")
+        self.assertEqual(code, 0, err)
+        self.assertNotIn("Traceback", err)
+
+    def test_eml_with_an_unknown_charset_is_read_as_utf8(self):
+        raw = (b"Subject: Hi\r\nContent-Type: text/plain; charset=x-made-up\r\n\r\nCaf\xc3\xa9 at noon\r\n")
+        with workdir() as d:
+            with open(os.path.join(d, "m.eml"), "wb") as f:
+                f.write(raw)
+            code, md, err = to_md(d, "m.eml")
+        self.assertEqual(code, 0, err)
+        self.assertIn("Caf\u00e9 at noon", md)
+
     # ---------------------------------------------------------------- pdf
 
     def test_pdf_page_layout_table_heading_and_bullets(self):
@@ -480,6 +555,85 @@ class ToMarkdownTest(unittest.TestCase):
             code, _, err = run(SKILL, SCRIPT, os.path.join(d, "n.txt"), "-o", os.path.join(d, "no", "o.md"))
         self.assertNotEqual(code, 0)
         self.assertIn("output folder does not exist", err)
+
+    # ---------------------------------------------------------------- damaged and hostile files
+
+    def test_zip_with_a_corrupt_member_fails_clearly(self):
+        data = bytearray(seeds.docx())
+        at = data.index(b"word/document.xml") + len(b"word/document.xml") + 5
+        data[at] ^= 0xFF  # inside the compressed document
+        with workdir() as d:
+            with open(os.path.join(d, "x.docx"), "wb") as f:
+                f.write(bytes(data))
+            code, _, err = to_md(d, "x.docx")
+        self.assertNotEqual(code, 0)
+        self.assertIn("looks damaged or truncated", err)
+        self.assertNotIn("Traceback", err)
+
+    def test_zip_with_an_encrypted_part_fails_clearly(self):
+        data = bytearray(seeds.xlsx())
+        at = data.index(b"PK\x01\x02")  # the first central-directory entry
+        data[at + 8] |= 0x1  # its "encrypted" flag, which Office never sets
+        with workdir() as d:
+            with open(os.path.join(d, "x.xlsx"), "wb") as f:
+                f.write(bytes(data))
+            code, _, err = to_md(d, "x.xlsx")
+        self.assertNotEqual(code, 0)
+        self.assertIn("has encrypted parts", err)
+        self.assertNotIn("Traceback", err)
+
+    def test_password_protected_office_file_says_so(self):
+        with workdir() as d:
+            with open(os.path.join(d, "x.docx"), "wb") as f:
+                f.write(b"\xD0\xCF\x11\xE0\xA1\xB1\x1A\xE1" + b"\x00" * 504)
+            code, _, err = to_md(d, "x.docx")
+        self.assertNotEqual(code, 0)
+        self.assertIn("is password-protected", err)
+
+    def test_docx_without_a_body_fails_clearly(self):
+        with workdir() as d:
+            with open(os.path.join(d, "x.docx"), "wb") as f:
+                f.write(seeds.docx('<w:document xmlns:w="urn:not-word"><w:body/></w:document>'))
+            code, _, err = to_md(d, "x.docx")
+        self.assertNotEqual(code, 0)
+        self.assertIn("has no document body", err)
+        self.assertNotIn("Traceback", err)
+
+    def test_docx_huge_grid_span_and_list_level_are_capped(self):
+        body = ('<w:tbl><w:tr><w:tc><w:tcPr><w:gridSpan w:val="999999999"/></w:tcPr>' + para("Wide") + '</w:tc></w:tr>'
+                '<w:tr><w:tc>' + para("x") + '</w:tc></w:tr></w:tbl>'
+                '<w:p><w:pPr><w:numPr><w:ilvl w:val="99999999"/><w:numId w:val="1"/></w:numPr></w:pPr>'
+                '<w:r><w:t>Deep</w:t></w:r></w:p>')
+        with workdir() as d:
+            docx(os.path.join(d, "x.docx"), body)
+            code, md, err = to_md(d, "x.docx")
+        self.assertEqual(code, 0, err)
+        self.assertLess(len(md), 2000)
+        self.assertIn("Deep", md)
+
+    def test_xlsx_cell_with_a_damaged_reference_is_skipped(self):
+        rows = [(1, '<c r="A1" t="s"><v>0</v></c><c r="!!" t="s"><v>1</v></c>')]
+        with workdir() as d:
+            self._workbook(os.path.join(d, "b.xlsx"), rows)
+            code, md, err = to_md(d, "b.xlsx")
+        self.assertEqual(code, 0, err)
+        self.assertEqual(md, "## Budget\n\n| Item |\n|---|\n")
+
+    def test_xlsx_one_far_away_cell_does_not_build_a_huge_grid(self):
+        rows = [(1, '<c r="A1" t="s"><v>0</v></c>'), (999999, '<c r="ZZZ999999" t="s"><v>1</v></c>')]
+        with workdir() as d:
+            self._workbook(os.path.join(d, "b.xlsx"), rows)
+            code, md, err = to_md(d, "b.xlsx")
+        self.assertEqual(code, 0, err)
+        self.assertEqual(md, "## Budget\n\n| Item |  |\n|---|---|\n|  | Cost |\n")
+        self.assertIn("18276 empty column(s) left out", err)
+
+    def test_html_huge_colspan_is_capped(self):
+        with workdir() as d:
+            write(os.path.join(d, "t.html"), '<table><tr><td colspan="999999999">a</td></tr><tr><td>b</td></tr></table>')
+            code, md, err = to_md(d, "t.html")
+        self.assertEqual(code, 0, err)
+        self.assertEqual(md.strip().splitlines()[0].count("|"), 1001)  # HTML's own limit: 1000 columns
 
     def test_bad_ocr_lang_is_rejected(self):
         with workdir() as d:
