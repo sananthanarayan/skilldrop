@@ -5,7 +5,18 @@ reads, and passes when the script either succeeds or rejects the input the way i
 an exit code from `ok_exits`, or argparse's own error. Any other exception is a crash: the
 traceback a user would see instead of a message.
 
-The seeds are small, valid inputs. The fuzzer mutates them.
+The seeds are small, valid inputs. The fuzzer mutates them. The Office and Outlook seeds are
+built in code (tests/fuzz/seeds.py), since a fuzzer can't reach a binary parser from a file that
+fails its first header check.
+
+An optional eighth field holds two extras:
+- "wrap": a function that builds the file from the fuzzed bytes. The read-*-xml targets fuzz the
+  XML part of an Office file inside a valid package, since a mutated zip mostly fails its checksum
+  before any XML is read.
+- "then": further steps that read what the first one wrote. For md-to-docx, md-to-xlsx and
+  md-to-pptx the next step is file-to-markdown, so every file one converter writes must be one the
+  other reads. A later step must succeed outright: if the writer accepted the input, the reader
+  rejecting its file is a finding too.
 """
 import contextlib
 import inspect
@@ -14,11 +25,22 @@ import os
 import sys
 import tempfile
 
+from tests.fuzz import seeds
 from tests.support import load
 
-# (name, skill, script, argv with {in}, {out} and {root}, input suffix, exit codes that mean "handled", seeds)
+# (name, skill, script, argv with {in}, {out} and {root}, input suffix, exit codes that mean "handled", seeds
+#  [, {"wrap": bytes -> file bytes, "then": [(skill, script, argv), ...]}])
 # A suffix starting with "/" places the input inside a throwaway repository at that path, with a
 # sibling record and the folder it names, and {root} is that repository.
+# A Markdown file using most of what the converters handle, for the ones that read Markdown.
+MARKDOWN = (
+    b"---\ntitle: Release notes\n---\n# Release notes\n\nIntro with **bold**, *italic*, ~~gone~~, `code` and a "
+    b"[link](https://docs.example/a?b=1&c=2).[^1]\n\n## Fixed\n\n1. The importer\n   - nested *item*\n2. Exports\n\n"
+    b"- [x] done\n- [ ] open\n\n| Area | Count | Note |\n|:--|--:|:-:|\n| Billing | 3 | a \\| b |\n| Search | 10 | |\n\n"
+    b"> **Note**\n> quoted line\n\n```python\nprint('x')\n```\n\n---\n\n![chart](chart.png)\n\n"
+    b"Line one  \nline two<br>three &amp; four\n\n[^1]: A footnote.\n"
+)
+
 TARGETS = [
     ("sql", "sql-review", "sql_lint.py", ["{in}", "--format", "json", "-o", "{out}"], ".sql", (0, 1, 2), [
         b"select a.id, count(*) / count(b.x) as r from a left join b on a.id = b.a_id\n"
@@ -98,6 +120,34 @@ TARGETS = [
         b"### Note\n\n## Setup\n\nRun **this** `cmd` and see [docs](https://docs.example/).\n\n| a | b |\n|---|---|\n| 1 | 2 |\n"
         b"\n```python\nprint('x')\n```\n\n- [ ] task\n> quote\n",
     ]),
+    ("md-to-confluence", "md-to-confluence", "md_to_confluence.py", ["{in}", "-o", "{out}.xhtml", "--toc"], ".md", (0, 1, 2), [MARKDOWN]),
+    # file-to-markdown's readers, each from a valid file of its kind
+    ("read-msg", "file-to-markdown", "to_markdown.py", ["{in}", "-o", "{out}.md"], ".msg", (0, 1, 2), [seeds.outlook_msg()]),
+    ("read-eml", "file-to-markdown", "to_markdown.py", ["{in}", "-o", "{out}.md"], ".eml", (0, 1, 2), [
+        b"From: Avery Example <avery@example.com>\r\nTo: robin@example.com\r\nSubject: =?utf-8?q?Quarterly_figures?=\r\n"
+        b"Date: Sat, 18 Jun 2022 04:26:00 +0000\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"b1\"\r\n\r\n"
+        b"--b1\r\nContent-Type: text/html; charset=utf-8\r\n\r\n<p>Hello, the <b>figures</b> are attached.</p>\r\n"
+        b"--b1\r\nContent-Type: text/csv; name=\"figures.csv\"\r\nContent-Disposition: attachment; filename=\"figures.csv\"\r\n"
+        b"Content-Transfer-Encoding: base64\r\n\r\ncmVnaW9uLHRvdGFsCm5vcnRoLDEyCg==\r\n--b1--\r\n",
+    ]),
+    ("read-docx", "file-to-markdown", "to_markdown.py", ["{in}", "-o", "{out}.md"], ".docx", (0, 1, 2), [seeds.docx()]),
+    ("read-xlsx", "file-to-markdown", "to_markdown.py", ["{in}", "-o", "{out}.md"], ".xlsx", (0, 1, 2), [seeds.xlsx()]),
+    ("read-pptx", "file-to-markdown", "to_markdown.py", ["{in}", "-o", "{out}.md"], ".pptx", (0, 1, 2), [seeds.pptx()]),
+    ("read-docx-xml", "file-to-markdown", "to_markdown.py", ["{in}", "-o", "{out}.md"], ".docx", (0, 1, 2),
+     [seeds.DOCX_XML.encode()], {"wrap": seeds.docx}),
+    ("read-xlsx-xml", "file-to-markdown", "to_markdown.py", ["{in}", "-o", "{out}.md"], ".xlsx", (0, 1, 2),
+     [seeds.XLSX_XML.encode()], {"wrap": seeds.xlsx}),
+    ("read-pptx-xml", "file-to-markdown", "to_markdown.py", ["{in}", "-o", "{out}.md"], ".pptx", (0, 1, 2),
+     [seeds.PPTX_XML.encode()], {"wrap": seeds.pptx}),
+    # round-trips: Markdown to an Office file, then back with file-to-markdown
+    ("roundtrip-docx", "md-to-docx", "md_to_docx.py", ["{in}", "-o", "{out}.docx"], ".md", (0, 1, 2), [MARKDOWN],
+     {"then": [("file-to-markdown", "to_markdown.py", ["{out}.docx", "-o", "{out}.back.md"])]}),
+    ("roundtrip-xlsx", "md-to-xlsx", "md_to_xlsx.py", ["{in}", "-o", "{out}.xlsx", "--formulas"], ".md", (0, 1, 2), [
+        b"# Totals\n\n| Region | Q1 | Q2 | Total |\n|---|--:|--:|---|\n| North | 1,200 | 3.5% | =B2+C2 |\n"
+        b"| South | (40) | 2026-01-31 | `x` |\n\n## Notes\n\n| a |\n|---|\n| TRUE |\n",
+    ], {"then": [("file-to-markdown", "to_markdown.py", ["{out}.xlsx", "-o", "{out}.back.md"])]}),
+    ("roundtrip-pptx", "md-to-pptx", "md_to_pptx.py", ["{in}", "-o", "{out}.pptx"], ".md", (0, 1, 2), [MARKDOWN],
+     {"then": [("file-to-markdown", "to_markdown.py", ["{out}.pptx", "-o", "{out}.back.md"])]}),
 ]
 
 BY_NAME = {t[0]: t for t in TARGETS}
@@ -109,9 +159,11 @@ class Crash(Exception):
 
 def runner(name):
     """A function taking the fuzzed bytes, running the target once, raising Crash on a crash."""
-    _, skill, script, argv, suffix, ok, _ = BY_NAME[name]
-    mod = load(skill, script)
-    takes_argv = bool(inspect.signature(mod.main).parameters)
+    _, skill, script, argv, suffix, ok, _ = BY_NAME[name][:7]
+    extras = BY_NAME[name][7] if len(BY_NAME[name]) > 7 else {}
+    wrap = extras.get("wrap")
+    steps = [(load(skill, script), script, argv)]
+    steps += [(load(s, sc), sc, av) for s, sc, av in extras.get("then", ())]
     work = tempfile.mkdtemp(prefix="skilldrop-fuzz-")
     out, repo = os.path.join(work, "out"), os.path.join(work, "repo")
     if suffix.startswith("/"):
@@ -123,23 +175,38 @@ def runner(name):
     else:
         src = os.path.join(work, "input" + suffix)
 
-    def one(data):
-        with open(src, "wb") as fh:
-            fh.write(data)
+    def call(mod, script, argv):
         args = [a.replace("{in}", src).replace("{out}", out).replace("{root}", repo) for a in argv]
-        saved = sys.argv
+        if isinstance(getattr(mod, "WARNINGS", None), list):
+            del mod.WARNINGS[:]  # module-level warnings would otherwise pile up across inputs
+        saved, err = sys.argv, io.StringIO()
         sys.argv = [script] + args
         try:
-            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-                code = mod.main(args) if takes_argv else mod.main()
+            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(err):
+                code = mod.main(args) if inspect.signature(mod.main).parameters else mod.main()
         except SystemExit as e:
             code = e.code
         except Exception as e:  # noqa: BLE001  (any other exception is the finding)
-            raise Crash("%s: %s: %s" % (name, type(e).__name__, e)) from e
+            raise Crash("%s: %s: %s: %s" % (name, script, type(e).__name__, e)) from e
         finally:
             sys.argv = saved
-        if isinstance(code, str) or code is None:  # sys.exit("message") or a plain return
-            return
-        if code not in ok:
+        return code, err.getvalue()
+
+    def one(data):
+        for path in os.listdir(work):  # a previous input's outputs must not feed this one's later steps
+            if path.startswith("out"):
+                os.remove(os.path.join(work, path))
+        with open(src, "wb") as fh:
+            fh.write(wrap(data) if wrap else data)
+        mod, script, argv = steps[0]
+        code, _ = call(mod, script, argv)
+        if not (isinstance(code, str) or code is None or code in ok):  # sys.exit("message") or a plain return is fine
             raise Crash("%s: exit code %r is not one the script documents (%s)" % (name, code, ok))
+        if code not in (0, None):
+            return  # the first step rejected the input cleanly; there is nothing to read back
+        for mod, script, argv in steps[1:]:
+            code, err = call(mod, script, argv)
+            if code not in (0, None):
+                raise Crash("%s: %s could not read what the step before it wrote (exit %r): %s"
+                            % (name, script, code, (code if isinstance(code, str) else err.strip())[-300:]))
     return one

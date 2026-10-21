@@ -103,7 +103,9 @@ def atheris_fuzz(name, seconds):
             print("crash input saved to", save(name, data), file=sys.stderr)
             raise
 
-    atheris.Setup([sys.argv[0], "-max_total_time=%d" % seconds, "-rss_limit_mb=2048", corpus], test_one)
+    # An input that takes over 10 seconds or 2 GB counts as a crash too: a small file that hangs a
+    # script or fills memory (a looping sector chain, one cell at ZZZ999999) is a finding.
+    atheris.Setup([sys.argv[0], "-max_total_time=%d" % seconds, "-timeout=10", "-rss_limit_mb=2048", corpus], test_one)
     atheris.Fuzz()
 
 

@@ -1,5 +1,6 @@
 # Fuzz the skill scripts that parse users' files (RFC-0062): SQL, Lighthouse and Terraform JSON,
-# brand files, cost and tracker exports, risk registers, event contracts, bundle stats.
+# brand files, cost and tracker exports, risk registers, event contracts, bundle stats, decision
+# records, Markdown, Office files and Outlook messages, and the Markdown-to-Office round-trips.
 #
 # Coverage-guided with Atheris (libFuzzer for Python), which has Linux x86-64 wheels only, so
 # this runs on ubuntu. The same targets run briefly on every OS in the unit tests
@@ -34,9 +35,10 @@ concurrency:
 jobs:
   fuzz:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 75
     env:
-      # 20 s a target on a pull request or push, 120 s on the weekly run: 15 targets.
+      # 20 s a target on a pull request or push, 120 s on the weekly run: 28 targets, so about
+      # 10 and 60 minutes.
       SECONDS_PER_TARGET: ${{ github.event_name == 'schedule' && '120' || '20' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

@@ -27,7 +27,7 @@ published package still has no dependencies.
 
 ## Proposal
 
-**Targets.** [`tests/fuzz/targets.py`](../../tests/fuzz/targets.py) lists 15 of them.
+**Targets.** [`tests/fuzz/targets.py`](../../tests/fuzz/targets.py) lists them: 15 at first, 28 since 1.0.1.
 - Each runs one script as a user does, with the fuzzed bytes as the file it reads, starting from
   small valid seed inputs.
 - A run passes when the script succeeds or rejects the input with an exit code it documents.
@@ -76,6 +76,44 @@ the wrong shape. So the six scripts that read JSON turn a `KeyError`, `TypeError
 what was expected, and says to report the file if it is genuine. The guard only changes how an
 unhandled error is reported: the message still names the exception and its text, so a real bug
 on a valid file can still be traced.
+
+**Later, in 1.0.1: the converters' binary formats**
+- **Valid seeds built in code.** [`tests/fuzz/seeds.py`](../../tests/fuzz/seeds.py) writes a real
+  Outlook .msg (a Compound File Binary with subject, sender, body, sent time, a recipient and an
+  attachment) and minimal .docx, .xlsx and .pptx packages, using the standard library only. A
+  fuzzer can't reach a binary parser from a file that fails its first header check.
+- **Each Office format is fuzzed twice.** One target mutates the whole file. A mutated zip mostly
+  fails its checksum, so another, `read-*-xml`, mutates only the main XML part and wraps it in a
+  valid package.
+- **Round-trips.** Markdown goes through `md-to-docx`, `md-to-xlsx` or `md-to-pptx`, and then back
+  through `file-to-markdown`. The second step must succeed outright: when the writer accepts an
+  input, the reader rejecting its file is a finding.
+- **A slow input is a crash.** Atheris now fails an input that takes over 10 seconds, because
+  the worst bugs this round were hangs and memory blow-ups, not exceptions. The weekly job's
+  timeout went from 45 to 75 minutes for the extra targets.
+
+**What they found**, all in `file-to-markdown`: 15 bugs, each now with a unit test. The fuzzer
+found the damaged-file and email ones. Reading the parser around those crashes found the six below
+that exhaust resources: a time-limited fuzzer rarely builds the one exact value that triggers
+them.
+- **Resource exhaustion from small files.**
+  - A looping .msg sector chain was read a million times, using 657 MB for a 2.5 KB file. Each
+    chain now reads a sector once.
+  - A DIFAT naming one FAT sector over and over built a FAT far larger than the file. The FAT is
+    now capped at what the file's size needs, and each sector is used once.
+  - One spreadsheet cell at `ZZZ999999` built a grid of a million empty rows. Only the rows and
+    columns that hold a value are kept now, with a note on the empty columns left out.
+  - A huge Word `gridSpan`, HTML `colspan` or list level is capped at the format's own limit:
+    63 columns, 1000 columns and level 8.
+- **Damaged files.** A corrupt zip member, a Word file with no body, or a cell reference that
+  isn't one now gives a one-line error, or skips that cell. A damaged .docx, .pptx, .xlsx, .msg
+  or .eml is reported as damaged, and the message asks for a report if the file opens normally
+  in its own app.
+- **Email.**
+  - An unknown charset is now read as UTF-8.
+  - Raw UTF-8 header bytes are kept as text, not written as invalid surrogates.
+  - A .msg sent time past the year 9999 is left out.
+  - On Python 3.9 only: a date or MIME boundary that won't parse no longer stops the conversion.
 
 ## Alternatives considered
 
