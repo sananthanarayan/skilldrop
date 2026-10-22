@@ -42,6 +42,18 @@ class GitHistoryFixtureTest(unittest.TestCase):
             self.assertIn("2025-01-10|Ana|Import", log)
             self.assertIn("A\tsvc/new/b.py", log)
 
+    def test_the_judge_sees_the_history(self):
+        with workdir() as src, workdir() as ws:
+            write(os.path.join(src, "a.py"), "v1\n")
+            write(os.path.join(src, "git-history.json"), json.dumps({
+                "commits": [{"date": "2025-03-02", "author": "Ben Ode", "message": "Change a", "files": {"a.py": "v2\n"}}]}))
+            run_bench.copy_fixtures(src, ws)
+            seen = run_bench.workspace_files(ws, src)
+            self.assertIn('<git-history input="true"', seen)
+            self.assertIn("Author: Ben Ode", seen)
+            self.assertIn("Date: 2025-03-02", seen)
+            self.assertIn("+v2", seen)
+
     def test_a_path_outside_the_fixture_is_refused(self):
         with workdir() as src, workdir() as ws:
             write(os.path.join(src, "git-history.json"), json.dumps({

@@ -8,6 +8,16 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.1.0 — 2026-10-22
+
+- **`context-graph` now answers "has the code drifted since we decided this, and who changed it?".** With `--git`, each current decision that governs code lists the commits that changed that code since the decision's date, who made them, how many cite the record, and when the record itself was last edited. The skill reads those changes against the record's requirements. It reports drift as the requirement, the line, and the commit that broke it, and never as a commit count ([RFC-0065](docs/rfcs/0065-context-graph-drift-and-core.md)).
+- **`context-graph` is now in the core pack, so every pack installs it.** Its name, install command and page are unchanged.
+- **The modernize and design loops now read the decisions before they act.**
+  - `modernize` surveys the recorded decisions behind the legacy component and where the code has drifted from them, so a rewrite keeps the constraints someone wrote down.
+  - `design` lists the decisions in force before setting targets. After the new ADR is written, it checks that every record it supersedes says so too.
+- **Re-measured on two fresh held-out evals,** one with real git history: judges preferred it in 3 and 2.5 of 4 pairs, and it met 53% of their checks against 47% for plain Claude Code.
+- **Benchmark evals can carry git history.** A fixture's `git-history.json` is replayed into a real repository for the run, and the judges see that history too.
+
 ## 1.0.1 — 2026-10-21
 
 - **`file-to-markdown`'s Office and Outlook readers are now fuzzed, and 16 bugs are fixed.** The fuzzer found 10. Reading the parser around them found 6 more, all hangs or memory blow-ups, which a time-limited fuzzer rarely reaches. The .msg reader is a hand-written binary parser, so it now has a valid Outlook message to start from. Each Office format is fuzzed twice: as a whole file, and with only its XML part changing inside a valid package, so the mutations get past the zip checksum.

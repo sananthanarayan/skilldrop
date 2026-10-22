@@ -197,6 +197,17 @@ def workspace_files(ws, given=None):
         if len(shown) < len(body):  # say so: a silently cut file reads to the judge as an empty one
             shown += "\n[%d of %d characters shown; the file continues]" % (len(shown), len(body))
         parts.append('<file path="%s"%s chars="%d">\n%s\n</file>' % (rel, tag, len(body), shown))
+    if os.path.isdir(os.path.join(ws, ".git")):
+        # An eval with git-history.json runs in a real repository. The judge sees the history the
+        # agent could read, or it would take every commit the reply cites for an invention.
+        log = subprocess.run(["git", "log", "--date=short", "--stat", "-p", "--format=commit %h%nAuthor: %an%nDate: %ad%n%n    %s%n%b"],
+                             cwd=ws, capture_output=True, text=True, encoding="utf-8", errors="replace")
+        text = log.stdout if log.returncode == 0 else ""
+        if text:
+            shown = text[:30000]
+            if len(shown) < len(text):
+                shown += "\n[%d of %d characters shown; the history continues]" % (len(shown), len(text))
+            parts.append('<git-history input="true" note="the git log of the working directory, which the agent could read">\n%s\n</git-history>' % shown)
     return "\n".join(parts)
 
 
@@ -348,6 +359,8 @@ def cache_path(kind, model, system, user, trial, files=None):
     parts = [kind, model, system, user, trial] + ([BACKEND + "/agent-1"] if BACKEND != "api" else [])
     if files and BACKEND != "api":
         parts.append(digest(files))
+        if os.path.isfile(os.path.join(files, GIT_HISTORY)):
+            parts.append("git-history-shown-to-judge")  # runs from before the judge saw it are stale
     key = hashlib.sha256(json.dumps(parts).encode()).hexdigest()
     return os.path.join(CACHE, key[:2], key + ".json")
 

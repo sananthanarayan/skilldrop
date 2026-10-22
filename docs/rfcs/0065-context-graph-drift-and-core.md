@@ -89,5 +89,16 @@ refused.
 
 ## Decision
 
-Accepted and implemented in 1.1.0. context-graph 0.2.0 was re-measured on fresh held-out evals,
-written blind (see `docs/benchmarks/admissions.json`).
+Accepted and implemented in 1.1.0.
+
+**Re-measured on two fresh held-out evals, written blind from the new description** (16 and 17;
+two trials; model claude-sonnet-5). Eval 16 carries git history, and asks whether a payments
+service still follows its idempotency decision.
+- **The judges preferred it in 3 and 2.5 of 4 pairs**, with a tie counting half.
+- **It met 53% of their checks, against 47% for plain Claude Code.**
+- **Its one loss was on length:** asked to "keep it short", it wrote more than the baseline.
+
+**The first run found a gap in the harness, not the skill.** The judges saw the files a run left
+behind, but not `.git`. So they read every commit an answer cited as invented. `run_bench.py` now
+shows them the repository's history, marked as an input, and runs from before that change aren't
+reused from the cache.
