@@ -63,6 +63,19 @@ workflow, is stored as `<name>.fixture` and copied in under its real name. Under
 name, GitHub would read the fake project's pins as the repo's own and raise security alerts
 against code nothing runs. `validate.py` fails on one that isn't renamed.
 
+A fixture that needs git history, for a skill that reads commits, holds a `git-history.json`
+at its root instead of a `.git` folder, which git can't commit:
+
+```json
+{"start": {"date": "2025-01-10", "author": "Ana", "message": "Initial import"},
+ "commits": [{"date": "2025-03-02", "author": "Ben", "message": "Switch to SQS",
+              "files": {"services/orders/publish.py": "…", "services/orders/old.py": null}}]}
+```
+
+The run turns the working directory into a repository. The fixture's other files are the first
+commit. Each later commit writes its files, or deletes the ones set to `null`, with that date
+and author. The working tree ends at the last commit.
+
 Because there is no network, a skill that has to install a dependency or call an API can't
 finish, and will score worse than it would on your machine.
 

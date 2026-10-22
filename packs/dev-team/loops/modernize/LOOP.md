@@ -16,7 +16,7 @@ can accept what the recordings don't cover and approve every intended change.
 
 | # | Stage | Type | Skills | Gate |
 |---|---|---|---|---|
-| 1 | `survey` | generate | [`codebase-tour`](../../skills/codebase-tour/SKILL.md) | — |
+| 1 | `survey` | generate | [`codebase-tour`](../../skills/codebase-tour/SKILL.md), [`context-graph`](../../../core/skills/context-graph/SKILL.md) | — |
 | 2 | `plan` | generate | [`refactor-plan`](../../skills/refactor-plan/SKILL.md), [`migration-plan`](../../skills/migration-plan/SKILL.md) | — |
 | 3 | `capture` | generate | [`behaviour-equivalence`](../../skills/behaviour-equivalence/SKILL.md) | — |
 | 4 | `rebuild` | generate | [`feature-implement-loop`](../../skills/feature-implement-loop/SKILL.md) | — |
@@ -29,6 +29,15 @@ can accept what the recordings don't cover and approve every intended change.
    must end with the boundary it will be swapped at (an HTTP API, a function signature, a
    batch file, a queue) and every caller and side effect that crosses it, each cited to a
    file. A boundary nobody can name means the component isn't ready to be replaced.
+
+   Then run `context-graph` on the same component, with git history. It finds the recorded
+   decisions that govern it: why it was built this way, what was tried before, and the
+   constraints the rewrite must keep. It also finds where the code has changed since those
+   decisions were made, and who changed it. Carry every constraint a current decision sets
+   into `plan`. A behaviour the old code has that contradicts its decision is a question for
+   the owner before `capture`: record it as it is, and ask whether the rewrite should keep it.
+   Each person who changed the code since the decision is worth asking what the records don't
+   say.
 2. **Plan the work.**
    - Restructuring the code in place → `refactor-plan`.
    - Moving data, a schema or a platform → `migration-plan`.
@@ -122,3 +131,4 @@ The log holds verdicts only: never recordings, code or data.
 - ❌ **Rebuilding everything, then comparing once.** Each planned step merges on its own and is compared again.
 - ❌ **Calling the migration done at G10.** Equivalence on the recordings is evidence; the cutover is a person's decision, with a rollback.
 - ❌ **Skipping `survey` because the old code is "well known".** The callers and side effects nobody remembers are the ones that break.
+- ❌ **Rewriting without reading the decisions behind the old code.** A constraint someone recorded years ago, such as a retention period or an ordering guarantee, is easy to drop in a rewrite and expensive to rediscover in production.

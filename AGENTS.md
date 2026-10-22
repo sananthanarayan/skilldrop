@@ -134,7 +134,7 @@ Every version bump lands with a matching entry at the top of [`CHANGELOG.md`](CH
 | Input files a worked example was made from | `packs/<pack>/skills/<skill-name>/examples/inputs/` — like eval fixtures, the scan lists what it finds there without raising it |
 | Adversarial-sweep checklist (devils-advocate style) | `packs/<pack>/skills/<skill-name>/lenses/<name>.md` |
 | Per-archetype quality bar (doc-critique style) | `packs/<pack>/skills/<skill-name>/rubrics/<archetype>.md` |
-| Input files an eval's prompt names | `packs/<pack>/skills/<skill-name>/evals/files/<eval id>/` — copied into the working directory of a benchmark run (RFC-0040). A dependency file in one (`package.json`, `go.mod`, a CI workflow) is named `<name>.fixture`; the run sees the real name (RFC-0058) |
+| Input files an eval's prompt names | `packs/<pack>/skills/<skill-name>/evals/files/<eval id>/` — copied into the working directory of a benchmark run (RFC-0040). A dependency file in one (`package.json`, `go.mod`, a CI workflow) is named `<name>.fixture`; the run sees the real name (RFC-0058). Git history the eval needs is a `git-history.json` there, replayed into a real repository for the run (RFC-0065) |
 | Acceptance checks for a skill | `packs/<pack>/skills/<skill-name>/evals/evals.json` (prompt + assertions) + `evals/eval_queries.json` (should/shouldn't-trigger phrases) |
 | RFC for a new skill or structural change | `docs/rfcs/NNNN-<kebab-slug>.md` — copy [`docs/rfcs/0000-template.md`](docs/rfcs/0000-template.md), next sequential number |
 | Long-form design doc (bigger than an RFC, not a skill) | `docs/designs/<name>.md` — e.g. the CLI command surface, the telemetry collection spec |

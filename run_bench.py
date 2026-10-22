@@ -36,7 +36,9 @@ Two backends:
               plus the files left behind. No API key; dollars are list price for the tokens.
 
 An eval whose prompt names input files keeps them in evals/files/<eval id>/. They are copied
-into the working directory for both arms (claude-cli only).
+into the working directory for both arms (claude-cli only). A git-history.json there turns
+the directory into a git repository with that history (see build_git_history), for a skill
+that reads commits.
 
 Spending is capped: --budget is a hard stop (default $5), --dry-run prints the call count and a
 rough estimate and spends nothing, and every response is cached under .bench-cache/ so a rerun
@@ -216,13 +218,60 @@ def workspace_name(rel):
     return rel[:-len(FIXTURE)] if rel.endswith(FIXTURE) else rel
 
 
+GIT_HISTORY = "git-history.json"
+
+
 def copy_fixtures(src, dest):
     for base, _, files in os.walk(src):
         for name in files:
             rel = os.path.relpath(os.path.join(base, name), src)
+            if rel == GIT_HISTORY:
+                continue
             out = os.path.join(dest, workspace_name(rel))
             os.makedirs(os.path.dirname(out), exist_ok=True)
             shutil.copy2(os.path.join(base, name), out)
+    if os.path.isfile(os.path.join(src, GIT_HISTORY)):
+        with open(os.path.join(src, GIT_HISTORY), encoding="utf-8") as fh:
+            build_git_history(dest, json.load(fh))
+
+
+def build_git_history(ws, history):
+    """A real git history for a fixture, from git-history.json, so it lives in the repo as
+    reviewable text rather than as a nested .git folder git can't commit:
+
+      {"start": {"date": "2025-01-10", "author": "Ana", "message": "Initial import"},
+       "commits": [{"date": "2025-03-02", "author": "Ben", "message": "Switch to SQS",
+                    "files": {"services/orders/publish.py": "...", "old.txt": null}}]}
+
+    The fixture's other files are the first commit ("start"); each later commit writes its
+    files, or deletes the ones set to null. The working tree ends at the last commit. Dates are
+    the author and committer dates, at noon UTC, so `git log --since` reads them as written."""
+    def git(*args, author="Fixture", date="2025-01-01"):
+        stamp = "%sT12:00:00+00:00" % date
+        env = dict(os.environ, GIT_AUTHOR_NAME=author, GIT_AUTHOR_EMAIL="%s@example.invalid" % author.lower().replace(" ", "."),
+                   GIT_COMMITTER_NAME=author, GIT_COMMITTER_EMAIL="%s@example.invalid" % author.lower().replace(" ", "."),
+                   GIT_AUTHOR_DATE=stamp, GIT_COMMITTER_DATE=stamp, GIT_CONFIG_GLOBAL=os.devnull, GIT_CONFIG_SYSTEM=os.devnull)
+        subprocess.run(["git", "-c", "init.defaultBranch=main", "-c", "commit.gpgsign=false", "-c", "core.hooksPath=" + os.devnull,
+                        *args], cwd=ws, env=env, check=True, capture_output=True)
+    start = history.get("start") or {}
+    git("init", "-q")
+    git("add", "-A")
+    git("commit", "-q", "--allow-empty", "-m", start.get("message", "Initial import"),
+        author=start.get("author", "Fixture"), date=start.get("date", "2025-01-01"))
+    for c in history.get("commits", []):
+        for rel, text in (c.get("files") or {}).items():
+            path = os.path.join(ws, *rel.split("/"))
+            if not os.path.realpath(path).startswith(os.path.realpath(ws) + os.sep):
+                raise ValueError("git-history.json writes outside the fixture: %s" % rel)
+            if text is None:
+                if os.path.exists(path):
+                    os.remove(path)
+            else:
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                with open(path, "w", encoding="utf-8") as fh:
+                    fh.write(text)
+        git("add", "-A")
+        git("commit", "-q", "--allow-empty", "-m", c["message"], author=c.get("author", "Fixture"), date=c["date"])
 
 
 def digest(d):

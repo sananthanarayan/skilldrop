@@ -14,7 +14,7 @@ Design-phase artifacts: diagrams, decision records, design docs, contracts, sche
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack solution-architect` |
-| Skills | 12 plus 4 from core |
+| Skills | 11 plus 5 from core |
 | Loops | design |
 | How-to | [Use the Solution architect pack](../../how-to/packs/use-the-solution-architect-pack.md) |
 
@@ -78,42 +78,6 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skil
 - **Be valid syntax.** Mentally trace through the Mermaid/PlantUML once before responding. Common breakers: unescaped `(` `)` `<` `>` inside labels, missing `end` for subgraphs, mixing graph types.
 
 **Hands off to:** `figma-diagrams` when the diagram needs to live where designers work.
-
-### `context-graph`
-
-Map the decisions behind a codebase from its ADRs, RFCs and design records — each record's status and date, what supersedes or amends what, which records cite which, the files and folders each decision governs, and with git the commits that implemented it — then answer "why is it like this?" from the record and check the record is still true. Finds supersessions only one side records, current decisions pointing at code that is gone, two current decisions governing the same path, and references to records that don't exist.
-
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skills/context-graph/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/context-graph/)
-
-**Use it when** the user asks "why do we use X", "which decisions govern this file or service", "is this ADR still current", "are our ADRs out of date", "what was decided before I change this", wants a map of the architecture decisions, or is onboarding onto a codebase's history.
-
-**Needs:** Python 3 for its scripts (standard library only).
-
-**A good result:**
-
-- **The answer names the governing record by id, status and date**, and the rationale is quoted or closely paraphrased from that record. No reason is supplied that the record doesn't give.
-- **A superseded record is never presented as current**, including one whose own Status line wasn't updated.
-- **"No recorded decision" is said when it's true**, and any reading of the code is labelled as inferred.
-- **Every problem names its record id and the exact fix.** Problems come before warnings.
-- **Two current records on the same path are raised as a possible conflict**, not silently resolved by date.
-- **The deciding record is checked against the code it governs, claim by claim,** with the line quoted, and drift is reported with both sides. A line number is given only when read from the file.
-- **Every script finding in the reply has been confirmed by reading;** one that doesn't hold is dropped.
-- **A removal or change question lists every use of the thing in the code,** recorded or not.
-- **Related records are read before they're called unrelated:** amendments, and rules for the same concern elsewhere in the codebase.
-- **A moved path is reported as moved, with its new location; only a path with no successor is "gone".**
-- **A mid-rollout pair of records is a missing cross-reference, not a contradiction.**
-- **The reply fits the size asked for (a stated limit is obeyed exactly), and never mentions a script, a graph or a tool.**
-- **Statuses, links and governed paths come from the script's output**, or are marked as read by hand when it couldn't run.
-- **No invented records, ids, dates, paths or commits.**
-
-**Hands off to:** `adr-generator` when a decision is live but unrecorded, or a record needs superseding, deprecating or correcting.
-
-**Not for:**
-
-- Writing a new ADR or fixing one: use `adr-generator`
-- How the code works now, with no decision history: use `codebase-tour`
-- Recovering the architecture from code with no records: use `reverse-architecture`
-- A record of business or product decisions for stakeholders: use `decision-log`
 
 ### `data-contract`
 
@@ -309,11 +273,11 @@ Take a ratified requirement to a recorded architectural decision — constraints
 
 | Stage | Skills | Gate |
 |---|---|---|
-| constrain | `nfr-spec` | — |
+| constrain | `context-graph`, `nfr-spec` | — |
 | shape | `design-doc`, `architecture-diagrams` | — |
 | threat | `threat-model` | — |
 | ratify | `council-review` | G1 review: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / SPLIT / BLOCKED |
-| record | `adr-generator` | — |
+| record | `adr-generator`, `context-graph` | — |
 
 Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/solution-architect/loops/design/LOOP.md)
 
@@ -322,6 +286,7 @@ Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/solution-architect/loo
 Installed with this pack. Details: [Core pack reference](pack-core.md).
 
 - `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder) can consume without further intake.
+- `context-graph`: Map the decisions behind a codebase from its ADRs, RFCs and design records — each record's status and date, what supersedes or amends what, which records cite which, the files and folders each decision governs, and with git the commits that implemented it and the commits that changed each decision's code since it was made, and who made them — then answer "why is it like this?" from the record and check the record is still true. Finds supersessions only one side records, current decisions pointing at code that is gone, code that has drifted from its decision, two current decisions governing the same path, and references to records that don't exist.
 - `council-review`: Convene a council of distinct senior-engineer personas (Architect, Security, Operator/SRE, Pragmatist, User-Advocate, plus optional bench seats) to deliberate a decision, design, or code change — each takes an independent stance, the genuine disagreements are surfaced as named cruxes, and a Chair issues a reconciled verdict that records dissents and states what would change the decision. The "Claude Council."
 - `doc-critique`: Review an existing document — ADR, design doc, runbook, exec summary, tech-comparison matrix, deck outline, decision log — and produce a structured critique against the same quality bars the skilldrop generators enforce. Categorizes findings by severity (blocker / major / minor / nit), points to the exact section/line, and suggests a concrete fix for each.
 - `output-hygiene`: Review agent-written text before it ships and strip the machine artifacts it carries — invisible Unicode, non-breaking spaces, homoglyphs, harness-added provenance trailers, trailing chat closers — then flag the prose tells a script cannot catch, each quoted with a rewrite.
