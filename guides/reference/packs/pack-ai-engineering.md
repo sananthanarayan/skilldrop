@@ -315,7 +315,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/a
 
 Audit whether an LLM-as-judge, or a panel of judges, can be trusted for the decision its scores drive, before anyone acts on them — above all whether the judge errs differently on the variants being compared (prompt v1 vs v2, model A vs B, short vs long inputs), plus chance-corrected and weighted agreement with expert labels, precision and recall on a rare class, each run reported separately with the items that flipped, position and length bias, and confidence intervals, checked against the user's own gate or criterion and ending in a direct answer (ship or not, which judge to use).
 
-Tier **standard** · v0.3.0 · [SKILL.md](../../../packs/ai-engineering/skills/judge-audit/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/judge-audit/)
+Tier **standard** · v0.3.1 · [SKILL.md](../../../packs/ai-engineering/skills/judge-audit/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/judge-audit/)
 
 **Use it when** the user asks "can we trust our LLM judge", "is our grader reliable enough to gate releases", "the grader says v2 is better, can we ship it", "which is the cheapest judge we can switch to", "our two judges agree 90%, is that good", "can we turn on auto-remove", "check our judge for position bias", or has a file of judge scores and wants to know whether to act on them.
 

@@ -54,8 +54,16 @@ cases for a skill is `eval-harness-generator`, and measuring AI tool usage is `a
 4. **Use the scale and the metric the user uses.** For 1–5 scores report quadratic-weighted
    kappa (say "quadratic"), exact agreement and mean bias; unweighted kappa treats 4-vs-5 like
    1-vs-5. Pass `--threshold` only when the user stated a pass score. When the user quotes a
-   figure ("kappa 0.8", "they agree 80%"), reproduce it first, say which statistic it is on which
-   rows, then show what it hides.
+   figure ("kappa 0.8", "they agree 80%", a vendor's "95% within one point"), reproduce it
+   first, say which statistic it is on which rows, then show what it hides. When it doesn't
+   reproduce, give the figure you get, its statistic and rows, and say theirs didn't: ✅
+   *"Within one point on 171 of 200 answers (85.5%), not the 95% claimed."* Never round toward
+   theirs.
+
+   **Read the label distribution next to the agreement.** A judge that never uses one end of
+   the scale can't flag the items that matter most there: ✅ *"The reviewers gave 1 to
+   9 answers; the judge gave 1 to none of them."* Count it from the distribution the script
+   prints.
 
 5. **Lead with the differential.** Per variant compare exact agreement, bias judge − expert
    with its interval, how often the judge scores higher and lower, and the bias-vs-length
@@ -86,11 +94,16 @@ cases for a skill is `eval-harness-generator`, and measuring AI tool usage is `a
    with the flipped items named; trial-matched kappa between judges, and Fleiss' across every
    judge × trial rating. Judges sharing a blind spot agree on it: expert agreement ranks first.
 
-10. **Say what the data cannot measure, in one line.** One run: no flip rate. One expert: no
+10. **Check a claim about what the score predicts on the outcomes, not on kappa.** Before
+    saying the score "barely predicts" failures, or that it does, put the outcome rate per score
+    band from the data side by side: ✅ *"Rated 2 or below: 12 of 15 were reverted; rated 5: 3 of 40."* A
+    low kappa between a score and an outcome is not evidence the score is useless.
+
+11. **Say what the data cannot measure, in one line.** One run: no flip rate. One expert: no
     expert-expert baseline. No expert labels: nothing shows the judge is right. Never fill a gap
     with a guess.
 
-11. **Answer the question asked, against the user's criterion.** Each gate check reads
+12. **Answer the question asked, against the user's criterion.** Each gate check reads
     *clears* (whole interval meets it), *fails* (none of it does) or *can't tell* (the interval
     spans it). "Which judge can we use" names one: ✅ *"Switch to the mid tier: it is the cheapest
     judge whose error doesn't move with length (bias shift −2 points against a 2.0-point gate);
@@ -100,12 +113,17 @@ cases for a skill is `eval-harness-generator`, and measuring AI tool usage is `a
     When the judge in use today also reads *can't tell*, the sample can't certify anyone: compare
     the candidate with the incumbent on the same items (the accuracy difference and its interval).
     Kappa bands (Landis–Koch "moderate") appear only as labelled context, never as the reason.
+    **One evidence standard for every subgroup.** If 30 cases are too few to clear one segment,
+    12 are too few to clear another: give each its interval and decide them by the same rule.
+    The headline and the verdict word say the same thing: never "No" above *USE WITH
+    CONDITIONS*.
     Verdict words: **TRUSTWORTHY FOR THIS DECISION**, **USE WITH CONDITIONS**, **DO NOT RELY ON IT**.
 
-12. **Write the reply short.** First line: the answer (yes/no, which judge, which arm it
+13. **Write the reply short.** First line: the answer (yes/no, which judge, which arm it
     favours and by how much). Then the two to four numbers behind it, each with its subset and
     run; what can't be measured; one next step that fits the user's deadline. No kappa tutorial,
-    no tables unless asked. A chat question gets a chat answer.
+    no tables unless asked. A chat question gets a chat answer. Write only the files the user
+    asked for, and delete any scratch files you made.
 
 **Non-interactive runs** (subagent, CI, headless): no criterion in the input becomes
 `[assumption] no stated gate; the reply says what the errors do to the decision`; a compared

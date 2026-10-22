@@ -61,9 +61,10 @@ Reads the bundler's own record of what it built, and the repo files that decide 
 
 11. **Reply short, in one message, in this order.**
     - **First line answers the question in the person's words.** ✅ *"Yes, the reviewer is right: echarts moved from the lazy reports chunk into vendors, so the first load grew from 311,282 to 803,674 bytes (+492,392) while the total fell 1,949."* ❌ *"This confirms it."* / *"Let me break this down."*
-    - **Then the fixes, numbered by first-load impact:** what it is, the chain, the change, what to check after. Two to four lines each.
+    - **Then the fixes, numbered by first-load impact:** what it is, the chain, the change, what to check after. Two to four lines each. The change is the exact edit, in the file the chain names, ready to apply: the import line to replace and its replacement, or a short diff. ✅ *"In `src/components/Header.tsx`, replace `import * as Icons from "@acme/icons"` with `import { SearchIcon, MenuIcon } from "@acme/icons"`."* ❌ *"Consider lazy-loading the locales."*
+    - **Edit files only when asked to change the code** ("fix it", "cut it", "open the PR"). Then make the edit, keep everything users rely on working, and say you couldn't rebuild if you couldn't. A question ("why is it big?") gets the edits in the reply, and the files stay untouched.
     - **One line on lazy chunks** when they matter to the question.
-    - **Then the guard:** the per-entry budget that would have caught it, with its threshold.
+    - **Then the guard:** the per-entry budget that would have caught it, with its threshold, as configuration for a tool the repo has or a named package to add: webpack `performance` (`hints: "error"`, `maxEntrypointSize`), a size-limit entry (`path`, `limit`), or the existing CI file's step. Never a script, flag or config key that doesn't exist; when you're unsure a tool takes an option, leave it out.
     - **"To confirm"** for what only the user can answer; omit it when empty. No module tables, no full package lists, no tool output pasted in, no flags or options that don't exist. About 250 words.
 
 **Non-interactive runs** (subagent, CI, headless): with no stats file, emit `BLOCKED: need the bundler stats file (webpack --json, esbuild --metafile, or rollup-plugin-visualizer raw-data)`. With only built files or a treemap screenshot, report the per-file sizes and emit `BLOCKED: need the stats file to say what is inside each chunk`. Browser targets absent from every project file (after looking) become `[assumption] browser targets unknown; polyfill findings unconfirmed`; a missing budget becomes `[assumption] budget set at the current initial size plus 5%`.
@@ -78,6 +79,8 @@ Reads the bundler's own record of what it built, and the repo files that decide 
 
 - **The first line answers the question** in the person's terms, with the exact byte figures from the stats.
 - **The repo was read:** targets, versions and importing files are cited by file name; nothing is called absent without having been looked for.
+- **Each fix is an exact edit to a named file;** files are changed only when the user asked for changes.
+- **The guard is real configuration** for a tool that exists, with no invented flag, script or key.
 - **One unit system,** bytes with kB = 1000, and the kind of size (module, emitted, post-bundle, compressed) is named once.
 - **Compressed figures are measured or absent,** never estimated into the lead.
 - **Initial and lazy are kept apart,** and a lazy chunk is never ranked above an initial-chunk fix.

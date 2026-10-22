@@ -124,7 +124,7 @@ Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/solution-architect/skil
 
 Draft the contract for an event or message interface (Kafka topics, SNS/SQS, EventBridge, Pub/Sub, RabbitMQ, webhooks) as an AsyncAPI 3.0 document plus a short decisions page — past-tense event names, a required envelope with event id for deduplication, the partition key and the ordering it does and doesn't give, at-least-once delivery and how consumers stay idempotent, data minimisation with PII marked, additive-only versioning with dated deprecation, and retention, replay and dead-letter handling.
 
-Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/solution-architect/skills/event-contract-draft/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/event-contract-draft/)
+Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/solution-architect/skills/event-contract-draft/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/event-contract-draft/)
 
 **Use it when** the user wants to define events, design a Kafka topic or message schema, write an AsyncAPI spec, agree what a producer publishes and what consumers must do, or version an event safely.
 
@@ -141,6 +141,9 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/solution-architect/skil
 - **Retention, replay and dead-letter are stated per channel**, with the DLQ owner named or open.
 - **The check result is reported only if it ran**, and the document has no FAIL.
 - **Nothing invented**: no team names, dates, volumes or retention the input didn't give, except as `[assumption]`.
+- **Every question asked is answered in its own line first,** before the contract.
+- **The user's draft stays theirs:** each change to their names, fields or shapes is listed with the rule it fixes, and nothing else is changed.
+- **The document is whole:** saved complete, or shown complete, never cut off.
 
 **Hands off to:** `data-contract` when an analytics team or a trained model reads the topic as a dataset.
 

@@ -24,7 +24,16 @@ APIs are `api-contract-draft`; a dataset's schema and quality SLAs for analytics
    by paymentId?") gets a direct answer in a few lines: yes or no, why, the fix. No AsyncAPI
    document. A request to define events gets the full contract (step 11).
 
-2. **List the facts, the producer and the consumers.** For each consumer, write what it does
+2. **When the user brings a draft, keep it theirs.** Their payload, event names or spec are the
+   starting point, not a sketch to redo. Keep their names, fields and shapes. Change one only
+   when it breaks a rule below: a float for money, personal data no consumer uses, a card
+   number, a command for a name, no event id. List each change: *"`price` (float) →
+   `priceMinor` + `currency`: floats lose pennies when summed"*. Anything you'd change that
+   breaks no rule goes under "Also worth considering", unapplied. ❌ Renaming their
+   events, dropping their fields and reshaping the payload, then answering their question
+   underneath.
+
+   **Then list the facts, the producer and the consumers.** For each consumer, write what it does
    with each event; that line decides payload size and justifies every field. Ask at most 2
    questions, spent on who consumes and what they do with it, and which broker. Missing broker
    → write broker-neutral with a Kafka binding, tagged `[assumption]`.
@@ -106,16 +115,30 @@ APIs are `api-contract-draft`; a dataset's schema and quality SLAs for analytics
     It checks AsyncAPI 3.x structure, `$ref`s, past-tense names, the envelope in every message,
     one type per schema, unmarked personal data, closed schemas, deprecation dates, and each
     channel's key, ordering, delivery, retention, replay and DLQ notes. When it can't run, say
-    the document is unchecked. Never claim a check that didn't run.
+    the document is unchecked. Never claim a check that didn't run. Report it as what it
+    checked and what it found: ✅ *"Checked against AsyncAPI 3.0 structure and the rules
+    above (envelope, past-tense names, PII marks, per-channel key, retention and DLQ): no
+    failures."* ❌ *"Passes the structural check."*
 
 11. **Reply in this order:**
-    1. **What the contract decides**, 3–6 lines, leading with every pushback from steps 3–9.
-    2. **Decisions**: a table of decision, choice, why (shape in [`reference.md`](reference.md)).
-    3. **What consumers must do**: numbered, at most 6: dedupe, ignore unknown fields, revision
+    1. **The answer to each question the user asked**, numbered in their order, in plain
+       words, one to three lines each: ✅ *"Versioning: add fields freely; a rename or type
+       change ships as `booking.confirmed.v2` beside v1 until a date agreed with
+       consumers."* A question the contract answers still gets its own line here, not left
+       for the reader to find in the spec.
+    2. **What the contract decides**, 3–6 lines, leading with every pushback from steps 3–9,
+       then each change you made to their draft (step 2).
+    3. **Decisions**: a table of decision, choice, why (shape in [`reference.md`](reference.md)).
+    4. **What consumers must do**: numbered, at most 6: dedupe, ignore unknown fields, revision
        check, no cross-key order, DLQ duty, the migration they owe and by when.
-    4. **The AsyncAPI document**, saved as `asyncapi.json` when files can be written, inline
-       otherwise; then one line on the check result.
-    5. **To confirm**: each open item with who can answer it.
+    5. **The AsyncAPI document**, saved as `asyncapi.json` when files can be written, inline
+       otherwise; then one line on the check result. When it's saved, show each event in the
+       reply as a short field table (field, type, required, who uses it), not as JSON. Never
+       paste part of the document: show all of it, or point to the file.
+    6. **To confirm**: each open item with who can answer it.
+
+    The reply starts with the answer: no leftover working notes ("This confirms it", "as
+    reworked above"), and no reference to anything the reader can't see.
 
 **Non-interactive runs** (subagent, CI, headless): a missing broker, retention, consumer
 detail or sunset date becomes a tagged `[assumption]` or a "To confirm" line, and the contract
@@ -140,6 +163,9 @@ happens in it that others react to`.
 - **Retention, replay and dead-letter are stated per channel**, with the DLQ owner named or open.
 - **The check result is reported only if it ran**, and the document has no FAIL.
 - **Nothing invented**: no team names, dates, volumes or retention the input didn't give, except as `[assumption]`.
+- **Every question asked is answered in its own line first,** before the contract.
+- **The user's draft stays theirs:** each change to their names, fields or shapes is listed with the rule it fixes, and nothing else is changed.
+- **The document is whole:** saved complete, or shown complete, never cut off.
 
 ## When to use this skill
 
@@ -165,3 +191,5 @@ happens in it that others react to`.
 - ❌ **In-place breaking change** to a live event, "so there's one version to maintain". Fulfilment breaks at deploy.
 - ❌ **`additionalProperties: false`** on payloads, which turns every additive change into a breaking one.
 - ❌ **A DLQ nobody owns.** Messages land there and the business notices weeks later.
+- ❌ **Redesigning the user's payload unasked.** Renamed events and dropped fields they didn't ask about make the contract yours, not theirs, and bury the answer they wanted.
+- ❌ **Answering inside the spec.** "See `x-delivery`" isn't an answer to "do we get exactly-once?". Say no, why, and what they get, in the first lines.

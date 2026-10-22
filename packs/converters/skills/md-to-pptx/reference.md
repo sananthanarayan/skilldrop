@@ -57,12 +57,20 @@ plus the paragraph spacing. It packs blocks top to bottom into 96% of the body h
 a "(continued)" slide when the next block does not fit.
 
 - **Text** splits between paragraphs or list items, never inside one. A subheading or a line
-  ending in `:` moves to the next slide with the item it introduces.
+  ending in `:` moves to the next slide with the item it introduces. A nested line stays with
+  the item above it: when a sub-bullet would start the next slide, the whole item moves, from
+  its top-level line. The exception is an item taller than 80% of a slide, which breaks inside.
+- **A section that splits is balanced.** It is packed again into up to 40% less height, in 5%
+  steps, while it still takes the same number of slides. So the last slide isn't left
+  holding one or two lines: three slides carry, say, 7, 7 and 6 items rather than 9, 9 and 2. A section with a `---` break isn't balanced,
+  because the author placed the breaks.
 - **Tables** split between rows, with the header row repeated, at least two rows per slide, and
   never one row left alone.
 - **Code** splits between lines, at least three per slide, and never one or two left alone.
 - **Images** shrink to the space left when at least 60% of their fitted size and 1.5 in remain;
   otherwise they move to the next slide.
+- **An image under 64 pixels on a side** is embedded at its size, with a warning that it looks
+  like a placeholder or a thumbnail: at 96 dpi an 8×6 image is a speck on the slide.
 - **A single paragraph or table row taller than a slide** cannot split. It is placed alone and
   overflows, with a warning: break it into bullets.
 - **A slide title over two lines** gets a warning. Titles are not shrunk either.
