@@ -323,19 +323,19 @@
   },
   {
    "skill": "context-graph",
-   "rfc": "0063",
-   "evals": "12–15",
-   "drafts": 3,
+   "rfc": "0065",
+   "evals": "16–17",
+   "drafts": 1,
    "judge1": [
-    4,
-    8
+    3,
+    4
    ],
    "judge2": [
-    5,
-    8
+    2.5,
+    4
    ],
-   "skill_met": 0.7,
-   "baseline_met": 0.45
+   "skill_met": 0.53,
+   "baseline_met": 0.47
   }
  ]
 }

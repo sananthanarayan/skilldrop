@@ -21,6 +21,18 @@
         "Carries the named condition into the ADR as part of the decision",
         "Proceeds to `record` rather than looping back to `shape`"
       ]
+    },
+    {
+      "id": "reads-existing-decisions-and-closes-the-supersession",
+      "prompt": "Run the design loop for moving order events from Kafka to SQS. The repo has ADRs under docs/adr, and ADR-0004 chose Kafka.",
+      "assertions": [
+        "Before setting targets, lists the decisions already in force for order events by id, including ADR-0004",
+        "States whether the new design keeps or supersedes each of those decisions",
+        "Runs nfr-spec and expresses targets as numbers, not adjectives",
+        "Writes the ADR only after G1, and the new ADR says it supersedes ADR-0004",
+        "After writing the ADR, checks that ADR-0004 is marked superseded by the new record, and gives the exact edit when it isn't",
+        "Does not invent records, ids or dates that are not in the repository"
+      ]
     }
   ]
 }

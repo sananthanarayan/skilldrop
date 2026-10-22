@@ -1,7 +1,7 @@
 {
-  "description": "The cross-role toolkit every pack builds on: structured intake, document critique, the review council, and output hygiene, plus the ship-a-draft wrapper. Installed automatically with every role pack.",
+  "description": "The cross-role toolkit every pack builds on: structured intake, document critique, the review council, output hygiene, and the decision graph behind a codebase, plus the ship-a-draft wrapper. Installed automatically with every role pack.",
   "display_name": "Core",
-  "keywords": ["intake", "critique", "review", "hygiene"],
+  "keywords": ["intake", "critique", "review", "hygiene", "decisions"],
   "links": {
     "documentation": "https://sananthanarayan.github.io/skilldrop/packs/core/"
   },

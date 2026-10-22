@@ -1,6 +1,6 @@
 ---
 name: context-graph
-description: Map the decisions behind a codebase from its ADRs, RFCs and design records — each record's status and date, what supersedes or amends what, which records cite which, the files and folders each decision governs, and with git the commits that implemented it — then answer "why is it like this?" from the record and check the record is still true. Finds supersessions only one side records, current decisions pointing at code that is gone, two current decisions governing the same path, and references to records that don't exist. Use when the user asks "why do we use X", "which decisions govern this file or service", "is this ADR still current", "are our ADRs out of date", "what was decided before I change this", wants a map of the architecture decisions, or is onboarding onto a codebase's history.
+description: Map the decisions behind a codebase from its ADRs, RFCs and design records — each record's status and date, what supersedes or amends what, which records cite which, the files and folders each decision governs, and with git the commits that implemented it and the commits that changed each decision's code since it was made, and who made them — then answer "why is it like this?" from the record and check the record is still true. Finds supersessions only one side records, current decisions pointing at code that is gone, code that has drifted from its decision, two current decisions governing the same path, and references to records that don't exist. Use when the user asks "why do we use X", "which decisions govern this file or service", "is this ADR still current", "has the code drifted since we decided this", "are our ADRs out of date", "what was decided before I change this", wants a map of the architecture decisions, or is onboarding onto a codebase's history.
 ---
 
 # context-graph
@@ -31,7 +31,7 @@ the code itself is `reverse-architecture`.
    # Other IDEs (from the skill folder)
    python3 scripts/context_graph.py --root <repo> --docs architecture/decisions --json -o graph.json --mermaid graph.mmd
    ```
-   `--git` adds the commits whose messages mention each record. A path counts as governed when a record names it in backticks or links to it, and it exists. Without the script, do the same by hand and say the links were found by reading, not computed.
+   `--git` adds the commits whose messages mention each record. For each current decision that governs code, it also lists the commits that changed that code since the decision's date (or since the record was committed, when it has no date). It gives who made them, how many cite the record, and when the record itself was last edited. A path counts as governed when a record names it in backticks or links to it, and it exists. Without the script, do the same by hand and say the links were found by reading, not computed.
 
    **The script's findings are leads, not answers.** Confirm each one by reading the records and the code before you report it, and drop the ones that don't hold. Two records "governing the same path" often don't clash at all: say so only when their decisions actually conflict, and quote both.
 
@@ -43,12 +43,15 @@ the code itself is `reverse-architecture`.
 
 4. **Check the deciding record against the code.** Open the files it governs and check each thing the record requires (every "must", every named field, check, limit or setting), not only its headline. Confirm or contradict each with the code, quoting the line: ✅ *"`scheduler/jobs.py` line 18 still opens a database transaction per job, as ADR-0012 says."* Report drift as a finding with both sides: ✅ *"ADR-0015 promises 30 days of audit-log retention; `ops/logging.yaml` sets `retention_days: 14`."* When the record describes a phased change (a migration, a dual-write, a rollout), say which phase the code is in. While it's mid-rollout, the old decision still holds for the parts not yet moved: that is a missing cross-reference, not a contradiction.
 
+   With git history, start with what changed since the decision: the commits to its code that don't cite it, newest first. Read what each one changed against the record's requirements. A commit is not drift by itself; a requirement the code no longer meets is. ✅ *"ADR-0009 (2026-02-10) requires one queue per tenant. Three commits since; `a1b2c3d` (Ben, 2026-05-03, 'Switch to shared queue') moved `orders/publish.py` to a single queue."* When the code changed a lot and the record was never touched, say so even when you find no contradiction. Name the people who made the changes: they are who to ask about what the record doesn't say.
+
 5. **For "can I remove or change X?", search the code for every use of X,** not only the records: imports, client constructors, config keys, environment variables and container definitions. A use that no record covers is still a dependency: list it as "in use, no recorded decision", with its file. The records tell you why; only the code tells you everything that would break.
 
 6. **Find the decisions that bear on it, not only the ones that name its path.** Read any record that amends, extends or narrows the governing one, and any that sets a rule for the same concern across the codebase (error handling, data access, logging, authentication), even when it names a different folder. A shared-library rule governs a change that creates a shared library. Before you call a related record unrelated, read it.
 
 7. **Report what is no longer true, worst first.** Problems before warnings:
    - **Supersession recorded on one side only:** "ADR-0004 still says Accepted". Fix it by marking it "Superseded by ADR-0009".
+   - **Code that no longer does what its current decision requires:** quote the requirement and the line, and name the commit that changed it when the history shows one.
    - **A current decision pointing at code that is gone:** the record names a folder or file that no longer exists. When the script suggests where it moved (a renamed sibling), or a README says so, report it as moved, not gone, and give the path to update. Only a path with no successor is gone; then the decision is dead, so deprecate it.
    - **A guide that still teaches a superseded decision:** an onboarding doc or a README that cites the old record, or describes its choice. Name the file and the line to change.
    - **Two current decisions governing the same path, neither superseding nor amending the other:** a possible conflict. Read both, quote the clash if there is one, and recommend which one supersedes or amends the other.
@@ -56,7 +59,7 @@ the code itself is `reverse-architecture`.
 
 8. **Give each fix as the exact edit.** The line to change in which record, such as changing `## Status` to `Superseded by ADR-0009`, linked to that record's file, or the new record that's needed and what it must decide. Don't rewrite records nobody asked about.
 
-9. **Say what the record can't tell.** Decisions made in chat or tickets and never written down, code that no record governs, and, without `--git`, whether anything was actually implemented. When a question has no record, say so, and suggest writing one only if the decision is still live.
+9. **Say what the record can't tell.** Decisions made in chat or tickets and never written down, code that no record governs, and, without `--git`, whether anything was actually implemented or has changed since. When a question has no record, say so, and suggest writing one only if the decision is still live.
 
 10. **Write the reply in this order, at the size asked for:**
    - the answer, in two or three sentences, with the governing record's id;
@@ -71,7 +74,7 @@ the code itself is `reverse-architecture`.
 ## Useful references in this skill
 
 - [`reference.md`](reference.md): the record formats read (MADR, Nygard, RFC frontmatter), how status, supersession, amendment and governed paths are detected, every check and its fix, and the JSON shape
-- [`scripts/context_graph.py`](scripts/context_graph.py): stdlib; builds the graph, checks it, answers `--why PATH` and `--record ID`; `--json`, `--mermaid`, `--git`; exits 1 on problems and 2 on bad input
+- [`scripts/context_graph.py`](scripts/context_graph.py): stdlib; builds the graph, checks it, answers `--why PATH` and `--record ID`; `--json`, `--mermaid`, `--git` (commits behind each record, and changes since each decision); exits 1 on problems and 2 on bad input
 - [`examples/order-events.md`](examples/order-events.md): worked example, a repo whose Kafka ADR was superseded on one side only and whose newer ADR names a folder that was deleted
 
 ## Quality bar
@@ -86,6 +89,7 @@ the code itself is `reverse-architecture`.
 - **A removal or change question lists every use of the thing in the code,** recorded or not.
 - **Related records are read before they're called unrelated:** amendments, and rules for the same concern elsewhere in the codebase.
 - **A moved path is reported as moved, with its new location; only a path with no successor is "gone".**
+- **Drift is a requirement the code no longer meets, with the record's words, the line, and the commit when the history shows one.** A count of commits is a reason to look, never a finding by itself.
 - **A mid-rollout pair of records is a missing cross-reference, not a contradiction.**
 - **The reply fits the size asked for (a stated limit is obeyed exactly), and never mentions a script, a graph or a tool.**
 - **Statuses, links and governed paths come from the script's output**, or are marked as read by hand when it couldn't run.
@@ -96,6 +100,7 @@ the code itself is `reverse-architecture`.
 - ✅ "Why do we use X?" or "Why is this service built this way?" in a repo with ADRs or RFCs
 - ✅ "Which decisions govern this file, folder or service before I change it?"
 - ✅ "Are our ADRs still current?" or "Find the stale or contradictory decisions"
+- ✅ "Has the code drifted from what we decided?" or "What changed in this service since the ADR, and who changed it?"
 - ✅ A map of a codebase's architecture decisions for onboarding or a review
 
 ## When NOT to use this skill
@@ -115,5 +120,6 @@ the code itself is `reverse-architecture`.
 - ❌ **Passing on a script warning unread.** "Both govern the same path" is a prompt to read both, not a conflict.
 - ❌ **Answering "can I remove it?" from the records alone.** The uses nobody recorded are the ones that break.
 - ❌ **Taking the record's word for it.** A decision the code no longer follows is the most useful thing to find; read the files.
+- ❌ **Calling it drift because the code changed.** Most commits since a decision implement or refine it. Only a requirement the code no longer meets is drift.
 - ❌ **"Gone" for a folder that was renamed.** Look for where it went before telling someone the decision is dead.
 - ❌ **Telling the reader how you found it.** "The script shows" or "the graph says" means nothing to them; say what the records and the code say.

@@ -14,16 +14,19 @@ a script, and why the decision is recorded only *after* the panel agrees.
 
 | # | Stage | Type | Skills | Gate |
 |---|---|---|---|---|
-| 1 | `constrain` | generate | [`nfr-spec`](../../skills/nfr-spec/SKILL.md) | — |
+| 1 | `constrain` | generate | [`context-graph`](../../../core/skills/context-graph/SKILL.md), [`nfr-spec`](../../skills/nfr-spec/SKILL.md) | — |
 | 2 | `shape` | generate | [`design-doc`](../../skills/design-doc/SKILL.md), [`architecture-diagrams`](../../skills/architecture-diagrams/SKILL.md) | — |
 | 3 | `threat` | verify | [`threat-model`](../../skills/threat-model/SKILL.md) | — |
 | 4 | `ratify` | gate | [`council-review`](../../../core/skills/council-review/SKILL.md) | **G1** review |
-| 5 | `record` | generate | [`adr-generator`](../../skills/adr-generator/SKILL.md) | — |
+| 5 | `record` | generate | [`adr-generator`](../../skills/adr-generator/SKILL.md), [`context-graph`](../../../core/skills/context-graph/SKILL.md) | — |
 
 ## How to run this loop
 
-1. **Constrain before shaping.** `nfr-spec` first, always. A design produced before its
-   quality targets exist gets judged on taste, and taste does not survive a review panel.
+1. **Constrain before shaping.** First run `context-graph` where the design will land. List the
+   decisions already in force there, each by id, and any the code has drifted from. A new
+   design either keeps each one or says which it supersedes; when the repo has no records,
+   say so. Then run `nfr-spec`, always. A design produced before its quality targets exist
+   gets judged on taste, and taste does not survive a review panel.
 2. **Shape prose and picture together.** `design-doc` and `architecture-diagrams` are one
    artifact in two renderings. A diagram that disagrees with the doc is a defect in both.
 3. **Attack it before ratifying.** `threat-model` consumes the design directly. Running it
@@ -33,7 +36,10 @@ a script, and why the decision is recorded only *after* the panel agrees.
    `REVISE` returns to `shape`. `SPLIT` and `RECONSIDER` leave the loop.
 5. **Record last.** `adr-generator` writes the decision *after* it is a decision, with the
    rejected options and the reasoning that killed them. An ADR written before G1 is a proposal
-   wearing an ADR's clothes.
+   wearing an ADR's clothes. Then run `context-graph` again. Every record the new ADR
+   supersedes must now say "Superseded by" it, and the new ADR must name the code it governs.
+   A supersession recorded on one side only is the most common way a decision log starts to
+   lie.
 
 ## Verdicts
 
@@ -74,10 +80,13 @@ which end in `BLOCKED`.
 - **The ADR names what was rejected and why.** A decision record with one option is a description of what happened, not a decision.
 - **Dissent is recorded, not resolved away.** A panel that always reaches consensus is not seating real positions.
 - **The diagram and the doc say the same thing.** They are checked against each other before G1, not after someone builds from the wrong one.
+- **The design names the decisions already in force where it lands,** and which of them it keeps or supersedes.
+- **After `record`, the records agree with each other:** each record the new ADR supersedes says so too.
 
 ## Anti-patterns to avoid
 
 - ❌ **Writing the ADR before G1.** It pre-commits the panel to a decision it has not made, and every reviewer can feel it.
 - ❌ **Running `threat-model` after ratification.** The panel then ratified an unattacked design, which is the failure this ordering exists to prevent.
 - ❌ **Treating `PROCEED WITH CONDITIONS` as `PROCEED`.** The conditions must reach the ADR; dropping them is how a conditional approval silently becomes unconditional.
+- ❌ **Designing over a decision nobody read.** A new design that quietly contradicts a current ADR leaves two decisions in force on one system, and the next reader can't tell which one wins.
 - ❌ **Skipping `constrain` because the NFRs are "obvious".** Obvious targets are the ones nobody writes down and everybody remembers differently.

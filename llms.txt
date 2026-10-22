@@ -6,7 +6,7 @@
 > 117 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 1.0.1.
+> Version 1.1.0.
 
 ## Start here
 
@@ -269,8 +269,8 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 Each skill and loop sits in exactly one pack folder, `packs/<pack>/`. Every role pack
 except `api-builder` requires `core`, which installs with it.
 
-- **core** (4 skills, loops: ship-a-draft): The cross-role toolkit every pack builds on: structured intake, document critique, the review council, and output hygiene, plus the ship-a-draft wrapper. Installed automatically with every role pack.
-- **solution-architect** (12 skills, loops: design, requires core): Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.
+- **core** (5 skills, loops: ship-a-draft): The cross-role toolkit every pack builds on: structured intake, document critique, the review council, output hygiene, and the decision graph behind a codebase, plus the ship-a-draft wrapper. Installed automatically with every role pack.
+- **solution-architect** (11 skills, loops: design, requires core): Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.
 - **product-manager** (10 skills, loops: discover, requires core): Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, and success measurement.
 - **dev-team** (20 skills, loops: build, modernize, release, requires core): Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, pull request descriptions, a ranked technical-debt register, migrations, launch readiness, release notes, agent-policy files, and code-quality gates.
 - **sre-oncall** (8 skills, loops: operate, requires core): Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.
@@ -326,5 +326,5 @@ except `api-builder` requires `core`, which installs with it.
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 64 RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 65 RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.

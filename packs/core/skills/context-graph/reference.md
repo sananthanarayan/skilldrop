@@ -30,6 +30,7 @@ Every `.md` file in them, recursively, is a record, except:
 | missing paths | a path that looks like the repository's (its first part is a top-level folder that exists) but doesn't exist |
 | moved | for a missing path, an existing sibling with a close name (`services/ledger-sync` → `services/ledger`), where the code may have gone |
 | commits | with `--git`: commits whose subject or body mentions the id, newest first, up to 20 |
+| drift | with `--git`, for a current record that governs a path: the commits that changed those paths since the record's date, newest first. When the record has no date, they count from when its file was first committed. Each has its author and whether it cites the record. Also gives the authors and their counts, the last change, and when the record file was last edited. Merges are left out |
 
 **Statuses, normalised:**
 
@@ -81,6 +82,11 @@ A file that isn't UTF-8 is skipped, with a note in the report.
     "date": "2025-03-02", "path": "docs/adr/0004-….md",
     "supersedes": [], "superseded_by": [], "amends": [], "cites": [], "cited_by": [],
     "governs": ["services/orders/"], "missing_paths": [], "commits": [],
+    "drift": {"since": "2025-03-02", "since_from": "record", "count": 3, "not_citing_record": 2,
+              "authors": [{"name": "Ben", "commits": 2}, {"name": "Ana", "commits": 1}],
+              "last_change": "2026-06-04", "record_last_edited": "2025-03-02",
+              "commits": [{"sha": "a1b2c3d", "date": "2026-06-04", "author": "Ben", "subject": "…",
+                           "cites_record": false}]},
     "successors": ["ADR-0009"], "successors_only_claimed_by_successor": ["ADR-0009"],
     "moved": {"services/kafka-bridge": ["services/bridge"]}
   }],
@@ -91,8 +97,30 @@ A file that isn't UTF-8 is skipped, with a note in the report.
 }
 ```
 
+`drift` is `null` without `--git`, and for a record that isn't current or governs no path.
+
 `successors` joins a record's own "superseded by" with every record that says it supersedes this
 one. The second list holds the ones only the newer record records.
+
+## Code changed since each decision (`--git`)
+
+The full report gains a table of the current decisions whose governed code has changed since
+they were made, most changed first:
+
+| Column | Meaning |
+|---|---|
+| Decided | the record's date; `*` when it has none and the date is when the record was first committed |
+| Commits since | commits to the governed paths since that date, merges left out |
+| Not citing it | how many of those don't mention the record's id: the changes made without reference to it |
+| By | the authors, with their counts, most first |
+| Last change | the newest of those commits |
+| Record last edited | the last commit to the record file itself |
+
+`--why` adds a "Changed since" line under each current decision, and `--record` lists up to 10
+of the commits. The Markdown table shows 15 rows; `--json` has them all.
+
+A commit to a decision's code is a reason to check it, not drift by itself. Drift is a
+requirement in the record that the code no longer meets.
 
 ## Limits
 

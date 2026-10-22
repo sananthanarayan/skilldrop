@@ -22,6 +22,18 @@
         "Says a new or wider normalisation rule is a return to capture, not a fix",
         "Counts the return under the cap of 3"
       ]
+    },
+    {
+      "id": "survey-reads-the-recorded-decisions",
+      "prompt": "Run the modernize loop. We're replacing services/billing (a Python 2 batch job) with a Go service. The repo has ADRs under docs/adr.",
+      "assertions": [
+        "Surveys the boundary and every caller and side effect that crosses it, each cited to a file, before planning",
+        "Reads the ADRs that govern services/billing and names the current one by id, status and date",
+        "Carries each constraint the current decision sets into the plan",
+        "Says where the code has changed since the decision was made, from the git history, and who changed it, or says git history wasn't available",
+        "Treats a behaviour that contradicts the recorded decision as a question for the owner before capture, not as something to fix silently in the rewrite",
+        "Does not invent decisions, ids, commits or people that are not in the repository"
+      ]
     }
   ]
 }

@@ -34,17 +34,17 @@
 <rect x="639.2" y="330" width="136.8" height="20" rx="10" fill="#6f9dff" fill-opacity=".08" stroke="#6f9dff" stroke-opacity=".35"/><text x="647.2" y="344" class="chip" fill="#6f9dff">solution-architect</text>
 <text x="92" y="372" class="h">Decide how to build it</text>
 <text x="92" y="396" class="muted"><tspan class="startl">Start here when</tspan> The problem is agreed, but not the approach.</text>
-<text x="92.0" y="424" class="mono">nfr-spec</text>
-<text x="155.6" y="424" class="arrow">→</text>
-<text x="172.6" y="424" class="mono">design-doc / architecture-diagrams</text>
-<text x="426.4" y="424" class="arrow">→</text>
-<text x="443.4" y="424" class="mono">threat-model</text>
-<text x="536.3" y="424" class="arrow">→</text>
-<text x="553.3" y="424" class="mono">council-review</text>
+<text x="92.0" y="424" class="mono">context-graph / nfr-spec</text>
+<text x="272.7" y="424" class="arrow">→</text>
+<text x="289.7" y="424" class="mono">design-doc / architecture-diagrams</text>
+<text x="543.6" y="424" class="arrow">→</text>
+<text x="560.6" y="424" class="mono">threat-model</text>
+<text x="653.4" y="424" class="arrow">→</text>
+<text x="670.4" y="424" class="mono">council-review</text>
 <text x="97.0" y="452" class="arrow">→</text>
 <rect x="114.0" y="438" width="187.7" height="20" rx="10" class="gate"/><text x="124.0" y="452" class="gatet">G1 · a review panel decides</text>
 <text x="306.7" y="452" class="arrow">→</text>
-<text x="323.7" y="452" class="mono">adr-generator</text>
+<text x="323.7" y="452" class="mono">adr-generator / context-graph</text>
 <text x="92" y="480" class="ends"><tspan class="endsl">Ends with</tspan> a recorded decision (ADR)</text>
 <rect x="72" y="524" width="724" height="184" rx="12" class="card"/>
 <rect x="72" y="536" width="4" height="160" rx="2" fill="#3dbb7c"/>
@@ -190,7 +190,7 @@
 <text x="462.0" y="1738" class="h">Replace legacy code safely</text>
 <text x="462.0" y="1762" class="muted"><tspan class="startl">Start here when</tspan> A legacy component is being</text>
 <text x="462.0" y="1780" class="muted">rewritten or moved.</text>
-<text x="462.0" y="1808" class="mono">codebase-tour</text>
+<text x="462.0" y="1808" class="mono">codebase-tour / context-graph</text>
 <text x="467.0" y="1836" class="arrow">→</text>
 <text x="484.0" y="1836" class="mono">refactor-plan / migration-plan</text>
 <text x="467.0" y="1864" class="arrow">→</text>

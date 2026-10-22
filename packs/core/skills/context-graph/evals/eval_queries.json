@@ -7,5 +7,8 @@
   {"query": "We just decided to move our search from Postgres full-text to a hosted search engine. Write the ADR for it in MADR format", "should_trigger": false},
   {"query": "I start on the checkout repo on Monday. How do I run it locally, run the tests, and where's the code for applying discount codes?", "should_trigger": false},
   {"query": "There are no design docs for this monolith. Work out its architecture from the code and the docker-compose file and draw me a C4 diagram", "should_trigger": false},
-  {"query": "Here are the notes from this morning's pricing steering meeting. Pull out what was decided, who owns each action and when it's due", "should_trigger": false}
+  {"query": "Here are the notes from this morning's pricing steering meeting. Pull out what was decided, who owns each action and when it's due", "should_trigger": false},
+  {"query": "ADR-0009 says order events go through one SQS queue per tenant. Has the orders service drifted from that since we decided it, and who changed it?", "should_trigger": true},
+  {"query": "Before I rewrite the billing batch job, what decisions did we record about it, and has anyone changed the code since without updating them?", "should_trigger": true},
+  {"query": "Show me who committed to services/orders in the last month and summarise what changed", "should_trigger": false}
 ]

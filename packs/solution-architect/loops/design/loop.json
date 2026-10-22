@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0028. The loop with the worst reversibility profile: a design mistake surfaces months later in code nobody wants to unwind. That is why its gate is a panel, not a script.",
   "name": "design",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Take a ratified requirement to a recorded architectural decision — constraints, structure, diagrams, threats, then a panel that must agree before the decision is written down. Use when the user is designing a system, choosing an architecture, or asking how something should be built.",
   "entrypoint": "LOOP.md",
   "kind": "loop",
@@ -10,8 +10,8 @@
     {
       "id": "constrain",
       "type": "generate",
-      "intent": "Name the quality targets before the structure, so the design is judged against numbers rather than taste.",
-      "skills": ["nfr-spec"]
+      "intent": "Read the decisions already in force where the design will land, then name the quality targets before the structure, so the design is judged against numbers and the existing decisions rather than taste.",
+      "skills": ["context-graph", "nfr-spec"]
     },
     {
       "id": "shape",
@@ -40,8 +40,8 @@
     {
       "id": "record",
       "type": "generate",
-      "intent": "Write the decision down with its rejected alternatives, so the next team inherits the reasoning and not just the outcome.",
-      "skills": ["adr-generator"]
+      "intent": "Write the decision down with its rejected alternatives, so the next team inherits the reasoning and not just the outcome, then check the records still agree with each other.",
+      "skills": ["adr-generator", "context-graph"]
     }
   ]
 }

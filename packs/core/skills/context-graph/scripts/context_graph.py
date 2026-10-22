@@ -3,13 +3,14 @@
 
 Reads decision records (ADRs, RFCs, design decisions) as Markdown, finds each one's id, title,
 status and date, and the edges between them: what supersedes or amends what, which records cite
-which, the files and folders each one governs, and, with --git, the commits that mention it.
+which, the files and folders each one governs, and, with --git, the commits that mention it and
+the commits that changed each current decision's code since it was made, and who made them.
 Then it checks the graph for what goes wrong as a codebase ages: a supersession only one side
 records, a current decision pointing at code that is gone, two current decisions governing the
 same path, references to records that don't exist.
 
   python3 context_graph.py                          # find records under ./docs, check them
-  python3 context_graph.py --root repo --git        # and the commits that mention each record
+  python3 context_graph.py --root repo --git        # and the commits behind each record, and since it
   python3 context_graph.py --why src/auth/session.py
   python3 context_graph.py --record ADR-0004
   python3 context_graph.py --docs architecture/decisions --json -o graph.json --mermaid graph.mmd
@@ -191,7 +192,7 @@ def parse_record(path, root, text):
     rec = {"id": rid, "title": title_of(meta, body, stem.replace("-", " ")), "status": status,
            "status_text": raw_status, "date": date_of(meta, body), "path": rel,
            "supersedes": [], "superseded_by": [], "amends": [], "cites": [], "governs": [],
-           "missing_paths": [], "commits": []}
+           "missing_paths": [], "commits": [], "drift": None}
     rec["supersedes"] += list_ids(meta.get("supersedes", "")) + list_ids(meta.get("replaces", ""))
     rec["superseded_by"] += list_ids(meta.get("superseded_by", "")) + list_ids(meta.get("replaced_by", ""))
     rec["amends"] += list_ids(meta.get("amends", ""))
@@ -288,6 +289,69 @@ def git_commits(root, records, limit):
             if rid in known and len(known[rid]["commits"]) < 20:
                 known[rid]["commits"].append({"sha": sha, "date": date, "subject": subject[:120]})
     return None
+
+
+def _git(root, *args):
+    """stdout of a git command in root, or None when git is missing or the command fails."""
+    try:
+        out = subprocess.run(["git", "-C", root, *args], capture_output=True, text=True,
+                             encoding="utf-8", errors="replace", timeout=60)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    return out.stdout if out.returncode == 0 else None
+
+
+def git_drift(root, records, limit):
+    """For each current decision that governs code: the commits that changed that code since the
+    decision was made, who made them, and when the record itself was last edited. Code that keeps
+    changing under a record nobody revisits is where a decision quietly stops being true."""
+    for r in records:
+        if r["status"] not in CURRENT or r["successors"] or not r["governs"]:
+            continue
+        since, source = r["date"], "record"
+        if not since:  # no date in the record: when the record was first committed
+            added = _git(root, "log", "--diff-filter=A", "--follow", "--date=short", "--format=%ad", "--", r["path"])
+            since, source = ((added or "").split() or [""])[-1], "git"
+        if not since:
+            r["drift"] = {"since": None, "note": "the record has no date and isn't committed, so changes since it can't be dated"}
+            continue
+        log = _git(root, "log", "--no-merges", "--since=%s 00:00" % since, "-n", str(limit), "--date=short",
+                   "--format=%h%x1f%ad%x1f%an%x1f%s%x1f%b%x1e", "--", *[g.rstrip("/") or "." for g in r["governs"]])
+        commits = []
+        for entry in (log or "").split("\x1e"):
+            parts = entry.strip("\n").split("\x1f")
+            if len(parts) < 4:
+                continue
+            body = parts[4] if len(parts) > 4 else ""
+            commits.append({"sha": parts[0], "date": parts[1], "author": parts[2], "subject": parts[3][:120],
+                            "cites_record": r["id"] in ids_in(parts[3] + "\n" + body)})
+        authors = {}
+        for c in commits:
+            authors[c["author"]] = authors.get(c["author"], 0) + 1
+        edited = (_git(root, "log", "-1", "--date=short", "--format=%ad", "--", r["path"]) or "").strip()
+        r["drift"] = {
+            "since": since, "since_from": source, "count": len(commits),
+            "not_citing_record": sum(1 for c in commits if not c["cites_record"]),
+            "authors": [{"name": n, "commits": k} for n, k in sorted(authors.items(), key=lambda x: (-x[1], x[0]))],
+            "last_change": commits[0]["date"] if commits else None,
+            "record_last_edited": edited or None,
+            "commits": commits[:20],
+        }
+
+
+def drift_line(d):
+    """One line: '12 commits by Ana (9), Ben (3) since 2026-02-10, the last on 2026-09-30'."""
+    if not d or d.get("since") is None:
+        return (d or {}).get("note", "")
+    if not d["count"]:
+        return "no commits have changed its code since %s" % d["since"]
+    who = ", ".join("%s (%d)" % (a["name"], a["commits"]) for a in d["authors"][:4]) + (" …" if len(d["authors"]) > 4 else "")
+    cite = "" if not d["not_citing_record"] else ("; %d don't cite the record" % d["not_citing_record"]
+                                                  if d["not_citing_record"] < d["count"] else "; none cites the record")
+    return "%d commit%s by %s since %s%s, the last on %s%s" % (
+        d["count"], "" if d["count"] == 1 else "s", who, d["since"],
+        " (when the record was committed; it has no date)" if d.get("since_from") == "git" else "",
+        d["last_change"], cite)
 
 
 SKIP_DIRS = {".git", "node_modules", "vendor", "dist", "build", ".venv", "venv", "__pycache__", "target"}
@@ -432,7 +496,8 @@ def why(records, path, root):
     hits.sort(key=lambda h: (0 if live(h[0]) else 1, rank.get(h[0]["status"], 2),
                              -int(h[0]["date"].replace("-", "") or 0)))
     return p, [{"id": r["id"], "title": r["title"], "status": r["status"], "date": r["date"], "path": r["path"],
-                "via": g, "superseded_by": sorted(set(succ.get(r["id"], []))), "current": live(r)} for r, g in hits]
+                "via": g, "superseded_by": sorted(set(succ.get(r["id"], []))), "current": live(r),
+                "drift": r.get("drift")} for r, g in hits]
 
 
 def mermaid(records):
@@ -479,6 +544,8 @@ def report(records, findings, note, query, dirs, root):
                     state = h["status"] + (", current" if h["current"] else "")
                 out.append("- **%s %s** (%s%s), via `%s`: %s" % (
                     h["id"], h["title"], state, ", " + h["date"] if h["date"] else "", h["via"], h["path"]))
+                if h.get("drift"):
+                    out.append("  - Changed since: %s" % drift_line(h["drift"]))
             if not cur:
                 out.append("\nNone of these is current: the decisions that governed it were superseded, "
                            "deprecated or never accepted.")
@@ -502,6 +569,13 @@ def report(records, findings, note, query, dirs, root):
                 out.append("- %s: %s" % (label, ", ".join(r[k])))
         for c in r["commits"]:
             out.append("- Commit %s %s: %s" % (c["sha"], c["date"], c["subject"]))
+        if r.get("drift"):
+            out.append("- Code changed since the decision: %s" % drift_line(r["drift"]))
+            if r["drift"].get("record_last_edited"):
+                out.append("- Record last edited: %s" % r["drift"]["record_last_edited"])
+            for c in r["drift"].get("commits", [])[:10]:
+                out.append("  - %s %s %s: %s%s" % (c["sha"], c["date"], c["author"], c["subject"],
+                                                    " (cites it)" if c["cites_record"] else ""))
         out.append("")
     counts = {}
     for r in records:
@@ -516,6 +590,28 @@ def report(records, findings, note, query, dirs, root):
     out += ["- %s %s" % (rid, msg) for _, rid, msg in probs] or ["None."]
     out.append("\n## Warnings (%d)\n" % len(warns))
     out += ["- %s %s" % (rid, msg) for _, rid, msg in warns] or ["None."]
+    drifted = sorted((r for r in records if r.get("drift") and r["drift"].get("count")),
+                     key=lambda r: (-r["drift"]["count"], r["id"]))
+    if not query and any(r.get("drift") for r in records):
+        out.append("\n## Code changed since each decision\n")
+        if not drifted:
+            out.append("No commit has changed the code a current decision governs since it was made.")
+        else:
+            out.append("Current decisions whose code has changed since they were made, most changed first. "
+                       "Each is a place to check that the code still does what the record says.\n")
+            out.append("| Record | Decided | Commits since | Not citing it | By | Last change | Record last edited |")
+            out.append("|---|---|---|---|---|---|---|")
+            for r in drifted[:15]:
+                d = r["drift"]
+                out.append("| %s %s | %s%s | %d | %d | %s | %s | %s |" % (
+                    r["id"], r["title"].replace("|", "/")[:50], d["since"], "*" if d["since_from"] == "git" else "",
+                    d["count"], d["not_citing_record"],
+                    ", ".join("%s (%d)" % (a["name"].replace("|", "/"), a["commits"]) for a in d["authors"][:3])
+                    + (" …" if len(d["authors"]) > 3 else ""), d["last_change"], d["record_last_edited"] or "-"))
+            if len(drifted) > 15:
+                out.append("\n…and %d more; `--json` lists them all." % (len(drifted) - 15))
+            if any(r["drift"]["since_from"] == "git" for r in drifted[:15]):
+                out.append("\n\\* The record has no date, so this counts from when it was first committed.")
     if not query:
         out.append("\n## Graph\n")
         out.append("| Record | Status | Date | Supersedes | Superseded by | Governs |")
@@ -536,7 +632,9 @@ def _main(argv=None):
     q = ap.add_mutually_exclusive_group()
     q.add_argument("--why", metavar="PATH", help="list the decisions that govern a file or folder")
     q.add_argument("--record", metavar="ID", help="show one record and its neighbours, e.g. ADR-0004")
-    ap.add_argument("--git", action="store_true", help="also read commit messages for record ids")
+    ap.add_argument("--git", action="store_true",
+                    help="also read the commits that mention each record, and those that changed each current "
+                         "decision's code since it was made")
     ap.add_argument("--git-limit", type=int, default=5000)
     ap.add_argument("--json", action="store_true", help="print the graph as JSON instead of Markdown")
     ap.add_argument("--mermaid", metavar="FILE", help="also write a Mermaid flowchart of the graph")
@@ -579,6 +677,8 @@ def _main(argv=None):
         claimed = [o["id"] for o in records if r["id"] in o["supersedes"]]
         r["successors"] = sorted(set(r["superseded_by"]) | set(claimed))
         r["successors_only_claimed_by_successor"] = sorted(set(claimed) - set(r["superseded_by"]))
+    if a.git and not any("no commits were read" in n for n in notes):
+        git_drift(root, records, a.git_limit)
     # Guides and READMEs that still cite a superseded decision may still teach it.
     by_id = {r["id"]: r for r in records}
     docs = other_docs(root, {r["path"] for r in records})

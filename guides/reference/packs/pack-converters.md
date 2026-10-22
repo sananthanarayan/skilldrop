@@ -13,7 +13,7 @@ Turn Markdown into Word, Excel and HTML files that people outside engineering ca
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack converters` |
-| Skills | 7 plus 4 from core |
+| Skills | 7 plus 5 from core |
 | Loops | none |
 | How-to | [Use the Converters pack](../../how-to/packs/use-the-converters-pack.md) |
 
@@ -223,6 +223,7 @@ Tier **standard** · v0.1.4 · [SKILL.md](../../../packs/converters/skills/merma
 Installed with this pack. Details: [Core pack reference](pack-core.md).
 
 - `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder) can consume without further intake.
+- `context-graph`: Map the decisions behind a codebase from its ADRs, RFCs and design records — each record's status and date, what supersedes or amends what, which records cite which, the files and folders each decision governs, and with git the commits that implemented it and the commits that changed each decision's code since it was made, and who made them — then answer "why is it like this?" from the record and check the record is still true. Finds supersessions only one side records, current decisions pointing at code that is gone, code that has drifted from its decision, two current decisions governing the same path, and references to records that don't exist.
 - `council-review`: Convene a council of distinct senior-engineer personas (Architect, Security, Operator/SRE, Pragmatist, User-Advocate, plus optional bench seats) to deliberate a decision, design, or code change — each takes an independent stance, the genuine disagreements are surfaced as named cruxes, and a Chair issues a reconciled verdict that records dissents and states what would change the decision. The "Claude Council."
 - `doc-critique`: Review an existing document — ADR, design doc, runbook, exec summary, tech-comparison matrix, deck outline, decision log — and produce a structured critique against the same quality bars the skilldrop generators enforce. Categorizes findings by severity (blocker / major / minor / nit), points to the exact section/line, and suggests a concrete fix for each.
 - `output-hygiene`: Review agent-written text before it ships and strip the machine artifacts it carries — invisible Unicode, non-breaking spaces, homoglyphs, harness-added provenance trailers, trailing chat closers — then flag the prose tells a script cannot catch, each quoted with a rewrite.

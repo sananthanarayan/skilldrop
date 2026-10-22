@@ -220,6 +220,36 @@
         "Delivers the map itself as one pasteable markdown block (e.g. a table of ID, title, store, status, date, replaced by/replaces) with the issues in a short separate list, rather than a long narrative or per-file walkthrough; any check that needs git history (e.g. whether ADR 7 was ever implemented) is given as a command to run, not as a claimed result.",
         "Invents nothing not in the input: no ADR numbers, dates, databases, services, sizes or commit details beyond what the files in doc/adr/, services/, deploy/ and web/ contain."
       ]
+    },
+    {
+      "id": 16,
+      "held_out": "2026-10-22",
+      "prompt": "I'm about to rework how payments handles client retries. ADR-0004 is the idempotency decision. Is the code in services/payments still doing what it says? If anything has drifted, which commit did it and who? Keep it short, I just need to know what I can safely assume before I start.",
+      "assertions": [
+        "Identifies the real drift: services/payments/idempotency.py no longer compares the stored body fingerprint in lookup(), so a request that reuses an Idempotency-Key with a different body gets the cached response back instead of a 422. That breaks ADR-0004 rule 4, and the response points out that the 422 branch in services/payments/api/create.py can no longer fire because IdempotencyConflict is never raised.",
+        "Pins the drift to the 2025-08-19 commit 'refactor: simplify idempotency store lookups' by Dmitri Vasquez, notes that its message says 'No behaviour change intended' even though behaviour did change, and notes that the same commit skipped test_mismatched_body_raises_conflict in tests/test_idempotency.py (reason 'flaky since lookup refactor, see PAY-311').",
+        "Does NOT report the 48-hour TTL (TTL_SECONDS = 48 * 60 * 60, i.e. 172800) as drift from ADR-0004's 24 hours. It recognises that ADR-0007 (2025-06-02, Accepted) amends rule 3 and that Lena Hargrove's 2025-06-04 commit implemented it.",
+        "Points out that the amendment is recorded on one side only: ADR-0007 says 'Amends: ADR-0004', but ADR-0004 still reads 'Status: Accepted' with 24 hours and no 'Amended by ADR-0007', even though ADR-0001 requires both sides to say so.",
+        "Confirms what still holds, so the user knows what is safe to assume: a missing Idempotency-Key is still rejected with 400, records are still scoped per merchant (key idem:{merchant_id}:{key}) and stored in Redis with a TTL, and ADR-0007 says all other ADR-0004 rules are unchanged, so rule 4 is still meant to apply.",
+        "Treats the later commits correctly as legitimate or neutral: Priya Natarajan's 2025-03-10 implementation commit, Tomás Okafor's 2025-03-12 tests and his 2025-09-30 debug-logging commit are not flagged as drift.",
+        "Answers the question directly and compactly: it starts with whether the code matches ADR-0004 (no, one rule is broken) plus the commit and author, and recommends restoring the comparison and un-skipping the test, or else writing a superseding ADR if dropping rule 4 was intended. It does not pad the answer with a full catalogue of unrelated ADRs (0001-0003).",
+        "Invents nothing: every commit, date, author, file, constant and ticket it cites (including PAY-311, which it does not claim to know the contents of) exists in the repository or its git history, and it invents no other ADRs, incidents or email addresses."
+      ]
+    },
+    {
+      "id": 17,
+      "held_out": "2026-10-22",
+      "prompt": "hey, joined the platform team last week and i'm inheriting the notifications service. someone told me \"half our ADRs are lies\" lol. which of the decision docs can i actually trust for notifications, and is anything in there just wrong? repo's checked out here",
+      "assertions": [
+        "Gives a direct trust verdict for each decision record that governs notifications: ADR-0002, ADR-0003, ADR-0004, ADR-0005, ADR-0006, ADR-0007 and RFC-012 (via services/*/retry.py). Each one gets its status and a short trust / don't trust / partly answer, rather than a generic essay about ADR hygiene.",
+        "Flags ADR-0003 (RabbitMQ) as superseded on one side only: ADR-0007 says 'Supersedes: ADR-0003', but ADR-0003 still says 'Status: Accepted', breaking the both-sides rule in ADR-0001. It confirms from services/notifications/consumer.py (KafkaConsumer, topics user-events and invoice-events, group notifications) that Kafka is what actually runs, so ADR-0003 should not be trusted.",
+        "Flags that ADR-0006 (5 attempts, 2s base) and RFC-012 (3 attempts, 1s base, full jitter, 30s cap) are both Accepted, both govern services/notifications/retry.py, and contradict each other, with neither recording that it supersedes the other. It notes that notifications' retry.py follows ADR-0006 (MAX_ATTEMPTS = 5, BASE_DELAY_SECONDS = 2) while services/billing/retry.py follows RFC-012, and it leaves the conflict for the team to settle and record instead of quietly declaring one the winner.",
+        "Flags that ADR-0005 governs services/notifications/templates/, which no longer exists (the templates are in packages/notification-templates/, per its README), and gets the nuance right: rendering is still server-side via services/notifications/render.py with Jinja2 autoescape, so the decision itself still holds and only its governed path is stale.",
+        "Flags that ADR-0007 points to 'RFC-015 for the migration plan and cutover dates', but no RFC-015 exists in docs/rfcs/ (only RFC-012).",
+        "Does not flag the ADR-0002 to ADR-0004 supersession, which is recorded on both sides. It confirms that services/notifications/email/sender.py uses the provider HTTPS API and that dispatch.py logs the provider message id, so ADR-0004 can be trusted.",
+        "Says plainly that the checkout has no git history, so it cannot say when or by whom the code moved away from a record. It gives the commands the user could run to find out (for example git log --follow on services/notifications/retry.py, or git log on the templates move).",
+        "Invents nothing: no record, status, date, person, path, topic name or number beyond what the files contain. In particular it does not make up what RFC-015 says or a reason why the templates were moved beyond the README's stated reason (billing previews)."
+      ]
     }
   ]
 }

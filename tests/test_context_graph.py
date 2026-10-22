@@ -506,7 +506,7 @@ class OutputTest(unittest.TestCase):
             self.assertEqual(set(g["records"][0]), {
                 "id", "title", "status", "status_text", "date", "path", "supersedes", "superseded_by", "amends",
                 "cites", "governs", "missing_paths", "commits", "cited_by", "successors",
-                "successors_only_claimed_by_successor", "moved"})
+                "successors_only_claimed_by_successor", "moved", "drift"})
             self.assertEqual(g["records"][0]["path"], "docs/adr/0001-a.md")
 
     def test_findings_json_and_markdown_put_problems_first(self):
@@ -571,6 +571,84 @@ class GitTest(unittest.TestCase):
                                  env={"GIT_CEILING_DIRECTORIES": os.path.dirname(d)})
             self.assertEqual(code, 0)
             self.assertEqual(json.loads(out)["notes"], ["not a git repository, so no commits were read"])
+
+
+    def commit(self, d, files, message, author="Test Author", date="2026-01-01T12:00:00"):
+        repo(d, files)
+        env = dict(os.environ, GIT_AUTHOR_NAME=author, GIT_AUTHOR_EMAIL="a@example.invalid",
+                   GIT_COMMITTER_NAME=author, GIT_COMMITTER_EMAIL="a@example.invalid",
+                   GIT_AUTHOR_DATE=date, GIT_COMMITTER_DATE=date)
+        if not os.path.isdir(os.path.join(d, ".git")):
+            subprocess.run(["git", "-c", "init.defaultBranch=main", "init", "-q"], cwd=d, check=True, capture_output=True)
+        for cmd in (["add", "-A"], ["-c", "commit.gpgsign=false", "commit", "-q", "-m", message]):
+            subprocess.run(["git", *cmd], cwd=d, env=env, check=True, capture_output=True)
+
+    def test_drift_counts_commits_to_governed_code_since_the_decision_and_who_made_them(self):
+        with workdir() as d:
+            self.commit(d, {"services/orders/app.py": "v1\n", "docs/adr/0001-orders.md":
+                            adr("Orders on SQS", "Accepted", "Publish from `services/orders/`.", date="2026-03-01")},
+                        "Start", date="2026-02-01T12:00:00")
+            self.commit(d, {"services/orders/app.py": "v2\n"}, "Batch the sends, per ADR-1", author="Ana",
+                        date="2026-04-02T12:00:00")
+            self.commit(d, {"services/orders/app.py": "v3\n"}, "Switch to Kafka client", author="Ben",
+                        date="2026-05-03T12:00:00")
+            self.commit(d, {"services/orders/app.py": "v4\n"}, "Retry tweak", author="Ben",
+                        date="2026-06-04T12:00:00")
+            self.commit(d, {"README.md": "x\n"}, "Unrelated", author="Cy", date="2026-07-01T12:00:00")
+            code, g = graph(d, "--git")
+            dr = recs(g)["ADR-0001"]["drift"]
+            self.assertEqual(dr["since"], "2026-03-01")
+            self.assertEqual(dr["count"], 3)
+            self.assertEqual(dr["not_citing_record"], 2)
+            self.assertEqual(dr["authors"], [{"name": "Ben", "commits": 2}, {"name": "Ana", "commits": 1}])
+            self.assertEqual(dr["last_change"], "2026-06-04")
+            self.assertEqual(dr["record_last_edited"], "2026-02-01")
+            self.assertEqual([c["subject"] for c in dr["commits"]],
+                             ["Retry tweak", "Switch to Kafka client", "Batch the sends, per ADR-1"])
+            code, out, _ = run(SKILL, SCRIPT, "--root", d, "--git")
+            self.assertIn("## Code changed since each decision", out)
+            self.assertIn("| ADR-0001 Orders on SQS | 2026-03-01 | 3 | 2 | Ben (2), Ana (1) | 2026-06-04 | 2026-02-01 |", out)
+            code, out, _ = run(SKILL, SCRIPT, "--root", d, "--git", "--why", "services/orders/app.py")
+            self.assertIn("Changed since: 3 commits by Ben (2), Ana (1) since 2026-03-01, the last on 2026-06-04; "
+                          "2 don't cite the record", out)
+            code, out, _ = run(SKILL, SCRIPT, "--root", d, "--git", "--record", "ADR-0001")
+            self.assertRegex(out, r"  - [0-9a-f]{4,} 2026-04-02 Ana: Batch the sends, per ADR-1 \(cites it\)")
+
+    def test_drift_without_a_date_counts_from_when_the_record_was_committed(self):
+        with workdir() as d:
+            self.commit(d, {"src/app.py": "v1\n"}, "Start", date="2026-01-01T12:00:00")
+            self.commit(d, {"docs/adr/0001-x.md": "# X\n\n## Status\n\nAccepted\n\nIn `src/app.py`.\n"},
+                        "Record it", date="2026-02-01T12:00:00")
+            self.commit(d, {"src/app.py": "v2\n"}, "Change", date="2026-03-01T12:00:00")
+            code, g = graph(d, "--git")
+            dr = recs(g)["ADR-0001"]["drift"]
+            self.assertEqual((dr["since"], dr["since_from"], dr["count"]), ("2026-02-01", "git", 1))
+            code, out, _ = run(SKILL, SCRIPT, "--root", d, "--git")
+            self.assertIn("| ADR-0001 X | 2026-02-01* | 1 |", out)
+            self.assertIn("counts from when it was first committed", out)
+
+    def test_drift_skips_superseded_and_proposed_records_and_says_when_nothing_changed(self):
+        with workdir() as d:
+            self.commit(d, {"src/a.py": "v1\n",
+                            "docs/adr/0001-old.md": adr("Old", "Superseded by ADR-0002", "In `src/a.py`.", date="2026-01-02"),
+                            "docs/adr/0002-new.md": adr("New", "Accepted", "Supersedes ADR-0001. In `src/a.py`.", date="2026-01-02"),
+                            "docs/adr/0003-idea.md": adr("Idea", "Proposed", "In `src/a.py`.", date="2026-01-02")},
+                        "All", date="2026-01-01T12:00:00")
+            code, g = graph(d, "--git")
+            r = recs(g)
+            self.assertIsNone(r["ADR-0001"]["drift"])
+            self.assertIsNone(r["ADR-0003"]["drift"])
+            self.assertEqual(r["ADR-0002"]["drift"]["count"], 0)
+            code, out, _ = run(SKILL, SCRIPT, "--root", d, "--git")
+            self.assertIn("No commit has changed the code a current decision governs since it was made.", out)
+
+    def test_without_git_flag_there_is_no_drift(self):
+        with workdir() as d:
+            self.commit(d, {"src/a.py": "v1\n", "docs/adr/0001-a.md": adr("A", "Accepted", "In `src/a.py`.")}, "All")
+            code, g = graph(d)
+            self.assertIsNone(recs(g)["ADR-0001"]["drift"])
+            code, out, _ = run(SKILL, SCRIPT, "--root", d)
+            self.assertNotIn("Code changed since", out)
 
 
 if __name__ == "__main__":
