@@ -8,6 +8,14 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.1.1 — 2026-10-22
+
+- **Four skills that only just passed admission are stronger, and re-measured on fresh held-out evals** ([RFC-0066](docs/rfcs/0066-strengthening-four-narrow-passes.md)):
+  - **`md-to-pptx`** splits a long section between list items and spreads it evenly over the continued slides, so no slide is left with two stray lines. It warns when an image is a tiny placeholder. It takes an internal note out of a deck you're sending outside the team, and never quotes the note in its reply. It met 59% of the judges' checks, against 22% for plain Claude Code.
+  - **`event-contract-draft`** answers each of your questions first, in its own line. It keeps your event names and fields, and lists every change it makes and why. It never pastes part of the spec. 56% against 31%.
+  - **`judge-audit`** gives the figure it computes when a quoted one doesn't reproduce. It notices a judge that never uses one end of the scale, and checks what a score predicts against the outcomes. Every subgroup gets the same sample-size standard. One judge preferred it in all 4 pairs; 73% against 65%.
+  - **`bundle-size-review`** gives each fix as the exact edit to a named file, and changes files only when you ask. A size budget it suggests is real configuration for a tool you have. 56% against 16%.
+
 ## 1.1.0 — 2026-10-22
 
 - **`context-graph` now answers "has the code drifted since we decided this, and who changed it?".** With `--git`, each current decision that governs code lists the commits that changed that code since the decision's date, who made them, how many cite the record, and when the record itself was last edited. The skill reads those changes against the record's requirements. It reports drift as the requirement, the line, and the commit that broke it, and never as a commit count ([RFC-0065](docs/rfcs/0065-context-graph-drift-and-core.md)).

@@ -79,6 +79,36 @@
         "Invents nothing that is not in vendor-sync-notes.md: no new numbers, people, dates, risks or recommendations",
         "Answers the request directly with a short reply naming the file and slide count, suited to a casual 'nothing fancy' ask"
       ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-22",
+      "prompt": "I need q3-status-report.md as a PowerPoint deck for Thursday. It's the Pellworth steering committee and I'll be emailing the file to their PMO beforehand, so it needs to look clean and open properly on their side. Can you convert it?",
+      "assertions": [
+        "Produces a single .pptx file that unzips to a valid package: [Content_Types].xml, ppt/presentation.xml, and one ppt/slides/slideN.xml for each heading in the report (title plus Summary, Milestones, Risks, Burn-up, Budget, Workstream updates, Next steps), plus any continued slides; no package was installed and no network was used to build it.",
+        "The Milestones table is a real PowerPoint table: its slide XML contains an <a:tbl> with 4 <a:gridCol> and 5 <a:tr> rows (header plus the four milestones), with cell text such as 'Priya Lindqvist' and 'Moved to 13 Nov' intact, not a picture or tab-separated text.",
+        "The Risks slide keeps the nesting: the three top-level risks sit at the first level and their four sub-points (e.g. '212 open items, down from 640 in August') are marked as a deeper level (a:pPr lvl=\"1\" or equivalent), not flattened.",
+        "The reply warns, before the file goes to Pellworth, that the HTML comment in the Budget section ('contractor spend is actually 14% over plan ... Do not raise with Pellworth') would ship as a speaker note in a file emailed to the client, and either leaves it out of the notes or clearly asks the user before including it; it does not silently put it into ppt/notesSlides/.",
+        "The reply states that img/burnup.png does not exist in the folder, so the Burn-up chart could not be embedded, and names what took its place (alt text, placeholder, or nothing); it does not draw, fabricate, or reference a non-existent image in ppt/media/.",
+        "The 20-bullet 'Workstream updates' section is split across two or more slides whose titles mark the continuation (e.g. 'Workstream updates (continued)'), with all 20 bullets present across them and no shrunk font (no normAutofit fontScale or reduced sz used to cram them); the reply names this split.",
+        "Invents nothing not in the source: every name, date and figure in the deck and reply (e.g. £1.18m, £1.65m, £1.62m, 212, 640, DEF-311, 4 Dec) comes from q3-status-report.md, and no new slides such as an agenda, RAG chart, or 'Questions?' slide with made-up content are added.",
+        "Answers the actual request directly: gives the path to the finished .pptx and a short list of the split, the dropped image and the speaker-note warning, without a long tutorial on PowerPoint or a menu of alternative approaches."
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-22",
+      "prompt": "can u turn the failover runbook into slides? ops review in an hour, we're walking the team thru it. diagram's in there too",
+      "assertions": [
+        "Finds and converts runbooks/db-failover.md without asking which file is meant, and produces a .pptx that unzips to a valid package with ppt/presentation.xml and one ppt/slides/slideN.xml per heading (plus continued slides).",
+        "Embeds runbooks/diagrams/topology.png by resolving the image path relative to the Markdown file's folder (runbooks/), not the working directory: the package has an image under ppt/media/ referenced from the Topology slide's .rels file, and an <p:pic> on that slide.",
+        "The YAML front matter (title, owner, last_reviewed, on_call_rota) is not rendered as slide body text; no slide shows 'owner: platform-ops' or the '---' delimiters as content.",
+        "The reply says the mermaid block on the Topology slide was not rendered as a diagram (it was either kept as code text or dropped) and names it, rather than leaving the team to find raw 'graph LR' text unexplained or silently losing it.",
+        "If the 14-step Procedure is split across slides, the continued slide keeps the original numbering (picks up at the right step, e.g. via startAt in a:buAutoNum or literal step numbers) instead of restarting at 1, and step 7's two sub-points stay nested under step 7; the reply names any split.",
+        "The reply points out that the TODO comment, which says step 9 (restart pgbouncer) is wrong for the v14 cluster, has become a speaker note on the Procedure slide, and flags it as something to settle before walking the team through step 9, since the slide body still shows the old instruction.",
+        "Code is kept verbatim in a monospace font: the psql command and 'export PGPASSWORD=<set-from-vault>' appear exactly as written, with the placeholder left as a placeholder and no real-looking password, host or command invented or 'corrected'.",
+        "Invents nothing: no steps, hosts, thresholds or owners that are not in db-failover.md (e.g. the 2 minutes, 30 seconds and 15 minutes figures are unchanged), and the reply is short enough for someone with an hour to go: the file path plus a few lines on the split, the mermaid block and the step-9 note."
+      ]
     }
   ]
 }

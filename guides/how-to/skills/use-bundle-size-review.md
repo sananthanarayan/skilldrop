@@ -48,6 +48,8 @@ A good result:
 
 - **The first line answers the question** in the person's terms, with the exact byte figures from the stats.
 - **The repo was read:** targets, versions and importing files are cited by file name; nothing is called absent without having been looked for.
+- **Each fix is an exact edit to a named file;** files are changed only when the user asked for changes.
+- **The guard is real configuration** for a tool that exists, with no invented flag, script or key.
 - **One unit system,** bytes with kB = 1000, and the kind of size (module, emitted, post-bundle, compressed) is named once.
 - **Compressed figures are measured or absent,** never estimated into the lead.
 - **Initial and lazy are kept apart,** and a lazy chunk is never ranked above an initial-chunk fix.

@@ -259,67 +259,67 @@
   },
   {
    "skill": "event-contract-draft",
-   "rfc": "0057",
-   "evals": "4–5",
-   "drafts": 1,
-   "judge1": [
-    2,
-    4
-   ],
-   "judge2": [
-    3,
-    4
-   ],
-   "skill_met": 0.5,
-   "baseline_met": 0.47
-  },
-  {
-   "skill": "md-to-pptx",
-   "rfc": "0057",
-   "evals": "4–5",
-   "drafts": 1,
-   "judge1": [
-    2,
-    4
-   ],
-   "judge2": [
-    2,
-    4
-   ],
-   "skill_met": 0.94,
-   "baseline_met": 0.69
-  },
-  {
-   "skill": "bundle-size-review",
-   "rfc": "0057",
+   "rfc": "0066",
    "evals": "6–7",
    "drafts": 2,
    "judge1": [
-    3,
+    2,
     4
    ],
    "judge2": [
     3,
     4
    ],
-   "skill_met": 0.31,
+   "skill_met": 0.56,
    "baseline_met": 0.31
   },
   {
-   "skill": "judge-audit",
-   "rfc": "0057",
-   "evals": "8–9",
-   "drafts": 3,
+   "skill": "md-to-pptx",
+   "rfc": "0066",
+   "evals": "6–7",
+   "drafts": 2,
    "judge1": [
     2,
     4
    ],
    "judge2": [
+    3,
+    4
+   ],
+   "skill_met": 0.59,
+   "baseline_met": 0.22
+  },
+  {
+   "skill": "bundle-size-review",
+   "rfc": "0066",
+   "evals": "8–9",
+   "drafts": 3,
+   "judge1": [
+    3,
+    4
+   ],
+   "judge2": [
+    3,
+    4
+   ],
+   "skill_met": 0.56,
+   "baseline_met": 0.16
+  },
+  {
+   "skill": "judge-audit",
+   "rfc": "0066",
+   "evals": "10–11",
+   "drafts": 4,
+   "judge1": [
+    4,
+    4
+   ],
+   "judge2": [
     2,
     4
    ],
-   "skill_met": 0.41,
-   "baseline_met": 0.19
+   "skill_met": 0.73,
+   "baseline_met": 0.65
   },
   {
    "skill": "context-graph",

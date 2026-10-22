@@ -139,7 +139,7 @@ Tier **light** · v0.1.3 · [SKILL.md](../../../packs/converters/skills/md-to-ht
 
 Turn an existing Markdown document (a status report, runbook, review or notes) into a PowerPoint deck (.pptx) that opens without a repair prompt, with nothing to install. Each heading becomes a slide, lists keep their nesting, tables become real PowerPoint tables, images are embedded, and comments become speaker notes. A section too long for one slide is split onto "continued" slides instead of shrinking the text, and the reply names every split, everything dropped, and any speaker note that would go out with the file.
 
-Tier **light** · v0.1.1 · [SKILL.md](../../../packs/converters/skills/md-to-pptx/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/md-to-pptx/)
+Tier **light** · v0.1.2 · [SKILL.md](../../../packs/converters/skills/md-to-pptx/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/md-to-pptx/)
 
 **Use it when** the user says "turn this markdown into slides", "make this report a PowerPoint", "convert the .md to pptx", "I need this as a deck for Thursday", or "export these notes to PowerPoint".
 
@@ -151,7 +151,9 @@ Tier **light** · v0.1.1 · [SKILL.md](../../../packs/converters/skills/md-to-pp
 - **No text below its set size.** Overflow is split onto continued slides, and every split is named in the reply.
 - **Tables are tables.** A pipe table becomes a PowerPoint table the user can edit, not a picture or tab-separated text, and a split table repeats its header row.
 - **Nothing is lost silently.** Every `WARN` is fixed and gone on rerun, or reported in plain words.
-- **Notes were read.** Any note that would embarrass the sender if forwarded is quoted back by slide number.
+- **Notes were read.** Any note that would embarrass the sender if forwarded is named by slide, and taken out when the deck is going outside the team. Its contents are never repeated in the reply.
+- **Every image arrived.** Each image the document names is on a slide at a readable size, or the reply names it as missing or a placeholder.
+- **Splits fall between items.** A list item and its sub-bullets stay on one slide, and continued slides are evenly filled.
 - **Facts are untouched.** No number, name, date or list order changed, and no slide added that the document lacks.
 - **Mismatches are named, not fixed.** A count or total the document contradicts is quoted back with both figures.
 - **The file checks out.** The `checked:` line is in the run, and no check is claimed that wasn't run.

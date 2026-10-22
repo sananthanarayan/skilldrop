@@ -55,6 +55,9 @@ A good result:
 - **Retention, replay and dead-letter are stated per channel**, with the DLQ owner named or open.
 - **The check result is reported only if it ran**, and the document has no FAIL.
 - **Nothing invented**: no team names, dates, volumes or retention the input didn't give, except as `[assumption]`.
+- **Every question asked is answered in its own line first,** before the contract.
+- **The user's draft stays theirs:** each change to their names, fields or shapes is listed with the rule it fixes, and nothing else is changed.
+- **The document is whole:** saved complete, or shown complete, never cut off.
 
 ## See a worked example
 

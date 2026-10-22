@@ -103,6 +103,36 @@
         "Invents nothing that is not in the input: no component names, package versions, file paths, chunk or asset sizes, or webpack/plugin options beyond what the stats and repo files contain. Any tool that would need installing from the network is given as a command, not presented as already run.",
         "Answers all three numbered questions directly, per app, in the order asked."
       ]
+    },
+    {
+      "id": 8,
+      "held_out": "2026-10-22",
+      "prompt": "ok so our welcome page (welcome.html, the `landing` entry) scores terribly on mobile and Priya from product says \"the bundle is huge, it's moment, just rip moment out\". is she right?? I ran the build with stats, it's at dist/stats.json, rest of the repo is here. what do we actually cut first, we want the landing page JS under 200kb",
+      "assertions": [
+        "Answers both questions directly up front: Priya is wrong about moment for this page, and it names what to cut first for the landing page (app-only vendor code, whole lodash, the legacy polyfills), not a generic bundle audit.",
+        "Shows that moment (./node_modules/moment/moment.js plus its locale context modules) is only in the lazy `admin` chunk (admin.e91c5d.js, 82,310 bytes), pulled in by the dynamic import() of ./admin/Reports in src/app/App.jsx, so it is not in the landing entry's first load and removing it would not shrink welcome.html's JavaScript.",
+        "Gives the landing entry's first-load JS as 287,994 bytes from the stats (runtime.3f1a9c.js 2,615 + vendors.8c2d41.js 281,467 + landing.a07e93.js 3,912), kept apart from the lazy admin chunk, and says the stats record minified, uncompressed bytes, so it cannot tell from them whether '200kb' (gzip or not, 1000 or 1024) is met; it gives a command to measure compressed size (e.g. `gzip -c dist/vendors.8c2d41.js | wc -c`) instead of making up a gzip figure.",
+        "Spots that the single `vendors` cacheGroup in webpack.config.js (fixed name: 'vendors', chunks: 'initial') makes the landing entry download node_modules that only the app entry uses. @northwind/datepicker and both copies of date-fns are reached only from ./src/app/BookingForm.jsx. It recommends dropping the fixed name, or splitting vendors per entry, so landing gets only what its own import chain needs.",
+        "Flags the whole-library lodash import and names the chain src/landing/index.jsx -> src/landing/Hero.jsx -> src/utils/format.js (`import _ from 'lodash'`) -> ./node_modules/lodash/lodash.js. It notes that lodash is CommonJS and can't be tree-shaken, and that only startCase, toLower and debounce are used, so it suggests per-method imports (e.g. lodash/startCase), lodash-es or native code.",
+        "Flags whatwg-fetch and promise-polyfill, which src/polyfills.js loads into both entries through the webpack entry arrays, as unneeded for the .browserslistrc targets (last 2 Chrome/Firefox/Safari/Edge/iOS versions, all with native fetch and Promise), and treats the IE11 comment as outdated.",
+        "Notes that date-fns is bundled twice: 2.30.0 at node_modules/date-fns (from the app's ^2.30.0) and 3.6.0 at node_modules/@northwind/datepicker/node_modules/date-fns, per package-lock.json.fixture/package-lock.json. It says that removing the duplicate means moving the app to date-fns 3 (checking the v2-to-v3 changes for format/parseISO in BookingForm.jsx), and it does not subtract the stats' module sizes, which are pre-minification source bytes (e.g. lodash.js at 544,098, more than the whole 281,467-byte vendors asset), from the emitted bytes as if they were savings. Post-change sizes are given as estimates to confirm by running `npm run build:stats`.",
+        "Invents nothing that isn't in the input: no module, package version, file name, byte count, gzip size or webpack option beyond what dist/stats.json and the repo files contain, and no claim that it ran a build."
+      ]
+    },
+    {
+      "id": 9,
+      "held_out": "2026-10-22",
+      "prompt": "We ship Parcelpost Chat, an embeddable support widget customers load with <script type=\"module\" src=\".../widget.js\">. Since PR #412 (emoji picker) went out, two customers have told us the widget adds a lot more to their page weight. But our size check in CI passed, and it actually said widget.js got smaller. The repo here is the PR branch, and I've saved the esbuild metafiles from a main build and a PR build as meta.main.json and meta.pr412.json. What grew and why? Is it on the initial load? And how should we change the size check so this gets caught next time?",
+      "assertions": [
+        "Answers directly up front: the widget's first-load JS went from 21,312 bytes (dist/widget.js alone on main) to 118,910 bytes on PR #412 (dist/widget.js 10,215 + the statically imported dist/chunk-R4N7QW2L.js 108,695), a growth of 97,598 bytes, and all of it is on the initial load.",
+        "Explains why widget.js 'got smaller' (21,312 to 10,215): preact and preact/hooks (10,214 + 1,436 bytesInOutput) moved out of widget.js into the shared chunk because the picker imports them too. This is a relocation, not a saving.",
+        "Names the cause and the import chain: src/emoji/emoji-data.json (96,512 bytesInOutput in the shared chunk) reaches the initial load via src/widget.ts -> src/composer.tsx -> src/emoji/data.ts -> src/emoji/emoji-data.json. The static `import { SHORTCODES } from './emoji/data'` added to composer.tsx defeats the dynamic import('./emoji/picker').",
+        "Keeps dist/picker-6YB3KD5M.js (5,920 bytes) separate as a lazy chunk, fetched only when the picker opens, and does not count it in the first-load growth.",
+        "Proposes a fix that keeps the emoji data off the initial load, such as loading SHORTCODES lazily (when the picker opens or the visitor first types ':') or using a small separate shortcode map, and says to confirm it with a rebuild (e.g. `META_OUT=meta.fix.json npm run build`) instead of stating post-fix byte counts as fact.",
+        "Explains that the check passed because scripts/check-size.mjs only measures dist/widget.js against 25,000 bytes. It proposes a per-entry first-load budget computed from the metafile (the entry output plus every output reachable through import-statement imports, excluding dynamic-import), which would have measured 118,910 bytes on PR #412 and failed the 25,000 limit. Lazy chunks can get their own separate limit.",
+        "Stays with the minified, uncompressed bytes the metafiles record and doesn't claim gzip/brotli transfer sizes (what customers' 'page weight' probably reflects). If it wants compressed numbers, it gives a command such as `gzip -c dist/chunk-*.js | wc -c` to run.",
+        "Invents nothing that isn't in the input: no output file, input module, byte count, esbuild option or CI step beyond what the metafiles and repo files contain, and no claim that it ran the build."
+      ]
     }
   ]
 }

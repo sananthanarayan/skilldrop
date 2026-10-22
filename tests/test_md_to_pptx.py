@@ -192,6 +192,34 @@ class ConvertTest(unittest.TestCase):
         self.assertIn("image gone.png not found", se)
         self.assertIn("1 image", so)
 
+    def test_tiny_image_is_embedded_and_warned_as_a_placeholder(self):
+        code, so, se, deck = self.build("# T\n\n## Pic\n\n![On-time](ontime.png)\n", files={"ontime.png": png_bytes(8, 6)})
+        self.assertEqual(code, 0, se)
+        self.assertEqual(len(list(deck.slide(2).iter(P + "pic"))), 1)
+        self.assertIn("image ontime.png is only 8x6 pixels", se)
+        self.assertIn("looks like a placeholder", se)
+
+    def _risks(self, n):
+        return "".join("%d. **Risk %d heading**\n   - Owner: Person %d\n   - Cause: cause %d\n   - Mitigation: fix %d\n"
+                       % (i, i, i, i, i) for i in range(1, n + 1))
+
+    def test_a_split_keeps_each_list_item_with_its_sub_bullets(self):
+        code, so, se, deck = self.build("# T\n\n## Risks\n\n" + self._risks(12))
+        self.assertEqual(code, 0, se)
+        cont = [n for n, t in enumerate(deck.titles(), 1) if t and t.startswith("Risks")]
+        self.assertGreater(len(cont), 1)
+        for n in cont:
+            body = [t for t in deck.texts(n) if t and not t.startswith("Risks")]
+            self.assertRegex(body[0], r"^Risk \d+ heading$", "slide %d starts mid-item: %r" % (n, body[0]))
+            self.assertTrue(body[-1].startswith("Mitigation:"), "slide %d ends mid-item: %r" % (n, body[-1]))
+
+    def test_a_split_is_balanced_so_the_last_slide_is_not_nearly_empty(self):
+        code, so, se, deck = self.build("# T\n\n## Risks\n\n" + self._risks(12))
+        self.assertEqual(code, 0, se)
+        counts = [len([t for t in deck.texts(n) if t and not t.startswith("Risks")])
+                  for n, t in enumerate(deck.titles(), 1) if t and t.startswith("Risks")]
+        self.assertLessEqual(max(counts) - min(counts), 4, counts)
+
     def test_internal_anchor_jumps_to_slide_and_external_link(self):
         md = "# T\n\n## Results\n\nx\n\n## Links\n\nSee [results](#results) and [site](https://example.com/a).\n"
         code, _, se, deck = self.build(md)

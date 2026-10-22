@@ -50,7 +50,9 @@ A good result:
 - **No text below its set size.** Overflow is split onto continued slides, and every split is named in the reply.
 - **Tables are tables.** A pipe table becomes a PowerPoint table the user can edit, not a picture or tab-separated text, and a split table repeats its header row.
 - **Nothing is lost silently.** Every `WARN` is fixed and gone on rerun, or reported in plain words.
-- **Notes were read.** Any note that would embarrass the sender if forwarded is quoted back by slide number.
+- **Notes were read.** Any note that would embarrass the sender if forwarded is named by slide, and taken out when the deck is going outside the team. Its contents are never repeated in the reply.
+- **Every image arrived.** Each image the document names is on a slide at a readable size, or the reply names it as missing or a placeholder.
+- **Splits fall between items.** A list item and its sub-bullets stay on one slide, and continued slides are evenly filled.
 - **Facts are untouched.** No number, name, date or list order changed, and no slide added that the document lacks.
 - **Mismatches are named, not fixed.** A count or total the document contradicts is quoted back with both figures.
 - **The file checks out.** The `checked:` line is in the run, and no check is claimed that wasn't run.

@@ -1,0 +1,5 @@
+node_modules/
+dist/
+meta.json
+# generated from the design team's emoji export, not committed
+src/emoji/emoji-data.json

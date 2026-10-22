@@ -23,7 +23,7 @@ For frontend engineers and the people who review their pages: read a Lighthouse 
 
 Find what makes a JavaScript bundle heavy and what can safely come out, from the bundler's stats file (webpack stats.json, an esbuild metafile, or the rollup-plugin-visualizer raw-data JSON that Vite builds use) read together with the repo around it (package.json, .browserslistrc, the lockfile, the bundler config and the source files that import the heavy modules). Gives each entry's first-load JavaScript in the exact bytes the stats record, kept apart from lazy chunks; finds whole-library imports, CommonJS packages that can't be tree-shaken, packages bundled twice and polyfills the browser targets don't need; names the import chain that pulls each module in before suggesting a removal; and, given before and after stats, says what grew, why, whether it lands in the first load and which per-entry budget would have caught it.
 
-Tier **standard** · v0.2.2 · [SKILL.md](../../../packs/frontend/skills/bundle-size-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/bundle-size-review/)
+Tier **standard** · v0.2.3 · [SKILL.md](../../../packs/frontend/skills/bundle-size-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/bundle-size-review/)
 
 **Use it when** the user says "why is our bundle so big", "what can we cut from the bundle", "review this stats.json", "why is lodash or moment in our bundle", "the bundle grew in this PR", or "set a bundle size budget".
 
@@ -33,6 +33,8 @@ Tier **standard** · v0.2.2 · [SKILL.md](../../../packs/frontend/skills/bundle-
 
 - **The first line answers the question** in the person's terms, with the exact byte figures from the stats.
 - **The repo was read:** targets, versions and importing files are cited by file name; nothing is called absent without having been looked for.
+- **Each fix is an exact edit to a named file;** files are changed only when the user asked for changes.
+- **The guard is real configuration** for a tool that exists, with no invented flag, script or key.
 - **One unit system,** bytes with kB = 1000, and the kind of size (module, emitted, post-bundle, compressed) is named once.
 - **Compressed figures are measured or absent,** never estimated into the lead.
 - **Initial and lazy are kept apart,** and a lazy chunk is never ranked above an initial-chunk fix.

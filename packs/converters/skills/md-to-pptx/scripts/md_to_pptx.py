@@ -787,6 +787,9 @@ class Deck(object):
             warn(line, "image %s is not PNG or JPEG; alt text written instead" % src)
             return self.para_unit("p", fallback, line)
         w, h, dx, dy, kind = info
+        if min(w, h) < 64:
+            warn(line, "image %s is only %dx%d pixels, so it shows as a speck on the slide; it looks like a "
+                       "placeholder or a thumbnail. Replace it with the full-size image" % (src, w, h))
         cx, cy = w / dx * EMU_IN, h / dy * EMU_IN
         scale = min(1.0, self.body_w / cx, self.body_h / cy)
         return {"kind": "image", "path": os.path.abspath(path), "alt": alt_plain, "fmt": kind,
@@ -880,8 +883,23 @@ class Deck(object):
 
     # ---- pagination ---------------------------------------------------------------
     def paginate(self, units, title, line):
-        """Pack units into pages of body height. Returns (pages, split_reason or None)."""
-        H = self.body_h
+        """Pack units into pages of body height. Returns (pages, split_reason or None).
+
+        A section that splits is then balanced: it is packed again into less height while it still
+        takes the same number of slides, so the last one isn't left holding two stray lines."""
+        pages, reasons = self._paginate([dict(u) for u in units], self.body_h)
+        breaks = any(u["kind"] == "break" for u in units)
+        if len(pages) > 1 and not breaks:
+            best, H = (pages, reasons), self.body_h
+            for k in range(1, 9):
+                trial = self._paginate([dict(u) for u in units], int(H * (1 - 0.05 * k)))
+                if len(trial[0]) != len(pages):
+                    break
+                best = trial
+            pages, reasons = best
+        return pages, reasons
+
+    def _paginate(self, units, H):
         pages = [[]]
         used = [0]
         last = [None]
@@ -914,6 +932,21 @@ class Deck(object):
             if k == "para":
                 if used[0] + cost(u, u["h"]) > H and used[0]:
                     carry = []
+                    # A nested list line belongs with the item above it: move the whole item, from
+                    # its top-level line, to the next slide, unless that would empty this one or
+                    # the item is taller than a slide anyway.
+                    if u["role"] in ("bullet", "num") and u["level"] > 0:
+                        cur = pages[-1]
+                        i = len(cur)
+                        while i > 0 and cur[i - 1]["kind"] == "para" and cur[i - 1]["role"] in ("bullet", "num") \
+                                and cur[i - 1]["level"] > 0:
+                            i -= 1
+                        if i > 0 and cur[i - 1]["kind"] == "para" and cur[i - 1]["role"] in ("bullet", "num"):
+                            i -= 1
+                            item_h = sum(x["h"] for x in cur[i:]) + u["h"]
+                            if [x for x in cur[:i] if x["kind"] != "notes"] and item_h < 0.8 * H:
+                                carry = cur[i:]
+                                del cur[i:]
                     # keep a subheading, or a lead-in line ending in ":", with what follows it
                     while pages[-1] and pages[-1][-1]["kind"] == "para" and (
                             pages[-1][-1]["role"] == "sub" or plain(pages[-1][-1]["segs"]).rstrip().endswith(":")) \

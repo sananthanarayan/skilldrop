@@ -52,7 +52,7 @@ In Claude Code you can use the plugin marketplace instead: run `/plugin marketpl
 <details>
 <summary><b>Choose your role:</b> 19 packs, from product management and architecture to SRE, GRC and job applications</summary>
 
-Install one pack. Every role pack also brings `core` (intake, critique, review council, output hygiene). Each pack page has a starter prompt to paste and says what a good result looks like.
+Install one pack. Every role pack also brings `core` (intake, critique, review council, output hygiene, and the decisions behind a codebase). Each pack page has a starter prompt to paste and says what a good result looks like.
 
 - **Product managers:** `product-manager` — PR/FAQs, strategy, OKRs, business cases, PRDs, success metrics. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/product-manager/)
 - **Architects:** `solution-architect` — diagrams, ADRs, design docs, API and data contracts, threat models. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/solution-architect/)

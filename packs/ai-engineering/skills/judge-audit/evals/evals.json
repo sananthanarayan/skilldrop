@@ -131,6 +131,35 @@
         "Does not invent test-retest or position-bias numbers. It notes the pilot ran the LLM once per segment, so its stability is unknown, and recommends a repeat run (and, if relevant, a check by segment type or length) before any rollout.",
         "Invents nothing: every figure, segment ID and language breakdown comes from adequacy_ratings.csv. It attributes no capabilities, model names or other claims to Quillmark beyond the one quoted in the request."
       ]
+    },
+    {
+      "id": 10,
+      "held_out": "2026-10-22",
+      "prompt": "Hey, we ran the eval for the Harbor support bot. Our LLM grader passes 87% of prompt v2's answers vs 70% for v1, and our release rule is v2 ships if it beats v1 by at least 5 points on the grader, so on paper we're clear. Priya (QA lead) also hand-graded the same 60 responses (30 questions, each answered by v1 and v2) as a calibration check, and the grader matches her on 87% of them overall, which seems solid. Everything's in judge_eval.csv. Can we ship v2 on Friday? Need a yes/no for the release meeting.",
+      "assertions": [
+        "Answers the actual question directly and up front: do not ship v2 on this evidence. The grader's 21-to-26 lift clears the 5-point rule on paper, but the grader can't be trusted for this comparison.",
+        "Splits grader-vs-Priya agreement by variant instead of accepting the pooled 87% (52/60): about 93% on v1 (28/30) but 80% on v2 (24/30), and says chance-corrected agreement (e.g. Cohen's kappa) falls sharply from v1 (about 0.84) to v2 (about 0.47).",
+        "Shows the grader's v2 errors all go one way: 6 false passes (q02, q11, q14, q19, q26, q28) and zero false fails, compared with one of each on v1 (q22 false pass, q05 false fail). So the grader errs differently on the two variants and the error inflates v2.",
+        "Finds the length bias: all six v2 false passes are v2's longest answers (252 to 273 words; every v2 answer of 240+ words was failed by Priya but passed by the grader), and v2 answers are much longer on average than v1's (about 201 vs 118 words).",
+        "Redoes the comparison on Priya's labels: v2 passes 20/30 vs v1's 21/30, slightly worse, not 17 points better. Or, paired by question, v2 wins on 6 questions and loses on 7. On the trusted labels the release rule is not met.",
+        "Flags the uncertainty from only 30 questions per variant (e.g. an interval or significance test on the lift, or a note that a gap of a few points can't be resolved) and recommends a concrete next step: fix the grader's length bias (rubric or length control) and re-check it against human labels on v2-style answers, or gate on human-labelled results.",
+        "Invents nothing: every count, question ID, word count and name it cites (Harbor, Priya, judge_eval.csv) comes from the prompt or the CSV, with no made-up extra data, grader model names or tools."
+      ]
+    },
+    {
+      "id": 11,
+      "held_out": "2026-10-22",
+      "prompt": "ok quick one. we've got judge-a (the big model) and judge-b (small, way cheaper) both scoring forum comments as remove/keep, and on our sample they agree like 93% of the time which seems really high?? so the plan is to switch to judge-b only and turn on auto-remove, no human in the loop. trust & safety's only ask was that we don't wrongly pull more than 1 in 20 of the comments we remove and that we catch most of the really bad stuff. the mods hand-labelled the same 200 comments last month (mod_label column), it's all in mod_sample_scored.csv. b got run twice, same settings, temp 0, so the runs should be identical. is 93% good enough, can we flip it on?",
+      "assertions": [
+        "Answers the actual question directly: no, don't turn on auto-remove with judge-b. 93% judge-to-judge agreement is not evidence that it is safe.",
+        "Explains why 93% is misleading: the mods only labelled 12 of 200 comments (6%) as remove, so a judge that keeps everything would match the mods 94% of the time. Reports chance-corrected agreement between judge-a and judge-b (Cohen's kappa about 0.38 on run 1), and points out that two judges agreeing with each other is not the same as either agreeing with the mods.",
+        "Scores judge-b against the mod labels on the remove class: on run 1 only 6 of its 11 removals are correct (about 55% precision) and it catches 6 of the 12 mod-labelled removes (50% recall). That is nowhere near T&S's 'no more than 1 in 20 wrong' (at least 95% precision).",
+        "Checks judge-a against the same bar too and finds it fails as well: 10 of its 13 removals are correct (about 77%; wrong removals c007, c068, c076) and it catches 10 of 12. So keeping the expensive judge does not make auto-remove safe either.",
+        "Reports judge-b's two runs separately rather than assuming they match: names the 5 comments that flipped between runs (c004, c029, c087, c115, c121), notes that 3 of them (c029, c087, c121) are mod-labelled removes, and says temp 0 did not make the runs deterministic, with the instability concentrated in the rare class.",
+        "Notes that with only 12 mod-labelled removes the precision and recall estimates have very wide uncertainty (e.g. confidence intervals), so this sample can't show 95% precision even for a judge that looks good. Recommends labelling many more likely-remove comments before any auto-remove decision.",
+        "Points out that 'catch most of the really bad stuff' has no number and asks for one or proposes one, and offers a safer interim option, such as using a judge to flag comments into a human review queue instead of removing them automatically.",
+        "Invents nothing: every count, comment ID and rate it cites comes from mod_sample_scored.csv or the prompt, with no made-up model names, prices, comment text or extra data."
+      ]
     }
   ]
 }

@@ -65,12 +65,24 @@ say is `slide-outliner`.
    - **A numbering jump** (`goes from 7 to 9`): PowerPoint numbers items in order, so "step 9"
      in the text now points at a different step. Name the missing number and the reference.
    - **A dropped construct** (footnote, HTML, remote image): say what was lost and where.
+   - **An image that is missing, or only a few pixels** (`looks like a placeholder`): the slide
+     won't show the chart. Name the image and the slide, and say the real file is needed. Check
+     every image the document names against the outline's `[image]` marks; none may vanish
+     without a line in the reply.
+   - **A split** now breaks between list items and spreads the section evenly over its slides.
+     When one item is taller than a slide, it still breaks inside that item: say so.
 
-5. **Read every speaker note before handing over.** The outline marks slides with `[notes]`.
-   Notes are invisible in the Markdown but travel inside the `.pptx`. Anyone it is emailed to
-   can read them. When a note reads as internal (*"don't raise the penalty clause"*, prices,
-   people, legal), name the slide and quote the note in the reply. Leave the note in place.
-   Deleting it is the user's call.
+5. **Read every speaker note and comment before handing over.** The outline marks slides with
+   `[notes]`. Notes are invisible in the Markdown but travel inside the `.pptx`. Anyone it is
+   emailed to can read them. A note reads as internal when it is marked so, or it holds prices,
+   margins, people's circumstances or legal positions (*"don't raise the penalty clause"*).
+   - **When the user says the deck goes outside their team** (a client, a vendor, a
+     board, the public), take an internal note out of the copy before converting, and say so.
+     The original still has it.
+   - **Otherwise leave it in, and flag it** by slide.
+   - **Either way, never repeat what it says.** Describe it, so the reply can be forwarded too:
+     ✅ *"Left out the internal note on the Pricing slide (negotiating position)."*
+     ❌ *"Left out the note saying we'd go as low as £40k."*
 
 6. **Check it, and claim only the checks that ran.** The script reopens the file and prints
    `checked: N XML parts parse, N relationships resolve`. Compare the slide outline it prints
@@ -79,7 +91,8 @@ say is `slide-outliner`.
 
 7. **Reply in four lines or fewer:** where the file is and how many slides; what split and where
    (*"Risks continues on slide 6, from the scanner risk"*); what was dropped, changed or doesn't
-   add up; any note to look at before sending. Example in
+   add up, including each missing or placeholder image; any note to look at before sending,
+   described, not quoted. Example in
    [`examples/support-weekly.md`](examples/support-weekly.md).
 
 **Non-interactive runs** (subagent, CI, headless): with no Markdown there is nothing to convert.
@@ -99,7 +112,9 @@ treating `Notes:` paragraphs as slide text is an `[assumption]` stated at the to
 - **No text below its set size.** Overflow is split onto continued slides, and every split is named in the reply.
 - **Tables are tables.** A pipe table becomes a PowerPoint table the user can edit, not a picture or tab-separated text, and a split table repeats its header row.
 - **Nothing is lost silently.** Every `WARN` is fixed and gone on rerun, or reported in plain words.
-- **Notes were read.** Any note that would embarrass the sender if forwarded is quoted back by slide number.
+- **Notes were read.** Any note that would embarrass the sender if forwarded is named by slide, and taken out when the deck is going outside the team. Its contents are never repeated in the reply.
+- **Every image arrived.** Each image the document names is on a slide at a readable size, or the reply names it as missing or a placeholder.
+- **Splits fall between items.** A list item and its sub-bullets stay on one slide, and continued slides are evenly filled.
 - **Facts are untouched.** No number, name, date or list order changed, and no slide added that the document lacks.
 - **Mismatches are named, not fixed.** A count or total the document contradicts is quoted back with both figures.
 - **The file checks out.** The `checked:` line is in the run, and no check is claimed that wasn't run.
@@ -124,6 +139,8 @@ treating `Notes:` paragraphs as slide text is an `[assumption]` stated at the to
 - ❌ **Installing python-pptx for a conversion.** The script needs nothing, so the deck builds on a locked-down laptop or in CI.
 - ❌ **"Improving" the deck.** An agenda slide, a "Thank you" slide or punchier bullets put words in the user's mouth they never wrote.
 - ❌ **Handing over notes unread.** A comment written for the presenter ships to every recipient of the file.
+- ❌ **Quoting the confidential note back in the reply.** The reply gets forwarded too. Say where it was and what kind of thing it was, not what it said.
+- ❌ **A chart that's a speck.** A placeholder or thumbnail embedded at its real size looks like a missing chart in the room. Flag it.
 - ❌ **Silently turning `Notes:` paragraphs into speaker notes.** "Notes: figures exclude VAT" is content. Ask, or keep it on the slide.
 - ❌ **Fixing a list that skips a number.** Renumbering hides that a step may be missing. Report it.
 - ❌ **Claiming "opens fine in PowerPoint"** when only the script's own check ran.
