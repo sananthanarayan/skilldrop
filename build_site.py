@@ -926,7 +926,9 @@ def measured_section():
     if h and d.get("by_kind", {}).get("author"):
         h2 = f" and {pc(h['win2'])}" if h.get("win2") is not None else ""
         verdict = (f"On the {h['evals']} evals written by someone who never read the skill, the two judges preferred it in "
-                   f"{pc(h['win'])}{h2} of pairs, which is the better guide to a request the skill was not shaped around.")
+                   f"{pc(h['win'])}{h2} of pairs. Some skills were later revised, or admitted, on the verdicts from those same "
+                   f"evals, so even that row is partly fitted; <a href=\"docs/explanation/what-the-benchmark-showed.html\">what "
+                   f"the benchmark showed</a> separates the evals nothing was decided on.")
     retired = len(read_json(os.path.join(ROOT, "catalogue.json")).get("retired", {}))
     adm_path = os.path.join(ROOT, "docs", "benchmarks", "admissions.json")
     admitted = len(read_json(adm_path)["skills"]) if os.path.exists(adm_path) else 0

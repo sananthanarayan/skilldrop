@@ -21,6 +21,9 @@ the commands are in [Benchmark skills against the agent without them](../how-to/
   agent in about 7 pairs out of 10.
 - The skills that win on evals they have never seen share one trait: they add a rule the
   plain agent does not follow on its own, and do not add a format.
+- Across the catalogue in late October, on the 176 held-out evals that no revision or
+  admission was based on, the judges had no preference between the skill and the plain
+  agent (49% and 48%). On no model tier was the skill preferred either.
 
 ## Two measures that disagreed
 
@@ -169,10 +172,32 @@ asking for since the held-out test:
 | Written without seeing the skill | 308 | 74% | 66% | 58% (52 to 63) | 56% (50 to 61) |
 
 On the authors' evals the skills win clearly, and part of that is fitted: many of those evals
-were revised against. On evals no skill was shaped around, both judges still prefer the
-skill, by 8 and 6 points, and the second judge's interval touches even. The gap on the
-checks shrinks from 37 points to 8, as it did in the first held-out test: on checks written
-by someone other than the author, the plain agent meets most of them.
+were revised against. The gap on the checks shrinks from 37 points to 8 on the held-out
+evals, as it did in the first held-out test: on checks written by someone other than the
+author, the plain agent meets most of them.
+
+"Written without seeing the skill" is not the same as "never decided on", though. The writer
+of a held-out eval never read the skill, but the skill's author may have read the judges'
+reasons on that eval afterwards and revised the skill, and a new skill is admitted only if it
+wins on its held-out evals. Git history separates the 308 into three groups:
+
+| Held-out evals | Count | Assertions met, skill | Without | Preferred blind, judge 1 | Judge 2 |
+|---|---|---|---|---|---|
+| Skill's instructions changed after the eval was added | 78 (23 skills) | 75% | 63% | 64% (54 to 74) | 64% (54 to 74) |
+| Added since 18 October for skills admitted on them | 54 (18 skills) | 63% | 47% | 78% (67 to 89) | 72% (61 to 83) |
+| Written by 18 October, skill unchanged since | 176 (88 skills) | 77% | 72% | 49% (42 to 57) | 48% (40 to 55) |
+
+The first two groups are fitted or selected: a revision was written after reading their
+verdicts, or a skill that lost on them was not admitted. Only the third was not the basis of
+any decision, and on it the judges have no preference between the skill and the plain agent.
+That is the same result the first held-out test found for 12 skills, now across 88 of them.
+The 58% and 56% above are real, but they are not a measure of a skill on a request it was not
+shaped around; the last row is.
+
+A skill counts as changed if anything other than its evals, scripts, tests or manifest
+changed in a commit after the eval's; script fixes are left out because they don't come from
+reading verdicts. The rule cannot see a draft revised before its evals were committed, which
+is how admission works, so the middle row is counted separately.
 
 Per skill the picture is mixed, as it was. On their held-out pairs, 49 skills sit above
 even, 36 below, and 32 at even. Each skill has two to four held-out pairs from one trial, so a
@@ -200,37 +225,49 @@ losses. They are being rebuilt with the rule first, and each one ships only if b
 prefer it in at least half the pairs on two new evals. Four added only a format and were
 retired in 0.16.13. The evals page lists them, with the reason for each.
 
-## The light and heavy tiers
+## The three tiers
 
 Until 18 October 2026 the benchmark had run only on the standard tier. That day the 224
 held-out evals ran once each on the light tier (`claude-haiku-5-5`) and the heavy tier
-(`claude-opus-5-5`), with the same two judges. The standard tier was not rerun on these
-evals, so the routing check compares light with heavy only. The summary is in
-[`docs/benchmarks/tiers.json`](../../docs/benchmarks/tiers.json).
+(`claude-opus-5-5`), with the same two judges; the summary is in
+[`docs/benchmarks/tiers.json`](../../docs/benchmarks/tiers.json). The standard tier
+(`claude-sonnet-5`) ran on the same 224 evals five days later, as part of the full catalogue
+run in [Where the catalogue stands](#where-the-catalogue-stands). Its row below is those 224
+evals taken out of that run.
 
 | Tier | Assertions met, skill | Without | Preferred blind, judge 1 | Judge 2 | $ per run, skill |
 |---|---|---|---|---|---|
 | light `claude-haiku-5-5` | 83% | 80% | 41% (35 to 48) | 48% (41 to 54) | $0.007 |
+| standard `claude-sonnet-5` | 78% | 72% | 51% (45 to 58) | 50% (44 to 57) | $0.13 |
 | heavy `claude-opus-5-5` | 85% | 83% | 31% (25 to 37) | 31% (25 to 37) | $0.19 |
 
-- **On evals they were not written against, the skills do not beat the plain agent on
-  either tier.** The lift on the checks is 3 points on both. Blind, the plain agent wins most
-  pairs, and on the heavy tier both judges preferred plain Opus 5.5 in about 7 pairs of 10.
-  The 61% in [Where the catalogue stands](#where-the-catalogue-stands) is the standard tier on
-  the 0.16.9 catalogue, mostly on evals the authors wrote, so it is not the comparison. The
-  standard tier on these same evals is.
-- **For most skills a cheaper model is enough, on the checks.** With the skill, Haiku 5.5
-  meets 83% of checks and Opus 5.5 85%, at about a twenty-seventh of the cost per run. Light
-  came within 5 points of heavy for 61 of 97 skills, including 9 of the 13 assigned heavy:
-  `accessibility-audit`, `agent-threat-model`, `devils-advocate`, `doc-critique`, `dpia`,
-  `skill-review`, `sql-review`, `strategy-analysis` and `terraform-plan-review`. Heavy led by
-  more than 5 points on the other four heavy skills (`business-case`, `council-review`,
-  `hypothesis-comparison`, `threat-model`) and on `decision-log`, which is assigned light. It
-  led by 15 or more on 13 standard skills, among them `adr-generator`, `brief-intake`,
-  `bug-triage`, `capacity-cost-model`, `prd-draft` and `risk-register`.
-- **No tier was changed.** Each row is two evals and one trial, and the standard tier is
-  missing from it. The model-routing rule that a heavy skill is never routed below heavy is
-  what the nine rows question; it stays until the standard tier and a second trial are in.
+- **On evals they were not written against, the skills do not beat the plain agent on any
+  tier.** The lift on the checks is 3 to 6 points. On standard the judges are at even; on
+  light the plain agent wins slightly more pairs, and on heavy both judges preferred plain
+  Opus 5.5 in about 7 pairs of 10.
+- **The standard tier scores below the light one, with the skill and without it.** Haiku 5.5
+  meets 83% of the checks with the skill and Sonnet 5 78%; without the skill, 80% against 72%.
+  Light came out more than 5 points ahead of standard for 53 of 97 skills and behind it for
+  19. A gap that shows up in the plain agent too belongs to the model, not the skill: the
+  routing table maps light and heavy to the 5.5 generation and standard to the one before it,
+  at the same list price as its successor.
+- **For most skills a cheaper model is enough, on the checks.** Taking the cheapest tier
+  within 5 points of the best, light is enough for 56 of 97 skills, standard for 15 and heavy
+  for 26. Of the 13 skills assigned heavy, light is enough for eight
+  (`accessibility-audit`, `devils-advocate`, `doc-critique`, `dpia`, `skill-review`,
+  `sql-review`, `strategy-analysis`, `terraform-plan-review`), standard for two
+  (`agent-threat-model`, `council-review`), and three need heavy (`business-case`,
+  `hypothesis-comparison`, `threat-model`). Heavy led standard by 15 points or more on 25
+  skills, among them `adr-generator`, `bug-triage`, `prd-draft`, `pre-merge-review` and
+  `subagent-design`, which is the weak standard model showing again.
+- **No tier was changed.** Each row is two evals and one trial, and the standard tier ran on
+  a different day and a slightly different catalogue: 29 of the 97 skills changed in between,
+  almost all in their scripts and manifests. `SKILL.md` changed only in `api-contract-draft`
+  and `file-to-markdown`, and five others had an example or template edited. Left out, the standard row barely moves (52%
+  and 51% on the 152 evals of unchanged skills). The routing rule that a heavy skill is never
+  routed below heavy is what the eight light rows question. Before any per-skill tier moves,
+  the model behind the standard tier is the first thing to settle, and then a second trial
+  on all three.
 
 Claude Code had no price for Haiku 5.5 when this ran, so its runs are priced from the
 runner's own table at $0.10 and $0.50 per million tokens. Light runs wrote more: 7,015 output

@@ -4,7 +4,7 @@ What is being worked on next. Not a commitment — a direction. Shipped work mov
 
 ## Upcoming
 
-- **Re-tier from measurement.** On the held-out evals Haiku 5.5 came within 5 points of Opus 5.5 for 61 of 97 skills, 9 of them assigned heavy, and the plain agent was preferred over the skill on both tiers ([what the benchmark showed](guides/explanation/what-the-benchmark-showed.md#the-light-and-heavy-tiers)). With the standard tier run on the same evals and a second trial on all three, set each tier from the numbers, and look first at what the skills lose to plain Opus 5.5.
+- **Re-tier from measurement.** All three tiers now have the 224 held-out evals ([what the benchmark showed](guides/explanation/what-the-benchmark-showed.md#the-three-tiers)). The skill is not preferred to the plain agent on any of them, and the standard tier (`claude-sonnet-5`) scores below the light one (`claude-haiku-5-5`) with the skill and without it, most likely because it maps to a model a generation older. First decide which model the standard tier maps to; then run a second trial on all three and set each tier from the numbers, looking first at what the skills lose to plain Opus 5.5.
 
 ## Considering
 

@@ -766,7 +766,7 @@ def bench_section(b):
 <li><b>Preferred by a blind judge</b> is the share of pairs where a judge that saw only the request and both results, in shuffled order, picked the skill's. 50% means no preference.</li>
 {second}<li>Ranges are 95% intervals over evals. A lift range that includes 0, or a preference range that includes 50%, is not a result.</li>
 <li>Most skills have one eval, so a single row below is an anecdote. The judge is a model. Cost is list price for the tokens used.</li>
-<li>Skills that lost were revised after reading the judges' reasons and run again on the same evals, so part of the preference on evals their author wrote is fitted to them. Evals written by someone who never read the skill are counted separately{" above" if any(len(d.get("by_kind", {})) == 2 for d in b["models"].values()) else ""}; that row is the better guide to a request the skill was not shaped around.</li>
+<li>Skills that lost were revised after reading the judges' reasons and run again on the same evals, so part of the preference on evals their author wrote is fitted to them. Evals written by someone who never read the skill are counted separately{" above" if any(len(d.get("by_kind", {})) == 2 for d in b["models"].values()) else ""}. Some skills were later revised, or admitted, on the verdicts from those evals too, so that row is the better guide but not a clean one; <a href="../docs/explanation/what-the-benchmark-showed.html">what the benchmark showed</a> separates the evals nothing was decided on.</li>
 </ul>
 <p>Reproduce it with <code>python3 run_bench.py</code> (<a href="{REPO_URL}/blob/main/docs/rfcs/0040-skill-benchmark.md">RFC-0040</a>).</p>
 </section>"""
