@@ -1,0 +1,34 @@
+[
+  {
+    "query": "List the frames in our Figma file",
+    "should_trigger": true
+  },
+  {
+    "query": "Read this Figma file structure via the API",
+    "should_trigger": true
+  },
+  {
+    "query": "Post a comment on this Figma frame",
+    "should_trigger": true
+  },
+  {
+    "query": "Convert this FigJam connector graph into a diagram spec",
+    "should_trigger": true
+  },
+  {
+    "query": "Draw an architecture diagram in Mermaid from this description",
+    "should_trigger": false
+  },
+  {
+    "query": "Reverse-engineer our architecture from the repo",
+    "should_trigger": false
+  },
+  {
+    "query": "Build a PowerPoint deck from this content",
+    "should_trigger": false
+  },
+  {
+    "query": "Audit this UI for accessibility issues",
+    "should_trigger": false
+  }
+]

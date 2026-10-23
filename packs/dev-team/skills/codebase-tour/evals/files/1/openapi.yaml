@@ -1,0 +1,21 @@
+openapi: 3.0.3
+info:
+  title: shipwright-api
+  version: 2.4.0
+paths:
+  /shipments:
+    get:
+      summary: List shipments
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, in_transit, delivered]
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A page of shipments

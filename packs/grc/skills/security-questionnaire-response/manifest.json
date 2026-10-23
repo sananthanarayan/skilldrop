@@ -1,0 +1,32 @@
+{
+  "name": "security-questionnaire-response",
+  "version": "0.1.0",
+  "description": "Answer a customer's security questionnaire from your own evidence: each question gets a direct answer (Yes, No, Partial or Not applicable), a short narrative, and the document and section it rests on. Questions the evidence doesn't cover are marked as needing input instead of being answered, and conflicts between sources, stale evidence and answers that would commit you to future work are flagged for the security owner. Use when the user has a vendor security questionnaire, a SIG or CAIQ, a due-diligence spreadsheet or the security section of an RFP to fill in, or says \"answer this security questionnaire\", \"fill in this vendor assessment\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "dpia",
+    "risk-register",
+    "soc2-evidence-map",
+    "threat-model"
+  ],
+  "tags": [
+    "security-questionnaire",
+    "vendor-assessment",
+    "due-diligence",
+    "grc",
+    "rfp",
+    "compliance"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Matches questions to evidence and writes short answers. The hard rule is mechanical: no evidence, no answer."
+  }
+}

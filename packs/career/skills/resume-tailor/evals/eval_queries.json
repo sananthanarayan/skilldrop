@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Tailor my resume for this job posting",
+    "should_trigger": true
+  },
+  {
+    "query": "Adapt my CV to this job description",
+    "should_trigger": true
+  },
+  {
+    "query": "Rewrite my resume so it fits this product manager role",
+    "should_trigger": true
+  },
+  {
+    "query": "I'm changing careers, can you rework my CV for this posting?",
+    "should_trigger": true
+  },
+  {
+    "query": "Am I a good fit for this job?",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a cover letter to go with my application",
+    "should_trigger": false
+  },
+  {
+    "query": "Give my resume a general critique",
+    "should_trigger": false
+  },
+  {
+    "query": "Convert my resume from Markdown to Word",
+    "should_trigger": false
+  }
+]

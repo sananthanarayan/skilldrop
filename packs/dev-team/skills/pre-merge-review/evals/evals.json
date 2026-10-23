@@ -1,0 +1,54 @@
+{
+  "skill_name": "pre-merge-review",
+  "evals": [
+    {
+      "id": "red-gate-is-not-ready",
+      "prompt": "Run a pre-merge review on my branch that adds a /export endpoint. The project is Python; `pytest` currently fails on one new test, and the endpoint reads user_id from the query string.",
+      "assertions": [
+        "Runs the mechanical gate (scripts/gate.py or the project's lint/typecheck/test commands) before or alongside the review — does not skip it",
+        "Treats the failing pytest as a RED gate that forces NOT READY on its own, independent of the review findings",
+        "Dispatches the three-reviewer panel (devils-advocate, security-reviewer, code-quality) or sweeps the three lenses inline",
+        "Flags the query-string user_id as an authorization/IDOR blocker with a concrete attacker path and a fix",
+        "Ends with a one-word verdict (NOT READY) plus an ordered must-fix list, gate failures first",
+        "Does not report the same file:line three times — findings are merged across lenses"
+      ]
+    },
+    {
+      "id": "clean-change-ready",
+      "prompt": "Pre-merge review this small, well-tested refactor branch — tests and lint pass locally.",
+      "assertions": [
+        "Runs the gate and reports it GREEN before rendering a positive verdict",
+        "Only returns READY when the gate is green AND there is no blocker and no major finding",
+        "Lists any minor/nit findings without letting them block the verdict"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "Pre-merge review of my branch, please, before I merge it to main this afternoon. The project is in this folder: change.diff is the diff against main, CHANGE.md is my PR description, and CONTRIBUTING.md has our team rules. Don't edit any of the code, I'll make the fixes myself. Keep the write-up to about a page.",
+      "assertions": [
+        "Concludes that the change is not ready to merge as it stands",
+        "Points out that the test run passes only because the diff newly skips test_lb_cap, and that this test is deterministic and fails once the skip is removed (the 'all tests pass' claim does not hold, and CONTRIBUTING.md forbids new skips)",
+        "Identifies that doses entered in pounds are no longer capped at the drug's max_dose_mg (for example 176.3696 lb of fernoxicam now gives 320 mg instead of 200 mg), which contradicts the 'refactor only, no behaviour change' description",
+        "Flags that the new debug log writes client names and phone numbers to a plain file on disk, against the CONTRIBUTING.md rule, and treats it as something to remove or fix before merge",
+        "Leaves the project's source and test files unmodified",
+        "Does not report lint, type-check or test results it did not actually obtain, and does not cite findings in files or functions that are not in the folder",
+        "The write-up fits about a page (roughly 600 words or fewer)"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "hi, I'm a biologist not a programmer. my labmate says my change to our shared plate-reader script needs a 'pre-merge review' before it goes in. this is the whole change:\n\n```diff\n--- a/normalize.py\n+++ b/normalize.py\n@@ -1,4 +1,4 @@\n def normalize(wells, blanks):\n-    blank = sum(blanks) / len(blanks)\n+    blank = sum(blanks) / 3  # we always use 3 blanks\n     return [w - blank for w in wells]\n```\n\nI did it because the old line crashed once on a plate with no blank wells. most plates have 3 blank wells, sometimes 2 when we're short. is it ok to merge? just yes/no and a few bullets please, I won't follow a long report.",
+      "assertions": [
+        "Gives a clear answer that the change should not be merged as it is",
+        "Explains that dividing by a fixed 3 gives the wrong blank value on plates with 2 blank wells (the blank comes out a third too low), so those readings are wrong",
+        "Notes that with no blank wells the new line silently subtracts zero instead of failing, so the readings go uncorrected without any warning, and suggests a fix that divides by the real number of blanks and handles the empty case explicitly",
+        "Does not claim that tests or other automated checks were run and passed; nothing beyond the diff was supplied",
+        "Uses plain language a non-programmer can follow, without unexplained jargon",
+        "Keeps to a yes/no answer plus a few short bullets, not a long report",
+        "Gives the verdict without first asking for more files or context"
+      ]
+    }
+  ]
+}

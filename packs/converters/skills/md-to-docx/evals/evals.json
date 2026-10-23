@@ -1,0 +1,57 @@
+{
+  "skill_name": "md-to-docx",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Northwind Legal wants our vendor onboarding policy as a Word doc so they can track changes. It's in docs/vendor-onboarding.md: a # title, ## sections, a numbered approval process with sub-steps, a pipe table of approval limits ($5,000 / $50,000 / unlimited), a footnote citing the finance policy, and a Mermaid flowchart of the approval path. Use ./brand/brand.json and A4 paper.",
+      "assertions": [
+        "Runs md_to_docx.py with --brand ./brand/brand.json and --page a4, writing a .docx",
+        "Deals with the Mermaid flowchart before converting: renders it to PNG with mermaid-render and embeds it, or says plainly that it stays as code",
+        "Moves the footnote's text into the body or a Notes section instead of letting it drop silently",
+        "Reports every WARN line the script printed, each with what was done about it",
+        "Keeps the approval limits ($5,000 / $50,000 / unlimited) and every other fact exactly as in the source",
+        "Checks the file opens (textutil, Quick Look, LibreOffice or Word) and reports the script's summary counts",
+        "Tells the user the headings drive Word's navigation pane and table of contents"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Convert this to Word for the Acme client, they don't use Markdown: <a 40-line Markdown status report pasted in the chat, with **Background** and **Next steps** as bold lines instead of headings, an HTML <table>, and an image linked from https://cdn.example.com/chart.png>",
+      "assertions": [
+        "Saves the pasted text to a .md file before converting",
+        "Turns the bold-line pseudo-headings into ## headings so Word sees them as headings",
+        "Rewrites the HTML table as a pipe table rather than letting it drop",
+        "Says the remote image is not embedded and asks for, or downloads, a local copy",
+        "Does not invent content, numbers or dates that are not in the pasted report"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "Please turn tender-response.md into a Word document, tender-response.docx, using our brand.json. It goes to the Thornbury Parish Council clerk, who will edit it with tracked changes, and the evaluation panel get around long bids with the Word navigation pane, so the headings have to work there. Submission is tomorrow, so just get it done.",
+      "assertions": [
+        "Writes tender-response.docx as a valid Word file, and the section headings use Word's built-in heading styles (Heading 1, Heading 2 and so on) rather than just bold or larger text",
+        "The team photo is embedded in the document, and the site map (img/site-map.png) is reported as missing rather than silently dropped",
+        "It tells the user that the pricing total (33,650) does not match the items, which add up to 32,650, and does not change any figure in the document on its own",
+        "It warns that the 'NOTE TO SELF' about checking the gritting price is still in the text and would go to the council, rather than passing it through without a word",
+        "The parish tender page link is a working hyperlink in the .docx, and the user is told the insurance certificate link points to a local file (docs/insurance-2026.pdf) that is not included",
+        "It reports that the accent colour in brand.json (#C8A2) is not a valid colour, rather than silently applying it or quietly replacing it with a colour of its own",
+        "It does not add content, prices or sections that are not in tender-response.md"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "my mum runs a community choir and their secretary only uses Word. can you make this into a word doc she can edit? one page please\n\n# Winter Concert - running order\nSat 12 Dec, St Aldric's Hall (doors 6.30)\n\n1. Welcome - Jan\n2. In the Bleak Midwinter (full choir)\n3. Ding Dong Merrily (full choir)\n3. Solo - Priya - Silent Night\n5. Interval - mince pies & raffle (20 mins)\n6. Carol medley (full choir + audience)\n7. Thank yous & close - Jan\n\n**Bring:** black folders, red scarves",
+      "assertions": [
+        "Writes a .docx file that opens in Word and can be edited",
+        "All seven items appear in the original order, with the names (Jan, Priya), the pieces and the 20-minute interval kept as written",
+        "The items end up numbered 1 to 7 in sequence, with no item lost or duplicated because of the repeated '3' in the source; if the numbering was changed, the reply says so",
+        "The title is a heading, the date, hall and door time line is kept, and 'Bring:' stays bold",
+        "It fits on one page, with no cover page, contents page or extra sections added",
+        "It does not invent times, pieces, performers or other details that are not in the text",
+        "It delivers the file without asking questions first, and the reply is short and in plain words"
+      ]
+    }
+  ]
+}

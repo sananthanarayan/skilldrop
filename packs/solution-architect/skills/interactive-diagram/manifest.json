@@ -1,0 +1,39 @@
+{
+  "name": "interactive-diagram",
+  "version": "0.2.4",
+  "description": "Turn a codebase, a system description, a process or a database schema into one self-contained interactive HTML diagram (architecture, workflow, data flow, lifecycle, ERD, sequence, class, tree, timeline or waterfall) where every box and arrow cites the file and line or the words it came from, anything inferred is drawn dashed as an assumption, and each cited line is checked against the repository before the page is written. Laid out automatically, opens offline with no CDN, and exports SVG, PNG and Mermaid. Use when the user asks to \"visualize\", \"map\" or \"make an interactive diagram of\" a repo, a request path, a pipeline, an approval process, a set of tables, an incident's events or a slow trace, or wants a diagram they can click through and share as one file.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "architecture-diagrams",
+    "mermaid-render",
+    "reverse-architecture"
+  ],
+  "tags": [
+    "diagram",
+    "architecture",
+    "interactive",
+    "html",
+    "erd",
+    "sequence-diagram",
+    "workflow",
+    "evidence"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "project",
+    "notes": "Reads the spec, the base spec for --compare, and the files the spec cites under --repo-root; writes only the HTML and Mermaid paths given. It matches secret-file names (.env, keys, credentials) only to refuse to show them. The page it writes makes no network requests."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "Tracing a path through code and citing each part is careful reading, not adversarial judgement; the layout and the checks are done by the script."
+  }
+}

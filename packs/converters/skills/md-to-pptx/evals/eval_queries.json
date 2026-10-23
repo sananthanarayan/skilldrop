@@ -1,0 +1,12 @@
+[
+  { "query": "turn this markdown status report into slides for Thursday", "should_trigger": true },
+  { "query": "Convert runbook.md to a pptx", "should_trigger": true },
+  { "query": "Can you make my meeting notes in notes.md into a PowerPoint? Keep the tables as tables", "should_trigger": true },
+  { "query": "Export docs/q3-review.md as a PowerPoint deck with our brand.json fonts and colours", "should_trigger": true },
+  { "query": "I need this README as slides, nothing fancy, one slide per section", "should_trigger": true },
+  { "query": "Build an investor pitch deck from these bullet points, with charts and our corporate template", "should_trigger": false },
+  { "query": "Outline the slides for my architecture review next week: what should each slide say?", "should_trigger": false },
+  { "query": "Convert this markdown report to a Word document legal can track changes in", "should_trigger": false },
+  { "query": "Turn the .pptx the client sent back into markdown", "should_trigger": false },
+  { "query": "Make the markdown onboarding guide a single HTML page I can email", "should_trigger": false }
+]

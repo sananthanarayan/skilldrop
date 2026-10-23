@@ -1,0 +1,43 @@
+{
+  "skill_name": "data-contract",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We publish an `orders_daily` table that three downstream teams consume. Write the data contract.",
+      "assertions": [
+        "Every field carries a meaning plus a unit or allowed-values, not merely a type — the cents-vs-dollars class of bug is designed out",
+        "Every quality SLA states a threshold, a check, and a breach action; 'high quality' is rejected as an SLA",
+        "The evolution policy explicitly names meaning-change-under-a-stable-name as a breaking change",
+        "The contract names the owner and the consumers it is a promise to",
+        "Freshness, completeness, validity, and distribution are each addressed or explicitly marked not-applicable"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "We're publishing the grain_deliveries table to Finance and Logistics and want a data contract in place before anyone else builds on it. Everything is in this folder: grain_deliveries.sql, sample_rows.csv and publisher-notes.md.",
+      "assertions": [
+        "Saves data-contract.yaml, which parses as YAML, and keeps the open issues in the reply to a few lines as asked",
+        "Resolves or flags the weight unit conflict: the notes say kg, but the schema comment and the sample values point to tonnes",
+        "Flags that moisture_pct in the sample rows mixes percentages (such as 14.2) with fractions (such as 0.138), and sets a check that would catch it",
+        "Classifies farmer_name and farmer_phone as personal data, despite the notes saying the table holds none",
+        "Does not promise 15-minute freshness, noting that the table is loaded nightly from the weighbridge export",
+        "Does not name an owner; leaves ownership as an open issue for the two teams to settle",
+        "Does not invent columns, consumers or allowed values that are not in the supplied files"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I'm the transport coordinator for Millbeck School District. The bus company emails us a spreadsheet of routes every week, and every time they rename or move a column our parent text alerts break. Someone said we need a 'data contract' with them. Can you write one I can send? A few bullets, they're not techy. The columns now are: Route No, Stop Name, Pickup Time, Driver First Name, Bus Reg.",
+      "assertions": [
+        "Delivers bullets ready to send, without asking questions first",
+        "Asks the bus company to keep the listed column names and order the same, and to give notice before changing them",
+        "Sets an expected format for at least one field that would break the alerts, such as pickup time (for example 24-hour HH:MM)",
+        "Raises whether Driver First Name needs to be shared, since it is personal information about the drivers",
+        "Does not invent columns, penalties, legal terms or deadlines not in the message; any notice period is offered as a suggestion",
+        "Keeps to a few bullets in plain language a non-technical bus company would follow"
+      ]
+    }
+  ]
+}

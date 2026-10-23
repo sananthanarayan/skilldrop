@@ -1,0 +1,35 @@
+# git log v3.1.0..release/3.2.0 --reverse --date=short --format='%h|%ad|%an|%s'
+# repo: tidewater-booking (hosted service: API + embeddable booking widget)
+4c1e9a2|2026-06-09|Imani Okafor|feat(reminders): send SMS reminders before a booking (#201)
+7b03f1d|2026-06-10|Imani Okafor|test: reminder scheduler unit tests
+1e8d4c6|2026-06-11|Imani Okafor|fix(reminders): don't send SMS for cancelled bookings (#204)
+a93b2e0|2026-06-12|Tomasz Wrobel|chore(deps): bump twilio 5.0.4 -> 5.2.1
+5f6a7d1|2026-06-15|Ruben Halvorsen|feat(calendar): two-way Google Calendar sync (#207)
+c2d91b8|2026-06-16|Tomasz Wrobel|ci: cache pnpm store
+9e4f0a3|2026-06-17|Dee Castellanos|fix(widget): date picker showed the wrong day for customers west of UTC (#209)
+3b7c5e2|2026-06-18|Ruben Halvorsen|wip
+d0a6e48|2026-06-19|Dee Castellanos|feat(widget): let customers reschedule from the confirmation email (#211)
+6a2f9c7|2026-06-22|Tomasz Wrobel|refactor(webhooks): rename `start`/`end` to `starts_at`/`ends_at` in booking.* payloads (#214)
+f18b3d5|2026-06-23|Tomasz Wrobel|docs: update webhook payload examples
+2c9e7a4|2026-06-24|Imani Okafor|perf(export): stream CSV export; 50k bookings 41s -> 14s (#216)
+b5d0c19|2026-06-25|Ruben Halvorsen|fix(calendar): duplicate events when a booking is edited twice (#218)
+8e3a1f6|2026-06-26|Tomasz Wrobel|chore: rename internal BookingRepo -> BookingStore
+0d7b4c2|2026-06-29|Imani Okafor|fix(auth): staff sessions stayed logged in after a password change (#220)
+e6c2a95|2026-06-30|Imani Okafor|feat(reminders): per-location reminder lead time setting, default 24h (#222)
+71f9d3b|2026-07-01|Ruben Halvorsen|more fixes
+a4e8b60|2026-07-02|Ruben Halvorsen|Revert "feat(calendar): two-way Google Calendar sync (#207)" (#225)
+    Reverts 5f6a7d1. Google has not approved our OAuth verification yet. Re-land in 3.3.
+3f5c8d7|2026-07-02|Ruben Halvorsen|Revert "fix(calendar): duplicate events when a booking is edited twice (#218)" (#225)
+    Reverts b5d0c19. Depends on the sync code removed in a4e8b60.
+c9a1e04|2026-07-03|Tomasz Wrobel|chore(deps): bump vite 5.2 -> 5.3
+5b2d7f9|2026-07-06|Dee Castellanos|fix(widget): "Book" button unresponsive on iOS Safari 16 (#227)
+1a6e3c8|2026-07-07|Tomasz Wrobel|feat(api): GET /v2/bookings accepts a `location_id` filter (#229)
+d8f4b21|2026-07-08|Tomasz Wrobel|chore(node): require Node 20 on our servers; drop Node 18 from CI (#230)
+9c0e5a7|2026-07-09|Imani Okafor|fix(reminders): reminders went out an hour early after the clocks changed (#232)
+4e7a2d0|2026-07-10|Dee Castellanos|test: e2e for reschedule flow
+b1c6f83|2026-07-13|Imani Okafor|fix(export): CSV export dropped the notes column (#234)
+6d9b0e5|2026-07-14|Tomasz Wrobel|feat(api)!: remove deprecated `X-Tidewater-Key` header auth; use Bearer tokens (#236)
+2f8c4a1|2026-07-15|Dee Castellanos|docs: changelog housekeeping
+e0b7d36|2026-07-16|Dee Castellanos|style: prettier
+7a3e9c2|2026-07-17|Dee Castellanos|fix: typo in reschedule email subject
+0c5d8b4|2026-07-20|Tomasz Wrobel|ci: bump runner image

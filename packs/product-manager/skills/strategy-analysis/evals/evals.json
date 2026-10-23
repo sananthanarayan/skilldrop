@@ -1,0 +1,63 @@
+{
+  "skill_name": "strategy-analysis",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run a SWOT on our product: a developer-tools startup with 4,000 paying tenants, strong CI/CD integration data, a small sales team, and a well-funded incumbent (CircleCI) moving into our niche. The decision this feeds: where to focus the next two quarters.",
+      "assertions": [
+        "SWOT is crossed into TOWS quadrants (S×O, S×T, W×O, W×T) — the four raw lists are not the final output",
+        "Every cell is specific (names a competitor, number, or capability), carries an evidence tag ([data]/[reported]/[assumption]), and has a 'so:' implication",
+        "No horoscope cells like 'strong team' or 'growing market' without specifics",
+        "Implications section is ranked (3-5 entries) and each is action-shaped, tied to the two-quarter focus decision",
+        "A verdict paragraph takes a side and names what evidence would change it",
+        "Assumptions appearing in top-ranked implications are flagged as validation targets",
+        "A hand-off to business-case or prfaq is offered where apt"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Give me a SWOT to decide whether we should enter the SMB payroll market in Germany.",
+      "assertions": [
+        "The skill flags that market-entry attractiveness is a Five Forces question and suggests it before or instead of SWOT",
+        "If Five Forces is run, all five forces get a pressure rating with the mechanism (who holds power and why) — no force rated 'N/A'",
+        "The output ends with a committal verdict on entering, not 'it depends'"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "[Non-interactive run — no user available to answer questions] Run a Porter's Five Forces on the European ride-sharing market. This feeds our decision on whether to expand our driver-scheduling SaaS into that segment next year.",
+      "assertions": [
+        "The skill proceeds (the decision IS named in the input) instead of blocking",
+        "Assumptions replacing the capped clarifying questions (e.g. competitive set) are tagged [assumption] and stated at the top",
+        "Market facts drawn from general knowledge are tagged [market: ...], distinguishable from user-supplied facts and assumptions"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "Our coach company's board meets next week on whether to launch an airport shuttle. My notes are in market_notes.md. Give me the analysis and a recommendation — one page, the board wants a recommendation, not a textbook.",
+      "assertions": [
+        "Uses or reconciles the airport authority's passenger figures (roughly 3–4% annual growth) rather than relying on the consultant's 12%",
+        "Catches the market-size arithmetic error: 1.2M trips x $28 is $33.6M, not $46M",
+        "Recognises that the incumbent's exclusive curbside rights until June 2029 block or limit a curbside service now, and the recommendation reflects it",
+        "Does not give a year-1 market-share number as a finding; says the inputs cannot support one, or labels any figure as a hedged assumption",
+        "Gives a clear recommendation (for example enter now, enter a different way, or wait) tied to the evidence",
+        "Does not invent competitors, figures, or regulations not in the notes",
+        "About one page (roughly 500 words or less)"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-18",
+      "prompt": "i run a swim school for kids, we rent 2 pools by the hour. a big gym chain just opened 10 min away with its own pool and kids lessons. what do i do?? a few bullets pls, im not a business person",
+      "assertions": [
+        "Gives concrete advice without stopping to ask questions first",
+        "Short — no more than about 10 bullets or 250 words",
+        "Uses plain language a non-business owner can act on; any framework terms are explained or avoided",
+        "Identifies where a specialist swim school can realistically compete with or differ from a gym chain's lessons, rather than only generic advice",
+        "Points out that depending on rented pool hours is a vulnerability or a factor to manage",
+        "Does not invent facts about the gym chain (its prices, class sizes, quality) or the local market as known; such points are framed as things to find out"
+      ]
+    }
+  ]
+}

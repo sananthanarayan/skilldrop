@@ -1,0 +1,46 @@
+{
+  "skill_name": "skill-author",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Make me an agent skill for Northwind's support team: every Monday someone pastes last week's Zendesk ticket export (CSV with id, subject, tags, created_at, status) and wants a one-page digest with the top five themes, counts per theme, and three example ticket ids each. We use Codex and Cursor. We already have a skill called incident-summary for single outages and one called csat-report for survey scores. It should never make up ticket counts.",
+      "assertions": [
+        "The frontmatter name is kebab-case, leads with the artifact, and matches the folder name in the file tree",
+        "The description leads with the digest as the artifact and ends with quoted trigger phrases a support lead would type",
+        "incident-summary and csat-report each appear in a When NOT line and in a should-not-trigger query",
+        "The counts are computed by a stdlib script, and SKILL.md shows the script with both the ${CLAUDE_SKILL_DIR} form and a plain relative scripts/ path",
+        "SKILL.md has a non-interactive line that emits BLOCKED when there is no ticket export, rather than inventing counts",
+        "The quality bar and the eval assertions include that no count or ticket id appears that is not in the export",
+        "Install instructions give .agents/skills/ for Codex and the .cursor/skills/ plus .cursor/rules/ pattern for Cursor",
+        "The interview asks at most two questions, because the deliverable, the tools and the siblings were already given"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "We're Hollin Hill Veterinary Group and we want an agent skill that drafts post-surgery discharge notes for pet owners from the vet's surgical notes. Our head nurse's process is in process.md, a note the team liked is in example-discharge.md, and IT's constraints are in constraints.md. Please write the skill.",
+      "assertions": [
+        "Writes the skill as a folder with a SKILL.md that works in both Cursor and Claude Code, with no script or step that needs Python, Node or internet access",
+        "The skill tells the agent to take medicine names, doses and frequencies only from the vet's notes, and to flag anything missing rather than fill it in",
+        "Resolves the conflict between the fixed '10 days' stitches line and the example's dissolvable stitches: stitch advice comes from the vet's notes",
+        "Does not have the skill book the recheck appointment in the practice system; it leaves booking to staff or says the agent cannot do it",
+        "Does not copy the client's name or phone number from the example into the skill folder",
+        "Does not invent practice policies, medicines or contact details that are not in the supplied files",
+        "Keeps SKILL.md under 150 lines"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "i'm a wedding photographer. can you make me one of those skill files so my AI writes the same kind of follow-up email to couples every time after a shoot? i use claude code on my mac. keep it short, i'm not a developer",
+      "assertions": [
+        "Delivers a usable SKILL.md, written to a file or given in full in the reply, without stopping to ask questions first",
+        "Says where to put the skill so Claude Code finds it",
+        "The skill tells the agent to leave clear placeholders for details it is not given (the couple's names, the date, when the gallery will be ready) rather than make them up",
+        "Does not put invented business details, such as prices, turnaround times or gallery links, into the skill as facts",
+        "Keeps the skill and the explanation short",
+        "Explains how to use it in plain language for a non-developer"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+tool,vendor,purpose,seats,contract_status,contract_end,data_terms,notes
+CodePilot Enterprise,Northgate AI,coding assistant,300,signed,2027-03-31,"zero-retention addendum signed 2026-02-12; no training on our data",engineering only; waiting list open
+AskDesk,Pellam Systems,general internal chatbot,850,signed,2027-01-31,"DPA signed; no training on our data; 30-day retention; EU hosting",SSO for all staff
+Transcribo,Transcribo Inc,meeting notetaker,40,pilot,2026-12-31,"DPA in legal review - not signed",pilot limited to internal meetings
+LingoDraft,Lingo Labs,translation,25,expired,2026-08-31,"renewal not signed",support still use it for Polish and Spanish replies

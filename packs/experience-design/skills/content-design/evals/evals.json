@@ -1,0 +1,45 @@
+{
+  "skill_name": "content-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's our 'Making a claim' page for Acme Home Insurance. Please make it something people can actually use. Current text: 'Policyholders wishing to initiate a claim in respect of loss or damage to insured property are required to notify Acme Home Insurance at the earliest practicable opportunity and in any event within 30 days of the incident. Notification may be effected via the online portal or by telephone. Claimants will be required to furnish supporting documentation including photographs, receipts and, where applicable, a crime reference number. Acme Home Insurance is committed to delivering market-leading service and has been recognised with numerous industry accolades. Claims are typically assessed within 15 working days of receipt of all documentation.' Most calls we get are 'what do I need to send' and 'how long will it take'.",
+      "assertions": [
+        "User-need statements follow 'As a… I need… so that…' with a specific reader and an evidence tag",
+        "Questions are listed in priority order and the page headings follow that order, written in the reader's words",
+        "The draft keeps every fact: 30 days, online or phone, photos, receipts, crime reference number where applicable, and 15 working days after all documents",
+        "No sentence in the draft is over 25 words",
+        "Before/after readability numbers are reported from the script, or the output says the grade was not computed",
+        "The cut list includes the 'market-leading service' and 'industry accolades' sentence with a reason",
+        "Does not invent a phone number, URL, excess amount or other fact not in the prompt; unknowns are placeholders listed as open questions"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Rewrite our Hardship Payment Plan page for Waterfold Water. The current page is in current-page.md. The policy it's meant to describe is policy-extract.md, and what customers actually ask us is in contact-centre-notes.md, along with some requests from our Comms manager. Give me the rewritten page ready to paste into the CMS, plus a short note of anything you changed on purpose or couldn't resolve.",
+      "assertions": [
+        "Uses the current policy's facts (income below £21,000, up to 24 months, 2 months of bank statements OR proof of benefit, no bill needed, decision within 10 working days) rather than the old page's figures, and notes that the old page disagreed with the policy",
+        "Does not carry over the '£900 over 12 months = £100 a month' example uncorrected; either flags that it doesn't add up or replaces it with a correct example",
+        "Does not promise a decision within 48 hours; keeps the policy's 10 working days and says why the Comms request was not followed",
+        "The page answers the callers' frequent questions in the reader's words, including that reminder letters and debt collection stop while the application is considered and what happens if payments are missed (two in a row, with 14 days' notice)",
+        "The rewritten page body is under 350 words",
+        "Does not invent a phone number, URL, approval rate or any other fact not in the files; the phone number and form link are left as clear placeholders",
+        "Delivers the finished page rather than stopping to ask questions first"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "hi, i run a small vet clinic. our 'before your pet's operation' sheet is a wall of text and people still feed their dogs the morning of surgery!! can you make it simple? half a page max, it gets printed. here's what it says now: 'Patients must be NPO from midnight prior to the procedure. Food must be withheld after 10pm the evening before. Water may be offered until 7am. Admission is between 8:00 and 8:30am. Owners should bring any current medication. Pre-anaesthetic bloods may be performed on admission. Owners will be telephoned after 2pm regarding discharge.'",
+      "assertions": [
+        "The no-food instruction is the most prominent thing on the sheet, since that is the problem the owner described",
+        "Notices that 'NPO from midnight' and 'no food after 10pm' disagree, and either uses one with a stated reason or asks the clinic to confirm, rather than silently picking one",
+        "Keeps the other facts: water until 7am, drop-off between 8:00 and 8:30am, bring current medication, possible blood test on arrival, and a call after 2pm about going home",
+        "Replaces jargon like 'NPO' and 'pre-anaesthetic bloods' with words a pet owner understands",
+        "Does not invent facts not given, such as different rules for cats, fasting for medication, prices or a phone number",
+        "Fits in half a printed page (roughly 200 words or fewer)"
+      ]
+    }
+  ]
+}

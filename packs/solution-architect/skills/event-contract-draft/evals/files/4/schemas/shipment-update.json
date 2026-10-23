@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UpdateShipment",
+  "description": "Draft v0.3 - one message type for everything that happens to a shipment. Published by tracking-core to the 'shipments' topic.",
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["CREATE_SHIPMENT", "UPDATE_STATUS", "SEND_DELIVERY_SMS", "CANCEL"],
+      "description": "What to do with this shipment."
+    },
+    "shipmentId": { "type": "string", "description": "e.g. PW-48213377" },
+    "carrierId": { "type": "string", "description": "e.g. CARR-017" },
+    "status": {
+      "type": "string",
+      "enum": ["booked", "picked_up", "in_transit", "out_for_delivery", "delivered", "failed_attempt", "returned"]
+    },
+    "recipient": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "dateOfBirth": { "type": "string", "description": "Only needed for age-restricted parcels, but we always send it." },
+        "address": {
+          "type": "object",
+          "properties": {
+            "line1": { "type": "string" },
+            "city": { "type": "string" },
+            "postcode": { "type": "string" }
+          }
+        }
+      }
+    },
+    "weight": { "type": "number", "description": "Parcel weight (kg)." },
+    "codAmount": { "type": "number", "description": "Cash-on-delivery amount collected, e.g. 24.99" },
+    "timestamp": { "type": "string", "description": "When it happened, depot local time, format dd/MM/yyyy HH:mm" }
+  },
+  "required": ["action", "shipmentId"]
+}

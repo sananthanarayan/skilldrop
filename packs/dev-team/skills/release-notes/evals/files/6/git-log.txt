@@ -1,0 +1,136 @@
+commit 0d1f6b8
+Author: Jun Okafor
+
+    chore(release): scaffold release checklist
+
+commit a4c91e0
+Author: Odile Brandt
+
+    chore(ci): cache node_modules between workflow runs
+
+commit 7d2b33f
+Author: Tomasz Wereszka
+
+    Revert "feat(invoices): Swiss QR-bill block on PDF invoices"
+
+    This reverts commit 3e8f10b. The bank validator rejects our reference
+    field. Pulling it until we can test against real QR scanners.
+
+commit e01f5c9
+Author: Marisol Quintero
+
+    fix(reminders): stop sending payment reminders for invoices marked paid offline
+
+    Invoices marked "paid by bank transfer" by hand were still getting the
+    automatic reminder email sent to the client.
+
+commit 5bb7a20
+Author: Tomasz Wereszka
+
+    misc fixes from Henrike's QA pass
+
+commit c33d9e4
+Author: Jun Okafor
+
+    chore(deps): bump pdfkit from 0.13.0 to 0.15.1
+
+commit 2f6a811
+Author: Marisol Quintero
+
+    feat(expenses): attach receipt photos to expenses from your phone's browser
+
+    Camera upload on mobile web. JPG, PNG and HEIC, up to 10 MB each.
+
+commit 88e0b4c
+Author: Jun Okafor
+
+    refactor(webhooks): normalise payload serializer
+
+    Moves all webhook payloads onto the shared serializer. Side effect:
+    `amount` on invoice.created and invoice.paid is now an integer in minor
+    units (cents) instead of a decimal string, to match the REST API, and
+    `client_name` is renamed to `client.display_name`. Anyone parsing our
+    webhooks has to update their handler. There is no compatibility flag.
+
+commit 41d7f02
+Author: Tomasz Wereszka
+
+    test: add fixtures for multi-currency invoices
+
+commit 3e8f10b
+Author: Tomasz Wereszka
+
+    feat(invoices): Swiss QR-bill block on PDF invoices
+
+    Adds the QR payment slip to the bottom of PDF invoices for clients
+    with a Swiss address.
+
+commit b9a2e6c
+Author: Odile Brandt
+
+    sync stuff
+
+commit 6c1d8a5
+Author: Marisol Quintero
+
+    feat(invoices): duplicate an invoice from the invoice menu
+
+    Copies line items, client and tax settings. The new invoice gets the
+    next invoice number and today's date.
+
+commit d57e3b1
+Author: Jun Okafor
+
+    perf(dashboard): faster invoice list for accounts with lots of invoices
+
+    Paginate server-side instead of fetching every invoice up front.
+
+commit 0ae4f9c
+Author: Odile Brandt
+
+    docs: fix typo in CONTRIBUTING
+
+commit f62c0d8
+Author: Marisol Quintero
+
+    fix(tax): VAT total off by a cent on long invoices
+
+    Totals on invoices with many line items could be off by 0.01 because
+    we rounded each line instead of the total.
+
+commit 19b7e44
+Author: Jun Okafor
+
+    chore: remove unused feature flag new_sidebar_v1
+
+commit ab30c6e
+Author: Tomasz Wereszka
+
+    fix(export): CSV export now includes the due date column
+
+commit 7e5d1f2
+Author: Odile Brandt
+
+    ci: run e2e suite on Node 22
+
+commit 2c94b8d
+Author: Jun Okafor
+
+    refactor(auth): extract session middleware
+
+commit 95f0a3c
+Author: Marisol Quintero
+
+    feat(portal): clients can download all their paid invoices as one ZIP
+
+    New "Download all" button on the client portal's invoice page.
+
+commit 4b6e7d9
+Author: Odile Brandt
+
+    chore(deps-dev): bump eslint to 9.12
+
+commit e8c2a05
+Author: Tomasz Wereszka
+
+    chore: fix typos in code comments

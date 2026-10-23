@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Extract the decisions and action items from these meeting notes",
+    "should_trigger": true
+  },
+  {
+    "query": "Turn this Slack thread into a decision log with owners and due dates",
+    "should_trigger": true
+  },
+  {
+    "query": "What did we actually decide in this transcript, and who owns what?",
+    "should_trigger": true
+  },
+  {
+    "query": "Give me a structured log of decisions from this design review",
+    "should_trigger": true
+  },
+  {
+    "query": "Write an ADR for the decision we made",
+    "should_trigger": false
+  },
+  {
+    "query": "Summarize this meeting for executives",
+    "should_trigger": false
+  },
+  {
+    "query": "Draft the design doc for what we agreed",
+    "should_trigger": false
+  },
+  {
+    "query": "Critique the quality of this decision log",
+    "should_trigger": false
+  }
+]

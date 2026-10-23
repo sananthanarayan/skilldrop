@@ -1,0 +1,44 @@
+{
+  "skill_name": "prd-draft",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Draft a PRD for a saved-search feature in our analytics product — users keep re-running the same filters every morning.",
+      "assertions": [
+        "The problem statement contains zero solution language and passes the alternative-solution test — more than one solution could follow from it",
+        "Every requirement is verifiable — a tester can demo it pass or fail; adjective requirements and implementation choices are rejected",
+        "Requirements are MoSCoW-prioritized",
+        "The won't-have list is non-empty and names specific excluded things",
+        "Each goal carries a success line stating how it will be measured",
+        "Claims that need evidence are marked rather than asserted as fact"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Our VP wants a leak-alert feature for water customers. Her brief is in brief.md; I also pulled call_center_notes.md and meter_facts.md. Write the PRD for v1 so engineering can start. Keep it under three pages.",
+      "assertions": [
+        "Does not promise real-time or within-minutes alerts; the requirements reflect that meter readings reach the utility only once a day",
+        "Uses or reconciles the call-centre figure (2,140 of 18,600 calls, about 11.5%) rather than repeating the brief's 30% as fact",
+        "Does not adopt the 20% network water-loss reduction as a target or fact without flagging that nothing in the inputs supports it",
+        "Respects the opt-in rule for SMS: does not switch SMS alerts on for all 140,000 customers, and accounts for app reach being only 9%",
+        "Deals explicitly with the 18% of homes on manually read meters (for example excluding them from v1), rather than assuming they get alerts",
+        "Does not invent figures, systems, or stakeholders not in the three input files",
+        "Stays under about three pages (roughly 1,500 words)"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "im on the PTA at my kids school. we want parents to be able to sign up for volunteer slots at events (bake sale, book fair etc) online instead of the paper sheet at the front office. i got asked to 'write up the requirements' for one of the dads who builds websites. no idea what that means honestly. half a page please",
+      "assertions": [
+        "Produces the requirements write-up rather than only asking questions",
+        "About half a page — no more than roughly 300 words",
+        "Plain language that both a PTA parent and a hobbyist web developer can follow, without unexplained product-management jargon",
+        "Requirements are concrete enough to check (for example parents can see open slots, sign up, and the organiser can see who is coming), not vague aims",
+        "Keeps the scope small enough for one volunteer to build — does not make payments, accounts, or a mobile app must-haves",
+        "Does not invent specifics presented as facts (school name, number of events, existing systems, budget); any assumptions are marked"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "skill_name": "rendering-strategy",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're rebuilding our outdoor gear shop in Next.js and the team wants SSR on every page. Everything we know is in fernhill-app.md. How should each route be rendered? Keep it to what we need to decide.",
+      "assertions": [
+        "Opens with the answer, including that SSR on every page is not needed, and gives a decision for each route (home, listing, product detail, cart, account, blog) rather than one mode for the app",
+        "Says SEO needs the content in the HTML of the first response, which static or revalidated pages provide, so the home, listing, blog and product content do not need per-request SSR",
+        "Keeps the personalised header off the rendering decision: the greeting and cart count load as a client or edge fragment on cached pages, and it flags that reading the session cookie in the root layout (or force-dynamic there) makes every route dynamic",
+        "Does not rely on time-based revalidation for the 10-second stock requirement: keeps the product page cached, fetches stock separately from a short-lived source, and says checkout or add-to-cart must re-check stock",
+        "Names what the product page shows when the inventory API is slow or times out during a drop (a timeout and a fallback), rather than letting the whole page wait",
+        "Names invalidation events and the pages they touch: the PIM webhook revalidates the product page and its category pages, the CMS publish webhook revalidates the post and the blog index; and states that cart and account are never stored in a shared cache",
+        "Compares renders or server load under SSR everywhere with the proposed mix using the file's traffic figures, with arithmetic that matches them",
+        "Does not invent traffic, freshness requirements, versions or services not in the file; anything else is tagged [assumption] or listed under To confirm"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our product is one React SPA built with Vite: marketing pages, pricing, docs and the logged-in app all in the same bundle. Marketing says our pages barely show up in Google and when people share our pricing page on LinkedIn the preview is blank. Someone wants to move the whole thing to server-side rendering. Is that the right call?",
+      "assertions": [
+        "Answers in the first lines that the whole app does not need server rendering: the public pages need HTML at first byte and the logged-in app can stay client-rendered",
+        "Splits the decision by route group (marketing, pricing, docs, logged-in app) rather than one mode for everything",
+        "Explains the blank link preview as the Open Graph tags not being in the initial HTML, because preview bots do not run JavaScript, and that prerendering the public pages fixes it",
+        "Recommends prerendering (static at build) or revalidation for marketing, pricing and docs rather than per-request SSR, since they are the same for every visitor",
+        "Says how the prerendered pages get updated (rebuild on deploy or on a content-change event)",
+        "Stays framework-neutral or offers options, and does not present one specific meta-framework's API as required",
+        "Does not invent traffic, page counts or update frequencies; anything it needs is asked for or tagged [assumption]",
+        "Is a chat-length answer, not a long design document"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Election night is in two weeks and I'm worried our Nuxt config won't hold. routes.md has our routes, traffic and the draft routeRules. What would you change, route by route?",
+      "assertions": [
+        "Flags the swr rule on /account/** as caching personalised pages in a shared server cache, so one reader's account page can be served to another, and replaces it with no shared caching (ssr: false or private, no-store)",
+        "Does not keep per-request SSR for the results pages: they are the same for everyone and a minute of staleness is acceptable, so they get a short swr or isr window (or a cached shell with a short-TTL results endpoint)",
+        "Uses the election-night traffic to show what per-request SSR on results would cost against a cached window, with arithmetic that matches the file",
+        "Keeps article pages cached and moves the paywall meter to a client-side (or edge) fragment read from the cookie, instead of rendering every article per request",
+        "Flags that prerender: true on topic pages freezes them until the next deploy while 150 articles a day are published, and replaces it with revalidation or on-demand invalidation on the CMS webhook",
+        "Names invalidation events: article publish or correction purges that article plus its topic pages and the home page",
+        "Names what results pages show if the results feed stalls (the last good copy, with an updated-at time)",
+        "Gives settings in Nuxt routeRules terms only, and does not invent traffic, versions or hosting details beyond the file"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-20",
+      "prompt": "our recipe site (nuxt) is a spa and google barely indexes it, also when people share a recipe on whatsapp the preview is just blank. routes.md has the page list, nuxt.config.ts and pages/recipes/[slug].vue are in here too, and build-notes.txt has what we tried. what should each page actually be - ssr, static, something else? we're on a static bucket + cdn right now if that matters",
+      "assertions": [
+        "Answers the question directly with a rendering mode for each of the seven routes in routes.md (/, /recipes/[slug], /category/[name], /search?q=, /account/saved, /account/settings, /print/[slug]), e.g. as a table, before or alongside the explanation.",
+        "Flags that the current setup (nitro preset 'static', files in a bucket behind a CDN, no servers) cannot run SSR or ISR, so any per-request or revalidating route needs a server/edge runtime; either recommends that hosting change explicitly or gives a static-only path (prerender plus rebuild on the Larder webhook) and states the trade-off.",
+        "Uses build-notes.txt to estimate that prerendering all ~42,000 recipes at the observed rate (1,200 in 6 min) takes about 3.5 hours (~210 min), and therefore recommends prerendering a subset and generating the rest on demand/incrementally rather than a full rebuild per CMS edit.",
+        "Keeps /recipes/[slug] shared-cacheable (static or revalidated) and moves the per-user Save heart to a client-side island/fetch; does not make the whole recipe page per-request SSR or vary its cache on the user's login just for the heart.",
+        "Explains that WhatsApp and similar link-preview crawlers do not run JavaScript, so title, description and og:image must be in the initial HTML, and points out that [slug].vue fetches the recipe and calls useHead inside onMounted, so that fetch must move to server-side data loading (useAsyncData/useFetch) - turning ssr on alone will not fix previews.",
+        "Ties invalidation to real events from the input: the Larder publish/edit/unpublish webhook for recipe (and affected category) pages and the daily 06:00 editor swap for the home page, and treats the ~3,000 reviews/day rating as tolerating a short revalidation window or a client fetch rather than requiring SSR.",
+        "Marks /search and /account/* as not for indexing or shared caching (client-rendered or private per-request), and gives /print/[slug] a canonical to /recipes/[slug] or noindex as duplicate content.",
+        "Invents nothing not in the input: no traffic figures, costs, recipe counts, build times, hosting providers, or Larder/FindIt API features beyond what the files state; anything needing the network (e.g. testing a URL with a preview debugger) is given as a command or step for the user to run."
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-20",
+      "prompt": "Our tech lead wants to ship the whole SvelteKit app (Tallyhub) as SSR on Stratus Functions next sprint - 'one mode, less to think about.' Marketing wants pricing and docs to be fast, and finance is asking what SSR-everything will cost us. The relevant bits are in the repo: traffic.md, routes.txt, svelte.config.js, src/hooks.server.ts, src/routes/+layout.server.ts and src/routes/(marketing)/pricing/+page.server.ts. Can you give me a rendering plan per route and tell me straight whether SSR-everything is actually a cost problem? I'm bringing this to Thursday's architecture review, so keep it to something I can put on a slide or two plus notes.",
+      "assertions": [
+        "Answers both questions directly: gives a rendering mode for each route or route group in routes.txt (/, /pricing, /customers/:slug, /docs/*, /blog/:slug, /app/* pages, api/*) and gives a clear yes/no on whether SSR-everything is a cost problem.",
+        "Computes cost from traffic.md: public pages 2.4M x 0.22 s x 1 GB = ~528,000 GB-s = ~$9.50 plus ~$0.96 invocations, about $10-11/month (and/or the app's ~2.52M navigations adding roughly another $11), and concludes compute cost is not a strong argument against SSR - the stronger reasons are cold-start latency (p95 900 ms) and cacheability.",
+        "Flags as the top-priority issue that src/hooks.server.ts sets 'cache-control: public, max-age=300' on every response, which would let the CDN serve one customer's authenticated /app pages (dashboard, billing) to another; says app and API responses must be private/no-store and the header must be set per route, not globally.",
+        "Notices that the root src/routes/+layout.server.ts returns locals.user for every page, so public pages depend on the session cookie and cannot be prerendered or shared-cached; recommends moving the user load into the app layout and rendering the nav's Log in/Open dashboard state on the client (or from a cheap check) for public pages.",
+        "Handles /pricing's per-country currency (x-country header -> USD/EUR/GBP): prerender or cache one variant per currency with country/currency in the cache key, resolve at the edge, or pick currency on the client - and warns that a single prerendered or shared-cached pricing page would show one currency to everyone.",
+        "Recommends prerendering docs (~900 repo markdown pages), blog (~250) and customers (40) at build, e.g. with SvelteKit's per-route `export const prerender = true`, with deploy as the invalidation event since the content lives in the repo.",
+        "Keeps /app/dashboard (live usage metrics) and other /app pages per-request or client-fetched behind login, never shared-cached, and notes that SvelteKit client navigations still hit functions for load data.",
+        "Invents nothing not in the input: no Stratus features, prices, traffic numbers, adapters or routes beyond the files (adapter-auto is noted as-is; any platform capability it can't verify offline is stated as something to check), and the answer is sized for a slide or two plus notes rather than a long essay."
+      ]
+    }
+  ]
+}

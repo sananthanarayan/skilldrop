@@ -1,0 +1,35 @@
+{
+  "name": "rollout-plan",
+  "version": "0.2.2",
+  "description": "Plan the progressive release of a code change behind a feature flag or canary — the exposure ladder (internal, beta cohort, 1%, 5%, 25%, 50%, 100%, or what the traffic supports), and for each step who is exposed, decision and guardrail metrics with a baseline and a threshold against a control cohort, the minimum traffic and time before the numbers mean anything, a promote / hold / roll back rule set in advance, who watches and what aborts automatically; then what turning the flag off does not undo, and who removes the flag by when. Use when the user asks for a rollout plan, canary plan, ramp schedule, progressive delivery or percentage rollout, \"how long should the canary run\", \"when do we go from 5% to 25%\", or how to turn on a flagged feature safely.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": [
+    "migration-plan",
+    "launch-readiness",
+    "observability-plan",
+    "success-metrics",
+    "runbook-generator"
+  ],
+  "handoff": [
+    {
+      "to": "migration-plan",
+      "when": "the change also alters a schema, backfills data, swaps a datastore or dual-writes",
+      "purpose": "Plan the expand, migrate and contract phases and the backfill, so the rollout only ramps exposure of a code path whose data is already in place.",
+      "fallback": "If migration-plan is absent, state inline that the schema or data change must be expanded and verified before step 1, list it under To confirm, and keep it out of the ladder."
+    },
+    {
+      "to": "launch-readiness",
+      "when": "the rollout plan is written and someone must decide whether the change may go live at all",
+      "purpose": "Judge the go/no-go against evidence: rollback tested, alerts and runbooks in place, targets measured, comms ready.",
+      "fallback": "If launch-readiness is absent, end the plan with the open preconditions for step 1 (rollback rehearsed, guardrail metrics instrumented, abort wired) as a short checklist with an owner role each."
+    }
+  ],
+  "tags": ["rollout", "feature-flags", "canary", "progressive-delivery", "release"],
+  "permissions": { "network": [], "commands": [], "files": "none", "notes": "canary_math.py takes numbers as arguments and prints to stdout; it reads and writes no files." },
+  "model": {
+    "tier": "standard",
+    "rationale": "Plan synthesis on a strong template; the arithmetic of how long each exposure step must run is done by its script, not the model."
+  }
+}

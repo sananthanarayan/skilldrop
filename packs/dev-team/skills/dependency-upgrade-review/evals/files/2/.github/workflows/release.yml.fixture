@@ -1,0 +1,23 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    steps:
+      - uses: northwind-ci/checkout-lite@9b8e7a6d5c4b3a291807f6e5d4c3b2a1908f7e6d # v3.2.0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install build && python -m build
+      - uses: octo-tools/pypi-publish@v3
+        with:
+          password: ${{ secrets.PYPI_TOKEN }}
+          packages-dir: dist/

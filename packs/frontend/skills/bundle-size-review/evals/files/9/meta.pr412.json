@@ -1,0 +1,196 @@
+{
+  "inputs": {
+    "node_modules/preact/dist/preact.module.js": {
+      "bytes": 11480,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/preact/hooks/dist/hooks.module.js": {
+      "bytes": 3620,
+      "imports": [
+        {
+          "path": "node_modules/preact/dist/preact.module.js",
+          "kind": "import-statement",
+          "original": "preact"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/api.ts": {
+      "bytes": 3960,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/composer.tsx": {
+      "bytes": 7720,
+      "imports": [
+        {
+          "path": "node_modules/preact/dist/preact.module.js",
+          "kind": "import-statement",
+          "original": "preact"
+        },
+        {
+          "path": "node_modules/preact/hooks/dist/hooks.module.js",
+          "kind": "import-statement",
+          "original": "preact/hooks"
+        },
+        {
+          "path": "src/api.ts",
+          "kind": "import-statement",
+          "original": "./api"
+        },
+        {
+          "path": "src/emoji/data.ts",
+          "kind": "import-statement",
+          "original": "./emoji/data"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/emoji/data.ts": {
+      "bytes": 690,
+      "imports": [
+        {
+          "path": "src/emoji/emoji-data.json",
+          "kind": "import-statement",
+          "original": "./emoji-data.json"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/emoji/emoji-data.json": {
+      "bytes": 142380,
+      "imports": [],
+      "format": "esm",
+      "with": {}
+    },
+    "src/emoji/picker.tsx": {
+      "bytes": 9140,
+      "imports": [
+        {
+          "path": "node_modules/preact/dist/preact.module.js",
+          "kind": "import-statement",
+          "original": "preact"
+        },
+        {
+          "path": "node_modules/preact/hooks/dist/hooks.module.js",
+          "kind": "import-statement",
+          "original": "preact/hooks"
+        },
+        {
+          "path": "src/emoji/data.ts",
+          "kind": "import-statement",
+          "original": "./data"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/styles.ts": {
+      "bytes": 4210,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/widget.ts": {
+      "bytes": 1610,
+      "imports": [
+        {
+          "path": "node_modules/preact/dist/preact.module.js",
+          "kind": "import-statement",
+          "original": "preact"
+        },
+        {
+          "path": "src/composer.tsx",
+          "kind": "import-statement",
+          "original": "./composer"
+        },
+        {
+          "path": "src/styles.ts",
+          "kind": "import-statement",
+          "original": "./styles"
+        },
+        {
+          "path": "src/emoji/picker.tsx",
+          "kind": "dynamic-import",
+          "original": "./emoji/picker"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "dist/widget.js": {
+      "imports": [
+        {
+          "path": "dist/chunk-R4N7QW2L.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "dist/picker-6YB3KD5M.js",
+          "kind": "dynamic-import"
+        }
+      ],
+      "exports": [],
+      "entryPoint": "src/widget.ts",
+      "inputs": {
+        "src/widget.ts": {
+          "bytesInOutput": 688
+        },
+        "src/composer.tsx": {
+          "bytesInOutput": 3467
+        },
+        "src/api.ts": {
+          "bytesInOutput": 1874
+        },
+        "src/styles.ts": {
+          "bytesInOutput": 3950
+        }
+      },
+      "bytes": 10215
+    },
+    "dist/picker-6YB3KD5M.js": {
+      "imports": [
+        {
+          "path": "dist/chunk-R4N7QW2L.js",
+          "kind": "import-statement"
+        }
+      ],
+      "exports": [
+        "default"
+      ],
+      "entryPoint": "src/emoji/picker.tsx",
+      "inputs": {
+        "src/emoji/picker.tsx": {
+          "bytesInOutput": 5830
+        }
+      },
+      "bytes": 5920
+    },
+    "dist/chunk-R4N7QW2L.js": {
+      "imports": [],
+      "exports": [
+        "EMOJI",
+        "SHORTCODES",
+        "h",
+        "render",
+        "useEffect",
+        "useRef",
+        "useState"
+      ],
+      "inputs": {
+        "node_modules/preact/dist/preact.module.js": {
+          "bytesInOutput": 10214
+        },
+        "node_modules/preact/hooks/dist/hooks.module.js": {
+          "bytesInOutput": 1436
+        },
+        "src/emoji/emoji-data.json": {
+          "bytesInOutput": 96512
+        },
+        "src/emoji/data.ts": {
+          "bytesInOutput": 402
+        }
+      },
+      "bytes": 108695
+    }
+  }
+}

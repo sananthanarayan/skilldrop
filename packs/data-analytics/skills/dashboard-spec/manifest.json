@@ -1,0 +1,31 @@
+{
+  "name": "dashboard-spec",
+  "version": "0.1.1",
+  "description": "Spec a dashboard before anyone builds it — the audience and the decision it serves, the questions in priority order, one chart per question with the chart type and why, the defined metric behind each chart, filters, refresh cadence and freshness SLA, and a list of what is deliberately left off, with vanity metrics cut. Use when the user says \"spec a dashboard\", \"what should go on our KPI dashboard\", \"the BI team needs requirements for a dashboard\", \"our dashboard has 40 charts and nobody uses it\", or \"design the exec dashboard\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "ai-usage-report",
+    "observability-plan",
+    "success-metrics"
+  ],
+  "tags": [
+    "dashboard",
+    "bi",
+    "analytics",
+    "kpi",
+    "data-visualization",
+    "requirements"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Structured spec from a decision and a metric list; the vanity-metric cut and chart choice need judgment but follow fixed rules."
+  }
+}

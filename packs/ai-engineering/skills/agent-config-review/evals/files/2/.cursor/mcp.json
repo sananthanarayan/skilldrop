@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "billing-db": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres@0.6.2"],
+      "env": {
+        "DATABASE_URL": "${env:BILLING_RO_DATABASE_URL}"
+      }
+    },
+    "sentry": {
+      "url": "https://mcp.sentry.example/mcp",
+      "headers": {
+        "Authorization": "Bearer ${env:SENTRY_TOKEN}"
+      }
+    }
+  }
+}

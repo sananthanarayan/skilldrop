@@ -1,0 +1,10 @@
+# Outbound HTTP settings for the payment-provider client
+provider:
+  base_url: https://provider.example.invalid/v2
+  timeout_seconds: 30
+  max_retries: 5
+  backoff:
+    base_ms: 200
+    jitter: full
+  retry_methods: [GET, POST]
+  api_key: REPLACE_ME

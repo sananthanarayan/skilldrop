@@ -1,0 +1,82 @@
+{
+  "skill_name": "lean-canvas",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Can you do a lean canvas for my startup? My notes are in pawpass-notes.md. Accelerator application is due Friday and I want to know what the weak spots are before they find them.",
+      "files": [
+        "evals/files/1/pawpass-notes.md"
+      ],
+      "assertions": [
+        "The reply opens with the single riskiest assumption and a test for it, before the canvas, and the riskiest assumption is about the problem, the customer or the channel rather than the no-show predictor's accuracy",
+        "Says the AI no-show predictor is a feature, not an unfair advantage, and the unfair-advantage box reads none yet (or equivalent) rather than a substitute moat",
+        "Flags that LinkedIn ads and PetTech Expo don't reach solo mobile groomers, who the notes say aren't big on social media and that the expo draws chains and franchise buyers",
+        "Computes CAC as $1,200 / 3 = $400, contribution as $29 - $6 = $23 a month, CAC payback of about 17.4 months, and lifetime margin of $23 x 9 = $207, and says payback is longer than the 9-month lifetime so each customer loses money",
+        "Downgrades the six salon-groomer interviews as evidence from the wrong segment (salon, not mobile) and stated intent rather than behaviour",
+        "Says plainly that the idea should change before building (channel and/or economics), not only lists risks",
+        "Each top test names what to do, a sample, a pass/fail threshold set in advance, a cost and a time; no test is 'validate the market' or 'run a survey'",
+        "Does not invent competitors, market sizes, churn figures, channels presented as facts, or prices not in the notes; every canvas entry is tagged evidence (with source) or assumption"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Quick one. I'm a product lead at Brackenridge Health (regional hospital group). Idea: an internal app where ward nurses swap shifts with each other directly instead of emailing the rostering office. Rostering says they handle about 150 swap emails a week. Every swap still needs the ward manager to sign off. Nurses would hear about it from the staff intranet news page and a poster in the canteen. Our unfair advantage is we own the rostering data, so no vendor can integrate as cleanly. No budget numbers yet. Lean canvas plus what I should test first? Keep it short.",
+      "assertions": [
+        "Opens with the riskiest assumption and its test, and the riskiest is about adoption by nurses or ward-manager sign-off, not whether the app can be built",
+        "Notes the 150 emails a week measures the rostering office's workload, not that nurses find swapping painful or will change how they swap",
+        "Treats ward managers as a second customer whose sign-off behaviour can block the idea",
+        "Accepts ownership of rostering data as a real advantage for an internal product over vendors, while saying it does not show nurses will adopt the app",
+        "Reads revenue streams for an internal product as the budget or saving that funds it, and does not invent a price, budget or cost figure; unit economics are skipped and the missing numbers are listed to confirm",
+        "The test has a sample, a pass/fail line set before it runs, a cost and a time (for example a manual or concierge swap run on one ward with a stated count)",
+        "Stays short as asked: no more than about 350 words, with the canvas as one line per box"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Here are my pitch notes for LunchLoop (lunchloop-pitch.md). Is this worth quitting my job for? What should I test before building the app?",
+      "files": [
+        "evals/files/3/lunchloop-pitch.md"
+      ],
+      "assertions": [
+        "Answers the quit-and-build question in the first lines, and says the idea should change (or be tested) before building the full app",
+        "Computes per-customer monthly revenue as 8 x 15% x $12 = $14.40, delivery cost as 8 x $1.10 = $8.80, contribution of $5.60 a month, and break-even of about 1,608 active customers from $9,000 fixed costs",
+        "Flags that break-even (about 1,608 customers) exceeds the founder's own estimate of 1,200 workers who would use it, so the model cannot cover the salary in this town at these numbers",
+        "Computes CAC as $500 / 20 = $25 and lifetime margin as $5.60 x 6 = $33.60, and does not claim CAC payback is longer than lifetime (payback is about 4.5 months, inside 6)",
+        "Notes the 8 lunches a month and 6-month stay come only from customers who stuck with it, in a 3-month pilot, so lifetime and order frequency are overstated or unproven",
+        "Says 'everyone who eats lunch at work' is not an early adopter and names the need for a narrower one",
+        "Moves 'our food is better than any chain' out of unfair advantage (it is a value proposition) and leaves unfair advantage as none yet or a candidate grounded in the notes",
+        "Does not invent food-safety rules, competitor names, delivery partners or numbers not in the notes; anything assumed is tagged as an assumption"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-20",
+      "prompt": "ok so I've been sitting on this idea for months and I think it's time. my notes are in clubkit-notes.md (sorry they're a mess). can you do the lean canvas thing on it and tell me straight — is this worth quitting my job for? be honest, my mates all say it's a great idea",
+      "assertions": [
+        "Answers the actual question directly and early: gives a plain verdict on whether to quit the job now (a good answer says not yet / not on this evidence, and names what would have to be true first) rather than burying it under the canvas.",
+        "Flags that the survey is weak evidence of willingness to pay because the club is the payer but only 4 of the 31 respondents were committee members, and only 1 of those 4 said yes to £15/month; it does not present '23 of 31 (74%) would use it' or '9 said yes' as demand from buyers.",
+        "Computes unit economics from the notes correctly: variable cost £3.80 per club per month (£1.20 hosting + £2.30 SMS + £0.30 payment fee), contribution £11.20, CAC £150 (£300 / 2 paid clubs), and with the guessed 5% monthly churn a lifetime value of about £224, giving an LTV:CAC of roughly 1.5 and a payback of about 13 months; it notes CAC rests on just 2 conversions.",
+        "Catches that the '400 clubs x £15 = £6,000/month' quit plan confuses revenue with take-home: at 400 clubs contribution is £4,480/month, and at 5% churn replacing about 20 clubs a month at £150 CAC costs about £3,000/month, leaving roughly £1,480 — well short of the £3,500 needed.",
+        "Tags the 5% churn figure as an assumption (the founder says it is a guess) and raises the June-August shutdown as a specific risk to a monthly subscription (seasonal cancellations), ranking churn/seasonality among the riskiest assumptions.",
+        "Ranks the riskiest assumptions explicitly (e.g. club committees will pay £15/month; clubs will switch from or add to the free TeamHuddle app; churn), and for the top ones proposes a cheap test with a pass/fail threshold stated before the test runs (e.g. a set number of committee members pre-paying or committing out of a stated number approached).",
+        "Fills the canvas only from the notes: entries such as the Ferncross Rovers secretary experience, the 17 'chasing subs' mentions, the ads test and the ~1,200 Westmarch County FA clubs are tagged as evidence with their source, while price, churn and the 'clubs will pay for subs' belief are tagged as assumptions.",
+        "Invents nothing not in the notes: no made-up competitors beyond TeamHuddle, no market-size, conversion or churn benchmarks presented as fact, no extra survey figures, and any missing box (e.g. unfair advantage or channels beyond Facebook ads) is marked as a gap or open question rather than filled with invented content."
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-20",
+      "prompt": "We're taking ClaimLens to the investment committee on Thursday. The proposal, cost model and the stakeholder emails are in this folder (proposal.md, cost-model.csv, stakeholder-emails.txt). The committee chair has told us she wants to see that we've stress-tested the idea, not just pitched it. Can you build a lean canvas for it and set out our riskiest assumptions and how we'd test them? Keep it to something we could put in an appendix.",
+      "assertions": [
+        "Catches that the proposal's break-even of 163 seats omits the product support cost in cost-model.csv: running costs are £6,500 + £2,500/month (0.5 FTE, £30,000/year) = £9,000/month, so break-even at £40/seat is 225 seats, and it states this correction plainly rather than repeating the 163 figure.",
+        "Points out that 225 seats exceeds the total potential seats across all three departments (120 + 60 + 35 = 215, which would bring in £8,600/month, about £400 short), so even full adoption does not cover running costs and the £180,000 build is never paid back at the current chargeback price.",
+        "Reads the stakeholder emails and corrects the 'confirmed interest' label: Underwriting only agreed to see a demo, and Complaints said its budget is locked until April and nothing can be charged this financial year; it treats neither as committed demand.",
+        "Flags the pilot usage drop (weekly active users fell from 22 of 25 in week 1 to 11 of 25 in week 6) as evidence against sustained adoption, and treats the 18-minutes-saved figure as weak evidence because it is self-reported by only 3 handlers.",
+        "Ranks the riskiest assumptions, with the economics/price-versus-cost gap and sustained handler usage near the top, and for each top assumption gives a cheap test with a pass/fail line set in advance (e.g. a signed chargeback commitment from the Claims head for a stated number of seats, or a measured time study with a stated minutes-saved threshold) — none of which requires spending the £180,000 first.",
+        "Makes a plain call that the proposal should change before the committee approves the build (e.g. reprice, cut run cost, re-scope, or ask for a smaller staged amount gated on the tests) rather than presenting the current ask as sound.",
+        "Fits the request for an appendix: a compact canvas plus a ranked assumptions/test table, with each canvas entry tagged evidence (citing proposal.md, cost-model.csv or stakeholder-emails.txt) or assumption, not a long essay.",
+        "Invents nothing not in the files: no new costs, salaries, seat counts, departments, usage figures, people or vendor names, and no outside benchmarks presented as fact; anything the files do not cover is marked as unknown."
+      ]
+    }
+  ]
+}

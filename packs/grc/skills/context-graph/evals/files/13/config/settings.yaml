@@ -1,0 +1,2 @@
+PRICING_SVC_URL: http://pricing-svc.internal:8080
+REDIS_URL: redis://cache.internal:6379/0

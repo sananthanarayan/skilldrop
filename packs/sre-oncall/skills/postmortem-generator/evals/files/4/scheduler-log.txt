@@ -1,0 +1,15 @@
+2026-09-22T01:02:00Z sched-a leader=sched-a job=dd-collect run=55120 START batches=20
+2026-09-22T01:26:41Z sched-a run=55120 batch 14/20 committed
+2026-09-22T01:27:09Z sched-a WARN lock store unreachable (timeout)
+2026-09-22T01:27:39Z lockstore lease holder=sched-a expired (ttl=30s)
+2026-09-22T01:27:40Z sched-b acquired leadership
+2026-09-22T01:30:12Z sched-a lock store reachable; leader is sched-b; demoting. running jobs: 1 (not interrupted)
+2026-09-22T01:31:00Z sched-b job=dd-collect last_status=RUNNING owner=sched-a (not leader) -> treating as orphaned, START run=55121
+2026-09-22T01:31:02Z sched-b run=55121 resuming from batch 15/20
+2026-09-22T01:33:20Z alert job-duration-anomaly job=dd-collect -> #batch-alerts (severity=info)
+2026-09-22T01:35:04Z page LOW "sched-a: lock store unreachable" -> platform on-call, acked 01:36:10
+2026-09-22T01:49:30Z sched-a run=55120 batch 20/20 committed, DONE
+2026-09-22T01:50:05Z sched-a run=55120 submitted DD-20260922-A rows=9870
+2026-09-22T02:16:48Z sched-b run=55121 batch 20/20 committed, DONE
+2026-09-22T02:17:15Z sched-b run=55121 submitted DD-20260922-B rows=3401
+2026-09-22T07:48:22Z job=dd-collect disabled on sched-a, sched-b by wli

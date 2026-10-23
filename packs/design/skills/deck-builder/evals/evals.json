@@ -1,0 +1,67 @@
+{
+  "skill_name": "deck-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build a .pptx from this content for an exec audience, using our brand palette (navy/white).",
+      "assertions": [
+        "A real .pptx file is produced, not an outline",
+        "Audience, format and design are confirmed in a single setup block rather than as a trickle of separate questions",
+        "The title slide carries a real title, subtitle, presenter, and date — never left blank",
+        "Section dividers appear sparingly, at most one every 4-5 content slides",
+        "Big-number layouts use only numbers the user supplied; no statistic is invented for emphasis",
+        "Bullet density matches the stated audience rather than a fixed default",
+        "The requested palette is applied rather than the default theme"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Build the Q3 QBR deck on our corporate template at ~/brand/acme-master.potx — 25 minutes, live, partner audience.",
+      "assertions": [
+        "The template's layouts are listed with --list-layouts before the spec is written, rather than layout names being guessed",
+        "The spec sets `template` and a `layout_map` covering at least title, section, content and closing",
+        "A palette is still collected, because the template does not colour charts, tables or big numbers",
+        "`aspect` is not fought with — the template's own slide size is accepted and stated",
+        "Slide count is derived from the 25-minute budget at roughly 2 minutes per slide"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Here are our renewal rates for the last three quarters (88%, 91%, 94%) and the SLA table from the contract. Put them in the deck.",
+      "assertions": [
+        "The three comparable figures become a `chart` slide, not a bullet list",
+        "The chart carries a `takeaway` sentence and a `source`",
+        "The SLA data becomes a `table` slide rather than aligned bullets",
+        "No figure appears that the user did not supply",
+        "Any build warning (missing image, short series) is reported to the user with its path rather than left in the file"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "Build the November board deck from ashby-vale-board-notes.md as a PowerPoint and save it as ashby-vale-board-nov.pptx. Everything you need should be in the notes.",
+      "assertions": [
+        "Writes ashby-vale-board-nov.pptx, a valid PowerPoint file with no more than 6 slides",
+        "It states the decision the board is asked to make (approve drawing £250,000 from the loan facility to start Tanner's Yard in January 2027) clearly, not buried in a later bullet",
+        "It notices the notes disagree on how many Furlong Close homes are let (14 versus 12 of 14) and does not put either figure on a slide as settled without flagging it",
+        "It notices the net surplus (£89,650) does not match the lines above it (£85,650) and does not present the stated total as checked fact without flagging it",
+        "It does not make up five years of arrears data: it shows only 2024 to 2026 and tells the user the five-year trend the treasurer asked for cannot be drawn from the notes",
+        "At least some of the figures (finance or arrears) appear as a chart or table in the deck, as the notes ask, rather than only as bullet text",
+        "It does not invent figures, names, dates or achievements that are not in the notes"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-18",
+      "prompt": "need a powerpoint for the PTA meeting on thursday about the playground fundraiser. 3 slides max. we've raised £2,340 so far out of the £5,000 target, the bake sale did best, and we still want to do a sponsored walk in spring but haven't picked a date. can you do it?",
+      "assertions": [
+        "Writes a .pptx file with no more than 3 slides",
+        "The figures are right: £2,340 raised of a £5,000 target, and any figure it works out is correct (£2,660 still to raise, about 47%)",
+        "It says the bake sale did best without making up how much it raised or what other events raised",
+        "The sponsored walk is shown as planned for spring with the date still to be decided; no date is invented",
+        "It does not invent other facts such as the school's name, people's names, numbers of families or deadlines",
+        "It delivers the file without asking questions first, and the reply is short and in plain words"
+      ]
+    }
+  ]
+}

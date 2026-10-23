@@ -1,0 +1,54 @@
+{
+  "skill_name": "file-to-markdown",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Northwind sent us their Q3 roadmap as northwind-q3.pptx (14 slides, a few charts, speaker notes on most slides). Turn it into markdown so we can critique it.",
+      "assertions": [
+        "Runs to_markdown.py on northwind-q3.pptx and writes a .md file",
+        "Each slide is a '## Slide N: title' section, in slide order",
+        "Speaker notes appear under their own slide, not collected at the end",
+        "States at the top of the reply how many charts and images were dropped, using the script's counts",
+        "Says that any critique cannot cover the chart contents because they were not converted",
+        "Does not invent slide content, numbers or chart values that are not in the converted text"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Here's acme-contract-summary.pdf, can you get the text out?",
+      "assertions": [
+        "Runs to_markdown.py on the PDF",
+        "If pdftotext is missing, passes on the install step (brew install poppler / apt install poppler-utils) and does not attempt to read the PDF bytes",
+        "If it converts, says the PDF gives text only: no headings or tables recovered",
+        "Does not summarise or paraphrase in place of the converted text"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I'm moving our crew policies onto the new wiki. Convert harbourline-shift-policy.docx into Markdown and save it as harbourline-shift-policy.md. Two more things: the wiki reviewer needs a list of anything that didn't survive the conversion, and tell me what the notice period for a swap is and what the night-sailing rates are, so I can put them in the summary box at the top of the page.",
+      "assertions": [
+        "Writes harbourline-shift-policy.md, with the document's title and section headings as Markdown headings and the overtime rates as a Markdown table",
+        "On the notice period, it reports that the document has an unaccepted tracked change from 48 to 24 hours and a comment saying legal have not signed off the change; it does not give 24 hours (or 48) as the settled answer without mentioning this",
+        "It says the night-sailing rates are not in the file (the document only refers to an Appendix B that is not included) and does not supply any night rates",
+        "It points out that the catering assistant row does not add up (13.10 + 1.90 is 15.00, not 15.20), and does not silently change the figure in the Markdown",
+        "Its list of what did not survive names the image (Figure 1) and the reviewer's comment, rather than claiming nothing was lost",
+        "The crew portal link is kept as a working Markdown link to its address, and the bold and italic in the closing note are kept",
+        "It does not invent text, rates, approvals or appendix content that are not in the .docx"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "hiya, our allotment treasurer sent me seed-swap-2026.csv for the newsletter. can you turn it into a table i can paste in? the newsletter thing takes markdown. just the table please, no essay",
+      "assertions": [
+        "Gives a Markdown table with all six seed varieties and, for each, the type, number of packets, donor plot and notes as in the file",
+        "Values that contain commas (\"Tomato, cherry 'Sungold'\", \"Squash, butternut\" and the quoted notes) stay in one cell each, and no columns are shifted",
+        "The blank line and the empty row in the file do not appear as empty rows in the table",
+        "If the Total row is kept, it notes briefly that the packets add up to 36, not 38; it does not silently change any figure",
+        "It does not invent varieties, numbers, donors or notes that are not in the file",
+        "The reply is the table plus at most a couple of short lines, with no long explanation, and it delivers without asking questions first"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Write our AI acceptable-use policy",
+    "should_trigger": true
+  },
+  {
+    "query": "What are people allowed to put into these AI tools?",
+    "should_trigger": true
+  },
+  {
+    "query": "We need AI governance rules before we roll this out",
+    "should_trigger": true
+  },
+  {
+    "query": "Draft data-handling tiers for AI tool usage",
+    "should_trigger": true
+  },
+  {
+    "query": "Generate the AGENTS.md for this repository",
+    "should_trigger": false
+  },
+  {
+    "query": "Threat model our agent's data access and exfiltration paths",
+    "should_trigger": false
+  },
+  {
+    "query": "Plan the rollout cohorts and enablement",
+    "should_trigger": false
+  },
+  {
+    "query": "Assess whether our governance is mature enough",
+    "should_trigger": false
+  }
+]

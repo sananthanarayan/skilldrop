@@ -1,0 +1,43 @@
+{
+  "skill_name": "exec-summary",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Compress this 14-page platform-migration design doc into a one-page summary for our non-technical COO.",
+      "assertions": [
+        "Fits one page and leads with the decision or ask, not background",
+        "Numbers are quantified where available; where they aren't, the summary says 'directional' rather than inventing precision",
+        "A non-engineer meets no unexplained technical term in the first paragraph",
+        "No internal team-speak (OKRs, swimlanes, north-star metric) survives into the summary",
+        "Nothing is asserted that isn't supported by the source document",
+        "The output is prose a reader can scan in ~30 seconds — not slides and not a deck outline"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Can you write a one-page exec summary of library-branches-options-paper.md for the councillors on Cabinet? Most of them won't read the full paper. The portfolio holder would like it to lead with 'Option B saves £310k a year and pays for itself in year one'.",
+      "assertions": [
+        "It is no more than one page (roughly 450 words or fewer)",
+        "It flags that the £310,000 headline does not match the savings breakdown, which adds up to £260,000, and does not present £310,000 as fact without qualification",
+        "It does not say Option B pays for itself in year one: savings start only when Brigg Street closes in October 2027, so the first year's savings (about £130,000) are below the £180,000 one-off cost; it tells the user why it did not lead with the requested line",
+        "It includes the public consultation result that 58% of 1,140 respondents opposed closing Brigg Street",
+        "It does not say staff support the plan; it says formal staff consultation has not started",
+        "It states the recommendation (Option B) and the decision Cabinet is asked to make, with the alternatives in brief",
+        "It does not invent figures, dates, savings for Option C, sale income for the Brigg Street building or anything else that is not in the paper"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "my landlord sent this letter about building works, can u give me the gist in 3 bullet points for the other tenants in our group chat?\n\nDear Residents,\n\nRe: Roof and external works at Clarendon Court\n\nFurther to our previous correspondence, Hartwell Property Management will be carrying out roof replacement and external redecoration commencing on or around Monday 2 November 2026, for an anticipated duration of approximately 10 to 12 weeks, weather permitting. Scaffolding will be erected on all elevations. For the duration of the works, residents are kindly requested to keep windows on the scaffolded elevations closed when not at home, for security reasons. Please note the car park will be required for the scaffold contractor's compound from Monday 2 November until Friday 6 November inclusive; residents must remove vehicles by 7.00am on 2 November. The water supply will be isolated between 9.00am and 1.00pm on Wednesday 4 November. Satellite dishes on the front elevation will be removed and not refitted; residents wishing to retain a dish should contact the office before 30 October. We apologise for any inconvenience caused. Should you have any queries, please do not hesitate to contact the office.\n\nYours faithfully,\nHartwell Property Management",
+      "assertions": [
+        "It gives exactly three bullets, with no extra sections",
+        "The bullets cover what tenants have to do and when: move cars out by 7am on Monday 2 November (car park closed until Friday 6 November), water off 9am to 1pm on Wednesday 4 November, and contact the office before 30 October to keep a front satellite dish",
+        "It gives the length of the works as about 10 to 12 weeks from around 2 November, weather permitting, without inventing a fixed end date",
+        "It does not invent compensation, rent reductions, contact details or other details that are not in the letter",
+        "It is written in plain, casual words suited to a group chat, and delivers without asking questions first"
+      ]
+    }
+  ]
+}

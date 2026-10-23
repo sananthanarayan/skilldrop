@@ -1,0 +1,11 @@
+{
+  "name": "token-budget-estimator",
+  "version": "1.0.0",
+  "description": "Estimates input and output token usage for a described agentic workflow, surfaces the dominant cost drivers, and suggests max_tokens budget controls per component. Use when planning a new Claude API integration, sizing a cost budget for a feature, or diagnosing why a workflow's token usage is higher than expected.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": ["prompt-caching-advisor", "agent-budget"],
+  "tags": ["claude-api", "cost", "tokens", "planning", "budgeting"],
+  "model": { "tier": "standard", "rationale": "Arithmetic breakdown plus heuristic judgment on dominant cost drivers — standard fits; no heavy reasoning needed." }
+}

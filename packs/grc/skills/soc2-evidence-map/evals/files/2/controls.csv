@@ -1,0 +1,13 @@
+control_id,control,owner,frequency,system
+C01,User access to production is approved by the system owner before it is granted,Head of Engineering,per request,Ticket system
+C02,User access to production is reviewed and inappropriate access removed,Head of Engineering,quarterly,Identity provider
+C03,Access is removed within 1 working day of an employee leaving,People Ops Lead,per event,HR system + identity provider
+C04,MFA is enforced for all workforce accounts,IT Lead,continuous,Identity provider
+C05,Production changes are peer reviewed and approved before deployment,Head of Engineering,per change,Code repository + ticket system
+C06,Production databases are encrypted at rest,Head of Engineering,continuous,Cloud provider console
+C07,Backups are taken daily and a restore is tested quarterly,Platform Lead,daily / quarterly,Backup tool
+C08,Availability is monitored and alerts are paged to on-call,Platform Lead,continuous,Monitoring tool
+C09,New hires pass a background check before start,People Ops Lead,per hire,Background check provider
+C10,Employees complete security awareness training on hire and annually,People Ops Lead,annual,Training platform
+C11,Vendors handling client data are risk assessed before onboarding and annually,Head of Compliance,annual,Vendor tracker spreadsheet
+C12,Confidential client files are deleted 90 days after contract end,Head of Compliance,per event,Client file exchange

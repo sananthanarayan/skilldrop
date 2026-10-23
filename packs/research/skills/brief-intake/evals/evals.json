@@ -1,0 +1,43 @@
+{
+  "skill_name": "brief-intake",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's a messy Slack thread about our caching problem — turn it into a brief I can hand to design-doc.",
+      "assertions": [
+        "Extracted fields marked [explicit] or [implied] carry a short verbatim snippet from the source so nothing is hallucinated",
+        "Relative dates are converted to absolute YYYY-MM-DD, marked implied where computed",
+        "Gaps are named as missing rather than filled in with plausible invention",
+        "The output names the downstream skill the brief is shaped for",
+        "The brief is structured into the fields that downstream skill needs, not a summary"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "I need the winter timetable decision in front of our board as an exec summary. Everything we've got is in thread.txt (the email chain) and ops-meeting-notes.md (Wednesday's ops meeting). Turn it into a brief the exec summary can be written from - I'll write the summary itself. One page max.",
+      "assertions": [
+        "Flags that the 06:10 sailing's average is 38 passengers in the email but 83 in the meeting notes, and does not silently pick one figure",
+        "Notes that the Option C savings listed (£84k + £51k + £20k = £155k) do not add up to the stated 'about £165k'",
+        "Treats the £120k subsidy cut as a proposal awaiting the council vote on 26 Nov 2026, not as approved",
+        "Records that Option B falls below the licence minimum of four return crossings a day, so it is ruled out on weekdays",
+        "Lists the tourism impact as missing information rather than supplying a figure or estimate for it",
+        "Does not invent figures, dates, decisions or people not in the two files",
+        "Stays within one page and is a brief for the summary writer, not the exec summary itself"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "my sister runs a dog grooming place and is thinking about opening sundays. she texted me this: 'sundays maybe?? jen says she'd do it but only every other week. regulars keep asking. rent's the same either way. dunno if its worth it'. can you turn that into something I can hand to whoever writes up the actual proposal? few bullets max",
+      "assertions": [
+        "Delivers the bullets without first stopping to ask questions (open questions can sit inside the bullets)",
+        "Captures that Jen can only cover alternate Sundays, so the other Sundays have no staff named",
+        "Notes that rent does not change, so it is not an extra cost of opening",
+        "Names what is still unknown that the proposal needs, such as how many Sunday bookings to expect and what staffing Sundays would cost",
+        "Does not invent prices, demand figures, wages or opening hours",
+        "Keeps to a few short bullets in plain language"
+      ]
+    }
+  ]
+}

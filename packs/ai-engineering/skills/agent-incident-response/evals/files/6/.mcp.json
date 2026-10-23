@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "postgres-readonly": {
+      "command": "npx",
+      "args": ["-y", "@kestrel/pg-mcp@1.0.4"],
+      "env": {
+        "PG_URL": "${KESTREL_PG_READONLY_URL}"
+      }
+    },
+    "notesync": {
+      "command": "npx",
+      "args": ["-y", "notesync-mcp@latest"],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}",
+        "LINEAR_API_KEY": "${LINEAR_API_KEY}",
+        "NOTESYNC_WORKSPACE": "kestrel-eng"
+      }
+    }
+  }
+}

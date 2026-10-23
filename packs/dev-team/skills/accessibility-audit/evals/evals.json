@@ -1,0 +1,46 @@
+{
+  "skill_name": "accessibility-audit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit this checkout form component before we ship:\n\n<form>\n  <div class=\"title\">Payment</div>\n  <input placeholder=\"Card number\" style=\"color:#999;background:#fff\">\n  <input placeholder=\"Expiry\">\n  <span class=\"err\" style=\"color:red\">Invalid</span>\n  <img src=\"lock.svg\" alt=\"image\">\n  <div class=\"btn\" onclick=\"submit()\" style=\"width:20px;height:20px\">Pay</div>\n</form>\n\nTarget is WCAG 2.2 AA.",
+      "assertions": [
+        "Opens with a coverage note stating what markup alone can and cannot verify (e.g. actual screen-reader output, live focus order)",
+        "Every finding cites a specific success criterion with number, name, and level (e.g. 2.1.1 Keyboard [A], 4.1.2 Name, Role, Value [A])",
+        "Every finding names the user group and assistive tech it blocks (e.g. keyboard-only, NVDA/VoiceOver users)",
+        "The div-as-button is a blocker for keyboard and screen-reader users; minor issues like the lock icon's alt text are not inflated to blocker",
+        "Contrast for #999 on #fff is given as a computed ratio (about 2.85:1) against the 4.5:1 threshold, and the 20x20 target is checked against 2.5.8's 24x24 minimum",
+        "Each finding is tagged [auto] or [manual] and has a concrete fix",
+        "Ends with a 'what's solid' section and a must-verify-with-live-AT checklist",
+        "Does not claim a pass on any behavior the markup can't show, and does not invent elements not in the snippet"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "I'm on the digital team at Harrowgate District Libraries. Our event booking page is booking.html with styles.css, and our automated scanner's output is scan-report.txt - it says we pass. Before we put a 'WCAG 2.2 AA compliant' badge on the site, please confirm we're compliant. Only the booking form inside <main> is ours; the header and footer belong to the council's central web team, so leave them out. The brand orange #E87722 is fixed by the council style guide and cannot change. We have one front-end developer, so keep it to what she can act on - no more than about two pages.",
+      "assertions": [
+        "Does not confirm WCAG 2.2 AA compliance or approve the badge; it says the page fails on the issues found and that a scan plus a code review cannot by themselves establish conformance",
+        "Catches that the scanner measured the help text against white, but the text sits on the #f2f2f2 panel, where #767676 is about 4.1:1 and fails the 4.5:1 minimum",
+        "Finds that white text on the #E87722 button is about 3:1 and fails for 16px normal-weight text, and proposes a fix that keeps the orange (for example dark text on the orange) rather than changing the brand colour",
+        "Finds that the ticket stepper built from clickable spans cannot be operated by keyboard or understood by a screen reader, and that the 90-second hold resets the form and redirects with no warning or way to extend it",
+        "Keeps to the stated scope: header and footer problems are not reported as findings to fix, and the empty alt on the decorative divider image is not reported as a failure",
+        "Does not invent elements, behaviours, or screen-reader test results that are not in the supplied files",
+        "The audit is about two pages or less (roughly 1,000 words or fewer)"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "hi, I run a small bakery and my nephew made our website ordering page. a customer who is blind emailed to say she couldn't place an order. he says the order button is this: <div class=\"btn\" onclick=\"placeOrder()\">Order now</div> and the cake photos don't have any descriptions on them. what do I tell him to fix? just a few bullet points in plain English please, I don't know any of the tech words",
+      "assertions": [
+        "Says the order button needs to be a real button (or have the equivalent role, focus and keyboard handling) because a screen-reader or keyboard user cannot find or press a clickable div",
+        "Says the cake photos need short text descriptions (alt text) so a screen reader can describe them",
+        "Gives a few plain-English bullet points the owner can pass on, not a long report",
+        "Avoids unexplained jargon; any technical term the nephew needs is explained in a few words",
+        "Does not claim to have found other specific problems on a page it has not seen, and does not say the rest of the page is fine; at most it suggests testing the whole ordering flow",
+        "Delivers the advice without stopping to ask for the page's code first"
+      ]
+    }
+  ]
+}

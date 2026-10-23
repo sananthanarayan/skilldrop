@@ -1,0 +1,56 @@
+{
+  "skill_name": "research-plan",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to research whether Northwind should build a self-serve onboarding flow instead of our current sales-led onboarding for small customers. The VP of Growth decides in Q1 planning on 15 January. We have product analytics in Amplitude and about 200 small customers. I've got maybe 25 hours.",
+      "assertions": [
+        "Opens with the decision, who makes it (VP of Growth) and the date (15 January), taken from the prompt",
+        "States one precise question naming the population, the change, the comparison and a timeframe",
+        "Breaks it into three to six sub-questions, each tied to the decision",
+        "Gives each sub-question a finding that would change the decision, with a threshold where one makes sense",
+        "Picks a method per sub-question with scope, owner and time, and prefers the existing Amplitude data over a new survey",
+        "Writes inclusion and exclusion criteria and paste-ready search strings, including one for the opposite view",
+        "Sets a stopping rule with both a sufficiency test and a budget cap within the 25 hours",
+        "Does not state findings or invent facts about Northwind not in the prompt; inferred items are tagged [assumption]"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Research AI coding assistants for me.",
+      "assertions": [
+        "Asks what decision the research will inform, who makes it and by when, before writing a plan",
+        "Asks no more than two questions",
+        "Does not produce a full plan around an invented decision"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "Our school board has to vote on a four-day school week. The superintendent's note is in request.md. Write the research plan it asks for.",
+      "assertions": [
+        "Ties the plan to the board vote in six weeks — the methods and timeline fit that window and the $5,000 budget",
+        "Does not plan a pilot or experiment that cannot finish before the vote",
+        "Treats both the 20% attendance claim and the test-score claim as things to check against sources, not as findings",
+        "Notes that the cost lines a four-day week could shrink (transport, utilities, substitutes — about 11% of the $58M budget) cannot produce 20% savings, or plans a check that tests this, and does not promise research that will 'prove' savings",
+        "Accounts for the parental-consent rule for surveying students under 13 (for example excluding them, surveying parents instead, or starting consent at once)",
+        "Does not invent study results, figures, or sources presented as real findings",
+        "Two pages or less"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "my mum is 78 and lives on her own. my brother and i have to decide by christmas whether she moves into assisted living or we get carers coming in at home. how do we research this properly so we dont get it wrong? half a page",
+      "assertions": [
+        "Delivers a plan without first stopping to ask what the decision is",
+        "About half a page — no more than roughly 300 words",
+        "Focuses on what would actually decide between the two options (for example her care needs and safety, what she wants, costs over time, and what is available locally), not general reading about ageing",
+        "Includes asking their mother what she wants",
+        "Fits the Christmas deadline — says what to do first and when they will know enough to decide",
+        "Does not invent costs, statistics, or named care providers as facts",
+        "Plain, kind language for a family, without research-method jargon"
+      ]
+    }
+  ]
+}

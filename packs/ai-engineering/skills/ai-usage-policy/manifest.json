@@ -1,0 +1,33 @@
+{
+  "name": "ai-usage-policy",
+  "version": "0.2.0",
+  "description": "Draft an organisation's AI use policy or staff guidance from what it has told you about its people, tools, data and worries — every \"don't\" paired with what to do instead (or who decides, when no approved way exists yet), what to do if data has already gone into a tool, and no claim about a tool, licence, owner, regulation or commitment the input didn't give. Written in the length, labels and voice the audience needs. Use when a team needs rules for what people may put into AI tools, or asks for an AI acceptable-use or governance policy. Do NOT use to write a repo's agent-tooling policy (that's agents-md-generator) or to analyse one agent's capability surface (that's agent-threat-model).",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "agent-threat-model",
+    "agents-md-generator",
+    "ai-adoption-rollout",
+    "ai-readiness-assessment",
+    "threat-model"
+  ],
+  "tags": [
+    "ai-adoption",
+    "governance",
+    "acceptable-use",
+    "policy",
+    "data-classification",
+    "compliance"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Drafts a policy that pairs every restriction with an alternative and claims nothing unsupplied. Bounded generation; escalate via ambiguous-input where a regulatory regime is named or contested."
+  }
+}

@@ -1,0 +1,2 @@
+Hi {first_name}, your {medication_name} is ready to collect at Brightwell {branch_name}
+between {collection_window}. Reply STOP to opt out.

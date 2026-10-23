@@ -1,0 +1,10 @@
+[
+  {"query": "Turn this prompt I keep pasting into a reusable skill for Claude Code", "should_trigger": true},
+  {"query": "Write a SKILL.md that makes our agent draft API changelogs the same way every time", "should_trigger": true},
+  {"query": "Make an agent skill that converts our Jira export into a sprint summary, it has to work in Copilot and Cursor", "should_trigger": true},
+  {"query": "Help me package our code-review checklist as a skill for Codex", "should_trigger": true},
+  {"query": "Add a new skill to the skilldrop catalogue with its manifest and catalogue row", "should_trigger": false},
+  {"query": "Review my existing skill folder and tell me if it's ready to publish", "should_trigger": false},
+  {"query": "Generate eval cases for the SKILL.md I already have", "should_trigger": false},
+  {"query": "Write an AGENTS.md for this repo so agents stop running npm when we use pnpm", "should_trigger": false}
+]

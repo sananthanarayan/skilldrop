@@ -1,0 +1,7 @@
+{
+  "rules": [
+    {"path": "body.created_at", "rule": "ignore", "reason": "wall-clock time of the call; varies old-vs-old"},
+    {"path": "body.id", "rule": "regex", "pattern": "^[0-9a-f-]{36}$", "replace": "<uuid>", "reason": "random UUID per call; format still checked"},
+    {"path": "body.items", "rule": "sort", "by": "code", "reason": "built from a hash map; no consumer reads the order"}
+  ]
+}

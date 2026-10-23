@@ -1,0 +1,76 @@
+{
+  "skill_name": "behaviour-equivalence",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We rewrote our quote service and ran a parity check. The old service is pricing_v1.py and the rewrite is pricing_v2.py; cases.jsonl has the 12 replayed requests; old.jsonl and old_rerun.jsonl are two runs of the old service; new.jsonl is the new one; rules.json is our normalisation rules, and with them the diff is clean. Background is in notes.md. Can we sign off the cutover?",
+      "assertions": [
+        "The first line gives a verdict of NOT EQUIVALENT (or plainly says the cutover should not be signed off), not 'equivalent' or 'mostly the same'",
+        "Identifies the real difference: VAT on reduced-rate lines is 1p lower in cases c04 and c07 (113 -> 112 and 1555 -> 1554, totals 2363 -> 2362 and 33185 -> 33184)",
+        "Names the cause from the code: pricing_v2 uses Python round() on a Decimal (half-to-even) where pricing_v1 quantizes with ROUND_HALF_UP",
+        "Says the 1p tolerance rules on vat_minor, lines[].vat_minor and total_minor are what make the diff look clean, and that money must be compared exactly rather than with a tolerance",
+        "Uses the two old runs to separate noise from regressions: quoted_at, quote_id and line order vary between old runs, the VAT values do not, so the VAT differences are not noise",
+        "Keeps the three justified rules (ignore quoted_at, regex on quote_id, sort lines by sku) and does not tell the team to ignore whole objects such as body or lines",
+        "States what the verdict does not cover, including promo codes, which notes.md says were not in the replay set",
+        "Does not invent cases, amounts, approvers, production volumes or dates that are not in the files"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We're replacing a nightly COBOL batch job that reads the day's card transactions and writes a settlement file plus a rejects file with a Java service. Before we turn the old one off, how do we prove the Java one produces the same output? Problems so far: the header line has the run timestamp, and the Java version writes the records in a different order. Short answer please.",
+      "assertions": [
+        "Answers in a short numbered plan, not a long document, and does not claim a verdict exists yet",
+        "Says to record inputs from real (scrubbed) production days, plus edge cases such as an empty day, a max-size day, rejected transactions, unusual characters, and dates around midnight, month end or DST",
+        "Says to run the COBOL job twice on the same input first and treat only fields that differ between those runs as noise",
+        "Normalises the run timestamp narrowly, in the header field only, not by ignoring the whole header or whole lines",
+        "Sorts records only after confirming the consumer of the settlement file does not depend on record order, and names that as a check",
+        "Compares the rejects file, trailer or control totals, and exit codes, not only the main settlement records",
+        "Says amounts are compared exactly (in minor units), with no tolerance",
+        "Does not invent volumes, file formats, field names or bank names not in the prompt"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Here's the golden master summary for our search API rewrite (diff-summary.txt). Dan says it's all cosmetic. Can we switch traffic?",
+      "assertions": [
+        "The first line says no, or gives a verdict of NOT EQUIVALENT, before any breakdown",
+        "Catches that the 3 status changes (404 -> 200 with empty results) are not covered by the error-copy sign-off and are a contract change clients may depend on, so they are unresolved until classified and approved",
+        "Accepts the 16 error.message changes as an intended change only because an approver (Mei, 3 Oct) is named, and notes clients that parse the message text should be checked",
+        "Says the 41 tie-order differences cannot be called noise without an old-vs-old run, because the old service may break ties deterministically and users see result order",
+        "Points out that the old-vs-old rerun was not done, so the normalised fields (took_ms, request_id, served_by) are unverified as noise, and asks for it",
+        "Does not treat 340 of 400 matching as a pass rate or verdict",
+        "Does not invent causes, cases, counts or names that are not in the summary"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-20",
+      "prompt": "ported our nightly fee calc job from py2 to py3 (fee_calc_py2.py -> fee_calc_py3.py). ran both on yesterday's input.csv, outputs are old_output.csv and new_output.csv, my diff is in diff.txt. only 3 of 12 rows differ and they're all off by a penny so pretty sure its just float noise. can i tell Priya its equivalent and switch off the old box friday?",
+      "assertions": [
+        "Answers the actual question directly near the top: no, it should not be signed off as equivalent or the old box switched off on that evidence, with an explicit verdict of NOT EQUIVALENT (or NOT PROVEN at best), not EQUIVALENT.",
+        "Says the three differing rows (A1001 163->162, A1009 361->360, A1011 113->112) are not float noise: each raw value is an exact half (162.5, 360.5, 112.5) and the change comes from Python 3 round() rounding half to even where the Python 2 code rounded half away from zero. A systematic rounding change, classed as a defect, or as an intended change only if finance names an approver.",
+        "Uses A1003 (167.5 -> 168) and/or A1007 (67.5 -> 68), which are also exact halves but match because they already round to even, as evidence the pattern is deterministic and not random noise; OR otherwise shows that every half-cent input is affected by the same rule.",
+        "Catches that the diff in diff.txt (cut -d, -f1,2) drops the currency and run_ts columns. That hides a real difference: new_output.csv has a blank currency for A1005, caused by the `ccy = row[\"currency\"] if fee > 0 else \"\"` line in fee_calc_py3.py. Treats it as a defect or as an intended change that needs a named approver, not as noise.",
+        "Says which differences can legitimately be normalised away, and only narrowly: the run_ts value, and row order (the Py2 version writes rows in arbitrary dict order, the Py3 version in input order), with a check that nothing downstream depends on row order. It does not drop whole columns.",
+        "Proposes a concrete fix for the rounding, such as decimal.Decimal with ROUND_HALF_UP, or an integer half-up formula, and says to re-run the comparison afterwards.",
+        "Flags that the evidence is too thin to switch off the old box: one day, 12 rows, all GBP, no negative amounts/refunds or other edge cases, and the old job was run only once, so its own nondeterminism is unknown. Recommends replaying more production-shaped input first. Keeps the answer proportionate to a quick Slack-style question rather than a long formal report.",
+        "Invents nothing that is not in the files: no extra account IDs, fee values, rates, downstream systems, or facts about Priya beyond her being the person to tell."
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-20",
+      "prompt": "I'm the engineering manager who has to sign off the orders-api migration from Express to Fastify before we cut traffic over on Tuesday 27 Oct. The team says it's equivalent and the one remaining diff is noise. Their recorded replays are in recordings/ (two runs against the old service, one against the new), the normalisation they applied is normalisation.yaml, and their write-up is TEAM_NOTES.md. Please check their reasoning and give me a verdict I can paste into the change record, with what has to happen before cutover if it isn't a yes.",
+      "assertions": [
+        "Gives a clear verdict up front that can be pasted into the change record: NOT EQUIVALENT, not the team's 'equivalent'. It also says plainly whether the Tuesday 27 Oct cutover should go ahead, with the blocking items listed.",
+        "Rejects dismissing seq 4 (GET /orders/ord_bad!!, old 400 INVALID_ORDER_ID vs new 500 INTERNAL_ERROR) as noise. A malformed id that now produces a server error is a behaviour change, most likely a validation defect, whatever the team thinks about how often clients send it.",
+        "Finds that ignoring response.body.error wholesale hides a contract change at seq 6: error.code went from QUANTITY_INVALID to VALIDATION_ERROR. Ties this to TEAM_NOTES saying the Android app switches on error.code, so this is a user-visible break, not reworded text.",
+        "Finds that numeric_strings_to_numbers hides a type change: total went from a string (\"19.90\", \"5.00\", \"39.80\") to a number (19.9, 5.0, 39.8) in seq 1, 2, 5 and 7. Ties this to TEAM_NOTES saying the web checkout passes total to the payment widget as a string, and treats it as a defect or as an intended change that needs a named approver.",
+        "Uses old_run1 vs old_run2 to separate the old service's real nondeterminism (request_id, date header, the id and created_at of the order created at seq 5, and the order of tags on ord_1001) from everything else. Recommends narrowing the rules to match: tags-only sorting instead of sort_all_arrays, id/created_at ignored only on the POST-created resource instead of globally, and error.message ignored instead of the whole error object.",
+        "Puts each remaining difference into one category (defect, intended change, or missing/over-broad normalisation), including the reworded 404 message at seq 3 and the content-type charset change. Notes that the files name no approver for any intended change, so none of them counts as approved yet.",
+        "Notes that 8 hand-picked requests on a seeded staging database are not production-shaped traffic. Calls out obvious coverage gaps, such as auth failures, pagination, and concurrent or large orders, and recommends replaying a production-shaped sample, or shadow traffic, with the corrected normalisation before cutover.",
+        "Invents nothing that is not in the files: no extra endpoints, recorded results, error codes, consumers, approvers or dates beyond those in recordings/, normalisation.yaml and TEAM_NOTES.md (Dana Okafor is the only person named)."
+      ]
+    }
+  ]
+}

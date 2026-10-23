@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ledgerline"
+dynamic = ["version"]
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.4", "nox>=2024.3"]
+
+[project.scripts]
+ledgerline = "ledgerline.cli:main"
+
+[tool.setuptools_scm]
+version_file = "src/ledgerline/_version.py"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["slow: reads the large sample statements"]

@@ -1,0 +1,38 @@
+[
+  {
+    "query": "Should our product pages be SSR or static with ISR? Stock changes a lot.",
+    "should_trigger": true
+  },
+  {
+    "query": "The team wants to server-render the whole site for SEO. Is that actually needed?",
+    "should_trigger": true
+  },
+  {
+    "query": "Help me pick SSG, ISR, SSR or CSR for each route of our Nuxt app",
+    "should_trigger": true
+  },
+  {
+    "query": "Our SPA's pages don't show up in Google and link previews are blank. What should we render on the server?",
+    "should_trigger": true
+  },
+  {
+    "query": "Which of our SvelteKit pages can we prerender and cache at the CDN, and which have to be dynamic because they're logged in?",
+    "should_trigger": true
+  },
+  {
+    "query": "Write the design doc for the new storefront: services, data stores and rollout plan",
+    "should_trigger": false
+  },
+  {
+    "query": "Write an ADR for our decision to move from Create React App to Next.js",
+    "should_trigger": false
+  },
+  {
+    "query": "Set p95 latency and availability targets for the checkout API",
+    "should_trigger": false
+  },
+  {
+    "query": "Here's our Lighthouse report: LCP is 4.1s on mobile. What's slowing the page down?",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "total": 7,
+  "issues": [
+    {"key": "AZx01", "rule": "python:S1244", "severity": "MAJOR", "type": "BUG", "status": "OPEN",
+     "component": "brookmere-intake:intake/payments.py", "line": 88,
+     "message": "Do not perform equality checks with floating point values."},
+    {"key": "AZx02", "rule": "python:S3776", "severity": "CRITICAL", "type": "CODE_SMELL", "status": "OPEN",
+     "component": "brookmere-intake:intake/payments.py", "line": 52,
+     "message": "Refactor this function to reduce its Cognitive Complexity from 23 to the 15 allowed."},
+    {"key": "AZx03", "rule": "python:S1192", "severity": "MINOR", "type": "CODE_SMELL", "status": "RESOLVED", "resolution": "FALSE-POSITIVE",
+     "component": "brookmere-intake:intake/payments.py", "line": 120,
+     "message": "Define a constant instead of duplicating this literal \"litres\" 4 times."},
+    {"key": "AZx04", "rule": "python:S1481", "severity": "MINOR", "type": "CODE_SMELL", "status": "OPEN",
+     "component": "brookmere-intake:intake/api.py", "line": 17,
+     "message": "Remove the unused local variable \"farm_ref\"."},
+    {"key": "AZx05", "rule": "python:S5754", "severity": "CRITICAL", "type": "CODE_SMELL", "status": "OPEN",
+     "component": "brookmere-intake:tests/test_payments.py", "line": 30,
+     "message": "Specify an exception class to catch or reraise the exception"},
+    {"key": "AZx06", "rule": "python:S3649", "severity": "BLOCKER", "type": "VULNERABILITY", "status": "OPEN",
+     "component": "brookmere-intake:legacy/ledger_import.py", "line": 204,
+     "message": "Change this code to not construct SQL queries directly from user-controlled data."},
+    {"key": "AZx07", "rule": "python:S1481", "severity": "MINOR", "type": "CODE_SMELL", "status": "OPEN",
+     "component": "brookmere-intake:intake/weighbridge.py", "line": 12,
+     "message": "Remove the unused local variable \"tare\"."}
+  ]
+}

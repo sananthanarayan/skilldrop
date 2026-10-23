@@ -1,0 +1,8 @@
+# Domain event publishing
+broker: kafka
+bootstrap_servers:
+  - kafka-0.harbor.internal:9092
+  - kafka-1.harbor.internal:9092
+topic: ledger.entry-events
+key: account_id
+acks: all

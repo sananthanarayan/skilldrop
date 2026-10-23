@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "defaultMode": "default",
+    "deny": [
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)"
+    ]
+  }
+}

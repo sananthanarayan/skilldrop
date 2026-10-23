@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Here are six papers on remote work and productivity. Synthesise what they say, with citations to page numbers.",
+    "should_trigger": true
+  },
+  {
+    "query": "Pull together the findings from these four analyst reports and show where they agree and disagree",
+    "should_trigger": true
+  },
+  {
+    "query": "I've got eight customer interview transcripts. Give me the cited themes and how strong the evidence is for each.",
+    "should_trigger": true
+  },
+  {
+    "query": "Write a short literature review from these sources, and don't add anything that isn't in them",
+    "should_trigger": true
+  },
+  {
+    "query": "Help me plan the research before I start looking for sources on four-day weeks",
+    "should_trigger": false
+  },
+  {
+    "query": "Turn this Slack thread into a brief I can hand to the ADR generator",
+    "should_trigger": false
+  },
+  {
+    "query": "Pull the decisions and action items out of these meeting notes",
+    "should_trigger": false
+  },
+  {
+    "query": "Here are the facts we have; which of these three explanations for the churn spike holds up best?",
+    "should_trigger": false
+  }
+]

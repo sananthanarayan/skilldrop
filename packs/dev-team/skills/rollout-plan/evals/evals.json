@@ -1,0 +1,109 @@
+{
+  "skill_name": "rollout-plan",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Plan the rollout for PR #2291. Checkout now calls our new tax service, Ledgerline, instead of the in-process tax tables. It's behind the flag `checkout_tax_v2`, evaluated server-side per user id. Checkout gets about 9,000 attempts an hour on average, peaking around 15,000 at 19:00. Today's checkout error rate is 0.8% and checkout conversion (attempt to paid order) is 62%. p95 checkout latency is 410 ms. The new path writes a `tax_breakdown` JSON into `orders.tax_details` (the column was added and deployed last sprint; the old code ignores it) and the order-confirmation email now shows the tax breakdown. Ledgerline bills us per call. About 40 enterprise accounts have a 99.95% checkout availability SLA. We'd like to be at 100% within a week.",
+      "assertions": [
+        "Opens with the ladder and total time in a line or two, and says whether 100% within a week is achievable with these numbers",
+        "Lays the steps out on a day-by-day schedule (day 1 to day 7, or dates) so the one-week target can be checked against it, and says what slips if a step holds",
+        "Every step names who is exposed and why, starts with internal users, and keeps the roughly 40 SLA enterprise accounts out of the early percentage steps",
+        "Error rate, p95 latency and conversion each carry the supplied baseline (0.8%, 410 ms, 62%) and a threshold relative to the concurrent flag-off cohort, not to yesterday and not 'monitor'",
+        "Sizes step durations from the 9,000 attempts/hour traffic and says a 1% step cannot detect a regression of about 0.3 pp in error rate in a sensible window (it needs roughly 3.5 days), changing the ladder accordingly",
+        "Every step has promote, hold and roll back rules written in advance, an abort trigger, a watcher role and the role allowed to override",
+        "Lists what turning the flag off does not undo: orders already charged with Ledgerline's tax amounts, confirmation emails already sent, tax_details rows written, and Ledgerline per-call charges, each with how it is handled",
+        "Does not re-plan the tax_details column, which is already deployed, and treats any further schema or data change as separate migration work",
+        "Names an owner role and a date or date rule for removing the flag and the old tax-table code path",
+        "Does not invent numbers the prompt did not give (p99 baseline, Ledgerline latency or error rate, enterprise traffic share); the size of regression to catch is labelled as an assumption to confirm"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Draft the rollout plan for one-tap reorder. The PR is described in pr-description.md and current numbers are in metrics-snapshot.txt. Product wants 1% on Monday and 100% by Thursday — is that OK?",
+      "assertions": [
+        "Answers the question first: the 1%-Monday-to-100%-Thursday schedule cannot detect a meaningful regression at 1,200 users per hour, and gives the time small steps would actually need",
+        "Any sample-size or duration figure appears as one plain sentence saying what it means for the ladder, with its inputs (traffic, baseline, regression size) shown; the reply does not open with a table of units per arm",
+        "Proposes a ladder whose step lengths follow from the 1,200 users/hour traffic and the supplied baselines (1.5% failure rate, 18% conversion), with larger or longer steps where the numbers need them",
+        "Thresholds compare the flag-on cohort with the flag-off cohort and include guardrails beside the decision metric (failure rate, p95/p99 latency of POST /v2/orders, payment declines or substitution complaints)",
+        "Notes that the client-side flag with a 24-hour cached config means flag-off can take up to a day to reach app 5.8 users, and calls for a server-side kill switch on the reorder endpoint",
+        "Lists partner orders sent to FreshPick, cards charged and push notifications sent as not undone by flag-off, with handling for each",
+        "Keeps users in the home_carousel_v3 experiment out of the rollout cohorts or explains how the overlap is handled, and holds business accounts back because of their 2-week notice contract",
+        "States that order metrics need a split by source before step 1, since no metric splits by source yet",
+        "Gives the flag an owner and removal date, noting that the code in app 5.8 cannot be removed until that version stops being supported",
+        "Does not invent traffic figures, baselines, owners' names or partner behaviour that are not in the files"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "we're a two-person team and the new search ranking on our recipe site is behind a feature flag. about 2,000 searches a day. how should we roll it out? keep it short",
+      "assertions": [
+        "Is short and in plain language: a handful of steps or bullets, not a full multi-section plan",
+        "Says plainly that at about 2,000 searches a day a small percentage step will not show a reliable difference, and recommends a split large enough (for example 50/50) run for days, or accepting that only large regressions will be caught",
+        "Names a metric to compare between the flag-on and flag-off groups (for example searches that end in a recipe click, or zero-result searches) with a threshold decided before starting",
+        "Says how to roll back (flag off) and whether anything is left behind, such as cached results",
+        "Includes removing the flag and the old ranking code by a set date",
+        "Does not invent a baseline click rate, conversion figure or other numbers the user did not give"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-20",
+      "prompt": "We're about to turn on pay-in-4 (Lumen Pay installments) on web checkout. It's behind checkout.pay_in_4, merged and deployed dark. PR description is in PR_DESCRIPTION.md and I pulled our funnel numbers into metrics_snapshot.txt. Product wants it at 100% before Black Friday code freeze on Nov 20. Can you write the rollout plan: the ramp schedule, what we watch at each step, how long to sit at each %, and when we pull it? I mostly care that we don't tank checkout conversion or blow up payment errors.",
+      "assertions": [
+        "Buckets exposure by a sticky key (user_id or equivalent, as the PR says the flag supports), not per request or per page view, so a shopper does not flip between payment UIs mid-checkout, and the control cohort is the unexposed users over the same time window.",
+        "Uses the given volume (about 41k sessions/hour, 3.1% conversion) to show roughly how many sessions or orders each step produces, and says plainly that the early small-percentage steps can only catch payment-error, latency or crash regressions. It does not claim a 1% step can detect a change in conversion of the size Product cares about, and it gives a rough sample-size or duration estimate for the step where conversion is actually judged.",
+        "Checks the ladder against Lumen's 2,000-new-agreements/day cap for the first 7 days, converting exposure % into expected agreements/day. It states the pay-in-4 take rate as an explicit assumption, since no take rate is given, and caps or holds the ramp so the limit is not breached.",
+        "Sets promote / hold / roll-back rules with numbers before the rollout starts, tied to the given baselines. Examples: a payment-submit error ceiling relative to the 0.42% baseline against control, a p95 latency ceiling relative to 1.8 s, and a conversion floor relative to 3.1%. At least one guardrail (for example, payment errors or Lumen API 5xx) triggers an automatic flag-off, not just a human review.",
+        "Spends long enough at the decision steps to cover the daily traffic cycle, including the 20:00-22:00 ET peak, and ideally a weekday/weekend cycle, rather than promoting after an hour. The schedule is shown to reach 100% before the Nov 20 freeze, or the plan explicitly flags that the deadline and the evidence requirement conflict.",
+        "Names what flag-off does NOT undo: Lumen agreements already created (with first installments charged and Lumen's emails sent) stay live, and orders with payment_method='installment' must still be refundable and serviceable. It notes that installment refunds have no admin tool yet (#4190 not merged, CS uses the Lumen dashboard), and it prepares CS/support for this, or makes #4190 a gate, before the broad-exposure steps.",
+        "Assigns who watches each step (by role or team, e.g. checkout on-call plus a payments/Lumen contact) and names an owner plus a date for removing the checkout.pay_in_4 flag and its dead code path after full rollout.",
+        "Does not invent figures the user didn't give, such as the pay-in-4 take rate, the Lumen API error rate, the refund or chargeback rate, or mobile traffic. Wherever the plan needs such a number, it labels it as an assumption or something to measure during the internal/beta step."
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-20",
+      "prompt": "Our billing team is switching invoice tax calculation to a new engine (Taxwell) behind billing.tax_engine_v2. Design note is at docs/tax-engine-v2.md. My instinct is the usual 1% for an hour, then 10%, 50%, 100% over a couple of days, but the billing lead says that won't tell us anything. Who's right, and what should the rollout actually look like? We'd like to be fully on v2 before Q1.",
+      "assertions": [
+        "Agrees with the billing lead and shows why using the note's numbers: at ~40-60 invoices/day off-cycle, 1% for an hour is well under one invoice, so zero errors at that step is no evidence at all, and percentage thresholds on such small counts are meaningless.",
+        "Replaces percentage steps with tenant-based cohorts: internal or test tenants first, then a small named set of willing or low-risk tenants, then larger batches. It notes that the flag targets by tenant_id (or a tenant_id hash), and it chooses early cohorts deliberately, for example covering, or deliberately holding back, Canadian HST/PST and US marketplace-facilitator tenants, rather than at random.",
+        "Proposes a shadow or dual-run phase in which v2 computes tax for real invoices without anything being sent, and the results are diffed against v1 before any customer gets a v2 invoice. Because correctness here can be checked without exposing anyone, it treats a near-zero unexplained diff rate (beyond the known bugs v2 is meant to fix) as the main promote gate.",
+        "Measures steps in invoices and billing cycles rather than hours: it requires at least one 1st-of-month run (~6,500 invoices) at a meaningful cohort size before full rollout, and checks that the timeline to Q1 contains enough month-end runs (from late October only the Nov 1, Dec 1 and Jan 1 runs remain) for that.",
+        "Sets promote / hold / roll-back rules in advance with concrete thresholds suited to small counts. Examples: an absolute count or zero-tolerance for tax mismatches above a cent or tolerance; generation failures compared with the ~0.6% baseline using counts, not percentages; Taxwell API errors or timeouts. At least one condition automatically flips the tenant(s) back to v1 or holds the nightly send.",
+        "Names what flag-off does not undo: invoices already emailed to customers' billing contacts and synced to QuickBooks/Xero cannot be recalled, so a wrong tax amount needs a credit-note or reissue process. It also says rows written to invoice_line_tax_v2 must still render after rollback, so the PDF renderer and any re-render path must keep reading v2 invoices, and the v2 table cannot simply be dropped.",
+        "Assigns who watches (for example, billing on-call plus finance or tax ops sign-off on the diff report before each promotion), and names an owner plus a date for removing the flag and retiring the v1 tax code once v2 is at 100% and has run through at least one cycle.",
+        "Does not invent per-tenant invoice volumes, Taxwell latency or error SLAs, or the current tax-mismatch rate, none of which are given. Where the plan depends on them, it says what it assumed or how to measure it during the shadow phase."
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-20",
+      "prompt": "We're about to turn on Smart Reminders in the Larkspur habit app (iOS + Android). The flag is server-side in notification-svc, config is in flags/smart_reminders_v2.yaml and how pushes go out is in notes/push-pipeline.md. Client support for it shipped in 4.12. Roughly 60% of our DAU are on 4.12 or later, the rest are spread across 4.8-4.11 and a chunk of those never update. PM wants it on for everyone before the holiday campaign kicks off mid-November. Can you write me the rollout plan? Honestly my biggest worry is people feeling spammed and turning off notifications for the whole app, because we can't get that permission back.",
+      "assertions": [
+        "Flags that the ramp rule as written would expose users on app versions below 4.12, and requires the targeting to gate on client app version >= 4.12 (so percentages are of eligible users, not all DAU).",
+        "Flags that bucketing by device_id lets one user with two devices land in both arms, and recommends bucketing by user id so exposure is sticky per person.",
+        "States that turning the flag off does not cancel reminders already planned into push_outbox for up to the next 24h (the flag is checked at planning time, not send time), and gives a concrete step to purge or re-plan queued sends as part of rollback.",
+        "States plainly that pushes already delivered and OS-level notification permission lost cannot be undone by the flag, and treats notification opt-out / permission-revoked rate per exposed user, measured against a control cohort on the same app versions, as a primary guardrail with an explicit hold/roll-back threshold.",
+        "Includes a hard automatic safeguard on send volume (e.g. a per-user daily cap or circuit breaker on smart nudges per user per day) independent of human watching, given smart mode can send up to 3 nudges/day per habit.",
+        "Sets a minimum dwell time per step of at least one full week (or justifies an equivalent), because habit and opt-out behaviour follows a weekly cycle and opt-outs lag sends, and checks that the resulting ladder actually fits before mid-November, saying plainly if it does not.",
+        "Does not state invented figures as fact (e.g. a specific DAU count, a baseline opt-out rate or a retention number the user never gave); where a baseline is needed it says to measure it from current data or marks it as an assumption.",
+        "Names who removes the flag and the fixed-time code path, and by when, and notes the removal is constrained by users still on pre-4.12 builds."
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-20",
+      "prompt": "We're rolling out rate limiter v2 on our API gateway (design in docs/ratelimiter-v2.md, recent traffic in ops/traffic-summary.txt). It has to be enforcing for every tenant by Monday 2 November because that's when the new enterprise contract limits take effect. Platform on-call is one person per week, handover Monday 10:00 UTC; this week it's Priya, next week it's Tomasz who just joined the rota. My manager wants to go straight to 50% tomorrow so we 'have plenty of runway'. Is that crazy? If so, what should the ramp look like instead, and what do we watch?",
+      "assertions": [
+        "Answers the 50%-tomorrow question directly near the top with a clear verdict and the specific reasons (not just generic caution), and offers a plan that still meets the 2 November deadline.",
+        "Flags that the flag's default bucketing by request_id would split each tenant's traffic between v1 and v2 (inconsistent limits per tenant, meaningless per-tenant comparison) and requires bucketing by tenant_id.",
+        "Recommends a shadow / log-only phase where v2 evaluates on all or most traffic and records would-have-throttled decisions without returning 429s, compared against v1 throttles, before any enforcement.",
+        "Recognises that percentage of tenants is not percentage of traffic (top 20 tenants carry 71% of requests) and handles the large and enterprise tenants deliberately, e.g. via allow/deny lists or a separate step, rather than leaving them to the random draw.",
+        "Treats the shared redis-gw cluster (58% CPU at peak, also serving session cache) and the fail-open path as rollout risks, with guardrails such as Redis CPU/latency, rl_v2.redis_error rate and added gateway p99 latency, and automatic abort or hold thresholds on them.",
+        "Uses the on-call rota concretely: places ramp steps on weekday working hours with the named watcher, avoids ramping across the Monday handover or into a weekend, and accounts for Tomasz being new (e.g. completing risky steps during Priya's week or pairing).",
+        "Says what turning the flag off does not undo: 429s already returned to tenants, their client retries/backoff or broken integrations, and any customer communication about the new limits; and notes that the rl_v2.* metrics must be wired to dashboards before the first step.",
+        "Does not invent numbers the user did not provide (e.g. a current 5xx rate, a v2 false-positive rate, or tenant-specific limits) and states them as figures to be measured; any thresholds proposed are framed relative to the v1/control baseline."
+      ]
+    }
+  ]
+}

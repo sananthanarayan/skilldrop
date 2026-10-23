@@ -1,0 +1,4 @@
+region,currency,base_rate,per_kg,free_threshold
+EU,EUR,4.90,1.20,50.00
+UK,GBP,3.95,1.10,40.00
+US,USD,5.50,0.95,75.00

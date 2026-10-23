@@ -1,0 +1,90 @@
+diff --git a/api/orders.py b/api/orders.py
+--- a/api/orders.py
++++ b/api/orders.py
+@@ -8,12 +8,16 @@ router = APIRouter()
+
+ @router.get("/orders")
+-def list_orders(limit: int = 50, offset: int = 0, db=Depends(get_db)):
+-    return db.query(Order).order_by(Order.id).offset(offset).limit(limit).all()
++def list_orders(page_size: int = 50, offset: int = 0, include_archived: bool = False, db=Depends(get_db)):
++    q = db.query(Order)
++    if not include_archived:
++        q = q.filter(Order.archived_at.is_(None))
++    return q.order_by(Order.id).offset(offset).limit(page_size).all()
+diff --git a/jobs/archive.py b/jobs/archive.py
+new file mode 100644
+--- /dev/null
++++ b/jobs/archive.py
+@@ -0,0 +1,14 @@
++import os
++from datetime import datetime, timedelta, timezone
++
++from models import Order
++
++ARCHIVE_DAYS = int(os.environ["ORDERS_ARCHIVE_DAYS"])
++
++
++def archive_old_orders(db):
++    cutoff = datetime.now(timezone.utc) - timedelta(days=ARCHIVE_DAYS)
++    n = db.query(Order).filter(Order.closed_at < cutoff, Order.archived_at.is_(None)).update(
++        {"archived_at": datetime.now(timezone.utc)})
++    db.commit()
++    return n
+diff --git a/migrations/versions/0042_orders_archived_at.py b/migrations/versions/0042_orders_archived_at.py
+new file mode 100644
+--- /dev/null
++++ b/migrations/versions/0042_orders_archived_at.py
+@@ -0,0 +1,16 @@
++import sqlalchemy as sa
++from alembic import op
++
++revision = "0042"
++down_revision = "0041"
++
++
++def upgrade():
++    op.add_column("orders", sa.Column("archived_at", sa.DateTime(timezone=True), nullable=True))
++    op.create_index("ix_orders_archived_at", "orders", ["archived_at"])
++
++
++def downgrade():
++    op.drop_index("ix_orders_archived_at", "orders")
++    op.drop_column("orders", "archived_at")
+diff --git a/models.py b/models.py
+--- a/models.py
++++ b/models.py
+@@ -14,3 +14,4 @@ class Order(Base):
+     closed_at = Column(DateTime(timezone=True))
++    archived_at = Column(DateTime(timezone=True), nullable=True, index=True)
+diff --git a/core/logging.py b/core/logging.py
+--- a/core/logging.py
++++ b/core/logging.py
+@@ -1,9 +1,15 @@
+-import logging
++import json
++import logging
+
+
+-def setup():
+-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
++class JsonFormatter(logging.Formatter):
++    def format(self, record):
++        return json.dumps({"ts": self.formatTime(record), "level": record.levelname, "msg": record.getMessage()})
++
++
++def setup():
++    handler = logging.StreamHandler()
++    handler.setFormatter(JsonFormatter())
++    logging.basicConfig(level=logging.INFO, handlers=[handler])
+diff --git a/tests/test_orders.py b/tests/test_orders.py
+--- a/tests/test_orders.py
++++ b/tests/test_orders.py
+@@ -30,3 +30,10 @@ def test_list_orders_default(client):
+     assert len(client.get("/orders").json()) == 50
++
++
++def test_archived_orders_hidden_by_default(client, archived_order):
++    ids = [o["id"] for o in client.get("/orders").json()]
++    assert archived_order.id not in ids
++    ids = [o["id"] for o in client.get("/orders?include_archived=true").json()]
++    assert archived_order.id in ids

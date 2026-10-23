@@ -1,0 +1,49 @@
+{
+  "name": "web-performance-review",
+  "version": "0.1.3",
+  "description": "Read a Lighthouse report or PageSpeed Insights result, with field data when there is any (CrUX, PSI loadingExperience or RUM p75), and say what makes the page slow for real users and what to fix first, ranked by how much each fix moves LCP, INP and CLS at the 75th percentile. Names the LCP element and which LCP phase dominates, the elements that shift and why, the long tasks and third parties by main-thread time, and treats estimated savings as lab estimates that overlap. Use when the user shares a Lighthouse JSON or PSI result and asks \"why is this page slow\", \"what should we fix first\", \"we score 92 but Search Console says LCP is poor\", \"did our change fix INP\", \"review this Lighthouse report\", or \"how do we pass Core Web Vitals\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "accessibility-audit",
+    "bundle-size-review",
+    "observability-plan",
+    "rendering-strategy"
+  ],
+  "handoff": [
+    {
+      "to": "observability-plan",
+      "when": "there is no field data, or the review needs RUM with per-element attribution to find after-load shifts or slow interactions",
+      "purpose": "Set up real-user collection of LCP, INP and CLS at p75 so fixes can be verified on users, not on one lab run.",
+      "fallback": "If observability-plan is absent, name the three vitals to collect at p75 per page type and form factor, with the element attribution for each, in one paragraph."
+    }
+  ],
+  "tags": [
+    "web-performance",
+    "core-web-vitals",
+    "lighthouse",
+    "frontend"
+  ],
+  "permissions": {
+    "network": [
+      "registry.npmjs.org"
+    ],
+    "commands": [
+      "lighthouse",
+      "npx"
+    ],
+    "files": "named-paths",
+    "notes": "The script reads the Lighthouse, PageSpeed Insights or CrUX JSON it is given and writes only an -o path the user names; it makes no network calls. The instructions run the Lighthouse CLI (through npx, which fetches it from the npm registry) against the page the user names."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "The metrics, opportunities and the elements behind them are read out of the Lighthouse report by its script; the model ranks fixes by what moves the user-facing numbers."
+  }
+}

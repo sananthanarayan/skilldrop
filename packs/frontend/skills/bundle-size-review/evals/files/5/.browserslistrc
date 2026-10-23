@@ -1,0 +1,3 @@
+# Managed fleet: warehouse tablets and office desktops run Chrome or Edge via MDM, auto-updated.
+chrome >= 110
+edge >= 110

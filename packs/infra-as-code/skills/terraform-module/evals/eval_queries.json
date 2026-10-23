@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Write a terraform module for a private S3 bucket with encryption",
+    "should_trigger": true
+  },
+  {
+    "query": "Create Terraform for an RDS Postgres instance that other teams can reuse",
+    "should_trigger": true
+  },
+  {
+    "query": "Turn these copy-pasted resource blocks into a reusable Terraform module with variables and outputs",
+    "should_trigger": true
+  },
+  {
+    "query": "Scaffold infrastructure as code for a GCS bucket with a README and inputs table",
+    "should_trigger": true
+  },
+  {
+    "query": "Review my terraform plan output before I apply it",
+    "should_trigger": false
+  },
+  {
+    "query": "Review this pull request that changes our Terraform files",
+    "should_trigger": false
+  },
+  {
+    "query": "Threat model the payments platform we are deploying to AWS",
+    "should_trigger": false
+  },
+  {
+    "query": "Estimate what this infrastructure will cost per month at 10k requests per second",
+    "should_trigger": false
+  }
+]

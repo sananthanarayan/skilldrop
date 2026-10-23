@@ -1,0 +1,12 @@
+resource_id,resource_name,cpu_p95_pct,mem_p95_pct,state,last_activity
+i-0a01,web-1,41,58,running,2026-09-30
+i-0a02,web-2,39,55,running,2026-09-30
+i-0a03,collections-db,62,81,running,2026-09-30
+i-0a04,collections-db-dr,3,22,running (replica),2026-09-30
+i-0a05,image-render,9,14,running,2026-09-30
+i-0a06,notebook-temp,1,4,running,2026-06-30
+i-0a07,bastion,2,10,running,2026-09-29
+vol-01,collections-db-data,,,in-use,2026-09-30
+vol-02,,,,available (unattached since 2026-03-14),2026-03-14
+vol-03,render-scratch,,,available (unattached since 2026-05-02),2026-05-02
+vol-04,collections-db-dr-data,,,in-use,2026-09-30

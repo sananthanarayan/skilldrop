@@ -1,0 +1,13 @@
+{
+  "name": "Ellerby Rivers Trust",
+  "colors": {
+    "primary": "#1D5C6B",
+    "accent": "#7FB069",
+    "text": "#1A1A1A",
+    "background": "#FFFFFF"
+  },
+  "fonts": {
+    "heading": "Georgia",
+    "body": "Arial"
+  }
+}

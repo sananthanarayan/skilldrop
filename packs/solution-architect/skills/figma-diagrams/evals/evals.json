@@ -1,0 +1,41 @@
+{
+  "skill_name": "figma-diagrams",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "List the pages and frames in this Figma file and post a comment on the checkout frame.",
+      "assertions": [
+        "The token is read from the FIGMA_TOKEN environment variable and never logged or passed on the command line",
+        "Output is filtered to pages, frames, and groups (about three levels) and summarized rather than dumping raw JSON",
+        "Before posting any comment, the exact comment text and target frame are shown for confirmation",
+        "The skill states clearly when FIGMA_TOKEN is missing rather than failing opaquely"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Our design agency sent the Figma file for Ostwick Museum's new signage as a JSON export, signage-file.json. We don't have a Figma login or API token at the museum, so please work from the file. Can you (1) list the pages and the frames on each, (2) check the Final page against what the Brief page asks for, and (3) draft the comments I should leave for the agency on any frames with problems — one line each, and don't post anything, I'll paste them in myself. The agency's cover email says 'all 12 sign types are on the Sign Types page and every floor is final'.",
+      "assertions": [
+        "Lists the pages and their frames as they appear in signage-file.json, without inventing frames",
+        "Points out that Level 2 has no frame on the Final page, only an old version on the Archive page",
+        "Points out that the 'Floor Plan – Level 1 – Final' frame contains text saying it is a draft not approved by the museum",
+        "Points out that only 11 sign types are present and Type 07 is missing, contradicting the agency's email",
+        "Does not claim to have posted comments or called the Figma API, and does not stop to ask for a token before doing the work",
+        "The draft comments are one line each and each is tied to a specific frame"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I'm the HR manager at Brindle & Co (about 40 people). I'd like our new-starter process on our FigJam team board: offer accepted → IT sets up laptop → first-day welcome → buddy assigned → 30-day check-in. I don't have an API token or any developer stuff, I just want something I can get onto the board. Keep it tiny.",
+      "assertions": [
+        "Delivers something the user can get onto the FigJam board without an API token, rather than stopping to ask for a token or access",
+        "Contains the five steps in the stated order",
+        "Does not claim to have created or posted anything in Figma or FigJam",
+        "Gives short, non-technical steps for getting it onto the board",
+        "Does not invent extra steps, owners or timings beyond those in the message",
+        "Keeps the whole reply short"
+      ]
+    }
+  ]
+}

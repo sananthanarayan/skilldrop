@@ -1,0 +1,168 @@
+{
+  "_comment": "Full deck-spec schema. The build_deck.py script consumes this. Top-level fields: title, audience, aspect, template, layout_map, palette, brand, slide_numbers, slides[].",
+
+  "title": "ProjectX Migration — Board Update",
+  "audience": "board",
+
+  "_aspect_comment": "16:9 (default), 4:3, or 16:10. Ignored when `template` is set — the template's own slide size wins.",
+  "aspect": "16:9",
+
+  "_template_comment": "Set `template` to a brand .pptx/.potx and the deck inherits its masters, theme fonts, colors and slide size. Relative paths resolve against this spec file. Discover the layout names with: python3 scripts/build_deck.py --list-layouts brand.potx — then map each logical layout to one. Any logical layout left out of the map falls back to the deck's own built-in design.",
+  "_template": "./brand/acme-master.potx",
+  "_layout_map": {
+    "title": "Title Slide",
+    "section": "Section Header",
+    "content": "Title and Content",
+    "two_column": "Two Content",
+    "big_number": "Title Only",
+    "quote": "Title Only",
+    "image": "Picture with Caption",
+    "table": "Title Only",
+    "chart": "Title Only",
+    "closing": "Closing"
+  },
+
+  "_brand_comment": "Path to a brand.json from the brand-kit skill, or the same object inline. It fills anything this spec leaves out: palette colours, template, logo files (logo.primary, logo.on_dark — PNG or JPG) and fonts (fonts.heading.family, fonts.body.family). --brand on the command line overrides it.",
+  "brand": "./brand/brand.json",
+
+  "palette": {
+    "primary": "#1A2A6C",
+    "secondary": "#4A5A8C",
+    "accent": "#FDBB2D",
+    "background": "#FFFFFF",
+    "text": "#222222"
+  },
+
+  "slide_numbers": true,
+
+  "slides": [
+    {
+      "layout": "title",
+      "title": "ProjectX Migration",
+      "subtitle": "Board update — Q3 FY26",
+      "presenter": "John Doe",
+      "date": "2026-09-15",
+      "notes": "Set the scene in one sentence — we're 60% through, ask is to approve overrun budget."
+    },
+
+    {
+      "layout": "section",
+      "title": "Where we are",
+      "notes": "Quick orientation before diving into the numbers."
+    },
+
+    {
+      "layout": "content",
+      "title": "Migration is 60% complete and on track for Q1 close",
+      "bullets": [
+        "8 of 14 services cut over with zero customer-visible incidents",
+        "Performance up 22% on migrated services (p99 latency)",
+        "Two services pushed to phase 3 — schema rewrite needed first"
+      ],
+      "notes": "Lead with the positive — zero incidents matters. Note the slipped services so it isn't a surprise later."
+    },
+
+    {
+      "layout": "big_number",
+      "title": "Cost savings already realised",
+      "number": "$2.4M",
+      "caption": "Annualised infra savings from the 8 migrated services",
+      "notes": "Pause here. Let the number land. Then say: we expect $5.8M annualised at full completion."
+    },
+
+    {
+      "layout": "chart",
+      "title": "Savings accrue as services cut over",
+      "takeaway": "Every phase has beaten its savings forecast — phase 3 is the same shape of work.",
+      "chart": {
+        "type": "column",
+        "categories": ["Phase 1", "Phase 2", "Phase 3 (fcst)"],
+        "series": [
+          { "name": "Forecast ($M)", "values": [0.6, 1.4, 2.0] },
+          { "name": "Actual ($M)", "values": [0.8, 1.6, null] }
+        ],
+        "legend": true,
+        "number_format": "0.0"
+      },
+      "source": "FinOps monthly report, Aug FY26",
+      "notes": "Only chart numbers that exist in the source. If a forecast is a forecast, label it one."
+    },
+
+    {
+      "layout": "table",
+      "title": "Service cut-over status",
+      "columns": ["Service", "Phase", "Status", "p99 delta"],
+      "rows": [
+        ["checkout-api", "1", "Live", "-31%"],
+        ["billing-core", "1", "Live", "-18%"],
+        ["catalogue", "2", "Live", "-22%"],
+        ["identity", "2", "Live", "-9%"],
+        ["ledger", "3", "Schema rewrite", "—"],
+        ["reporting", "3", "Schema rewrite", "—"]
+      ],
+      "caption": "Full 14-service table in the appendix pack.",
+      "notes": "Don't read the table. Point at the two rows in the last column and move on."
+    },
+
+    {
+      "layout": "image",
+      "title": "Target architecture after phase 3",
+      "image": "./assets/target-architecture.png",
+      "position": "right",
+      "bullets": [
+        "Single control plane per region",
+        "Legacy DB decommissioned at phase 3 close",
+        "Active-active across two regions"
+      ],
+      "caption": "Generated from the C4 model — see the architecture repo for the source.",
+      "notes": "Raster only (PNG/JPG). Export SVG or EMF diagrams to PNG first — python-pptx cannot read them."
+    },
+
+    {
+      "layout": "two_column",
+      "title": "What's left vs. what's added",
+      "left": {
+        "title": "Original scope",
+        "bullets": [
+          "14 services migrated",
+          "Legacy DB decommissioned",
+          "Single-region active"
+        ]
+      },
+      "right": {
+        "title": "Discovered in flight",
+        "bullets": [
+          "2 services need schema rewrite",
+          "Multi-region requirement (regulatory)",
+          "Auth refactor coupled with cut-over"
+        ]
+      },
+      "notes": "Frame the scope additions honestly. Multi-region was a regulator change, not a planning miss."
+    },
+
+    {
+      "layout": "quote",
+      "quote": "The migration went smoother than any I've seen in 20 years — and our team learned more in 6 months than the prior 2.",
+      "attribution": "VP Engineering, after phase 2 cut-over",
+      "notes": "Optional, but lands well with a board that's worried about morale."
+    },
+
+    {
+      "layout": "content",
+      "title": "Top risks for the remaining 40%",
+      "bullets": [
+        "Schema rewrite — 6 weeks, narrowly de-risked by dry runs",
+        "Auth refactor coupling — increases coordination overhead",
+        "Holiday-period freeze cuts available calendar by 4 weeks"
+      ],
+      "notes": "Don't soften the risks. Boards trust presenters who name them."
+    },
+
+    {
+      "layout": "closing",
+      "title": "Asking for $620k FY26 budget overrun",
+      "subtitle": "Covers schema rewrite + multi-region; payback < 8 months",
+      "notes": "Land on the Ask. Take questions here, not after a thank-you slide."
+    }
+  ]
+}

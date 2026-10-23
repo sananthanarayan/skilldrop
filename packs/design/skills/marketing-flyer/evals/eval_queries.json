@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Make a flyer for our open day in our brand colours",
+    "should_trigger": true
+  },
+  {
+    "query": "Design a one-page handout announcing the new clinic",
+    "should_trigger": true
+  },
+  {
+    "query": "I need a poster for the charity run, with our logo",
+    "should_trigger": true
+  },
+  {
+    "query": "Create an Instagram-sized announcement image that matches our flyer",
+    "should_trigger": true
+  },
+  {
+    "query": "Build the board deck as a pptx",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the press release for the launch",
+    "should_trigger": false
+  },
+  {
+    "query": "Set up our brand colours and fonts so we can reuse them",
+    "should_trigger": false
+  }
+]

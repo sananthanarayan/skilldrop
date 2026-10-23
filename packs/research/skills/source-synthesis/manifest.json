@@ -1,0 +1,42 @@
+{
+  "name": "source-synthesis",
+  "version": "0.2.1",
+  "description": "Answer a question from a set of sources the user supplied — papers, reports, articles, interview notes, emails — saying only what the material supports, labelling anything that comes from elsewhere where it appears, counting a source that repeats another once, and giving a labelled estimate when the user needs a figure the sources don't settle. Written in the length and format the user asked for; a full cited literature review only when that is the ask. Use when the user hands over several sources and asks to \"synthesise these\", \"what do these papers say\", \"pull together what we know\", \"literature review\", or \"where do the sources agree and disagree\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "brief-intake",
+    "decision-log",
+    "doc-critique",
+    "hypothesis-comparison",
+    "research-plan",
+    "strategy-analysis"
+  ],
+  "handoff": [
+    {
+      "to": "hypothesis-comparison",
+      "when": "the findings point to several rival explanations for the same observation",
+      "purpose": "Rank the explanations by how much of the cited evidence contradicts each.",
+      "fallback": "If hypothesis-comparison is absent, list the rival explanations under the findings with the citations for and against each, and say which has the least evidence against it."
+    }
+  ],
+  "tags": [
+    "research",
+    "synthesis",
+    "literature-review",
+    "citations",
+    "evidence"
+  ],
+  "permissions": {"network": [], "commands": [], "files": "named-paths"},
+  "model": {
+    "tier": "standard",
+    "rationale": "Bounded synthesis over supplied text. The hard part is keeping outside knowledge out and checking the sources' own sums, which a mid-tier model does when told to."
+  }
+}

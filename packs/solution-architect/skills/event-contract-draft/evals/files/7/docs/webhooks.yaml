@@ -1,0 +1,40 @@
+asyncapi: 2.6.0
+info:
+  title: Tallyfern Invoice Webhooks
+  version: 0.3.0
+  description: |
+    Tallyfern POSTs these to the HTTPS endpoint a partner registers in the dashboard.
+    Delivery: we wait 10s for a 2xx. On timeout or non-2xx we retry up to 5 times
+    (1m, 5m, 15m, 1h, 6h). After the 5th failure the event is dropped.
+    Signing: header X-Tallyfern-Signature = hex(HMAC-SHA256(partner_secret, raw_body)).
+channels:
+  invoice-events:
+    subscribe:
+      message:
+        name: InvoiceEvent
+        payload:
+          type: object
+          properties:
+            event:
+              type: string
+              enum: [invoice_created, invoice_paid, invoice_voided]
+            invoice_id:
+              type: string
+            amount:
+              type: number
+              description: Invoice total in major units, e.g. 129.99
+            currency:
+              type: string
+              enum: [USD, EUR, GBP, JPY]
+            customer:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                tax_id:
+                  type: string
+            paid_at:
+              type: string
+              format: date-time

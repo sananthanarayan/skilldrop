@@ -1,0 +1,10 @@
+# Partner configuration (ADR-0008). Loaded at startup.
+partners:
+  - id: velo
+    url: https://hooks.velo.example/parcel
+    events: [picked_up, delivered, exception]
+    secret_ref: vault://parcelhook/partners/velo
+  - id: northwind-retail
+    url: https://api.northwind.example/webhooks/shipments
+    events: [delivered]
+    secret_ref: vault://parcelhook/partners/northwind-retail

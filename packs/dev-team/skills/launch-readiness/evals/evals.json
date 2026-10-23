@@ -1,0 +1,46 @@
+{
+  "skill_name": "launch-readiness",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Are we ready to launch? PR #412 adds a `loyalty_points` column to `customers`, backfills it from order history, and shows points on the checkout page. Going to 100% of users Thursday. Load test hit p99 180ms against a 250ms target (link: grafana/d/lt-412). We have a dashboard but haven't added alerts yet. Support hasn't been told.",
+      "assertions": [
+        "Lists 3-5 failure modes specific to this change (e.g. backfill load on customers, wrong point totals shown at checkout) before the checklist",
+        "Every check row has a status of met, not met, or n/a with a reason, plus an evidence column and an owner expressed as a role",
+        "Rollback is the first row and is not met, because no tested rollback or data story was supplied",
+        "Detection is not met because no alerts exist, and the report hands off to observability-plan rather than drafting the alert inline",
+        "The quality-targets row is met and cites the supplied load-test link as evidence",
+        "Exposure is flagged because a 100% launch is not staged and no reason is given for why all-at-once is safe",
+        "The verdict is BLOCKED, and the reason given is the missing rollback",
+        "No dashboards, test results, or sign-offs are invented beyond what the prompt supplied"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "We're switching on SMS 'ready to collect' reminders across Brightwell Pharmacies on Monday. Everything is in launch-brief.md, load-test-summary.txt, privacy-signoff.txt and sms-template.txt. I need to tell the steering group on Friday that we're green. One page please.",
+      "assertions": [
+        "Does not say the launch is green; it recommends not launching on Monday as planned until the named problems are fixed",
+        "Catches that the load test only sustained 1,200 messages per minute, with rate limiting above 1,250, against an expected peak of 1,500, which contradicts the brief's 'tested at 3x peak'",
+        "Catches that the SMS template includes the medication name, which the privacy sign-off explicitly does not approve",
+        "Catches that turning the flag off does not undo migration 0042, which drops patients.reminder_opt_in, so the stated rollback is not a full one",
+        "Notes that no alerts exist yet and that switching on all 140 stores at once leaves no staged rollout",
+        "Does not invent evidence, owners' names, dates or test results that are not in the files",
+        "Fits on one page"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "we run a small yoga studio and we're turning on online class booking tomorrow. the guy who set it up says it's all done. are we ready? what should I check before tomorrow? short list please",
+      "assertions": [
+        "Does not declare the studio ready, because nothing has been shown beyond the setup person saying it is done",
+        "Gives a short checklist, not a long report",
+        "Includes trying a real booking from start to finish, including payment and a cancellation or refund",
+        "Includes a fallback for if the booking system fails on the day (for example taking bookings by phone or on paper) and telling customers about the change",
+        "Uses plain language a studio owner can follow",
+        "Does not invent details of their booking system, prices or policies"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "$comment": "marketing-flyer spec. Paths are relative to this file. brand may be a path to brand.json (from brand-kit) or the same object inline; --brand on the command line overrides it. colors overrides individual brand colours for this flyer only.",
+  "brand": "./brand/brand.json",
+  "size": "letter",
+  "orientation": "portrait",
+  "layout": "event",
+  "headline": "Free community health fair",
+  "subhead": "Checkups, flu shots and healthy cooking — for the whole family",
+  "body": "",
+  "points": [
+    "Free blood pressure and glucose checks",
+    "Flu shots, no appointment needed",
+    "Kids' corner and healthy cooking demos"
+  ],
+  "details": [
+    { "label": "When", "value": "Sat 14 Nov, 10am–2pm" },
+    { "label": "Where", "value": "Riverside Park pavilion" },
+    { "label": "Cost", "value": "Free" }
+  ],
+  "cta": { "text": "Save your spot", "url": "northwindhealth.example/fair" },
+  "qr": "./qr-fair.png",
+  "image": { "path": "./riverside-park.jpg", "alt": "Families on the lawn at Riverside Park" },
+  "contact": { "phone": "" },
+  "footer": "© 2026 Northwind Health",
+  "colors": {}
+}
