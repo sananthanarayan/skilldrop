@@ -8,6 +8,12 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.1.2 — 2026-10-23
+
+- **The published benchmark now covers the current catalogue, split by who wrote the eval.** All 520 evals of the 117 skills ran on the standard tier against plain Claude Code, one trial, two blind judges. Skills meet 73% of their checks against 53% without them, and the judges prefer the skill's result in 62% and 61% of pairs. On the 212 evals written by each skill's author the preference is 69% and 68%; on the 308 written by someone who never read the skill it is 58% and 56%, with the second judge's interval touching even. The [home page](https://sananthanarayan.github.io/skilldrop/) leads with the held-out number, and the [evals page](https://sananthanarayan.github.io/skilldrop/evals/) shows both rows and every skill's own result. The previous published run was the 0.16.9 catalogue of 18 days earlier, mostly on authors' evals.
+- **The 21 skills admitted since that run now show their full-run measurement** on their skill pages instead of the admission result; the admissions list is empty until the next new skill.
+- **[What the benchmark showed](guides/explanation/what-the-benchmark-showed.md)** has the new standing: 49 skills above even on their held-out pairs, 36 below, 32 at even, each on two to four pairs.
+
 ## 1.1.1 — 2026-10-22
 
 - **Four skills that only just passed admission are stronger, and re-measured on fresh held-out evals** ([RFC-0066](docs/rfcs/0066-strengthening-four-narrow-passes.md)):

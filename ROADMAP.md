@@ -4,7 +4,6 @@ What is being worked on next. Not a commitment — a direction. Shipped work mov
 
 ## Upcoming
 
-- **Publish the benchmark on the current catalogue.** Every skill now has held-out evals and the summary splits them from the author's; the published run is still the 0.16.9 catalogue. A full run of 376 evals is about $50 of plan usage and several hours.
 - **Re-tier from measurement.** On the held-out evals Haiku 5.5 came within 5 points of Opus 5.5 for 61 of 97 skills, 9 of them assigned heavy, and the plain agent was preferred over the skill on both tiers ([what the benchmark showed](guides/explanation/what-the-benchmark-showed.md#the-light-and-heavy-tiers)). With the standard tier run on the same evals and a second trial on all three, set each tier from the numbers, and look first at what the skills lose to plain Opus 5.5.
 
 ## Considering

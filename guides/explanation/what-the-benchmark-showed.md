@@ -156,10 +156,27 @@ judge's reasons improve the evals the reasons came from and little else.
 
 ## Where the catalogue stands
 
-Across all 209 evals, new ones included, the two judges prefer the skill's result in 61%
-(interval 55 to 68) and 61% (55 to 67) of pairs. Skills meet 75% of their checks and the
-plain agent 44%. That headline mixes skills that clearly help with skills that clearly do
-not, and the held-out test says the second group is larger than the tuned numbers suggested.
+The published run is from 23 October 2026: all 520 evals of the 117 skills on the standard
+tier, one trial, two judges. Skills meet 73% of their checks and the plain agent 53%. The two
+judges prefer the skill's result in 62% (interval 58 to 67) and 61% (57 to 65) of pairs.
+
+That headline now splits by who wrote the eval, which is the number this page has been
+asking for since the held-out test:
+
+| Evals | Count | Assertions met, skill | Without | Preferred blind, judge 1 | Judge 2 |
+|---|---|---|---|---|---|
+| Written by the skill's author | 212 | 72% | 35% | 69% (62 to 75) | 68% (62 to 74) |
+| Written without seeing the skill | 308 | 74% | 66% | 58% (52 to 63) | 56% (50 to 61) |
+
+On the authors' evals the skills win clearly, and part of that is fitted: many of those evals
+were revised against. On evals no skill was shaped around, both judges still prefer the
+skill, by 8 and 6 points, and the second judge's interval touches even. The gap on the
+checks shrinks from 37 points to 8, as it did in the first held-out test: on checks written
+by someone other than the author, the plain agent meets most of them.
+
+Per skill the picture is mixed, as it was. On their held-out pairs, 49 skills sit above
+even, 36 below, and 32 at even. Each skill has two to four held-out pairs from one trial, so a
+single skill's row is an anecdote and the totals are the result.
 
 ## What follows from it
 
