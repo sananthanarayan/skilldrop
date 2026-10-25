@@ -4,7 +4,8 @@ What is being worked on next. Not a commitment — a direction. Shipped work mov
 
 ## Upcoming
 
-- **Re-tier from measurement.** All three tiers now have the 224 held-out evals ([what the benchmark showed](guides/explanation/what-the-benchmark-showed.md#the-three-tiers)). The skill is not preferred to the plain agent on any of them, and the standard tier (`claude-sonnet-5`) scores below the light one (`claude-haiku-5-5`) with the skill and without it, most likely because it maps to a model a generation older. First decide which model the standard tier maps to; then run a second trial on all three and set each tier from the numbers, looking first at what the skills lose to plain Opus 5.5.
+- **Re-tier from measurement.** The standard tier now maps to Sonnet 5.5 and has run on all 308 held-out evals ([what the benchmark showed](guides/explanation/what-the-benchmark-showed.md#standard-on-sonnet-55)). Next, a second trial on light (about $85 of plan usage) and heavy (about $280) on the same evals, then set each skill's tier from the numbers.
+- **What the skills lose to the plain agent on current models.** On the held-out evals nothing was decided on, the judges preferred plain Sonnet 5.5 to the skill in about two pairs of three, and plain Opus 5.5 in about seven of ten. Once the tier trials are in, pick the skills that lose on both trials with both judges, and ask of each what rule it adds that the plain agent breaks: keep, rebuild rule-first, or retire ([RFC-0046](docs/rfcs/0046-keep-rebuild-or-retire.md)). Don't read the clean evals' judge reasons before that list is fixed; measure any rebuild on fresh evals.
 
 ## Considering
 

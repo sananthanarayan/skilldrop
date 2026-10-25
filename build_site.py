@@ -916,8 +916,12 @@ def measured_section():
     if not os.path.exists(path):
         return ""
     b = read_json(path)
-    d = next(iter(b["models"].values()))
+    model, d = next(iter(b["models"].items()))
     pc = lambda x: f"{100 * x:.0f}%"
+    routed = read_json(os.path.join(ROOT, "model-routing.json"))["providers"]["claude-code"]["models"].get(d.get("label"))
+    moved = (f" The {esc(d['label'])} tier has since moved to <code>{esc(routed)}</code>; "
+             f"its results there are in <a href=\"docs/explanation/what-the-benchmark-showed.html\">what the benchmark showed</a>."
+             if routed and routed != model else "")
     judges = f"{pc(d['win'])} of pairs" + (f", and a second judge in {pc(d['win2'])}" if d.get("win2") is not None else "")
     lows = [c[0] for c in (d.get("win_ci"), d.get("win2_ci")) if c]
     verdict = ("Both ranges sit above even. Many skills were revised against these same evals, and a sample of them lost on evals they had not seen, so read it as progress, not proof." if lows and min(lows) > 0.5 else
@@ -940,7 +944,7 @@ def measured_section():
   <div class="inner"><div class="narrow">
     <p class="eyebrow">Measured</p>
     <h2>Every skill is run against the agent without it.</h2>
-    <p class="lede" style="margin-bottom:0">Each acceptance eval runs twice as a real agent session, once with the skill and once without. With a skill the agent meets {pc(d['skill'])} of that skill's checks; without, {pc(d['baseline'])}. A blind judge that sees only the request and the two results preferred the skill's in {judges}. {verdict}{rule} <a href="evals/">See every skill's numbers and how they were measured &rarr;</a></p>
+    <p class="lede" style="margin-bottom:0">Each acceptance eval runs twice as a real agent session, once with the skill and once without. In the last full run, on <code>{esc(model)}</code>, with a skill the agent meets {pc(d['skill'])} of that skill's checks; without, {pc(d['baseline'])}. A blind judge that sees only the request and the two results preferred the skill's in {judges}. {verdict}{moved}{rule} <a href="evals/">See every skill's numbers and how they were measured &rarr;</a></p>
   </div></div>
 </section>
 """

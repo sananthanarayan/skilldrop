@@ -25,10 +25,11 @@ The blind judge picked the skill's answer: *"A misses this and recommends a Clai
 
 ## The receipts
 
-Every skill runs as a real agent session twice: once with the skill, once without. The results are [published either way](https://sananthanarayan.github.io/skilldrop/evals/). In the last full run (5 October 2026: 100 skills, 209 evals, `claude-sonnet-5`):
+Every skill runs as a real agent session twice: once with the skill, once without. The results are [published either way](https://sananthanarayan.github.io/skilldrop/evals/). In the last full run (23 October 2026: 117 skills, 520 evals, `claude-sonnet-5`):
 
-- **With a skill, answers met 75% of their checks; without one, 44%.** The checks were written by each skill's author, so the fairer number is the next one.
-- **Two blind judges preferred the skill's answer in 61% of pairs** (95% interval 55–68%). Each judge saw only the request and both answers, in shuffled order.
+- **With a skill, answers met 73% of their checks; without one, 53%.** The checks were written by each skill's author, so the fairer numbers are the next ones.
+- **Two blind judges preferred the skill's answer in 62% and 61% of pairs.** Each judge saw only the request and both answers, in shuffled order. On the 176 held-out evals that no revision or admission was based on, it was 49% and 48%: no preference.
+- **On Sonnet 5.5, now the standard tier, the judges preferred the plain agent.** On all 308 held-out evals the skill won 40% and 43% of pairs ([what the benchmark showed](guides/explanation/what-the-benchmark-showed.md#standard-on-sonnet-55)).
 - **4 skills that didn't beat the plain agent were [retired](https://sananthanarayan.github.io/skilldrop/evals/#retired)**, and they're listed. Each new skill has to win on held-out evals before it ships.
 
 [Get started](https://sananthanarayan.github.io/skilldrop/start/) · [Browse the packs](https://sananthanarayan.github.io/skilldrop/packs/) · [Search all skills](https://sananthanarayan.github.io/skilldrop/catalogue/) · [Docs](https://sananthanarayan.github.io/skilldrop/docs/) · [What stays stable in 1.x](guides/reference/versioning-and-stability.md) · [Contribute](CONTRIBUTING.md)

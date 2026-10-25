@@ -23,7 +23,8 @@ the commands are in [Benchmark skills against the agent without them](../how-to/
   plain agent does not follow on its own, and do not add a format.
 - Across the catalogue in late October, on the 176 held-out evals that no revision or
   admission was based on, the judges had no preference between the skill and the plain
-  agent (49% and 48%). On no model tier was the skill preferred either.
+  agent (49% and 48%). On the newer models it did worse: with the standard tier on Sonnet 5.5,
+  the judges preferred the plain agent in about two pairs of three on those evals.
 
 ## Two measures that disagreed
 
@@ -265,11 +266,55 @@ evals taken out of that run.
   almost all in their scripts and manifests. `SKILL.md` changed only in `api-contract-draft`
   and `file-to-markdown`, and five others had an example or template edited. Left out, the standard row barely moves (52%
   and 51% on the 152 evals of unchanged skills). The routing rule that a heavy skill is never
-  routed below heavy is what the eight light rows question. Before any per-skill tier moves,
-  the model behind the standard tier is the first thing to settle, and then a second trial
-  on all three.
+  routed below heavy is what the eight light rows question. Before any per-skill tier moved,
+  the model behind the standard tier had to be settled; see the next section.
 
 Claude Code had no price for Haiku 5.5 when this ran, so its runs are priced from the
 runner's own table at $0.10 and $0.50 per million tokens. Light runs wrote more: 7,015 output
 tokens with the skill and 4,099 without. Evals 4 and 5 of `role-shortlist` ran on the version
 before 0.16.21.
+
+### Standard on Sonnet 5.5
+
+On 25 October the routing table's standard tier moved to `claude-sonnet-5-5`, the same
+generation as light and heavy, at the same list price as Sonnet 5. All 308 held-out evals
+then ran on it with the same two judges: one trial each, and a second trial on the first 118
+before a plan usage limit stopped the run. The summary is in
+[`docs/benchmarks/standard-sonnet-5-5.json`](../../docs/benchmarks/standard-sonnet-5-5.json).
+On the same 224 evals as the table above:
+
+| Tier | Assertions met, skill | Without | Preferred blind, judge 1 | Judge 2 | $ per run, skill |
+|---|---|---|---|---|---|
+| standard `claude-sonnet-5-5` | 85% | 83% | 36% (30 to 41) | 39% (33 to 45) | $0.07 |
+
+- **The gap on the checks is gone.** With the skill, Sonnet 5.5 meets 85% of the checks,
+  level with Opus 5.5 and above Haiku 5.5; without it, 83%, against Sonnet 5's 72%. It also
+  costs less per run than Sonnet 5 did, $0.07 against $0.13 with the skill, because it
+  writes less: 3,273 output tokens a run against 5,442.
+- **Blind, the plain agent is now preferred on standard as well.** Both intervals on the
+  224 sit below even. Across all 308 held-out evals the skill wins 40% (36 to 45) and 43%
+  (38 to 48) of pairs. By the groups in [Where the catalogue stands](#where-the-catalogue-stands):
+
+  | Held-out evals, on Sonnet 5.5 | Count | Preferred blind, judge 1 | Judge 2 |
+  |---|---|---|---|
+  | Skill's instructions changed after the eval was added | 78 | 50% (39 to 61) | 49% (38 to 60) |
+  | Added since 18 October for skills admitted on them | 54 | 54% (42 to 66) | 61% (50 to 72) |
+  | Written by 18 October, skill unchanged since | 176 | 32% (26 to 39) | 35% (28 to 41) |
+
+  On the evals nothing was decided on, the judges preferred plain Sonnet 5.5 in about two
+  pairs of three. Even the fitted and selected groups only reach about even.
+- **The stronger the plain agent, the less the skill is preferred.** Across the four models
+  on these 224 evals, ordered by how many checks the plain agent meets: Sonnet 5 (72%), skill
+  preferred in 51% and 50%; Haiku 5.5 (80%), 41% and 48%; Sonnet 5.5 (83%), 36% and 39%; Opus
+  5.5 (83%), 31% and 31%. Four points are not a law, but the direction fits the judges'
+  reasons in the earlier held-out tests, where most losses came from structure a capable
+  model did not need. This run's reasons have not been read, so its clean evals stay unseen
+  for the next decision.
+- **With Sonnet 5.5 as standard, the routing check moves.** Taking the cheapest tier within
+  5 points of the best, light is enough for 54 of 97 skills, standard for 25 and heavy for
+  18. Of the 13 skills assigned heavy, light is enough for six, standard for five, and only
+  `hypothesis-comparison` and `threat-model` need heavy.
+- **No per-skill tier was changed.** The winner of a pair was the same in both trials for 80
+  of the 118 evals that had two, so one trial is still weak evidence for a single skill. Light
+  and heavy have one trial each, run a week earlier on the 0.16.21 catalogue. Their second
+  trials come next.

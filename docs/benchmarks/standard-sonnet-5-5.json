@@ -1,0 +1,1286 @@
+{
+ "date": "2026-10-25",
+ "backend": "claude-cli",
+ "judge_model": "claude-sonnet-5-5",
+ "trials": 1,
+ "second_trial_evals": 118,
+ "scripted": [
+  "agent-config-review",
+  "agent-incident-response",
+  "ai-usage-report",
+  "backlog-triage",
+  "behaviour-equivalence",
+  "brand-kit",
+  "bundle-size-review",
+  "cloud-cost-review",
+  "codebase-tour",
+  "content-design",
+  "context-graph",
+  "cover-letter",
+  "deck-builder",
+  "delivery-metrics-report",
+  "dependency-upgrade-review",
+  "event-contract-draft",
+  "feedback-synthesis",
+  "figma-diagrams",
+  "file-to-markdown",
+  "hypothesis-comparison",
+  "interactive-diagram",
+  "judge-audit",
+  "lean-canvas",
+  "marketing-flyer",
+  "md-to-confluence",
+  "md-to-docx",
+  "md-to-html",
+  "md-to-pptx",
+  "md-to-xlsx",
+  "mermaid-render",
+  "output-hygiene",
+  "pre-merge-review",
+  "rendering-strategy",
+  "resume-tailor",
+  "risk-register",
+  "rollout-plan",
+  "skill-review",
+  "slo-spec",
+  "source-synthesis",
+  "sql-review",
+  "team-status-report",
+  "terraform-plan-review",
+  "tracker-brief-sync",
+  "web-performance-review"
+ ],
+ "models": {
+  "claude-sonnet-5-5": {
+   "label": "standard",
+   "evals": 308,
+   "runs": 426,
+   "skill": 0.8275374922696351,
+   "baseline": 0.7774891774891775,
+   "lift": 0.05004831478045764,
+   "lift_ci": [
+    0.03181818181818182,
+    0.06865337043908473
+   ],
+   "win": 0.4034090909090909,
+   "win_ci": [
+    0.35633116883116883,
+    0.4537337662337662
+   ],
+   "second_judge": "claude-opus-5-5",
+   "win2": 0.42938311688311687,
+   "win2_ci": [
+    0.37662337662337664,
+    0.4788961038961039
+   ],
+   "judges_agree": 336,
+   "judges_decided": 419,
+   "cost_skill": 0.08470815211267604,
+   "cost_baseline": 0.06392358990610329,
+   "out_tokens_skill": 3769.1830985915494,
+   "out_tokens_baseline": 3011.5845070422533,
+   "truncated": 0,
+   "refused": 0,
+   "trial_range": 0.06381154156577885,
+   "errors": 0,
+   "skipped": 0,
+   "by_kind": {
+    "held_out": {
+     "evals": 308,
+     "skills": 117,
+     "skill": 0.8275374922696351,
+     "baseline": 0.7774891774891775,
+     "lift": 0.05004831478045764,
+     "lift_ci": [
+      0.03181818181818182,
+      0.06865337043908473
+     ],
+     "win": 0.4034090909090909,
+     "win_ci": [
+      0.35633116883116883,
+      0.4537337662337662
+     ],
+     "win2": 0.42938311688311687,
+     "win2_ci": [
+      0.37662337662337664,
+      0.4788961038961039
+     ]
+    }
+   }
+  }
+ },
+ "routing": [],
+ "floor": 0.14186379097093382,
+ "skills": [
+  {
+   "skill": "accessibility-audit",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7797619047619048,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.25,
+   "cost_skill": 0.08061327500000001,
+   "cost_baseline": 0.047034225
+  },
+  {
+   "skill": "adr-generator",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.7976190476190476,
+   "preferred": 0.5,
+   "cost_skill": 0.06500495,
+   "cost_baseline": 0.039012200000000004
+  },
+  {
+   "skill": "agent-adoption-stage",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8214285714285714,
+   "baseline_met": 0.75,
+   "preferred": 0.0,
+   "cost_skill": 0.068128425,
+   "cost_baseline": 0.034992325000000005
+  },
+  {
+   "skill": "agent-budget",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8154761904761905,
+   "baseline_met": 0.8095238095238095,
+   "preferred": 0.25,
+   "cost_skill": 0.101917675,
+   "cost_baseline": 0.0653842
+  },
+  {
+   "skill": "agent-config-review",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.78125,
+   "baseline_met": 0.625,
+   "preferred": 0.5,
+   "cost_skill": 0.098705875,
+   "cost_baseline": 0.056596125
+  },
+  {
+   "skill": "agent-incident-response",
+   "model": "claude-sonnet-5-5",
+   "evals": 4,
+   "skill_met": 0.671875,
+   "baseline_met": 0.40625,
+   "preferred": 0.375,
+   "cost_skill": 0.09642955,
+   "cost_baseline": 0.06858829999999999
+  },
+  {
+   "skill": "agent-loop-design",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8214285714285714,
+   "baseline_met": 0.8214285714285714,
+   "preferred": 0.5,
+   "cost_skill": 0.054907500000000005,
+   "cost_baseline": 0.049408975
+  },
+  {
+   "skill": "agent-threat-model",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8511904761904762,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.5,
+   "cost_skill": 0.0662156,
+   "cost_baseline": 0.033746325
+  },
+  {
+   "skill": "agents-md-generator",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.375,
+   "cost_skill": 0.05916695,
+   "cost_baseline": 0.045556
+  },
+  {
+   "skill": "ai-adoption-rollout",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.75,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.25,
+   "cost_skill": 0.089700475,
+   "cost_baseline": 0.061575624999999995
+  },
+  {
+   "skill": "ai-readiness-assessment",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8214285714285714,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.0,
+   "cost_skill": 0.045062,
+   "cost_baseline": 0.04304945
+  },
+  {
+   "skill": "ai-usage-policy",
+   "model": "claude-sonnet-5-5",
+   "evals": 6,
+   "skill_met": 0.8526785714285715,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 0.3333333333333333,
+   "cost_skill": 0.059477866666666664,
+   "cost_baseline": 0.05226608333333333
+  },
+  {
+   "skill": "ai-usage-report",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7976190476190476,
+   "baseline_met": 0.875,
+   "preferred": 0.0,
+   "cost_skill": 0.101648325,
+   "cost_baseline": 0.09078822500000001
+  },
+  {
+   "skill": "ai-use-case-triage",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8095238095238095,
+   "baseline_met": 0.8154761904761905,
+   "preferred": 0.25,
+   "cost_skill": 0.067846075,
+   "cost_baseline": 0.04841095
+  },
+  {
+   "skill": "api-contract-draft",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.6904761904761905,
+   "baseline_met": 0.7321428571428572,
+   "preferred": 0.5,
+   "cost_skill": 0.1960902,
+   "cost_baseline": 0.061347200000000005
+  },
+  {
+   "skill": "application-form-answers",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.875,
+   "baseline_met": 0.75,
+   "preferred": 0.75,
+   "cost_skill": 0.061409375,
+   "cost_baseline": 0.044070649999999996
+  },
+  {
+   "skill": "architecture-diagrams",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.8928571428571428,
+   "preferred": 0.25,
+   "cost_skill": 0.0433844,
+   "cost_baseline": 0.06664880000000001
+  },
+  {
+   "skill": "audience-profile",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7571428571428571,
+   "baseline_met": 0.7214285714285714,
+   "preferred": 0.0,
+   "cost_skill": 0.042560150000000005,
+   "cost_baseline": 0.026622475
+  },
+  {
+   "skill": "backlog-triage",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8869047619047619,
+   "baseline_met": 0.9226190476190477,
+   "preferred": 0.625,
+   "cost_skill": 0.0751416,
+   "cost_baseline": 0.0390941
+  },
+  {
+   "skill": "behaviour-equivalence",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.875,
+   "baseline_met": 0.6875,
+   "preferred": 0.75,
+   "cost_skill": 0.0928407,
+   "cost_baseline": 0.060806025
+  },
+  {
+   "skill": "brand-kit",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9642857142857143,
+   "baseline_met": 0.7785714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.104608075,
+   "cost_baseline": 0.088184975
+  },
+  {
+   "skill": "brief-intake",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8095238095238095,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.05321315,
+   "cost_baseline": 0.034173625
+  },
+  {
+   "skill": "bug-triage",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.0,
+   "cost_skill": 0.0561839,
+   "cost_baseline": 0.04156005
+  },
+  {
+   "skill": "bundle-size-review",
+   "model": "claude-sonnet-5-5",
+   "evals": 6,
+   "skill_met": 0.6458333333333334,
+   "baseline_met": 0.4895833333333333,
+   "preferred": 0.4166666666666667,
+   "cost_skill": 0.09325565000000001,
+   "cost_baseline": 0.10823100833333334
+  },
+  {
+   "skill": "business-case",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8809523809523809,
+   "baseline_met": 0.875,
+   "preferred": 0.25,
+   "cost_skill": 0.0961312,
+   "cost_baseline": 0.049711
+  },
+  {
+   "skill": "capacity-cost-model",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8214285714285714,
+   "baseline_met": 0.8571428571428571,
+   "preferred": 0.5,
+   "cost_skill": 0.143427475,
+   "cost_baseline": 0.070090075
+  },
+  {
+   "skill": "cloud-cost-review",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7142857142857142,
+   "baseline_met": 0.6071428571428571,
+   "preferred": 0.25,
+   "cost_skill": 0.10963845,
+   "cost_baseline": 0.054458074999999995
+  },
+  {
+   "skill": "codebase-tour",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.625,
+   "preferred": 0.75,
+   "cost_skill": 0.1203173,
+   "cost_baseline": 0.0681467
+  },
+  {
+   "skill": "content-design",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.25,
+   "cost_skill": 0.0775667,
+   "cost_baseline": 0.035422375000000006
+  },
+  {
+   "skill": "context-graph",
+   "model": "claude-sonnet-5-5",
+   "evals": 14,
+   "skill_met": 0.774234693877551,
+   "baseline_met": 0.7142857142857143,
+   "preferred": 0.6428571428571429,
+   "cost_skill": 0.06749827142857143,
+   "cost_baseline": 0.06177279285714286
+  },
+  {
+   "skill": "council-review",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.6428571428571428,
+   "preferred": 0.5,
+   "cost_skill": 0.06430335,
+   "cost_baseline": 0.0385526
+  },
+  {
+   "skill": "cover-letter",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.75,
+   "cost_skill": 0.07287279999999999,
+   "cost_baseline": 0.043266075
+  },
+  {
+   "skill": "dashboard-spec",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.875,
+   "baseline_met": 0.7678571428571428,
+   "preferred": 0.25,
+   "cost_skill": 0.091522075,
+   "cost_baseline": 0.053068674999999996
+  },
+  {
+   "skill": "data-contract",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.7916666666666666,
+   "preferred": 0.5,
+   "cost_skill": 0.0771965,
+   "cost_baseline": 0.04145105
+  },
+  {
+   "skill": "decision-log",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7928571428571429,
+   "baseline_met": 0.7928571428571429,
+   "preferred": 0.25,
+   "cost_skill": 0.034963675,
+   "cost_baseline": 0.025304899999999998
+  },
+  {
+   "skill": "deck-builder",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7261904761904762,
+   "baseline_met": 0.9583333333333334,
+   "preferred": 0.0,
+   "cost_skill": 0.09502599999999999,
+   "cost_baseline": 0.2696845
+  },
+  {
+   "skill": "delivery-metrics-report",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7261904761904762,
+   "baseline_met": 0.7023809523809524,
+   "preferred": 0.125,
+   "cost_skill": 0.0661981,
+   "cost_baseline": 0.08392087499999999
+  },
+  {
+   "skill": "dependency-upgrade-review",
+   "model": "claude-sonnet-5-5",
+   "evals": 4,
+   "skill_met": 0.78125,
+   "baseline_met": 0.671875,
+   "preferred": 1.0,
+   "cost_skill": 0.084063425,
+   "cost_baseline": 0.057909225
+  },
+  {
+   "skill": "design-doc",
+   "model": "claude-sonnet-5-5",
+   "evals": 6,
+   "skill_met": 0.9166666666666666,
+   "baseline_met": 0.8050595238095237,
+   "preferred": 0.25,
+   "cost_skill": 0.0798585,
+   "cost_baseline": 0.0692851
+  },
+  {
+   "skill": "design-system-spec",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.6785714285714285,
+   "baseline_met": 0.8333333333333334,
+   "preferred": 0.0,
+   "cost_skill": 0.076887875,
+   "cost_baseline": 0.0771997
+  },
+  {
+   "skill": "devils-advocate",
+   "model": "claude-sonnet-5-5",
+   "evals": 6,
+   "skill_met": 0.8234126984126985,
+   "baseline_met": 0.8368055555555555,
+   "preferred": 0.9166666666666666,
+   "cost_skill": 0.06380515833333332,
+   "cost_baseline": 0.039308025
+  },
+  {
+   "skill": "doc-critique",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.8928571428571428,
+   "preferred": 0.0,
+   "cost_skill": 0.055015125,
+   "cost_baseline": 0.028124549999999998
+  },
+  {
+   "skill": "dpia",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.888888888888889,
+   "baseline_met": 0.888888888888889,
+   "preferred": 0.0,
+   "cost_skill": 0.1113056,
+   "cost_baseline": 0.06648993333333333
+  },
+  {
+   "skill": "eval-harness-generator",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9523809523809524,
+   "baseline_met": 0.9523809523809524,
+   "preferred": 0.0,
+   "cost_skill": 0.05444773333333333,
+   "cost_baseline": 0.0569725
+  },
+  {
+   "skill": "event-contract-draft",
+   "model": "claude-sonnet-5-5",
+   "evals": 4,
+   "skill_met": 0.71875,
+   "baseline_met": 0.625,
+   "preferred": 0.25,
+   "cost_skill": 0.33386455000000004,
+   "cost_baseline": 0.095944425
+  },
+  {
+   "skill": "exec-summary",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8285714285714285,
+   "baseline_met": 1.0,
+   "preferred": 0.5,
+   "cost_skill": 0.07157365,
+   "cost_baseline": 0.0370957
+  },
+  {
+   "skill": "feature-implement-loop",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 1.0,
+   "cost_skill": 0.12021120000000002,
+   "cost_baseline": 0.07343570000000002
+  },
+  {
+   "skill": "feedback-synthesis",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.875,
+   "preferred": 1.0,
+   "cost_skill": 0.4025535,
+   "cost_baseline": 0.10738015000000001
+  },
+  {
+   "skill": "figma-diagrams",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.6666666666666667,
+   "preferred": 0.5,
+   "cost_skill": 0.0522588,
+   "cost_baseline": 0.03822590000000001
+  },
+  {
+   "skill": "file-to-markdown",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.05102885,
+   "cost_baseline": 0.06050705
+  },
+  {
+   "skill": "guide-builder",
+   "model": "claude-sonnet-5-5",
+   "evals": 6,
+   "skill_met": 0.9791666666666666,
+   "baseline_met": 0.8174603174603176,
+   "preferred": 0.5,
+   "cost_skill": 0.0461356,
+   "cost_baseline": 0.04721804999999999
+  },
+  {
+   "skill": "hypothesis-comparison",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 0.5,
+   "cost_skill": 0.09567954999999999,
+   "cost_baseline": 0.029782100000000002
+  },
+  {
+   "skill": "incident-comms",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.5,
+   "cost_skill": 0.0612096,
+   "cost_baseline": 0.041497150000000003
+  },
+  {
+   "skill": "information-architecture",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.10677999999999999,
+   "cost_baseline": 0.04553005
+  },
+  {
+   "skill": "interactive-diagram",
+   "model": "claude-sonnet-5-5",
+   "evals": 10,
+   "skill_met": 0.7875,
+   "baseline_met": 0.7,
+   "preferred": 0.6,
+   "cost_skill": 0.16990374000000003,
+   "cost_baseline": 0.18306286
+  },
+  {
+   "skill": "job-fit-analysis",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.8660714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.0459752,
+   "cost_baseline": 0.0331051
+  },
+  {
+   "skill": "judge-audit",
+   "model": "claude-sonnet-5-5",
+   "evals": 8,
+   "skill_met": 0.5892857142857143,
+   "baseline_met": 0.6316964285714286,
+   "preferred": 0.5625,
+   "cost_skill": 0.1180960875,
+   "cost_baseline": 0.08332463749999999
+  },
+  {
+   "skill": "launch-readiness",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.0,
+   "cost_skill": 0.04268865,
+   "cost_baseline": 0.03419095
+  },
+  {
+   "skill": "lean-canvas",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9375,
+   "baseline_met": 0.75,
+   "preferred": 0.0,
+   "cost_skill": 0.11874385,
+   "cost_baseline": 0.07066625
+  },
+  {
+   "skill": "llm-eval-harness",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7142857142857142,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 1.0,
+   "cost_skill": 0.07346929999999999,
+   "cost_baseline": 0.04659895
+  },
+  {
+   "skill": "marketing-flyer",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7023809523809523,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.08634069999999999,
+   "cost_baseline": 0.07658155
+  },
+  {
+   "skill": "mcp-pairing",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9375,
+   "baseline_met": 0.75,
+   "preferred": 0.0,
+   "cost_skill": 0.10768135,
+   "cost_baseline": 0.0542197
+  },
+  {
+   "skill": "md-to-confluence",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.625,
+   "baseline_met": 0.375,
+   "preferred": 0.5,
+   "cost_skill": 0.11235955000000002,
+   "cost_baseline": 0.0533868
+  },
+  {
+   "skill": "md-to-docx",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.6428571428571428,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.0717438,
+   "cost_baseline": 0.2396538
+  },
+  {
+   "skill": "md-to-html",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9,
+   "baseline_met": 0.8285714285714285,
+   "preferred": 0.0,
+   "cost_skill": 0.08801415000000001,
+   "cost_baseline": 0.071663
+  },
+  {
+   "skill": "md-to-pptx",
+   "model": "claude-sonnet-5-5",
+   "evals": 4,
+   "skill_met": 0.84375,
+   "baseline_met": 0.59375,
+   "preferred": 0.25,
+   "cost_skill": 0.06398405,
+   "cost_baseline": 0.258228925
+  },
+  {
+   "skill": "md-to-xlsx",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.061197150000000006,
+   "cost_baseline": 0.15086465
+  },
+  {
+   "skill": "mermaid-render",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.049255850000000004,
+   "cost_baseline": 0.04758085
+  },
+  {
+   "skill": "migration-plan",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.0,
+   "cost_skill": 0.07206900000000001,
+   "cost_baseline": 0.052701
+  },
+  {
+   "skill": "nfr-spec",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.6904761904761905,
+   "baseline_met": 0.7738095238095238,
+   "preferred": 0.5,
+   "cost_skill": 0.0816852,
+   "cost_baseline": 0.05206295
+  },
+  {
+   "skill": "observability-plan",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.75,
+   "preferred": 0.0,
+   "cost_skill": 0.11604345000000002,
+   "cost_baseline": 0.0635159
+  },
+  {
+   "skill": "okr-cascade",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7738095238095238,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.5,
+   "cost_skill": 0.07088615000000001,
+   "cost_baseline": 0.05615225000000001
+  },
+  {
+   "skill": "output-hygiene",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 1.0,
+   "preferred": 0.5,
+   "cost_skill": 0.0547183,
+   "cost_baseline": 0.0414653
+  },
+  {
+   "skill": "postmortem-generator",
+   "model": "claude-sonnet-5-5",
+   "evals": 6,
+   "skill_met": 0.9236111111111112,
+   "baseline_met": 0.7886904761904762,
+   "preferred": 0.6666666666666666,
+   "cost_skill": 0.06540091666666666,
+   "cost_baseline": 0.056102033333333336
+  },
+  {
+   "skill": "pr-description-writer",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.0,
+   "cost_skill": 0.04162645,
+   "cost_baseline": 0.02728045
+  },
+  {
+   "skill": "prd-draft",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.6785714285714286,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 0.0,
+   "cost_skill": 0.0708839,
+   "cost_baseline": 0.05414914999999999
+  },
+  {
+   "skill": "pre-merge-review",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428572,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.25,
+   "cost_skill": 0.0495717,
+   "cost_baseline": 0.036870299999999995
+  },
+  {
+   "skill": "prfaq",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.5,
+   "cost_skill": 0.062052249999999996,
+   "cost_baseline": 0.04505965
+  },
+  {
+   "skill": "prompt-caching-advisor",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.6333333333333333,
+   "baseline_met": 0.8,
+   "preferred": 0.5,
+   "cost_skill": 0.0400436,
+   "cost_baseline": 0.032180850000000004
+  },
+  {
+   "skill": "refactor-plan",
+   "model": "claude-sonnet-5-5",
+   "evals": 4,
+   "skill_met": 0.8125,
+   "baseline_met": 0.5625,
+   "preferred": 1.0,
+   "cost_skill": 0.21981497500000002,
+   "cost_baseline": 0.10896147499999999
+  },
+  {
+   "skill": "release-notes",
+   "model": "claude-sonnet-5-5",
+   "evals": 6,
+   "skill_met": 0.9107142857142857,
+   "baseline_met": 0.8839285714285715,
+   "preferred": 0.5,
+   "cost_skill": 0.036422666666666666,
+   "cost_baseline": 0.03385273333333333
+  },
+  {
+   "skill": "rendering-strategy",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.75,
+   "baseline_met": 0.75,
+   "preferred": 1.0,
+   "cost_skill": 0.1070621,
+   "cost_baseline": 0.0580205
+  },
+  {
+   "skill": "requirements-interview",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.0765808,
+   "cost_baseline": 0.0537758
+  },
+  {
+   "skill": "research-plan",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.0,
+   "cost_skill": 0.07561265,
+   "cost_baseline": 0.044080400000000006
+  },
+  {
+   "skill": "resume-tailor",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.9375,
+   "preferred": 1.0,
+   "cost_skill": 0.06490119999999999,
+   "cost_baseline": 0.04292585
+  },
+  {
+   "skill": "reverse-architecture",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.07030195,
+   "cost_baseline": 0.04114355
+  },
+  {
+   "skill": "risk-register",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.14629199999999998,
+   "cost_baseline": 0.05891195
+  },
+  {
+   "skill": "role-shortlist",
+   "model": "claude-sonnet-5-5",
+   "evals": 4,
+   "skill_met": 0.9375,
+   "baseline_met": 0.8303571428571428,
+   "preferred": 0.5,
+   "cost_skill": 0.045642225,
+   "cost_baseline": 0.033751575
+  },
+  {
+   "skill": "rollout-plan",
+   "model": "claude-sonnet-5-5",
+   "evals": 4,
+   "skill_met": 0.875,
+   "baseline_met": 0.59375,
+   "preferred": 0.25,
+   "cost_skill": 0.133354925,
+   "cost_baseline": 0.07993895000000001
+  },
+  {
+   "skill": "runbook-generator",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.07400445,
+   "cost_baseline": 0.06090385000000001
+  },
+  {
+   "skill": "security-questionnaire-response",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 0.6666666666666666,
+   "preferred": 0.0,
+   "cost_skill": 0.0868122,
+   "cost_baseline": 0.05472375
+  },
+  {
+   "skill": "service-blueprint",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.75,
+   "preferred": 0.0,
+   "cost_skill": 0.08127414999999999,
+   "cost_baseline": 0.03492435
+  },
+  {
+   "skill": "skill-author",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.1507912,
+   "cost_baseline": 0.0801958
+  },
+  {
+   "skill": "skill-review",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 0.0,
+   "cost_skill": 0.052801299999999995,
+   "cost_baseline": 0.027835850000000002
+  },
+  {
+   "skill": "slide-outliner",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8285714285714285,
+   "baseline_met": 0.7285714285714285,
+   "preferred": 1.0,
+   "cost_skill": 0.0531793,
+   "cost_baseline": 0.03516645
+  },
+  {
+   "skill": "slo-spec",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9375,
+   "baseline_met": 0.8125,
+   "preferred": 0.0,
+   "cost_skill": 0.2255469,
+   "cost_baseline": 0.15443189999999998
+  },
+  {
+   "skill": "soc2-evidence-map",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.75,
+   "baseline_met": 0.6071428571428572,
+   "preferred": 0.0,
+   "cost_skill": 0.11310724999999999,
+   "cost_baseline": 0.06557185
+  },
+  {
+   "skill": "sonar-onboard",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 0.75,
+   "preferred": 0.5,
+   "cost_skill": 0.1031497,
+   "cost_baseline": 0.0497878
+  },
+  {
+   "skill": "sonar-review",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 0.5,
+   "cost_skill": 0.04753115,
+   "cost_baseline": 0.029643949999999995
+  },
+  {
+   "skill": "source-synthesis",
+   "model": "claude-sonnet-5-5",
+   "evals": 6,
+   "skill_met": 0.7648809523809524,
+   "baseline_met": 0.6696428571428572,
+   "preferred": 0.8333333333333334,
+   "cost_skill": 0.05622296666666666,
+   "cost_baseline": 0.0552221
+  },
+  {
+   "skill": "sql-review",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 1.0,
+   "cost_skill": 0.06547195,
+   "cost_baseline": 0.03658475
+  },
+  {
+   "skill": "strategy-analysis",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.6904761904761905,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.0,
+   "cost_skill": 0.04633685,
+   "cost_baseline": 0.03017435
+  },
+  {
+   "skill": "subagent-design",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428572,
+   "baseline_met": 0.7738095238095238,
+   "preferred": 0.0,
+   "cost_skill": 0.06360674999999999,
+   "cost_baseline": 0.0527301
+  },
+  {
+   "skill": "success-metrics",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.0,
+   "cost_skill": 0.04917165,
+   "cost_baseline": 0.030456449999999996
+  },
+  {
+   "skill": "team-status-report",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 0.5,
+   "cost_skill": 0.0456795,
+   "cost_baseline": 0.029567300000000005
+  },
+  {
+   "skill": "tech-debt-register",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428572,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.07670385,
+   "cost_baseline": 0.04257905
+  },
+  {
+   "skill": "terraform-module",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.15510174999999998,
+   "cost_baseline": 0.07988665
+  },
+  {
+   "skill": "terraform-plan-review",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428572,
+   "baseline_met": 0.7738095238095238,
+   "preferred": 1.0,
+   "cost_skill": 0.03720485,
+   "cost_baseline": 0.02649515
+  },
+  {
+   "skill": "test-plan-generator",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 1.0,
+   "cost_skill": 0.0530764,
+   "cost_baseline": 0.05459145
+  },
+  {
+   "skill": "threat-model",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.5,
+   "cost_skill": 0.0585469,
+   "cost_baseline": 0.03692955
+  },
+  {
+   "skill": "token-budget-estimator",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428572,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.053239049999999996,
+   "cost_baseline": 0.037825500000000005
+  },
+  {
+   "skill": "tool-use-schema-writer",
+   "model": "claude-sonnet-5-5",
+   "evals": 4,
+   "skill_met": 0.9642857142857143,
+   "baseline_met": 0.8035714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.04146785,
+   "cost_baseline": 0.038061450000000004
+  },
+  {
+   "skill": "tracker-brief-sync",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.1086843,
+   "cost_baseline": 0.04488690000000001
+  },
+  {
+   "skill": "user-journey-map",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.75,
+   "baseline_met": 0.8333333333333334,
+   "preferred": 0.0,
+   "cost_skill": 0.06467645,
+   "cost_baseline": 0.04693850000000001
+  },
+  {
+   "skill": "user-story-splitter",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.6785714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.0809465,
+   "cost_baseline": 0.03661955
+  },
+  {
+   "skill": "ux-writing",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.0,
+   "cost_skill": 0.09964695000000001,
+   "cost_baseline": 0.04107355
+  },
+  {
+   "skill": "web-performance-review",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "skill_met": 0.5625,
+   "baseline_met": 0.5625,
+   "preferred": 0.0,
+   "cost_skill": 0.0619517,
+   "cost_baseline": 0.06389635
+  }
+ ]
+}
