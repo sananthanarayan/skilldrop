@@ -21,7 +21,7 @@
       "label": "Claude Code (Anthropic)",
       "models": {
         "light": "claude-haiku-5-5",
-        "standard": "claude-sonnet-5",
+        "standard": "claude-sonnet-5-5",
         "heavy": "claude-opus-5-5"
       },
       "select_via": "`/model <model-id>` in the session, or hand the skill to the model-router agent for automatic dispatch.",
