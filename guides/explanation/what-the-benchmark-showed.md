@@ -318,3 +318,45 @@ On the same 224 evals as the table above:
   of the 118 evals that had two, so one trial is still weak evidence for a single skill. Light
   and heavy have one trial each, run a week earlier on the 0.16.21 catalogue. Their second
   trials come next.
+
+### The scripts without the instructions
+
+A skill that loses blind could be losing to its instructions while its scripts still help, or
+adding nothing at all. On 27 October the 44 skills that ship scripts ran a third arm on their
+132 held-out evals. It got the scripts and the data they read, and no SKILL.md, reference or
+examples: only a generated list of the scripts ([RFC-0067](../../docs/rfcs/0067-scripts-without-instructions.md)).
+The run used one trial on `claude-sonnet-5-5`, with the same two judges, and cost $106.54 at
+list price. The summary is in
+[`docs/benchmarks/tools-arm-sonnet-5-5.json`](../../docs/benchmarks/tools-arm-sonnet-5-5.json).
+
+| | Skill | Scripts only | Plain agent |
+|---|---|---|---|
+| Assertions met | 80% | 76% | 71% |
+| $ per run | $0.112 | $0.094 | $0.087 |
+
+| Blind pair | Judge 1 | Judge 2 |
+|---|---|---|
+| Skill preferred to the plain agent | 45% (37 to 53) | 44% (36 to 52) |
+| Scripts only preferred to the plain agent | 44% (36 to 52) | 44% (36 to 53) |
+| Skill preferred to scripts only | 48% (40 to 57) | 46% (38 to 54) |
+
+- **On the checks, each layer adds a little.** The scripts add about 5 points to the plain
+  agent, and the instructions about 4 more.
+- **Blind, no arm reliably beats another.** Every interval spans even, and the plain agent
+  leans slightly ahead of both. Taken together, the instructions add no measurable preference
+  over the scripts alone, at about 19% more per run.
+- **Per skill, most results are open.** A reading needs every judge to agree, and most skills
+  have two evals:
+  - **32 skills are mixed.**
+  - **8 read *the plain agent is preferred*:** `ai-usage-report`, `deck-builder`,
+    `file-to-markdown`, `hypothesis-comparison`, `marketing-flyer`, `md-to-html`,
+    `mermaid-render` and `risk-register`.
+  - **3 read *the scripts carry it*:** `backlog-triage`, `figma-diagrams`, and
+    `interactive-diagram`, narrowly, on 10 evals.
+  - **1 reads *instructions help*:** `codebase-tour`.
+
+  Several on the plain-preferred list are converters whose real output is a file, so check
+  those rows against the outputs before reading them as the skill failing.
+- **Nothing was decided on this.** It is one trial. The judges' reasons haven't been read, so
+  the list of losing skills can be fixed before anyone looks at why. A second trial on the same
+  evals is running.
