@@ -217,6 +217,6 @@
     "md-to-html": { "in": "1.2.0", "why": "On its held-out evals, in each of two trials and with both blind judges, the agent without it made the better page: the skill's script showed raw HTML as text and its security policy blocked embeds, and it adds no rule the agent breaks." },
     "mermaid-render": { "in": "1.2.0", "why": "On its held-out evals, in each of two trials and with both blind judges, the agent without it fixed the same diagrams, ran the Mermaid CLI itself and said plainly what it had not rendered; the skill adds no rule it breaks." },
     "marketing-flyer": { "in": "1.2.0", "why": "On its held-out evals, in each of two trials and with both blind judges, the agent without it built the whole flyer with placeholders where the skill stopped or used a generic template; it adds no rule the agent breaks." },
-    "deck-builder": { "in": "1.2.0", "why": "On its held-out evals the agent without it built the better deck in each of two trials; rebuilt rule-first, with its script able to run, it still lost on fresh evals (judges 2 and 1 of 4; 69% of checks against 81%)." }
+    "deck-builder": { "in": "1.2.0", "why": "On its held-out evals the agent without it built the better deck in each of two trials; rebuilt rule-first, with its script able to run, it still lost on fresh evals (judges 2 and 1 of 4; 69% of checks against 81%).", "instead": "md-to-pptx" }
   }
 }

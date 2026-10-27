@@ -195,9 +195,21 @@ def span_of(value, cap):
     return min(int(v), cap) if v.isascii() and v.isdigit() and int(v) > 0 else 1
 
 
+# Every package opened during a conversion, closed by main() when it ends: a nested function
+# that keeps the ZipFile alive would otherwise hold the file open on Windows until garbage
+# collection, so it couldn't be deleted or overwritten.
+OPEN_ZIPS = []
+
+
+def close_zips():
+    while OPEN_ZIPS:
+        OPEN_ZIPS.pop().close()
+
+
 def open_zip(path, kind):
     try:
         z = zipfile.ZipFile(str(path))
+        OPEN_ZIPS.append(z)
     except zipfile.BadZipFile:
         with open(str(path), "rb") as fh:
             if fh.read(8) == b"\xD0\xCF\x11\xE0\xA1\xB1\x1A\xE1":
@@ -1819,6 +1831,13 @@ LEGACY = {".doc": ".docx", ".ppt": ".pptx", ".xls": ".xlsx", ".rtf": ".docx", ".
 
 
 def main(argv=None):
+    try:
+        return _main(argv)
+    finally:
+        close_zips()  # on success, on an error exit, and on a damaged file alike
+
+
+def _main(argv=None):
     ap = argparse.ArgumentParser(description="Convert a document to Markdown for another skill to read.")
     ap.add_argument("input", help=".docx .pptx .xlsx .html .csv .tsv .json .txt .md .eml .msg .pdf")
     ap.add_argument("-o", "--output", required=True, help="Markdown file to write, or - for stdout")

@@ -117,6 +117,11 @@ revisit them as a new skill measured from the start.
 taken without its package installed. It should be re-run with the new environment before
 anything is decided on it.
 
+**A retired skill can still be installed** from the last commit that had it, with
+`npx skilldrop-cli install <skill> --from https://github.com/sananthanarayan/skilldrop#43317a11eda9280e803e7224e9d1878211ee84f2`.
+Its record points `deck-builder` at `md-to-pptx`. The other three have no replacement skill:
+the plain agent does the job.
+
 ## Decision
 
 Implemented in 1.2.0:
