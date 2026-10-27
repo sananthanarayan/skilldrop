@@ -325,38 +325,52 @@ A skill that loses blind could be losing to its instructions while its scripts s
 adding nothing at all. On 27 October the 44 skills that ship scripts ran a third arm on their
 132 held-out evals. It got the scripts and the data they read, and no SKILL.md, reference or
 examples: only a generated list of the scripts ([RFC-0067](../../docs/rfcs/0067-scripts-without-instructions.md)).
-The run used one trial on `claude-sonnet-5-5`, with the same two judges, and cost $106.54 at
+The run used two trials on `claude-sonnet-5-5`, with the same two judges, and cost $213.05 at
 list price. The summary is in
 [`docs/benchmarks/tools-arm-sonnet-5-5.json`](../../docs/benchmarks/tools-arm-sonnet-5-5.json).
 
 | | Skill | Scripts only | Plain agent |
 |---|---|---|---|
 | Assertions met | 80% | 76% | 71% |
-| $ per run | $0.112 | $0.094 | $0.087 |
+| $ per run | $0.113 | $0.095 | $0.084 |
 
 | Blind pair | Judge 1 | Judge 2 |
 |---|---|---|
-| Skill preferred to the plain agent | 45% (37 to 53) | 44% (36 to 52) |
-| Scripts only preferred to the plain agent | 44% (36 to 52) | 44% (36 to 53) |
-| Skill preferred to scripts only | 48% (40 to 57) | 46% (38 to 54) |
+| Skill preferred to the plain agent | 45% (38 to 51) | 46% (39 to 53) |
+| Scripts only preferred to the plain agent | 44% (38 to 51) | 40% (34 to 46) |
+| Skill preferred to scripts only | 52% (45 to 58) | 52% (45 to 59) |
 
 - **On the checks, each layer adds a little.** The scripts add about 5 points to the plain
   agent, and the instructions about 4 more.
-- **Blind, no arm reliably beats another.** Every interval spans even, and the plain agent
-  leans slightly ahead of both. Taken together, the instructions add no measurable preference
-  over the scripts alone, at about 19% more per run.
-- **Per skill, most results are open.** A reading needs every judge to agree, and most skills
-  have two evals:
-  - **32 skills are mixed.**
-  - **8 read *the plain agent is preferred*:** `ai-usage-report`, `deck-builder`,
-    `file-to-markdown`, `hypothesis-comparison`, `marketing-flyer`, `md-to-html`,
-    `mermaid-render` and `risk-register`.
-  - **3 read *the scripts carry it*:** `backlog-triage`, `figma-diagrams`, and
-    `interactive-diagram`, narrowly, on 10 evals.
-  - **1 reads *instructions help*:** `codebase-tour`.
+- **Blind, the plain agent is not beaten by either.** The skill against the plain agent spans
+  even for both judges. The second judge preferred the plain agent to the scripts alone, with
+  an interval below even.
+- **Overall, the instructions and the scripts alone come out even.** That's 52% for both
+  judges. Overall, the instructions don't buy a preference, at about 19% more per run.
+- **One trial is not enough for a single skill.** The winner of a pair was the same in both
+  trials for 251 of 396 pairs (63%). Four skills went from one clear reading to a different one
+  between trials: `backlog-triage`, `codebase-tour`, `hypothesis-comparison` and
+  `risk-register`.
 
-  Several on the plain-preferred list are converters whose real output is a file, so check
-  those rows against the outputs before reading them as the skill failing.
-- **Nothing was decided on this.** It is one trial. The judges' reasons haven't been read, so
-  the list of losing skills can be fixed before anyone looks at why. A second trial on the same
-  evals is running.
+**Per skill, over both trials.** A reading needs both judges to agree, and most skills have two
+evals:
+
+| Reading | Skills |
+|---|---|
+| The plain agent is preferred, in **each** trial (5) | `deck-builder`, `file-to-markdown`, `marketing-flyer`, `md-to-html`, `mermaid-render` |
+| The plain agent is preferred, over both trials together (3 more) | `ai-usage-report`, `judge-audit`, `lean-canvas` |
+| Instructions help (5) | `agent-incident-response`, `codebase-tour`, `context-graph`, `dependency-upgrade-review`, `resume-tailor` |
+| The scripts carry it (2) | `feedback-synthesis`, `web-performance-review` |
+| Mixed (29) | the rest |
+
+- **The first five are the list for keep, rebuild or retire.** They lost to the plain agent
+  in each trial, with both judges, which is the roadmap's bar.
+  - Four make a file: `deck-builder`, `file-to-markdown`, `md-to-html` and `mermaid-render`.
+    For those, check the outputs before the reasons. A blind judge reading a reply may be
+    rewarding the plain agent's prose over a converted file.
+  - `marketing-flyer` is the one that isn't a converter.
+- **The instructions earn their cost on five skills.** Each beat both the plain agent and its
+  own scripts: four on two to four evals, and `context-graph` on 14. So the right question is
+  which skills need their instructions, not whether skills do.
+- **Nothing was decided on this yet.** The judges' reasons haven't been read, so the list
+  above was fixed before anyone looked at why.

@@ -89,8 +89,12 @@ finding.
 Accepted and implemented: `run_bench.py --tools-arm`, with unit tests in
 `tests/test_run_bench_tools_arm.py`.
 
-**First full run, 27 October.** One trial on all 44 scripted skills' 132 held-out evals, for
-$106.54. It ran ahead of the tier trials, so the whole picture came first. No arm was reliably
-preferred to another. Eight skills read *the plain agent is preferred*, three *the scripts carry
-it*, one *instructions help*, and 32 *mixed*. The account is in
+**First full run, 27 October.** Two trials on all 44 scripted skills' 132 held-out evals, for
+$213.05. It ran ahead of the tier trials, so the whole picture came first.
+- **Blind, nothing beat the plain agent,** and the skill against its scripts alone came out
+  even.
+- **Pair winners agreed in only 63% of pairs across the two trials,** so a per-skill reading
+  needs both.
+- **Five skills lost in each trial with both judges.** Five more gained from their
+  instructions. The account is in
 [what the benchmark showed](../../guides/explanation/what-the-benchmark-showed.md#the-scripts-without-the-instructions).
