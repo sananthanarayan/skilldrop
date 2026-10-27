@@ -348,7 +348,8 @@ def scripts_digest(skill):
         for n in sorted(names):
             path = os.path.join(base, n)
             with open(path, "rb") as fh:
-                h.update(os.path.relpath(path, root).encode() + b"\0" + fh.read())
+                # "/" on every OS, so the same scripts give the same key on Windows too
+                h.update(os.path.relpath(path, root).replace(os.sep, "/").encode() + b"\0" + fh.read())
     return h.hexdigest()[:16]
 
 

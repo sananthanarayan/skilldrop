@@ -31,7 +31,8 @@ class StagingTest(unittest.TestCase):
             fake_skill(skill)
             with mock.patch.object(catalog, "skill_dir", return_value=skill):
                 dest = run_bench.stage_skill("widgets", ws, "tools")
-            got = sorted(os.path.relpath(os.path.join(b, n), dest) for b, _, ns in os.walk(dest) for n in ns)
+            got = sorted(os.path.relpath(os.path.join(b, n), dest).replace(os.sep, "/")
+                         for b, _, ns in os.walk(dest) for n in ns)
             self.assertEqual(got, ["scripts/count.py", "scripts/notes.txt", "templates/palette.json"])
 
     def test_full_layout_keeps_the_instructions_but_not_the_evals(self):
