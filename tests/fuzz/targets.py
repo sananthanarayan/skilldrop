@@ -116,10 +116,6 @@ TARGETS = [
         b"`services/orders/`, see [ADR 1](0001-record.md) and RFC-0012.\n",
         b"# ADR 3: Kafka\n\n## Status\n\nSuperseded by ADR-0009\n\nDate: 2025-01-02\n\nAmends ADR-0001. `src/x/*`\n",
     ]),
-    ("md-to-html", "md-to-html", "md_to_html.py", ["{in}", "-o", "{out}", "--toc"], ".md", (0, 1, 2), [
-        b"### Note\n\n## Setup\n\nRun **this** `cmd` and see [docs](https://docs.example/).\n\n| a | b |\n|---|---|\n| 1 | 2 |\n"
-        b"\n```python\nprint('x')\n```\n\n- [ ] task\n> quote\n",
-    ]),
     ("md-to-confluence", "md-to-confluence", "md_to_confluence.py", ["{in}", "-o", "{out}.xhtml", "--toc"], ".md", (0, 1, 2), [MARKDOWN]),
     # file-to-markdown's readers, each from a valid file of its kind
     ("read-msg", "file-to-markdown", "to_markdown.py", ["{in}", "-o", "{out}.md"], ".msg", (0, 1, 2), [seeds.outlook_msg()]),

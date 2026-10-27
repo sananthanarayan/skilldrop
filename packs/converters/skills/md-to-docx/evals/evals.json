@@ -6,7 +6,7 @@
       "prompt": "Northwind Legal wants our vendor onboarding policy as a Word doc so they can track changes. It's in docs/vendor-onboarding.md: a # title, ## sections, a numbered approval process with sub-steps, a pipe table of approval limits ($5,000 / $50,000 / unlimited), a footnote citing the finance policy, and a Mermaid flowchart of the approval path. Use ./brand/brand.json and A4 paper.",
       "assertions": [
         "Runs md_to_docx.py with --brand ./brand/brand.json and --page a4, writing a .docx",
-        "Deals with the Mermaid flowchart before converting: renders it to PNG with mermaid-render and embeds it, or says plainly that it stays as code",
+        "Deals with the Mermaid flowchart before converting: renders it to PNG with the Mermaid CLI and embeds it, or says plainly that it stays as code",
         "Moves the footnote's text into the body or a Notes section instead of letting it drop silently",
         "Reports every WARN line the script printed, each with what was done about it",
         "Keeps the approval limits ($5,000 / $50,000 / unlimited) and every other fact exactly as in the source",

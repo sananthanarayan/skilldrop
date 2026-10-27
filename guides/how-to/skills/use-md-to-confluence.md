@@ -61,7 +61,6 @@ A good result:
 ## Use something else when
 
 - A Word file to edit with tracked changes; use `md-to-docx`
-- A standalone web page or an HTML attachment for email; use `md-to-html`
 - Jira epics and issues from a PRD; use `tracker-brief-sync`
 - Writing the runbook itself; use `runbook-generator`, then convert
 
@@ -69,4 +68,4 @@ A good result:
 
 - [SKILL.md](../../../packs/converters/skills/md-to-confluence/SKILL.md), the instructions the agent reads
 - [Its page on the site](https://sananthanarayan.github.io/skilldrop/skills/md-to-confluence/)
-- Related: [md-to-docx](use-md-to-docx.md), [md-to-html](use-md-to-html.md), [mermaid-render](use-mermaid-render.md), [runbook-generator](use-runbook-generator.md), [tracker-brief-sync](use-tracker-brief-sync.md)
+- Related: [md-to-docx](use-md-to-docx.md), [runbook-generator](use-runbook-generator.md), [tracker-brief-sync](use-tracker-brief-sync.md)

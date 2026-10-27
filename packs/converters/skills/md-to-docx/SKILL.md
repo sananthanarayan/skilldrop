@@ -31,8 +31,8 @@ from `guide-builder` or
      Word's navigation pane.
    - Raw HTML, footnotes and Mermaid blocks don't convert. Rewrite an HTML table as a pipe table,
      move a footnote's text into the sentence or a "Notes" section, and render each diagram to PNG
-     with `mermaid-render` (PNG output needs mermaid-cli installed), then embed the PNG as a
-     Markdown image with alt text.
+     with the Mermaid CLI (`npx -y @mermaid-js/mermaid-cli -i diagram.mmd -o diagram.png`; it needs Node.js), then embed the PNG as a Markdown image with
+     alt text.
    - Lists nested deeper than two levels are flattened. Restructure them into a sub-heading
      and a list.
    - Image paths must be relative to the Markdown file and point at PNG or JPEG files.
@@ -107,7 +107,6 @@ or page size uses the defaults, with an `[assumption]` line at the top of your r
 ## When NOT to use this skill
 
 - ❌ Slides; use `deck-builder`
-- ❌ A web page or a file to open in a browser; use `md-to-html`
 - ❌ The other direction, a Word file or PDF back to Markdown; use `file-to-markdown`
 - ❌ Tables that need to be sorted, filtered or summed; use `md-to-xlsx`
 - ❌ Writing the document itself; draft it first with `guide-builder` or the skill for that document, then convert

@@ -8,6 +8,13 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.2.0 — 2026-10-27
+
+- **Three skills are retired: `md-to-html`, `mermaid-render` and `marketing-flyer`.** On their held-out evals, in each of two trials and with both blind judges, plain Claude Code on Sonnet 5.5 did the job better. It wrote the better web page in every run, fixed the same diagrams and ran the Mermaid CLI itself, and built the whole flyer with placeholders where the skill stopped. None of the three adds a rule the plain agent breaks ([RFC-0068](docs/rfcs/0068-five-skills-that-lost-to-the-plain-agent.md)).
+  - **If you installed one, it keeps working.** `skilldrop outdated`, `update` and `doctor` now name it, with the reason and the uninstall command, and remove nothing.
+- **The design pack is about decks now.** Its first task captures your brand and builds a deck in it. The converters pack covers Word, Excel, PowerPoint and Confluence. To show a Mermaid diagram as a picture, the converters now say to render it with the Mermaid CLI (`npx -y @mermaid-js/mermaid-cli`) and embed the PNG.
+- **`file-to-markdown` and `deck-builder` also lost to the plain agent, and will be rebuilt rather than retired.** `file-to-markdown`'s script dropped an embedded image and wrote an unaccepted tracked change as final text. `deck-builder`'s script couldn't run in the benchmark because it needs `python-pptx`. Both will be measured again on fresh evals, and retired if they still lose.
+
 ## 1.1.3 — 2026-10-25
 
 - **The standard tier now resolves to Sonnet 5.5 in Claude Code**, the same generation as light (Haiku 5.5) and heavy (Opus 5.5), at the same list price as Sonnet 5. The `model-router` agent and the routing table's `/model` advice pick it up for every skill assigned standard. On the 224 held-out evals Sonnet 5 had met fewer checks than Haiku 5.5, with a skill (78% against 83%) and without one (72% against 80%); Sonnet 5.5 meets 85% and 83%, and costs $0.07 a run with a skill against Sonnet 5's $0.13.

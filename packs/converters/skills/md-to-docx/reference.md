@@ -79,7 +79,7 @@ embedded: a reader without the font sees Word's substitute. Brand fonts that are
 | Raw HTML blocks | No dependable mapping from arbitrary HTML to Word | Rewrite as Markdown; HTML tables as pipe tables |
 | Inline HTML tags | Same | The text is kept; `<br>` becomes a line break |
 | Footnotes `[^1]` | Word footnotes need a separate part and are rarely worth it in a converted draft | Fold the note into the sentence, or a "Notes" section |
-| Mermaid blocks | Rendering needs a browser engine | Render to PNG with mermaid-render, then embed the image |
+| Mermaid blocks | Rendering needs a browser engine | Render to PNG with the Mermaid CLI (`npx -y @mermaid-js/mermaid-cli`), then embed the image |
 | Nesting past 2 levels | Flattened to keep the document readable | Split with a sub-heading |
 | YAML front matter | Not content | Its `title:` is used as the document title |
 

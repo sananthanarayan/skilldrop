@@ -12,7 +12,7 @@
       "name": "skilldrop",
       "source": ".",
       "description": "Portable AI-agent skills, measured against the agent without them. ADRs, PRDs, runbooks, decks and reviews, installable into Claude Code, Cursor, Kiro, and any IDE that takes custom instructions. One command per skill or per role-based pack.",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -27,7 +27,7 @@
         "ref": "plugins"
       },
       "description": "The cross-role toolkit every pack builds on: structured intake, document critique, the review council, output hygiene, and the decision graph behind a codebase, plus the ship-a-draft wrapper. Installed automatically with every role pack. (5 skills)",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -50,7 +50,7 @@
         "ref": "plugins"
       },
       "description": "Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them. (16 skills)",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -73,7 +73,7 @@
         "ref": "plugins"
       },
       "description": "Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, and success measurement. (15 skills)",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -96,7 +96,7 @@
         "ref": "plugins"
       },
       "description": "Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, pull request descriptions, a ranked technical-debt register, migrations, launch readiness, release notes, agent-policy files, and code-quality gates. (25 skills)",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -119,7 +119,7 @@
         "ref": "plugins"
       },
       "description": "Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models. (13 skills)",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -142,7 +142,7 @@
         "ref": "plugins"
       },
       "description": "Non-technical audiences: audience profiling, exec summaries, decision logs, and guides. Decks live in the design pack. (9 skills)",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -163,8 +163,8 @@
         "path": "packs/design",
         "ref": "plugins"
       },
-      "description": "On-brand visual work: capture a brand once, then build real PowerPoint decks and print-ready marketing flyers in that brand, with logo, colours and fonts applied. (9 skills)",
-      "version": "1.1.3",
+      "description": "On-brand visual work: capture a brand once, then build real PowerPoint decks in that brand, with logo, colours and fonts applied. (8 skills)",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -173,8 +173,7 @@
         "brand",
         "deck",
         "pptx",
-        "flyer",
-        "marketing",
+        "presentation",
         "logo"
       ],
       "homepage": "https://sananthanarayan.github.io/skilldrop/packs/design/"
@@ -188,7 +187,7 @@
         "ref": "plugins"
       },
       "description": "Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, and AI-usage reporting. (20 skills)",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -211,7 +210,7 @@
         "ref": "plugins"
       },
       "description": "Skills for teams building on the Anthropic API — prompt caching, token budgeting, eval generation for skills, and tool-use schema writing. (4 skills)",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -233,8 +232,8 @@
         "path": "packs/converters",
         "ref": "plugins"
       },
-      "description": "Turn Markdown into Word, Excel and HTML files that people outside engineering can open, turn their files back into Markdown, and render diagrams to images. Standard-library Python scripts, with nothing to install. (12 skills)",
-      "version": "1.1.3",
+      "description": "Turn Markdown into Word, Excel, PowerPoint and Confluence files that people outside engineering can open, and turn their files back into Markdown. Standard-library Python scripts, with nothing to install. (10 skills)",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -246,8 +245,8 @@
         "docx",
         "excel",
         "xlsx",
-        "html",
-        "mermaid"
+        "powerpoint",
+        "confluence"
       ],
       "homepage": "https://sananthanarayan.github.io/skilldrop/packs/converters/"
     },
@@ -260,7 +259,7 @@
         "ref": "plugins"
       },
       "description": "The experience around a product: the structure people navigate, the content and interface words they read, the components they use, and the service behind it all. (10 skills)",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -284,7 +283,7 @@
         "ref": "plugins"
       },
       "description": "Take a question from vague to answered: plan the research around the decision it serves, synthesise the sources with every claim cited, and rank rival explanations by the evidence against them. (8 skills)",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -308,7 +307,7 @@
         "ref": "plugins"
       },
       "description": "For leads and PMs who run work in Jira, Linear or GitHub Projects: load a PRD into the tracker, triage the backlog, write the weekly status report, and check the tracker still matches the doc, all from an export or an MCP tool, with the numbers computed rather than estimated. (8 skills)",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -333,7 +332,7 @@
         "ref": "plugins"
       },
       "description": "For analysts and the people who rely on their numbers: review SQL for the bugs that quietly inflate a figure, and spec dashboards around a decision instead of every chart that was easy to make. (7 skills)",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -357,7 +356,7 @@
         "ref": "plugins"
       },
       "description": "Governance, risk and compliance drafts for compliance leads, DPOs and risk owners: a risk register with a checked heat map, a GDPR data protection impact assessment, a SOC 2 control-to-evidence map, and answers to a customer security questionnaire drawn from your own evidence, each prepared for a qualified person to review. (9 skills)",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -383,7 +382,7 @@
         "ref": "plugins"
       },
       "description": "Terraform you can hand to another team and plans you can trust before apply: reusable modules with secure defaults, and a plan review that catches destroys, data loss, access widening and drift. (7 skills)",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -409,7 +408,7 @@
         "ref": "plugins"
       },
       "description": "For frontend engineers and the people who review their pages: read a Lighthouse report for what actually slows the page, find what makes a JavaScript bundle heavy, and choose how each route is rendered from what it needs. (8 skills)",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -433,7 +432,7 @@
         "ref": "plugins"
       },
       "description": "For people writing Agent Skills in their own repos: write a portable SKILL.md folder from a described task, then audit any skill for routing, portability, safety, structure and evals before you share it. (7 skills)",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"
@@ -460,7 +459,7 @@
         "ref": "plugins"
       },
       "description": "Job applications, for any occupation: a shortlist of which of an employer's roles to go for, an honest check of your resume against the posting, a tailored resume and a cover letter that say nothing you didn't, the application form's answers drafted from your resume, and a script that lists every figure and name in a draft that your own resume doesn't contain. (10 skills)",
-      "version": "1.1.3",
+      "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
         "url": "https://github.com/sananthanarayan"

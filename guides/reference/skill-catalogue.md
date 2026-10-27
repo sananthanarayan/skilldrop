@@ -156,12 +156,11 @@ Skills for teams building directly on the Anthropic API — prompt caching strat
 
 ## Design and brand
 
-Capture a brand once, then build decks and flyers that use it. `brand-kit` writes the `brand.json` that `deck-builder` and `marketing-flyer` read; each also asks for branding itself when there is none.
+Capture a brand once, then build decks that use it. `brand-kit` writes the `brand.json` that `deck-builder` reads; it also asks for branding itself when there is none.
 
 | Skill | What it does |
 |---|---|
 | [`brand-kit`](../../packs/design/skills/brand-kit/SKILL.md) | Capture a brand as a reusable `brand.json`: logo files (and an on-dark version), five colour roles as hex codes, heading and body fonts, voice (words to use and avoid), imagery rules, a PowerPoint template, contact details and legal footer. Every value is traced to its source and tagged `[explicit]` or `[inferred]`; a stdlib checker fails malformed hex codes, text contrast below 4.5:1 and missing files, and flags SVG logos PowerPoint can't use. Writes a one-page `BRAND.md` too. |
-| [`marketing-flyer`](../../packs/design/skills/marketing-flyer/SKILL.md) | A print-ready flyer in the user's brand — event, launch, offer, hiring — as one self-contained HTML file (Letter, A4, A5, or square and story sizes for social) that saves to PDF, or exports through headless Chrome with `--pdf` / `--png`. Four layouts (hero, split, event, minimal); one call to action; a headline of ten words or fewer; at most four points; contrast checked, with band text flipped to whichever colour reads; no invented dates, prices or contact details. Stdlib only. |
 | [`slide-outliner`](../../packs/design/skills/slide-outliner/SKILL.md) | Outline an architecture-review or pitch deck — slide titles, key points, and speaker notes — sized to a target time budget. Doesn't generate PPTX. |
 | [`deck-builder`](../../packs/design/skills/deck-builder/SKILL.md) | Generate a real PowerPoint (`.pptx`) file from content + audience + a brand `.potx`/`.pptx` template or colour palette. Uses `python-pptx`; 10 layouts including charts, tables and images, audience-tuned density. Pairs naturally with `audience-profile` + `slide-outliner`. |
 
@@ -173,9 +172,7 @@ Capture a brand once, then build decks and flyers that use it. `brand-kit` write
 | [`md-to-docx`](../../packs/converters/skills/md-to-docx/SKILL.md) | Markdown to a Word .docx with real Heading styles (navigation pane, TOC), live links, lists, tables, code, embedded images, optional brand fonts, and a warning per dropped construct. |
 | [`md-to-pptx`](../../packs/converters/skills/md-to-pptx/SKILL.md) | Markdown to a PowerPoint deck with nothing to install: one heading per slide, real tables and embedded images, comments as speaker notes, and a section too long for one slide split onto "continued" slides at full size. The reply names every split, everything dropped, and any speaker note that would go out with the file. |
 | [`md-to-confluence`](../../packs/converters/skills/md-to-confluence/SKILL.md) | Markdown to a Confluence page in storage format: real code blocks, tables, tasks and panels, images listed as attachments, and an optional publish that first shows which page it will change and at what version, refuses stale or wrong-space overwrites, and reads credentials only from the environment. |
-| [`md-to-html`](../../packs/converters/skills/md-to-html/SKILL.md) | One self-contained, print-friendly HTML file from Markdown: anchored headings, optional TOC, embedded images, brand colours, Mermaid as text or pinned CDN, raw HTML escaped. |
 | [`md-to-xlsx`](../../packs/converters/skills/md-to-xlsx/SKILL.md) | Markdown tables, CSV or JSON to an Excel .xlsx: one sheet per table named from its heading, typed numbers, currency, percentages and dates, frozen filtered header, formulas inert by default. |
-| [`mermaid-render`](../../packs/converters/skills/mermaid-render/SKILL.md) | Mermaid lint with line numbers and fixes for the errors that stop rendering, then SVG/PNG/PDF via mermaid-cli or a standalone HTML page without it. |
 
 ## Data & analytics
 

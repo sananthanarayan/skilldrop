@@ -241,7 +241,7 @@ Markdown:
 
 ## `ops-review.pdf`
 
-A two-page PDF printed from Chrome: the `md-to-html` example's output, so it has a title,
+A two-page PDF printed from Chrome, from an HTML page of the same report, so it has a title,
 a nested list, a table, a chart image, a Mermaid diagram kept as text, and a code block.
 
 ```bash

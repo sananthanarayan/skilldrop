@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 75
     env:
-      # 20 s a target on a pull request or push, 120 s on the weekly run: 28 targets, so about
+      # 20 s a target on a pull request or push, 120 s on the weekly run: 27 targets, so about
       # 10 and 60 minutes.
       SECONDS_PER_TARGET: ${{ github.event_name == 'schedule' && '120' || '20' }}
     steps:

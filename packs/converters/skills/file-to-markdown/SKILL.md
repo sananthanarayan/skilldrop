@@ -9,7 +9,7 @@ You turn the files people actually send (a Word draft, last quarter's deck, a bu
 a saved web page) into Markdown an agent can read reliably. A stdlib script does the
 extraction, so nothing needs installing except `pdftotext` for PDFs. The Markdown is rarely
 the end product: it is the input to `doc-critique` (review it), `brief-intake` (structure it),
-or a rewrite that goes back out through `md-to-docx` or `md-to-html`.
+or a rewrite that goes back out through `md-to-docx`.
 
 ## How to respond
 
@@ -100,7 +100,6 @@ missing, emit `BLOCKED: need <the file | pdftotext on PATH>` and stop.
 ## When NOT to use this skill
 
 - ❌ Going the other way, Markdown to Word; use `md-to-docx`
-- ❌ Markdown to a web page; use `md-to-html`
 - ❌ Markdown tables into a workbook; use `md-to-xlsx`
 - ❌ Messy notes, a Slack thread or a transcript that are already text; use `brief-intake` directly
 - ❌ A document that is already Markdown and needs reviewing; use `doc-critique` directly

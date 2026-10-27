@@ -1,6 +1,6 @@
 {
   "name": "md-to-pptx",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Turn an existing Markdown document (a status report, runbook, review or notes) into a PowerPoint deck (.pptx) that opens without a repair prompt, with nothing to install. Each heading becomes a slide, lists keep their nesting, tables become real PowerPoint tables, images are embedded, and comments become speaker notes. A section too long for one slide is split onto \"continued\" slides instead of shrinking the text, and the reply names every split, everything dropped, and any speaker note that would go out with the file. Use when the user says \"turn this markdown into slides\", \"make this report a PowerPoint\", \"convert the .md to pptx\", \"I need this as a deck for Thursday\", or \"export these notes to PowerPoint\".",
   "entrypoint": "SKILL.md",
   "deps": {
@@ -16,17 +16,10 @@
     "deck-builder",
     "file-to-markdown",
     "md-to-docx",
-    "md-to-html",
-    "mermaid-render",
     "slide-outliner"
   ],
   "handoff": [
-    {
-      "to": "mermaid-render",
-      "when": "the Markdown contains Mermaid diagram blocks",
-      "purpose": "Render each diagram to PNG so it is embedded on its slide instead of appearing as code.",
-      "fallback": "If mermaid-render is absent, leave the block as code, tell the user the diagram did not convert, and suggest exporting it to PNG from mermaid.live."
-    },
+    
     {
       "to": "deck-builder",
       "when": "the user wants the deck redesigned for an audience (charts, layouts, a narrative) rather than converted as written",

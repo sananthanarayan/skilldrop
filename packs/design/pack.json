@@ -1,7 +1,7 @@
 {
-  "description": "On-brand visual work: capture a brand once, then build real PowerPoint decks and print-ready marketing flyers in that brand, with logo, colours and fonts applied.",
+  "description": "On-brand visual work: capture a brand once, then build real PowerPoint decks in that brand, with logo, colours and fonts applied.",
   "display_name": "Design",
-  "keywords": ["brand", "deck", "pptx", "flyer", "marketing", "logo"],
+  "keywords": ["brand", "deck", "pptx", "presentation", "logo"],
   "links": {
     "documentation": "https://sananthanarayan.github.io/skilldrop/packs/design/"
   },
@@ -13,18 +13,18 @@
   "first-value": {
     "audience-posture": "non-technical",
     "prerequisites": ["Your logo as a PNG file, and your brand colours if you know them"],
-    "starter-task": "Capture your brand once, then make a flyer in it",
-    "starter-prompt": "Set up our brand kit from this logo (./brand/logo.png) and these colours: #0E5A46, #F2A541. Then make a Letter-size flyer for our community health fair on Saturday 14 November, 10am–2pm, at Riverside Park.",
-    "verification": "brand-kit writes brand.json and a one-page BRAND.md with contrast checked, and marketing-flyer writes flyer.html in your colours with your logo, one call to action, and only the facts you gave it.",
-    "recovery": "If the flyer comes out in default colours, check that marketing-flyer was given the brand.json path. If brand-kit does not activate, ask for it by name (\"use brand-kit\")."
+    "starter-task": "Capture your brand once, then build a deck in it",
+    "starter-prompt": "Set up our brand kit from this logo (./brand/logo.png) and these colours: #0E5A46, #F2A541. Then turn ./notes/q3-update.md into a five-slide deck in that brand for Thursday's team meeting.",
+    "verification": "brand-kit writes brand.json and a one-page BRAND.md with contrast checked, and deck-builder writes an editable .pptx in your colours and fonts with your logo, using only the content you gave it.",
+    "recovery": "If the deck comes out in default colours, check that deck-builder was given the brand.json path. If brand-kit does not activate, ask for it by name (\"use brand-kit\")."
   },
   "requires": ["core"],
   "journey": {
-    "when": "You need a deck or a flyer in your own branding and do not want to answer the brand questions every time.",
+    "when": "You need a deck in your own branding and do not want to answer the brand questions every time.",
     "you_bring": [
       "your logo as a PNG, and a white version if you have one",
       "brand colours, fonts or a PowerPoint template, if you know them",
-      "the content: the doc or points for the deck, and the event facts for a flyer",
+      "the content: the doc or points for the deck",
       "the audience and how long you have to present"
     ],
     "steps": [
@@ -48,13 +48,8 @@
         "you_do": "Run it on the deck against the deck rubric, as deck-builder recommends.",
         "you_get": "A verdict and severity-tagged findings with a fix for each.",
         "decide": "Ship the deck, apply the changes, or rework the outline."
-      },
-      {
-        "skill": "marketing-flyer",
-        "you_do": "If you also need a flyer, give it the event facts and the same brand.json.",
-        "you_get": "A print-ready flyer.html with one call to action and only the facts you gave it, which you can save to PDF."
       }
     ],
-    "you_end_with": "A reusable brand kit, a reviewed on-brand .pptx, and optionally a flyer built from the same brand."
+    "you_end_with": "A reusable brand kit and a reviewed, on-brand .pptx."
   }
 }

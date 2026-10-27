@@ -1,7 +1,7 @@
 {
-  "description": "Turn Markdown into Word, Excel and HTML files that people outside engineering can open, turn their files back into Markdown, and render diagrams to images. Standard-library Python scripts, with nothing to install.",
+  "description": "Turn Markdown into Word, Excel, PowerPoint and Confluence files that people outside engineering can open, and turn their files back into Markdown. Standard-library Python scripts, with nothing to install.",
   "display_name": "Converters",
-  "keywords": ["convert", "markdown", "word", "docx", "excel", "xlsx", "html", "mermaid"],
+  "keywords": ["convert", "markdown", "word", "docx", "excel", "xlsx", "powerpoint", "confluence"],
   "links": {
     "documentation": "https://sananthanarayan.github.io/skilldrop/packs/converters/"
   },
@@ -20,10 +20,9 @@
   },
   "requires": ["core"],
   "journey": {
-    "when": "Your draft is in Markdown, but the people who need it work in Word, Excel or a browser, or they sent you their files and you want to work on them as Markdown.",
+    "when": "Your draft is in Markdown, but the people who need it work in Word, Excel, PowerPoint or Confluence, or they sent you their files and you want to work on them as Markdown.",
     "you_bring": [
       "the Markdown draft, or the Word, PDF, Excel or HTML files you were sent",
-      "any Mermaid diagrams the draft contains",
       "a brand.json from brand-kit, if the Word file should be in your brand",
       "who it is for, and whether they edit it, calculate with it or only read it"
     ],
@@ -40,11 +39,6 @@
         "you_get": "The draft with invisible characters and generated-by trailers stripped, and machine-sounding lines flagged with rewrites."
       },
       {
-        "skill": "mermaid-render",
-        "you_do": "If the draft has Mermaid diagrams, render them.",
-        "you_get": "Each diagram checked for the errors that stop it rendering, then an SVG or PNG per diagram to embed in the Word or HTML version (PNG and SVG need mermaid-cli installed)."
-      },
-      {
         "skill": "md-to-docx",
         "you_do": "Convert the draft for readers who will edit or comment in Word.",
         "you_get": "A .docx with real headings, live links, tables and embedded images, plus a list of anything dropped.",
@@ -54,11 +48,6 @@
         "skill": "md-to-xlsx",
         "you_do": "Convert the tables for readers who will filter or total them.",
         "you_get": "A .xlsx with one sheet per table, typed numbers, dates and percentages, and formulas off unless you ask."
-      },
-      {
-        "skill": "md-to-html",
-        "you_do": "Convert the draft for readers who only need to read it in a browser.",
-        "you_get": "One self-contained, print-friendly HTML file with images embedded, so it still works when emailed."
       }
     ],
     "you_end_with": "The same content in the format each reader uses, with nothing dropped silently, and a Markdown source you can keep editing."

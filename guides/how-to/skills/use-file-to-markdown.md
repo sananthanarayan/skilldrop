@@ -60,7 +60,6 @@ A good result:
 ## Use something else when
 
 - Going the other way, Markdown to Word; use `md-to-docx`
-- Markdown to a web page; use `md-to-html`
 - Markdown tables into a workbook; use `md-to-xlsx`
 - Messy notes, a Slack thread or a transcript that are already text; use `brief-intake` directly
 - A document that is already Markdown and needs reviewing; use `doc-critique` directly
@@ -69,4 +68,4 @@ A good result:
 
 - [SKILL.md](../../../packs/converters/skills/file-to-markdown/SKILL.md), the instructions the agent reads
 - [Its page on the site](https://sananthanarayan.github.io/skilldrop/skills/file-to-markdown/)
-- Related: [brief-intake](use-brief-intake.md), [doc-critique](use-doc-critique.md), [md-to-docx](use-md-to-docx.md), [md-to-html](use-md-to-html.md), [md-to-xlsx](use-md-to-xlsx.md)
+- Related: [brief-intake](use-brief-intake.md), [doc-critique](use-doc-critique.md), [md-to-docx](use-md-to-docx.md), [md-to-xlsx](use-md-to-xlsx.md)

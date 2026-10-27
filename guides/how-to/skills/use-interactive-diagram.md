@@ -61,11 +61,11 @@ A good result:
 
 - A Mermaid, PlantUML or C4 diagram to paste into a doc — use `architecture-diagrams`
 - An as-is architecture write-up in C4 levels from infrastructure files — use `reverse-architecture`
-- Fixing or rendering an existing Mermaid diagram — use `mermaid-render`
+- Fixing or rendering an existing Mermaid diagram; the agent does that well on its own, with `npx @mermaid-js/mermaid-cli` for images
 - Charts of numbers, dashboards or metrics — this draws structure, not data
 
 ## Next
 
 - [SKILL.md](../../../packs/solution-architect/skills/interactive-diagram/SKILL.md), the instructions the agent reads
 - [Its page on the site](https://sananthanarayan.github.io/skilldrop/skills/interactive-diagram/)
-- Related: [architecture-diagrams](use-architecture-diagrams.md), [mermaid-render](use-mermaid-render.md), [reverse-architecture](use-reverse-architecture.md)
+- Related: [architecture-diagrams](use-architecture-diagrams.md), [reverse-architecture](use-reverse-architecture.md)

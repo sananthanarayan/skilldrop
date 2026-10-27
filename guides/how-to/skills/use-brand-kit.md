@@ -59,11 +59,11 @@ A good result:
 ## Use something else when
 
 - Designing a new brand from scratch: this captures a brand, it doesn't invent one
-- Building the deck or flyer itself; use `deck-builder` or `marketing-flyer`
+- Building the deck itself; use `deck-builder`
 - A one-off document where the user only wants the default look
 
 ## Next
 
 - [SKILL.md](../../../packs/design/skills/brand-kit/SKILL.md), the instructions the agent reads
 - [Its page on the site](https://sananthanarayan.github.io/skilldrop/skills/brand-kit/)
-- Related: [deck-builder](use-deck-builder.md), [marketing-flyer](use-marketing-flyer.md)
+- Related: [deck-builder](use-deck-builder.md)

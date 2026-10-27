@@ -144,7 +144,7 @@ don't cite them in the first place, and read the page before it leaves the team.
 
 - ❌ A Mermaid, PlantUML or C4 diagram to paste into a doc — use `architecture-diagrams`
 - ❌ An as-is architecture write-up in C4 levels from infrastructure files — use `reverse-architecture`
-- ❌ Fixing or rendering an existing Mermaid diagram — use `mermaid-render`
+- ❌ Fixing or rendering an existing Mermaid diagram; the agent does that well on its own, with `npx @mermaid-js/mermaid-cli` for images
 - ❌ Charts of numbers, dashboards or metrics — this draws structure, not data
 
 ## Anti-patterns to avoid

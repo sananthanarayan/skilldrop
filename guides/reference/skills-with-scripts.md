@@ -40,13 +40,10 @@ What each one declares in its manifest: the packages to install, the environment
 | [`interactive-diagram`](../../packs/solution-architect/skills/interactive-diagram/SKILL.md) | solution-architect | — | — | — | — | project |
 | [`judge-audit`](../../packs/ai-engineering/skills/judge-audit/SKILL.md) | ai-engineering | — | — | — | — | named-paths |
 | [`lean-canvas`](../../packs/product-manager/skills/lean-canvas/SKILL.md) | product-manager | — | — | — | — | named-paths |
-| [`marketing-flyer`](../../packs/design/skills/marketing-flyer/SKILL.md) | design | — | — | — | `google-chrome`, `chromium`, `chrome` | named-paths |
 | [`md-to-confluence`](../../packs/converters/skills/md-to-confluence/SKILL.md) | converters | — | `CONFLUENCE_EMAIL (optional)`, `CONFLUENCE_API_TOKEN (optional)`, `CONFLUENCE_PAT (optional)` | `*.atlassian.net` | — | named-paths |
 | [`md-to-docx`](../../packs/converters/skills/md-to-docx/SKILL.md) | converters | — | — | — | — | named-paths |
-| [`md-to-html`](../../packs/converters/skills/md-to-html/SKILL.md) | converters | — | — | — | — | named-paths |
 | [`md-to-pptx`](../../packs/converters/skills/md-to-pptx/SKILL.md) | converters | — | — | — | — | named-paths |
 | [`md-to-xlsx`](../../packs/converters/skills/md-to-xlsx/SKILL.md) | converters | — | — | — | — | named-paths |
-| [`mermaid-render`](../../packs/converters/skills/mermaid-render/SKILL.md) | converters | — | — | `registry.npmjs.org` | `mmdc`, `npm` | named-paths |
 | [`output-hygiene`](../../packs/core/skills/output-hygiene/SKILL.md) | core | — | — | — | — | named-paths |
 | [`pre-merge-review`](../../packs/dev-team/skills/pre-merge-review/SKILL.md) | dev-team | — | — | — | `git`, `ruff`, `mypy`, `pytest`, `*` | project |
 | [`rendering-strategy`](../../packs/frontend/skills/rendering-strategy/SKILL.md) | frontend | — | — | — | — | named-paths |

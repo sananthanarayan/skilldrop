@@ -37,7 +37,8 @@ sure nobody overwrites the wrong page. Runbooks often come from `runbook-generat
    - **Two images with the same file name** (`before/screen.png`, `after/screen.png`) become one
      attachment, so both show the same picture. Rename one (`screen-before.png`).
    - **Footnotes are dropped.** Move the text into the sentence or a "Notes" section.
-   - **Mermaid shows as source.** Render it to PNG with `mermaid-render` and embed the PNG.
+   - **Mermaid shows as source.** Render it to PNG with the Mermaid CLI
+     (`npx -y @mermaid-js/mermaid-cli`) and embed the PNG.
    - **A front-matter `title:` wins over the `#` heading** for a new page. An update keeps the
      page's current title, so when the Markdown's title differs (`Deploy checklist v2 (draft)`),
      say so and rename only if asked.
@@ -124,7 +125,6 @@ Markdown file to convert` and write nothing.
 ## When NOT to use this skill
 
 - ❌ A Word file to edit with tracked changes; use `md-to-docx`
-- ❌ A standalone web page or an HTML attachment for email; use `md-to-html`
 - ❌ Jira epics and issues from a PRD; use `tracker-brief-sync`
 - ❌ Writing the runbook itself; use `runbook-generator`, then convert
 
