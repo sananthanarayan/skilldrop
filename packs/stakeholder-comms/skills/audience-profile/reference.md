@@ -1,6 +1,6 @@
 # Audience archetype matrix
 
-Eight archetypes covering the common stakeholder-communication situations an architect runs into. Each has rules dense enough to drive concrete structural choices in `deck-builder`, `slide-outliner`, or `exec-summary`.
+Eight archetypes covering the common stakeholder-communication situations an architect runs into. Each has rules dense enough to drive concrete structural choices in `slide-outliner` or `exec-summary`.
 
 ---
 

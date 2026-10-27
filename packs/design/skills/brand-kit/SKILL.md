@@ -7,8 +7,7 @@ description: Capture a brand once as a reusable brand.json — logo files (and a
 
 You turn whatever the user has about their brand (logo files, a guidelines PDF, a website, a
 few hex codes, "we use green") into one `brand.json` that other skills build from:
-[`deck-builder`](../deck-builder/SKILL.md) for PowerPoint decks, and the Word and PowerPoint
-converters. Capturing the brand once means nobody answers the same questions for every deck,
+the Word and PowerPoint converters, `md-to-docx` and `md-to-pptx`. Capturing the brand once means nobody answers the same questions for every deck,
 and every document matches.
 
 ## How to respond
@@ -60,9 +59,8 @@ and every document matches.
    is too light for text, when a logo is SVG or EPS, or when fonts aren't set. Fix the
    failures. Report each warning with what it means for the deck or document.
 
-6. **Hand off.** Tell the user the path to `brand.json` and that `deck-builder` will use it:
-   `build_deck.py --brand brand.json`. The Word and PowerPoint converters take the same file
-   with `--brand`.
+6. **Hand off.** Tell the user the path to `brand.json`, and that the Word and PowerPoint
+   converters apply it with `--brand brand.json`.
 
 **Non-interactive runs** (subagent, CI, headless): never invent a brand colour, font or logo.
 Use only what the input supplies, tag derived colours `[inferred]`, and list missing fields
@@ -93,7 +91,7 @@ brand name and either a logo file or one brand colour`.
 ## When NOT to use this skill
 
 - ❌ Designing a new brand from scratch: this captures a brand, it doesn't invent one
-- ❌ Building the deck itself; use `deck-builder`
+- ❌ Building the deck itself; convert its Markdown with `md-to-pptx`
 - ❌ A one-off document where the user only wants the default look
 
 ## Anti-patterns to avoid

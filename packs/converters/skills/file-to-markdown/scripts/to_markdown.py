@@ -4,9 +4,10 @@
 Stdlib only, Python 3.9+. Handles .docx, .pptx, .xlsx, .html/.htm, .csv/.tsv,
 .json, .txt/.md, .eml and Outlook .msg email, and .pdf (through `pdftotext` when it is installed). A PDF page with no
 text layer (a scan) is read by OCR when `tesseract` and `pdftoppm` are installed.
-Everything the conversion could not carry (images, charts, comments, formulas,
-tracked changes) is counted and reported on stderr, so nobody mistakes the
-Markdown for the whole document.
+Embedded .docx and .pptx images are saved beside the output and linked, and tracked
+changes come through as pending ({++added++}, {--removed--}). Everything else the
+conversion could not carry (charts, comments, formulas) is counted and reported on
+stderr, so nobody mistakes the Markdown for the whole document.
 
 Usage:
     python3 to_markdown.py report.docx -o report.md
@@ -20,6 +21,7 @@ import argparse
 import csv
 import io
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -31,6 +33,7 @@ from collections import OrderedDict
 from datetime import datetime, timedelta
 from html.parser import HTMLParser
 from pathlib import Path
+from urllib.parse import quote
 from xml.etree import ElementTree as ET
 
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
@@ -103,16 +106,52 @@ def wrap(text, bold, italic):
     return lead + core + trail
 
 
+class Raw(str):
+    """Markdown written as is: an image link, or a tracked-change marker. Never escaped, never
+    merged with the text around it."""
+
+
+# Where embedded images are saved: a folder beside the output file, set by main(). None when
+# the Markdown goes to stdout, and then images are counted as dropped, as before.
+MEDIA = {"dir": None, "link": None, "names": {}}
+
+
+def save_media(z, member, alt, rep):
+    """Copy one image out of an Office package beside the Markdown, and return the Markdown that
+    links it, or None when there is nowhere to save it or the part is missing."""
+    if not MEDIA["dir"] or member not in z.namelist():
+        rep.drop("images")
+        return None
+    name = MEDIA["names"].get(member)
+    if name is None:
+        base = re.sub(r"[^A-Za-z0-9._-]+", "-", member.rsplit("/", 1)[-1]) or "image"
+        name, k = base, 1
+        while name in MEDIA["names"].values():
+            stem, dot, ext = base.rpartition(".")
+            name = "%s-%d.%s" % (stem, k, ext) if dot else "%s-%d" % (base, k)
+            k += 1
+        os.makedirs(MEDIA["dir"], exist_ok=True)
+        with open(os.path.join(MEDIA["dir"], name), "wb") as fh:
+            fh.write(z.read(member))
+        MEDIA["names"][member] = name
+    rep.keep("images saved")
+    alt = re.sub(r"[\[\]\n]+", " ", alt or "").strip() or "image"
+    return Raw("![%s](%s/%s)" % (alt, MEDIA["link"], name))
+
+
 def render_segments(segs):
     """segs: list of (text, bold, italic, href). Merge neighbours with equal formatting."""
     merged = []
     for t, b, i, h in segs:
-        if merged and merged[-1][1:] == (b, i, h):
+        if merged and merged[-1][1:] == (b, i, h) and not isinstance(t, Raw) and not isinstance(merged[-1][0], Raw):
             merged[-1] = (merged[-1][0] + t, b, i, h)
         else:
             merged.append((t, b, i, h))
     out = []
     for t, b, i, h in merged:
+        if isinstance(t, Raw):
+            out.append(str(t))
+            continue
         piece = wrap(md_escape(t), b, i)
         if h:
             piece = "[%s](%s)" % (piece.strip(), h.replace(" ", "%20").replace(")", "%29"))
@@ -256,7 +295,7 @@ def docx_to_md(path, rep):
                     field["instr"] += ch.text or ""
                 elif field["state"] == "instr":
                     continue
-                elif tag == W + "t":
+                elif tag in (W + "t", W + "delText"):
                     segs.append((ch.text or "", b, i, href or field["href"]))
                 elif tag == W + "tab":
                     segs.append((" ", False, False, None))
@@ -266,8 +305,16 @@ def docx_to_md(path, rep):
                     rep.drop("images")
                 elif tag == W + "drawing":
                     uris = [g.get("uri") or "" for g in ch.iter(A + "graphicData")]
-                    if any(True for _ in ch.iter(A + "blip")):
-                        rep.drop("images")
+                    blips = list(ch.iter(A + "blip"))
+                    if blips:
+                        rid = blips[0].get(R + "embed")
+                        target = rels.get(rid, (None, "", ""))
+                        alt = next((d.get("descr") or d.get("name") for d in ch.iter() if d.tag.endswith("}docPr")), "")
+                        link = save_media(z, resolve("word", target[0]), alt, rep) if target[0] and target[2] != "External" else None
+                        if link is None and not target[0]:
+                            rep.drop("images")
+                        elif link:
+                            segs.append((link, False, False, None))
                     elif not any("chart" in u for u in uris):  # charts are counted from word/charts
                         rep.drop("shapes/text boxes")
 
@@ -280,10 +327,17 @@ def docx_to_md(path, rep):
                     target = rels.get(rid, (None,))[0] if rid else None
                     walk(ch, target)
                 elif ch.tag == W + "ins":
-                    rep.drop("tracked insertions (kept as text)")
+                    # Pending, not accepted: shown in CriticMarkup so a reader sees it is a
+                    # proposal, and nothing is silently settled.
+                    rep.keep("tracked insertions shown as {++ ++}")
+                    segs.append((Raw("{++"), False, False, None))
                     walk(ch, href)
+                    segs.append((Raw("++}"), False, False, None))
                 elif ch.tag == W + "del":
-                    rep.drop("tracked deletions (left out)")
+                    rep.keep("tracked deletions shown as {-- --}")
+                    segs.append((Raw("{--"), False, False, None))
+                    walk(ch, href)
+                    segs.append((Raw("--}"), False, False, None))
                 elif ch.tag in (W + "smartTag", W + "sdt", W + "sdtContent", W + "fldSimple"):
                     walk(ch, href)
         walk(p, None)
@@ -571,7 +625,17 @@ def pptx_to_md(path, rep):
                         lines.append("")
                     lines.extend(got)
             elif tag == P + "pic":
-                rep.drop("images")
+                blip = next(iter(sp.iter(A + "blip")), None)
+                target = rels.get(blip.get(R + "embed"), (None, "", "")) if blip is not None else (None, "", "")
+                cnv = next((d for d in sp.iter() if d.tag.endswith("}cNvPr")), None)
+                alt = (cnv.get("descr") or cnv.get("name")) if cnv is not None else ""
+                link = save_media(z, resolve(base, target[0]), alt, rep) if target[0] and target[2] != "External" else None
+                if link:
+                    if lines:
+                        lines.append("")
+                    lines.append(str(link))
+                elif not target[0]:
+                    rep.drop("images")
             elif tag == P + "graphicFrame":
                 tbl = sp.find(".//" + A + "tbl")
                 if tbl is not None:
@@ -1772,6 +1836,13 @@ def main(argv=None):
         sys.exit("error: input not found: %s" % a.input)
     ext = path.suffix.lower()
     rep = Report()
+    # Embedded images go beside the Markdown, in <name>-images/; to stdout there is nowhere to
+    # put them, so they are counted as dropped.
+    if a.output != "-":
+        stem = Path(a.output).stem
+        MEDIA.update(dir=str(Path(a.output).parent / (stem + "-images")), link=quote(stem + "-images"), names={})
+    else:
+        MEDIA.update(dir=None, link=None, names={})
     if ext in LEGACY:
         sys.exit("error: %s files are not supported. Save or export it as %s and rerun%s."
                  % (ext, LEGACY[ext], " (on macOS: textutil -convert docx <file>)"
@@ -1797,6 +1868,9 @@ def main(argv=None):
 
     if not md.strip():
         rep.notes.append("the conversion produced no text")
+    if any(k.startswith("tracked") for k in rep.kept):
+        rep.notes.append("tracked changes are pending, not accepted: {++added++} and {--removed--} mark them. "
+                         "Accept or reject them in Word to settle the text")
     if a.output == "-":
         sys.stdout.write(md)
     else:

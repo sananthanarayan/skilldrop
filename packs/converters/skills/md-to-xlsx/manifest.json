@@ -12,9 +12,9 @@
     "optional": []
   },
   "related": [
-    "deck-builder",
     "file-to-markdown",
-    "md-to-docx"
+    "md-to-docx",
+    "md-to-pptx"
   ],
   "tags": [
     "excel",

@@ -64,7 +64,6 @@ A good result:
 
 ## Use something else when
 
-- Designing a persuasive deck for an audience, with charts, layouts and a narrative; use `deck-builder`
 - Planning what each slide should say before any document exists; use `slide-outliner`
 - A Word document to edit and track changes in; use `md-to-docx`
 - A `.pptx` back to Markdown; use `file-to-markdown`
@@ -73,4 +72,4 @@ A good result:
 
 - [SKILL.md](../../../packs/converters/skills/md-to-pptx/SKILL.md), the instructions the agent reads
 - [Its page on the site](https://sananthanarayan.github.io/skilldrop/skills/md-to-pptx/)
-- Related: [brand-kit](use-brand-kit.md), [deck-builder](use-deck-builder.md), [file-to-markdown](use-file-to-markdown.md), [md-to-docx](use-md-to-docx.md), [slide-outliner](use-slide-outliner.md)
+- Related: [brand-kit](use-brand-kit.md), [file-to-markdown](use-file-to-markdown.md), [md-to-docx](use-md-to-docx.md), [slide-outliner](use-slide-outliner.md)

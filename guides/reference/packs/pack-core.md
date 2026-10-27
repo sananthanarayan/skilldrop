@@ -21,7 +21,7 @@ The cross-role toolkit every pack builds on: structured intake, document critiqu
 
 ### `brief-intake`
 
-Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder) can consume without further intake.
+Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, slide-outliner) can consume without further intake.
 
 Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/core/skills/brief-intake/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/brief-intake/)
 

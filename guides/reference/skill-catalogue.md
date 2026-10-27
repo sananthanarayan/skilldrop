@@ -156,13 +156,12 @@ Skills for teams building directly on the Anthropic API — prompt caching strat
 
 ## Design and brand
 
-Capture a brand once, then build decks that use it. `brand-kit` writes the `brand.json` that `deck-builder` reads; it also asks for branding itself when there is none.
+Capture a brand once, and plan a deck for its audience. `brand-kit` writes the `brand.json` that the Word and PowerPoint converters apply with `--brand`.
 
 | Skill | What it does |
 |---|---|
 | [`brand-kit`](../../packs/design/skills/brand-kit/SKILL.md) | Capture a brand as a reusable `brand.json`: logo files (and an on-dark version), five colour roles as hex codes, heading and body fonts, voice (words to use and avoid), imagery rules, a PowerPoint template, contact details and legal footer. Every value is traced to its source and tagged `[explicit]` or `[inferred]`; a stdlib checker fails malformed hex codes, text contrast below 4.5:1 and missing files, and flags SVG logos PowerPoint can't use. Writes a one-page `BRAND.md` too. |
 | [`slide-outliner`](../../packs/design/skills/slide-outliner/SKILL.md) | Outline an architecture-review or pitch deck — slide titles, key points, and speaker notes — sized to a target time budget. Doesn't generate PPTX. |
-| [`deck-builder`](../../packs/design/skills/deck-builder/SKILL.md) | Generate a real PowerPoint (`.pptx`) file from content + audience + a brand `.potx`/`.pptx` template or colour palette. Uses `python-pptx`; 10 layouts including charts, tables and images, audience-tuned density. Pairs naturally with `audience-profile` + `slide-outliner`. |
 
 ## Converters
 

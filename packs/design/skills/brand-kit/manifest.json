@@ -12,15 +12,8 @@
     "optional": []
   },
   "related": [
-    "deck-builder"
-  ],
-  "handoff": [
-    {
-      "to": "deck-builder",
-      "when": "the brand kit is written and the user wants a deck",
-      "purpose": "Build the PowerPoint deck in this brand: build_deck.py --brand brand.json.",
-      "fallback": "If deck-builder is absent, give the user the brand.json path and the five hex codes to paste into whatever deck tool they use."
-    }
+    "md-to-pptx",
+    "md-to-docx"
   ],
   "tags": [
     "brand",

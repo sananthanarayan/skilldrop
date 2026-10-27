@@ -8,7 +8,7 @@ Input to `ai-usage-report` is a CSV or JSONL file. Each row / each JSON object i
 |---|---|---|
 | `timestamp` | ISO 8601 datetime | e.g. `2026-05-21T14:32:11Z` |
 | `user` | string | Stable identifier — email, handle, or employee ID. Use the same value for the same person across events. |
-| `tool` | string | What was invoked — e.g. `claude-code`, `cursor`, `copilot`, or a specific skill name like `deck-builder` |
+| `tool` | string | What was invoked — e.g. `claude-code`, `cursor`, `copilot`, or a specific skill name like `slide-outliner` |
 
 If any of these three is missing, the script exits with an error. They are the minimum needed to compute a volume report.
 
@@ -51,7 +51,7 @@ When a column is omitted, the report includes a *"Where signals are missing"* se
 timestamp,user,tool,session_id,output_consumed,consumed_at,outcome
 2026-05-21T09:14:23Z,alice@acme.example,claude-code,sess-001,1,2026-05-21T11:02:00Z,success
 2026-05-21T09:14:55Z,alice@acme.example,claude-code,sess-001,1,2026-05-21T11:02:00Z,success
-2026-05-21T09:18:02Z,alice@acme.example,deck-builder,sess-001,1,2026-05-21T14:30:00Z,success
+2026-05-21T09:18:02Z,alice@acme.example,slide-outliner,sess-001,1,2026-05-21T14:30:00Z,success
 2026-05-21T10:01:11Z,bob@acme.example,cursor,sess-014,0,,success
 2026-05-21T10:01:30Z,bob@acme.example,cursor,sess-014,0,,success
 2026-05-21T14:22:08Z,carol@acme.example,claude-code,sess-029,1,2026-05-22T08:11:00Z,success

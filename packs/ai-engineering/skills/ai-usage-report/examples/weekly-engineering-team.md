@@ -8,7 +8,7 @@ A small synthetic event log demonstrating the three views — including graceful
 timestamp,user,tool,session_id,output_consumed,consumed_at,outcome
 2026-05-19T09:14:23Z,alice@acme.example,claude-code,sess-001,1,2026-05-19T11:02:00Z,success
 2026-05-19T09:14:55Z,alice@acme.example,claude-code,sess-001,1,2026-05-19T11:02:00Z,success
-2026-05-19T09:18:02Z,alice@acme.example,deck-builder,sess-001,1,2026-05-19T14:30:00Z,success
+2026-05-19T09:18:02Z,alice@acme.example,slide-outliner,sess-001,1,2026-05-19T14:30:00Z,success
 2026-05-19T10:01:11Z,bob@acme.example,cursor,sess-014,0,,success
 2026-05-19T10:01:30Z,bob@acme.example,cursor,sess-015,0,,success
 2026-05-19T10:02:11Z,bob@acme.example,cursor,sess-016,0,,success

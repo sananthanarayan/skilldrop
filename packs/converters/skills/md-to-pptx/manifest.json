@@ -13,19 +13,13 @@
   },
   "related": [
     "brand-kit",
-    "deck-builder",
     "file-to-markdown",
     "md-to-docx",
     "slide-outliner"
   ],
   "handoff": [
     
-    {
-      "to": "deck-builder",
-      "when": "the user wants the deck redesigned for an audience (charts, layouts, a narrative) rather than converted as written",
-      "purpose": "Design a persuasive deck from the content instead of mapping headings to slides.",
-      "fallback": "If deck-builder is absent, deliver the converted deck and say in one line that it follows the document's structure and has not been redesigned."
-    }
+    
   ],
   "tags": [
     "powerpoint",

@@ -26,7 +26,7 @@ mkdir -p ~/.claude/skills && cp -R packs/<pack>/skills/<skill-name> ~/.claude/sk
 # Install a single skill into Claude Code — project-scope (tracked with repo)
 mkdir -p .claude/skills && cp -R packs/<pack>/skills/<skill-name> .claude/skills/
 
-# Install Python deps for a skill that has them (currently figma-diagrams, deck-builder)
+# Install Python deps for a skill that has them (currently figma-diagrams)
 cd packs/<pack>/skills/<skill-name> && python3 -m pip install -r requirements.txt
 
 # Consistency lint — run from the repo root before committing (works on Python 3.9+)
@@ -281,7 +281,7 @@ The folder name is the slug used for `/`-invocation: kebab-case, descriptive, us
 - `evals/evals.json` — `{ "skill_name": …, "evals": [ { "id", "prompt", "assertions": [ … ] } ] }`. At least one realistic prompt; assertions are the checkable statements a passing output satisfies (they should restate the skill's own `Quality bar` as verifiable claims about one concrete output).
 - `evals/eval_queries.json` — `[ { "query": …, "should_trigger": true|false } ]`. 4+ phrases that should invoke the skill and 3+ near-misses that should route to a sibling skill instead. The `false` rows are the discipline: they force the `description` to draw a real boundary against sibling skills.
 
-**Every skill ships evals** (full coverage since 0.13.8; `validate.py` fails a skill without both files). The `should_trigger: false` rows are where the care goes: each one is a real near-miss that belongs to a **named sibling**, taken from the skill's "When NOT to use" section and its `related` list — "help me present this" (`exec-summary` / `slide-outliner` / `deck-builder` / `audience-profile`), "define the contract" (`api-contract-draft` / `data-contract`), "review this" (`devils-advocate` / `doc-critique` / `council-review` / `sonar-review`). Don't invent a collision to fill the file: a no-trigger row nobody would actually type documents nothing. Assertions come from the skill's own Quality bar, and every skill that handles facts gets a "does not invent X not in the prompt" assertion. The [evals workflow](.github/workflows/evals.yml) runs the trigger queries against a live model every week and the assertions every month under a dollar budget, reports the results, and appends counts to the `eval-history` branch that the site's trend reads (RFC-0055).
+**Every skill ships evals** (full coverage since 0.13.8; `validate.py` fails a skill without both files). The `should_trigger: false` rows are where the care goes: each one is a real near-miss that belongs to a **named sibling**, taken from the skill's "When NOT to use" section and its `related` list — "help me present this" (`exec-summary` / `slide-outliner` / `audience-profile`), "define the contract" (`api-contract-draft` / `data-contract`), "review this" (`devils-advocate` / `doc-critique` / `council-review` / `sonar-review`). Don't invent a collision to fill the file: a no-trigger row nobody would actually type documents nothing. Assertions come from the skill's own Quality bar, and every skill that handles facts gets a "does not invent X not in the prompt" assertion. The [evals workflow](.github/workflows/evals.yml) runs the trigger queries against a live model every week and the assertions every month under a dollar budget, reports the results, and appends counts to the `eval-history` branch that the site's trend reads (RFC-0055).
 
 **5. Update the skill catalogue.** Add a row to [`guides/reference/skill-catalogue.md`](guides/reference/skill-catalogue.md) (under the right category), and to **Installing dependencies** in [`guides/reference/install-targets.md`](guides/reference/install-targets.md) if the skill has runtime deps.
 
@@ -353,7 +353,7 @@ If a skill has executable scripts (Python, Node, shell):
 - **Write outputs to a user-specified path**, not a hard-coded location.
 - **Don't shell out to interactive commands** (`gh auth login`, `aws configure`) — those need the user; the skill shouldn't drive them.
 
-See `packs/design/skills/deck-builder/scripts/build_deck.py` for the reference pattern.
+See `packs/converters/skills/md-to-docx/scripts/md_to_docx.py` for the reference pattern.
 
 ## Before you commit
 
@@ -451,7 +451,7 @@ The README groups skills into these categories. Prefer adding to one of them ove
 6. **Documentation** — written technical artifacts (`adr-generator`, `design-doc`, `runbook-generator`, `release-notes`).
 7. **Agent engineering** — designing agentic systems themselves (`agent-loop-design`, `subagent-design`, `agent-budget`, `agent-threat-model`, `agents-md-generator`).
 8. **AI adoption & observability** — measuring and gating AI usage itself (`ai-usage-report`, `llm-eval-harness`).
-9. **Stakeholder communication** — non-technical audiences (`audience-profile`, `slide-outliner`, `deck-builder`, `exec-summary`, `decision-log`, `incident-comms`).
+9. **Stakeholder communication** — non-technical audiences (`audience-profile`, `slide-outliner`, `exec-summary`, `decision-log`, `incident-comms`).
 
 A new section needs a use-case-first name, a one-sentence definition of what belongs in it, and at least one existing skill that would also fit there. Sections are cheap; ungrouped skills make the README harder to scan.
 
@@ -494,4 +494,4 @@ When you add or change a skill, set its tier in **both** `model-routing.json` an
 - Machine-readable contracts: [contracts/loop.schema.json](contracts/loop.schema.json), [contracts/terminals.json](contracts/terminals.json)
 - Model routing: [MODEL-ROUTING.md](MODEL-ROUTING.md) + [model-routing.json](model-routing.json)
 - Claude Code project settings: [.claude/settings.json](.claude/settings.json) — registers the repo as a local plugin marketplace (`skilldrop@skilldrop-local`) so the catalogue can be dogfooded from the working tree
-- Reference implementations for skill scripts: [`packs/design/skills/deck-builder/scripts/`](packs/design/skills/deck-builder/scripts/), [`packs/solution-architect/skills/figma-diagrams/scripts/`](packs/solution-architect/skills/figma-diagrams/scripts/)
+- Reference implementations for skill scripts: [`packs/converters/skills/md-to-docx/scripts/`](packs/converters/skills/md-to-docx/scripts/), [`packs/solution-architect/skills/figma-diagrams/scripts/`](packs/solution-architect/skills/figma-diagrams/scripts/)

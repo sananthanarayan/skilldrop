@@ -21,9 +21,9 @@ Turn Markdown into Word, Excel, PowerPoint and Confluence files that people outs
 
 ### `file-to-markdown`
 
-Convert a Word document, PowerPoint deck, Excel workbook, web page, CSV, JSON, text file, email (.eml or Outlook .msg) or PDF into clean Markdown that keeps headings, lists, tables, links, bold and italic, slide titles and speaker notes, and reports everything it dropped (images, charts, comments, formulas, tracked changes), so the content can be read, reviewed or fed to another skill.
+Convert a Word document, PowerPoint deck, Excel workbook, web page, CSV, JSON, text file, email (.eml or Outlook .msg) or PDF into clean Markdown. It keeps headings, lists, tables, links, bold and italic, slide titles and speaker notes. It saves embedded images beside the Markdown and links them, shows tracked changes as pending rather than accepted, and reports everything else it dropped (charts, comments, formulas), so the content can be read, reviewed or fed to another skill.
 
-Tier **light** · v0.3.3 · [SKILL.md](../../../packs/converters/skills/file-to-markdown/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/file-to-markdown/)
+Tier **light** · v0.4.0 · [SKILL.md](../../../packs/converters/skills/file-to-markdown/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/file-to-markdown/)
 
 **Use it when** the user hands over a .docx, .pptx, .xlsx, .html, .csv, .json, .eml, .msg or .pdf and says "read this", "turn this into markdown", "extract the text", or wants it critiqued or briefed.
 
@@ -36,6 +36,9 @@ Tier **light** · v0.3.3 · [SKILL.md](../../../packs/converters/skills/file-to-
 - **Nothing is added.** The Markdown holds only what the file holds: no summaries, no invented headings, no filled-in empty cells.
 - **Speaker notes stay attached to their slide,** because that is often where the real argument is.
 - **Numbers are copied as stored.** No rounding, no currency symbols added; dates converted only when the cell is formatted as a date.
+- **Images come through as files.** An embedded image is saved and linked where it sat, with its alt text, not reduced to a caption.
+- **Tracked changes stay pending.** They are marked, counted and said to be unaccepted; only one the user or a comment settles is applied, and the reply says so.
+- **A contradiction isn't pasted silently.** Both figures are named, and a deliverable meant for pasting leaves it out or marks it.
 - **Inferred structure is flagged.** When headings come from font size instead of styles, the reply says to check the levels.
 
 **Hands off to:** `doc-critique` when the user wants the converted document reviewed; `brief-intake` when the converted document is source material for another skill.
@@ -96,7 +99,7 @@ Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/converters/skills/md-to
 
 **Not for:**
 
-- Slides; use `deck-builder`
+- Slides; use `md-to-pptx`
 - The other direction, a Word file or PDF back to Markdown; use `file-to-markdown`
 - Tables that need to be sorted, filtered or summed; use `md-to-xlsx`
 - Writing the document itself; draft it first with `guide-builder` or the skill for that document, then convert
@@ -124,11 +127,8 @@ Tier **light** · v0.1.3 · [SKILL.md](../../../packs/converters/skills/md-to-pp
 - **Mismatches are named, not fixed.** A count or total the document contradicts is quoted back with both figures.
 - **The file checks out.** The `checked:` line is in the run, and no check is claimed that wasn't run.
 
-**Hands off to:** `deck-builder` when the user wants the deck redesigned for an audience (charts, layouts, a narrative) rather than converted as written.
-
 **Not for:**
 
-- Designing a persuasive deck for an audience, with charts, layouts and a narrative; use `deck-builder`
 - Planning what each slide should say before any document exists; use `slide-outliner`
 - A Word document to edit and track changes in; use `md-to-docx`
 - A `.pptx` back to Markdown; use `file-to-markdown`
@@ -156,14 +156,14 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/converters/skills/md-to
 
 - A document with a few tables in it, to be read rather than calculated; use `md-to-docx`
 - An Excel file back to Markdown or CSV; use `file-to-markdown`
-- Charts or a slide of numbers for a meeting; use `deck-builder`
+- A slide of numbers for a meeting; put the table in the Markdown and use `md-to-pptx`
 - Building a financial model with formulas, scenarios and linked sheets. This converts data; it doesn't design models.
 
 ## Included from core
 
 Installed with this pack. Details: [Core pack reference](pack-core.md).
 
-- `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder) can consume without further intake.
+- `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, slide-outliner) can consume without further intake.
 - `context-graph`: Map the decisions behind a codebase from its ADRs, RFCs and design records — each record's status and date, what supersedes or amends what, which records cite which, the files and folders each decision governs, and with git the commits that implemented it and the commits that changed each decision's code since it was made, and who made them — then answer "why is it like this?" from the record and check the record is still true. Finds supersessions only one side records, current decisions pointing at code that is gone, code that has drifted from its decision, two current decisions governing the same path, and references to records that don't exist.
 - `council-review`: Convene a council of distinct senior-engineer personas (Architect, Security, Operator/SRE, Pragmatist, User-Advocate, plus optional bench seats) to deliberate a decision, design, or code change — each takes an independent stance, the genuine disagreements are surfaced as named cruxes, and a Chair issues a reconciled verdict that records dissents and states what would change the decision. The "Claude Council."
 - `doc-critique`: Review an existing document — ADR, design doc, runbook, exec summary, tech-comparison matrix, deck outline, decision log — and produce a structured critique against the same quality bars the skilldrop generators enforce. Categorizes findings by severity (blocker / major / minor / nit), points to the exact section/line, and suggests a concrete fix for each.

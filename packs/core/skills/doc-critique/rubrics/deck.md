@@ -1,6 +1,6 @@
 # Rubric: Slide Deck / Outline
 
-Mirrors `slide-outliner` + `deck-builder` quality bars. Apply to either a finished deck (read titles + speaker notes) or an outline.
+Mirrors the `slide-outliner` quality bar. Apply to either a finished deck (read titles + speaker notes) or an outline.
 
 ## Blockers
 - **Audience is explicit or obvious from the deck.** Same content for execs vs engineers is a different deck — if you can't tell which one this is, that's the blocker.

@@ -163,7 +163,7 @@
         "path": "packs/design",
         "ref": "plugins"
       },
-      "description": "On-brand visual work: capture a brand once, then build real PowerPoint decks in that brand, with logo, colours and fonts applied. (8 skills)",
+      "description": "On-brand visual work: capture a brand once as a brand.json the Word and PowerPoint converters apply, and plan a deck slide by slide for its audience. (7 skills)",
       "version": "1.2.0",
       "author": {
         "name": "Sanjay Ananthanarayan",
@@ -172,7 +172,7 @@
       "keywords": [
         "brand",
         "deck",
-        "pptx",
+        "outline",
         "presentation",
         "logo"
       ],

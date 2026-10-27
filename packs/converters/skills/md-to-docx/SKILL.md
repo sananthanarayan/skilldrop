@@ -106,7 +106,7 @@ or page size uses the defaults, with an `[assumption]` line at the top of your r
 
 ## When NOT to use this skill
 
-- ❌ Slides; use `deck-builder`
+- ❌ Slides; use `md-to-pptx`
 - ❌ The other direction, a Word file or PDF back to Markdown; use `file-to-markdown`
 - ❌ Tables that need to be sorted, filtered or summed; use `md-to-xlsx`
 - ❌ Writing the document itself; draft it first with `guide-builder` or the skill for that document, then convert

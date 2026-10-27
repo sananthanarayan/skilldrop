@@ -1,7 +1,7 @@
 ---
 rfc: 0068
 title: Keep, rebuild or retire the five skills that lost to the plain agent in both trials
-status: accepted
+status: implemented
 date: 2026-10-27
 author: sanjay-ananth
 ---
@@ -82,7 +82,43 @@ retired.
   converts a document, while `deck-builder` designs a deck with native charts and a corporate
   template. Neither was tested here. It deserves a run in which its script can work.
 
+## What the rebuilds measured
+
+Each rebuild was measured on two new held-out evals, written blind from its description after
+the rebuild. Two trials, two judges, model `claude-sonnet-5-5`, $3.52 for both. The benchmark
+now installs a skill's pip requirements into an environment on every arm's PATH, which is what a
+user does, so `deck-builder`'s script could run this time.
+
+| Rebuild | Evals | Judge 1 | Judge 2 | Checks met | Plain agent | Result |
+|---|---|---|---|---|---|---|
+| `file-to-markdown` 0.4.0 | 5–6 | 2 of 4 | 3 of 4 | 72% | 62% | **Kept** |
+| `deck-builder` 0.4.0 | 6–7 | 2 of 4 | 1 of 4 | 69% | 81% | **Retired** |
+
+- **`file-to-markdown` passes.** On the workbook-and-deck eval both judges preferred it in both
+  trials: it converted both files faithfully and caught a stated total that didn't match its
+  parts. On the tracked-changes eval the plain agent was preferred three times out of four. Both kept
+  the changes pending. The judges' reasons were that the plain agent also kept the reviewer's
+  comment and who made each change, which the script still reports as dropped.
+- **`deck-builder` still loses with its script working.** It built on the template and put the
+  caveats on the slides. The judges still preferred the plain agent's decks in most pairs, and
+  the plain agent met more of the checks. So it is retired, as the bar says.
+- **One rebuild draft was caught leaking.** Three lines first written into `deck-builder`'s
+  instructions echoed the new evals' summary, which had been read minutes earlier. They were
+  removed before the run, and a scan of both diffs against the new evals found no overlap beyond
+  everyday words.
+
+**What retiring `deck-builder` leaves.** The design pack keeps `brand-kit` and `slide-outliner`.
+It now ends with a reviewed outline, which `md-to-pptx` turns into a `.pptx` with the same
+`brand.json`. `brand-kit`'s output is read by the Word and PowerPoint converters. Native
+PowerPoint charts and building on a corporate `.potx` template go with it. The roadmap can
+revisit them as a new skill measured from the start.
+
+**`figma-diagrams` also has a pip requirement,** so its scripts-only reading on 27 October was
+taken without its package installed. It should be re-run with the new environment before
+anything is decided on it.
+
 ## Decision
 
-The three retirements are accepted and implemented in 1.2.0. The two rebuilds follow in their
-own change, with their measurements.
+Implemented in 1.2.0:
+- `md-to-html`, `mermaid-render`, `marketing-flyer` and `deck-builder` are retired;
+- `file-to-markdown` 0.4.0 is the rebuild, kept.

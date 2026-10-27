@@ -1,6 +1,6 @@
 ---
 name: audience-profile
-description: Translate an audience type (exec, board, technical, sales, investor, internal, partner, customer) into structural rules — slide count, density, tone, must-have sections, things to avoid. Reusable across deck-builder, slide-outliner, and exec-summary. Use whenever a stakeholder communication deliverable is being designed for a specific audience.
+description: Translate an audience type (exec, board, technical, sales, investor, internal, partner, customer) into structural rules — slide count, density, tone, must-have sections, things to avoid. Reusable across slide-outliner and exec-summary. Use whenever a stakeholder communication deliverable is being designed for a specific audience.
 ---
 
 # audience-profile
@@ -40,7 +40,7 @@ You help the user (or another skill) pick the right *shape* for a communication 
 
 3. **Be opinionated.** This skill exists to *make decisions* for the user. If they push back, fine — but don't hedge in the initial response. "Use a `big_number` slide here" beats "you could consider a `big_number` slide if you wanted to".
 
-4. **Hand off cleanly.** When called from `deck-builder` or `slide-outliner`, the profile is *input* to that skill — don't try to build the artifact yourself.
+4. **Hand off cleanly.** When called from `slide-outliner` or `exec-summary`, the profile is *input* to that skill — don't try to build the artifact yourself.
 
 ## When to use this skill
 
@@ -69,6 +69,6 @@ You help the user (or another skill) pick the right *shape* for a communication 
 - ❌ **Profiling the most senior title in the room instead of the actual decision-maker.** If the VP is there to rubber-stamp what their staff engineer recommends, the staff engineer is the audience. Profile who the deliverable must *convince*, not who has the grandest title.
 - ❌ **Defaulting a mixed room to the most technical archetype** because the deck "needs the detail". A non-technical attendee lost on slide 3 is lost for the whole meeting; resolve to the least-technical archetype and push depth to an appendix.
 - ❌ **Hedged, generic output.** "Know your audience and keep it appropriately concise" is a fortune cookie, not a profile. Emit the numbers: slide count, bullet density, the must-have sections in order.
-- ❌ **Building the artifact instead of the profile.** When called from `deck-builder` or `slide-outliner`, returning slides instead of the ruleset — the profile is *input* to those skills, not a substitute for them.
+- ❌ **Building the artifact instead of the profile.** When called from `slide-outliner` or `exec-summary`, returning slides instead of the ruleset — the profile is *input* to those skills, not a substitute for them.
 - ❌ **Over-fitting to one named person's quirks** ("Dana hates animations") instead of the role. Profiles are reusable because they're keyed to the archetype; bake in one individual's preferences and the profile dies when Dana changes jobs. Note the personal quirk as a one-line override, keep the archetype intact.
 - ❌ **Showing the machinery.** The reply and the artifact are for the person who asked. Don't mention this skill, its files, templates, caps or internal terms, or that the run is non-interactive. Name another skill once, at the end, as a suggested next step, never inside the artifact.

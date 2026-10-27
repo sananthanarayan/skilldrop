@@ -8,7 +8,7 @@ kind: reference
 
 Many skills ship helper scripts in a `scripts/` folder, and each one declares what its scripts need in its own `manifest.json`: `deps` for packages, `env` for environment variables, and `permissions` for the hosts, commands and files the scripts touch. You can read that block before you install.
 
-Most scripts run on the Python standard library. Two need a package: `deck-builder` (`python-pptx`) and `figma-diagrams` (`requests`). [Installing dependencies](install-targets.md#installing-dependencies) covers both.
+Most scripts run on the Python standard library. One needs a package: `figma-diagrams` (`requests`). [Installing dependencies](install-targets.md#installing-dependencies) covers both.
 
 ## Every skill with scripts
 
@@ -29,7 +29,6 @@ What each one declares in its manifest: the packages to install, the environment
 | [`content-design`](../../packs/experience-design/skills/content-design/SKILL.md) | experience-design | — | — | — | — | none |
 | [`context-graph`](../../packs/core/skills/context-graph/SKILL.md) | core | — | — | — | `git` | named-paths |
 | [`cover-letter`](../../packs/career/skills/cover-letter/SKILL.md) | career | — | — | — | — | named-paths |
-| [`deck-builder`](../../packs/design/skills/deck-builder/SKILL.md) | design | `python-pptx==1.0.2` | — | — | — | named-paths |
 | [`delivery-metrics-report`](../../packs/sre-oncall/skills/delivery-metrics-report/SKILL.md) | sre-oncall | — | — | — | — | named-paths |
 | [`dependency-upgrade-review`](../../packs/dev-team/skills/dependency-upgrade-review/SKILL.md) | dev-team | — | — | `github.com`, `api.github.com`, `registry.npmjs.org`, `pypi.org`, `proxy.golang.org` | `git`, `gh`, `npm`, `pip`, `go` | named-paths |
 | [`event-contract-draft`](../../packs/solution-architect/skills/event-contract-draft/SKILL.md) | solution-architect | — | — | — | — | named-paths |

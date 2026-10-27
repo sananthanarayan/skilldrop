@@ -13,12 +13,12 @@
   },
   "related": [
     "brand-kit",
-    "deck-builder",
     "file-to-markdown",
     "guide-builder",
     "md-to-xlsx",
     "output-hygiene",
-    "release-notes"
+    "release-notes",
+    "md-to-pptx"
   ],
   "handoff": [
     

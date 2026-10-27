@@ -234,10 +234,6 @@
       "tier": "light",
       "rationale": "Extracts decisions/owners/dates from notes. Pattern extraction; escalate on long transcripts via large-input rule."
     },
-    "deck-builder": {
-      "tier": "standard",
-      "rationale": "Shapes content, maps a brand template's layouts, and runs a script. Judgment, not hard reasoning."
-    },
     "delivery-metrics-report": {
       "tier": "standard",
       "rationale": "A stdlib script computes every number; the model maps columns, checks data quality and interprets weekly trends against fixed DORA definitions, which is bounded judgment."

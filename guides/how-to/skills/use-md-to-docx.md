@@ -59,7 +59,7 @@ A good result:
 
 ## Use something else when
 
-- Slides; use `deck-builder`
+- Slides; use `md-to-pptx`
 - The other direction, a Word file or PDF back to Markdown; use `file-to-markdown`
 - Tables that need to be sorted, filtered or summed; use `md-to-xlsx`
 - Writing the document itself; draft it first with `guide-builder` or the skill for that document, then convert
@@ -68,4 +68,4 @@ A good result:
 
 - [SKILL.md](../../../packs/converters/skills/md-to-docx/SKILL.md), the instructions the agent reads
 - [Its page on the site](https://sananthanarayan.github.io/skilldrop/skills/md-to-docx/)
-- Related: [brand-kit](use-brand-kit.md), [deck-builder](use-deck-builder.md), [file-to-markdown](use-file-to-markdown.md), [guide-builder](use-guide-builder.md), [md-to-xlsx](use-md-to-xlsx.md), [output-hygiene](use-output-hygiene.md), [release-notes](use-release-notes.md)
+- Related: [brand-kit](use-brand-kit.md), [file-to-markdown](use-file-to-markdown.md), [guide-builder](use-guide-builder.md), [md-to-xlsx](use-md-to-xlsx.md), [output-hygiene](use-output-hygiene.md), [release-notes](use-release-notes.md), [md-to-pptx](use-md-to-pptx.md)

@@ -1,9 +1,9 @@
 # skilldrop
 
-> 114 portable skills for the artifacts knowledge work ships (ADRs, design docs,
+> 113 portable skills for the artifacts knowledge work ships (ADRs, design docs,
 > PRDs, runbooks, threat models, decks, postmortems), plus 11 loops that sequence them
 > behind gates. A loop orders skills; a skill never calls a skill, so every one of the
-> 114 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
+> 113 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
 > Version 1.2.0.
@@ -128,7 +128,6 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use dashboard-spec](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-dashboard-spec.md) *(how-to)*: Spec a dashboard before anyone builds it
 - [Use data-contract](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-data-contract.md) *(how-to)*: Draft a data contract for a dataset, table, or event stream consumed by others
 - [Use decision-log](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-decision-log.md) *(how-to)*: Extract decisions, action items, owners, and due dates from meeting notes, Slack threads, design-review transcripts, or any unstructured discussion
-- [Use deck-builder](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-deck-builder.md) *(how-to)*: Generate a real PowerPoint (.pptx) file from content, audience, and either a brand template or a color palette
 - [Use delivery-metrics-report](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-delivery-metrics-report.md) *(how-to)*: Produce a delivery metrics report for one service from deployment, incident and pull-request exports
 - [Use dependency-upgrade-review](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-dependency-upgrade-review.md) *(how-to)*: Give a merge verdict on a dependency-upgrade pull request (Dependabot, Renovate or a hand-made bump) across npm, pip, Go, Cargo and Maven lockfiles and GitHub Actions…
 - [Use design-doc](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-design-doc.md) *(how-to)*: Generate a Google-style engineering design doc (problem, goals/non-goals, options considered, recommended approach, risks, rollout) from a feature brief or short…
@@ -142,7 +141,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use feature-implement-loop](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-feature-implement-loop.md) *(how-to)*: Implement a feature or story so it ends up *verified*, not just generated
 - [Use feedback-synthesis](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-feedback-synthesis.md) *(how-to)*: Turn raw customer feedback
 - [Use figma-diagrams](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-figma-diagrams.md) *(how-to)*: Work with Figma and FigJam files via the Figma REST API
-- [Use file-to-markdown](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-file-to-markdown.md) *(how-to)*: Convert a Word document, PowerPoint deck, Excel workbook, web page, CSV, JSON, text file, email (.eml or Outlook .msg) or PDF into clean Markdown that keeps headings…
+- [Use file-to-markdown](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-file-to-markdown.md) *(how-to)*: Convert a Word document, PowerPoint deck, Excel workbook, web page, CSV, JSON, text file, email (.eml or Outlook .msg) or PDF into clean Markdown
 - [Use guide-builder](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-guide-builder.md) *(how-to)*: Turn raw notes, a spec, a thread or a messy procedure into a guide someone else can follow
 - [Use hypothesis-comparison](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-hypothesis-comparison.md) *(how-to)*: Compare rival explanations for an observation with analysis of competing hypotheses (ACH)
 - [Use incident-comms](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-incident-comms.md) *(how-to)*: Draft audience-segmented updates during a live incident
@@ -272,7 +271,7 @@ except `api-builder` requires `core`, which installs with it.
 - **dev-team** (20 skills, loops: build, modernize, release, requires core): Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, pull request descriptions, a ranked technical-debt register, migrations, launch readiness, release notes, agent-policy files, and code-quality gates.
 - **sre-oncall** (8 skills, loops: operate, requires core): Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.
 - **stakeholder-comms** (4 skills, requires core): Non-technical audiences: audience profiling, exec summaries, decision logs, and guides. Decks live in the design pack.
-- **design** (3 skills, requires core): On-brand visual work: capture a brand once, then build real PowerPoint decks in that brand, with logo, colours and fonts applied.
+- **design** (2 skills, requires core): On-brand visual work: capture a brand once as a brand.json the Word and PowerPoint converters apply, and plan a deck slide by slide for its audience.
 - **ai-engineering** (15 skills, requires core): Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, and AI-usage reporting.
 - **api-builder** (4 skills): Skills for teams building on the Anthropic API — prompt caching, token budgeting, eval generation for skills, and tool-use schema writing.
 - **converters** (5 skills, requires core): Turn Markdown into Word, Excel, PowerPoint and Confluence files that people outside engineering can open, and turn their files back into Markdown. Standard-library Python scripts, with nothing to install.
@@ -293,9 +292,9 @@ except `api-builder` requires `core`, which installs with it.
 - **build-and-review-software** (24 skills): The loop around the code itself: supervised implementation, adversarial review panels, test plans, triage, pull request descriptions, a ranked technical-debt register, accessibility and static-analysis passes, and the policy files agents read.
 - **build-on-the-claude-api** (4 skills): Skills for teams building directly on the Anthropic API — prompt caching strategy, token budgeting, eval generation, and tool-use schema writing.
 - **run-and-recover-the-service** (11 skills): Operate what shipped: runbooks, observability design, release notes, incident communication, and the postmortem that closes the loop.
-- **explain-it-to-decision-makers** (7 skills): Get a non-technical audience to a decision: audience profiling, deck outlines and real decks, exec summaries, decision logs, and how-to guides.
+- **explain-it-to-decision-makers** (6 skills): Get a non-technical audience to a decision: audience profiling, deck outlines and real decks, exec summaries, decision logs, and how-to guides.
 - **govern-ai-use** (8 skills): Adopt AI deliberately and prove what it is doing: readiness assessment, use-case triage, rollout plans, acceptable-use policy, adoption staging, and usage reporting.
-- **create-on-brand-collateral** (3 skills): Make collateral that looks like it came from your team: capture the brand once, then build decks with your logo, colours and fonts.
+- **create-on-brand-collateral** (2 skills): Make collateral that looks like it came from your team: capture the brand once, then build decks with your logo, colours and fonts.
 - **get-a-draft-ready-to-ship** (8 skills): The passes either side of a generator: collect a messy input into a structured brief, critique the argument, and strip the machine artifacts before it leaves the building.
 - **design-the-experience** (5 skills): Shape what people see and read before it's built: information architecture, interface copy, content specs, component specs and service blueprints.
 - **research-a-question** (3 skills): Take a question to a sourced answer: a research plan with a stopping rule, a cited synthesis of the sources, and competing explanations weighed against the evidence.
@@ -318,7 +317,7 @@ except `api-builder` requires `core`, which installs with it.
 - [catalogue.json](https://sananthanarayan.github.io/skilldrop/catalogue.json): every skill, loop, pack and outcome as machine-readable JSON — name, description, tier, tags, related. Prefer this over scraping the site.
 - [model-routing.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/model-routing.json): the abstract tier per skill (light/standard/heavy) and the provider map that resolves a tier to a concrete model.
 - [catalogue.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/catalogue.json): pack display order and outcome membership; each pack's metadata is in `packs/<pack>/pack.json`.
-- All 114 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
+- All 113 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
 
 ## Optional
 

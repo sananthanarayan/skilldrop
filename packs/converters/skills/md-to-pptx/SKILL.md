@@ -9,7 +9,7 @@ This skill turns a Markdown document into a `.pptx` mechanically: the headings d
 slides and the words stay the user's own. A stdlib Python script writes the PowerPoint file,
 checks it, and prints an outline of the slides. The agent's job is the part around it: get the
 Markdown into a shape that converts well, run the script, read what it reports, and tell the
-user what changed. Designing a persuasive deck is `deck-builder`; planning what slides should
+user what changed. Planning what slides should
 say is `slide-outliner`.
 
 ## How to respond
@@ -127,7 +127,6 @@ treating `Notes:` paragraphs as slide text is an `[assumption]` stated at the to
 
 ## When NOT to use this skill
 
-- ❌ Designing a persuasive deck for an audience, with charts, layouts and a narrative; use `deck-builder`
 - ❌ Planning what each slide should say before any document exists; use `slide-outliner`
 - ❌ A Word document to edit and track changes in; use `md-to-docx`
 - ❌ A `.pptx` back to Markdown; use `file-to-markdown`

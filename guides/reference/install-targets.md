@@ -169,7 +169,6 @@ Per-skill quick reference:
 | Skill | Install command (run from inside the copied skill folder) |
 |---|---|
 | `figma-diagrams` | `python3 -m pip install -r requirements.txt` (installs `requests`) + `export FIGMA_TOKEN=figd_...` |
-| `deck-builder` | `python3 -m pip install -r requirements.txt` (installs `python-pptx`) |
 | _all other skills_ | _no runtime deps: pure markdown skills_ |
 
 For `figma-diagrams`, you also need a [Figma Personal Access Token](https://www.figma.com/developers/api#access-tokens) exported as the `FIGMA_TOKEN` env var. What each skill's scripts need beyond packages is on [Skills that ship scripts](skills-with-scripts.md).

@@ -362,7 +362,51 @@ def stage_skill(skill, ws, layout="full"):
     return dest
 
 
-def cli_agent(model, system, user, skill=None, files=None, layout="full"):
+DEPS_HOME = os.path.join(os.path.expanduser("~"), ".cache", "skilldrop-bench", "venvs")
+
+
+def requirements(skill):
+    """A skill's declared pip requirements file, or None."""
+    p = os.path.join(catalog.skill_dir(skill), "requirements.txt") if skill else ""
+    return p if p and os.path.isfile(p) else None
+
+
+def deps_key(skill):
+    req = requirements(skill)
+    if not req:
+        return None
+    with open(req, "rb") as fh:
+        return hashlib.sha256(fh.read()).hexdigest()[:16]
+
+
+def deps_bin(skill):
+    """A virtual environment with the skill's pip requirements, built once per requirements file
+    outside the sandbox (which has no network), and put first on every arm's PATH. A user installs
+    a skill's requirements before using it, so the run does too, and the plain agent gets the
+    same machine, so the comparison stays fair."""
+    key = deps_key(skill)
+    if not key:
+        return None
+    venv = os.path.join(DEPS_HOME, key)
+    py = os.path.join(venv, "Scripts" if os.name == "nt" else "bin", "python")
+    if not os.path.exists(py):
+        os.makedirs(DEPS_HOME, exist_ok=True)
+        tmp = venv + ".%d.tmp" % os.getpid()
+        subprocess.run([sys.executable, "-m", "venv", tmp], check=True, capture_output=True)
+        tpy = os.path.join(tmp, "Scripts" if os.name == "nt" else "bin", "python")
+        r = subprocess.run([tpy, "-m", "pip", "install", "--quiet", "--disable-pip-version-check", "-r",
+                            requirements(skill)], capture_output=True, text=True)
+        if r.returncode != 0:
+            shutil.rmtree(tmp, ignore_errors=True)
+            raise APIError("could not install %s's requirements: %s" % (skill, r.stderr.strip()[-300:]))
+        try:
+            os.replace(tmp, venv)
+        except OSError:  # another worker finished first
+            shutil.rmtree(tmp, ignore_errors=True)
+    return os.path.dirname(py)
+
+
+def cli_agent(model, system, user, skill=None, files=None, layout="full", env_skill=None):
     """A real agent run: Claude Code with its own system prompt and file and shell tools, in a
     throwaway directory, sandboxed, with no settings, plugins or MCP servers from this machine.
     `system` is appended to Claude Code's prompt. The skill arm also gets the skill's folder at
@@ -371,6 +415,10 @@ def cli_agent(model, system, user, skill=None, files=None, layout="full"):
     with tempfile.TemporaryDirectory() as ws, tempfile.TemporaryDirectory() as side:
         ws = os.path.realpath(ws)
         env = dict(os.environ)
+        bindir = deps_bin(env_skill)
+        if bindir:  # python3 and pip resolve to the environment with the skill's requirements
+            env["PATH"] = bindir + os.pathsep + env.get("PATH", "")
+            env["VIRTUAL_ENV"] = os.path.dirname(bindir)
         if files:
             copy_fixtures(files, ws)
         if skill:
@@ -433,17 +481,21 @@ def cache_path(kind, model, system, user, trial, files=None, extra=None):
     return os.path.join(CACHE, key[:2], key + ".json")
 
 
-def call(kind, model, system, user, trial, max_tokens, budget, skill=None, files=None, layout="full"):
+def call(kind, model, system, user, trial, max_tokens, budget, skill=None, files=None, layout="full",
+         env_skill=None):
     """One model call, cached on everything that determines it. Returns a record with the text,
     the API's usage block, the cost at this model's rate, and whether it came from the cache."""
     extra = ("tools/" + scripts_digest(skill)) if layout == "tools" else None
+    if kind == "gen" and BACKEND == "claude-cli" and deps_key(env_skill):
+        extra = (extra or "") + "/deps/" + deps_key(env_skill)  # runs without the requirements are stale
     path = cache_path(kind, model, system, user, trial, files, extra)
     if os.path.exists(path):
         return dict(json.load(open(path, encoding="utf-8")), cached=True)
     budget.check()
     start = time.time()
     if BACKEND == "claude-cli":
-        text, resp = cli_agent(model, system, user, skill, files, layout) if kind == "gen" else cli_messages(model, system, user)
+        text, resp = (cli_agent(model, system, user, skill, files, layout, env_skill) if kind == "gen"
+                      else cli_messages(model, system, user))
     else:
         text, resp = messages(model, system, user, max_tokens=max_tokens, timeout=600, raw=True)
     served = resp.get("model", "")
@@ -510,7 +562,7 @@ def run_unit(unit, judge_model, budget):
     try:
         for arm, system in arm_systems(s, md):
             gen = call("gen", model, system, e["prompt"], trial, 16000, budget, s if arm != "baseline" else None,
-                       fixtures(s, e.get("id")), "tools" if arm == "tools" else "full")
+                       fixtures(s, e.get("id")), "tools" if arm == "tools" else "full", env_skill=s)
             grades, jrec = judge(judge_model, gen["text"], e["assertions"], trial, budget)
             row["arms"][arm] = {"output": gen["text"], "usage": gen["usage"], "cost": gen["cost"],
                                 "seconds": gen["seconds"], "stop_reason": gen["stop_reason"],
@@ -915,6 +967,8 @@ def estimate(units, floor_units, judge_model):
         arms = arm_systems(s, md)
         for arm, system in arms:
             extra = ("tools/" + scripts_digest(s)) if arm == "tools" else None
+            if BACKEND == "claude-cli" and deps_key(s):
+                extra = (extra or "") + "/deps/" + deps_key(s)
             fresh += not os.path.exists(cache_path("gen", model, system, e["prompt"], trial, fixtures(s, e.get("id")), extra))
             total += ((len(system) + len(e["prompt"])) / 4 * pin + 4000 * pout) / 1e6
             total += ((seen + 500) * jin + 500 * jout) / 1e6         # assertion judge reads one output

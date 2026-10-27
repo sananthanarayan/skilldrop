@@ -4,7 +4,7 @@
 # github-actions: pinned to commit SHAs, so a repointed tag cannot inject code into the
 # publish job. Dependabot keeps the SHA and its trailing version comment honest.
 #
-# pip: the two skills with scripts pin their deps rather than ranging, so a future release
+# pip: the skill with a pip dependency (figma-diagrams) pins it rather than ranging, so a future release
 # cannot install itself unreviewed onto a user's machine. Note these installs happen on the
 # *user's* machine, not in CI — a merged bump only reaches people who reinstall the skill.
 #
@@ -28,15 +28,6 @@ updates:
       actions:
         patterns:
           - "*"
-
-  - package-ecosystem: pip
-    directory: /packs/design/skills/deck-builder
-    schedule:
-      interval: monthly
-    commit-message:
-      prefix: "chore"
-    labels:
-      - dependencies
 
   # Watch only. A major bump here can raise the Python floor, which is a breaking change
   # for anyone on an older interpreter — review the release notes before merging.

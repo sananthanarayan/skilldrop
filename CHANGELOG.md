@@ -10,10 +10,16 @@ Bullets say what a user can now do, not which files moved.
 
 ## 1.2.0 — 2026-10-27
 
-- **Three skills are retired: `md-to-html`, `mermaid-render` and `marketing-flyer`.** On their held-out evals, in each of two trials and with both blind judges, plain Claude Code on Sonnet 5.5 did the job better. It wrote the better web page in every run, fixed the same diagrams and ran the Mermaid CLI itself, and built the whole flyer with placeholders where the skill stopped. None of the three adds a rule the plain agent breaks ([RFC-0068](docs/rfcs/0068-five-skills-that-lost-to-the-plain-agent.md)).
+- **Four skills are retired: `md-to-html`, `mermaid-render`, `marketing-flyer` and `deck-builder`.** On their held-out evals, in each of two trials and with both blind judges, plain Claude Code on Sonnet 5.5 did the job better ([RFC-0068](docs/rfcs/0068-five-skills-that-lost-to-the-plain-agent.md)).
+  - **The first three** add no rule the plain agent breaks. It wrote the better web page in every run, fixed the same diagrams and ran the Mermaid CLI itself, and built the whole flyer with placeholders where the skill stopped.
+  - **`deck-builder` was rebuilt around its rules first,** and measured on fresh evals with its script able to run. The plain agent's decks were still preferred, and met more checks (81% against 69%).
   - **If you installed one, it keeps working.** `skilldrop outdated`, `update` and `doctor` now name it, with the reason and the uninstall command, and remove nothing.
-- **The design pack is about decks now.** Its first task captures your brand and builds a deck in it. The converters pack covers Word, Excel, PowerPoint and Confluence. To show a Mermaid diagram as a picture, the converters now say to render it with the Mermaid CLI (`npx -y @mermaid-js/mermaid-cli`) and embed the PNG.
-- **`file-to-markdown` and `deck-builder` also lost to the plain agent, and will be rebuilt rather than retired.** `file-to-markdown`'s script dropped an embedded image and wrote an unaccepted tracked change as final text. `deck-builder`'s script couldn't run in the benchmark because it needs `python-pptx`. Both will be measured again on fresh evals, and retired if they still lose.
+- **The design pack captures your brand and outlines your deck.** Turn the outline into an on-brand `.pptx` with `md-to-pptx` from the converters pack, which reads the same `brand.json`. The converters pack covers Word, Excel, PowerPoint and Confluence. To show a Mermaid diagram as a picture, the converters now say to render it with the Mermaid CLI (`npx -y @mermaid-js/mermaid-cli`) and embed the PNG.
+- **`file-to-markdown` 0.4.0 was rebuilt, and now beats plain Claude Code on fresh evals** (judges 2 and 3 of 4; 72% of checks against 62%).
+  - **Images:** it saves embedded images from Word and PowerPoint files beside the Markdown, and links them where they sat.
+  - **Tracked changes:** they stay pending, as `{++added++}` and `{--removed--}`, never written as accepted text.
+  - **Contradictions:** it doesn't paste a figure the source contradicts into a table meant for publishing.
+- **Benchmark runs now install a skill's pip requirements**, for every arm, as a user would.
 
 ## 1.1.3 — 2026-10-25
 
