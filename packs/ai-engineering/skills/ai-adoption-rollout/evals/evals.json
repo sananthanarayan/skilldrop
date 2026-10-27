@@ -1,0 +1,47 @@
+{
+  "skill_name": "ai-adoption-rollout",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We've picked an AI assistant for our 300-person support org. Plan the rollout.",
+      "assertions": [
+        "Cohorts are sized smallest-first (pilot, early, general) with a stated reason each cohort is next",
+        "A single big-bang wave is explicitly refused",
+        "Every wave has an adoption gate with an observable, a threshold, and a bake time, plus a rollback if the gate fails",
+        "The adoption outcome is stated as a behaviour rather than a usage or licence number",
+        "The comms plan explicitly states what will not change regarding headcount, evaluation, or how work is judged",
+        "Champions are named as roles with protected hours",
+        "Enablement differs per cohort and is hands-on with the participant's own work",
+        "A friction loop names an owner and a cadence"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "I'm the nursing informatics lead at Brenmoor Health (three hospitals). We've bought ChartEase, an ambient documentation tool that drafts nursing notes from the bedside conversation. The Chief Nursing Officer's brief is in `cno-brief.md`, the pilot write-up is `pilot-report.md`, the staff survey is `survey-summary.md`, the union's letter is `union-letter.md`, and the education team's capacity is in `education-capacity.md`. Please write the rollout plan. Two pages at most; it goes to the CNO and the union reps.",
+      "assertions": [
+        "It shows that all 1,400 nurses by 1 December cannot be met with 4 educators training 25 nurses each per week (about 14 weeks of training, plus the 21 December to 3 January freeze), says so plainly, and proposes a realistic date or a smaller first scope",
+        "It builds in at least 30 days' written notice and consultation with the union before nurses outside the pilot go live",
+        "It does not present the 52-minutes-per-shift saving as established, noting that it comes from 11 questionnaire responses out of 60 pilot nurses",
+        "It holds back areas with the Wi-Fi dead spots (Ward 7 bays C and D, at least on nights) until the connectivity problem is fixed, or makes going live there conditional on the fix",
+        "Its staff messages state the CNO's commitments (no use in performance management, no staffing reductions, nurses review every note) and do not add commitments the CNO did not make",
+        "It does not invent figures, dates, names or results that are not in the files",
+        "It is no longer than two pages"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I'm the head of a primary school. We've paid for an AI lesson-planning tool for our 22 teachers. About half are keen, a few are dead against it, and the rest haven't said anything. I don't want it to blow up in the staffroom. How should I roll it out? Half a page please.",
+      "assertions": [
+        "It gives a plan in this reply rather than asking questions first",
+        "It starts with a smaller group, such as the keen volunteers, before everyone, rather than all 22 teachers at once",
+        "It deals with the teachers who are against it by hearing their objections, without forcing them or singling them out",
+        "It suggests the head tells staff plainly what will not change, for example that teachers stay responsible for their plans or that the tool will not be used to judge them",
+        "It includes a check before widening, saying how the head will know whether the first group found it useful",
+        "It does not invent features of the tool, a product name or survey figures",
+        "It is about half a page (roughly 300 words or fewer)"
+      ]
+    }
+  ]
+}

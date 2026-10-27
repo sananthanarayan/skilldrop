@@ -1,0 +1,11 @@
+Load test - SMS reminder sender (staging, provider sandbox)
+Date: 8 Oct
+
+Ramp: 200 -> 1,400 messages/min over 30 min
+
+Peak sustained rate:     1,200 messages/min for 20 min
+p95 send latency:        2.1 s
+Error rate at 1,200/min: 0.4%
+
+Above 1,250 messages/min the provider returned HTTP 429 (rate limited) on 31% of sends.
+Retries were not enabled for this run.

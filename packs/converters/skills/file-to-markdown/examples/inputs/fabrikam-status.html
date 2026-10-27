@@ -1,0 +1,14 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Fabrikam status</title><style>body{color:red}</style><script>track()</script></head>
+<body><nav><a href="/">Home</a></nav>
+<h1>Fabrikam service status</h1>
+<p>All systems <strong>operational</strong> except <em>search</em>. Details on the <a href="https://status.fabrikam.example/search">incident page</a>.</p>
+<h2>Open incidents</h2>
+<table><thead><tr><th>ID</th><th>Service</th><th>Since</th></tr></thead>
+<tbody><tr><td>INC-7</td><td>Search | EU</td><td>09:40 UTC</td></tr><tr><td>INC-8</td><td>Exports</td><td>11:05 UTC</td></tr></tbody></table>
+<h2>What to do</h2>
+<ol><li>Retry the search</li><li>If it fails, use filters:<ul><li>by date</li><li>by owner</li></ul></li></ol>
+<blockquote><p>We will post the next update by 14:00 UTC.</p></blockquote>
+<pre><code class="language-bash">curl -s https://status.fabrikam.example/api | jq .</code></pre>
+<p><img src="data:image/png;base64,AAAA" alt="graph"> <img src="uptime.png" alt="Uptime chart"></p>
+<script>more()</script>
+</body></html>

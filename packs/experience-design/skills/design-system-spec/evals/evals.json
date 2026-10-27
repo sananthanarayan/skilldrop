@@ -1,0 +1,46 @@
+{
+  "skill_name": "design-system-spec",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write the component spec for Acme's modal dialog. It's used for confirmations (delete project), short forms (rename), and a long terms-and-conditions view that scrolls. Our tokens include color.background.surface, color.background.overlay, color.border.subtle, color.text.default, space.200, space.300, radius.large, font.heading.md, font.body.md, shadow.overlay. Web, built in Vue.",
+      "assertions": [
+        "States purpose and boundary, including when to use something other than a modal",
+        "Anatomy parts are numbered and the same numbers are used in the state and token tables",
+        "Every applicable state is specified, including focus, and focus is distinguishable from hover without relying on colour alone",
+        "Styling uses only token names, never hex codes or pixel values; any needed token not in the prompt is tagged [proposed token]",
+        "Keyboard behaviour covers focus moving into the dialog on open, Tab staying inside, Esc closing, and focus returning to the trigger",
+        "Specifies a native <dialog> or role=dialog with aria-modal and an accessible name from the heading",
+        "Every WCAG citation is a real WCAG 2.2 criterion with the correct number and name",
+        "Ends with open questions for engineering, each naming the decision it blocks"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Write the component spec for the dose stepper in our MedRound ward medication app so engineering can build it. The designer's notes are in designer-notes.md, our tokens are in tokens.json, and the open build questions are in eng-thread.md. Keep it to one Confluence page, about 1,200 words maximum.",
+      "assertions": [
+        "Flags that the error text colour #E57373 on the white surface is about 3:1 and fails the 4.5:1 text contrast requirement, despite the designer's note saying it passes, and proposes the darker error token or another fix",
+        "Flags that 20 × 20 px buttons fall below the WCAG 2.2 AA minimum target size of 24 × 24 CSS px (2.5.8), and does not present 44 px as the AA requirement",
+        "Does not use 'color.border.focus-strong' as if it exists; notes it is missing from tokens.json and points to an existing token or leaves it as an open question",
+        "Does not specify press-and-hold auto-repeat as settled behaviour; it follows the clinical safety objection (one tap, one step) or raises the disagreement as a decision to be made",
+        "States what happens at 0.5 mL and 10 mL and when someone types an out-of-range or off-step value such as 12, 0 or 2.3, answering QA's question",
+        "Does not invent usage data (such as how often nurses hit 10 mL), token values or research not in the files",
+        "Stays within about 1,200 words"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "our developer asked me to 'spec' the newsletter signup box on our garden centre website before he builds it. i'm the marketing person, i don't really know what that means lol. it's just an email box and a button that says Join. to save space i was going to put 'Your email' inside the box instead of a label above it. can you give me a short checklist he can work from? one screen max.",
+      "assertions": [
+        "Covers what happens with an invalid or empty email, while the form is sending, after a successful signup, and if sending fails",
+        "Advises against using the placeholder text as the only label, and explains why in plain terms (it disappears when typing, and screen readers and some users miss it)",
+        "Covers keyboard use and screen-reader needs, such as a programmatic label and error messages that are announced",
+        "Written plainly for a marketing person to hand to a developer, without unexplained design-system jargon",
+        "Does not invent brand colours, fonts, token names, pixel values or a privacy policy link not given; anything needed is left as something to fill in",
+        "Fits on one screen (roughly 300 words or fewer) as a checklist"
+      ]
+    }
+  ]
+}

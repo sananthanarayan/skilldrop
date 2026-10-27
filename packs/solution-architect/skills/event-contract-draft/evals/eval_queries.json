@@ -1,0 +1,38 @@
+[
+  {
+    "query": "Write the AsyncAPI spec for the order events our service publishes to Kafka",
+    "should_trigger": true
+  },
+  {
+    "query": "Define the message schema, envelope and partition key for our payment events topic",
+    "should_trigger": true
+  },
+  {
+    "query": "We need to rename a field on a live SNS/SQS event without breaking the consumers. How do we version it?",
+    "should_trigger": true
+  },
+  {
+    "query": "Draft the EventBridge event contract for InvoicePaid, including what consumers have to do about duplicates",
+    "should_trigger": true
+  },
+  {
+    "query": "If we key our Kafka topic by customerId, is ordering guaranteed for each order?",
+    "should_trigger": true
+  },
+  {
+    "query": "Draft the OpenAPI spec for the orders REST API: create, fetch and list orders",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a data contract for the orders table the analysts query in the warehouse, with freshness and completeness SLAs",
+    "should_trigger": false
+  },
+  {
+    "query": "Define the data contract for the clickstream topic that feeds the lakehouse, with null-rate and volume checks",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a design doc for moving the order service from polling to an event-driven architecture",
+    "should_trigger": false
+  }
+]

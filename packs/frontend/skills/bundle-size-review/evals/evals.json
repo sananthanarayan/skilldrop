@@ -1,0 +1,138 @@
+{
+  "skill_name": "bundle-size-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The dispatch dashboard is slow to open on our technicians' phones, and the bundle analyzer treemap shows echarts as the giant block. I ran webpack with --json and attached stats.json, plus package.json and src/utils/format.js. What's making the bundle heavy, and what should we cut first?",
+      "assertions": [
+        "Opens with the first-load fix, not echarts: lodash is imported whole (import _ from \"lodash\", the CommonJS lodash/lodash.js, 544,098 bytes of webpack module size, before minification) into the initial vendors chunk through src/utils/format.js",
+        "Says echarts and zrender sit in the lazy reports chunk that src/routes.js loads with import(), so they do not delay the first screen, and ranks them below the initial-chunk fixes",
+        "Measures the main entry's initial JavaScript as the vendors and main chunks, 311,282 bytes of emitted JavaScript (301,412 + 9,870, minified, before compression), in one unit system, and does not present the sum of all chunks as what the first load downloads. It gives no compressed figure as measured: any gzip number is labelled an estimate or replaced by a way to measure it after a build",
+        "Finds date-fns installed twice, naming node_modules/date-fns (pulled in by src/utils/format.js) and node_modules/@tidal/daterange-picker/node_modules/date-fns (pulled in by the picker, a CommonJS copy), and proposes aligning the versions so one copy is installed rather than removing date-fns from the app",
+        "Gives the lodash fix from the functions format.js actually uses (groupBy, sortBy, round) as per-method imports, lodash-es named imports or native code, and notes from the stats that format.js is the only importer",
+        "Does not promise the pre-minification module size as the download saving, and says the saving is confirmed by rebuilding and comparing",
+        "Proposes a per-entry budget on the main entry's initial JavaScript, with a threshold in the unit of the tool that enforces it",
+        "Does not invent the version of the nested date-fns copy or the picker's required range, which are not in the input, and says how to read them (for example npm ls date-fns)",
+        "Keeps the reply lean: the answer first, a short numbered list of fixes, no full module or package table"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "PR #318 on our order console failed the bundle-size check; PR.md has the CI output and the author's comment. meta-before.json and meta-after.json are the esbuild metafiles from main and from the PR branch. Should we raise the limit like the author suggests? What actually grew?",
+      "assertions": [
+        "Answers first that raising the total limit is the wrong fix, because the change that slows the first load is in the main entry, not the lazy Analytics route",
+        "Attributes the first-load growth to papaparse (19,480 bytes) and file-saver (2,690 bytes) imported statically by src/components/ExportButton.tsx through src/components/Toolbar.tsx, 23,344 bytes added to the main entry's initial JavaScript (159,050 to 182,394)",
+        "Attributes the larger growth, 195,230 bytes, to @tidal/heatmap in the Analytics chunk that src/App.tsx loads with import(), and says it does not land in the first load",
+        "Recommends loading papaparse and file-saver with a dynamic import when the export button is clicked, and says what to check after (the export still downloads a correct CSV)",
+        "Proposes a per-entry budget on the main entry's initial JavaScript (plus, optionally, a separate figure for the Analytics route) and says that budget would have caught this PR's first-load growth while a total-size limit only flagged the lazy growth",
+        "Gives no invented compressed sizes: the metafile bytes are minified and uncompressed, and with no built files any gzip figure is labelled an estimate or replaced by a way to measure it",
+        "Does not invent load times, Lighthouse scores, user counts or sizes that cannot be computed from the metafiles and PR.md",
+        "Keeps the reply short and answer-first, without a table of every chunk and module"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We're on Vite. stats.json is the rollup-plugin-visualizer raw-data output (gzip and brotli sizes on), and package.json is attached. moment is by far the biggest thing in our bundle. Can we just remove it? And what else is making the first load heavy? We'd like the first load under 60 KB gzipped.",
+      "assertions": [
+        "Answers first that moment cannot just be removed: the app does not import it; @tidal/react-dates does, through src/pages/BookingCalendar.tsx, so deleting it from package.json would not change the bundle",
+        "Says moment (moment-with-locales, 488,140 bytes rendered) is in the lazy BookingCalendar chunk loaded by import() from src/routes.tsx, so it is not part of the first load",
+        "Names the way to shrink it (replace the date picker with one built on a smaller date library or a native input, or keep the picker and drop the bundled locales) and what to check (formats, locales and time zones the calendar uses)",
+        "Identifies the core-js polyfills from import of core-js/stable in src/main.tsx (58,250 bytes rendered, 21,454 bytes gzipped per the visualizer) in the initial index chunk, and checks them against the browserslist in package.json (Chrome and Edge 111, Firefox 115, Safari 16.4), which have these features natively",
+        "Measures the first load as 75,974 bytes gzipped across the index and vendor chunks, from the visualizer's figures, says it is over the 60 KB target and that removing core-js brings it to about 54,500 bytes",
+        "Does not present react-dom as something to remove",
+        "Does not invent which locales the app needs, the picker's internals, or a moment version beyond what package.json says",
+        "Keeps the reply short and answer-first"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-20",
+      "prompt": "Our size bot flagged PR #482 on the support portal (it adds a Reply box under each ticket on the Home page, src/components/CommentBox.jsx) and says main grew a lot. But I diffed the dist folder totals and it's only about +3 KB, so I think the bot is comparing the wrong thing. Before and after webpack stats are in stats/before.json and stats/after.json. Is the bot wrong? And what should we have had set up to catch this properly?",
+      "assertions": [
+        "Answers the question directly up front: the bot is right. The initial `main` chunk grew from 163,000 to 342,900 bytes (+179,900, roughly 176-180 KB), while the all-chunks total grew only 3,400 bytes (347,100 to 350,500), which is the +3 KB the user saw.",
+        "Explains why the total barely moved: the editor code (src/components/RichText.jsx 3,900 + @inkwell/editor 141,200 + inkwell-model 31,400 = 176,500 bytes) moved out of the lazy `compose` chunk (184,100 down to 7,600) into the initial `main` chunk. The bytes went from lazy-loaded to first load; little new code was added.",
+        "Names the import chain from the `reasons` in after.json: src/routes/Home.jsx -> src/components/CommentBox.jsx -> src/components/RichText.jsx -> @inkwell/editor -> inkwell-model. Notes that src/routes/Compose.jsx is still loaded through import(), so the static import from CommentBox is what drags the editor in.",
+        "Recommends a fix that keeps the editor out of the first load: load RichText (or the editor) lazily from CommentBox with dynamic import()/React.lazy, for example when Reply is clicked, which CommentBox.jsx's `open` state already gates. Does not suggest removing the editor, and does not suggest lazy-loading the Compose route, which is already lazy.",
+        "Proposes a per-entry budget on the `main` entry's initial JavaScript (for example webpack `performance.maxEntrypointSize` with `hints: 'error'`, or a size-limit style CI check on main), not a budget on total dist size. The threshold it gives passes 163,000 and fails 342,900, and it says explicitly that a total-size budget would have missed this PR.",
+        "Is accurate about what the numbers are: the stats `size` values are webpack module sizes, not gzip or brotli bytes. Any compressed figure is either labelled an estimate or comes with a command to measure it from the built files (e.g. `gzip -c dist/main.*.js | wc -c`). It does not present invented compressed numbers as measured.",
+        "Invents nothing that isn't in the input: no modules, packages, asset sizes, config files or CI tools described as already present beyond what stats/before.json, stats/after.json and CommentBox.jsx show. For example, it does not claim react-dom or client.js changed.",
+        "Stays proportionate to a 'was the bot wrong, how do we guard this' question. It stays on this regression and the budget and does not turn into a full bundle audit (e.g. recommending replacing react or react-dom)."
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-20",
+      "prompt": "ops dashboard is really slow to open on the warehouse tablets and someone said the bundle is huge. what can we actually cut without breaking anything? esbuild metafile is build/meta.json, rest of the repo is here",
+      "assertions": [
+        "Answers the question directly with a ranked list of what can come out of the first load. It treats first-load JS as the entry output dist/assets/main-7QX2KD.js (421,400 bytes), leaves the .js.map outputs out of the count, and keeps the lazily loaded dist/assets/Exports-M4PZ1A.js (215,500 bytes) separate.",
+        "Ranks glyphset as the biggest first-load cut (198,400 bytesInOutput, about 47% of main) and traces it to src/components/Icon.jsx, where `import * as Icons from 'glyphset'` plus the `Icons[name]` dynamic lookup stops tree-shaking. The fix it gives is explicit imports (or an explicit name-to-component map) of only the icons actually used, plus a way to list the names in use (e.g. grep for `<Icon name=`), since the route sources aren't provided.",
+        "Finds tempora bundled twice: v3.1.0 at node_modules/tempora (ESM, 6,900 bytes in main) and v2.9.1 at node_modules/plotline/node_modules/tempora (CJS, 23,800 bytes, not tree-shaken). It gives the chain src/routes/Overview.jsx -> plotline -> plotline's nested tempora, and notes from package-lock.json that plotline 4.2.0 requires tempora ^2.4.0.",
+        "Treats the tempora dedupe with care: forcing v3 on plotline (npm overrides/resolutions) is a major-version jump and not a safe removal without checking. The response gives a command to run with network access (e.g. `npm view plotline versions` / `npm view plotline@latest dependencies`) and does not claim that a plotline version supporting tempora 3 exists.",
+        "Checks polyfills against .browserslistrc (chrome >= 110, edge >= 110): es.promise, es.array.flat, es.object.from-entries, es.string.replace-all and es.array.at can come out of src/polyfills.js (about 5,950 bytes). es.object.group-by (610 bytes) must stay, because Object.groupBy only shipped in Chrome/Edge 117 and src/utils/groupRows.js uses it. The alternative is to rewrite groupRows and then drop it.",
+        "Does not present sheetsmith (214,300 bytes, the biggest single library) as a first-load cut, because it is only reached through the dynamic import of src/routes/Exports.jsx and sits in the lazy Exports chunk. If it mentions sheetsmith, it says it doesn't affect opening the dashboard.",
+        "Is accurate that the metafile bytes are minified, uncompressed sizes, not gzip or brotli. Any compressed figure is labelled an estimate or comes with a command to measure it after a build. It does not suggest cutting code needed at runtime (react, react-dom, plotline itself).",
+        "Invents nothing that isn't in the input: no package versions, icon names, sizes, files or browser targets beyond what meta.json, package.json, package-lock.json, .browserslistrc and the src files contain. It delivers the cut list instead of stopping to ask clarifying questions first."
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-20",
+      "prompt": "lighthouse keeps dinging our landing page for unused JS. we moved the charts onto a lazy /reports route back in march so i dont get why index-*.js is still ~460k. someone on the team reckons its the echarts locale files? vite build w/ the visualizer plugin, raw data is in stats.json. what can we cut - the german charts have to keep working tho",
+      "assertions": [
+        "Names the import chain that keeps ECharts in the entry chunk assets/index-C7qK2mPa.js despite the lazy route: src/main.tsx -> src/i18n/index.ts -> src/i18n/chartLocales.ts -> echarts/core (imported for registerLocale) -> echarts/lib/core/echarts.js and zrender.",
+        "Corrects the team's guess with numbers: the six registered locale files (DE, FR, ES, JA, PT-br, KO) are only about 8.2 KB gzip (8,244 B), while ECharts core + zrender + tslib in the entry total about 67.6 KB gzip (67,604 B), close to half the entry's ~147.4 KB gzip (147,431 B, the sum of per-module gzipLength).",
+        "Explains that the ~460k figure is the uncompressed size (the entry's renderedLength sums to 465,132 B), gives first-load JavaScript in compressed terms (~147 KB gzip), and keeps the lazy Reports chunk (assets/Reports-Bf41xQ9e.js, ~40.4 KB gzip / 40,414 B) separate from that figure.",
+        "Recommends moving the chartLocales import / registerLocale call off the entry path, into src/pages/Reports.tsx or a module only Reports imports, so echarts/core moves into the lazy chunk. Does not recommend dropping ECharts or undoing the lazy route.",
+        "Keeps German working by keeping the DE registration (EN ships with ECharts core via langEN). Says FR, ES, JA, PT-br and KO can be dropped because SUPPORTED_LANGUAGES is only ['en', 'de'], and puts that at about 6.9 KB gzip (6,892 B), a minor saving next to the core move.",
+        "Gives the expected outcome as an estimate (entry roughly 80 KB gzip after the move: 147,431 - 67,604 = 79,827 B, with React/react-dom/router at ~73 KB as the remaining floor) and says to confirm it by rebuilding (e.g. `npm run build` / `vite build`) and re-reading stats.json, since per-module gzip sums only approximate the gzip of the whole chunk.",
+        "Invents nothing that is not in the input: no module sizes, files, chunk names, ECharts APIs or Lighthouse scores beyond what stats.json and the source files contain.",
+        "Answers the actual question directly and at a size that fits a casual ask: leads with what is really heavy and the specific cut(s) to make, rather than a module-by-module audit of the whole bundle."
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-20",
+      "prompt": "I lead frontend platform at Quillmark. Both of our apps in the monorepo (apps/storefront and apps/backoffice, webpack 5) consume our shared component library @quillmark/ui from packages/ui. Storefront only uses Button, PriceTag and Modal, yet its main bundle is enormous. I've committed production stats for both: apps/storefront/stats.json and apps/backoffice/stats.json. I need three things: (1) what @quillmark/ui is costing each app on first load and why, (2) the change to packages/ui that fixes it, plus anything that change could break, and (3) per-entry size budgets we can enforce in CI for both apps so this doesn't creep back.",
+      "assertions": [
+        "Traces the import chain from stats reasons/issuers, e.g. ./src/index.tsx -> ./src/App.tsx -> ./src/pages/Home.tsx -> @quillmark/ui (../../packages/ui/dist/index.js) -> ./Chart -> chart.js/auto -> chart.js/dist/chart.cjs. Names the root cause: packages/ui is compiled to CommonJS (tsconfig \"module\": \"commonjs\", only a \"main\" field, no ESM entry and no \"sideEffects\"), so the barrel's require() calls pull in every component (the stats show the 'Module is not an ECMAScript module' bailout).",
+        "For storefront, gives first-load cost from the CompressionPlugin output: main.8c41d2e7.js is 141,206 B gzip (437,914 B raw). Names the unused weight in it: the DataGrid/DatePicker/Chart wrappers and their dependencies @tanstack/table-core, dayjs, chart.js (with helpers.segment.cjs and @kurkle/color).",
+        "Treats webpack module `size` values as pre-minification source bytes, not emitted or gzip bytes. For example, it does not claim the chart.js-related modules' 522,298 B (or the 665,654 B of unused modules) are part of a 437,914-byte asset. Any per-dependency compressed saving is labelled an estimate or comes with a way to measure it after a rebuild. It also notes that backoffice's stats contain no gzip sizes (no CompressionPlugin there).",
+        "For backoffice, sees that DataGrid/DatePicker (table-core, dayjs) are really used by Users/Orders in main, but Chart/chart.js is used only by the lazy Analytics route. analytics.e71b4d08.js is just 1,206 B because chart.js already sits in main. Says chart.js will move into the analytics chunk only once main's imports stop going through the CommonJS barrel.",
+        "The packages/ui fix ships an ES module build (e.g. ESM output via a \"module\" field or an \"exports\" import condition, optionally per-component entry points) and declares side effects while keeping CSS as one (e.g. \"sideEffects\": [\"**/*.css\"]), because dist/Button.js does require(\"./Button.css\"). It warns that a blanket \"sideEffects\": false would silently drop the Button styles.",
+        "Budgets are set per entry for each app separately with an explicit unit (gzip vs raw). Notes that webpack's performance.maxEntrypointSize counts uncompressed emitted bytes, that storefront has performance.hints set to false, and that backoffice's 512,000-byte limit did not fire at 451,088 B. Proposes deriving the final numbers from post-fix stats plus headroom, without stating post-fix sizes as measured fact.",
+        "Invents nothing that is not in the input: no component names, package versions, file paths, chunk or asset sizes, or webpack/plugin options beyond what the stats and repo files contain. Any tool that would need installing from the network is given as a command, not presented as already run.",
+        "Answers all three numbered questions directly, per app, in the order asked."
+      ]
+    },
+    {
+      "id": 8,
+      "held_out": "2026-10-22",
+      "prompt": "ok so our welcome page (welcome.html, the `landing` entry) scores terribly on mobile and Priya from product says \"the bundle is huge, it's moment, just rip moment out\". is she right?? I ran the build with stats, it's at dist/stats.json, rest of the repo is here. what do we actually cut first, we want the landing page JS under 200kb",
+      "assertions": [
+        "Answers both questions directly up front: Priya is wrong about moment for this page, and it names what to cut first for the landing page (app-only vendor code, whole lodash, the legacy polyfills), not a generic bundle audit.",
+        "Shows that moment (./node_modules/moment/moment.js plus its locale context modules) is only in the lazy `admin` chunk (admin.e91c5d.js, 82,310 bytes), pulled in by the dynamic import() of ./admin/Reports in src/app/App.jsx, so it is not in the landing entry's first load and removing it would not shrink welcome.html's JavaScript.",
+        "Gives the landing entry's first-load JS as 287,994 bytes from the stats (runtime.3f1a9c.js 2,615 + vendors.8c2d41.js 281,467 + landing.a07e93.js 3,912), kept apart from the lazy admin chunk, and says the stats record minified, uncompressed bytes, so it cannot tell from them whether '200kb' (gzip or not, 1000 or 1024) is met; it gives a command to measure compressed size (e.g. `gzip -c dist/vendors.8c2d41.js | wc -c`) instead of making up a gzip figure.",
+        "Spots that the single `vendors` cacheGroup in webpack.config.js (fixed name: 'vendors', chunks: 'initial') makes the landing entry download node_modules that only the app entry uses. @northwind/datepicker and both copies of date-fns are reached only from ./src/app/BookingForm.jsx. It recommends dropping the fixed name, or splitting vendors per entry, so landing gets only what its own import chain needs.",
+        "Flags the whole-library lodash import and names the chain src/landing/index.jsx -> src/landing/Hero.jsx -> src/utils/format.js (`import _ from 'lodash'`) -> ./node_modules/lodash/lodash.js. It notes that lodash is CommonJS and can't be tree-shaken, and that only startCase, toLower and debounce are used, so it suggests per-method imports (e.g. lodash/startCase), lodash-es or native code.",
+        "Flags whatwg-fetch and promise-polyfill, which src/polyfills.js loads into both entries through the webpack entry arrays, as unneeded for the .browserslistrc targets (last 2 Chrome/Firefox/Safari/Edge/iOS versions, all with native fetch and Promise), and treats the IE11 comment as outdated.",
+        "Notes that date-fns is bundled twice: 2.30.0 at node_modules/date-fns (from the app's ^2.30.0) and 3.6.0 at node_modules/@northwind/datepicker/node_modules/date-fns, per package-lock.json.fixture/package-lock.json. It says that removing the duplicate means moving the app to date-fns 3 (checking the v2-to-v3 changes for format/parseISO in BookingForm.jsx), and it does not subtract the stats' module sizes, which are pre-minification source bytes (e.g. lodash.js at 544,098, more than the whole 281,467-byte vendors asset), from the emitted bytes as if they were savings. Post-change sizes are given as estimates to confirm by running `npm run build:stats`.",
+        "Invents nothing that isn't in the input: no module, package version, file name, byte count, gzip size or webpack option beyond what dist/stats.json and the repo files contain, and no claim that it ran a build."
+      ]
+    },
+    {
+      "id": 9,
+      "held_out": "2026-10-22",
+      "prompt": "We ship Parcelpost Chat, an embeddable support widget customers load with <script type=\"module\" src=\".../widget.js\">. Since PR #412 (emoji picker) went out, two customers have told us the widget adds a lot more to their page weight. But our size check in CI passed, and it actually said widget.js got smaller. The repo here is the PR branch, and I've saved the esbuild metafiles from a main build and a PR build as meta.main.json and meta.pr412.json. What grew and why? Is it on the initial load? And how should we change the size check so this gets caught next time?",
+      "assertions": [
+        "Answers directly up front: the widget's first-load JS went from 21,312 bytes (dist/widget.js alone on main) to 118,910 bytes on PR #412 (dist/widget.js 10,215 + the statically imported dist/chunk-R4N7QW2L.js 108,695), a growth of 97,598 bytes, and all of it is on the initial load.",
+        "Explains why widget.js 'got smaller' (21,312 to 10,215): preact and preact/hooks (10,214 + 1,436 bytesInOutput) moved out of widget.js into the shared chunk because the picker imports them too. This is a relocation, not a saving.",
+        "Names the cause and the import chain: src/emoji/emoji-data.json (96,512 bytesInOutput in the shared chunk) reaches the initial load via src/widget.ts -> src/composer.tsx -> src/emoji/data.ts -> src/emoji/emoji-data.json. The static `import { SHORTCODES } from './emoji/data'` added to composer.tsx defeats the dynamic import('./emoji/picker').",
+        "Keeps dist/picker-6YB3KD5M.js (5,920 bytes) separate as a lazy chunk, fetched only when the picker opens, and does not count it in the first-load growth.",
+        "Proposes a fix that keeps the emoji data off the initial load, such as loading SHORTCODES lazily (when the picker opens or the visitor first types ':') or using a small separate shortcode map, and says to confirm it with a rebuild (e.g. `META_OUT=meta.fix.json npm run build`) instead of stating post-fix byte counts as fact.",
+        "Explains that the check passed because scripts/check-size.mjs only measures dist/widget.js against 25,000 bytes. It proposes a per-entry first-load budget computed from the metafile (the entry output plus every output reachable through import-statement imports, excluding dynamic-import), which would have measured 118,910 bytes on PR #412 and failed the 25,000 limit. Lazy chunks can get their own separate limit.",
+        "Stays with the minified, uncompressed bytes the metafiles record and doesn't claim gzip/brotli transfer sizes (what customers' 'page weight' probably reflects). If it wants compressed numbers, it gives a command such as `gzip -c dist/chunk-*.js | wc -c` to run.",
+        "Invents nothing that isn't in the input: no output file, input module, byte count, esbuild option or CI step beyond what the metafiles and repo files contain, and no claim that it ran the build."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+agent: tenant-support
+model: vendor-default
+tools:
+  inbox_read:
+    mailbox: support@halden-row.test
+  crm_lookup:
+    fields: [name, address, phone, rent_ledger, bank_details, id_documents]
+  send_email:
+    allowed_recipients: "*"
+    require_approval: false
+  contractor_ticket:
+    enabled: true
+  fetch_url:
+    enabled: true
+    allowed_domains: "*"
+  notes_append:
+    doc: tenant-notes
+guardrails:
+  injection_filter: enabled

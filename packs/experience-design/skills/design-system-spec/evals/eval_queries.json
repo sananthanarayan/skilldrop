@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Write a component spec for our button: variants, states, tokens and accessibility",
+    "should_trigger": true
+  },
+  {
+    "query": "Document the tabs component for our design system so engineering can build it",
+    "should_trigger": true
+  },
+  {
+    "query": "Spec out a toast notification with all its states and keyboard behaviour",
+    "should_trigger": true
+  },
+  {
+    "query": "Our date picker behaves differently in three products — write one spec they can all build to",
+    "should_trigger": true
+  },
+  {
+    "query": "Audit our sign-up page for WCAG 2.2 AA problems",
+    "should_trigger": false
+  },
+  {
+    "query": "Set up our brand kit with our logo, colours and fonts",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the error messages and helper text for the checkout form",
+    "should_trigger": false
+  },
+  {
+    "query": "Design the navigation structure for our settings area",
+    "should_trigger": false
+  }
+]

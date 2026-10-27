@@ -1,0 +1,179 @@
+{
+  "exporter": "Ridgeback CI timing export v2",
+  "pipeline": "lantern-nightly",
+  "build": "4127",
+  "started_at": "2026-10-18T02:00:00Z",
+  "result": "success",
+  "time_unit": "ms, relative to started_at",
+  "steps": [
+    {
+      "id": 1,
+      "parent_id": null,
+      "name": "build-4127",
+      "agent": "ci-coord-01",
+      "start_ms": 0,
+      "end_ms": 2760000
+    },
+    {
+      "id": 2,
+      "parent_id": 1,
+      "name": "sync_sources",
+      "agent": "build-agent-07",
+      "start_ms": 0,
+      "end_ms": 140000,
+      "avg_cpu_pct": 21
+    },
+    {
+      "id": 3,
+      "parent_id": 1,
+      "name": "compile",
+      "agent": "build-agent-07",
+      "start_ms": 140000,
+      "end_ms": 1040000
+    },
+    {
+      "id": 4,
+      "parent_id": 3,
+      "name": "compile_engine",
+      "agent": "build-agent-07",
+      "start_ms": 140000,
+      "end_ms": 1040000,
+      "avg_cpu_pct": 94
+    },
+    {
+      "id": 5,
+      "parent_id": 3,
+      "name": "compile_gameplay",
+      "agent": "build-agent-11",
+      "start_ms": 140000,
+      "end_ms": 620000,
+      "avg_cpu_pct": 91
+    },
+    {
+      "id": 6,
+      "parent_id": 3,
+      "name": "compile_editor_tools",
+      "agent": "build-agent-12",
+      "start_ms": 140000,
+      "end_ms": 470000,
+      "avg_cpu_pct": 88
+    },
+    {
+      "id": 7,
+      "parent_id": 3,
+      "name": "upload_debug_symbols",
+      "agent": "build-agent-11",
+      "start_ms": 620000,
+      "end_ms": 1460000,
+      "avg_cpu_pct": 6,
+      "blocking": false
+    },
+    {
+      "id": 8,
+      "parent_id": 1,
+      "name": "cook_assets",
+      "agent": "build-agent-07",
+      "start_ms": 1040000,
+      "end_ms": 1400000
+    },
+    {
+      "id": 9,
+      "parent_id": 8,
+      "name": "cook_textures",
+      "agent": "build-agent-07",
+      "start_ms": 1040000,
+      "end_ms": 1400000,
+      "avg_cpu_pct": 92
+    },
+    {
+      "id": 10,
+      "parent_id": 8,
+      "name": "compile_shaders",
+      "agent": "build-agent-14",
+      "start_ms": 1040000,
+      "end_ms": 1220000,
+      "avg_cpu_pct": 95
+    },
+    {
+      "id": 11,
+      "parent_id": 8,
+      "name": "cook_audio",
+      "agent": "build-agent-15",
+      "start_ms": 1040000,
+      "end_ms": 1160000,
+      "avg_cpu_pct": 63
+    },
+    {
+      "id": 12,
+      "parent_id": 1,
+      "name": "bake_lighting",
+      "agent": "bake-agent-02",
+      "start_ms": 1400000,
+      "end_ms": 2040000,
+      "avg_cpu_pct": 97
+    },
+    {
+      "id": 13,
+      "parent_id": 1,
+      "name": "package",
+      "agent": "build-agent-07",
+      "start_ms": 2040000,
+      "end_ms": 2760000
+    },
+    {
+      "id": 14,
+      "parent_id": 13,
+      "name": "sign_binaries",
+      "agent": "sign-02",
+      "start_ms": 2580000,
+      "end_ms": 2670000,
+      "avg_cpu_pct": 41
+    },
+    {
+      "id": 15,
+      "parent_id": 13,
+      "name": "make_installer",
+      "agent": "build-agent-07",
+      "start_ms": 2670000,
+      "end_ms": 2760000,
+      "avg_cpu_pct": 78
+    }
+  ],
+  "events": [
+    {
+      "t_ms": 620000,
+      "step_id": 7,
+      "msg": "upload started in background (blocking=false); 3.8 GB of .pdb files for gameplay and editor_tools"
+    },
+    {
+      "t_ms": 1040000,
+      "step_id": 10,
+      "msg": "compile_shaders: 2,214 permutations, 1,980 from shader cache, 234 compiled (includes 61 for water_surface)"
+    },
+    {
+      "t_ms": 1400000,
+      "step_id": 12,
+      "msg": "bake_lighting: lightmap cache miss for 38 of 38 levels (cache key changed); baking all"
+    },
+    {
+      "t_ms": 1460000,
+      "step_id": 7,
+      "msg": "upload finished"
+    },
+    {
+      "t_ms": 2040000,
+      "step_id": 13,
+      "msg": "waiting for a free agent in pool 'sign-pool' (0 of 2 free)"
+    },
+    {
+      "t_ms": 2580000,
+      "step_id": 13,
+      "msg": "agent sign-02 acquired after 540000 ms in queue"
+    },
+    {
+      "t_ms": 2760000,
+      "step_id": 1,
+      "msg": "build succeeded"
+    }
+  ]
+}

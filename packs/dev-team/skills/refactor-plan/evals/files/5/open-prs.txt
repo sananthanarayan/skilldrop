@@ -1,0 +1,4 @@
+#88  feat(orders): "order delayed" email            touches src/notify/legacyMailer.ts (new TemplateName + subject), src/orders/onOrderDelayed.ts   -- wanted for peak season
+#91  chore(notify): move templates to MJML          touches src/notify/templates/*, src/notify/legacyMailer.ts (loadTemplate)              -- design team, 2 wks old
+#93  feat(auth): magic-link login                   touches src/auth/*, calls mailer.send with new template "magic_link"
+#95  fix(ci): retry flaky e2e                        touches .github/workflows/ci.yml

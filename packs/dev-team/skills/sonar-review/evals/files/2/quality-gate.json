@@ -1,0 +1,19 @@
+{
+  "analysis": {
+    "project": "brookmere-intake",
+    "branch": "feature/litre-rounding",
+    "revision": "7f3c2e1",
+    "date": "2026-10-16T14:02:11Z"
+  },
+  "projectStatus": {
+    "status": "ERROR",
+    "conditions": [
+      {"status": "ERROR", "metricKey": "new_coverage", "comparator": "LT", "errorThreshold": "80", "actualValue": "61.3"},
+      {"status": "ERROR", "metricKey": "new_security_hotspots_reviewed", "comparator": "LT", "errorThreshold": "100", "actualValue": "0.0"},
+      {"status": "ERROR", "metricKey": "new_reliability_rating", "comparator": "GT", "errorThreshold": "1", "actualValue": "3"},
+      {"status": "OK", "metricKey": "new_security_rating", "comparator": "GT", "errorThreshold": "1", "actualValue": "1"},
+      {"status": "OK", "metricKey": "new_maintainability_rating", "comparator": "GT", "errorThreshold": "1", "actualValue": "1"},
+      {"status": "OK", "metricKey": "new_duplicated_lines_density", "comparator": "GT", "errorThreshold": "3", "actualValue": "1.2"}
+    ]
+  }
+}

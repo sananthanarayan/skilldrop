@@ -1,0 +1,76 @@
+{
+  "skill_name": "feedback-synthesis",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm the PM for Tallyhouse, our invoicing app for small businesses. Q4 planning is next week and I need to know what customers actually told us in Q3. It's all in this folder: support-tickets.csv (35 tickets), nps-verbatims.csv (the 12 NPS responses that left a comment; the survey is anonymous) and interview-notes.md (5 customer interviews). What are the themes, and which should we act on first? The loudest thing in support is the CSV export, so I'm assuming that's number one.",
+      "assertions": [
+        "It corrects the premise: the CSV export problem comes from 2 accounts, and 6 of its 7 tickets are from one account (A-1042), so it is not ranked first on volume",
+        "It ranks card payments failing for clients (3 accounts: A-1107, A-1220, A-1315) above the blurry PDF logo (7 accounts), stating that payment failure blocks getting paid while the logo is cosmetic",
+        "It says the card payment failures come only from EU accounts (Germany, France, Netherlands), and reports the anonymous NPS comment N-06 beside the 3 accounts rather than adding it to make 4",
+        "It states the bulk-edit requests as the problem behind them (changing a rate means editing each recurring invoice by hand, 30 to 58 invoices) and keeps 'bulk edit' only as a quoted request",
+        "It does not make dark mode a theme with an invented reason: it reports the three anonymous NPS requests as having no stated need and turns the reason into an interview question",
+        "It names automatic payment reminders as something customers value and should not be broken, and notes the conflict with the accounts reporting reminders sent to a former contact",
+        "It names the limits of each source (tickets come from people with problems, 12 self-selected anonymous NPS comments, 5 interviews) and gives no percentage of the customer base",
+        "Every quotation is verbatim from the files with its ticket, response or interview ID, interviewer summaries are not put in quotation marks, and it invents no quotes or counts not in the input"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Here are our 15 App Store reviews for Stridewell (running app) from September. Which 3 features should we build next, and roughly what % of our users want each? Bullets please, it's going in Slack.\n\n1. RunnerJo, 2 stars: \"Please sync with Strava! I have to upload every run twice.\"\n2. Mo_K, 5 stars: \"The training plans are brilliant. Got me from 5k to 10k.\"\n3. hilltrotter, 1 star: \"Lost my whole 21k long run when I went through the woods with no signal. Recording just stopped. Gutted.\"\n4. Bex R, 4 stars: \"Need an Apple Watch app so I can leave my phone at home.\"\n5. RunnerJo, 2 stars: \"Still no Strava sync. Updating my review.\"\n6. dawnpatrol, 3 stars: \"Apple Watch app please\"\n7. Sam T, 5 stars: \"Training plans adapt when I miss a session, love it.\"\n8. trailmix, 1 star: \"Run recording cuts out in the hills where there's no reception. Lost two runs this month.\"\n9. Kez, 4 stars: \"Would be 5 stars with Apple Watch support.\"\n10. NightOwl, 3 stars: \"Font on the run screen is too small to read mid-run.\"\n11. pacepal, 3 stars: \"Strava sync would be nice.\"\n12. Lou, 4 stars: \"Apple Watch app!!\"\n13. GreenMile, 5 stars: \"Best plans of any running app I've tried.\"\n14. ahmedruns, 2 stars: \"Make it work offline.\"\n15. Fenn, 4 stars: \"Great app, but add dark mode.\"",
+      "assertions": [
+        "It gives no percentage of users for any item, says 15 self-selected reviews cannot support one, and gives counts of reviewers instead",
+        "It counts the Strava request as 2 reviewers, not 3, because RunnerJo wrote two of the reviews",
+        "It ranks runs being lost where there is no signal (hilltrotter, trailmix) at or near the top as a data-loss problem, ahead of more often requested items that block nothing",
+        "It states the lost-runs and Apple Watch items as problems (recording stops without signal; running without the phone) rather than as 'offline mode' and 'Apple Watch app', and notes only one of the four Apple Watch reviews says why",
+        "It names the training plans as what reviewers value and should not be broken",
+        "It keeps to short bullets suitable for a Slack message, without a long report",
+        "Quotations are verbatim from the reviews, and it invents no reviews, reasons or counts not in the prompt"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our Head of Sales keeps saying every enterprise prospect asks for SSO and it's costing us deals, and she wants it at the top of the Q1 brief for Fieldnote. Before I write the brief, pull the themes out of sales-call-notes.md (eight calls from September) and churn-exit-survey.csv (the ten exit surveys from Q3). I need something I can hand straight to whoever writes the brief.",
+      "assertions": [
+        "It counts SSO by distinct prospect: Harrowgate Logistics' two calls (C-01, C-03) count once, and the rep's own note on Norland (C-06) is not counted as a prospect asking, giving 2 prospects (Harrowgate and Brightwater)",
+        "It reports that SSO came only from prospects with 650 or more staff, that Norland (900 staff) did not raise it, and that no churned customer mentions it while noting that no churned respondent is in that size band",
+        "It identifies double-booking or clashes when jobs are reassigned as the most common churn theme (5 of the 10 exit responses: X-02, X-03, X-05, X-06, X-09) and notes that two prospects (C-02, C-07) raised the same problem",
+        "It states themes as problems (enterprise IT won't approve a rollout without central sign-in; reassigning a sick technician's jobs creates double bookings) rather than as feature names",
+        "It names the sampling limits: sales notes are prospects' words filtered through reps, and the exit survey covers leavers only",
+        "It does not put a rep's summary (such as C-08's pricing note or C-06's SSO note) inside quotation marks as the prospect's words, and every quotation carries its call or response ID",
+        "It states plainly how the evidence compares with the claim that every enterprise prospect asks for SSO, and ends with questions for the next interviews tied to the themes",
+        "It invents no quotes, deal values or counts not in the files; the only deal value cited is the rep's £84k estimate for Harrowgate, attributed to the rep"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-20",
+      "prompt": "I'm the PM for Tallyweave (invoicing + expenses for small businesses). I've dropped our Q3 support ticket export in support_tickets_q3.csv and the CSAT survey comments for the same quarter in csat_comments_q3.csv. Engineering has told me we can fund exactly one fix next quarter. Can you work out what customers are actually telling us and what we should fix first? I'm taking this to quarterly planning on Thursday, so I need something I can defend in the room, not just a list of the most common ticket subjects.",
+      "assertions": [
+        "Counts the export-timeout issue by account, not by ticket: 10 tickets but only 3 accounts. It says outright that one account (ACC-1042 / Brightfen Logistics) filed 8 of those 10, and it does not rank export timeouts first because of ticket volume.",
+        "Groups the tickets worded as different feature requests ('Excel export', 'bulk edit', 'notes field', 'bank integration', the wrong balance on a statement, the overdue reminder sent after a deposit) into one problem: Tallyweave cannot record or show part-payments or instalments against an invoice. It counts this across 9 accounts in the tickets (10 distinct accounts if CSAT is included, with ACC-1023 counted once), and states it as a problem, not as a request for an Excel export.",
+        "Breaks themes down by segment and notes that the part-payment problem sits mostly in the Starter plan (7 of 9 ticket accounts). It also notes the SSO lockout affects only Enterprise accounts.",
+        "Calls out the SSO lockout (TW-4130, TW-4168: 2 Enterprise accounts, whole organisation unable to log in, no fallback) as a severe blocker. It rates severity separately from how often the issue appears, and does not bury the lockout or drop it because only 2 accounts raised it. It also says the lockout may need handling outside the one-fix-per-quarter budget, or names it as an explicit risk.",
+        "Spots that the sources disagree about receipt scanning. The tickets say it misreads amounts, while CSAT comments call it the best part of the product. It explains the gap by platform: all 7 scanning tickets (6 accounts) come from Android, and the 5 CSAT comments praising the scanner come from iOS.",
+        "Makes one clear recommendation for the single funded fix. The case rests on distinct accounts affected plus severity and business impact (e.g. churn threats, client-facing embarrassment), not raw ticket counts. It also says what evidence would change the call (e.g. account revenue, Brightfen's churn risk).",
+        "States what this sample cannot tell. Tickets only capture customers who contact support. CSAT covers a subset of accounts. The data has no revenue or seat-count weighting. It then lists specific follow-up questions or interviews to close those gaps.",
+        "Every quote is verbatim text from the two CSV files and carries its ticket_id or response_id. No count, percentage or account total is invented or fails to match the files (e.g. 48 tickets from 36 accounts; 16 CSAT responses)."
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-20",
+      "prompt": "I'm the product designer on Basilbox, a meal-planning app. Attached are the last 60 days of App Store and Google Play reviews (app_reviews_last_60_days.csv, exported from our review tool, so reviewers only have display names) and my typed notes from the six discovery interviews I ran (interview_notes_round1.md). Could you affinity map all of this and tell me what users are telling us? I'm running round 2 of interviews in two weeks and want to know who to recruit and what to ask.",
+      "assertions": [
+        "Counts reviewers, not reviews. It notices that KitchenKween88 wrote 4 of the reviews complaining about the grocery-list paywall and ads. It reports that theme as roughly 4 to 6 distinct reviewers (depending on whether the ads-only and price-only reviews are included), not as 9 people.",
+        "Reframes the 'calendar view' requests as the problem underneath them: the number of people eating changes from night to night or week to week, so portions are wrong and food is wasted. The evidence is the review text (lowtide_lou, Priya_in_Leeds, Teo M.) and interviews P2, P4 and P5. It does not present 'build a calendar view' as the finding.",
+        "Flags the data loss after Sign in with Apple (2 App Store reviews on version 4.2.0; all saved recipes gone) as high severity despite being rare. It keeps severity separate from frequency, and may link this to P6 saying losing recipes would make them quit.",
+        "Notes that URL recipe-import failures are concentrated on one platform: all 5 such reviews are from Google Play, mostly on 4.2.0/4.2.1. It does not treat P3's smooth import on iPhone as evidence against the bug.",
+        "Surfaces the disagreement on price. Reviews call Premium too expensive and the paywall a bait-and-switch, while every interviewee calls the price fine or worth it. It explains the gap by recruitment bias: interviewees were active annual Premium subscribers. It does not declare either source right.",
+        "States what the sample cannot tell. App reviews self-select toward extremes. No free-tier or Android users were interviewed. Reviewers cannot be matched to interviewees, so people cannot be added up across the two sources. Six interviews are too few to estimate prevalence.",
+        "Gives round-2 recruitment and questions tied to the gaps found. Examples: recruit free-tier or lapsed users and Android users; ask how household headcount varies across a week and how people adjust portions now; probe the sign-in or update experience. Generic questions like 'what do you like about the app' do not count.",
+        "Every quote is verbatim text from the CSV or the interview notes, with its source (review author/date, or P1 to P6). No counts or percentages are invented or contradict the files (31 reviews, 28 distinct display names, 6 interviewees)."
+      ]
+    }
+  ]
+}

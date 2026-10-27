@@ -1,0 +1,7 @@
+Checkout funnel, web only, trailing 28 days (from Looker, pulled 2026-10-19)
+
+checkout sessions / hour       avg 41,000   (peak ~68,000 at 20:00-22:00 ET, trough ~9,000 at 04:00 ET)
+session -> order conversion     3.1%
+payment step errors (any 4xx/5xx on /checkout/payment submit)   0.42% of submits
+p95 payment submit latency      1.8 s
+orders with cart total $50-$1,000   about 61% of orders

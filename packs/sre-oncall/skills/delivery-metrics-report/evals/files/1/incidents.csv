@@ -1,0 +1,7 @@
+incident_id,service,started_at,resolved_at,caused_by_deploy
+INC-311,payments-api,2026-07-17T15:42:00Z,2026-07-17T18:10:00Z,dep-1046
+INC-318,payments-api,2026-08-05T13:20:00+01:00,2026-08-05T17:05:00+01:00,dep-1055
+INC-320,payments-api,2026-08-12T02:14:00Z,2026-08-12T03:01:00Z,
+INC-324,payments-api,2026-08-21T09:30:00Z,2026-08-21T10:15:00Z,
+INC-327,payments-api,2026-08-28T16:00:00Z,,
+INC-205,payments-api,2026-07-22T08:00:00Z,2026-07-22T08:40:00Z,

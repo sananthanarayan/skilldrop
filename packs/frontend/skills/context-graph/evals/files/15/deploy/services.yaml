@@ -1,0 +1,14 @@
+# Services deployed to the production cluster
+services:
+  - name: shipments
+    path: services/shipments
+    datastores: [postgres:haulmark_core]
+  - name: telemetry
+    path: services/telemetry
+    datastores: [postgres:haulmark_telemetry]
+  - name: api
+    path: services/api
+    datastores: [postgres:haulmark_core]
+  - name: dashboard
+    path: web/dashboard
+    datastores: []

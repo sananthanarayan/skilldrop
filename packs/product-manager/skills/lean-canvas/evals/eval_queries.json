@@ -1,0 +1,42 @@
+[
+  {
+    "query": "Fill in a lean canvas for my idea: a subscription app that plans weekly meals for parents of kids with food allergies",
+    "should_trigger": true
+  },
+  {
+    "query": "What are the riskiest assumptions in my startup idea, and how do I test them before I write any code?",
+    "should_trigger": true
+  },
+  {
+    "query": "Poke holes in my business model — $49/month, we pay about $300 to get each customer, they stay around five months",
+    "should_trigger": true
+  },
+  {
+    "query": "I want to pitch an internal tool to the ops leadership team. Is it worth building, and what should I validate first?",
+    "should_trigger": true
+  },
+  {
+    "query": "How do I validate this idea cheaply this month? It's a marketplace for renting camping gear between neighbours",
+    "should_trigger": true
+  },
+  {
+    "query": "Write the business case for the new routing platform with build, buy and do-nothing options and NPV for the steering committee",
+    "should_trigger": false
+  },
+  {
+    "query": "The exec team approved the idea — write the press release and FAQ working backwards from launch",
+    "should_trigger": false
+  },
+  {
+    "query": "Run a Five Forces analysis on the meal-kit market before we decide whether to enter",
+    "should_trigger": false
+  },
+  {
+    "query": "What should we measure to know whether the new onboarding checklist worked after it ships?",
+    "should_trigger": false
+  },
+  {
+    "query": "Here are 30 customer interview notes — find the themes and what we should fix first",
+    "should_trigger": false
+  }
+]

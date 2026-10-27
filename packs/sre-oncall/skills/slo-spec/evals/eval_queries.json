@@ -1,0 +1,38 @@
+[
+  {
+    "query": "Define SLOs for our checkout service: which SLIs, what targets, and the error budget",
+    "should_trigger": true
+  },
+  {
+    "query": "How much error budget is 99.9% over 28 days if we do 3 million requests a day?",
+    "should_trigger": true
+  },
+  {
+    "query": "What burn-rate alerts should page us for a 99.95% availability SLO?",
+    "should_trigger": true
+  },
+  {
+    "query": "Product wants 99.99% for the payments API. Is that realistic when our card processor only promises 99.9%?",
+    "should_trigger": true
+  },
+  {
+    "query": "Write an error-budget policy: what happens when our SLO budget runs out",
+    "should_trigger": true
+  },
+  {
+    "query": "List the non-functional requirements for the new booking feature: latency, availability, data retention, accessibility",
+    "should_trigger": false
+  },
+  {
+    "query": "What should we instrument in the order service, and which dashboards and log fields do we need?",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the on-call runbook for the payments service, including rollback and escalation",
+    "should_trigger": false
+  },
+  {
+    "query": "Compute our change failure rate and deployment frequency from this deploy log",
+    "should_trigger": false
+  }
+]

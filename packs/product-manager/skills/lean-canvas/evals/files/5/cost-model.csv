@@ -1,0 +1,5 @@
+item,type,amount_gbp,period,notes
+Build (contractor team),one-off,180000,once,5 months to production
+Cloud hosting,run,2500,month,fixed
+Model API usage,run,4000,month,platform minimum commitment; covers up to 300 seats
+Product support (0.5 FTE),people,30000,year,half of one analyst salary; from go-live

@@ -1,0 +1,26 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 3c1d0a2..5e7b9f4 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -13,7 +13,7 @@ jobs:
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@9ce6fd9fa4b164bf8911b62115bf9104ba1a2803 # v4.2.0
+-      - uses: bramblewick/setup-toolchain@c8aee2ae521bdb1ef1b97761673ebbe92c953b0f # v3.2.0
++      - uses: bramblewick/setup-toolchain@8141d107d0837efc25f86e096a7eefd58e979515 # v3.3.0
+         with:
+           node-version-file: .nvmrc
+       - run: npm ci --ignore-scripts
+diff --git a/.github/workflows/release.yml b/.github/workflows/release.yml
+index 0a4e8c1..b19d2e7 100644
+--- a/.github/workflows/release.yml
++++ b/.github/workflows/release.yml
+@@ -15,7 +15,7 @@ jobs:
+     environment: production
+     steps:
+       - uses: actions/checkout@9ce6fd9fa4b164bf8911b62115bf9104ba1a2803 # v4.2.0
+-      - uses: bramblewick/setup-toolchain@c8aee2ae521bdb1ef1b97761673ebbe92c953b0f # v3.2.0
++      - uses: bramblewick/setup-toolchain@7dd0aa52537f8f4f4002b505507186cdaec669c4 # v3.3.0
+         with:
+           node-version-file: .nvmrc
+       - run: npm ci

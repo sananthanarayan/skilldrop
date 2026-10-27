@@ -1,0 +1,20 @@
+{
+  "name": "frontend",
+  "version": "1.2.0",
+  "description": "For frontend engineers and the people who review their pages: read a Lighthouse report for what actually slows the page, find what makes a JavaScript bundle heavy, and choose how each route is rendered from what it needs. (8 skills, 1 loop)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/frontend/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "frontend",
+    "web-performance",
+    "core-web-vitals",
+    "bundle-size",
+    "rendering",
+    "ssr"
+  ]
+}

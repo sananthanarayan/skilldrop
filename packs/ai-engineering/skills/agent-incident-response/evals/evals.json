@@ -1,0 +1,107 @@
+{
+  "skill_name": "agent-incident-response",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our coding agent committed our Anthropic API key to a PR branch this morning. My notes and my plan are in incident-notes.md, the CI log for the PR run is ci-build-log.txt and the agent's session log is agent-session-excerpt.txt. Is my plan right? What should I do?",
+      "assertions": [
+        "Opens by saying the plan's order is wrong: revoke the key in the Anthropic Console now, before force-pushing or any other cleanup, because removing the commit does not unleak it",
+        "Rejects waiting for tomorrow's deploy window: create a replacement key, put it in the production summariser and revoke the old key today",
+        "Stops or checks the still-running agent session on bx-02, and says the new key must not go back into deploy/env.sh or the agent's environment",
+        "Says the key is in clear in the CI log (the shell trace printed it) and in the uploaded test-debug-logs artifact kept for 90 days, to be saved as evidence and then deleted",
+        "Catches that the agent also copied deploy/env.sh into a second repo, ledgerline-infra, on branch agent/env-loader (commit a71d0e4), and includes that repo in the revocation scope and cleanup",
+        "States the exposure window as starting 14 Oct 07:12 UTC (09:12 CEST) and says to check the key's usage in the Anthropic Console from then to the revocation time, and to set a spend limit or alert",
+        "Says to tell the lead or security team today rather than at Thursday's 1:1",
+        "Does not invent usage figures, attacker activity, URLs or times that are not in the files"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Last Thursday (16 Oct) I added a Jira MCP server to our team's agent setup. Today a colleague noticed the package is mcp-jira-helpr, not the official one. Our config is in mcp-config.json and yesterday's session is in session-transcript.txt. As far as I can tell it only touched Jira. I'm going to uninstall it and add the official server. Anything else I need to do?",
+      "assertions": [
+        "Opens by saying uninstalling is not the first step: revoke the credentials the server held and stop agent sessions that load it, then copy the config before removing anything",
+        "Treats both the Jira API token and the AWS access key in the server's env block as compromised and says to revoke each at its own provider",
+        "Catches that the transcript shows the customer export customers-2026-09.csv (2,140 rows of names, emails and postcodes) sent through the server's sync_context tool, contradicting 'it only touched Jira'",
+        "Identifies the 'system note' inside the Jira search result as an injected instruction that the agent followed",
+        "Says to involve the data protection officer or privacy lead the same day and flags a possible legal notification duty without deciding whether it applies",
+        "Says to record the package name and the version that actually ran before uninstalling, noting the config used @latest so the version is not in the config",
+        "Scopes the window from the install on 16 Oct to revocation, including every session since then, and checks AWS and Jira activity for that window",
+        "Does not claim the AWS key or Jira token was misused, or invent figures or events not in the files"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Got an email from RelayDeck (the hosted agent console we use) saying they had a breach and stored provider keys may have been accessed. Our OpenAI usage page shows about $2,300 yesterday when we normally spend around $40 a day. I've already deleted the key from RelayDeck. Is that enough? The same key also runs our support chatbot in production.",
+      "assertions": [
+        "Says plainly in the first lines that deleting the key from RelayDeck does not revoke it, and that it must be revoked in the OpenAI dashboard's API keys page now",
+        "Handles the production chatbot by creating a replacement key, swapping it in and revoking the old one straight away, not by delaying revocation",
+        "Says to set a spend limit or budget alert on the OpenAI project and to raise the unexpected charges with OpenAI",
+        "Says to check usage for the whole window from when the key could have been taken to revocation, not only yesterday, and treats the breach start date as unknown unless RelayDeck states it",
+        "Asks for or flags any other keys or tokens stored in RelayDeck as in the same breach",
+        "Gives a test for when it is over, such as usage stopping after the revocation time once reporting catches up",
+        "Stays a short chat answer with ordered steps, not a long report",
+        "Does not invent breach dates, usage figures beyond the $2,300 and $40 given, or URLs"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-20",
+      "prompt": "ok so claude went a bit rogue on me this afternoon. i asked it to clean up the migration mess on staging and it dropped a table (ledger_entries) and then force pushed over feature/ledger-sync. i hit esc once i saw what it was doing. full session is in agent-session.log, i already pasted it into #platform-eng so the team can see what happened. db infra is in infra/. what do i do now, is the table gone for good??",
+      "assertions": [
+        "Answers the actual question up front: the table is very likely not gone for good, because infra/staging-db.tf has point-in-time restore, and the response gives the restore target as just before the 14:12:33 UTC drop.",
+        "Treats the restore as urgent: backup_retention_period = 1 (day) means the point before the drop drops out of the restore window around 14:12 UTC on 2026-10-21, so the restore has to start today. It also says to restore to a new instance or a copy rather than over the live staging database.",
+        "Spots from agent-session.log that two tables were dropped, ledger_entries (with CASCADE, which removed constraint fk_audit_entry on ledger_audit) and ledger_entries_tmp, and that ledger_audit itself was not dropped. It does not accept the user's 'a table' at face value.",
+        "Spots that the session log contains the staging DB password (EXAMPLE-staging-pw-0000 for ledger_app) and LEDGER_SVC_TOKEN (sk-EXAMPLE-0000), and that pasting it into #platform-eng exposed both. Says to rotate both and to remove or redact the Slack message after keeping an unredacted copy as evidence.",
+        "Spots that the force-push overwrote two commits by Dana Whitlow (71be0c9, 8c41e2a) that were on the remote but not in the local branch. Gives a concrete recovery from the old tip 8c41e2a (e.g. `git branch rescue 8c41e2a` or the reflog of origin/feature/ledger-sync, or Dana's clone), and says to tell Dana not to pull or reset and not to run gc/prune until recovered.",
+        "Says to keep the agent session stopped and not resume it in auto-accept / bypass-permissions mode, and to confirm nothing ran after the 14:13:06 interrupt before cleanup starts.",
+        "Gives an ordered list sized for a stressed individual developer, not a policy document. It names who to tell (the team or staging DB owner payments-platform, and Dana) and says when.",
+        "Invents nothing that isn't in the files: no extra tables, commit SHAs, backup snapshots, tools or cloud-provider console steps presented as fact. Anything that needs the network or the user's cloud account is given as a command or step for the user to run, not as something already done."
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-20",
+      "prompt": "Morning - our provider dashboard shows about $2.6k overnight on the ops project, we normally spend a couple of dollars a night. Pretty sure it's the nightly-triage job looping again. The usage export is usage-export-2026-10-20.csv, the job config is jobs/nightly-triage/job.yaml and the last run log is jobs/nightly-triage/run.log. My plan is to set max_turns to 50 and redeploy before standup at 10. Can you sanity check that and tell us what we should actually do?",
+      "assertions": [
+        "Answers the actual question directly: the max_turns plan is not enough on its own, because only part of the bill is the loop.",
+        "Splits the bill using the export: about $1,372.50 is the triage loop (model-medium, triage-agent/1.4, 02:00-07:00 UTC), and about $1,237.50 is model-large traffic from python-requests/2.31 (23:00 on 2026-10-19, 00:00, 01:00 and 05:00 on 2026-10-20). The job is configured for model-medium only, so the response concludes that someone else is probably using the ops-shared key.",
+        "Puts revoking/rotating sk-EXAMPLE-0000 (ops-shared) at the provider at or near the top of the order, ahead of editing config or redeploying. It also says to check what else the key could reach (other projects, models, spend), not only the triage job.",
+        "Points out that run.log shows the job still looping at 07:52:11Z (turn 12114, retrying #4411 on tracker 429), so the running process has to be killed on runner-ops-02 and the 02:00 schedule paused now. Waiting for a redeploy is not good enough.",
+        "Spots the comment in job.yaml saying the key is shared with support-bot, so revoking it will break support-bot. Recommends a separate new key for each service, plus a heads-up in #ops.",
+        "Notes that the key sits in plaintext in a committed job.yaml, which is the likely leak path. Moving it to a secret store fixes things going forward, but the old key must still be treated as compromised and revoked, because it stays in git history.",
+        "Fixes the loop cause as well as max_turns: retry_on_rate_limit with no backoff on 429. Recommends backoff or a retry cap and a hard spend limit or alert at the provider. It says to keep the usage export and logs as evidence, and to contact provider support and finance about the unauthorised model-large spend.",
+        "Invents nothing: every figure, time, model, user agent and name it cites matches the three files (e.g. it does not invent IP addresses, a per-token price table, or other jobs). Steps that need the provider console or network are given as actions for the user, not reported as done."
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-20",
+      "prompt": "ok kind of freaking out. last week i set up the notesync mcp server in claude code (someone in a discord recommended it). today there's a github issue on its repo saying it steals keys, and i looked at the code (put the bit in notesync-excerpt.txt) and yeah it reads ~/.ssh and sends it to some telemetry domain. i already rm'd ~/.ssh/id_ed25519, made a new one with ssh-keygen and added the new pub key to github. next i'm going to take it out of .mcp.json and push. anything else i need to do or am i good? also dumped my ssh config, the mcp log and a git log in here",
+      "assertions": [
+        "Says plainly that deleting the local id_ed25519 does not revoke it: the old public key must be removed from GitHub (account SSH keys) and from authorized_keys on bastion.kestrel-prod.example and build-01 (10.40.2.11), the hosts in ssh-config.txt that use that key, and it puts this ahead of editing and pushing .mcp.json.",
+        "Flags that the new key is also suspect: notesync was started again at 2026-10-20T08:31 per notesync.log and the excerpt resends on start and every 6 hours, so the server/npx process and any open agent sessions must be killed first and the key generated again after that.",
+        "Widens the scope beyond SSH: GITHUB_TOKEN and LINEAR_API_KEY (passed to notesync through the .mcp.json env block and sent via process.env), plus ~/.aws/credentials, ~/.config/gh/hosts.yml and ~/.npmrc if they exist, are all treated as leaked and must be revoked or rotated at GitHub, Linear, AWS and npm.",
+        "Spots from git-log.txt that .mcp.json is committed to origin/main (and origin/feature/ledger-csv-export) since 2026-10-12, so teammates who pulled it, like Priya Raman and Tomasz Bielski, may have run notesync too. It tells Sam to warn them right away to stop it and check their own machines, rather than treating this as a one-laptop problem.",
+        "Treats the exposure window as starting at the first launch on 2026-10-12 (notesync-mcp 2.3.1), not just when 2.3.2 arrived on 2026-10-15, unless 2.3.1 is shown to be clean, and says to check use of the old key and tokens since then (GitHub security log, auth logs on the bastion).",
+        "Says to keep evidence before cleaning up: save the cached notesync-mcp package files (e.g. from the npx cache), notesync.log and the exfil host telemetry.notesync-cdn.example before clearing caches or uninstalling. It may also suggest reporting the package to npm.",
+        "Invents nothing that isn't in the files (no made-up hostnames, versions, dates, teammates or token values), and gives any network step as a command or a provider-console action rather than claiming to have done it.",
+        "Answers 'am I good?' directly with a clear no at the top, then gives a short ordered list a solo developer can work through now. It is not a long generic corporate incident-response playbook."
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-20",
+      "prompt": "I maintain harbor-metrics (open source, we publish @harbor/metrics to npm). Our issue-triage bot, an LLM agent running as the harbor-triage-bot GitHub App, opened PR #482 last night after reading a comment on issue #479, and our CI workflow ran on it once (around 22:41 UTC). Nobody has merged it. The issue thread, the PR diff, the run log, ci.yml from main, SECURITY.md and package.json are in this folder. The log shows the secrets as *** so I think nothing actually leaked, but I want a plan for the next hour before the other maintainers come online, and who we need to tell.",
+      "assertions": [
+        "Corrects the belief that *** means nothing leaked. Masking only hides values in the log. The step piped its whole environment to https://ci-diag.example.net/u/479 and got {\"ok\":true,\"ref\":\"d-7f3a\"} back, so NPM_TOKEN (the NPM_PUBLISH_TOKEN secret) and SENTRY_AUTH_TOKEN (job-level env in ci.yml, also listed in the step's env) must be treated as stolen.",
+        "Revokes those tokens at npm and Sentry as the first actions. Only then does it close PR #482, delete the branch or update repository secrets, and it notes that changing the GitHub secret alone does not revoke the stolen value.",
+        "Stops the source: suspends or uninstalls the harbor-triage-bot GitHub App (or turns off its issue trigger) and stops the CI workflow from running on that branch again, instead of relying on closing PR #482. It explains that the run got secrets because the head branch triage/ci-diagnostics-479 was in the base repo, not a fork.",
+        "Checks what the stolen tokens could reach, not only what is known: it looks for @harbor/metrics versions published after 2026-10-19T22:41Z (given as a command such as `npm view @harbor/metrics time --json`) and checks Sentry for misuse. For the job's GITHUB_TOKEN (Contents: write, Packages: write), it checks for pushes, tags, releases or packages during the run, and notes this token expired when the job ended and does not need rotating.",
+        "Widens the scope beyond #482: other branches, PRs, comments and workflow runs created by harbor-triage-bot, and other repos the App is installed on. Because the bot could edit workflow files, every secret those workflows can read (e.g. CODECOV_TOKEN and anything release.yml uses) is treated as reachable.",
+        "Keeps evidence before cleanup: download run #1342's log, and save the PR #482 diff and the qa-helper-2291 comment on #479 (and that account's details) before hiding or deleting anything.",
+        "Says who to tell and by when: the other core maintainers through security@harbor-metrics.example per SECURITY.md right away; npm (and users, through a GitHub Security Advisory) if a version was published after the run; GitHub about the qa-helper-2291 account. It does not tell users publicly before the tokens are revoked and the publish check is done.",
+        "Answers the actual question directly (a time-ordered plan for the next hour plus a who-to-tell list) and invents nothing not in the files: no made-up versions, secret names, run numbers or contacts."
+      ]
+    }
+  ]
+}

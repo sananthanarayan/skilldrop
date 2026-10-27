@@ -1,0 +1,25 @@
+billing_period,account,region,service,resource_id,resource_name,usage_type,usage_quantity,unit,cost_usd,tag_team,tag_env
+2026-09,kh-prod,eu-west-1,EC2,i-0a01,web-1,BoxUsage:m5.2xlarge,720,Hrs,276.48,web,prod
+2026-09,kh-prod,eu-west-1,EC2,i-0a02,web-2,BoxUsage:m5.2xlarge,720,Hrs,276.48,web,prod
+2026-09,kh-prod,eu-west-1,EC2,i-0a03,collections-db,BoxUsage:r5.4xlarge,720,Hrs,725.76,collections,prod
+2026-09,kh-prod,eu-west-2,EC2,i-0a04,collections-db-dr,BoxUsage:r5.4xlarge,720,Hrs,725.76,collections,dr
+2026-09,kh-prod,eu-west-1,EC2,i-0a05,image-render,BoxUsage:c5.4xlarge,720,Hrs,489.6,digitisation,prod
+2026-09,kh-dev,eu-west-1,EC2,i-0a06,notebook-temp,BoxUsage:m5.4xlarge,720,Hrs,552.96,,
+2026-09,kh-prod,eu-west-1,EC2,i-0a07,bastion,BoxUsage:t3.large,720,Hrs,59.9,web,prod
+2026-09,kh-prod,eu-west-1,EC2,i-0a08,reporting,BoxUsage:m5.xlarge,720,Hrs,138.24,finance,prod
+2026-09,kh-prod,eu-west-1,EBS,vol-01,collections-db-data,VolumeUsage.gp2,500,GB-Mo,50.0,collections,prod
+2026-09,kh-dev,eu-west-1,EBS,vol-02,,VolumeUsage.gp2,2000,GB-Mo,200.0,,
+2026-09,kh-prod,eu-west-1,EBS,vol-03,render-scratch,VolumeUsage.gp2,1000,GB-Mo,100.0,digitisation,prod
+2026-09,kh-prod,eu-west-2,EBS,vol-04,collections-db-dr-data,VolumeUsage.gp2,500,GB-Mo,50.0,collections,dr
+2026-09,kh-prod,eu-west-1,EBS,snapshots,,SnapshotUsage,18000,GB-Mo,900.0,,
+2026-09,kh-prod,eu-west-1,S3,kh-archive-masters,,TimedStorage-ByteHrs,85000,GB-Mo,1955.0,digitisation,prod
+2026-09,kh-prod,eu-west-1,S3,kh-archive-masters,,Requests-Tier2,31000,Requests,12.4,digitisation,prod
+2026-09,kh-prod,eu-west-1,S3,kh-web-assets,,TimedStorage-ByteHrs,400,GB-Mo,9.2,web,prod
+2026-09,kh-prod,eu-west-1,VPC,nat-01,,NatGateway-Hours,1440,Hrs,69.12,,
+2026-09,kh-prod,eu-west-1,VPC,nat-01,,NatGateway-Bytes,42000,GB,2016.0,,
+2026-09,kh-prod,eu-west-1,DataTransfer,kh-archive-masters,,DataTransfer-Out-Bytes,61500,GB,5227.5,digitisation,prod
+2026-09,kh-prod,eu-west-1,DataTransfer,,,DataTransfer-Regional-Bytes,9000,GB,180.0,,
+2026-09,kh-prod,eu-west-1,DataTransfer,i-0a03,collections-db,DataTransfer-InterRegion-Out,3000,GB,60.0,collections,prod
+2026-09,kh-prod,eu-west-1,CloudWatch,,,DataProcessing-Bytes (logs ingest),2900,GB,1653.0,,
+2026-09,kh-prod,eu-west-1,CloudWatch,,,CW:MetricMonitorUsage,280,Metrics,84.0,,
+2026-09,kh-prod,eu-west-1,Support,,,Business support,1,Month,1100.0,,

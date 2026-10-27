@@ -1,0 +1,2 @@
+schedule: "0 2 * * *"
+bucket: corvane-parcelhook-exports

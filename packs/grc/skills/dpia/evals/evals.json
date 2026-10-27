@@ -1,0 +1,46 @@
+{
+  "skill_name": "dpia",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Northwind Health is adding a symptom checker to its patient app: users in Germany and France type symptoms, an AI model suggests whether to book a GP, a pharmacist or urgent care, and the conversation is stored with their patient record. The model is hosted by a vendor in Ireland and we send anonymised transcripts to a US research partner to improve it. Write the DPIA. Our DPO is Claire Martin.",
+      "assertions": [
+        "The draft follows the Article 35(7) structure: systematic description and purposes, necessity and proportionality, risks to individuals, and measures",
+        "Health data is identified as special category data and given an Article 9(2) condition or an open question saying one is needed",
+        "Each purpose (triage suggestion, storing with the record, research sharing) has its own lawful basis rather than one basis for the whole activity",
+        "The transfer to the US research partner is treated as a transfer outside the EEA with a mechanism named or marked to confirm, and the 'anonymised' claim is questioned rather than accepted",
+        "Risks are scored as harms to patients (for example, a wrong triage suggestion delaying care), not as fines or reputational harm to Northwind",
+        "Residual risk counts only agreed measures, and the draft gives a view on whether prior consultation looks needed",
+        "Retention periods and other facts not in the prompt are marked to confirm and listed as DPO questions, not invented",
+        "The DPO advice and sign-off fields are left blank, and the not-legal-advice statement appears once"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Kestrel Fitness wants to replace membership cards with facial recognition at the gym turnstiles. Draft the DPIA for our DPO. The project brief is project-brief.md, the vendor's factsheet is vendor-factsheet.md, and legal's notes are legal-notes.md. Keep it to what the DPO can review in one sitting, no more than about 2,000 words.",
+      "assertions": [
+        "Identifies face templates used to identify members as special category (biometric) data, and says legitimate interests alone is not enough: an Article 9 condition is needed, realistically explicit consent",
+        "Points out that phasing out card entry undermines consent being freely given, and that a non-biometric alternative should stay",
+        "Flags both vendor facts that the brief doesn't account for: support access from outside the EEA (a transfer with no mechanism in the draft DPA) and keeping templates and photos for 24 months for model improvement, against the brief's 'deleted when membership ends'",
+        "Addresses the junior members aged 14–17 as a specific risk",
+        "Does not simply conclude that the supervisory authority need not be consulted as the COO asked; ties the prior-consultation view to the residual risk after measures",
+        "Does not invent facts not in the files, such as vendor certifications, match accuracy rates, member numbers or a signed DPA; unknowns become questions for the DPO",
+        "Stays within about 2,000 words and keeps CCTV out of scope as the brief states"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "Hi, I manage a small dental practice. We want to start texting appointment reminders to patients through a free messaging app on our receptionist's own phone, using the mobile numbers we already have on file. Someone at a training day said we might need a 'DPIA'?? Do we? And if so can you give me a one-page version I can keep on file.",
+      "assertions": [
+        "Gives a clear answer on whether a DPIA is needed and why, rather than only saying 'ask a lawyer'",
+        "Recognises that dental appointment reminders reveal health-related information about patients",
+        "Flags using a free messaging app on a staff member's personal phone as the main risk (practice control, loss of the phone, the app provider's access) and suggests safer options",
+        "Raises whether patients' numbers can be used for reminders and how patients can opt out",
+        "Does not invent facts not given, such as the number of patients, which app it is, or where its servers are; unknowns are listed as things to check",
+        "Fits on one page and is written in plain language for a practice manager"
+      ]
+    }
+  ]
+}

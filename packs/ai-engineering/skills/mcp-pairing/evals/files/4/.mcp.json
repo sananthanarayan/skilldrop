@@ -1,0 +1,47 @@
+{
+  "mcpServers": {
+    "github": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_EXAMPLEEXAMPLEEXAMPLEEXAMPLE0001"
+      },
+      "_comment": "classic PAT, scopes: repo, workflow, admin:org, delete_repo -- easiest to just give it everything"
+    },
+    "github-reviewer": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_EXAMPLEEXAMPLEEXAMPLEEXAMPLE0001",
+        "GITHUB_TOOLSETS": "all"
+      },
+      "_comment": "used by the review stage so it can approve + merge when it's happy"
+    },
+    "jira": {
+      "command": "npx",
+      "args": ["-y", "jira-mcp-plus-unofficial@latest"],
+      "env": {
+        "JIRA_URL": "https://example-team.atlassian.net",
+        "JIRA_EMAIL": "build-bot@example.com",
+        "JIRA_API_TOKEN": "EXAMPLE-JIRA-TOKEN-DO-NOT-USE"
+      },
+      "_comment": "found this on a forum thread, works better than the official one"
+    },
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "slack-mcp-server-community"],
+      "env": {
+        "SLACK_BOT_TOKEN": "xoxb-EXAMPLE-EXAMPLE-EXAMPLE",
+        "_scopes": "chat:write, chat:write.public, channels:history, groups:history, im:history, users:read.email, admin"
+      }
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "some-postgres-mcp"],
+      "env": {
+        "DATABASE_URL": "postgresql://app_owner:EXAMPLEPASSWORD@prod-db.internal.example:5432/orders"
+      },
+      "_comment": "handy for the implement stage to check schemas"
+    }
+  }
+}

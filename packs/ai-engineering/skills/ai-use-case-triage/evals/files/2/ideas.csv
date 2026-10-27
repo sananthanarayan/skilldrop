@@ -1,0 +1,10 @@
+id,idea,department,claimed_annual_value_usd,data_needed,notes
+1,Demand forecasting for fresh-produce ordering,Supply,1100000,"3 years of till data plus waste logs","Needs a new data pipeline; data team estimate: 4 data engineers for 6 months"
+2,AI flags likely theft and waste hotspots to cut shrink,Loss Prevention,2100000,"Till data, waste logs, CCTV","Value assumes we 'eliminate 75% of shrink'"
+3,Dynamic shelf pricing on perishables,Commercial,900000,"Till data, stock levels, electronic shelf labels","CEO sponsor"
+4,Personalised offers from loyalty data via a third-party AI vendor,Marketing,650000,"Loyalty card data",""
+5,Drafting replies to customer service emails,Customer Care,60000,"Past customer emails (anonymised)","Off-the-shelf tool available"
+6,Rota scheduling assistant for store managers,HR,180000,"Rota history, footfall counts",""
+7,Matching supplier invoices to purchase orders,Finance,140000,"Invoices and POs (already in ERP)","ERP vendor offers an AI add-on; no data engineering needed"
+8,Recipe suggestions on the website,Digital,40000,"Product catalogue",""
+9,Checking shelf layouts from shelf photos,Store Ops,300000,"Shelf photos (not yet collected)","Would need photo capture set up in stores"

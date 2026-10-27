@@ -1,0 +1,18 @@
+Tallyhub - SvelteKit route map (src/routes)
+
+PUBLIC
+  (marketing)/+page.svelte              /                  landing page, edited by marketing ~2x/month
+  (marketing)/pricing/                  /pricing           3 plans, price shown in USD/EUR/GBP by visitor country (x-country header)
+  (marketing)/customers/[slug]/         /customers/:slug   40 case studies
+  docs/[...path]/                       /docs/*            ~900 pages, markdown files in the repo (docs/content/)
+  blog/[slug]/                          /blog/:slug        ~250 posts, markdown in the repo
+
+BEHIND LOGIN
+  app/+layout.server.ts                 redirects to /login if no user
+  app/dashboard/                        /app/dashboard     live usage metrics for the customer's org
+  app/projects/[id]/                    /app/projects/:id
+  app/settings/                         /app/settings
+  app/billing/                          /app/billing       invoices, card on file (last 4)
+
+API
+  api/*                                 JSON endpoints used by the app

@@ -1,0 +1,43 @@
+{
+  "skill_name": "nfr-spec",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Sweep the non-functional requirements for our new checkout service.",
+      "assertions": [
+        "Every category in the catalog lands in one of three states — a target, not-applicable with a reason, or a tagged default; silence in any category is a failure",
+        "Every target states a percentile, a load condition, and how it will be verified — a latency number with no load condition is rejected",
+        "The availability target matches the honest answer to what an hour of downtime costs, not a marketing instinct",
+        "Privacy and retention are given concrete periods rather than 'per policy'",
+        "The output is a reviewable ledger covering all categories, not a prose paragraph about quality"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Can you write the non-functional requirements for this? The brief is vehicle-booking-brief.md. It goes to the delivery team and the supplier next week. No more than two pages.",
+      "assertions": [
+        "Points out that 2,000 bookings a day does not imply 500 requests per second, and bases the load target on the evidence given (the 1 March opening rush of 6,000 bookings in the first hour)",
+        "Replaces '100% of the time' with a measurable availability target and explains why 100% is not a usable requirement",
+        "Requires ramp scanning to keep working when the mobile signal drops out at Harrick pier and Saltness slipway",
+        "Flags the conflict between keeping passenger details forever and the 3-year manifest deletion and marketing opt-in rules, and does not adopt 'forever'",
+        "Does not treat accessibility as not applicable, given passengers must be able to request an accessible space",
+        "Does not invent facts about the business not in the brief; any figure not derived from it is marked as an assumption",
+        "Fits within two pages"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I own a small bakery (Crumb & Co, two shops). We're getting a website where people can order birthday cakes and collect them. The web guy asked me for 'non-functional requirements' and I have no idea what that means. What should I tell him? A few bullets in plain English please.",
+      "assertions": [
+        "Answers with bullets the owner can pass on directly, without asking questions first",
+        "Uses plain English; any technical term is explained or avoided",
+        "Gives concrete, checkable targets (for example a page-load time or how much downtime is acceptable) rather than only words like 'fast' or 'reliable'",
+        "Covers looking after customers' personal and payment details",
+        "Marks figures as suggestions to confirm, and does not state facts about the bakery (order volumes, opening hours, prices) that were not given",
+        "Stays to a few bullets (roughly 10 or fewer)"
+      ]
+    }
+  ]
+}

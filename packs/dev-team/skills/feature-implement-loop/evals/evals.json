@@ -1,0 +1,46 @@
+{
+  "skill_name": "feature-implement-loop",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Implement this story in our Python/FastAPI service (pytest, ruff, mypy already set up):\n\nAs an admin, I can export the audit log for a date range as CSV.\nAcceptance criteria:\n1. GET /admin/audit/export?from=YYYY-MM-DD&to=YYYY-MM-DD returns text/csv.\n2. Non-admins get 403.\n3. from after to returns 400 with a clear message.\n4. Ranges over 90 days return 400.\n5. The CSV opens cleanly in Excel.\n\nBuild it and check your own work.",
+      "assertions": [
+        "Restates the five acceptance criteria as a numbered checklist before writing code",
+        "Plans a named test per criterion up front and flags criterion 5 (opens cleanly in Excel) as manual-verify",
+        "Runs the project's tests plus ruff and mypy, and does not report VERIFIED while any command is red",
+        "Review findings are tagged blocker/major/minor/nit with file:line and a concrete fix, covering edge cases, security (e.g. authz on the admin route, CSV formula injection), and craft",
+        "Tests assert the criterion's expected output (status codes, content type, messages), not just that the call didn't throw",
+        "Stops at or before 3 rounds, and later rounds patch only the named gaps rather than regenerating the whole feature",
+        "Final report has a status (VERIFIED, VERIFIED WITH OPEN ITEMS, or BLOCKED), an acceptance-criteria table mapping each criterion to a test, manual-verify, or open item, an honest round log, and open items",
+        "Does not add criteria the user did not give without echoing them back first"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Please implement LIB-88 (TICKET.md) in this repo - the code is fees.py and desk.py, closures.csv holds the closure dates, and the tests are in tests/test_fees.py. Tests run with `python3 -m unittest discover -s tests`. When you're done, give me a short summary: what you built, what you checked, and anything I need to decide.",
+      "assertions": [
+        "Implements the fee calculation with tests, runs `python3 -m unittest discover -s tests`, and reports the real result; it does not claim tests pass without having run them",
+        "Flags that the ticket's worked example is wrong: 8 March is a Sunday and 9 March is a closure day, so 3 chargeable days and $0.75, not $1.25; no test expects $1.25",
+        "Notices that the existing MAX_FEE of $15.00 in fees.py conflicts with the ticket's $10.00 cap and says which one it applied",
+        "Has tests with specific expected amounts for the junior-card rule, the cap at the lower of replacement cost and $10.00, and the Sunday and closure exclusions",
+        "Does not invent a daily rate for magazines; a magazine is rejected or raised as a decision for the user",
+        "Uses only the standard library, and the existing tests and desk.checkin still work",
+        "The closing summary is short (a few lines plus any decisions needed)"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "hi, I do the tea and setup rota for our community choir with rota.py (members.txt is everyone). can you make it skip people who are away? they're in away.txt, I typed it in a hurry. just make it work and tell me in a couple of lines what you changed, I'm not a programmer",
+      "assertions": [
+        "After the change, running rota.py puts nobody on a date when away.txt says they are away, even though away.txt uses different capitalisation and extra spaces",
+        "Handles or clearly points out that Edith Marsh is back for 5 Dec, rather than silently leaving her off every date or treating '(back for the 5 dec one)' as part of her name",
+        "The header line and the name that is not a member (Ruth Ng) cause no error and do not appear in the rota",
+        "The script is actually run and the output keeps the same 'date: name & name' format",
+        "The reply to the user is a couple of plain-language lines without programming jargon",
+        "Does not add features that were not asked for (no new options, dependencies or file formats)"
+      ]
+    }
+  ]
+}

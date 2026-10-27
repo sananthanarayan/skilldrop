@@ -1,0 +1,7 @@
+stage,model,runs,input_tokens_millions,output_tokens_millions,cost_usd
+extract,Core,5060,218,24.6,1023.00
+extract (claim C-88213),Core,140,42,1.4,147.00
+classify,Core,5200,52,2.6,195.00
+fraud_check,Apex,5200,78,5.2,1560.00
+draft_letter,Apex,5200,41.6,10.4,1404.00
+TOTAL,,,,,5476.00

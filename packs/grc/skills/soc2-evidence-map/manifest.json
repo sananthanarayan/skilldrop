@@ -1,0 +1,41 @@
+{
+  "name": "soc2-evidence-map",
+  "version": "0.1.0",
+  "description": "Map an organisation's controls to the SOC 2 Trust Services Criteria in scope (Security always, plus Availability, Confidentiality, Processing Integrity or Privacy if chosen), and for each control list the evidence an auditor will ask for, the system it lives in, the owner, how often it is produced, and the gaps — distinguishing Type I (designed and in place at a date) from Type II (operating over a period, sampled from a full population) — as a table and a CSV the team can work from. Use when the user is preparing for a SOC 2 audit or readiness assessment, says \"SOC 2 evidence\", \"map our controls to the TSC\", \"what will the auditor ask for\", \"SOC 2 gap analysis\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "ai-usage-policy",
+    "dpia",
+    "nfr-spec",
+    "risk-register",
+    "threat-model"
+  ],
+  "handoff": [
+    {
+      "to": "risk-register",
+      "when": "the company has no risk assessment, which the risk assessment criteria expect",
+      "purpose": "Produce the scored, owned risk register the auditor will ask to see.",
+      "fallback": "If risk-register is absent, list the top risks with likelihood, impact, owner and treatment inline and mark the risk assessment control partial."
+    }
+  ],
+  "tags": [
+    "soc2",
+    "audit",
+    "compliance",
+    "grc",
+    "controls",
+    "evidence"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Maps controls against a fixed criteria set and a known Type I vs Type II evidence pattern. Judgment is needed on coverage and gap status, but the structure is bounded by the reference."
+  }
+}

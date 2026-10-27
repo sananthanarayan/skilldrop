@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Implement this ticket and make sure every acceptance criterion actually has a test",
+    "should_trigger": true
+  },
+  {
+    "query": "Build this story, review your own code adversarially, and fix the gaps",
+    "should_trigger": true
+  },
+  {
+    "query": "Here's a feature spec with acceptance criteria — give me shippable, self-checked code",
+    "should_trigger": true
+  },
+  {
+    "query": "Implement the password-reset flow per these criteria and loop until the review is clean",
+    "should_trigger": true
+  },
+  {
+    "query": "Review this PR I wrote for edge cases and broken assumptions",
+    "should_trigger": false
+  },
+  {
+    "query": "Should we use Postgres or DynamoDB for the new service? Write it up for review",
+    "should_trigger": false
+  },
+  {
+    "query": "Run the pre-merge gate on my branch before I open the PR",
+    "should_trigger": false
+  }
+]

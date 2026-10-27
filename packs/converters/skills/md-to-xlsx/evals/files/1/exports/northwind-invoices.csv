@@ -1,0 +1,25 @@
+Invoice ID;Customer;Amount;Due date;Paid;Notes
+000731;Northwind Health;$199.99;2026-10-01;FALSE;
+000732;Fabrikam Clinics;$199.99;2026-11-06;TRUE;Net 30
+000733;Contoso Labs;$48,000.00;2026-12-11;TRUE;=SUM(C2:C9) please check
+000734;Adatum Care;$12,400.00;2026-10-16;FALSE;Second reminder sent
+000735;Tailspin Dental;$2,315.75;2026-11-21;TRUE;=HYPERLINK("http://pay.example","pay here")
+000736;Northwind Health;$48,000.00;2026-12-26;TRUE;
+000737;Fabrikam Clinics;$860.50;2026-10-03;FALSE;Disputed line 3
+000738;Contoso Labs;$199.99;2026-11-08;TRUE;=cmd|'/c calc'!A1
+000739;Adatum Care;$860.50;2026-12-13;TRUE;PO 4471
+000740;Tailspin Dental;$860.50;2026-10-18;FALSE;
+000741;Northwind Health;$2,315.75;2026-11-23;TRUE;
+000742;Fabrikam Clinics;$860.50;2026-12-28;TRUE;Net 30
+000743;Contoso Labs;$199.99;2026-10-05;FALSE;=SUM(C2:C9) please check
+000744;Adatum Care;$2,315.75;2026-11-10;TRUE;Second reminder sent
+000745;Tailspin Dental;$7,250.00;2026-12-15;TRUE;=HYPERLINK("http://pay.example","pay here")
+000746;Northwind Health;$12,400.00;2026-10-20;FALSE;
+000747;Fabrikam Clinics;$7,250.00;2026-11-25;TRUE;Disputed line 3
+000748;Contoso Labs;$860.50;2026-12-02;TRUE;=cmd|'/c calc'!A1
+000749;Adatum Care;$2,315.75;2026-10-07;FALSE;PO 4471
+000750;Tailspin Dental;$48,000.00;2026-11-12;TRUE;
+000751;Northwind Health;$12,400.00;2026-12-17;TRUE;
+000752;Fabrikam Clinics;$860.50;2026-10-22;FALSE;Net 30
+000753;Contoso Labs;$2,315.75;2026-11-27;TRUE;=SUM(C2:C9) please check
+000754;Adatum Care;$7,250.00;2026-12-04;TRUE;Second reminder sent

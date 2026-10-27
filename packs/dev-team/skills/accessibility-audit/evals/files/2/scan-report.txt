@@ -1,0 +1,23 @@
+Automated accessibility scan
+Page: /events/book
+Standard: WCAG 2.2 AA
+Run: 2026-10-12 09:14
+
+Result: PASS - 0 violations, 14 passes, 0 incomplete
+
+Passes (selected)
+- html-has-lang: <html> has a lang attribute
+- document-title: page has a <title>
+- image-alt: all <img> elements have an alt attribute (2 of 2)
+- label: form fields have accessible names (3 of 3)
+- color-contrast: .help-text #767676 on #ffffff = 4.54:1 (required 4.5:1)
+- color-contrast: body text #1a1a1a on #ffffff = 17.4:1
+- button-name: <button> has an accessible name ("Submit reservation form")
+- heading-order: headings are in order
+- select-name: <select> has an associated label
+
+Not evaluated
+- .btn-primary: background colour could not be determined
+- Elements inside <header> and <footer>: excluded by scan configuration
+
+Compliance summary: WCAG 2.2 AA - PASS

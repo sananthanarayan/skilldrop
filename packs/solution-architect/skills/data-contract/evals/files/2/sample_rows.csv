@@ -1,0 +1,6 @@
+delivery_id,delivered_at,site_code,member_id,farmer_name,farmer_phone,crop,net_weight,moisture_pct,grade,price_per_tonne
+WB-2026-081201,2026-08-12 06:42:10,HGT,M0412,Example Farmer One,07700 900101,wheat,28.420,14.200,A,192.50
+WB-2026-081202,2026-08-12 07:05:44,HGT,M0388,Example Farmer Two,07700 900102,barley,24.115,0.138,B,171.00
+WB-2026-081203,2026-08-12 07:31:09,MLB,M0129,Example Farmer Three,,oilseed_rape,19.870,8.900,A,
+WB-2026-081204,2026-08-12 08:02:51,RSW,M0412,Example Farmer One,07700 900101,wheat,27.960,0.151,R,0.00
+WB-2026-081205,2026-08-12 08:14:30,HGT,M0233,Example Farmer Four,07700 900104,oats,21.300,15.600,,

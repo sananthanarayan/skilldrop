@@ -1,0 +1,44 @@
+{
+  "name": "judge-audit",
+  "version": "0.3.1",
+  "description": "Audit whether an LLM-as-judge, or a panel of judges, can be trusted for the decision its scores drive, before anyone acts on them — above all whether the judge errs differently on the variants being compared (prompt v1 vs v2, model A vs B, short vs long inputs), plus chance-corrected and weighted agreement with expert labels, precision and recall on a rare class, each run reported separately with the items that flipped, position and length bias, and confidence intervals, checked against the user's own gate or criterion and ending in a direct answer (ship or not, which judge to use). Use when the user asks \"can we trust our LLM judge\", \"is our grader reliable enough to gate releases\", \"the grader says v2 is better, can we ship it\", \"which is the cheapest judge we can switch to\", \"our two judges agree 90%, is that good\", \"can we turn on auto-remove\", \"check our judge for position bias\", or has a file of judge scores and wants to know whether to act on them.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "ai-usage-report",
+    "eval-harness-generator",
+    "llm-eval-harness"
+  ],
+  "handoff": [
+    {
+      "to": "llm-eval-harness",
+      "when": "the verdict is DO NOT RELY ON IT and the judge, its rubric or its labelled set has to be rebuilt",
+      "purpose": "Design the labelled set, the split criteria and the pass bar the rebuilt judge will be validated against.",
+      "fallback": "If llm-eval-harness is absent, list inline the criteria to split the rubric into, the number of expert-labelled items to collect (including failures), and the bar each must clear for the decision."
+    }
+  ],
+  "tags": [
+    "llm-as-judge",
+    "evals",
+    "inter-rater-agreement",
+    "ai-engineering",
+    "bias"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "judge_stats.py reads the judgement files, and the --gold file, named on the command line (or stdin) and writes only the -o path the user names; no network. --self-test reads and writes nothing."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "The agreement and stability statistics are computed by its script; the model's work is reading them against the decision the judge serves."
+  }
+}

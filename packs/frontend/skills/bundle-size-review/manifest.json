@@ -1,0 +1,52 @@
+{
+  "name": "bundle-size-review",
+  "version": "0.2.3",
+  "description": "Find what makes a JavaScript bundle heavy and what can safely come out, from the bundler's stats file (webpack stats.json, an esbuild metafile, or the rollup-plugin-visualizer raw-data JSON that Vite builds use) read together with the repo around it (package.json, .browserslistrc, the lockfile, the bundler config and the source files that import the heavy modules). Gives each entry's first-load JavaScript in the exact bytes the stats record, kept apart from lazy chunks; finds whole-library imports, CommonJS packages that can't be tree-shaken, packages bundled twice and polyfills the browser targets don't need; names the import chain that pulls each module in before suggesting a removal; and, given before and after stats, says what grew, why, whether it lands in the first load and which per-entry budget would have caught it. Use when the user says \"why is our bundle so big\", \"what can we cut from the bundle\", \"review this stats.json\", \"why is lodash or moment in our bundle\", \"the bundle grew in this PR\", or \"set a bundle size budget\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "dependency-upgrade-review",
+    "pre-merge-review",
+    "rendering-strategy",
+    "web-performance-review"
+  ],
+  "tags": [
+    "frontend",
+    "bundle-size",
+    "webpack",
+    "tree-shaking",
+    "performance-budget"
+  ],
+  "permissions": {
+    "network": [
+      "registry.npmjs.org"
+    ],
+    "commands": [
+      "npx",
+      "npm",
+      "pnpm",
+      "yarn"
+    ],
+    "files": "named-paths",
+    "notes": "The script reads only the stats files it is given (or stdin), the project files next to them (package.json, .browserslistrc, the lockfile, bundler and TypeScript configs, and source files outside node_modules/dist/build, or the --root folder) and, with --dist, the built files in that folder; it writes only the -o path and makes no network calls. The instructions run the project's own bundler through npx --no to produce the stats, npm ls / pnpm why / yarn why to read versions, and npm view / npm dedupe, which reach the npm registry, to check which versions a dependent accepts and to align duplicates."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "Sizes, duplicates and what pulls each module in are computed from the bundler's stats file by its script; the judgment is which removal is safe."
+  },
+  "handoff": [
+    {
+      "to": "web-performance-review",
+      "when": "the user's real question is why the page is slow for users, with a Lighthouse or PageSpeed report in hand",
+      "purpose": "Rank fixes by how much each moves LCP, INP and CLS, of which JavaScript weight is only one cause.",
+      "fallback": "If web-performance-review is absent, say the bundle findings cover download and parse cost only, and name the Lighthouse audits (LCP element, long tasks, render-blocking resources) that would show whether JavaScript is the bottleneck."
+    }
+  ]
+}

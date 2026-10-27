@@ -1,0 +1,31 @@
+{
+  "name": "tech-debt-register",
+  "version": "0.1.0",
+  "description": "Turn a pile of technical-debt complaints, TODOs and incident notes into a ranked register: each item with where it lives, the cost it imposes today backed by evidence, the size of the fix, a decision (pay now, schedule, accept or watch) with the trigger that reopens it, and an owner if one was given. It ends with the few items worth paying down this quarter and why. Use when the user asks for a tech debt register, a debt inventory or backlog, \"what debt should we pay down\", \"prioritise our tech debt\", or wants to make the case for refactoring time.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "backlog-triage",
+    "bug-triage",
+    "migration-plan",
+    "risk-register"
+  ],
+  "tags": [
+    "tech-debt",
+    "refactoring",
+    "planning",
+    "prioritisation",
+    "engineering"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Structures and ranks items against stated evidence. Judgment is bounded: a cost with no evidence is recorded as unknown, not estimated."
+  }
+}

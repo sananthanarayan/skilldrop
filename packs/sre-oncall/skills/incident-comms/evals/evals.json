@@ -1,0 +1,43 @@
+{
+  "skill_name": "incident-comms",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're 20 minutes into a live incident — checkout is failing for about 30% of users, cause not yet confirmed. Draft the customer, internal, and exec updates.",
+      "assertions": [
+        "Each message's first sentence is reader-facing impact, not an internal symptom or architecture detail",
+        "Every message names the next-update time, or marks it [set HH:MM] when unknown",
+        "No unconfirmed cause is stated and no commitment is made that might need retracting",
+        "The three audiences (customer status page, internal stakeholders, exec) get genuinely different messages rather than one text reused",
+        "Nothing is asserted beyond what the operator supplied"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "I'm the duty comms officer for Corrin Valley Transit and we're mid-incident with TallyCard top-ups. It's 14:40 now. The incident channel is in incident-channel.txt, the last status page post is in last-status-update.md and our comms rules are in comms-rules.md. Please draft what I need to send now.",
+      "assertions": [
+        "The customer post describes the impact accurately: card payments at ticket machines failing, app top-ups partly failing, cash at machines working, and does not say all top-ups are down or that the problem is fixed",
+        "No customer-facing message gives the database failover theory or the '30 minutes' estimate, and the CEO note says there is no ETA yet instead of inventing one",
+        "Tells riders that inspectors will accept people who could not top up, until the end of service today",
+        "Describes the 'charged twice' reports as temporary holds that should drop off within 3 to 5 working days, without promising refunds or saying riders were charged twice",
+        "Each message states when the next update will come, and no public message names the payment processor or uses the word 'breach'",
+        "The status page post is no more than 600 characters",
+        "Does not invent figures, times, causes or actions that are not in the channel log"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "school office here. the online system parents use to pay for school lunches is down since this morning and parents are emailing us in a panic. the company that runs it just says they're 'working on it'. the head says children will still get lunch today and parents can pay later. can you write me a text message to parents (has to fit one SMS, 160 characters) and a slightly longer email?",
+      "assertions": [
+        "Delivers both a text message and an email ready to send, without stopping to ask questions first",
+        "The text message is 160 characters or fewer",
+        "Both say children will still get lunch today and parents can pay later",
+        "Neither gives a cause or promises when the system will be fixed",
+        "Tells parents when or how the school will update them next",
+        "Does not invent details that were not given, such as a payment deadline, refunds, a supplier name or a fix time"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+[departing engineer] ok, last bits before I go on Friday
+[departing engineer] current release is v2.6.1. v2.6.0 was the one with migration 0042. v2.5.4 was the last before it
+[departing engineer] if a gauge stops reporting, first check the radio link light on the gauge cabinet panel in the control room. if it's red, it's the link not us
+[departing engineer] if the collector hangs, `sudo systemctl restart gauge-collector` on tidefeed-app-01 sorts it 9 times out of 10
+[departing engineer] oh, and the Meridian support contract ran out in August. procurement are "looking at it". so there's nobody to call about gauge hardware right now
+[departing engineer] we never wrote down SLOs or set up proper dashboards. there's the /health endpoint and that's it
+[new owner] what about the --rollback thing in the notes?
+[departing engineer] honestly not sure it still works, I always just redeployed the old tag

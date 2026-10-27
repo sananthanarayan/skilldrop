@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Run a Sonar review on this branch",
+    "should_trigger": true
+  },
+  {
+    "query": "What does the quality gate say about my changes?",
+    "should_trigger": true
+  },
+  {
+    "query": "Give me the Sonar findings for the files I changed",
+    "should_trigger": true
+  },
+  {
+    "query": "Check Sonar compliance before I open the PR",
+    "should_trigger": true
+  },
+  {
+    "query": "Set up Sonar in this repository",
+    "should_trigger": false
+  },
+  {
+    "query": "Review this code adversarially for edge cases the first pass missed",
+    "should_trigger": false
+  },
+  {
+    "query": "Run the full pre-merge gate and reviewer panel",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the postmortem for last night's incident",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Write a data contract for this table",
+    "should_trigger": true
+  },
+  {
+    "query": "We have downstream consumers of this dataset — define the contract and its SLAs",
+    "should_trigger": true
+  },
+  {
+    "query": "Define the schema and quality guarantees for this event stream",
+    "should_trigger": true
+  },
+  {
+    "query": "What should our producers promise consumers about this data?",
+    "should_trigger": true
+  },
+  {
+    "query": "Draft the OpenAPI spec for our REST API",
+    "should_trigger": false
+  },
+  {
+    "query": "Design the database schema and indexes from our access patterns",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the product requirements document",
+    "should_trigger": false
+  },
+  {
+    "query": "Plan our observability and alerting",
+    "should_trigger": false
+  }
+]

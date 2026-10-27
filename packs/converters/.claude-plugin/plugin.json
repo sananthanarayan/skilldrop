@@ -1,0 +1,22 @@
+{
+  "name": "converters",
+  "version": "1.2.0",
+  "description": "Turn Markdown into Word, Excel, PowerPoint and Confluence files that people outside engineering can open, and turn their files back into Markdown. Standard-library Python scripts, with nothing to install. (10 skills, 1 loop)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/converters/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "convert",
+    "markdown",
+    "word",
+    "docx",
+    "excel",
+    "xlsx",
+    "powerpoint",
+    "confluence"
+  ]
+}

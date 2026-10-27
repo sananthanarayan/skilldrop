@@ -1,0 +1,11 @@
+legacy_field,new_field,notes
+donor_id,donor_id,
+surname,last_name,
+forename,first_name,
+dob,date_of_birth,legacy stores DD/MM/YY
+blood_group,blood_group,
+last_donation,last_donation_date,
+donation_count,lifetime_donations,
+deferral_code,deferral_code,see deferral-codes.csv
+deferral_until,deferral_end_date,blank means no end date
+centre_code,home_site,

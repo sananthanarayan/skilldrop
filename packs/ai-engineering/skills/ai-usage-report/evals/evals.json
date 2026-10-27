@@ -1,0 +1,46 @@
+{
+  "skill_name": "ai-usage-report",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's our AI usage export for September 1-30: northwind-ai-events.csv, 4,212 rows, 14 engineers on the platform team. Columns are timestamp, user_email, tool_name, session_id, output_consumed. There's no discard field. I want the team-rollup view for our VP's monthly staff meeting — she wants to know whether people are actually using what the AI gives them or just clicking the button.",
+      "assertions": [
+        "The report header states the exact period covered (2026-09-01 to 2026-09-30)",
+        "The team-rollup names no individual anywhere — no emails, names, or per-person rows, even in passing",
+        "The handoff is three sentences above the report: volume, what the data does and doesn't show, and the most actionable pattern",
+        "The discard-rate signal is omitted with a note that the input has no discard field, rather than estimated or shown with '~' or 'est.' placeholders",
+        "The output-consumed rate and other numbers are computed from the input rows and reconcile with the 4,212-row count; no metric is invented",
+        "The 'AI theater' framing appears only in section headers and pattern-level observations, never as a judgment about a person",
+        "Recommendations target team patterns (e.g. a workshop), not specific people",
+        "No prompt text is embedded in the report; it works from metadata only"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "I manage the content team at Plover & Finch, a small marketing agency. Leadership wants to know who is actually getting value from Draftwell, our AI writing tool, and who is just generating stuff to look busy. I've exported `draftwell-events.csv` and our `published-assets.csv`, plus `team-roster.md` and `export-note.md`. Write me the report: a one-page summary plus a per-person table. Also rank the six of them so I can flag the bottom two for performance conversations.",
+      "assertions": [
+        "It removes the duplicated rows (the same event_id appearing twice, all Farah's events from 22-28 September) and reports Farah's figures deduplicated, for example 14 drafts generated rather than 19",
+        "It treats the usernames corin and c.lund as the same person, Corin, giving 17 drafts generated in total",
+        "It accounts for the gaps: 15-21 September is missing from the data, Delphine was on leave 1-14 September, and Ezra's tool is not in this export; it does not judge Delphine or Ezra as low adopters",
+        "It flags that Amara generated the most drafts (64) but only 2 ended up in published work, as a pattern worth discussing, without claiming to know her intent",
+        "It does not name a 'bottom two' for performance conversations from this data, and says why the data cannot support it",
+        "It does not invent numbers that cannot be derived from the files",
+        "It is a summary of about one page plus a per-person table"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I'm the practice manager at a law firm with 5 solicitors. Our AI tool's admin page shows this for last month: Priya 212 chats, Tom 9 chats, Leah 87 chats, Sam 0 chats, Grace 140 chats. The partners want to know who's actually using it well. Can you write it up in a few lines for them?",
+      "assertions": [
+        "It delivers the write-up in this reply rather than asking questions first",
+        "It says chat counts show how much the tool is used, not whether it is used well, and does not call Priya the best or Tom the worst user on the basis of the counts",
+        "It does not conclude that Sam is not using AI or is doing badly; it notes that the data does not say why (for example leave or another tool)",
+        "It says what extra information would show whether the tool is being used well, such as whether outputs end up in client work",
+        "It does not invent figures beyond the five counts given (totals or shares calculated from them are fine)",
+        "It is a few lines suitable for the partners"
+      ]
+    }
+  ]
+}

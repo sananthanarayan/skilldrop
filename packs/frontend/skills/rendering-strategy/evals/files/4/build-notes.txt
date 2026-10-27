@@ -1,0 +1,5 @@
+2026-10-02  tried `nuxi generate` with ssr on as a test, prerendering 1,200 recipes only
+            -> took 6 min on CI
+            didn't try the full set
+2026-10-05  Search Console: 42k recipe URLs discovered, ~3.1k indexed
+            most crawled pages show just the spinner in the screenshot

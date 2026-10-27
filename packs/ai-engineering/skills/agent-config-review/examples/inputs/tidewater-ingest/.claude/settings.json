@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv run pytest:*)",
+      "Bash(make:*)",
+      "Bash(git diff:*)",
+      "mcp__slack__slack_get_channel_history"
+    ],
+    "deny": ["Read(./.env)"]
+  },
+  "sandbox": {
+    "enabled": true,
+    "allowUnsandboxedCommands": false,
+    "excludedCommands": ["docker"],
+    "network": { "allowedDomains": ["pypi.org", "files.pythonhosted.org"] }
+  },
+  "hooks": {
+    "PreToolUse": [
+      { "matcher": "Bash", "hooks": [ { "type": "command", "command": "python3 tools/guard_commands.py" } ] }
+    ]
+  }
+}

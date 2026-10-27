@@ -1,0 +1,11 @@
+[
+  { "query": "Our LLM grader and a second model agree 88% on pass/fail. Is that enough to use it as a release gate?", "should_trigger": true },
+  { "query": "Here's a CSV of judge scores with three trials per item and some human labels. Can we trust the judge?", "should_trigger": true },
+  { "query": "Check our pairwise LLM judge for position bias before we pick the winning prompt", "should_trigger": true },
+  { "query": "Compute Cohen's kappa between our model judge and the annotators and tell me whether the judge is usable", "should_trigger": true },
+  { "query": "We want to swap our expensive judge model for a cheaper one. Here are both models' grades on the same 100 answers plus expert labels.", "should_trigger": true },
+  { "query": "We want an LLM judge to grade helpfulness on our chatbot. How should we set that up?", "should_trigger": false },
+  { "query": "Design an eval set and pass bar for our RAG assistant before we change the prompt", "should_trigger": false },
+  { "query": "Generate eval cases for this skilldrop SKILL.md so I can drop them in its evals folder", "should_trigger": false },
+  { "query": "Summarise how much each team used AI coding assistants last quarter from this telemetry export", "should_trigger": false }
+]

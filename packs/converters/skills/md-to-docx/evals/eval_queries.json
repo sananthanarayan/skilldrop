@@ -1,0 +1,10 @@
+[
+  { "query": "Convert README-for-legal.md to a Word document", "should_trigger": true },
+  { "query": "The client can't open Markdown, can you send the design doc as a .docx?", "should_trigger": true },
+  { "query": "Make this markdown report editable in Word with our brand fonts", "should_trigger": true },
+  { "query": "Export these release notes to docx so HR can track changes", "should_trigger": true },
+  { "query": "Turn this markdown outline into a PowerPoint deck", "should_trigger": false },
+  { "query": "Convert the onboarding guide into a single HTML page I can email", "should_trigger": false },
+  { "query": "Turn this Word file the client sent back into Markdown", "should_trigger": false },
+  { "query": "Put these markdown tables into an Excel spreadsheet", "should_trigger": false }
+]

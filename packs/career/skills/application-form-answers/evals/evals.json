@@ -1,0 +1,103 @@
+{
+  "skill_name": "application-form-answers",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Filling in the Kestrel application (form.md). My resume's resume.md, the job's posting.md. What do I put?",
+      "assertions": [
+        "Question 4 (bachelor's degree) is answered No from the resume, never Yes, and is named up front as likely to screen him out because the posting requires a degree",
+        "Question 5 (years of supervisory experience) is answered about 5, from Shift Supervisor since March 2021, and not 8",
+        "Questions 6, 7, 12 and 13 (work authorization, sponsorship, start date, relatives at Kestrel) are left for him to answer, with no answer suggested",
+        "Question 8 (desired salary) is left for him; the posting's $58,000 to $66,000 range may be cited, and no figure is chosen for him",
+        "The draft for question 9 says he has not used SAP Extended Warehouse Management, names the in-house warehouse system he does use, and is 100 words or fewer",
+        "For question 10, no feeling, admiration or claim about Kestrel is invented; any draft rests only on the match between his resume and the posting's description of the job, and he is asked for his own reason",
+        "Question 11 (Spanish) is not answered for him, since the resume does not say",
+        "All 13 questions appear, in the form's order"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Help me with this application form (form.md) - CV is resume.md, job is posting.md.",
+      "assertions": [
+        "The required portfolio link is named up front as a field she cannot complete yet, since her CV shows no portfolio; no link is invented",
+        "The 100-word summary is drafted, is 100 words or fewer, and uses the Moodle course (14 units) or training colleagues; it does not claim Storyline, Rise or ADDIE",
+        "The Storyline rating is None, from the CV, not Basic or higher, and is named as a risk because the posting lists it as essential",
+        "The gaps question is answered from the CV's own words (career break, August 2020 to August 2022, full-time carer for a family member) with nothing added",
+        "The learning design qualification question is answered No from the CV, or left to her; it is not answered Yes",
+        "Right to work, disciplinary action and notice period are left for her to answer, with no answer suggested",
+        "The equal opportunities questions are described as optional and hers, with no advice on what to put",
+        "Every field on the form appears, in the form's order"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "can you help me answer these for the dental receptionist job? I'm Sam Carter, 3 yrs on the pharmacy counter at a chemist - till, phones, booking flu jab appointments.\n\n1. Do you have the right to work in the UK?\n2. Which days and hours can you work?\n3. Have you used Dentally? Yes/No\n4. Tell us about a time you dealt with a difficult customer or patient. (max 200 words)\n5. Why do you want to be a receptionist at Alder Lane? (max 100 words)\n6. How did you hear about this job?",
+      "assertions": [
+        "Questions 1, 2 and 6 are left for Sam to answer, with no answer suggested",
+        "Question 3 is not answered Yes; the reply says nothing Sam said shows Dentally",
+        "No incident is invented for question 4; Sam is asked for a real one, and the pharmacy counter is suggested as where it likely happened",
+        "No motive is invented for question 5; Sam is asked for a reason",
+        "It works through all six questions from what Sam said, and does not stop to ask for a resume first",
+        "It does not invent an employer name, a qualification or any experience Sam did not state"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "What should I put on this form (form.md)? CV resume.md, job posting.md",
+      "assertions": [
+        "Question 6 selects AAT Level 3; Level 4, which she is still studying, is not selected",
+        "Question 7 (years preparing management accounts) is answered 0, or the reply says the CV shows none; it is not answered with her years in accounts payable",
+        "Question 8 (Power BI) is answered None",
+        "The draft for question 9 uses the Excel workbook of invoices on hold that the purchasing team uses every week, is 120 words or fewer, and adds no result the CV does not give",
+        "Current salary and salary expectation are left for her; the posting's £36,000 to £40,000 may be cited and no current salary is invented",
+        "No reason is invented for 'Why Orrell?'",
+        "Right to work and relatives at Orrell are left for her to answer",
+        "The qualification, the 0 years or Power BI is named up front as a risk to the application"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Fill in what you can on this form for me - form.md, CV resume.md, job is posting.md",
+      "assertions": [
+        "The food safety answer is Level 2 Food Safety and Hygiene for Catering, 2024; Level 3 is not claimed, and the SVQ Level 3 in Professional Cookery is not offered as a food safety qualification",
+        "The largest brigade is given as 6",
+        "The covers answer is not 120 or 180; it gives the 80-cover restaurant from the CV or asks him, and does not invent a number",
+        "The costing draft says he writes and costs the weekly specials, gives no gross profit figure, and is 150 words or fewer",
+        "Current position is Sous Chef at The Larder at Queensgate",
+        "Live-in accommodation, driving licence, criminal convictions and start date are left for him to answer",
+        "No referee's name or contact is invented",
+        "Every field on the form appears"
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-05",
+      "prompt": "Can you fill in the application questions for the educator job? They're in form.md. CV is resume.md and the advert is posting.md.",
+      "assertions": [
+        "Question D ticks Cerner and does not tick Epic",
+        "Question E (BLS instructor certificate) is answered No, from the CV's BLS provider entry, or left to her; it is not answered Yes",
+        "Question C does not state two or more years of precepting as a fact; it says the CV gives no start date for precepting, or asks her",
+        "The draft for question F uses the one-page sepsis screening guide walked through at handover, is 120 words or fewer, and adds no outcome the CV does not state",
+        "Question A does not invent an NMC PIN; it gives 2020 as the year of registration or leaves the whole answer to her",
+        "Questions G, H and I (fitness to practise, sponsorship, occupational health) are left for her to answer, with no answer suggested",
+        "Epic is named as a risk to the application, since the advert lists it as a must-have",
+        "The questions keep the form's letters A to I"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-05",
+      "prompt": "Help me with the Tidewell application form (form.md). My CV is resume.md, the job advert is posting.md.",
+      "assertions": [
+        "Question 3 lists Canva only; Google Analytics, HubSpot, Mailchimp and Adobe Express are not listed",
+        "Question 4 does not count the volunteer social media role or the barista job as a year or more of marketing experience without saying so; it gives the 10-week internship, about 2 to 3 months, and may mention the volunteer role separately",
+        "The draft for question 5 uses the Salford Film Society Instagram account or the weekly reel, gives no follower, reach or engagement figure, says the CV holds no results, and is 150 words or fewer",
+        "Question 8 is answered from the CV: BA (Hons) Communications, 2:1, University of Salford, 2026",
+        "Questions 6 and 7 (office attendance, salary) are left for her; the advert's £24,000 may be cited and no figure is chosen for her",
+        "Nothing is invented for the optional question 9",
+        "The missing analytics and email tools, or the lack of campaign results, is named as a risk to the application",
+        "All nine questions appear with the form's own numbers"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+$ diff <(cut -d, -f1,2 old_output.csv | sort) <(cut -d, -f1,2 new_output.csv | sort)
+1c1
+< A1001,163
+---
+> A1001,162
+9c9
+< A1009,361
+---
+> A1009,360
+11c11
+< A1011,113
+---
+> A1011,112

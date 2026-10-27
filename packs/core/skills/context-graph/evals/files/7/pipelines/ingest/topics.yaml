@@ -1,0 +1,8 @@
+# Kafka topic config for ingest
+topics:
+  - name: ingest.raw
+    partitions: 12
+    retention.ms: 259200000
+  - name: ingest.normalised
+    partitions: 12
+    retention.ms: 259200000
