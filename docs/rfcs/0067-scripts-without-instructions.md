@@ -87,5 +87,10 @@ finding.
 ## Decision
 
 Accepted and implemented: `run_bench.py --tools-arm`, with unit tests in
-`tests/test_run_bench_tools_arm.py`. Not yet run at scale. The first full run waits for the tier
-trials, which fix the list of losing skills.
+`tests/test_run_bench_tools_arm.py`.
+
+**First full run, 27 October.** One trial on all 44 scripted skills' 132 held-out evals, for
+$106.54. It ran ahead of the tier trials, so the whole picture came first. No arm was reliably
+preferred to another. Eight skills read *the plain agent is preferred*, three *the scripts carry
+it*, one *instructions help*, and 32 *mixed*. The account is in
+[what the benchmark showed](../../guides/explanation/what-the-benchmark-showed.md#the-scripts-without-the-instructions).
