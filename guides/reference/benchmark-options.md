@@ -43,7 +43,8 @@ Every flag, from `python3 run_bench.py --help`:
 | `--tolerance` | Routing check: a model within this of the best score counts as adequate | 0.05 |
 | `--workers` | Parallel workers | 4 |
 | `--no-floor` | Skip grading the non-answer | off |
-| `--dry-run` | Print how many agent sessions and judgements the run needs and a rough cost at list price; spend nothing | off |
+| `--tools-arm` | With `--backend claude-cli`: for each skill that ships scripts, a third arm runs its scripts without its instructions, judged against the plain agent and against the skill. See [The scripts without the instructions](#the-scripts-without-the-instructions) | off |
+| `--dry-run` | Print how many agent sessions and judgements the run needs and a rough cost at list price; spend nothing. The estimate counts every judge and the files each judge reads, and still tends to come in under the real cost, by up to half on agent runs | off |
 | `--out DIR` | Directory for `results.json` and `report.md` | `bench-results` |
 | `--publish FILE` | Also write the summary, without the outputs, to `FILE` | off |
 
@@ -78,6 +79,37 @@ and author. The working tree ends at the last commit.
 
 Because there is no network, a skill that has to install a dependency or call an API can't
 finish, and will score worse than it would on your machine.
+
+## The scripts without the instructions
+
+A skill that loses to the plain agent could lose for either of two reasons. Its instructions may
+be too heavy for the model, while its scripts still help. Or it adds nothing the model doesn't
+already do. `--tools-arm` tells them apart. For each skill that ships scripts, a third arm runs
+beside the skill and the plain agent:
+
+- **What it gets:** the skill's folder without its instructions. That means no `SKILL.md`,
+  `reference.md`, `manifest.json`, `examples/` or `evals/`. The scripts keep the data they read,
+  such as `templates/`.
+- **Its whole system prompt is generated:** where the scripts are, each one's first docstring
+  line, and "run one with --help". No rule from the skill reaches it.
+- **How it's judged:** against the same assertions, then in two more blind pairs per judge.
+  One is the scripts only against the plain agent; the other is the skill against the scripts
+  only.
+- **The cache:** its runs are cached on a hash of the scripts and their data, so changing a
+  script reruns the arm.
+
+The report adds a section with the three arms side by side, and a reading per skill. Every judge
+has to agree on it, or it reads *mixed*:
+
+| Reading | The blind pairs |
+|---|---|
+| instructions help | The skill beats the scripts only, and the plain agent |
+| the scripts carry it | The scripts only beat the plain agent, and the skill doesn't beat them |
+| the plain agent is preferred | Neither the skill nor the scripts only beats the plain agent |
+| mixed | Anything else, or judges that disagree |
+
+A skill with no scripts runs as before, with two arms. With a handful of evals per skill a reading
+is a lead to check against the outputs, not a verdict ([RFC-0067](../../docs/rfcs/0067-scripts-without-instructions.md)).
 
 ## What it writes
 

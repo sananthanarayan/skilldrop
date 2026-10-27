@@ -9,6 +9,10 @@ evals/evals.json it runs a paired comparison on each model:
   baseline  the same request with no skill, only a one-line agent prompt
   floor     a non-answer, graded like any output. Shows how many assertions pass vacuously
             ("does not invent rows"), so the other two numbers have a zero to stand on.
+  tools     with --tools-arm (claude-cli only), for a skill that ships scripts: its scripts and
+            the data they read, with no instructions, only a generated list of the scripts. It is
+            judged against the plain agent and against the skill, so a losing skill says whether
+            its instructions or its scripts carry the result (RFC-0067).
 
 Two measures, because the assertions were written by the skill's author:
 
@@ -97,6 +101,11 @@ PAIR_SYSTEM = ("You compare two responses to the same request. Pick the one that
 
 BACKEND = "api"  # or "claude-cli"; set from --backend
 SECOND_JUDGE = None  # a second pairwise judge, set from --second-judge
+TOOLS_ARM = False  # also run each scripted skill's tools without its instructions, set from --tools-arm
+
+# What the tools arm leaves out of a skill's folder: its instructions. Data the scripts read,
+# such as templates/, stays, so every script still runs.
+INSTRUCTIONS = ("SKILL.md", "reference.md", "manifest.json", "examples", "evals", "__pycache__")
 
 
 CLI_BASE = ["--disable-slash-commands", "--strict-mcp-config", "--no-session-persistence",
@@ -296,7 +305,63 @@ def digest(d):
     return h.hexdigest()[:16]
 
 
-def cli_agent(model, system, user, skill=None, files=None):
+def has_scripts(skill):
+    d = os.path.join(catalog.skill_dir(skill), "scripts")
+    return os.path.isdir(d) and any(n.endswith((".py", ".js", ".sh")) for n in os.listdir(d))
+
+
+def tools_system(skill):
+    """The tools arm's whole instruction: where the scripts are, and each one's own first
+    docstring or comment line. Generated, never written by hand, so it carries none of the
+    skill's rules."""
+    import ast
+    d = os.path.join(catalog.skill_dir(skill), "scripts")
+    lines = []
+    for name in sorted(os.listdir(d)):
+        path = os.path.join(d, name)
+        if not name.endswith((".py", ".js", ".sh")) or not os.path.isfile(path):
+            continue
+        first = ""
+        try:
+            with open(path, encoding="utf-8") as fh:
+                src = fh.read()
+            if name.endswith(".py"):
+                first = (ast.get_docstring(ast.parse(src)) or "").strip().split("\n")[0]
+            else:
+                m = next((l for l in src.splitlines()[1:12] if l.strip().startswith(("//", "#", "*"))), "")
+                first = m.strip().lstrip("/#* ").strip()
+        except (SyntaxError, UnicodeDecodeError, ValueError):
+            pass
+        lines.append("- skills/%s/scripts/%s%s" % (skill, name, (": " + first) if first else ""))
+    return (NONINTERACTIVE + "\n\nScripts that may help with this kind of task are in the working "
+            "directory. Run one with --help to see what it takes.\n" + "\n".join(lines))
+
+
+def scripts_digest(skill):
+    """The tools arm is measuring the scripts, so a changed script must not reuse a cached run."""
+    h = hashlib.sha256()
+    root = catalog.skill_dir(skill)
+    for base, dirs, names in os.walk(root):
+        dirs[:] = sorted(x for x in dirs if x not in INSTRUCTIONS)
+        if os.path.relpath(base, root) == ".":
+            names = [n for n in names if n not in INSTRUCTIONS]
+        for n in sorted(names):
+            path = os.path.join(base, n)
+            with open(path, "rb") as fh:
+                h.update(os.path.relpath(path, root).encode() + b"\0" + fh.read())
+    return h.hexdigest()[:16]
+
+
+def stage_skill(skill, ws, layout="full"):
+    """Copy a skill into the working directory at skills/<name>/, as a plain-copy install does.
+    The tools layout leaves out its instructions and keeps the scripts and the data they read."""
+    dest = os.path.join(ws, "skills", skill)
+    ignore = INSTRUCTIONS if layout == "tools" else ("evals", "__pycache__")
+    shutil.copytree(catalog.skill_dir(skill), dest, ignore=shutil.ignore_patterns(*ignore))
+    return dest
+
+
+def cli_agent(model, system, user, skill=None, files=None, layout="full"):
     """A real agent run: Claude Code with its own system prompt and file and shell tools, in a
     throwaway directory, sandboxed, with no settings, plugins or MCP servers from this machine.
     `system` is appended to Claude Code's prompt. The skill arm also gets the skill's folder at
@@ -308,9 +373,9 @@ def cli_agent(model, system, user, skill=None, files=None):
         if files:
             copy_fixtures(files, ws)
         if skill:
-            dest = os.path.join(ws, "skills", skill)
-            shutil.copytree(catalog.skill_dir(skill), dest, ignore=shutil.ignore_patterns("evals", "__pycache__"))
-            env["CLAUDE_SKILL_DIR"] = dest
+            dest = stage_skill(skill, ws, layout)
+            if layout != "tools":
+                env["CLAUDE_SKILL_DIR"] = dest
         sysfile = os.path.join(side, "system.txt")
         open(sysfile, "w", encoding="utf-8").write(system)
         text, resp = cli_run(["--model", model, "--append-system-prompt-file", sysfile, "--restricted",
@@ -355,8 +420,10 @@ def cost_of(model, usage):
     return (tokens_in * pin + usage.get("output_tokens", 0) * pout) / 1e6
 
 
-def cache_path(kind, model, system, user, trial, files=None):
+def cache_path(kind, model, system, user, trial, files=None, extra=None):
     parts = [kind, model, system, user, trial] + ([BACKEND + "/agent-1"] if BACKEND != "api" else [])
+    if extra:
+        parts.append(extra)
     if files and BACKEND != "api":
         parts.append(digest(files))
         if os.path.isfile(os.path.join(files, GIT_HISTORY)):
@@ -365,16 +432,17 @@ def cache_path(kind, model, system, user, trial, files=None):
     return os.path.join(CACHE, key[:2], key + ".json")
 
 
-def call(kind, model, system, user, trial, max_tokens, budget, skill=None, files=None):
+def call(kind, model, system, user, trial, max_tokens, budget, skill=None, files=None, layout="full"):
     """One model call, cached on everything that determines it. Returns a record with the text,
     the API's usage block, the cost at this model's rate, and whether it came from the cache."""
-    path = cache_path(kind, model, system, user, trial, files)
+    extra = ("tools/" + scripts_digest(skill)) if layout == "tools" else None
+    path = cache_path(kind, model, system, user, trial, files, extra)
     if os.path.exists(path):
         return dict(json.load(open(path, encoding="utf-8")), cached=True)
     budget.check()
     start = time.time()
     if BACKEND == "claude-cli":
-        text, resp = cli_agent(model, system, user, skill, files) if kind == "gen" else cli_messages(model, system, user)
+        text, resp = cli_agent(model, system, user, skill, files, layout) if kind == "gen" else cli_messages(model, system, user)
     else:
         text, resp = messages(model, system, user, max_tokens=max_tokens, timeout=600, raw=True)
     served = resp.get("model", "")
@@ -401,8 +469,9 @@ def judge(judge_model, output, asserts, trial, budget):
     return grade(judge_model, output, asserts, send)
 
 
-def pair(judge_model, prompt, a, b, seed, trial, budget):
-    """Blind pairwise preference. Which output is shown as A is fixed by the eval, not by the arm."""
+def pair(judge_model, prompt, a, b, seed, trial, budget, names=("skill", "baseline")):
+    """Blind pairwise preference. Which output is shown as A is fixed by the eval, not by the arm.
+    `names` labels a and b in the result."""
     flip = int(hashlib.sha256(seed.encode()).hexdigest(), 16) % 2 == 1
     first, second = (b, a) if flip else (a, b)
     rec = call("pair", judge_model, PAIR_SYSTEM,
@@ -413,7 +482,7 @@ def pair(judge_model, prompt, a, b, seed, trial, budget):
     except ValueError:
         v = {}
     w = str(v.get("winner", "")).upper()
-    winner = "tie" if w not in ("A", "B") else ("baseline" if (w == "A") == flip else "skill")
+    winner = "tie" if w not in ("A", "B") else (names[1] if (w == "A") == flip else names[0])
     return {"winner": winner, "why": v.get("why", "not judged"), "cost": rec["cost"]}
 
 
@@ -425,8 +494,11 @@ def arm_systems(skill, md):
     """(arm, system text) pairs. Through the API the text is the whole system prompt; through
     Claude Code it is appended to Claude Code's own prompt, so the baseline is plain Claude Code."""
     if BACKEND == "claude-cli":
-        return (("skill", skill_system(md) + f"\n\nThis skill's folder is at skills/{skill}/ in the working "
+        arms = (("skill", skill_system(md) + f"\n\nThis skill's folder is at skills/{skill}/ in the working "
                  "directory (CLAUDE_SKILL_DIR points to it)."), ("baseline", NONINTERACTIVE))
+        if TOOLS_ARM and has_scripts(skill):
+            arms += (("tools", tools_system(skill)),)
+        return arms
     return (("skill", skill_system(md)), ("baseline", BASELINE_SYSTEM))
 
 
@@ -436,8 +508,8 @@ def run_unit(unit, judge_model, budget):
     md = open(os.path.join(catalog.skill_dir(s), "SKILL.md"), encoding="utf-8").read()
     try:
         for arm, system in arm_systems(s, md):
-            gen = call("gen", model, system, e["prompt"], trial, 16000, budget, s if arm == "skill" else None,
-                       fixtures(s, e.get("id")))
+            gen = call("gen", model, system, e["prompt"], trial, 16000, budget, s if arm != "baseline" else None,
+                       fixtures(s, e.get("id")), "tools" if arm == "tools" else "full")
             grades, jrec = judge(judge_model, gen["text"], e["assertions"], trial, budget)
             row["arms"][arm] = {"output": gen["text"], "usage": gen["usage"], "cost": gen["cost"],
                                 "seconds": gen["seconds"], "stop_reason": gen["stop_reason"],
@@ -450,6 +522,17 @@ def run_unit(unit, judge_model, budget):
             row["pairwise2"] = pair(SECOND_JUDGE, e["prompt"], row["arms"]["skill"]["output"],
                                     row["arms"]["baseline"]["output"], f"{s}/{e.get('id')}/{model}/{trial}",
                                     trial, budget)
+        if "tools" in row["arms"]:
+            # The tools against the plain agent: do the scripts help on their own? The skill
+            # against the tools: do the instructions add anything on top of the scripts?
+            seed = f"{s}/{e.get('id')}/{model}/{trial}"
+            for key, a, b, judge_ in (("tools_vs_baseline", "tools", "baseline", judge_model),
+                                      ("skill_vs_tools", "skill", "tools", judge_model),
+                                      ("tools_vs_baseline2", "tools", "baseline", SECOND_JUDGE),
+                                      ("skill_vs_tools2", "skill", "tools", SECOND_JUDGE)):
+                if judge_:
+                    row[key] = pair(judge_, e["prompt"], row["arms"][a]["output"], row["arms"][b]["output"],
+                                    seed + "/" + key.rstrip("2"), trial, budget, names=(a, b))
     except BudgetExceeded:
         row["skipped"] = "budget"
     except (APIError, json.JSONDecodeError) as err:
@@ -506,6 +589,43 @@ def second_judge(rows, m, done):
     return {"second_judge": SECOND_JUDGE, "win2": mean(win2), "win2_ci": boot(win2),
             "judges_agree": sum(r["pairwise"]["winner"] == r["pairwise2"]["winner"] for r in decided),
             "judges_decided": len(decided)}
+
+
+def side(winner, name):
+    """1 when `name` won the pair, 0.5 for a tie, 0 when the other side won."""
+    return 1.0 if winner == name else 0.5 if winner == "tie" else 0.0
+
+
+def reading(skill_pref, tools_pref, skill_over_tools):
+    """What a skill's three-way result suggests, from the pairwise preferences (0 to 1). A lead
+    for a person to check against the outputs, never a verdict: a skill has few evals."""
+    if skill_over_tools is None or tools_pref is None:
+        return None
+    if skill_over_tools > 0.5 and skill_pref > 0.5:
+        return "instructions help"
+    if tools_pref > 0.5 and skill_over_tools <= 0.5:
+        return "the scripts carry it"
+    if skill_pref < 0.5 and tools_pref < 0.5:
+        return "the plain agent is preferred"
+    return "mixed"
+
+
+def tools_summary(rows, m):
+    """The tools arm on one model: the three arms on the same evals, and both new pairings."""
+    part = [r for r in rows if r["model"] == m and "pairwise" in r and "tools_vs_baseline" in r]
+    if not part:
+        return {}
+    d = {"evals": len(by_eval(part, m, lambda r: 0)), "skills": len({r["skill"] for r in part})}
+    for arm in ("skill", "tools", "baseline"):
+        d[arm] = mean(list(by_eval(part, m, lambda r, a=arm: met(r["arms"][a]["grades"])).values()))
+        d["cost_" + arm] = mean([r["arms"][arm]["cost"] for r in part])
+    for key, name in (("pairwise", "skill"), ("tools_vs_baseline", "tools"), ("skill_vs_tools", "skill"),
+                      ("pairwise2", "skill"), ("tools_vs_baseline2", "tools"), ("skill_vs_tools2", "skill")):
+        have = [r for r in part if key in r]
+        if have:
+            w = list(by_eval(have, m, lambda r, k=key, n=name: side(r[k]["winner"], n)).values())
+            d["win_" + key], d["win_" + key + "_ci"] = mean(w), boot(w)
+    return d
 
 
 def held_out_ids(skills):
@@ -570,6 +690,9 @@ def summarize(rows, floor, models, labels, tolerance):
             "skipped": sum(1 for r in rows if r["model"] == m and "skipped" in r),
             "by_kind": by_kind(rows, m, held),
         }
+        tools = tools_summary(rows, m)
+        if tools:
+            out["models"][m]["tools"] = tools
     out["skills"] = []
     for m in models:
         done = [r for r in rows if r["model"] == m and "pairwise" in r]
@@ -582,6 +705,26 @@ def summarize(rows, floor, models, labels, tolerance):
                 "preferred": mean([{"skill": 1.0, "tie": 0.5, "baseline": 0.0}[r["pairwise"]["winner"]] for r in mine]),
                 "cost_skill": mean([r["arms"]["skill"]["cost"] for r in mine]),
                 "cost_baseline": mean([r["arms"]["baseline"]["cost"] for r in mine])})
+            three = [r for r in mine if "tools_vs_baseline" in r]
+            if three:
+                row = out["skills"][-1]
+                row.update({
+                    "tools_met": mean([met(r["arms"]["tools"]["grades"]) for r in three]),
+                    "tools_preferred": mean([side(r["tools_vs_baseline"]["winner"], "tools") for r in three]),
+                    "skill_over_tools": mean([side(r["skill_vs_tools"]["winner"], "skill") for r in three]),
+                    "cost_tools": mean([r["arms"]["tools"]["cost"] for r in three])})
+                judges = [("pairwise", "tools_vs_baseline", "skill_vs_tools")]
+                if all("pairwise2" in r and "tools_vs_baseline2" in r for r in three):
+                    judges.append(("pairwise2", "tools_vs_baseline2", "skill_vs_tools2"))
+                    row.update({
+                        "preferred2": mean([side(r["pairwise2"]["winner"], "skill") for r in three]),
+                        "tools_preferred2": mean([side(r["tools_vs_baseline2"]["winner"], "tools") for r in three]),
+                        "skill_over_tools2": mean([side(r["skill_vs_tools2"]["winner"], "skill") for r in three])})
+                # The reading needs every judge to agree; otherwise it is mixed.
+                reads = {reading(mean([side(r[a]["winner"], "skill") for r in three]),
+                                 mean([side(r[b]["winner"], "tools") for r in three]),
+                                 mean([side(r[c]["winner"], "skill") for r in three])) for a, b, c in judges}
+                row["reading"] = reads.pop() if len(reads) == 1 else "mixed"
     if len(models) > 1:
         tiers = json.load(open(os.path.join(ROOT, "model-routing.json"), encoding="utf-8"))["skills"]
         cost = {m: sum(price(m)) for m in models}
@@ -650,6 +793,42 @@ def report(summary, judge_model, trials, spent, scripted):
             lines += ["", f"**Second judge** `{d['second_judge']}` on `{m}`: preferred the skill's result in "
                       f"{pct(d['win2'])}{ci(d['win2_ci'])} of pairs, and picked the same side as the first judge in "
                       f"{d['judges_agree']} of {d['judges_decided']} pairs where both chose one."]
+    for m, d in summary["models"].items():
+        t = d.get("tools")
+        if not t:
+            continue
+        lines += ["", f"## The scripts without the instructions (`{m}`)", "",
+                  f"For the {t['skills']} skill(s) here that ship scripts, a third arm got the skill's scripts and the "
+                  "data they read, with no SKILL.md, reference or examples: only a generated list of the scripts and "
+                  "each one's first docstring line. All three arms ran on the same "
+                  f"{t['evals']} eval(s).", "",
+                  "| | Skill | Scripts only | Plain agent |", "|---|---|---|---|",
+                  f"| Assertions met | {pct(t['skill'])} | {pct(t['tools'])} | {pct(t['baseline'])} |",
+                  f"| $ per run | ${t['cost_skill']:.4f} | ${t['cost_tools']:.4f} | ${t['cost_baseline']:.4f} |", "",
+                  "| Blind pair | Judge 1 | Judge 2 |", "|---|---|---|"]
+        for label, k in (("Skill preferred to the plain agent", "pairwise"),
+                         ("Scripts only preferred to the plain agent", "tools_vs_baseline"),
+                         ("Skill preferred to scripts only", "skill_vs_tools")):
+            two = {"pairwise": "pairwise2"}.get(k, k + "2")
+            lines.append(f"| {label} | {pct(t.get('win_' + k))}{ci(t.get('win_' + k + '_ci'))} | "
+                         f"{pct(t.get('win_' + two))}{ci(t.get('win_' + two + '_ci'))} |")
+        mine = [r for r in summary["skills"] if r["model"] == m and r.get("reading")]
+        if mine:
+            counts = {}
+            for r in mine:
+                counts[r["reading"]] = counts.get(r["reading"], 0) + 1
+            lines += ["", "Per skill, from the blind pairs (every judge must agree, or it reads *mixed*): "
+                      + ", ".join(f"{n} {k}" for k, n in sorted(counts.items(), key=lambda x: -x[1])) + ". "
+                      "Each skill has a handful of evals, so a row is a lead to check against the outputs, "
+                      "not a verdict.", "",
+                      "| Skill | Evals | Met: skill / scripts / plain | Skill > plain | Scripts > plain | Skill > scripts | Reading |",
+                      "|---|---|---|---|---|---|---|"]
+            for r in sorted(mine, key=lambda r: (r["reading"], r["skill"])):
+                j2 = lambda k: (" / " + pct(r[k + "2"])) if (k + "2") in r else ""
+                lines.append(f"| `{r['skill']}` | {r['evals']} | {pct(r['skill_met'])} / {pct(r['tools_met'])} / "
+                             f"{pct(r['baseline_met'])} | {pct(r['preferred'])}{j2('preferred')} | "
+                             f"{pct(r['tools_preferred'])}{j2('tools_preferred')} | "
+                             f"{pct(r['skill_over_tools'])}{j2('skill_over_tools')} | {r['reading']} |")
     notes = []
     for m, d in summary["models"].items():
         bits = []
@@ -705,19 +884,42 @@ def resolve_models(spec):
     return models, labels
 
 
+def fixture_tokens(skill, eval_id):
+    """Roughly how many tokens of input files a judge reads beside an output: the files the run
+    leaves behind are shown to it, up to workspace_files' limits, and a git history up to 30,000
+    characters."""
+    d = fixtures(skill, eval_id)
+    if not d:
+        return 0
+    chars = 0
+    for base, _, names in os.walk(d):
+        for n in names:
+            if n != GIT_HISTORY:
+                chars += os.path.getsize(os.path.join(base, n))
+    hist = os.path.join(d, GIT_HISTORY)
+    return (min(chars, 90000) + (min(3 * os.path.getsize(hist), 30000) if os.path.isfile(hist) else 0)) / 4
+
+
 def estimate(units, floor_units, judge_model):
-    """Rough dollars for the calls not yet cached: characters / 4 as tokens, and an assumed
-    4,000 output tokens per generation. Printed as an estimate; the run itself bills from usage."""
+    """Rough dollars for the calls not yet cached: characters / 4 as tokens, an assumed 4,000
+    output tokens per generation, and the input files every judge reads beside each output.
+    Every pairing is counted once per judge. Printed as an estimate; the run bills from usage."""
     total, fresh = 0.0, 0
-    jin, jout = price(judge_model)
+    judges = [price(judge_model)] + ([price(SECOND_JUDGE)] if SECOND_JUDGE else [])
+    jin, jout = judges[0]
     for s, e, model, trial in units:
         md = open(os.path.join(catalog.skill_dir(s), "SKILL.md"), encoding="utf-8").read()
         pin, pout = price(model)
-        for _, system in arm_systems(s, md):
-            fresh += not os.path.exists(cache_path("gen", model, system, e["prompt"], trial, fixtures(s, e.get("id"))))
+        seen = 4000 + fixture_tokens(s, e.get("id"))                # one output, with the files it left
+        arms = arm_systems(s, md)
+        for arm, system in arms:
+            extra = ("tools/" + scripts_digest(s)) if arm == "tools" else None
+            fresh += not os.path.exists(cache_path("gen", model, system, e["prompt"], trial, fixtures(s, e.get("id")), extra))
             total += ((len(system) + len(e["prompt"])) / 4 * pin + 4000 * pout) / 1e6
-            total += (4500 * jin + 500 * jout) / 1e6          # assertion judge reads one output
-        total += (9000 * jin + 100 * jout) / 1e6              # pairwise judge reads both
+            total += ((seen + 500) * jin + 500 * jout) / 1e6         # assertion judge reads one output
+        pairs = 3 if len(arms) == 3 else 1                          # with the tools arm: two more pairings
+        for qin, qout in judges:
+            total += pairs * ((2 * seen + len(e["prompt"]) / 4) * qin + 100 * qout) / 1e6
     total += len(floor_units) * (400 * jin + 500 * jout) / 1e6
     return total, fresh
 
@@ -742,14 +944,19 @@ def main():
                     help="routing check: a model within this of the best score counts as adequate (default 0.05)")
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--no-floor", action="store_true", help="skip grading the non-answer")
+    ap.add_argument("--tools-arm", action="store_true",
+                    help="claude-cli only: for each skill that ships scripts, also run its scripts without its "
+                         "instructions, and judge that arm against the plain agent and against the skill (RFC-0067)")
     ap.add_argument("--dry-run", action="store_true", help="count calls and estimate cost; spend nothing")
     ap.add_argument("--out", default="bench-results", help="directory for results.json and report.md")
     ap.add_argument("--publish", metavar="FILE",
                     help="also write the summary (no outputs) to FILE; docs/benchmarks/latest.json is what the site reads")
     a = ap.parse_args()
 
-    global BACKEND, SECOND_JUDGE
-    BACKEND, SECOND_JUDGE = a.backend, a.second_judge
+    global BACKEND, SECOND_JUDGE, TOOLS_ARM
+    BACKEND, SECOND_JUDGE, TOOLS_ARM = a.backend, a.second_judge, a.tools_arm
+    if TOOLS_ARM and BACKEND != "claude-cli":
+        sys.exit("--tools-arm needs --backend claude-cli: through the API there are no tools to run the scripts with")
     if SECOND_JUDGE and price(SECOND_JUDGE) is None:
         sys.exit(f"no price for second judge {SECOND_JUDGE!r}: add it to PRICES in run_bench.py")
     all_skills = catalog.skills()
@@ -772,9 +979,12 @@ def main():
     floor_units = [] if a.no_floor else evals
 
     est, fresh = estimate(units, floor_units, a.judge_model)
+    n_tools = sum(1 for u in units if TOOLS_ARM and BACKEND == "claude-cli" and has_scripts(u[0]))
+    n_judges = 2 if SECOND_JUDGE else 1
     print(f"{len(evals)} eval(s) across {len(skills)} skill(s) x {len(models)} model(s) x {a.trials} trial(s): "
-          f"{2 * len(units)} generations ({fresh} not cached), {2 * len(units) + len(floor_units)} assertion "
-          f"gradings, {len(units)} pairwise judgements. Rough cost if nothing is cached: ${est:.2f}. "
+          f"{2 * len(units) + n_tools} generations ({fresh} not cached), {2 * len(units) + n_tools + len(floor_units)} "
+          f"assertion gradings, {n_judges * (len(units) + 2 * n_tools)} pairwise judgements"
+          f"{f' ({n_tools} run(s) with the scripts-only arm)' if TOOLS_ARM else ''}. Rough cost if nothing is cached: ${est:.2f}. "
           f"Budget: ${a.budget:.2f}.")
     if a.dry_run:
         return 0
