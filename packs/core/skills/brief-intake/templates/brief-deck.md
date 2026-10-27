@@ -1,6 +1,6 @@
 # Brief: Deck
 
-> Target downstream skills: `slide-outliner` → `deck-builder` (and `audience-profile` for the structural rules)
+> Target downstream skills: `slide-outliner` (and `audience-profile` for the structural rules)
 
 ## Topic / working title
 {One line} [explicit|implied|inferred|missing]
@@ -39,5 +39,5 @@
 ---
 
 ## 🚩 Missing for downstream
-- {e.g. "Audience not specified — deck-builder will refuse to start"}
-- {e.g. "No palette — deck-builder will ask before building"}
+- {e.g. "Audience not specified — the outline can't be sized"}
+- {e.g. "No brand or palette — the deck will use the default look"}

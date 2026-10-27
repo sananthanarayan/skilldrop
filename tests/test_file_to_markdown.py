@@ -149,10 +149,65 @@ class ToMarkdownTest(unittest.TestCase):
             docx(os.path.join(d, "c.docx"), body, {"word/comments.xml": comments})
             code, md, err = to_md(d, "c.docx")
         self.assertEqual(code, 0, err)
-        self.assertEqual(md.strip(), "Kept added")
+        self.assertEqual(md.strip(), "Kept {++added++}{--removed--}")  # pending, never settled
         self.assertIn("2 comments", err)
-        self.assertIn("1 tracked insertions (kept as text)", err)
-        self.assertIn("1 tracked deletions (left out)", err)
+        self.assertIn("1 tracked insertions shown as {++ ++}", err)
+        self.assertIn("1 tracked deletions shown as {-- --}", err)
+        self.assertIn("tracked changes are pending, not accepted", err)
+
+    IMG_REL = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
+    WP_NS = "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+
+    def _docx_with_image(self, d):
+        drawing = ('<w:p><w:r><w:drawing><wp:inline xmlns:wp="%s"><wp:docPr id="1" name="Picture 1" '
+                   'descr="Rota flow"/><a:graphic xmlns:a="%s"><a:graphicData><a:blip r:embed="rId9"/>'
+                   '</a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>' % (self.WP_NS, A_NS))
+        return docx(os.path.join(d, "r.docx"), para("Before") + drawing,
+                    {"word/media/flow chart.png": b"\x89PNG fake"},
+                    doc_rels=[("rId9", self.IMG_REL, "media/flow chart.png", False)])
+
+    def test_docx_image_is_saved_beside_the_markdown_and_linked(self):
+        with workdir() as d:
+            self._docx_with_image(d)
+            code, md, err = to_md(d, "r.docx")
+            saved = os.listdir(os.path.join(d, "out-images"))
+            with open(os.path.join(d, "out-images", saved[0]), "rb") as fh:
+                data = fh.read()
+        self.assertEqual(code, 0, err)
+        self.assertEqual(saved, ["flow-chart.png"])
+        self.assertEqual(data, b"\x89PNG fake")
+        self.assertIn("![Rota flow](out-images/flow-chart.png)", md)
+        self.assertIn("1 images saved", err)
+        self.assertNotIn("dropped (not in the Markdown): 1 images", err)
+
+    def test_image_to_stdout_is_counted_as_dropped(self):
+        with workdir() as d:
+            self._docx_with_image(d)
+            code, out, err = run(SKILL, SCRIPT, os.path.join(d, "r.docx"), "-o", "-")
+            self.assertFalse(os.path.exists(os.path.join(d, "out-images")))
+        self.assertEqual(code, 0, err)
+        self.assertIn("1 images", err)
+        self.assertNotIn("![", out)
+
+    def test_pptx_picture_is_saved_and_linked(self):
+        slide = ('<p:sld xmlns:p="%s" xmlns:a="%s" xmlns:r="%s"><p:cSld><p:spTree>'
+                 '<p:pic><p:nvPicPr><p:cNvPr id="4" name="Picture 3" descr="Burn-up chart"/></p:nvPicPr>'
+                 '<p:blipFill><a:blip r:embed="rId2"/></p:blipFill></p:pic></p:spTree></p:cSld></p:sld>'
+                 % (P_NS, A_NS, R_NS))
+        parts = {
+            "ppt/presentation.xml": '<p:presentation xmlns:p="%s" xmlns:r="%s"><p:sldIdLst>'
+                                    '<p:sldId id="256" r:id="rId1"/></p:sldIdLst></p:presentation>' % (P_NS, R_NS),
+            "ppt/_rels/presentation.xml.rels": rels(("rId1", R_NS + "/slide", "slides/slide1.xml", False)),
+            "ppt/slides/slide1.xml": slide,
+            "ppt/slides/_rels/slide1.xml.rels": rels(("rId2", self.IMG_REL, "../media/image7.png", False)),
+            "ppt/media/image7.png": b"png",
+        }
+        with workdir() as d:
+            make_zip(os.path.join(d, "deck.pptx"), parts)
+            code, md, err = to_md(d, "deck.pptx")
+            self.assertTrue(os.path.isfile(os.path.join(d, "out-images", "image7.png")))
+        self.assertEqual(code, 0, err)
+        self.assertIn("![Burn-up chart](out-images/image7.png)", md)
 
     def test_docx_without_heading_styles_infers_headings_and_says_so(self):
         big = '<w:b/><w:sz w:val="36"/>'

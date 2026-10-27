@@ -1,6 +1,6 @@
 {
   "name": "md-to-confluence",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Turn a Markdown runbook, design note or guide into a Confluence page: storage-format XHTML with real code blocks, tables, tasks, info and warning panels, images as attachments and an optional contents macro, a warning for everything dropped, and an optional publish that first shows which page it will create or overwrite and at what version, refuses stale or wrong-space overwrites, and takes credentials only from the environment. Use when the user says \"put this in Confluence\", \"publish this markdown to the wiki\", \"update the Confluence page with this\", \"convert to Confluence storage format\", or names a Confluence space for a Markdown file.",
   "entrypoint": "SKILL.md",
   "deps": {
@@ -17,18 +17,11 @@
   },
   "related": [
     "md-to-docx",
-    "md-to-html",
-    "mermaid-render",
     "runbook-generator",
     "tracker-brief-sync"
   ],
   "handoff": [
-    {
-      "to": "mermaid-render",
-      "when": "the Markdown has Mermaid diagrams",
-      "purpose": "Render each diagram to PNG so it can go on the page as an attachment instead of showing as source code.",
-      "fallback": "If mermaid-render is absent, leave the diagram as a code block and tell the user it shows as text until someone adds an image or a diagram app."
-    }
+    
   ],
   "tags": [
     "confluence",

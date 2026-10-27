@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="skilldrop — a prompt gets you a draft, a skill gets you a deliverable. Skills are run with and without themselves; 4 were retired for losing.">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="skilldrop — a prompt gets you a draft, a skill gets you a deliverable. Skills are run with and without themselves; 8 were retired for losing.">
   <defs>
     <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#7c5cff" stop-opacity="0.30"/>
@@ -29,7 +29,7 @@
        against catalogue.json by validate.py, so it can't go stale unnoticed. -->
   <text class="mono" x="80" y="486" font-size="24" fill="#ecebe8">run with and without</text>
   <text class="mono" x="388" y="486" font-size="24" fill="#3a3a3f">/</text>
-  <text class="mono" x="418" y="486" font-size="24" fill="#ecebe8"><tspan fill="#a48cff">4 retired</tspan> for losing</text>
+  <text class="mono" x="418" y="486" font-size="24" fill="#ecebe8"><tspan fill="#a48cff">8 retired</tspan> for losing</text>
   <text class="mono" x="727" y="486" font-size="24" fill="#3a3a3f">/</text>
   <text class="mono" x="757" y="486" font-size="24" fill="#ecebe8">gates that say no</text>
 

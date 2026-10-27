@@ -9,7 +9,7 @@ This skill turns a Markdown document into a `.pptx` mechanically: the headings d
 slides and the words stay the user's own. A stdlib Python script writes the PowerPoint file,
 checks it, and prints an outline of the slides. The agent's job is the part around it: get the
 Markdown into a shape that converts well, run the script, read what it reports, and tell the
-user what changed. Designing a persuasive deck is `deck-builder`; planning what slides should
+user what changed. Planning what slides should
 say is `slide-outliner`.
 
 ## How to respond
@@ -35,8 +35,8 @@ say is `slide-outliner`.
      `Notes:` paragraph stays on the slide as text. Convert those paragraphs into comments only
      when the user said they are speaker notes ("the Notes: bits are what I'll say").
    - **What doesn't convert:** rewrite an HTML table as a pipe table, fold a footnote's text into
-     its sentence, and render a Mermaid block to PNG with `mermaid-render` (PNG output needs
-     mermaid-cli), then embed it as an image. Remote images are not fetched. Ask for a local copy,
+     its sentence, and render a Mermaid block to PNG with the Mermaid CLI
+     (`npx -y @mermaid-js/mermaid-cli`; it needs Node.js), then embed it as an image. Remote images are not fetched. Ask for a local copy,
      or leave the alt text and say so.
    - **Facts are untouched.** Same numbers, names, dates and order. Don't renumber a list that
      skips a number. Report it (step 4).
@@ -127,10 +127,8 @@ treating `Notes:` paragraphs as slide text is an `[assumption]` stated at the to
 
 ## When NOT to use this skill
 
-- ❌ Designing a persuasive deck for an audience, with charts, layouts and a narrative; use `deck-builder`
 - ❌ Planning what each slide should say before any document exists; use `slide-outliner`
 - ❌ A Word document to edit and track changes in; use `md-to-docx`
-- ❌ A web page or a file to open in a browser; use `md-to-html`
 - ❌ A `.pptx` back to Markdown; use `file-to-markdown`
 
 ## Anti-patterns to avoid

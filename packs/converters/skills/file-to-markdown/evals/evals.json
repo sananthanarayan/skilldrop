@@ -49,6 +49,36 @@
         "It does not invent varieties, numbers, donors or notes that are not in the file",
         "The reply is the table plus at most a couple of short lines, with no long explanation, and it delivers without asking questions first"
       ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-27",
+      "prompt": "Our procurement lead just forwarded supplier_agreement_v3.docx and it still has Legal's markup in it. Can you turn it into Markdown for our Confluence page, and tell me which bits haven't actually been agreed yet? Please don't accept anything on my behalf.",
+      "assertions": [
+        "Writes a Markdown file with 'Master Supply Agreement' as the top heading and the five numbered sections ('1. Payment terms' through '5. Price schedule') as subheadings. The three supplier obligations are a bulleted list, 'EUR 250,000' is bold and 'gross negligence' is italic.",
+        "Renders the price schedule as a Markdown table with the header Part number | Unit price | Minimum order quantity and the rows VP-110 / EUR 42.00 / 500 and VP-220 / EUR 57.50 / 250. Keeps 'supplier portal' as a Markdown link to https://supplier.example.com/terms.",
+        "Shows the payment-terms change as pending rather than accepted: the deleted '30' and the inserted '60' are both visible and marked as a proposed change by J. Okafor. It does not present the clause as simply 'payable within 60 days' as if it were agreed.",
+        "Shows the deleted sentence 'No termination fee applies.' (M. Lindqvist) as a pending deletion that is still visible and marked, not silently dropped. Shows the ISO 9001 obligation bullet as a pending insertion by J. Okafor, not as an agreed obligation.",
+        "Surfaces R. Achterberg's comment on the EUR 250,000 liability cap (asking to raise it to EUR 500,000, marked 'Not agreed yet') as an open item, either inline or in a notes or dropped-items list.",
+        "Answers the question directly with a short list of what is not yet agreed: exactly three tracked changes (30 to 60 days; the inserted ISO 9001 obligation; the deleted termination-fee sentence) and one open comment on the liability cap. It accepts or rejects none of them and leaves supplier_agreement_v3.docx unchanged.",
+        "Saves the embedded logo image as an image file next to the Markdown (for example in a sibling folder) and links it from the Markdown with a relative image link.",
+        "Invents nothing that is not in the document: no extra clauses, parties, prices, dates, authors or comments. Names, figures and the portal URL match the file exactly."
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-27",
+      "prompt": "can u turn the offsite deck + numbers into md for the board pack. sarah says the notes are where the real story is. offsite_q3.pptx and numbers.xlsx, need it today thx",
+      "assertions": [
+        "Produces Markdown covering both files. The three slide titles 'Q3 Offsite: Where We Landed', 'Revenue by region' and 'APAC launch' appear in that order as headings, each with its bullets, and each slide's speaker notes are kept and clearly labelled as notes under the right slide.",
+        "Converts both worksheets, each identified by its name: Regions as a Markdown table (EMEA 120 / 110, North America 140 / 130, LATAM 160 / 150, Total row) and Assumptions (FX rate GBP/EUR 1.17; Source: Finance close 10 Oct 2026).",
+        "Reports that the bar chart on slide 2 is not reproduced as a chart, either as a dropped item or as a text summary. Any figures it gives for the chart are exactly the values cached in it (EMEA 120, North America 140, LATAM 160), and no chart values are made up.",
+        "Flags that the Regions Total in B5 is the formula =SUM(B2:B4) with a stored value of 410, while the three rows sum to 420 (120+140+160). It treats the total as stale or inconsistent rather than silently showing 410 or quietly correcting it to 420. The Plan total of 390 does match its rows.",
+        "Warns the user, beyond just copying the notes, that the slide 3 notes say the £250k APAC first-year target must not go into the board pack (finance hasn't signed it off; say 'target under review'). It neither leaves £250k in board-pack-ready output without a warning nor deletes it silently.",
+        "Relays the 'real story' from the slide 2 notes, since the user pointed to them: North America beat plan only because of the one-off Kestrel Sports order (£35k), and without it NA is at 105 against a plan of 130.",
+        "Invents nothing that is not in the files: no extra slides, regions, APAC actuals, prior-quarter LATAM figures, chart values or names beyond those present.",
+        "Is the right size for a rushed request. It delivers the Markdown file(s) straight away with a brief summary of the flagged issues, not a long essay or a rewritten board pack, and does not hold up the work with clarifying questions."
+      ]
     }
   ]
 }

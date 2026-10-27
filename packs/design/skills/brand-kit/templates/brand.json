@@ -1,5 +1,5 @@
 {
-  "$comment": "brand-kit output. deck-builder and marketing-flyer read this file; any field left out is asked for or defaulted by them. Paths are relative to this file. Every value carries where it came from in `sources`.",
+  "$comment": "brand-kit output. md-to-docx and md-to-pptx read this file; any field left out is asked for or defaulted by them. Paths are relative to this file. Every value carries where it came from in `sources`.",
   "name": "Northwind Health",
   "tagline": "Care that comes to you",
   "logo": {

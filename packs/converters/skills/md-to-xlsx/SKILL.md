@@ -107,7 +107,7 @@ JSON strings stay text except ISO dates, because whoever produced the JSON chose
 
 - ❌ A document with a few tables in it, to be read rather than calculated; use `md-to-docx`
 - ❌ An Excel file back to Markdown or CSV; use `file-to-markdown`
-- ❌ Charts or a slide of numbers for a meeting; use `deck-builder`
+- ❌ A slide of numbers for a meeting; put the table in the Markdown and use `md-to-pptx`
 - ❌ Building a financial model with formulas, scenarios and linked sheets. This converts data; it doesn't design models.
 
 ## Anti-patterns to avoid

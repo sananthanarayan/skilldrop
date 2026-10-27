@@ -46,10 +46,10 @@ class StagingTest(unittest.TestCase):
 
     def test_a_real_skill_whose_script_reads_templates_still_has_them(self):
         with workdir() as ws:
-            dest = run_bench.stage_skill("deck-builder", ws, "tools")
-            self.assertTrue(os.path.isfile(os.path.join(dest, "templates", "palettes.json")))
+            dest = run_bench.stage_skill("ai-usage-report", ws, "tools")
+            self.assertTrue(os.path.isdir(os.path.join(dest, "templates")))
             self.assertFalse(os.path.exists(os.path.join(dest, "SKILL.md")))
-            r = subprocess.run([sys.executable, os.path.join(dest, "scripts", "build_deck.py"), "--help"],
+            r = subprocess.run([sys.executable, os.path.join(dest, "scripts", "build_report.py"), "--help"],
                                capture_output=True, text=True)
             self.assertNotIn("Traceback", r.stderr)
 
@@ -170,6 +170,26 @@ class EstimateTest(unittest.TestCase):
     def test_fixture_files_and_git_history_count(self):
         self.assertGreater(run_bench.fixture_tokens("context-graph", 16), 1000)
         self.assertEqual(run_bench.fixture_tokens("adr-generator", 999), 0)
+
+
+class DepsTest(unittest.TestCase):
+    def test_a_skill_without_requirements_gets_no_environment(self):
+        self.assertIsNone(run_bench.deps_key("context-graph"))
+        self.assertIsNone(run_bench.deps_bin("context-graph"))
+        self.assertIsNone(run_bench.deps_bin(None))
+
+    def test_requirements_build_one_environment_and_change_the_key(self):
+        with workdir() as skill, workdir() as home:
+            fake_skill(skill)
+            write(os.path.join(skill, "requirements.txt"), "# nothing to install\n")
+            with mock.patch.object(catalog, "skill_dir", return_value=skill), \
+                    mock.patch.object(run_bench, "DEPS_HOME", home):
+                key = run_bench.deps_key("widgets")
+                bindir = run_bench.deps_bin("widgets")
+                self.assertTrue(os.path.isdir(bindir))
+                self.assertEqual(run_bench.deps_bin("widgets"), bindir)  # built once, then reused
+                write(os.path.join(skill, "requirements.txt"), "# a different pin\n")
+                self.assertNotEqual(run_bench.deps_key("widgets"), key)
 
 
 class FlagTest(unittest.TestCase):

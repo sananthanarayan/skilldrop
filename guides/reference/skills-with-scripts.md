@@ -8,7 +8,7 @@ kind: reference
 
 Many skills ship helper scripts in a `scripts/` folder, and each one declares what its scripts need in its own `manifest.json`: `deps` for packages, `env` for environment variables, and `permissions` for the hosts, commands and files the scripts touch. You can read that block before you install.
 
-Most scripts run on the Python standard library. Two need a package: `deck-builder` (`python-pptx`) and `figma-diagrams` (`requests`). [Installing dependencies](install-targets.md#installing-dependencies) covers both.
+Most scripts run on the Python standard library. One needs a package: `figma-diagrams` (`requests`). [Installing dependencies](install-targets.md#installing-dependencies) covers both.
 
 ## Every skill with scripts
 
@@ -29,7 +29,6 @@ What each one declares in its manifest: the packages to install, the environment
 | [`content-design`](../../packs/experience-design/skills/content-design/SKILL.md) | experience-design | — | — | — | — | none |
 | [`context-graph`](../../packs/core/skills/context-graph/SKILL.md) | core | — | — | — | `git` | named-paths |
 | [`cover-letter`](../../packs/career/skills/cover-letter/SKILL.md) | career | — | — | — | — | named-paths |
-| [`deck-builder`](../../packs/design/skills/deck-builder/SKILL.md) | design | `python-pptx==1.0.2` | — | — | — | named-paths |
 | [`delivery-metrics-report`](../../packs/sre-oncall/skills/delivery-metrics-report/SKILL.md) | sre-oncall | — | — | — | — | named-paths |
 | [`dependency-upgrade-review`](../../packs/dev-team/skills/dependency-upgrade-review/SKILL.md) | dev-team | — | — | `github.com`, `api.github.com`, `registry.npmjs.org`, `pypi.org`, `proxy.golang.org` | `git`, `gh`, `npm`, `pip`, `go` | named-paths |
 | [`event-contract-draft`](../../packs/solution-architect/skills/event-contract-draft/SKILL.md) | solution-architect | — | — | — | — | named-paths |
@@ -40,13 +39,10 @@ What each one declares in its manifest: the packages to install, the environment
 | [`interactive-diagram`](../../packs/solution-architect/skills/interactive-diagram/SKILL.md) | solution-architect | — | — | — | — | project |
 | [`judge-audit`](../../packs/ai-engineering/skills/judge-audit/SKILL.md) | ai-engineering | — | — | — | — | named-paths |
 | [`lean-canvas`](../../packs/product-manager/skills/lean-canvas/SKILL.md) | product-manager | — | — | — | — | named-paths |
-| [`marketing-flyer`](../../packs/design/skills/marketing-flyer/SKILL.md) | design | — | — | — | `google-chrome`, `chromium`, `chrome` | named-paths |
 | [`md-to-confluence`](../../packs/converters/skills/md-to-confluence/SKILL.md) | converters | — | `CONFLUENCE_EMAIL (optional)`, `CONFLUENCE_API_TOKEN (optional)`, `CONFLUENCE_PAT (optional)` | `*.atlassian.net` | — | named-paths |
 | [`md-to-docx`](../../packs/converters/skills/md-to-docx/SKILL.md) | converters | — | — | — | — | named-paths |
-| [`md-to-html`](../../packs/converters/skills/md-to-html/SKILL.md) | converters | — | — | — | — | named-paths |
 | [`md-to-pptx`](../../packs/converters/skills/md-to-pptx/SKILL.md) | converters | — | — | — | — | named-paths |
 | [`md-to-xlsx`](../../packs/converters/skills/md-to-xlsx/SKILL.md) | converters | — | — | — | — | named-paths |
-| [`mermaid-render`](../../packs/converters/skills/mermaid-render/SKILL.md) | converters | — | — | `registry.npmjs.org` | `mmdc`, `npm` | named-paths |
 | [`output-hygiene`](../../packs/core/skills/output-hygiene/SKILL.md) | core | — | — | — | — | named-paths |
 | [`pre-merge-review`](../../packs/dev-team/skills/pre-merge-review/SKILL.md) | dev-team | — | — | — | `git`, `ruff`, `mypy`, `pytest`, `*` | project |
 | [`rendering-strategy`](../../packs/frontend/skills/rendering-strategy/SKILL.md) | frontend | — | — | — | — | named-paths |

@@ -49,7 +49,6 @@ Shipped providers (Claude Code is filled in; the rest are templates you complete
 | `adr-generator` | Structures a decision into MADR/Nygard. Bounded judgment. |
 | `architecture-diagrams` | Prose → diagram syntax. Correctness matters, reasoning bounded. |
 | `brief-intake` | Extraction + `[explicit]/[implied]/[inferred]` tagging. Tagging needs care. |
-| `deck-builder` | Generates pptx content + runs a script. Content shaping. |
 | `design-doc` | Synthesizes a design doc. *Escalates to heavy* on big/contested inputs. |
 | `exec-summary` | One-page compression. *Escalates* on very long source docs. |
 | `figma-diagrams` | API calls + spec generation. Bounded transformation. |

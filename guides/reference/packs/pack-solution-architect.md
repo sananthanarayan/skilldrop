@@ -174,7 +174,7 @@ Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/solution-architect/skil
 
 Turn a codebase, a system description, a process or a database schema into one self-contained interactive HTML diagram (architecture, workflow, data flow, lifecycle, ERD, sequence, class, tree, timeline or waterfall) where every box and arrow cites the file and line or the words it came from, anything inferred is drawn dashed as an assumption, and each cited line is checked against the repository before the page is written. Laid out automatically, opens offline with no CDN, and exports SVG, PNG and Mermaid.
 
-Tier **standard** · v0.2.4 · [SKILL.md](../../../packs/solution-architect/skills/interactive-diagram/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/interactive-diagram/)
+Tier **standard** · v0.2.5 · [SKILL.md](../../../packs/solution-architect/skills/interactive-diagram/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/interactive-diagram/)
 
 **Use it when** the user asks to "visualize", "map" or "make an interactive diagram of" a repo, a request path, a pipeline, an approval process, a set of tables, an incident's events or a slow trace, or wants a diagram they can click through and share as one file.
 
@@ -193,7 +193,7 @@ Tier **standard** · v0.2.4 · [SKILL.md](../../../packs/solution-architect/skil
 
 - A Mermaid, PlantUML or C4 diagram to paste into a doc — use `architecture-diagrams`
 - An as-is architecture write-up in C4 levels from infrastructure files — use `reverse-architecture`
-- Fixing or rendering an existing Mermaid diagram — use `mermaid-render`
+- Fixing or rendering an existing Mermaid diagram; the agent does that well on its own, with `npx @mermaid-js/mermaid-cli` for images
 - Charts of numbers, dashboards or metrics — this draws structure, not data
 
 ### `nfr-spec`
@@ -288,7 +288,7 @@ Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/solution-architect/loo
 
 Installed with this pack. Details: [Core pack reference](pack-core.md).
 
-- `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, deck-builder) can consume without further intake.
+- `brief-intake`: Turn raw mess — a Slack thread, meeting transcript, Jira ticket, half-written Notion page, email chain, or paragraph of free-form context — into a structured brief that the downstream skill (adr-generator, design-doc, runbook-generator, exec-summary, slide-outliner) can consume without further intake.
 - `context-graph`: Map the decisions behind a codebase from its ADRs, RFCs and design records — each record's status and date, what supersedes or amends what, which records cite which, the files and folders each decision governs, and with git the commits that implemented it and the commits that changed each decision's code since it was made, and who made them — then answer "why is it like this?" from the record and check the record is still true. Finds supersessions only one side records, current decisions pointing at code that is gone, code that has drifted from its decision, two current decisions governing the same path, and references to records that don't exist.
 - `council-review`: Convene a council of distinct senior-engineer personas (Architect, Security, Operator/SRE, Pragmatist, User-Advocate, plus optional bench seats) to deliberate a decision, design, or code change — each takes an independent stance, the genuine disagreements are surfaced as named cruxes, and a Chair issues a reconciled verdict that records dissents and states what would change the decision. The "Claude Council."
 - `doc-critique`: Review an existing document — ADR, design doc, runbook, exec summary, tech-comparison matrix, deck outline, decision log — and produce a structured critique against the same quality bars the skilldrop generators enforce. Categorizes findings by severity (blocker / major / minor / nit), points to the exact section/line, and suggests a concrete fix for each.

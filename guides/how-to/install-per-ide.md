@@ -72,7 +72,7 @@ Attach `skills/architecture-diagrams/SKILL.md` to your prompt (`@file` in Contin
 
 ## Install a skill's dependencies
 
-A skill that ships a `requirements.txt`, such as `figma-diagrams` or `deck-builder`, needs its Python packages; run this inside the copied folder:
+A skill that ships a `requirements.txt`, such as `figma-diagrams`, needs its Python packages; run this inside the copied folder:
 
 ```bash
 python3 -m pip install -r requirements.txt

@@ -61,11 +61,11 @@ A good result:
 
 - A document with a few tables in it, to be read rather than calculated; use `md-to-docx`
 - An Excel file back to Markdown or CSV; use `file-to-markdown`
-- Charts or a slide of numbers for a meeting; use `deck-builder`
+- A slide of numbers for a meeting; put the table in the Markdown and use `md-to-pptx`
 - Building a financial model with formulas, scenarios and linked sheets. This converts data; it doesn't design models.
 
 ## Next
 
 - [SKILL.md](../../../packs/converters/skills/md-to-xlsx/SKILL.md), the instructions the agent reads
 - [Its page on the site](https://sananthanarayan.github.io/skilldrop/skills/md-to-xlsx/)
-- Related: [deck-builder](use-deck-builder.md), [file-to-markdown](use-file-to-markdown.md), [md-to-docx](use-md-to-docx.md)
+- Related: [file-to-markdown](use-file-to-markdown.md), [md-to-docx](use-md-to-docx.md), [md-to-pptx](use-md-to-pptx.md)

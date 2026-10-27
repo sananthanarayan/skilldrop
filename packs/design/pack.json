@@ -1,7 +1,7 @@
 {
-  "description": "On-brand visual work: capture a brand once, then build real PowerPoint decks and print-ready marketing flyers in that brand, with logo, colours and fonts applied.",
+  "description": "On-brand visual work: capture a brand once as a brand.json the Word and PowerPoint converters apply, and plan a deck slide by slide for its audience.",
   "display_name": "Design",
-  "keywords": ["brand", "deck", "pptx", "flyer", "marketing", "logo"],
+  "keywords": ["brand", "deck", "outline", "presentation", "logo"],
   "links": {
     "documentation": "https://sananthanarayan.github.io/skilldrop/packs/design/"
   },
@@ -13,18 +13,18 @@
   "first-value": {
     "audience-posture": "non-technical",
     "prerequisites": ["Your logo as a PNG file, and your brand colours if you know them"],
-    "starter-task": "Capture your brand once, then make a flyer in it",
-    "starter-prompt": "Set up our brand kit from this logo (./brand/logo.png) and these colours: #0E5A46, #F2A541. Then make a Letter-size flyer for our community health fair on Saturday 14 November, 10am–2pm, at Riverside Park.",
-    "verification": "brand-kit writes brand.json and a one-page BRAND.md with contrast checked, and marketing-flyer writes flyer.html in your colours with your logo, one call to action, and only the facts you gave it.",
-    "recovery": "If the flyer comes out in default colours, check that marketing-flyer was given the brand.json path. If brand-kit does not activate, ask for it by name (\"use brand-kit\")."
+    "starter-task": "Capture your brand once, then outline a deck for it",
+    "starter-prompt": "Set up our brand kit from this logo (./brand/logo.png) and these colours: #0E5A46, #F2A541. Then outline a five-slide deck from ./notes/q3-update.md for Thursday's team meeting.",
+    "verification": "brand-kit writes brand.json and a one-page BRAND.md with contrast checked, and slide-outliner returns a slide-by-slide outline with takeaway titles and speaker notes, sized to the time.",
+    "recovery": "If brand-kit does not activate, ask for it by name (\"use brand-kit\"). To turn the outline into a .pptx in your brand, the converters pack's md-to-pptx takes the same brand.json with --brand."
   },
   "requires": ["core"],
   "journey": {
-    "when": "You need a deck or a flyer in your own branding and do not want to answer the brand questions every time.",
+    "when": "You need a deck or document in your own branding and do not want to answer the brand questions every time.",
     "you_bring": [
       "your logo as a PNG, and a white version if you have one",
       "brand colours, fonts or a PowerPoint template, if you know them",
-      "the content: the doc or points for the deck, and the event facts for a flyer",
+      "the content: the doc or points for the deck",
       "the audience and how long you have to present"
     ],
     "steps": [
@@ -39,22 +39,12 @@
         "you_get": "A slide-by-slide outline with takeaway titles, key points, speaker notes, backup slides for likely questions, and a slide-count check against the time."
       },
       {
-        "skill": "deck-builder",
-        "you_do": "Hand it the outline, the audience and your brand.json.",
-        "you_get": "An editable .pptx in your brand, with charts, tables and images where the content calls for them."
-      },
-      {
         "skill": "doc-critique",
-        "you_do": "Run it on the deck against the deck rubric, as deck-builder recommends.",
+        "you_do": "Run it on the outline against the deck rubric.",
         "you_get": "A verdict and severity-tagged findings with a fix for each.",
-        "decide": "Ship the deck, apply the changes, or rework the outline."
-      },
-      {
-        "skill": "marketing-flyer",
-        "you_do": "If you also need a flyer, give it the event facts and the same brand.json.",
-        "you_get": "A print-ready flyer.html with one call to action and only the facts you gave it, which you can save to PDF."
+        "decide": "Build the deck from the outline, apply the changes, or rework it."
       }
     ],
-    "you_end_with": "A reusable brand kit, a reviewed on-brand .pptx, and optionally a flyer built from the same brand."
+    "you_end_with": "A reusable brand kit and a reviewed outline, ready to become an on-brand .pptx with md-to-pptx from the converters pack."
   }
 }

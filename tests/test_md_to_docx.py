@@ -344,5 +344,15 @@ class MdToDocxFunctionsTest(unittest.TestCase):
             self.assertIsNone(self.m.image_size(write(os.path.join(d, "t.png"), "text")))
 
 
+class QuoteLedByOtherWhitespaceTest(unittest.TestCase):
+    def test_a_quote_line_led_by_a_vertical_tab_finishes(self):
+        # Found by the fuzzer: the quote test stripped all whitespace, the collector only
+        # spaces, so the parser looped forever on this line.
+        with workdir() as d:
+            src = write(os.path.join(d, "q.md"), "# T\n\n## S\n\n\x0b> **Note**\n> quoted line\n")
+            code, _, err = run(SKILL, SCRIPT, src, "-o", os.path.join(d, "q.docx"), timeout=30)
+        self.assertEqual(code, 0, err)
+
+
 if __name__ == "__main__":
     unittest.main()

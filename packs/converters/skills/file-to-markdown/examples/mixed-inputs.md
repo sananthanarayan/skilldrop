@@ -11,7 +11,7 @@ actually printed.
 
 ## `acme-brief.docx`
 
-A Word brief with Title and Heading styles, bulleted and numbered lists, a hyperlink, a table, an image, a comment and a tracked change.
+A Word brief with Title and Heading styles, bulleted and numbered lists, a hyperlink, a table, an image, a comment and a tracked change. It is in [`inputs/`](inputs/acme-brief.docx).
 
 ```bash
 python3 scripts/to_markdown.py acme-brief.docx -o acme-brief.md
@@ -20,45 +20,51 @@ python3 scripts/to_markdown.py acme-brief.docx -o acme-brief.md
 stderr:
 
 ```text
-converted acme-brief.docx -> acme-brief.md: 4 headings, 5 list items, 1 tables
-dropped (not in the Markdown): 1 comments, 1 images, 1 tracked deletions (left out), 1 tracked insertions (kept as text)
+converted acme-brief.docx -> acme-brief.md: 4 headings, 5 list items, 1 images saved, 1 tables, 1 tracked deletions shown as {-- --}, 1 tracked insertions shown as {++ ++}
+dropped (not in the Markdown): 1 comments
+note: tracked changes are pending, not accepted: {++added++} and {--removed--} mark them. Accept or reject them in Word to settle the text
 ```
+
+The image is saved as `acme-brief-images/image1.png` and linked where it sat. The tracked change
+stays pending.
 
 Markdown:
 
 ````markdown
 # Acme migration brief
 
-# Background
+## Background
 
 We are moving **three services** to the new platform, *starting in November*. See the [project page](https://acme.example/migration).
 
-## Goals
+### Goals
 
 - Cut hosting cost
 - Retire the 2014 cluster
    - Including the batch jobs
 
-## Steps
+### Steps
 
 1. Inventory services
 2. Pilot with billing
 
 Architecture sketch:
 
-| Risk | Owner | Due |
+![Architecture sketch](acme-brief-images/image1.png)
+
+| **Risk** | **Owner** | **Due** |
 |---|---|---|
 | Vendor lock-in | Priya | 2026-11-01 |
 | Data residency \| EU | Tom | 2026-12-15 |
 
 Open question: who signs off the cutover?
 
-Kept text new wording
+Kept text {--old wording--}{++new wording++}
 ````
 
 ## `northwind-roadmap.pptx`
 
-A three-slide deck with a title slide, bullets at two levels, a picture, a chart and speaker notes on slide 2.
+A three-slide deck with a title slide, bullets at two levels, a picture and speaker notes on slide 2. It is in [`inputs/`](inputs/northwind-roadmap.pptx).
 
 ```bash
 python3 scripts/to_markdown.py northwind-roadmap.pptx -o northwind-roadmap.md
@@ -67,8 +73,8 @@ python3 scripts/to_markdown.py northwind-roadmap.pptx -o northwind-roadmap.md
 stderr:
 
 ```text
-converted northwind-roadmap.pptx -> northwind-roadmap.md: 3 slides, 1 slides with speaker notes
-dropped (not in the Markdown): 1 images, 1 charts
+converted northwind-roadmap.pptx -> northwind-roadmap.md: 3 slides, 1 images saved, 1 slides with speaker notes
+dropped: nothing detected
 ```
 
 Markdown:
@@ -83,6 +89,8 @@ Product review, 12 October
 - **Self-serve onboarding**
   - Cut setup time from 3 days to 4 hours
 - Usage-based billing
+
+![Shipped features](northwind-roadmap-images/image1.png)
 
 > **Speaker notes:** Mention the two pilot customers by segment, not by name.
 >
@@ -241,7 +249,7 @@ Markdown:
 
 ## `ops-review.pdf`
 
-A two-page PDF printed from Chrome: the `md-to-html` example's output, so it has a title,
+A two-page PDF printed from Chrome, from an HTML page of the same report, so it has a title,
 a nested list, a table, a chart image, a Mermaid diagram kept as text, and a code block.
 
 ```bash
@@ -296,10 +304,10 @@ one page and continues on the next loses its header row to the previous page.
 ## What to tell the user (for the first three files)
 
 > I converted all three. Before we review, here is what is **not** in the Markdown:
-> - **Brief:** one embedded image (the architecture sketch) and one reviewer comment. A tracked
->   change was shown as accepted: "old wording" removed, "new wording" kept.
-> - **Deck:** the picture on slide 2 and the chart on slide 3 ("Adoption"). Slide 3's numbers
->   are missing from what I read; send the chart data if the review should cover it.
+> - **Brief:** one reviewer comment. Its image is saved beside the Markdown and linked. One
+>   tracked change is still pending ("old wording" deleted, "new wording" inserted), so it is
+>   marked, not accepted: say which way it should go.
+> - **Deck:** nothing. Its picture is saved and linked, and slide 2's speaker notes are kept.
 > - **Workbook:** the chart, and the two SUM formulas. Their last calculated values (16500 and
 >   17250.5) are in the table, but the formulas themselves are not.
 >

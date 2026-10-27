@@ -249,7 +249,7 @@ def parse_blocks(lines, base_line, refs):
             start = ln
             while i < n:
                 l2 = expand_tabs(lines[i])
-                s2 = l2.lstrip(" ")
+                s2 = l2.lstrip()  # the same whitespace the test above strips, or a line led by \v never advances
                 if s2.startswith(">"):
                     s2 = s2[1:]
                     if s2.startswith(" "):

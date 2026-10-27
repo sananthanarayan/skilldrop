@@ -1,18 +1,18 @@
 ---
 title: One Markdown draft, every reader's format
-summary: Take one Markdown report to a Word file for the people who edit it, a spreadsheet for the people who total it, and one HTML file for everyone else, then bring a reply back to Markdown, with the converters pack. Nothing is dropped without being named.
+summary: Take one Markdown report to a Word file for the people who edit it, a spreadsheet for the people who total it, and a slide deck for the meeting, then bring a reply back to Markdown, with the converters pack. Nothing is dropped without being named.
 kind: tutorial
 ---
 
 # One Markdown draft, every reader's format
 
 In about twenty minutes you'll turn one Markdown report into a Word file, an Excel workbook
-and a single HTML page, check and render its diagram, and bring a Word file back to Markdown.
+and a slide deck, and bring a Word file back to Markdown.
 Every converter says what it dropped. A converter that drops content silently is how a
 footnote or a caveat goes missing from the copy the reader actually opens.
 
 Every output on this page is real. It came from running the pack's scripts on the example
-report that ships with `md-to-docx`, and on a small diagram you'll write along the way.
+report that ships with `md-to-docx`.
 
 ## Install the pack
 
@@ -22,8 +22,8 @@ The converters are standard-library Python scripts, so there is nothing else to 
 npx skilldrop-cli install --pack converters
 ```
 
-This adds `md-to-docx`, `md-to-xlsx`, `md-to-html`, `file-to-markdown` and `mermaid-render`,
-plus `core`.
+This adds `md-to-docx`, `md-to-xlsx`, `md-to-pptx`, `md-to-confluence` and
+`file-to-markdown`, plus `core`.
 
 ## Start from the example report
 
@@ -83,48 +83,28 @@ a label. To get numbers there too, move the unit into the column header in the M
 (`Median first response (h)`, with `3.1` in the cells) and convert again: the sheet then
 reports 9 numbers.
 
-## Make one page for everyone else
+## Make the deck for the review meeting
 
-For people who only read it, one HTML file that still works as an email attachment:
+The review is presented on Thursday, so turn the same file into slides:
 
-> Make q3-review.md a single HTML page with a table of contents.
-
-```text
-warning: raw HTML found and shown as text (1 place(s)); this is deliberate, see --allow-html
-wrote q3-review.html (8 KB): 5 headings, 1 tables, 1 code blocks, 0 Mermaid, 1 images embedded, 0 remote, 0 missing
-```
-
-The image is embedded in the file, so nothing breaks offline. The raw HTML callout is
-shown as text, not run. A page that runs whatever HTML a draft contains can run a script
-someone pasted into it.
-
-## Check a diagram before it goes in
-
-Add a diagram of the escalation path, written quickly, to `escalation.mmd`:
+> Make q3-review.md a PowerPoint deck for Thursday's review.
 
 ```text
-flowchart LR
-  T[Ticket opened] --> B{Bot can answer?}
-  B -- yes --> R[Resolved by bot]
-  B -- no --> H[Hand-off to agent (tier 1)]
-  H --> E[Escalate to tier 2
+WARN line 1: YAML front matter dropped (lines 1-4); used on the title slide: title, author
+WARN line 48: raw HTML block dropped
+WARN line 54: footnote definition dropped (footnotes are not supported)
+WARN line 36: footnote reference [^1] dropped
+wrote q3-review.pptx (6 slides, 1 of them continued, 1 table, 1 image, 1 code block, 2 links, speaker notes on 0; 16:9; brand: no)
+  checked: 28 XML parts parse, 28 relationships resolve, every part has a content type
 ```
 
-> Check escalation.mmd and render it.
+Each `##` heading became a slide, the table is a real PowerPoint table, and "Proposals for
+Q4" ran long, so it continues on a second slide instead of shrinking the text. The same four
+warnings appear as for Word, so the same fixes in the Markdown carry to both files.
 
-`mermaid-render` finds the two errors that would stop it rendering, each with its line and
-its fix:
-
-```text
-escalation.mmd:4: error: label of `H` has unquoted `(` `)`; wrap the label in quotes: H["Hand-off to agent (tier 1)"]
-escalation.mmd:5: error: unbalanced brackets: `E[` is never closed with `]`
-lint: 1 diagram(s), 2 error(s), 0 warning(s)
-```
-
-After both fixes it reports `flowchart: ok`. Rendering to SVG or PNG needs `mermaid-cli`;
-without it, the script writes an HTML preview instead and says that the preview loads
-Mermaid from a CDN. For a file that must work offline, install `mermaid-cli` and render the
-SVG.
+A Mermaid diagram in the draft converts as code in every format. To show it as a picture,
+render it to PNG first with the Mermaid CLI (`npx -y @mermaid-js/mermaid-cli -i diagram.mmd
+-o diagram.png`, which needs Node.js), then embed the PNG as a Markdown image.
 
 ## Bring their reply back to Markdown
 
