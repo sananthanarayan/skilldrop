@@ -357,20 +357,23 @@ evals:
 
 | Reading | Skills |
 |---|---|
-| The plain agent is preferred, in **each** trial (5) | `deck-builder`, `file-to-markdown`, `marketing-flyer`, `md-to-html`, `mermaid-render` |
+| The plain agent is preferred, in **each** trial (5) | `file-to-markdown`, and four skills since retired ([RFC-0068](../../docs/rfcs/0068-five-skills-that-lost-to-the-plain-agent.md)) |
 | The plain agent is preferred, over both trials together (3 more) | `ai-usage-report`, `judge-audit`, `lean-canvas` |
 | Instructions help (5) | `agent-incident-response`, `codebase-tour`, `context-graph`, `dependency-upgrade-review`, `resume-tailor` |
 | The scripts carry it (2) | `feedback-synthesis`, `web-performance-review` |
 | Mixed (29) | the rest |
 
-- **The first five are the list for keep, rebuild or retire.** They lost to the plain agent
-  in each trial, with both judges, which is the roadmap's bar.
-  - Four make a file: `deck-builder`, `file-to-markdown`, `md-to-html` and `mermaid-render`.
-    For those, check the outputs before the reasons. A blind judge reading a reply may be
-    rewarding the plain agent's prose over a converted file.
-  - `marketing-flyer` is the one that isn't a converter.
+- **The first five were the list for keep, rebuild or retire.** They lost to the plain agent
+  in each trial, with both judges, which is the roadmap's bar. The decision on each is in
+  [RFC-0068](../../docs/rfcs/0068-five-skills-that-lost-to-the-plain-agent.md):
+  - **Checked against the outputs first:** four of the five make a file, and a blind judge
+    reading a reply could have been rewarding the plain agent's prose over a converted file.
+    It wasn't: in every case the plain agent's file was as good or better.
+  - **Three added no rule the plain agent breaks,** and were retired.
+  - **Two were rebuilt and measured again on fresh evals.** `file-to-markdown` now beats the
+    plain agent and was kept. The other still lost with its script working, and was retired.
 - **The instructions earn their cost on five skills.** Each beat both the plain agent and its
   own scripts: four on two to four evals, and `context-graph` on 14. So the right question is
   which skills need their instructions, not whether skills do.
-- **Nothing was decided on this yet.** The judges' reasons haven't been read, so the list
-  above was fixed before anyone looked at why.
+- **The list was fixed before the reasons were read,** as the roadmap required. The reasons
+  were then read only for those five, to decide on them.
