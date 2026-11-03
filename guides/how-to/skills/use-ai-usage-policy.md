@@ -58,6 +58,10 @@ A good result:
 - Assessing whether governance is mature enough yet — that's [`ai-readiness-assessment`](../../../packs/ai-engineering/skills/ai-readiness-assessment/SKILL.md).
 - A security review of a design — that's `threat-model`.
 
+## Where a loop runs it
+
+- Stage `policy` of the [`adopt` loop](../../../packs/ai-engineering/loops/adopt/LOOP.md)
+
 ## Next
 
 - [SKILL.md](../../../packs/ai-engineering/skills/ai-usage-policy/SKILL.md), the instructions the agent reads

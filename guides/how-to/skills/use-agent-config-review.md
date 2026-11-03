@@ -67,6 +67,10 @@ A good result:
 - Writing the organisation's rules for AI tools and data — `ai-usage-policy`
 - A token already leaked or an agent already did damage — `agent-incident-response`; review the config after containment
 
+## Where a loop runs it
+
+- Stage `launch` of the [`ship-agent` loop](../../../packs/ai-engineering/loops/ship-agent/LOOP.md), where gate G12.1 decides
+
 ## Next
 
 - [SKILL.md](../../../packs/ai-engineering/skills/agent-config-review/SKILL.md), the instructions the agent reads

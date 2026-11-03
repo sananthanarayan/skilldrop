@@ -58,6 +58,10 @@ A good result:
 - Running a multi-perspective review right now — `council-review` is the panel, ready-made
 - Implementing one story — `feature-implement-loop`
 
+## Where a loop runs it
+
+- Stage `design` of the [`ship-agent` loop](../../../packs/ai-engineering/loops/ship-agent/LOOP.md)
+
 ## Next
 
 - [SKILL.md](../../../packs/ai-engineering/skills/subagent-design/SKILL.md), the instructions the agent reads

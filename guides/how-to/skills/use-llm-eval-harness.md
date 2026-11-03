@@ -57,6 +57,10 @@ A good result:
 - Picking which model/vendor to buy on price, terms or support — this measures quality on your task, which is one input to that decision
 - The provider-specific API mechanics (token counting, streaming, tool-call format) — consult the provider's own reference; this skill is the eval methodology
 
+## Where a loop runs it
+
+- Stage `evals` of the [`ship-agent` loop](../../../packs/ai-engineering/loops/ship-agent/LOOP.md)
+
 ## Next
 
 - [SKILL.md](../../../packs/ai-engineering/skills/llm-eval-harness/SKILL.md), the instructions the agent reads

@@ -1,0 +1,35 @@
+{
+  "$comment": "RFC-0069. A service people struggle with, from its page to the service behind it. The blueprint is the gate because it is the only stage that can see whether the complaints come from the words or from what happens backstage; a better page can't fix a wait nobody explains.",
+  "name": "clarify",
+  "version": "0.1.0",
+  "description": "Take a service people struggle with from its page to the service behind it: a content spec and plain-language rewrite from what users need, every string on the form or flow, and a service blueprint that tests whether those fixes reach the fail points behind the complaints, with a gate that sends the work back to the page when it misses a fail point and out to product when the fix is backstage. Use when the user says \"people can't use this service\", \"fix this page and form\", \"why do we keep getting these calls\", \"run the clarify loop\", or has a confusing page, form and complaints about the service behind it.",
+  "entrypoint": "LOOP.md",
+  "kind": "loop",
+  "cap": 3,
+  "stages": [
+    {
+      "id": "page",
+      "type": "generate",
+      "intent": "Write the content spec from the user needs and the complaints: the questions the page must answer in order, its structure, and a plain-language rewrite with its readability before and after.",
+      "skills": ["content-design"]
+    },
+    {
+      "id": "strings",
+      "type": "generate",
+      "intent": "Write every string on the form or flow, in the content spec's terms, with errors that say what happened and what to do next.",
+      "skills": ["ux-writing"]
+    },
+    {
+      "id": "blueprint",
+      "type": "verify",
+      "intent": "Blueprint the service behind the page and form, trace each complaint to the cell that causes it, and judge whether the page and strings reach the fail points that cause the complaints.",
+      "skills": ["service-blueprint"],
+      "gate": {
+        "id": "G14",
+        "kind": "review",
+        "verdicts": ["PROCEED", "PROCEED WITH CONDITIONS", "REVISE", "RECONSIDER", "BLOCKED"],
+        "revise_to": "page"
+      }
+    }
+  ]
+}

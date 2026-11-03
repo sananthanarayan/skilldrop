@@ -70,6 +70,16 @@ A session takes about 1–3 hours for one product area.
 
 You end with: A tested-or-testable structure, the content and strings for a key page and flow, a buildable component spec, and a service blueprint with the fixes ranked.
 
+## 4. Run it as a loop
+
+A loop runs the skills in order and stops at each gate for a verdict. Install and start one:
+
+```bash
+npx skilldrop-cli install --loop --pack experience-design
+```
+
+- **clarify**: Take a service people struggle with from its page to the service behind it: a content spec and plain-language rewrite from what users need, every string on the form or flow, and a service blueprint that tests whether those fixes reach the fail points behind the complaints, with a gate that sends the work back to the page when it misses a fail point and out to product when the fix is backstage. Say "run the clarify loop on this". Stages: page → strings → blueprint [G14].
+
 ## Next
 
 - [Every skill in the Experience design pack](../../reference/packs/pack-experience-design.md): what each one makes, needs and hands off to

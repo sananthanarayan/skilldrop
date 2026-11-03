@@ -63,6 +63,16 @@ A session takes about 20 to 45 minutes.
 
 You end with: A reusable module with safe defaults, and a reviewed plan with a clear apply decision.
 
+## 4. Run it as a loop
+
+A loop runs the skills in order and stops at each gate for a verdict. Install and start one:
+
+```bash
+npx skilldrop-cli install --loop --pack infra-as-code
+```
+
+- **provision**: Take an infrastructure change from a described need to a Terraform apply a person approved: a module with secure defaults, a review of the real plan that names every destroy, replace, widening and out-of-scope change, and a check right before apply that the plan being applied is the one reviewed, with a gate that sends the module back when the plan would destroy state or widen access unasked. Say "run the provision loop on this". Stages: module → plan [G13] → apply [G13.1].
+
 ## Next
 
 - [Every skill in the Infrastructure as code pack](../../reference/packs/pack-infra-as-code.md): what each one makes, needs and hands off to

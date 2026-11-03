@@ -14,7 +14,7 @@ Terraform you can hand to another team and plans you can trust before apply: reu
 |---|---|
 | Install | `npx skilldrop-cli install --pack infra-as-code` |
 | Skills | 2 plus 5 from core |
-| Loops | none |
+| Loops | provision |
 | How-to | [Use the Infrastructure as code pack](../../how-to/packs/use-the-infra-as-code-pack.md) |
 
 ## Skills
@@ -78,6 +78,20 @@ Tier **heavy** · v0.1.2 · [SKILL.md](../../../packs/infra-as-code/skills/terra
 - Planning a data or platform migration end to end, with cutover and rollback: use `migration-plan`
 - Estimating what the new infrastructure will cost: use `capacity-cost-model`
 - Writing the step-by-step apply and rollback procedure for on-call: use `runbook-generator`
+
+## Loops
+
+### `provision`
+
+Take an infrastructure change from a described need to a Terraform apply a person approved: a module with secure defaults, a review of the real plan that names every destroy, replace, widening and out-of-scope change, and a check right before apply that the plan being applied is the one reviewed, with a gate that sends the module back when the plan would destroy state or widen access unasked.
+
+| Stage | Skills | Gate |
+|---|---|---|
+| module | `terraform-module` | — |
+| plan | `terraform-plan-review` | G13 review: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / BLOCKED |
+| apply | `terraform-plan-review` | G13.1 human: PROCEED / REVISE / BLOCKED |
+
+Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/infra-as-code/loops/provision/LOOP.md)
 
 ## Included from core
 

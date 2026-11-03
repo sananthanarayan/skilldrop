@@ -130,6 +130,14 @@ OUTSIDE = {
                      "a spec with signed-off metrics"),
     "modernize":    ("Replace legacy code safely", "A legacy component is being rewritten or moved.",
                      "a cutover a person accepted"),
+    "adopt":        ("Start using AI", "A team has AI ideas, no rules and no plan.",
+                     "a first wave its sponsor approved"),
+    "ship-agent":   ("Ship an AI agent", "Someone is building an agent with tools.",
+                     "a launch its owner signed"),
+    "provision":    ("Change infrastructure safely", "New or changed Terraform is about to be applied.",
+                     "an apply a person approved"),
+    "clarify":      ("Fix a confusing service", "A confusing page and form, and the calls they cause.",
+                     "words that reach the complaints"),
 }
 COLOUR = {"discover": "#6d4aff", "design": "#2563eb", "build": "#15803d", "release": "#be185d",
           "operate": "#0e7490"}

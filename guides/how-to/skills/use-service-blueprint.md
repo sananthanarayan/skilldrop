@@ -62,6 +62,10 @@ A good result:
 - The technical architecture of the systems in the support lane — that's `architecture-diagrams`
 - Requirements for a fix the blueprint found — that's `prd-draft`
 
+## Where a loop runs it
+
+- Stage `blueprint` of the [`clarify` loop](../../../packs/experience-design/loops/clarify/LOOP.md), where gate G14 decides
+
 ## Next
 
 - [SKILL.md](../../../packs/experience-design/skills/service-blueprint/SKILL.md), the instructions the agent reads

@@ -92,6 +92,7 @@ python3 run_bench.py [--skills a,b] [--models light,standard,heavy] [--trials N]
 python3 run_bench.py --backend claude-cli ...                     # agent runs through a signed-in Claude Code; no API key
 python3 run_bench.py --backend claude-cli --publish docs/benchmarks/latest.json   # the summary the site renders
 python3 run_bench.py --backend claude-cli --second-judge claude-opus-5-5         # a second blind judge, and how often the two agree
+python3 run_bench.py --backend claude-cli --loops <name,...|all> [--held-out]   # a loop against its own skills without it and the plain agent (RFC-0070)
 
 # Skill packs — list packs / list a pack's skills / install a pack
 python3 pack.py

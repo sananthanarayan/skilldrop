@@ -58,6 +58,10 @@ A good result:
 - Deciding what the loop may spend — `agent-budget`
 - One-off tasks — a loop for something that runs once is ceremony
 
+## Where a loop runs it
+
+- Stage `design` of the [`ship-agent` loop](../../../packs/ai-engineering/loops/ship-agent/LOOP.md)
+
 ## Next
 
 - [SKILL.md](../../../packs/ai-engineering/skills/agent-loop-design/SKILL.md), the instructions the agent reads

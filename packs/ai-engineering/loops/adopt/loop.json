@@ -1,0 +1,53 @@
+{
+  "$comment": "RFC-0069. AI ideas to a first rollout wave a sponsor approved. Readiness is scored against the first slice, not the whole organisation, because a gap only blocks the use cases that need what is missing; the gate sits there so a slice that needs it goes back to triage before anyone writes a policy for it.",
+  "name": "adopt",
+  "version": "0.1.0",
+  "description": "Take an organisation from a pile of AI ideas to a first rollout wave its sponsor approved: the use cases ranked with a first slice, readiness scored against that slice, a usage policy covering the data the slice touches, and a cohort rollout whose first wave is the slice's users, with a gate that sends the slice back when a blocking gap stands in its way. Use when the user says \"help us start using AI\", \"roll out AI across the team\", \"run the adopt loop\", or has AI ideas, no policy and no rollout plan.",
+  "entrypoint": "LOOP.md",
+  "kind": "loop",
+  "cap": 3,
+  "stages": [
+    {
+      "id": "triage",
+      "type": "generate",
+      "intent": "Rank the candidate use cases on value, feasibility and risk with the weights shown, and name one first slice with the observable that would prove or kill it.",
+      "skills": ["ai-use-case-triage"]
+    },
+    {
+      "id": "readiness",
+      "type": "verify",
+      "intent": "Score readiness against what the first slice needs, and judge whether any blocking gap stands between the slice and its first users.",
+      "skills": ["ai-readiness-assessment"],
+      "gate": {
+        "id": "G11",
+        "kind": "review",
+        "verdicts": ["PROCEED", "PROCEED WITH CONDITIONS", "REVISE", "RECONSIDER", "BLOCKED"],
+        "revise_to": "triage"
+      }
+    },
+    {
+      "id": "policy",
+      "type": "generate",
+      "intent": "Write the usage rules for the people in the slice, covering every kind of data the slice puts into a tool, each restriction paired with what to do instead.",
+      "skills": ["ai-usage-policy"]
+    },
+    {
+      "id": "rollout",
+      "type": "generate",
+      "intent": "Plan the cohorts, enablement, champions and comms, with the slice's users as the pilot and the slice's observable as the pilot's adoption gate.",
+      "skills": ["ai-adoption-rollout"]
+    },
+    {
+      "id": "sign-off",
+      "type": "gate",
+      "intent": "The sponsor approves the first wave, with the policy and the readiness conditions it opens under.",
+      "skills": ["doc-critique"],
+      "gate": {
+        "id": "G11.1",
+        "kind": "human",
+        "verdicts": ["PROCEED", "PROCEED WITH CONDITIONS", "REVISE", "BLOCKED"],
+        "revise_to": "policy"
+      }
+    }
+  ]
+}

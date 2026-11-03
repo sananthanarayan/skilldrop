@@ -66,6 +66,11 @@ A good result:
 - Estimating what the new infrastructure will cost: use `capacity-cost-model`
 - Writing the step-by-step apply and rollback procedure for on-call: use `runbook-generator`
 
+## Where a loop runs it
+
+- Stage `plan` of the [`provision` loop](../../../packs/infra-as-code/loops/provision/LOOP.md), where gate G13 decides
+- Stage `apply` of the [`provision` loop](../../../packs/infra-as-code/loops/provision/LOOP.md), where gate G13.1 decides
+
 ## Next
 
 - [SKILL.md](../../../packs/infra-as-code/skills/terraform-plan-review/SKILL.md), the instructions the agent reads

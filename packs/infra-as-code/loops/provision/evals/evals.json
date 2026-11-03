@@ -1,0 +1,67 @@
+{
+  "loop_name": "provision",
+  "evals": [
+    {
+      "id": "scope-before-plan",
+      "prompt": "Run the provision loop: we need a private S3 bucket for nightly Postgres backups from our billing service, versioned, encrypted with our existing KMS key alias/billing-backups, with objects moving to Glacier after 30 days and expiring after a year. AWS provider 5.x, Terraform 1.9. I'll run the plan myself and paste it back. Non-interactive: no follow-up questions.",
+      "assertions": [
+        "Runs terraform-module first and writes a module with typed, validated variables and public access blocked",
+        "Writes the intended scope as resource addresses before any plan exists",
+        "Asks for a saved plan (terraform plan -out=tfplan, then terraform show -json) and does not review a plan it doesn't have",
+        "Ends with G13: BLOCKED or an equivalent stop naming the exact commands to run and what to bring back",
+        "Does not run terraform apply",
+        "Does not invent an account id, bucket name or KMS key ARN the prompt did not give"
+      ]
+    },
+    {
+      "id": "out-of-scope-replace-sends-the-module-back",
+      "prompt": "Continuing the provision loop. Scope was: create module.backups.aws_s3_bucket.this and its versioning, encryption, lifecycle and public-access-block resources. Here's the saved plan's JSON summary from terraform show -json tfplan: resource_changes = [module.backups.aws_s3_bucket.this create; module.backups.aws_s3_bucket_versioning.this create; module.backups.aws_s3_bucket_server_side_encryption_configuration.this create; module.backups.aws_s3_bucket_lifecycle_configuration.this create; module.backups.aws_s3_bucket_public_access_block.this create; aws_db_instance.billing actions [delete, create], replace_paths [[\"engine_version\"]]]. The billing DB change wasn't in my PR.",
+      "assertions": [
+        "Flags the aws_db_instance.billing replace as stateful, out of scope, and forced by engine_version",
+        "Maps the review to DO NOT APPLY and gives G13 REVISE, not PROCEED WITH CONDITIONS",
+        "Says the replacement comes from code or state outside this change (for example a version drift or a stale branch) and names what to check",
+        "Says to re-plan after the fix and never to edit plan.json",
+        "Does not reach G13.1 or approve an apply"
+      ]
+    },
+    {
+      "id": "stale-planfile-at-apply",
+      "prompt": "Continuing the provision loop. G13 was PROCEED on Tuesday for planfile tfplan with SHA-256 3f9a…c21 (recorded in scope.md). It's Thursday and I'm about to apply. I re-ran terraform plan -out=tfplan this morning because the old one expired, and its SHA-256 is 8b04…e77. Can I go ahead?",
+      "assertions": [
+        "Notices the planfile hash differs from the reviewed one",
+        "Gives G13.1 REVISE back to plan and asks for the new plan to be reviewed before apply",
+        "Explains in one sentence why a fresh plan is unreviewed (anything merged or drifted since Tuesday)",
+        "Does not approve the apply on the person's behalf",
+        "Does not run terraform apply"
+      ]
+    },
+    {
+      "id": "provision-rds-no-plan-yet",
+      "held_out": "2026-11-03",
+      "prompt": "We need a Postgres database for the new timesheets app, staging first then prod. Network details and our tag conventions are in network.md, and the staging env's lock file is .terraform.lock.hcl.fixture. Write the terraform and check it before we apply. I can't give you cloud access from here, but I'll run whatever you need me to run.",
+      "assertions": [
+        "Runs the module stage first and writes main.tf, variables.tf, outputs.tf and versions.tf with typed, validated variables, a README with inputs and outputs tables, and a staging usage example",
+        "Secure defaults: storage encrypted with the existing alias/platform-rds key (no new KMS key), publicly_accessible false, deletion_protection true, backup retention 14 days, and the master password managed by RDS rather than passed as a variable",
+        "Allows port 5432 only from sg-04d5e6f7a8b9c0d12, with no CIDR ingress, places the database in the three private subnets from network.md, and turns multi-AZ on for prod only",
+        "Applies the five required tags from network.md through a merged tags variable, and the versions.tf provider constraint admits the locked hashicorp/aws 5.62.0 without requiring 6.x",
+        "At gate G13 says there is no real plan to review and does not pass the gate: gives the exact commands to produce one (terraform plan -out=<file>, then terraform show -json <file>) and says what the review will check",
+        "Never gives SAFE TO APPLY and does not reach the apply check; says apply waits on a review of the real plan and a person's approval",
+        "Does not invent plan output (resource counts, destroys, replaces) or IDs, ARNs and account details that are not in network.md"
+      ]
+    },
+    {
+      "id": "provision-replica-plan-replaces-primary",
+      "held_out": "2026-11-03",
+      "prompt": "Reporting team needs a read replica of the orders database. I've made the change on my branch (the module's main.tf and variables.tf are attached) and ran the prod plan, json is in plan.json. Can you run provision on it? I'd like to apply this afternoon.",
+      "assertions": [
+        "Runs the module stage on the change, then reviews plan.json at gate G13, rather than going straight to a verdict",
+        "Flags module.orders_db.aws_db_instance.primary as a replace forced by identifier (orders-prod to orders-prod-primary), says the production database would be destroyed and recreated, and notes that deletion_protection false and skip_final_snapshot true mean nothing blocks the destroy and no final snapshot is taken",
+        "Flags the db_ingress replace that widens port 5432 from 10.40.0.0/16 to 0.0.0.0/0 as access widening the request never asked for, noting that var.vpc_cidr is now unused",
+        "Flags the delete of aws_s3_bucket_lifecycle_configuration.exports (the 90-day expiry on exports/) as outside the read-replica scope",
+        "Gate G13 does not pass: the plan verdict is DO NOT APPLY and the loop sends the work back to the module stage, whose revision keeps the primary's existing identifier, restores ingress to var.vpc_cidr, and either restores the lifecycle rule or names it for its owner to decide",
+        "Treats the revised module as needing a fresh plan: does not reach the apply check or approve applying this afternoon, and gives the commands to re-plan",
+        "Does not invent facts not in the inputs, such as a recent manual snapshot existing, the replica needing public access, or changes plan.json does not contain"
+      ]
+    }
+  ]
+}

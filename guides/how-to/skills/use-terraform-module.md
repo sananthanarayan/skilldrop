@@ -64,6 +64,10 @@ A good result:
 - Estimating what the infrastructure will cost at expected load: use `capacity-cost-model`
 - Moving existing infrastructure or data from one platform to another: use `migration-plan`
 
+## Where a loop runs it
+
+- Stage `module` of the [`provision` loop](../../../packs/infra-as-code/loops/provision/LOOP.md)
+
 ## Next
 
 - [SKILL.md](../../../packs/infra-as-code/skills/terraform-module/SKILL.md), the instructions the agent reads

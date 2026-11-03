@@ -14,7 +14,7 @@ The experience around a product: the structure people navigate, the content and 
 |---|---|
 | Install | `npx skilldrop-cli install --pack experience-design` |
 | Skills | 5 plus 5 from core |
-| Loops | none |
+| Loops | clarify |
 | How-to | [Use the Experience design pack](../../how-to/packs/use-the-experience-design-pack.md) |
 
 ## Skills
@@ -160,6 +160,20 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/experience-design/skill
 - Capturing the brand's voice and visual identity — that's `brand-kit`
 - Checking a built UI against WCAG — that's `accessibility-audit`
 - The full component spec (states, tokens, behaviour) — that's `design-system-spec`; this skill can supply its content rules
+
+## Loops
+
+### `clarify`
+
+Take a service people struggle with from its page to the service behind it: a content spec and plain-language rewrite from what users need, every string on the form or flow, and a service blueprint that tests whether those fixes reach the fail points behind the complaints, with a gate that sends the work back to the page when it misses a fail point and out to product when the fix is backstage.
+
+| Stage | Skills | Gate |
+|---|---|---|
+| page | `content-design` | — |
+| strings | `ux-writing` | — |
+| blueprint | `service-blueprint` | G14 review: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / BLOCKED |
+
+Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/experience-design/loops/clarify/LOOP.md)
 
 ## Included from core
 
