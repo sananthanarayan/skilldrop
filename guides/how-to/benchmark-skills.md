@@ -75,6 +75,19 @@ python3 run_bench.py --backend claude-cli --skills adr-generator --trials 2 \
 Responses are cached, so only the edited skill's runs are paid for; add an eval the skill
 hasn't seen before you trust the new number.
 
+## Benchmark a loop against its own skills
+
+Run a loop's evals in three arms: the loop, its stage skills without the loop, and the plain
+agent.
+
+```bash
+python3 run_bench.py --backend claude-cli --loops research --trials 2 \
+  --second-judge claude-opus-5-5 --budget 10
+```
+
+The report gives each loop a reading, and *the order helps* is the one that says its gates
+earn their place; a run with no held-out loop eval is a smoke test, not a result.
+
 ## Publish the result
 
 Write the summary, without the outputs, to the file the site reads.

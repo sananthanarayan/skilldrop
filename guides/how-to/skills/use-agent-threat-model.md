@@ -63,6 +63,10 @@ A good result:
 - Output quality, hallucination, or eval design — that's `llm-eval-harness`
 - After a confirmed leak — that's `postmortem-generator`
 
+## Where a loop runs it
+
+- Stage `threat` of the [`ship-agent` loop](../../../packs/ai-engineering/loops/ship-agent/LOOP.md), where gate G12 decides
+
 ## Next
 
 - [SKILL.md](../../../packs/ai-engineering/skills/agent-threat-model/SKILL.md), the instructions the agent reads

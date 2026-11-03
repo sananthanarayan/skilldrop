@@ -1,0 +1,9 @@
+[
+  {"query": "write the terraform for an RDS read replica and check the plan before we apply", "should_trigger": true},
+  {"query": "run the provision loop on this new VPC", "should_trigger": true},
+  {"query": "provision a private bucket for backups safely, module to apply", "should_trigger": true},
+  {"query": "I'm about to apply the plan we reviewed yesterday, is it still the same one?", "should_trigger": true},
+  {"query": "review this terraform plan, is it safe to apply?", "should_trigger": false},
+  {"query": "turn this terraform into a reusable module", "should_trigger": false},
+  {"query": "plan the migration of our database to a new instance class", "should_trigger": false}
+]

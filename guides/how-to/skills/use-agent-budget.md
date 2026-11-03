@@ -59,6 +59,10 @@ A good result:
 - Designing the loop or the fan-out itself — `agent-loop-design` / `subagent-design`; this skill prices what they draw
 - Negotiating provider contracts or rate limits — procurement, not a spec
 
+## Where a loop runs it
+
+- Stage `budget` of the [`ship-agent` loop](../../../packs/ai-engineering/loops/ship-agent/LOOP.md)
+
 ## Next
 
 - [SKILL.md](../../../packs/ai-engineering/skills/agent-budget/SKILL.md), the instructions the agent reads

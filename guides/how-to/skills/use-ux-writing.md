@@ -64,6 +64,10 @@ A good result:
 - Checking a built UI against WCAG — that's `accessibility-audit`
 - The full component spec (states, tokens, behaviour) — that's `design-system-spec`; this skill can supply its content rules
 
+## Where a loop runs it
+
+- Stage `strings` of the [`clarify` loop](../../../packs/experience-design/loops/clarify/LOOP.md)
+
 ## Next
 
 - [SKILL.md](../../../packs/experience-design/skills/ux-writing/SKILL.md), the instructions the agent reads

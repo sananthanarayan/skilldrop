@@ -14,6 +14,19 @@ evals/evals.json it runs a paired comparison on each model:
             judged against the plain agent and against the skill, so a losing skill says whether
             its instructions or its scripts carry the result (RFC-0067).
 
+With --loops (claude-cli only) it measures loops instead of skills (RFC-0070). Each eval in a
+loop's evals/evals.json runs in three arms:
+
+  loop      LOOP.md is the system prompt, with the loop's folder and every stage skill's
+            folder in the working directory
+  stages    the same stage skills, installed, with no loop: the system prompt is generated
+            from each skill's own description, so no rule from LOOP.md reaches it
+  baseline  plain Claude Code
+
+and is judged in three blind pairs: the loop against the plain agent, the loop against its
+skills alone, and the skills alone against the plain agent. A loop that wins the first but
+not the second is winning on its skills, not on the order and gates it adds.
+
 Two measures, because the assertions were written by the skill's author:
 
   assertions  a judge checks each output against the eval's assertions. It never sees which
@@ -102,6 +115,7 @@ PAIR_SYSTEM = ("You compare two responses to the same request. Pick the one that
 BACKEND = "api"  # or "claude-cli"; set from --backend
 SECOND_JUDGE = None  # a second pairwise judge, set from --second-judge
 TOOLS_ARM = False  # also run each scripted skill's tools without its instructions, set from --tools-arm
+LOOP_ARMS = ("loop", "stages", "baseline")  # with --loops: the loop, its skills without it, the plain agent
 
 # What the tools arm leaves out of a skill's folder: its instructions. Data the scripts read,
 # such as templates/, stays, so every script still runs.
@@ -406,12 +420,14 @@ def deps_bin(skill):
     return os.path.dirname(py)
 
 
-def cli_agent(model, system, user, skill=None, files=None, layout="full", env_skill=None):
+def cli_agent(model, system, user, skill=None, files=None, layout="full", env_skill=None, stage=None):
     """A real agent run: Claude Code with its own system prompt and file and shell tools, in a
     throwaway directory, sandboxed, with no settings, plugins or MCP servers from this machine.
     `system` is appended to Claude Code's prompt. The skill arm also gets the skill's folder at
-    skills/<name>/, the path a plain-copy install uses. Returns the final message followed by
-    the files the run left behind."""
+    skills/<name>/, the path a plain-copy install uses. `stage`, when given, is called with the
+    working directory instead and stages whatever folders the run gets (a loop and its skills);
+    it returns the folder CLAUDE_SKILL_DIR points to, or None. Returns the final message followed
+    by the files the run left behind."""
     with tempfile.TemporaryDirectory() as ws, tempfile.TemporaryDirectory() as side:
         ws = os.path.realpath(ws)
         env = dict(os.environ)
@@ -424,6 +440,10 @@ def cli_agent(model, system, user, skill=None, files=None, layout="full", env_sk
         if skill:
             dest = stage_skill(skill, ws, layout)
             if layout != "tools":
+                env["CLAUDE_SKILL_DIR"] = dest
+        if stage:
+            dest = stage(ws)
+            if dest:
                 env["CLAUDE_SKILL_DIR"] = dest
         sysfile = os.path.join(side, "system.txt")
         open(sysfile, "w", encoding="utf-8").write(system)
@@ -482,10 +502,11 @@ def cache_path(kind, model, system, user, trial, files=None, extra=None):
 
 
 def call(kind, model, system, user, trial, max_tokens, budget, skill=None, files=None, layout="full",
-         env_skill=None):
+         env_skill=None, stage=None, key=None):
     """One model call, cached on everything that determines it. Returns a record with the text,
-    the API's usage block, the cost at this model's rate, and whether it came from the cache."""
-    extra = ("tools/" + scripts_digest(skill)) if layout == "tools" else None
+    the API's usage block, the cost at this model's rate, and whether it came from the cache.
+    `stage` and `key` come together: what a loop arm stages, and a digest of it for the cache."""
+    extra = ("tools/" + scripts_digest(skill)) if layout == "tools" else key
     if kind == "gen" and BACKEND == "claude-cli" and deps_key(env_skill):
         extra = (extra or "") + "/deps/" + deps_key(env_skill)  # runs without the requirements are stale
     path = cache_path(kind, model, system, user, trial, files, extra)
@@ -494,7 +515,7 @@ def call(kind, model, system, user, trial, max_tokens, budget, skill=None, files
     budget.check()
     start = time.time()
     if BACKEND == "claude-cli":
-        text, resp = (cli_agent(model, system, user, skill, files, layout, env_skill) if kind == "gen"
+        text, resp = (cli_agent(model, system, user, skill, files, layout, env_skill, stage) if kind == "gen"
                       else cli_messages(model, system, user))
     else:
         text, resp = messages(model, system, user, max_tokens=max_tokens, timeout=600, raw=True)
@@ -623,12 +644,13 @@ def boot(xs, n=2000):
     return means[int(0.025 * n)], means[int(0.975 * n)]
 
 
-def by_eval(rows, model, value):
-    """{(skill, eval): mean of value(row) over trials} for one model's completed rows."""
+def by_eval(rows, model, value, unit="skill"):
+    """{(skill, eval): mean of value(row) over trials} for one model's completed rows. `unit` is
+    "loop" for a loop run's rows."""
     acc = {}
     for r in rows:
         if r["model"] == model and "pairwise" in r:
-            acc.setdefault((r["skill"], r["eval"]), []).append(value(r))
+            acc.setdefault((r[unit], r["eval"]), []).append(value(r))
     return {k: mean(v) for k, v in acc.items()}
 
 
@@ -922,6 +944,335 @@ def report(summary, judge_model, trials, spent, scripted):
     return "\n".join(lines) + "\n"
 
 
+# --------------------------------------------------------------------------- loops (RFC-0070)
+
+def loop_spec(loop):
+    with open(os.path.join(catalog.loop_dir(loop), "loop.json"), encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def loop_skills(loop):
+    """The skills a loop's stages run, in stage order, each once. `*` (a wrapper's generator,
+    chosen at run time) is no folder, so it is left out."""
+    out = []
+    for st in loop_spec(loop).get("stages", []):
+        for s in st.get("skills", []):
+            if s != "*" and s not in out:
+                out.append(s)
+    return out
+
+
+def loop_evals(loop):
+    p = os.path.join(catalog.loop_dir(loop), "evals", "evals.json")
+    if not os.path.exists(p):
+        return []
+    with open(p, encoding="utf-8") as fh:
+        return json.load(fh).get("evals", [])
+
+
+def loop_fixtures(loop, eval_id):
+    """A loop eval's input files, in the loop's evals/files/<eval id>/, as for a skill."""
+    d = os.path.join(catalog.loop_dir(loop), "evals", "files", str(eval_id))
+    return d if os.path.isdir(d) else None
+
+
+def skill_description(skill):
+    with open(os.path.join(catalog.skill_dir(skill), "manifest.json"), encoding="utf-8") as fh:
+        return json.load(fh)["description"]
+
+
+def loop_system(loop, md):
+    """The loop arm: LOOP.md, and where the loop and its skills are."""
+    return (skill_system(md) + "\n\nThis loop's folder is at skills/%s/ in the working directory "
+            "(CLAUDE_SKILL_DIR points to it). The skills its stages run are installed beside it: %s."
+            % (loop, ", ".join("skills/%s/" % s for s in loop_skills(loop))))
+
+
+def stages_system(loop):
+    """The stages arm's whole instruction: the installed skills, each with its own description,
+    the way an agent sees skills it has installed. Generated, never written by hand, so it
+    carries none of the loop's order, gates or rules."""
+    lines = ["- skills/%s/SKILL.md: %s" % (s, skill_description(s)) for s in loop_skills(loop)]
+    return (NONINTERACTIVE + "\n\nThese skills are installed in the working directory. Read a "
+            "skill's SKILL.md before you use it.\n" + "\n".join(lines))
+
+
+def loop_digest(loop):
+    """The loop's folder and every stage skill's folder, without their evals: editing LOOP.md or
+    a stage skill must not reuse a cached run."""
+    h = hashlib.sha256()
+    for label, root in [("loop/" + loop, catalog.loop_dir(loop))] + [("skill/" + s, catalog.skill_dir(s))
+                                                                    for s in loop_skills(loop)]:
+        for base, dirs, names in os.walk(root):
+            dirs[:] = sorted(x for x in dirs if x not in ("evals", "__pycache__"))
+            for n in sorted(names):
+                path = os.path.join(base, n)
+                with open(path, "rb") as fh:
+                    h.update((label + "/" + os.path.relpath(path, root).replace(os.sep, "/")).encode()
+                             + b"\0" + fh.read())
+    return h.hexdigest()[:16]
+
+
+def stage_loop(loop, ws, with_loop=True):
+    """Install the loop's stage skills at skills/<name>/, and the loop itself at skills/<loop>/
+    when with_loop is set. Returns the loop's folder, or None without it."""
+    for s in loop_skills(loop):
+        stage_skill(s, ws, "full")
+    if not with_loop:
+        return None
+    dest = os.path.join(ws, "skills", loop)
+    shutil.copytree(catalog.loop_dir(loop), dest, ignore=shutil.ignore_patterns("evals", "__pycache__"))
+    return dest
+
+
+def loop_env_skill(loop):
+    """The first stage skill with pip requirements: its environment is every arm's, as for a skill."""
+    return next((s for s in loop_skills(loop) if requirements(s)), None)
+
+
+def loop_arms(loop, md):
+    """(arm, system text, stage callback, cache key) for each arm of a loop eval."""
+    dig = loop_digest(loop)
+    return (("loop", loop_system(loop, md), lambda ws: stage_loop(loop, ws, True), "loop/loop/" + dig),
+            ("stages", stages_system(loop), lambda ws: stage_loop(loop, ws, False), "loop/stages/" + dig),
+            ("baseline", NONINTERACTIVE, None, None))
+
+
+LOOP_PAIRS = (("pairwise", "loop", "baseline"), ("loop_vs_stages", "loop", "stages"),
+              ("stages_vs_baseline", "stages", "baseline"))
+
+
+def run_loop_unit(unit, judge_model, budget):
+    lp, e, model, trial = unit
+    row = {"loop": lp, "eval": e.get("id"), "model": model, "trial": trial,
+           "held_out": bool(e.get("held_out")), "arms": {}}
+    with open(os.path.join(catalog.loop_dir(lp), "LOOP.md"), encoding="utf-8") as fh:
+        md = fh.read()
+    env_skill, files = loop_env_skill(lp), loop_fixtures(lp, e.get("id"))
+    try:
+        for arm, system, stage, key in loop_arms(lp, md):
+            gen = call("gen", model, system, e["prompt"], trial, 16000, budget, None, files,
+                       env_skill=env_skill, stage=stage, key=key)
+            grades, jrec = judge(judge_model, gen["text"], e["assertions"], trial, budget)
+            row["arms"][arm] = {"output": gen["text"], "usage": gen["usage"], "cost": gen["cost"],
+                                "seconds": gen["seconds"], "stop_reason": gen["stop_reason"],
+                                "turns": gen.get("turns"), "grades": grades, "judge_cost": jrec["cost"]}
+        seed = "loop:%s/%s/%s/%s" % (lp, e.get("id"), model, trial)
+        for judge_, suffix in ((judge_model, ""), (SECOND_JUDGE, "2")):
+            if not judge_:
+                continue
+            for key, a, b in LOOP_PAIRS:
+                row[key + suffix] = pair(judge_, e["prompt"], row["arms"][a]["output"], row["arms"][b]["output"],
+                                         seed + "/" + key, trial, budget, names=(a, b))
+    except BudgetExceeded:
+        row["skipped"] = "budget"
+    except (APIError, json.JSONDecodeError) as err:
+        row["error"] = str(err)
+    return row
+
+
+def loop_reading(loop_pref, stages_pref, loop_over_stages):
+    """reading() for a loop: the stage skills stand where a skill's scripts stand."""
+    r = reading(loop_pref, stages_pref, loop_over_stages)
+    return {"instructions help": "the order helps", "the scripts carry it": "the skills carry it"}.get(r, r)
+
+
+def loop_prefs(rows, suffix=""):
+    """The three blind preferences over rows, from one judge: loop > plain, stages > plain, loop > stages."""
+    return (mean([side(r["pairwise" + suffix]["winner"], "loop") for r in rows]),
+            mean([side(r["stages_vs_baseline" + suffix]["winner"], "stages") for r in rows]),
+            mean([side(r["loop_vs_stages" + suffix]["winner"], "loop") for r in rows]))
+
+
+def summarize_loops(rows, floor, models, labels):
+    floor_ok = [f for f in floor if "grades" in f]
+    out = {"kind": "loops", "floor": mean([met(f["grades"]) for f in floor_ok]) if floor_ok else None,
+           "models": {}, "loops": []}
+    for m in models:
+        done = [r for r in rows if r["model"] == m and "pairwise" in r]
+        d = {"label": labels[m], "evals": len(by_eval(done, m, lambda r: 0, "loop")), "runs": len(done),
+             "loops": len({r["loop"] for r in done}),
+             "held_out_evals": len(by_eval([r for r in done if r.get("held_out")], m, lambda r: 0, "loop")),
+             "errors": sum(1 for r in rows if r["model"] == m and "error" in r),
+             "skipped": sum(1 for r in rows if r["model"] == m and "skipped" in r)}
+        for arm in LOOP_ARMS:
+            d[arm] = mean(list(by_eval(done, m, lambda r, a=arm: met(r["arms"][a]["grades"]), "loop").values()))
+            d["cost_" + arm] = mean([r["arms"][arm]["cost"] for r in done])
+        for suffix in ("", "2"):
+            for key, name, _ in LOOP_PAIRS:
+                have = [r for r in done if key + suffix in r]
+                if have:
+                    w = list(by_eval(have, m, lambda r, k=key + suffix, n=name: side(r[k]["winner"], n), "loop").values())
+                    d["win_" + key + suffix], d["win_" + key + suffix + "_ci"] = mean(w), boot(w)
+        out["models"][m] = d
+        for lp in sorted({r["loop"] for r in done}):
+            mine = [r for r in done if r["loop"] == lp]
+            row = {"loop": lp, "model": m, "evals": len({r["eval"] for r in mine}),
+                   "held_out_evals": len({r["eval"] for r in mine if r.get("held_out")})}
+            for arm in LOOP_ARMS:
+                row[arm + "_met"] = mean([met(r["arms"][arm]["grades"]) for r in mine])
+                row["cost_" + arm] = mean([r["arms"][arm]["cost"] for r in mine])
+            row["preferred"], row["stages_preferred"], row["loop_over_stages"] = loop_prefs(mine)
+            judges = [""]
+            if all("pairwise2" in r and "stages_vs_baseline2" in r and "loop_vs_stages2" in r for r in mine):
+                judges.append("2")
+                row["preferred2"], row["stages_preferred2"], row["loop_over_stages2"] = loop_prefs(mine, "2")
+            # Every judge must agree on the reading; otherwise it is mixed.
+            reads = {loop_reading(*loop_prefs(mine, j)) for j in judges}
+            row["reading"] = reads.pop() if len(reads) == 1 else "mixed"
+            out["loops"].append(row)
+    return out
+
+
+def report_loops(summary, judge_model, trials, spent):
+    lines = ["# Loop benchmark: the loop, its skills without it, and the plain agent", "",
+             f"Judge: `{judge_model}` · trials per eval: {trials} · spent this run: ${spent:.2f} · run through "
+             "Claude Code agent runs (`claude -p` with file and shell tools, sandboxed, in an empty directory); "
+             "dollars are list price for the tokens used", "",
+             "Three arms on every eval. *Loop*: LOOP.md, with the loop and its stage skills installed. *Skills, "
+             "no loop*: the same skills installed, and only their own descriptions in the prompt. *Plain agent*: "
+             "Claude Code with neither. A loop that beats the plain agent but not its own skills is winning on the "
+             "skills, not on the order and gates it adds.", "",
+             f"**Floor: a non-answer meets {pct(summary['floor'])} of assertions.**"]
+    for m, d in summary["models"].items():
+        lines += ["", f"## {d['label']} `{m}`", "",
+                  f"{d['evals']} eval(s) across {d['loops']} loop(s), {d['held_out_evals']} of them held out.", ""]
+        if not d["held_out_evals"]:
+            lines += ["None of these evals is held out: each loop's author wrote them, so read this as a smoke "
+                      "test, not a result.", ""]
+        lines += ["| | Loop | Skills, no loop | Plain agent |", "|---|---|---|---|",
+                  f"| Assertions met | {pct(d['loop'])} | {pct(d['stages'])} | {pct(d['baseline'])} |",
+                  f"| $ per run | ${d['cost_loop']:.4f} | ${d['cost_stages']:.4f} | ${d['cost_baseline']:.4f} |", "",
+                  "| Blind pair | Judge 1 | Judge 2 |", "|---|---|---|"]
+        for label, k in (("Loop preferred to the plain agent", "pairwise"),
+                         ("Loop preferred to its skills without it", "loop_vs_stages"),
+                         ("Skills without the loop preferred to the plain agent", "stages_vs_baseline")):
+            lines.append(f"| {label} | {pct(d.get('win_' + k))}{ci(d.get('win_' + k + '_ci'))} | "
+                         f"{pct(d.get('win_' + k + '2'))}{ci(d.get('win_' + k + '2_ci'))} |")
+        mine = [r for r in summary["loops"] if r["model"] == m]
+        if mine:
+            lines += ["", "Per loop, from the blind pairs (every judge must agree, or it reads *mixed*). A loop has a "
+                      "handful of evals, so a row is a lead to check against the outputs, not a verdict.", "",
+                      "| Loop | Evals | Met: loop / skills / plain | Loop > plain | Loop > skills | Skills > plain | Reading |",
+                      "|---|---|---|---|---|---|---|"]
+            for r in sorted(mine, key=lambda r: (r["reading"], r["loop"])):
+                j2 = lambda k: (" / " + pct(r[k + "2"])) if (k + "2") in r else ""
+                lines.append(f"| `{r['loop']}` | {r['evals']} | {pct(r['loop_met'])} / {pct(r['stages_met'])} / "
+                             f"{pct(r['baseline_met'])} | {pct(r['preferred'])}{j2('preferred')} | "
+                             f"{pct(r['loop_over_stages'])}{j2('loop_over_stages')} | "
+                             f"{pct(r['stages_preferred'])}{j2('stages_preferred')} | {r['reading']} |")
+        bits = []
+        if d["errors"]:
+            bits.append(f"{d['errors']} error(s)")
+        if d["skipped"]:
+            bits.append(f"{d['skipped']} run(s) skipped when the budget ran out")
+        if bits:
+            lines += ["", "Run notes: " + "; ".join(bits) + "."]
+    lines += ["", "Each run is a full agent session, graded on its final message and the files it wrote. The judge "
+              "is a model. Outputs, grades and token counts for every run are in results.json."]
+    return "\n".join(lines) + "\n"
+
+
+def estimate_loops(units, floor_units, judge_model):
+    """estimate() for loop units: three arms, and three pairings per judge."""
+    total, fresh = 0.0, 0
+    judges = [price(judge_model)] + ([price(SECOND_JUDGE)] if SECOND_JUDGE else [])
+    jin, jout = judges[0]
+    for lp, e, model, trial in units:
+        with open(os.path.join(catalog.loop_dir(lp), "LOOP.md"), encoding="utf-8") as fh:
+            md = fh.read()
+        pin, pout = price(model)
+        files = loop_fixtures(lp, e.get("id"))
+        seen = 4000 + dir_tokens(files)
+        env_skill = loop_env_skill(lp)
+        for arm, system, _, key in loop_arms(lp, md):
+            extra = key
+            if deps_key(env_skill):
+                extra = (extra or "") + "/deps/" + deps_key(env_skill)
+            fresh += not os.path.exists(cache_path("gen", model, system, e["prompt"], trial, files, extra))
+            # a loop arm reads the loop and stage skills it is given: about as much again as its prompt
+            total += ((2 * len(system) + len(e["prompt"])) / 4 * pin + 6000 * pout) / 1e6
+            total += ((seen + 500) * jin + 500 * jout) / 1e6
+        for qin, qout in judges:
+            total += len(LOOP_PAIRS) * ((2 * seen + len(e["prompt"]) / 4) * qin + 100 * qout) / 1e6
+    total += len(floor_units) * (400 * jin + 500 * jout) / 1e6
+    return total, fresh
+
+
+def write_results(a, rows, floor, summary, md, spent, models, extra_pub):
+    """Shared by the skill and loop runs: redact, write results.json and report.md, publish."""
+    pats = privacy.matcher(privacy.terms())
+    os.makedirs(a.out, exist_ok=True)
+    json.dump({"backend": BACKEND, "judge_model": a.judge_model, "models": models, "trials": a.trials, "spent": spent,
+               "summary": summary, "floor": floor, "runs": rows},
+              open(os.path.join(a.out, "results.json"), "w", encoding="utf-8"), indent=2)
+    open(os.path.join(a.out, "report.md"), "w", encoding="utf-8").write(md)
+    if a.publish:
+        if privacy.scan_text(json.dumps(summary), pats):
+            sys.exit("not publishing: the summary contains your name, email or organization (RFC-0049)")
+        os.makedirs(os.path.dirname(os.path.abspath(a.publish)), exist_ok=True)
+        with open(a.publish, "w", encoding="utf-8") as f:
+            json.dump({"date": time.strftime("%Y-%m-%d"), "backend": BACKEND, "judge_model": a.judge_model,
+                       "trials": a.trials, **extra_pub, **summary}, f, indent=1)
+            f.write("\n")
+
+
+def main_loops(a, models, labels):
+    """--loops: the loop, its skills without it, and the plain agent, on every loop eval."""
+    all_loops = catalog.loops()
+    names = list(all_loops) if a.loops.strip() == "all" else [x.strip() for x in a.loops.split(",") if x.strip()]
+    unknown = [n for n in names if n not in all_loops]
+    if unknown:
+        sys.exit(f"unknown loop(s): {', '.join(unknown)}")
+    evals = [(lp, e) for lp in names for e in loop_evals(lp)]
+    if a.held_out:
+        evals = [(lp, e) for lp, e in evals if e.get("held_out")]
+    if a.evals:
+        ids = {i.strip() for i in a.evals.split(",")}
+        evals = [(lp, e) for lp, e in evals if str(e.get("id")) in ids]
+    if not evals:
+        sys.exit(f"no loop evals to run in {', '.join(names)}")
+    units = [(lp, e, m, t) for lp, e in evals for m in models for t in range(a.trials)]
+    floor_units = [] if a.no_floor else evals
+    est, fresh = estimate_loops(units, floor_units, a.judge_model)
+    n_judges = 2 if SECOND_JUDGE else 1
+    held = sum(1 for _, e in evals if e.get("held_out"))
+    print(f"{len(evals)} loop eval(s) ({held} held out) across {len({lp for lp, _ in evals})} loop(s) x {len(models)} "
+          f"model(s) x {a.trials} trial(s): {3 * len(units)} generations ({fresh} not cached), "
+          f"{3 * len(units) + len(floor_units)} assertion gradings, {n_judges * 3 * len(units)} pairwise judgements. "
+          f"Rough cost if nothing is cached: ${est:.2f}. Budget: ${a.budget:.2f}.")
+    if a.dry_run:
+        return 0
+    budget = Budget(a.budget)
+    with ThreadPoolExecutor(max_workers=a.workers) as ex:
+        rows = list(ex.map(lambda u: run_loop_unit(u, a.judge_model, budget), units))
+        floor = list(ex.map(lambda u: run_floor(u, a.judge_model, budget), floor_units))
+    pats = privacy.matcher(privacy.terms())
+    named = {}
+    for r in rows:
+        for arm, d in r.get("arms", {}).items():
+            d["output"], n = privacy.redact(d.get("output", ""), pats)
+            if n:
+                named.setdefault(r["loop"], set()).add(arm)
+                d["named_you"] = n
+    summary = summarize_loops(rows, floor, models, labels)
+    md = report_loops(summary, a.judge_model, a.trials, budget.spent)
+    if named:
+        md += ("\n**Named you:** %d run(s) wrote the signed-in account's name, email or organization into their output "
+               "(replaced with [you] in results.json): %s.\n" % (
+                   sum(1 for r in rows for d in r.get("arms", {}).values() if d.get("named_you")),
+                   ", ".join("`%s` (%s)" % (k, ", ".join(sorted(v))) for k, v in sorted(named.items()))))
+    write_results(a, rows, floor, summary, md, budget.spent, models, {"loops": sorted({lp for lp, _ in evals})})
+    print(md)
+    step = os.environ.get("GITHUB_STEP_SUMMARY")
+    if step:
+        with open(step, "a", encoding="utf-8") as f:
+            f.write(md)
+    if budget.spent >= a.budget:
+        print(f"stopped at the ${a.budget:.2f} budget; rerun with a higher --budget to finish (cached calls are free)")
+    return 0
+
+
 # --------------------------------------------------------------------------- main
 
 def resolve_models(spec):
@@ -941,7 +1292,11 @@ def fixture_tokens(skill, eval_id):
     """Roughly how many tokens of input files a judge reads beside an output: the files the run
     leaves behind are shown to it, up to workspace_files' limits, and a git history up to 30,000
     characters."""
-    d = fixtures(skill, eval_id)
+    return dir_tokens(fixtures(skill, eval_id))
+
+
+def dir_tokens(d):
+    """fixture_tokens for a fixture folder, or None for none."""
     if not d:
         return 0
     chars = 0
@@ -1002,6 +1357,9 @@ def main():
     ap.add_argument("--tools-arm", action="store_true",
                     help="claude-cli only: for each skill that ships scripts, also run its scripts without its "
                          "instructions, and judge that arm against the plain agent and against the skill (RFC-0067)")
+    ap.add_argument("--loops", metavar="NAMES",
+                    help="claude-cli only: benchmark these loops (comma-separated, or all) instead of skills: the loop, "
+                         "its stage skills without it, and the plain agent, judged in three blind pairs (RFC-0070)")
     ap.add_argument("--dry-run", action="store_true", help="count calls and estimate cost; spend nothing")
     ap.add_argument("--out", default="bench-results", help="directory for results.json and report.md")
     ap.add_argument("--publish", metavar="FILE",
@@ -1010,6 +1368,12 @@ def main():
 
     global BACKEND, SECOND_JUDGE, TOOLS_ARM
     BACKEND, SECOND_JUDGE, TOOLS_ARM = a.backend, a.second_judge, a.tools_arm
+    if a.loops is not None:
+        if a.skills or a.tools_arm:
+            sys.exit("--loops can't be combined with --skills or --tools-arm: a run measures skills or loops, not both")
+        if BACKEND != "claude-cli":
+            sys.exit("--loops needs --backend claude-cli: a loop's arms read the skill folders they are given, "
+                     "and through the API there are no tools to read them with")
     if TOOLS_ARM and BACKEND != "claude-cli":
         sys.exit("--tools-arm needs --backend claude-cli: through the API there are no tools to run the scripts with")
     if SECOND_JUDGE and price(SECOND_JUDGE) is None:
@@ -1022,6 +1386,8 @@ def main():
     models, labels = resolve_models(a.models)
     if price(a.judge_model) is None:
         sys.exit(f"no price for judge model {a.judge_model!r}: add it to PRICES in run_bench.py")
+    if a.loops is not None:
+        return main_loops(a, models, labels)
     evals = [(s, e) for s in skills for e in (load(s, "evals.json") or {}).get("evals", [])]
     if a.held_out:
         evals = [(s, e) for s, e in evals if e.get("held_out")]
@@ -1071,19 +1437,7 @@ def main():
                "(replaced with [you] in results.json): %s.\n" % (
                    sum(1 for r in rows for d in r.get("arms", {}).values() if d.get("named_you")),
                    ", ".join("`%s` (%s)" % (k, ", ".join(sorted(v))) for k, v in sorted(named.items()))))
-    os.makedirs(a.out, exist_ok=True)
-    json.dump({"backend": BACKEND, "judge_model": a.judge_model, "models": models, "trials": a.trials, "spent": budget.spent,
-               "summary": summary, "floor": floor, "runs": rows},
-              open(os.path.join(a.out, "results.json"), "w", encoding="utf-8"), indent=2)
-    open(os.path.join(a.out, "report.md"), "w", encoding="utf-8").write(md)
-    if a.publish:
-        if privacy.scan_text(json.dumps(summary), pats):
-            sys.exit("not publishing: the summary contains your name, email or organization (RFC-0049)")
-        os.makedirs(os.path.dirname(os.path.abspath(a.publish)), exist_ok=True)
-        with open(a.publish, "w", encoding="utf-8") as f:
-            json.dump({"date": time.strftime("%Y-%m-%d"), "backend": BACKEND, "judge_model": a.judge_model,
-                       "trials": a.trials, "scripted": sorted(scripted), **summary}, f, indent=1)
-            f.write("\n")
+    write_results(a, rows, floor, summary, md, budget.spent, models, {"scripted": sorted(scripted)})
     print(md)
     step = os.environ.get("GITHUB_STEP_SUMMARY")
     if step:

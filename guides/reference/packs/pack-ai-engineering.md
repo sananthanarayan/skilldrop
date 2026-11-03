@@ -14,7 +14,7 @@ Adopt and build AI systems: readiness assessment, use-case triage, rollout and a
 |---|---|
 | Install | `npx skilldrop-cli install --pack ai-engineering` |
 | Skills | 15 plus 5 from core |
-| Loops | none |
+| Loops | adopt, ship-agent |
 | How-to | [Use the AI engineering pack](../../how-to/packs/use-the-ai-engineering-pack.md) |
 
 ## Skills
@@ -419,6 +419,36 @@ Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/ai-engineering/skills/s
 - Setting the spend policy — `agent-budget`
 - Running a multi-perspective review right now — `council-review` is the panel, ready-made
 - Implementing one story — `feature-implement-loop`
+
+## Loops
+
+### `adopt`
+
+Take an organisation from a pile of AI ideas to a first rollout wave its sponsor approved: the use cases ranked with a first slice, readiness scored against that slice, a usage policy covering the data the slice touches, and a cohort rollout whose first wave is the slice's users, with a gate that sends the slice back when a blocking gap stands in its way.
+
+| Stage | Skills | Gate |
+|---|---|---|
+| triage | `ai-use-case-triage` | — |
+| readiness | `ai-readiness-assessment` | G11 review: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / BLOCKED |
+| policy | `ai-usage-policy` | — |
+| rollout | `ai-adoption-rollout` | — |
+| sign-off | `doc-critique` | G11.1 human: PROCEED / PROCEED WITH CONDITIONS / REVISE / BLOCKED |
+
+Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/ai-engineering/loops/adopt/LOOP.md)
+
+### `ship-agent`
+
+Take an AI agent from an idea to a launch a person signed: the loop spec with its exit criteria and cap, the spend caps per stage, a threat model where every lethal-trifecta path has an architectural fix, an eval harness with its pass bar set before the first run, and a review of the real agent configuration before launch, with a gate that sends the design back when a path to exfiltration stays open.
+
+| Stage | Skills | Gate |
+|---|---|---|
+| design | `agent-loop-design`, `subagent-design` | — |
+| budget | `agent-budget` | — |
+| threat | `agent-threat-model` | G12 review: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / BLOCKED |
+| evals | `llm-eval-harness` | — |
+| launch | `agent-config-review` | G12.1 human: PROCEED / PROCEED WITH CONDITIONS / REVISE / BLOCKED |
+
+Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/ai-engineering/loops/ship-agent/LOOP.md)
 
 ## Included from core
 

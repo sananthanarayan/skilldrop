@@ -8,6 +8,16 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.3.0 — 2026-11-03
+
+- **Four new loops cover packs that had none** ([RFC-0069](docs/rfcs/0069-adopt-ship-agent-provision-clarify-loops.md)). Install one with `npx skilldrop-cli install --loop <name>`.
+  - **`adopt`** (ai-engineering) takes a team from AI ideas to a first rollout wave. Readiness is scored against the first use case, not the whole organisation (G11), and the sponsor approves the first wave (G11.1).
+  - **`ship-agent`** (ai-engineering) takes an AI agent from design to launch. The design goes back whenever a path from untrusted content to private data and out is still open (G12). At launch, the configuration the team built is checked against what the threat model allowed, and the owner decides (G12.1).
+  - **`provision`** (infra-as-code) takes a Terraform change from module to apply. The real plan is reviewed against a scope written before the plan existed (G13), and the person running apply confirms it's the plan that was reviewed (G13.1). The loop never runs `apply` itself.
+  - **`clarify`** (experience-design) rewrites a page and its form from the complaints, then blueprints the service behind them. The blueprint shows which complaints new words can't stop, and sends those to the service's owner (G14).
+- **Benchmark a loop against its own skills.** `python3 run_bench.py --backend claude-cli --loops <name|all>` runs each loop eval three ways: the loop, its stage skills without the loop, and plain Claude Code. Blind judges then say whether the loop's order and gates add anything its skills don't ([RFC-0070](docs/rfcs/0070-benchmarking-loops.md)). The four new loops ship with held-out evals written blind from their descriptions; no loop has been measured yet.
+- **`figure-check` was built and is not shipped.** It traced every figure in a draft to its source. On held-out evals it met more checks than plain Claude Code, but the judges preferred the plain agent's replies in both drafts it went through ([RFC-0071](docs/rfcs/0071-figure-check.md)).
+
 ## 1.2.0 — 2026-10-27
 
 - **Four skills are retired: `md-to-html`, `mermaid-render`, `marketing-flyer` and `deck-builder`.** On their held-out evals, in each of two trials and with both blind judges, plain Claude Code on Sonnet 5.5 did the job better ([RFC-0068](docs/rfcs/0068-five-skills-that-lost-to-the-plain-agent.md)).

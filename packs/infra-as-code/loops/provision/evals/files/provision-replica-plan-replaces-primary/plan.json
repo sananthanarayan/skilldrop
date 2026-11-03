@@ -1,0 +1,901 @@
+{
+  "format_version": "1.2",
+  "terraform_version": "1.9.5",
+  "variables": {
+    "environment": {
+      "value": "prod"
+    }
+  },
+  "planned_values": {
+    "root_module": {
+      "child_modules": [
+        {
+          "address": "module.orders_db",
+          "resources": [
+            {
+              "address": "module.orders_db.aws_db_instance.primary",
+              "mode": "managed",
+              "type": "aws_db_instance",
+              "name": "primary",
+              "provider_name": "registry.terraform.io/hashicorp/aws",
+              "schema_version": 0,
+              "values": {
+                "identifier": "orders-prod-primary",
+                "engine": "postgres",
+                "engine_version": "16.4",
+                "instance_class": "db.r7g.xlarge",
+                "allocated_storage": 200,
+                "storage_type": "gp3",
+                "storage_encrypted": true,
+                "kms_key_id": "arn:aws:kms:eu-west-2:210987654398:key/7f3c2a1e-9b84-4d6e-a1f0-3c5b7d9e2a64",
+                "db_subnet_group_name": "orders-prod-db",
+                "vpc_security_group_ids": [
+                  "sg-0e7d6c5b4a3928170"
+                ],
+                "publicly_accessible": false,
+                "username": "orders_admin",
+                "manage_master_user_password": true,
+                "backup_retention_period": 14,
+                "multi_az": true,
+                "deletion_protection": false,
+                "skip_final_snapshot": true,
+                "final_snapshot_identifier": null,
+                "address": null,
+                "arn": null,
+                "id": null,
+                "replicate_source_db": "",
+                "tags": {
+                  "Environment": "prod",
+                  "Owner": "team-orders",
+                  "CostCentre": "CC-3120",
+                  "Service": "orders",
+                  "ManagedBy": "terraform"
+                },
+                "tags_all": {
+                  "Environment": "prod",
+                  "Owner": "team-orders",
+                  "CostCentre": "CC-3120",
+                  "Service": "orders",
+                  "ManagedBy": "terraform"
+                }
+              },
+              "sensitive_values": {}
+            },
+            {
+              "address": "module.orders_db.aws_db_instance.replica",
+              "mode": "managed",
+              "type": "aws_db_instance",
+              "name": "replica",
+              "provider_name": "registry.terraform.io/hashicorp/aws",
+              "schema_version": 0,
+              "values": {
+                "identifier": "orders-prod-replica",
+                "replicate_source_db": "orders-prod-primary",
+                "instance_class": "db.r7g.large",
+                "storage_encrypted": true,
+                "kms_key_id": "arn:aws:kms:eu-west-2:210987654398:key/7f3c2a1e-9b84-4d6e-a1f0-3c5b7d9e2a64",
+                "vpc_security_group_ids": [
+                  "sg-0e7d6c5b4a3928170"
+                ],
+                "publicly_accessible": false,
+                "skip_final_snapshot": true,
+                "deletion_protection": false,
+                "tags": {
+                  "Environment": "prod",
+                  "Owner": "team-orders",
+                  "CostCentre": "CC-3120",
+                  "Service": "orders",
+                  "ManagedBy": "terraform",
+                  "Role": "reporting-replica"
+                },
+                "tags_all": {
+                  "Environment": "prod",
+                  "Owner": "team-orders",
+                  "CostCentre": "CC-3120",
+                  "Service": "orders",
+                  "ManagedBy": "terraform",
+                  "Role": "reporting-replica"
+                },
+                "address": null,
+                "arn": null,
+                "id": null
+              },
+              "sensitive_values": {}
+            },
+            {
+              "address": "module.orders_db.aws_db_subnet_group.orders",
+              "mode": "managed",
+              "type": "aws_db_subnet_group",
+              "name": "orders",
+              "provider_name": "registry.terraform.io/hashicorp/aws",
+              "schema_version": 0,
+              "values": {
+                "name": "orders-prod-db",
+                "subnet_ids": [
+                  "subnet-0d41e2f3a4b5c6d78",
+                  "subnet-0e52f3a4b5c6d7e89",
+                  "subnet-0f63a4b5c6d7e8f9a"
+                ],
+                "tags": {
+                  "Environment": "prod",
+                  "Owner": "team-orders",
+                  "CostCentre": "CC-3120",
+                  "Service": "orders",
+                  "ManagedBy": "terraform"
+                },
+                "tags_all": {
+                  "Environment": "prod",
+                  "Owner": "team-orders",
+                  "CostCentre": "CC-3120",
+                  "Service": "orders",
+                  "ManagedBy": "terraform"
+                },
+                "id": "orders-prod-db"
+              },
+              "sensitive_values": {}
+            },
+            {
+              "address": "module.orders_db.aws_s3_bucket.exports",
+              "mode": "managed",
+              "type": "aws_s3_bucket",
+              "name": "exports",
+              "provider_name": "registry.terraform.io/hashicorp/aws",
+              "schema_version": 0,
+              "values": {
+                "bucket": "orders-prod-exports",
+                "id": "orders-prod-exports",
+                "tags": {
+                  "Environment": "prod",
+                  "Owner": "team-orders",
+                  "CostCentre": "CC-3120",
+                  "Service": "orders",
+                  "ManagedBy": "terraform"
+                },
+                "tags_all": {
+                  "Environment": "prod",
+                  "Owner": "team-orders",
+                  "CostCentre": "CC-3120",
+                  "Service": "orders",
+                  "ManagedBy": "terraform"
+                },
+                "arn": "arn:aws:s3:::orders-prod-exports"
+              },
+              "sensitive_values": {}
+            },
+            {
+              "address": "module.orders_db.aws_security_group.db",
+              "mode": "managed",
+              "type": "aws_security_group",
+              "name": "db",
+              "provider_name": "registry.terraform.io/hashicorp/aws",
+              "schema_version": 0,
+              "values": {
+                "name": "orders-prod-db",
+                "description": "Orders database",
+                "vpc_id": "vpc-0b8e7f6a5d4c3b2a1",
+                "id": "sg-0e7d6c5b4a3928170",
+                "tags": {
+                  "Environment": "prod",
+                  "Owner": "team-orders",
+                  "CostCentre": "CC-3120",
+                  "Service": "orders",
+                  "ManagedBy": "terraform"
+                },
+                "tags_all": {
+                  "Environment": "prod",
+                  "Owner": "team-orders",
+                  "CostCentre": "CC-3120",
+                  "Service": "orders",
+                  "ManagedBy": "terraform"
+                }
+              },
+              "sensitive_values": {}
+            },
+            {
+              "address": "module.orders_db.aws_security_group_rule.db_ingress",
+              "mode": "managed",
+              "type": "aws_security_group_rule",
+              "name": "db_ingress",
+              "provider_name": "registry.terraform.io/hashicorp/aws",
+              "schema_version": 0,
+              "values": {
+                "type": "ingress",
+                "security_group_id": "sg-0e7d6c5b4a3928170",
+                "from_port": 5432,
+                "to_port": 5432,
+                "protocol": "tcp",
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "ipv6_cidr_blocks": null,
+                "description": "Postgres",
+                "id": null,
+                "self": false,
+                "source_security_group_id": null
+              },
+              "sensitive_values": {}
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "resource_changes": [
+    {
+      "address": "module.orders_db.aws_db_instance.primary",
+      "module_address": "module.orders_db",
+      "mode": "managed",
+      "type": "aws_db_instance",
+      "name": "primary",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "delete",
+          "create"
+        ],
+        "before": {
+          "identifier": "orders-prod",
+          "engine": "postgres",
+          "engine_version": "16.4",
+          "instance_class": "db.r7g.xlarge",
+          "allocated_storage": 200,
+          "storage_type": "gp3",
+          "storage_encrypted": true,
+          "kms_key_id": "arn:aws:kms:eu-west-2:210987654398:key/7f3c2a1e-9b84-4d6e-a1f0-3c5b7d9e2a64",
+          "db_subnet_group_name": "orders-prod-db",
+          "vpc_security_group_ids": [
+            "sg-0e7d6c5b4a3928170"
+          ],
+          "publicly_accessible": false,
+          "username": "orders_admin",
+          "manage_master_user_password": true,
+          "backup_retention_period": 14,
+          "multi_az": true,
+          "deletion_protection": false,
+          "skip_final_snapshot": true,
+          "final_snapshot_identifier": null,
+          "address": "orders-prod.c9x2k4m7q1ab.eu-west-2.rds.example",
+          "arn": "arn:aws:rds:eu-west-2:210987654398:db:orders-prod",
+          "id": "db-4K7QX2M9PL3ZB8WD1TNC6RYAEH",
+          "replicate_source_db": "",
+          "tags": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform"
+          },
+          "tags_all": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform"
+          }
+        },
+        "after": {
+          "identifier": "orders-prod-primary",
+          "engine": "postgres",
+          "engine_version": "16.4",
+          "instance_class": "db.r7g.xlarge",
+          "allocated_storage": 200,
+          "storage_type": "gp3",
+          "storage_encrypted": true,
+          "kms_key_id": "arn:aws:kms:eu-west-2:210987654398:key/7f3c2a1e-9b84-4d6e-a1f0-3c5b7d9e2a64",
+          "db_subnet_group_name": "orders-prod-db",
+          "vpc_security_group_ids": [
+            "sg-0e7d6c5b4a3928170"
+          ],
+          "publicly_accessible": false,
+          "username": "orders_admin",
+          "manage_master_user_password": true,
+          "backup_retention_period": 14,
+          "multi_az": true,
+          "deletion_protection": false,
+          "skip_final_snapshot": true,
+          "final_snapshot_identifier": null,
+          "address": null,
+          "arn": null,
+          "id": null,
+          "replicate_source_db": "",
+          "tags": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform"
+          },
+          "tags_all": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform"
+          }
+        },
+        "after_unknown": {
+          "address": true,
+          "arn": true,
+          "id": true,
+          "endpoint": true,
+          "master_user_secret": true
+        },
+        "before_sensitive": {},
+        "after_sensitive": {},
+        "replace_paths": [
+          [
+            "identifier"
+          ]
+        ]
+      },
+      "action_reason": "replace_because_cannot_update"
+    },
+    {
+      "address": "module.orders_db.aws_db_instance.replica",
+      "module_address": "module.orders_db",
+      "mode": "managed",
+      "type": "aws_db_instance",
+      "name": "replica",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "identifier": "orders-prod-replica",
+          "replicate_source_db": "orders-prod-primary",
+          "instance_class": "db.r7g.large",
+          "storage_encrypted": true,
+          "kms_key_id": "arn:aws:kms:eu-west-2:210987654398:key/7f3c2a1e-9b84-4d6e-a1f0-3c5b7d9e2a64",
+          "vpc_security_group_ids": [
+            "sg-0e7d6c5b4a3928170"
+          ],
+          "publicly_accessible": false,
+          "skip_final_snapshot": true,
+          "deletion_protection": false,
+          "tags": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform",
+            "Role": "reporting-replica"
+          },
+          "tags_all": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform",
+            "Role": "reporting-replica"
+          },
+          "address": null,
+          "arn": null,
+          "id": null
+        },
+        "after_unknown": {
+          "address": true,
+          "arn": true,
+          "id": true,
+          "endpoint": true
+        },
+        "before_sensitive": {},
+        "after_sensitive": {}
+      }
+    },
+    {
+      "address": "module.orders_db.aws_db_subnet_group.orders",
+      "module_address": "module.orders_db",
+      "mode": "managed",
+      "type": "aws_db_subnet_group",
+      "name": "orders",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "no-op"
+        ],
+        "before": {
+          "name": "orders-prod-db",
+          "subnet_ids": [
+            "subnet-0d41e2f3a4b5c6d78",
+            "subnet-0e52f3a4b5c6d7e89",
+            "subnet-0f63a4b5c6d7e8f9a"
+          ],
+          "tags": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform"
+          },
+          "tags_all": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform"
+          },
+          "id": "orders-prod-db"
+        },
+        "after": {
+          "name": "orders-prod-db",
+          "subnet_ids": [
+            "subnet-0d41e2f3a4b5c6d78",
+            "subnet-0e52f3a4b5c6d7e89",
+            "subnet-0f63a4b5c6d7e8f9a"
+          ],
+          "tags": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform"
+          },
+          "tags_all": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform"
+          },
+          "id": "orders-prod-db"
+        },
+        "after_unknown": {},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      }
+    },
+    {
+      "address": "module.orders_db.aws_s3_bucket.exports",
+      "module_address": "module.orders_db",
+      "mode": "managed",
+      "type": "aws_s3_bucket",
+      "name": "exports",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "no-op"
+        ],
+        "before": {
+          "bucket": "orders-prod-exports",
+          "id": "orders-prod-exports",
+          "tags": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform"
+          },
+          "tags_all": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform"
+          },
+          "arn": "arn:aws:s3:::orders-prod-exports"
+        },
+        "after": {
+          "bucket": "orders-prod-exports",
+          "id": "orders-prod-exports",
+          "tags": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform"
+          },
+          "tags_all": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform"
+          },
+          "arn": "arn:aws:s3:::orders-prod-exports"
+        },
+        "after_unknown": {},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      }
+    },
+    {
+      "address": "module.orders_db.aws_s3_bucket_lifecycle_configuration.exports",
+      "module_address": "module.orders_db",
+      "mode": "managed",
+      "type": "aws_s3_bucket_lifecycle_configuration",
+      "name": "exports",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "delete"
+        ],
+        "before": {
+          "bucket": "orders-prod-exports",
+          "id": "orders-prod-exports",
+          "expected_bucket_owner": "",
+          "rule": [
+            {
+              "id": "expire-exports-90d",
+              "status": "Enabled",
+              "expiration": [
+                {
+                  "days": 90,
+                  "date": null,
+                  "expired_object_delete_marker": false
+                }
+              ],
+              "filter": [
+                {
+                  "prefix": "exports/"
+                }
+              ]
+            }
+          ]
+        },
+        "after": null,
+        "after_unknown": {},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      },
+      "action_reason": "delete_because_no_resource_config"
+    },
+    {
+      "address": "module.orders_db.aws_security_group.db",
+      "module_address": "module.orders_db",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "db",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "no-op"
+        ],
+        "before": {
+          "name": "orders-prod-db",
+          "description": "Orders database",
+          "vpc_id": "vpc-0b8e7f6a5d4c3b2a1",
+          "id": "sg-0e7d6c5b4a3928170",
+          "tags": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform"
+          },
+          "tags_all": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform"
+          }
+        },
+        "after": {
+          "name": "orders-prod-db",
+          "description": "Orders database",
+          "vpc_id": "vpc-0b8e7f6a5d4c3b2a1",
+          "id": "sg-0e7d6c5b4a3928170",
+          "tags": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform"
+          },
+          "tags_all": {
+            "Environment": "prod",
+            "Owner": "team-orders",
+            "CostCentre": "CC-3120",
+            "Service": "orders",
+            "ManagedBy": "terraform"
+          }
+        },
+        "after_unknown": {},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      }
+    },
+    {
+      "address": "module.orders_db.aws_security_group_rule.db_ingress",
+      "module_address": "module.orders_db",
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "db_ingress",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "delete",
+          "create"
+        ],
+        "before": {
+          "type": "ingress",
+          "security_group_id": "sg-0e7d6c5b4a3928170",
+          "from_port": 5432,
+          "to_port": 5432,
+          "protocol": "tcp",
+          "cidr_blocks": [
+            "10.40.0.0/16"
+          ],
+          "ipv6_cidr_blocks": null,
+          "description": "Postgres from VPC",
+          "id": "sgrule-2208476153",
+          "self": false,
+          "source_security_group_id": null
+        },
+        "after": {
+          "type": "ingress",
+          "security_group_id": "sg-0e7d6c5b4a3928170",
+          "from_port": 5432,
+          "to_port": 5432,
+          "protocol": "tcp",
+          "cidr_blocks": [
+            "0.0.0.0/0"
+          ],
+          "ipv6_cidr_blocks": null,
+          "description": "Postgres",
+          "id": null,
+          "self": false,
+          "source_security_group_id": null
+        },
+        "after_unknown": {
+          "id": true
+        },
+        "before_sensitive": {},
+        "after_sensitive": {},
+        "replace_paths": [
+          [
+            "cidr_blocks"
+          ]
+        ]
+      },
+      "action_reason": "replace_because_cannot_update"
+    }
+  ],
+  "prior_state": {
+    "format_version": "1.0",
+    "terraform_version": "1.9.5",
+    "values": {
+      "root_module": {
+        "child_modules": [
+          {
+            "address": "module.orders_db",
+            "resources": [
+              {
+                "address": "module.orders_db.aws_db_instance.primary",
+                "mode": "managed",
+                "type": "aws_db_instance",
+                "name": "primary",
+                "provider_name": "registry.terraform.io/hashicorp/aws",
+                "schema_version": 0,
+                "values": {
+                  "identifier": "orders-prod",
+                  "engine": "postgres",
+                  "engine_version": "16.4",
+                  "instance_class": "db.r7g.xlarge",
+                  "allocated_storage": 200,
+                  "storage_type": "gp3",
+                  "storage_encrypted": true,
+                  "kms_key_id": "arn:aws:kms:eu-west-2:210987654398:key/7f3c2a1e-9b84-4d6e-a1f0-3c5b7d9e2a64",
+                  "db_subnet_group_name": "orders-prod-db",
+                  "vpc_security_group_ids": [
+                    "sg-0e7d6c5b4a3928170"
+                  ],
+                  "publicly_accessible": false,
+                  "username": "orders_admin",
+                  "manage_master_user_password": true,
+                  "backup_retention_period": 14,
+                  "multi_az": true,
+                  "deletion_protection": false,
+                  "skip_final_snapshot": true,
+                  "final_snapshot_identifier": null,
+                  "address": "orders-prod.c9x2k4m7q1ab.eu-west-2.rds.example",
+                  "arn": "arn:aws:rds:eu-west-2:210987654398:db:orders-prod",
+                  "id": "db-4K7QX2M9PL3ZB8WD1TNC6RYAEH",
+                  "replicate_source_db": "",
+                  "tags": {
+                    "Environment": "prod",
+                    "Owner": "team-orders",
+                    "CostCentre": "CC-3120",
+                    "Service": "orders",
+                    "ManagedBy": "terraform"
+                  },
+                  "tags_all": {
+                    "Environment": "prod",
+                    "Owner": "team-orders",
+                    "CostCentre": "CC-3120",
+                    "Service": "orders",
+                    "ManagedBy": "terraform"
+                  }
+                }
+              },
+              {
+                "address": "module.orders_db.aws_db_subnet_group.orders",
+                "mode": "managed",
+                "type": "aws_db_subnet_group",
+                "name": "orders",
+                "provider_name": "registry.terraform.io/hashicorp/aws",
+                "schema_version": 0,
+                "values": {
+                  "name": "orders-prod-db",
+                  "subnet_ids": [
+                    "subnet-0d41e2f3a4b5c6d78",
+                    "subnet-0e52f3a4b5c6d7e89",
+                    "subnet-0f63a4b5c6d7e8f9a"
+                  ],
+                  "tags": {
+                    "Environment": "prod",
+                    "Owner": "team-orders",
+                    "CostCentre": "CC-3120",
+                    "Service": "orders",
+                    "ManagedBy": "terraform"
+                  },
+                  "tags_all": {
+                    "Environment": "prod",
+                    "Owner": "team-orders",
+                    "CostCentre": "CC-3120",
+                    "Service": "orders",
+                    "ManagedBy": "terraform"
+                  },
+                  "id": "orders-prod-db"
+                }
+              },
+              {
+                "address": "module.orders_db.aws_s3_bucket.exports",
+                "mode": "managed",
+                "type": "aws_s3_bucket",
+                "name": "exports",
+                "provider_name": "registry.terraform.io/hashicorp/aws",
+                "schema_version": 0,
+                "values": {
+                  "bucket": "orders-prod-exports",
+                  "id": "orders-prod-exports",
+                  "tags": {
+                    "Environment": "prod",
+                    "Owner": "team-orders",
+                    "CostCentre": "CC-3120",
+                    "Service": "orders",
+                    "ManagedBy": "terraform"
+                  },
+                  "tags_all": {
+                    "Environment": "prod",
+                    "Owner": "team-orders",
+                    "CostCentre": "CC-3120",
+                    "Service": "orders",
+                    "ManagedBy": "terraform"
+                  },
+                  "arn": "arn:aws:s3:::orders-prod-exports"
+                }
+              },
+              {
+                "address": "module.orders_db.aws_s3_bucket_lifecycle_configuration.exports",
+                "mode": "managed",
+                "type": "aws_s3_bucket_lifecycle_configuration",
+                "name": "exports",
+                "provider_name": "registry.terraform.io/hashicorp/aws",
+                "schema_version": 0,
+                "values": {
+                  "bucket": "orders-prod-exports",
+                  "id": "orders-prod-exports",
+                  "expected_bucket_owner": "",
+                  "rule": [
+                    {
+                      "id": "expire-exports-90d",
+                      "status": "Enabled",
+                      "expiration": [
+                        {
+                          "days": 90,
+                          "date": null,
+                          "expired_object_delete_marker": false
+                        }
+                      ],
+                      "filter": [
+                        {
+                          "prefix": "exports/"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "address": "module.orders_db.aws_security_group.db",
+                "mode": "managed",
+                "type": "aws_security_group",
+                "name": "db",
+                "provider_name": "registry.terraform.io/hashicorp/aws",
+                "schema_version": 0,
+                "values": {
+                  "name": "orders-prod-db",
+                  "description": "Orders database",
+                  "vpc_id": "vpc-0b8e7f6a5d4c3b2a1",
+                  "id": "sg-0e7d6c5b4a3928170",
+                  "tags": {
+                    "Environment": "prod",
+                    "Owner": "team-orders",
+                    "CostCentre": "CC-3120",
+                    "Service": "orders",
+                    "ManagedBy": "terraform"
+                  },
+                  "tags_all": {
+                    "Environment": "prod",
+                    "Owner": "team-orders",
+                    "CostCentre": "CC-3120",
+                    "Service": "orders",
+                    "ManagedBy": "terraform"
+                  }
+                }
+              },
+              {
+                "address": "module.orders_db.aws_security_group_rule.db_ingress",
+                "mode": "managed",
+                "type": "aws_security_group_rule",
+                "name": "db_ingress",
+                "provider_name": "registry.terraform.io/hashicorp/aws",
+                "schema_version": 0,
+                "values": {
+                  "type": "ingress",
+                  "security_group_id": "sg-0e7d6c5b4a3928170",
+                  "from_port": 5432,
+                  "to_port": 5432,
+                  "protocol": "tcp",
+                  "cidr_blocks": [
+                    "10.40.0.0/16"
+                  ],
+                  "ipv6_cidr_blocks": null,
+                  "description": "Postgres from VPC",
+                  "id": "sgrule-2208476153",
+                  "self": false,
+                  "source_security_group_id": null
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "configuration": {
+    "provider_config": {
+      "aws": {
+        "name": "aws",
+        "full_name": "registry.terraform.io/hashicorp/aws",
+        "version_constraint": ">= 5.40.0, < 6.0.0",
+        "expressions": {
+          "region": {
+            "constant_value": "eu-west-2"
+          }
+        }
+      }
+    },
+    "root_module": {
+      "module_calls": {
+        "orders_db": {
+          "source": "../../modules/orders-db",
+          "expressions": {
+            "environment": {
+              "constant_value": "prod"
+            },
+            "vpc_id": {
+              "constant_value": "vpc-0b8e7f6a5d4c3b2a1"
+            },
+            "vpc_cidr": {
+              "constant_value": "10.40.0.0/16"
+            },
+            "instance_class": {
+              "constant_value": "db.r7g.xlarge"
+            },
+            "kms_key_arn": {
+              "constant_value": "arn:aws:kms:eu-west-2:210987654398:key/7f3c2a1e-9b84-4d6e-a1f0-3c5b7d9e2a64"
+            }
+          }
+        }
+      }
+    }
+  },
+  "timestamp": "2026-11-03T10:42:17Z",
+  "applyable": true,
+  "complete": true,
+  "errored": false
+}

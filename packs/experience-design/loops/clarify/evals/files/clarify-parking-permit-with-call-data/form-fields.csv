@@ -1,0 +1,12 @@
+step,field,label,hint,error_message,rules
+1,postcode,Postcode,,Invalid input,Required; UK postcode format
+1,address,Select address,,Please select,Required; picked from postcode lookup
+2,vrm,VRM,,Invalid input,Required; letters and digits only; no spaces allowed; max 7 characters
+2,vehicle_make,Make,,Invalid input,Required
+2,keeper,Are you the registered keeper?,,Please answer,Required; Yes or No
+3,proof_of_residency,Upload satisfactory evidence of residency,,Upload failed,Required; JPG PNG or PDF; max 4 MB per file
+3,proof_of_vehicle,Upload vehicle registration document or lease agreement,,Upload failed,Required; JPG PNG or PDF; max 4 MB per file
+4,permit_start,Commencement date,DD/MM/YYYY,Invalid date,Required; today or later; no more than 30 days ahead
+4,email,Email,,Invalid input,Required; valid email address
+5,pay,Proceed,,Transaction error,Opens payment page; times out after 10 minutes
+6,confirmation,Application received,Your reference is {ref}.,,Shown after payment

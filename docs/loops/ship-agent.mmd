@@ -1,0 +1,26 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    design["design<br/><small>agent-loop-design·subagent-design</small>"]:::gen
+    budget["budget<br/><small>agent-budget</small>"]:::gen
+    threat["threat<br/><small>agent-threat-model</small>"]:::review
+    evals["evals<br/><small>llm-eval-harness</small>"]:::gen
+    launch["launch<br/><small>agent-config-review</small>"]:::gate
+    G12{"G12 · review"}:::gate
+    G12_1{"G12.1 · human"}:::gate
+    DONE(["complete"]):::ship
+
+    design --> budget
+    budget --> threat
+    threat --> G12
+    G12 == "PROCEED" ==> evals
+    evals --> launch
+    launch --> G12_1
+    G12_1 == "PROCEED" ==> DONE
+
+    G12 -- "REVISE (max 3)" --> design
+    G12_1 -- "REVISE (max 3)" --> threat

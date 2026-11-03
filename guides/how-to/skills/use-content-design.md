@@ -64,6 +64,10 @@ A good result:
 - Where pages live and how the navigation groups them — that's `information-architecture`
 - The persona's whole path and emotions across stages — that's `user-journey-map`
 
+## Where a loop runs it
+
+- Stage `page` of the [`clarify` loop](../../../packs/experience-design/loops/clarify/LOOP.md)
+
 ## Next
 
 - [SKILL.md](../../../packs/experience-design/skills/content-design/SKILL.md), the instructions the agent reads

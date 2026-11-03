@@ -44,6 +44,7 @@ Every flag, from `python3 run_bench.py --help`:
 | `--workers` | Parallel workers | 4 |
 | `--no-floor` | Skip grading the non-answer | off |
 | `--tools-arm` | With `--backend claude-cli`: for each skill that ships scripts, a third arm runs its scripts without its instructions, judged against the plain agent and against the skill. See [The scripts without the instructions](#the-scripts-without-the-instructions) | off |
+| `--loops NAMES` | With `--backend claude-cli`: benchmark these loops (comma-separated, or `all`) instead of skills, in three arms. Can't be combined with `--skills` or `--tools-arm`. See [Loops against their own skills](#loops-against-their-own-skills) | off |
 | `--dry-run` | Print how many agent sessions and judgements the run needs and a rough cost at list price; spend nothing. The estimate counts every judge and the files each judge reads, and still tends to come in under the real cost, by up to half on agent runs | off |
 | `--out DIR` | Directory for `results.json` and `report.md` | `bench-results` |
 | `--publish FILE` | Also write the summary, without the outputs, to `FILE` | off |
@@ -110,6 +111,35 @@ has to agree on it, or it reads *mixed*:
 
 A skill with no scripts runs as before, with two arms. With a handful of evals per skill a reading
 is a lead to check against the outputs, not a verdict ([RFC-0067](../../docs/rfcs/0067-scripts-without-instructions.md)).
+
+## Loops against their own skills
+
+A loop claims that its order and gates add something its skills don't. `--loops` tests that
+claim. Each eval in a loop's `evals/evals.json` runs in three arms:
+
+- **Loop:** `LOOP.md` is the system prompt. The loop and every stage skill are installed at
+  `skills/<name>/`. A wrapper's `*` stage installs nothing.
+- **Skills, no loop:** the same stage skills installed, with no loop. Its system prompt is
+  generated from each skill's own description, so no rule from `LOOP.md` reaches it.
+- **Plain agent:** Claude Code with neither.
+
+Input files come from the loop's `evals/files/<eval id>/`, handled as a skill's are.
+`--held-out` and `--evals` filter loop evals too. Every arm is graded on the assertions, then
+judged in three blind pairs per judge: the loop against the plain agent, the loop against its
+skills alone, and the skills alone against the plain agent. Runs are cached on a hash of the
+loop's folder and its stage skills' folders, so editing `LOOP.md` or a stage skill reruns it.
+
+Each loop gets a reading. Every judge has to agree on it, or it reads *mixed*:
+
+| Reading | The blind pairs |
+|---|---|
+| the order helps | The loop beats its skills alone, and the plain agent |
+| the skills carry it | The skills alone beat the plain agent, and the loop doesn't beat them |
+| the plain agent is preferred | Neither the loop nor its skills alone beats the plain agent |
+| mixed | Anything else, or judges that disagree |
+
+A run with no held-out loop eval is reported as a smoke test, not a result, because the loop's
+author wrote every eval ([RFC-0070](../../docs/rfcs/0070-benchmarking-loops.md)).
 
 ## What it writes
 

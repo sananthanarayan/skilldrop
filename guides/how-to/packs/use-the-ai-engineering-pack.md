@@ -60,6 +60,17 @@ Bring:
 
 You end with: A readiness baseline, a chosen first use case, a usage policy, and a gated rollout plan.
 
+## 4. Run it as a loop
+
+A loop runs the skills in order and stops at each gate for a verdict. Install and start one:
+
+```bash
+npx skilldrop-cli install --loop --pack ai-engineering
+```
+
+- **adopt**: Take an organisation from a pile of AI ideas to a first rollout wave its sponsor approved: the use cases ranked with a first slice, readiness scored against that slice, a usage policy covering the data the slice touches, and a cohort rollout whose first wave is the slice's users, with a gate that sends the slice back when a blocking gap stands in its way. Say "run the adopt loop on this". Stages: triage → readiness [G11] → policy → rollout → sign-off [G11.1].
+- **ship-agent**: Take an AI agent from an idea to a launch a person signed: the loop spec with its exit criteria and cap, the spend caps per stage, a threat model where every lethal-trifecta path has an architectural fix, an eval harness with its pass bar set before the first run, and a review of the real agent configuration before launch, with a gate that sends the design back when a path to exfiltration stays open. Say "run the ship-agent loop on this". Stages: design → budget → threat [G12] → evals → launch [G12.1].
+
 ## Next
 
 - [Every skill in the AI engineering pack](../../reference/packs/pack-ai-engineering.md): what each one makes, needs and hands off to

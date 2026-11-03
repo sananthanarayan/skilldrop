@@ -1,0 +1,12 @@
+step,field,label,hint,error_message,rules
+1,postcode,Postcode,,Invalid,Required; UK postcode format
+1,address,Address,,Please select,Required; picked from postcode lookup
+2,bins_required,Number of bins,,Invalid,Required; 1 to 3
+2,existing_bin,Do you have an existing brown bin?,,Please answer,Required; Yes or No
+2,bin_serial,Bin serial number,,Serial number not recognised,Required if existing_bin = Yes; 8 digits
+3,start_date,Start date,DD/MM/YYYY,Invalid date,Required; between 1 March and 30 November
+3,email,Email address,,Invalid,Required
+3,phone,Telephone,,Invalid,Optional
+4,terms,I accept the terms and conditions,,You must accept,Required checkbox; links to terms page
+5,pay,Pay now,,Payment failed,Card only
+6,confirmation,Thank you,Your subscription reference is {ref}.,,Shown after payment

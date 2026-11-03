@@ -1,0 +1,10 @@
+[
+  {"query": "we're building an agent that reads our Jira tickets and opens PRs, take it from design to launch safely", "should_trigger": true},
+  {"query": "run the ship-agent loop on this support-inbox agent", "should_trigger": true},
+  {"query": "design this agent, cap what it can spend, threat-model it and set up the evals before we build it", "should_trigger": true},
+  {"query": "we built the agent, check its config against the threat model and tell the owner if it can launch", "should_trigger": true},
+  {"query": "threat-model this MCP setup for prompt injection", "should_trigger": false},
+  {"query": "is our .claude/settings.json safe?", "should_trigger": false},
+  {"query": "should this be one agent or several?", "should_trigger": false},
+  {"query": "help us start using AI across the company", "should_trigger": false}
+]

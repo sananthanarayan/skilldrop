@@ -29,7 +29,7 @@ Plus one **wrapper**, which is not a lifecycle stage but the two passes either s
 |---|---|---|---|
 | [`ship-a-draft`](../../packs/core/loops/ship-a-draft/LOOP.md) | raw notes, a transcript, a ticket | **G5** review — `doc-critique`'s verdict | a stakeholder-ready artifact |
 
-And five loops outside the delivery lifecycle, each for one job that runs alongside it:
+And nine loops outside the delivery lifecycle, each for one job that runs alongside it:
 
 | Loop | Takes | Gate | Produces | Mistake costs |
 |---|---|---|---|---|
@@ -38,6 +38,10 @@ And five loops outside the delivery lifecycle, each for one job that runs alongs
 | [`comply`](../../packs/grc/loops/comply/LOOP.md) | a change that carries risk: a launch, a vendor, new personal data | **G8** mechanical — the register's own script; **G8.1** human — the risk owner signs | a register, a DPIA and an evidence map that agree, signed by the owner | a risk accepted on a control that doesn't exist |
 | [`measure`](../../packs/data-analytics/loops/measure/LOOP.md) | a dashboard request and the SQL behind its numbers | **G9** review — every query reviewed; **G9.1** human — each metric's owner confirms its definition | a dashboard spec whose numbers are defined and reviewed | a wrong number made to look settled by a chart |
 | [`modernize`](../../packs/dev-team/loops/modernize/LOOP.md) | a legacy component to rewrite or move | **G10** mechanical — the new component matches recordings of the old; **G10.1** human — the cutover | a replacement that behaves the same, cut over by a person | a migration that changes behaviour nobody approved |
+| [`adopt`](../../packs/ai-engineering/loops/adopt/LOOP.md) | AI ideas, a team, and no rules or plan yet | **G11** review — does a blocking gap sit on what the first slice needs?; **G11.1** human — the sponsor approves the first wave | a ranked first slice, a policy for its data and a rollout whose pilot is its users | a policy and rollout written for a slice that can't start |
+| [`ship-agent`](../../packs/ai-engineering/loops/ship-agent/LOOP.md) | an agent's job, tools and data | **G12** review — does every lethal-trifecta path have an architectural fix?; **G12.1** human — the owner decides the launch | a design, budget, threat model and eval plan, then a launch review of the built configuration | an agent that can be talked into sending private data out |
+| [`provision`](../../packs/infra-as-code/loops/provision/LOOP.md) | an infrastructure need, then a saved plan | **G13** review — the real plan against the scope written with the module; **G13.1** human — the plan applied is the plan reviewed | a module and an apply a person approved | a destroyed database or an access rule nobody asked for |
+| [`clarify`](../../packs/experience-design/loops/clarify/LOOP.md) | a confusing page and form, and the complaints | **G14** review — do the new words reach the fail points behind the complaints? | a page, strings and a blueprint that says which complaints need the service to change | better words that leave the same calls coming |
 
 Every gate emits a verdict from one shared vocabulary ([`contracts/terminals.json`](../../contracts/terminals.json)) in five classes — pass, conditional, revise, redirect, blocked — so `READY`, `PROCEED` and `SHIP IT` are recognisably the same kind of answer. The diagrams below render on GitHub; their Mermaid sources live in [`docs/loops/`](../../docs/loops) for re-rendering.
 
@@ -417,3 +421,140 @@ flowchart LR
 ```
 
 <!-- loop:modernize:end -->
+
+## `adopt` — a pile of AI ideas to a first wave its sponsor approved
+
+Readiness is scored **against the first slice**, not the whole organisation, so a gap only stops the use cases that need what is missing. The pilot is the slice's own users, and the **sponsor** approves the first wave.
+
+<!-- loop:adopt:start -->
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    triage["triage<br/><small>ai-use-case-triage</small>"]:::gen
+    readiness["readiness<br/><small>ai-readiness-assessment</small>"]:::review
+    policy["policy<br/><small>ai-usage-policy</small>"]:::gen
+    rollout["rollout<br/><small>ai-adoption-rollout</small>"]:::gen
+    sign-off["sign-off<br/><small>doc-critique</small>"]:::gate
+    G11{"G11 · review"}:::gate
+    G11_1{"G11.1 · human"}:::gate
+    DONE(["complete"]):::ship
+
+    triage --> readiness
+    readiness --> G11
+    G11 == "PROCEED" ==> policy
+    policy --> rollout
+    rollout --> sign-off
+    sign-off --> G11_1
+    G11_1 == "PROCEED" ==> DONE
+
+    G11 -- "REVISE (max 3)" --> triage
+    G11_1 -- "REVISE (max 3)" --> policy
+```
+
+<!-- loop:adopt:end -->
+
+## `ship-agent` — an agent's job to a launch its owner signed
+
+The threat model inventories the **design's** tools, so every path from untrusted content to private data and out gets an architectural fix before anything is built. At launch, the **built** configuration is checked against what the threat model allowed, and the **owner** decides.
+
+<!-- loop:ship-agent:start -->
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    design["design<br/><small>agent-loop-design·subagent-design</small>"]:::gen
+    budget["budget<br/><small>agent-budget</small>"]:::gen
+    threat["threat<br/><small>agent-threat-model</small>"]:::review
+    evals["evals<br/><small>llm-eval-harness</small>"]:::gen
+    launch["launch<br/><small>agent-config-review</small>"]:::gate
+    G12{"G12 · review"}:::gate
+    G12_1{"G12.1 · human"}:::gate
+    DONE(["complete"]):::ship
+
+    design --> budget
+    budget --> threat
+    threat --> G12
+    G12 == "PROCEED" ==> evals
+    evals --> launch
+    launch --> G12_1
+    G12_1 == "PROCEED" ==> DONE
+
+    G12 -- "REVISE (max 3)" --> design
+    G12_1 -- "REVISE (max 3)" --> threat
+```
+
+<!-- loop:ship-agent:end -->
+
+## `provision` — an infrastructure need to an apply a person approved
+
+The scope is written as resource addresses **before** any plan exists, so the review can't read the plan to fit it. Only a saved planfile is reviewed, and right before apply a **person** confirms it is the plan that was reviewed.
+
+<!-- loop:provision:start -->
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    module["module<br/><small>terraform-module</small>"]:::gen
+    plan["plan<br/><small>terraform-plan-review</small>"]:::review
+    apply["apply<br/><small>terraform-plan-review</small>"]:::gate
+    G13{"G13 · review"}:::gate
+    G13_1{"G13.1 · human"}:::gate
+    DONE(["complete"]):::ship
+
+    module --> plan
+    plan --> G13
+    G13 == "PROCEED" ==> apply
+    apply --> G13_1
+    G13_1 == "PROCEED" ==> DONE
+
+    G13 -- "REVISE (max 3)" --> module
+    G13_1 -- "REVISE (max 3)" --> plan
+```
+
+<!-- loop:provision:end -->
+
+## `clarify` — a service people struggle with to words that reach the complaints
+
+The complaints are written down first. After the page and the strings are rewritten, the blueprint traces every complaint to the cell that causes it, which shows the ones **new words can't stop**: those go to the service's owner.
+
+<!-- loop:clarify:start -->
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
+flowchart LR
+    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
+    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
+    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
+    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
+
+    page["page<br/><small>content-design</small>"]:::gen
+    strings["strings<br/><small>ux-writing</small>"]:::gen
+    blueprint["blueprint<br/><small>service-blueprint</small>"]:::review
+    G14{"G14 · review"}:::gate
+    DONE(["complete"]):::ship
+
+    page --> strings
+    strings --> blueprint
+    blueprint --> G14
+    G14 == "PROCEED" ==> DONE
+
+    G14 -- "REVISE (max 3)" --> page
+```
+
+<!-- loop:clarify:end -->

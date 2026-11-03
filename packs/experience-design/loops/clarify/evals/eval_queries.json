@@ -1,0 +1,10 @@
+[
+  {"query": "people can't use our permit service: fix the page and the form and find out why they keep calling", "should_trigger": true},
+  {"query": "run the clarify loop on the benefits application journey", "should_trigger": true},
+  {"query": "we keep getting 'where is my order' calls, rewrite the help page and check whether that will even fix it", "should_trigger": true},
+  {"query": "fix this page and form, here are last quarter's complaints", "should_trigger": true},
+  {"query": "rewrite this page in plain English", "should_trigger": false},
+  {"query": "write the error messages for our signup form", "should_trigger": false},
+  {"query": "build a service blueprint of our claims process", "should_trigger": false},
+  {"query": "reorganise our help centre navigation", "should_trigger": false}
+]

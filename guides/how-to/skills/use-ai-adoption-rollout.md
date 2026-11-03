@@ -59,6 +59,10 @@ A good result:
 - Writing the rules for what may be put into the tool — that's [`ai-usage-policy`](../../../packs/ai-engineering/skills/ai-usage-policy/SKILL.md).
 - Reporting on adoption that already happened — that's `ai-usage-report`.
 
+## Where a loop runs it
+
+- Stage `rollout` of the [`adopt` loop](../../../packs/ai-engineering/loops/adopt/LOOP.md)
+
 ## Next
 
 - [SKILL.md](../../../packs/ai-engineering/skills/ai-adoption-rollout/SKILL.md), the instructions the agent reads

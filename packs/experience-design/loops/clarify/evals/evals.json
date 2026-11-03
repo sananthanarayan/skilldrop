@@ -1,0 +1,68 @@
+{
+  "loop_name": "clarify",
+  "evals": [
+    {
+      "id": "words-and-backstage-split",
+      "prompt": "Run the clarify loop on Ashby Vale Council's parking permit service. The current page:\n\n\"Residents' Parking Permits. Eligibility for a residents' parking permit (RPP) is determined in accordance with the Traffic Management Order applicable to your zone. Applicants must furnish proof of residency (see Schedule 2) and vehicle registration documentation. Applications are processed within the statutory timeframe. Permits are issued digitally; no paper permit will be displayed.\"\n\nThe form asks for 'RPP zone', 'V5C reference' and 'Proof type (Sched. 2)'. Last quarter's calls: 412 'where is my permit', 188 'which documents count as proof', 97 'do I need to put anything in my windscreen', 60 'what zone am I in'. The team says applications sit in a shared inbox until someone checks documents, which takes 2 to 15 working days; nobody emails the applicant when the permit is live. Non-interactive: no follow-up questions.",
+      "assertions": [
+        "Writes down the four complaint types with their counts before rewriting anything",
+        "The content spec's questions come from the complaints: proof documents, zone, nothing in the windscreen, and how long it takes",
+        "The form strings use the same terms the page chose, and replace 'RPP zone', 'V5C reference' and 'Proof type (Sched. 2)' with plain words",
+        "The blueprint traces 'where is my permit' to the shared-inbox wait and the missing confirmation email, both backstage",
+        "Marks each complaint as reached by the page, reached by the strings, or caused backstage",
+        "Gives G14 PROCEED WITH CONDITIONS or RECONSIDER, not PROCEED, because the biggest complaint is caused backstage, and names the backstage fix with an owner role",
+        "The page tells applicants how long processing takes, using the 2 to 15 working days the team gave",
+        "Does not invent a processing time, owner name or statistic the prompt did not give"
+      ]
+    },
+    {
+      "id": "missed-complaint-sends-it-back",
+      "prompt": "Continuing the clarify loop. The blueprint traced 188 calls a quarter ('which documents count as proof') to the page, but the new page.md still just says 'Upload proof that you live at this address' with no list of what counts. Everything else lined up. What's the G14 verdict and what happens next?",
+      "assertions": [
+        "Gives G14 REVISE because a complaint caused by the words is reached by no line",
+        "Returns to page with that complaint, not to the blueprint",
+        "Says the strings stage re-runs if the change touches the form's proof upload field",
+        "Counts the next attempt as round 2 under the cap of 3",
+        "Does not invent the list of accepted documents; marks it for the team to supply if the input doesn't give it"
+      ]
+    },
+    {
+      "id": "blocked-without-a-service",
+      "prompt": "Run the clarify loop. Our users are confused. Non-interactive, no follow-up questions.",
+      "assertions": [
+        "Emits BLOCKED naming what is missing: the service, one customer scenario, and the current page or form",
+        "Does not invent a service, page or complaints",
+        "Does not produce a content spec, strings or blueprint",
+        "Says in plain words what it will produce once it has them"
+      ]
+    },
+    {
+      "id": "clarify-parking-permit-with-call-data",
+      "held_out": "2026-11-03",
+      "prompt": "People can't use our resident parking permit service and the phones never stop. The current page is permit-page.md, the form is form-fields.csv, last quarter's call reasons are in calls-q3.csv and I sat with the permits team and wrote up how it works behind the scenes (backoffice-notes.md). Run the clarify loop, I want to know what we can fix on the page and what we can't.",
+      "assertions": [
+        "Runs content design, then UX writing, then the service blueprint, then gate G14, and the string table reuses the content spec's terms (one name for proof of address, and 'registration number' or similar rather than 'VRM')",
+        "The content spec builds its user needs from the call reasons, lists the questions the page must answer in priority order, gives a plain-language rewrite of permit-page.md with a before/after readability check, and lists what to cut and why",
+        "The string table covers every field in form-fields.csv, and each error says what happened and what to do next, including the 4 MB limit and accepted formats on uploads and how to enter a registration number",
+        "The blueprint places each of the seven call reasons at a step and layer, marking as fail points with owners the Tuesday/Thursday evidence batches, Friday printing and second-class post, the 4 MB platform cap, the no-spaces registration check, and the double charge after pressing Back on a timed-out payment",
+        "Gate G14 sends 'Where is my permit' (batching and post) and 'Charged twice' out to product as backstage fixes, naming the Digital Services manager for the payment fault, rather than claiming the copy fixes them; the page may still set an honest expectation from the 13-working-day average",
+        "Any page-fixable fail point the first pass misses (such as the unlinked postcode zone lookup, the accepted and rejected proofs of address, or the 50-a-year visitor permit allowance) sends the work back to the page with a REVISE verdict, and the final mapping shows every page-fixable fail point covered",
+        "Does not invent call volumes, timescales, prices, rules or owners not in the inputs"
+      ]
+    },
+    {
+      "id": "clarify-garden-waste-no-complaint-data",
+      "held_out": "2026-11-03",
+      "prompt": "People can't use our garden waste subscription page and sign-up form, everyone says so. Page is garden-waste-page.md, form fields are in form-fields.csv. I don't have any call data, the contact centre won't share it until next quarter, so just fix it with what's there.",
+      "assertions": [
+        "Runs content design, then UX writing, then the service blueprint, in that order, and still produces a content spec, plain-language rewrite and string table from the page and form",
+        "Says plainly that no complaint or call data was supplied, and labels the user needs and fail points it draws from the page and form as assumptions to test",
+        "The blueprint marks its fail points as hypotheses (for example, where to find the bin serial number, how long the permit sticker takes to arrive, the full-year charge for a late start) rather than as confirmed complaint drivers",
+        "Gate G14 does not report a pass on evidence it lacks: the verdict is PROCEED WITH CONDITIONS or NOT READY, naming the contact centre's call reasons as what is needed to confirm the fixes reach the fail points",
+        "The string table covers every field in form-fields.csv, and each error says what happened and what to do next",
+        "Delivers the work in this reply rather than stopping to ask for the call data",
+        "Does not invent call volumes or complaint themes presented as fact, or service details not on the page such as sticker delivery times, bin delivery times or collection days"
+      ]
+    }
+  ]
+}
