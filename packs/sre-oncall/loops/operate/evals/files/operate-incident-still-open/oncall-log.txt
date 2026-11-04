@@ -1,0 +1,17 @@
+#payments-oncall, Wednesday 2026-11-04 (times UTC)
+
+01:31  alertbot: PAGE WebhookDeliveryLatencyHigh — p95 merchant webhook delivery latency 9m (threshold 2m)
+01:33  Noor (on-call): ack. looking
+01:38  Noor (on-call): retry queue for webhook-dispatcher at 1,450 and growing. most failures are timeouts calling merchant endpoints
+01:44  Noor (on-call): not obviously a deploy, last dispatcher deploy was Monday
+01:52  Noor (on-call): p95 latency 25m now. merchants on the status page subscriber list will start noticing
+01:55  Noor (on-call): posted to status page: "Investigating — some merchants may see delayed payment webhooks. Next update 02:30 UTC."
+02:04  Noor (on-call): seeing a lot of timeouts against one partner relay (relay-eu.partner.example), but also some against merchants direct. not sure which is cause and which is effect
+02:10  Noor (on-call): scaled webhook-dispatcher consumers 12 -> 30 to chew through the backlog
+02:35  Noor (on-call): retry queue 900, falling
+03:05  Noor (on-call): retry queue 240. backlog draining
+03:40  Noor (on-call): p95 delivery latency back to 40s. looks like we're through the worst
+03:41  alertbot: RESOLVED WebhookDeliveryLatencyHigh
+03:52  Noor (on-call): leaving consumers at 30 for now
+04:10  Noor (on-call): hmm. retry queue growing again, 2,100 -> 3,400 in the last 20 min. error rate on calls through relay-eu at 12%. latency alert hasn't re-fired yet
+04:12  Noor (on-call): going to look properly in the morning, too tired to think. consumers still at 30

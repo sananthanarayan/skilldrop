@@ -80,7 +80,7 @@ Tier **light** · v0.1.2 · [SKILL.md](../../../packs/converters/skills/md-to-co
 
 Turn a Markdown draft into a Word document (.docx) that someone outside engineering can open, edit and track changes in, with real Heading styles so the navigation pane and table of contents work, live hyperlinks, numbered and bulleted lists, tables, code blocks, embedded images and optional brand fonts and colours, and a warning for everything that could not be carried over.
 
-Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/converters/skills/md-to-docx/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/md-to-docx/)
+Tier **heavy** · v0.1.4 · [SKILL.md](../../../packs/converters/skills/md-to-docx/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/md-to-docx/)
 
 **Use it when** the user wants a Markdown file as a Word doc, says "send this as a .docx", "convert to Word", "legal needs it in Word", or "make this editable for the client".
 

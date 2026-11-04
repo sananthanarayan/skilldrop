@@ -1,0 +1,11 @@
+# edge cases collected by ops, Oct 2026
+20000201Credit Balance Ltd       -2000  30S
+20000202Half Pence S             33500  30S
+20000203Half Pence P             60050  30P
+20000204Exactly Grace            99999  14S
+20000205Unknown Tier             50000  30X
+20000206Cap Then Double         300000  91P
+20000207lower case name          40000  30S
+20000208Short Line          123
+20000209Bad Balance            12a4567  30S
+20000210Exactly Ninety          400000  90S

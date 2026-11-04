@@ -40,7 +40,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/solution-architect/skil
 
 Draft an OpenAPI 3.1 contract from a feature brief or story — resource-oriented paths, a full error catalog (RFC 9457), pagination/idempotency/versioning decided not deferred, examples on every operation, plus a decisions log so review argues choices instead of YAML.
 
-Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/solution-architect/skills/api-contract-draft/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/api-contract-draft/)
+Tier **light** · v0.1.3 · [SKILL.md](../../../packs/solution-architect/skills/api-contract-draft/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/api-contract-draft/)
 
 **Use it when** the user wants to design an API, draft an OpenAPI/Swagger spec, define request/response shapes, or agree a contract between frontend/backend or two teams before code.
 
@@ -65,7 +65,7 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/solution-architect/skil
 
 Generate architecture diagrams (Mermaid, PlantUML, C4) from a written description of a system. Supports AWS/Azure/GCP cloud topologies, microservice landscapes, sequence flows, container diagrams, and ER models.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skills/architecture-diagrams/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/architecture-diagrams/)
+Tier **light** · v0.1.1 · [SKILL.md](../../../packs/solution-architect/skills/architecture-diagrams/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/architecture-diagrams/)
 
 **Use it when** Use whenever the user asks for an architecture diagram, system sketch, flow diagram, or visualization of a design.
 
@@ -107,7 +107,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skil
 
 Generate a Google-style engineering design doc (problem, goals/non-goals, options considered, recommended approach, risks, rollout) from a feature brief or short description.
 
-Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/solution-architect/skills/design-doc/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/design-doc/)
+Tier **light** · v0.1.4 · [SKILL.md](../../../packs/solution-architect/skills/design-doc/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/design-doc/)
 
 **Use it when** the user wants to draft a design doc, technical proposal, or one-pager for an engineering review.
 
@@ -157,7 +157,7 @@ Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/solution-architect/skil
 
 Work with Figma and FigJam files via the Figma REST API — read existing file structure, list frames/pages, post comments, and produce FigJam-importable diagram specs.
 
-Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/solution-architect/skills/figma-diagrams/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/figma-diagrams/)
+Tier **light** · v0.1.4 · [SKILL.md](../../../packs/solution-architect/skills/figma-diagrams/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/figma-diagrams/)
 
 **Use it when** the user mentions a Figma URL, asks to inspect/audit a Figma file, wants to comment on a design programmatically, or wants their architecture diagram in Figma.
 

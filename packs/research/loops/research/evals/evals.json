@@ -34,6 +34,34 @@
         "Does not invent a decision or gather sources",
         "Says in plain words what it will produce once it has the decision"
       ]
+    },
+    {
+      "id": "research-trial-conversion-drop",
+      "held_out": "2026-11-04",
+      "prompt": "Research why trial-to-paid dropped in September. We have to decide by the 15th whether the onboarding email rebuild goes ahead of the pricing page A/B test on next quarter's roadmap, so I need to know which explanation actually holds up. Everything we've got is in sources/ (six files).",
+      "assertions": [
+        "Starts with a research plan tied to the roadmap decision in the prompt (onboarding email rebuild versus pricing page A/B test), with sub-questions and what finding would change the decision, before any synthesis",
+        "The synthesis cites a source for each claim and counts the growth recap (s6) once, as a repeat of the s1 figures rather than independent confirmation",
+        "Sets out rival explanations including at least onboarding email deliverability, the 15 September pricing page change, the Vantor free tier and seasonality",
+        "Ranks by contradicting evidence: the drop starts with the 31 Aug and 7 Sep cohorts, before the 15 Sep pricing change and the 10 Sep Vantor launch, the 21 Sep cohort recovers while both are still in place, and the 2025 September cohorts show no dip",
+        "Puts the broken DKIM on the onboarding emails (2 to 19 September) as the least-contradicted explanation, and names the missing join between email opens and conversion as the linchpin or the remaining check",
+        "Gives a G7 verdict that lets the answer go forward (such as PROCEED or PROCEED WITH CONDITIONS) rather than sending the work back",
+        "Does not invent figures not in the sources, such as revenue lost, conversion rates for users who did or did not open the emails, or a count of trial users who tried Vantor"
+      ]
+    },
+    {
+      "id": "research-ticket-spike-confounded",
+      "held_out": "2026-11-04",
+      "prompt": "Research what's behind the jump in support tickets since early October. Ops need to know by Monday whether to roll back the app 4.2 navigation or put temp staff on billing queries, we can't do both. Sources are in sources/. Just give me the answer.",
+      "assertions": [
+        "The plan ties the work to the rollback-versus-temp-staff decision and says what finding would favour each option, before any synthesis",
+        "The synthesis cites a source for each claim and notes that October tickets carry no topic tags because tagging stopped on 28 September",
+        "Treats the agent poll (5 against 4) as opinion, not as evidence that separates the two explanations",
+        "The comparison shows that the billing migration (live 5 October) and the 4.2 release (6 October) landed in the same week, and that 'where is my invoice' tickets and the October reviews fit both, so neither is clearly less contradicted",
+        "The G7 gate does not let the answer go forward as decided: it returns a send-back verdict (such as REVISE) rather than PROCEED",
+        "Names a specific observation that would tell the two apart, such as re-tagging a sample of October tickets by topic or comparing ticket rates for web-only customers (billing change, no app change) against app users",
+        "Does not invent a ticket breakdown by topic, a count of duplicate authorisations, or a cause the sources do not support"
+      ]
     }
   ]
 }

@@ -46,10 +46,10 @@ class StagingTest(unittest.TestCase):
 
     def test_a_real_skill_whose_script_reads_templates_still_has_them(self):
         with workdir() as ws:
-            dest = run_bench.stage_skill("ai-usage-report", ws, "tools")
+            dest = run_bench.stage_skill("brand-kit", ws, "tools")
             self.assertTrue(os.path.isdir(os.path.join(dest, "templates")))
             self.assertFalse(os.path.exists(os.path.join(dest, "SKILL.md")))
-            r = subprocess.run([sys.executable, os.path.join(dest, "scripts", "build_report.py"), "--help"],
+            r = subprocess.run([sys.executable, os.path.join(dest, "scripts", "check_brand.py"), "--help"],
                                capture_output=True, text=True)
             self.assertNotIn("Traceback", r.stderr)
 

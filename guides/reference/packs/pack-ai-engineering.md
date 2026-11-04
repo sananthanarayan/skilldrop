@@ -13,7 +13,7 @@ Adopt and build AI systems: readiness assessment, use-case triage, rollout and a
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack ai-engineering` |
-| Skills | 15 plus 5 from core |
+| Skills | 14 plus 5 from core |
 | Loops | adopt, ship-agent |
 | How-to | [Use the AI engineering pack](../../how-to/packs/use-the-ai-engineering-pack.md) |
 
@@ -23,7 +23,7 @@ Adopt and build AI systems: readiness assessment, use-case triage, rollout and a
 
 Place an engineering team on the agentic-coding adoption ladder (0 gated → 4 intent-steered) using observables like agents-in-flight per engineer and who writes the code, name the one bottleneck gating the next step, prescribe the single next unlock, and state which current guardrail must change.
 
-Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/ai-engineering/skills/agent-adoption-stage/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/agent-adoption-stage/)
+Tier **light** · v0.1.4 · [SKILL.md](../../../packs/ai-engineering/skills/agent-adoption-stage/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/agent-adoption-stage/)
 
 **Use it when** a leader asks "how far along are we with coding agents", "why has our AI adoption plateaued", or "what do we do next to get more out of this". Do NOT use to assess organisational preconditions like data, policy, and culture (that's ai-readiness-assessment) or to plan a tool's human rollout (that's ai-adoption-rollout).
 
@@ -43,7 +43,6 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/ai-engineering/skills/a
 - Assessing organisational preconditions — data, policy ownership, incentives — that's [`ai-readiness-assessment`](../../../packs/ai-engineering/skills/ai-readiness-assessment/SKILL.md), a different axis (a team can be governance-ready and stuck at stage 1).
 - Planning how a tool reaches people — cohorts, enablement, comms — that's [`ai-adoption-rollout`](../../../packs/ai-engineering/skills/ai-adoption-rollout/SKILL.md).
 - Choosing which use cases to build — that's [`ai-use-case-triage`](../../../packs/ai-engineering/skills/ai-use-case-triage/SKILL.md).
-- Reporting measured usage from telemetry — that's [`ai-usage-report`](../../../packs/ai-engineering/skills/ai-usage-report/SKILL.md).
 - Designing one specific loop or fleet — that's `agent-loop-design` / `subagent-design`, which this skill routes *to*.
 
 ### `agent-budget`
@@ -187,7 +186,7 @@ Tier **heavy** · v0.2.1 · [SKILL.md](../../../packs/ai-engineering/skills/agen
 
 Plan the human rollout of an AI tool or workflow to an organisation — sized cohorts, enablement per cohort, named champions, a comms plan that states what will not change, and an adoption gate every wave must pass before the next one opens.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/ai-adoption-rollout/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/ai-adoption-rollout/)
+Tier **light** · v0.1.2 · [SKILL.md](../../../packs/ai-engineering/skills/ai-adoption-rollout/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/ai-adoption-rollout/)
 
 **Use it when** a tool has been chosen and the question is how it reaches people without stalling or backlash. Do NOT use to phase a technical cutover (that's migration-plan) or to choose which use case to roll out (that's ai-use-case-triage).
 
@@ -207,13 +206,12 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/a
 - Choosing which use case to roll out — that's [`ai-use-case-triage`](../../../packs/ai-engineering/skills/ai-use-case-triage/SKILL.md).
 - Deciding whether the organisation is ready at all — that's [`ai-readiness-assessment`](../../../packs/ai-engineering/skills/ai-readiness-assessment/SKILL.md).
 - Writing the rules for what may be put into the tool — that's [`ai-usage-policy`](../../../packs/ai-engineering/skills/ai-usage-policy/SKILL.md).
-- Reporting on adoption that already happened — that's `ai-usage-report`.
 
 ### `ai-readiness-assessment`
 
 Score an organisation's or team's readiness to adopt AI tooling across six gating dimensions — data, tooling, skills, governance, process, and culture — with an evidence line per score and the blocking gaps ranked by what stops adoption first.
 
-Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/ai-engineering/skills/ai-readiness-assessment/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/ai-readiness-assessment/)
+Tier **standard** · v0.1.4 · [SKILL.md](../../../packs/ai-engineering/skills/ai-readiness-assessment/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/ai-readiness-assessment/)
 
 **Use it when** the user asks "are we ready for AI", wants an AI maturity or readiness baseline, or needs to know what to fix before rolling tools out. Do NOT use to pick which use cases to build (that's ai-use-case-triage) or to plan the rollout itself (that's ai-adoption-rollout).
 
@@ -232,7 +230,6 @@ Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/ai-engineering/skills/a
 - Planning the rollout once you've decided to go — that's [`ai-adoption-rollout`](../../../packs/ai-engineering/skills/ai-adoption-rollout/SKILL.md).
 - Writing the rules for what people may put into a tool — that's [`ai-usage-policy`](../../../packs/ai-engineering/skills/ai-usage-policy/SKILL.md).
 - A market or competitive question ("should we enter this space?") — that's `strategy-analysis`.
-- Measuring adoption that has already happened — that's `ai-usage-report`.
 - **Assessing how far an engineering team's agent practice has actually got** — agents in flight, who writes the code, what still gets reviewed — that's [`agent-adoption-stage`](../../../packs/ai-engineering/skills/agent-adoption-stage/SKILL.md). It's the orthogonal axis: this skill scores whether the *organisation* can adopt at all; that one scores how far the *practice* has got. A team can be governance-ready and stuck at stage 1, or running ten agents with no policy at all — run both when the answers disagree.
 
 ### `ai-usage-policy`
@@ -260,38 +257,11 @@ Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/ai-engineering/skills/a
 - Assessing whether governance is mature enough yet — that's [`ai-readiness-assessment`](../../../packs/ai-engineering/skills/ai-readiness-assessment/SKILL.md).
 - A security review of a design — that's `threat-model`.
 
-### `ai-usage-report`
-
-Generate a per-user or team-level report on how AI tools are being used — volume, breadth, and effectiveness signals (e.g. whether AI outputs landed in shipped artifacts vs were generated and discarded). Consumes usage-event logs exported from an MCP server or other telemetry source.
-
-Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/ai-engineering/skills/ai-usage-report/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/ai-usage-report/)
-
-**Use it when** a manager or team lead needs to understand AI adoption beyond raw counts — including spotting "AI theater" where people invoke AI to claim usage but don't act on the outputs.
-
-**Needs:** Python 3 for its scripts (standard library only).
-
-**A good result:**
-
-- **Numbers are computed from the input, not estimated.** If the script cannot compute a metric (missing field), the column is omitted with a note. Never fill with `~` or `est.` placeholders.
-- **Per-user reports include only users present in the input.** Don't infer missing users from elsewhere.
-- **The "AI theater" framing lives in section headers, not in per-user judgments.** Say "Single-shot rate: 87%" — never "Alice is doing AI theater."
-- **Privacy posture matches the view.** `per-user` names individuals; `team-rollup` never names anyone, even in passing.
-- **Recommendations target patterns, not people.** "Consider a deeper-engagement workshop for the team" — never "Coach Alice to engage more deeply."
-- **Period is explicit on the report header.** Every report shows the dates it covers.
-- **Sample size is honored.** If `n_users < 5` in a team-rollup, the report is no longer anonymous — refuse to generate the team-rollup view and tell the user why.
-
-**Not for:**
-
-- You don't have usage telemetry yet — the skill consumes data, doesn't collect it. The collection-side spec (event schema, MCP server) lives in the skilldrop repo at `docs/designs/ai-usage-telemetry-design.md`.
-- You want to *judge* specific named people. The skill surfaces patterns; performance judgments based on AI usage are a different (and harder) decision.
-- The input lacks every effectiveness field. You can still produce a volume report, but call out the limitation explicitly — don't ship a report that looks like effectiveness analysis when it isn't.
-- Your team is < 5 people *and* the view is team-rollup. Aggregate views aren't anonymous at that size.
-
 ### `ai-use-case-triage`
 
 Turn a pile of candidate AI use cases into a ranked portfolio — each scored on value, feasibility, and risk with the weights shown, a recommended first slice that can prove or kill the thesis, and an explicit not-yet list with the condition that would promote each entry.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/ai-use-case-triage/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/ai-use-case-triage/)
+Tier **light** · v0.1.1 · [SKILL.md](../../../packs/ai-engineering/skills/ai-use-case-triage/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/ai-use-case-triage/)
 
 **Use it when** a team has more AI ideas than capacity and needs to choose, or asks "where should we actually start with AI". Do NOT use to assess whether the organisation is ready at all (that's ai-readiness-assessment) or to price a single decision (that's business-case).
 
@@ -315,7 +285,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/a
 
 Audit whether an LLM-as-judge, or a panel of judges, can be trusted for the decision its scores drive, before anyone acts on them — above all whether the judge errs differently on the variants being compared (prompt v1 vs v2, model A vs B, short vs long inputs), plus chance-corrected and weighted agreement with expert labels, precision and recall on a rare class, each run reported separately with the items that flipped, position and length bias, and confidence intervals, checked against the user's own gate or criterion and ending in a direct answer (ship or not, which judge to use).
 
-Tier **standard** · v0.3.1 · [SKILL.md](../../../packs/ai-engineering/skills/judge-audit/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/judge-audit/)
+Tier **standard** · v0.3.2 · [SKILL.md](../../../packs/ai-engineering/skills/judge-audit/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/judge-audit/)
 
 **Use it when** the user asks "can we trust our LLM judge", "is our grader reliable enough to gate releases", "the grader says v2 is better, can we ship it", "which is the cheapest judge we can switch to", "our two judges agree 90%, is that good", "can we turn on auto-remove", "check our judge for position bias", or has a file of judge scores and wants to know whether to act on them.
 
@@ -338,14 +308,13 @@ Tier **standard** · v0.3.1 · [SKILL.md](../../../packs/ai-engineering/skills/j
 
 - Designing the eval set, grading methods and pass bar for an LLM feature — `llm-eval-harness`
 - Generating eval cases for a skill's `evals/` folder — `eval-harness-generator`
-- Measuring how much teams use AI tools — `ai-usage-report`
 - Inter-rater reliability for humans only, with no model in the loop — the statistics transfer, but the bias checks here assume a model
 
 ### `llm-eval-harness`
 
 Design an evaluation harness for an LLM-powered feature — a versioned golden set (representative + adversarial + regression cases), the cheapest adequate grading method per case, a metric with a pre-set pass bar and regression gate, and a failure taxonomy that targets iteration.
 
-Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/ai-engineering/skills/llm-eval-harness/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/llm-eval-harness/)
+Tier **light** · v0.1.4 · [SKILL.md](../../../packs/ai-engineering/skills/llm-eval-harness/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/llm-eval-harness/)
 
 **Use it when** the user is building or tuning an LLM feature (prompt, RAG, agent, classifier) and needs evals, a way to test prompt/model changes, or to stop shipping quality regressions on vibes.
 
@@ -360,7 +329,6 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/ai-engineering/skills/l
 
 **Not for:**
 
-- Tabulating AI usage/adoption telemetry — that's `ai-usage-report`
 - Product-outcome metrics for a feature (adoption, handle time) — that's `success-metrics`
 - Picking which model/vendor to buy on price, terms or support — this measures quality on your task, which is one input to that decision
 - The provider-specific API mechanics (token counting, streaming, tool-call format) — consult the provider's own reference; this skill is the eval methodology

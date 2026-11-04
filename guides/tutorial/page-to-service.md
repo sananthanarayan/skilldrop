@@ -119,6 +119,20 @@ It ranks three fixes:
 The first two are why "where is my permit" is two thirds of the calls. A better page
 couldn't fix them, and a better form couldn't either.
 
+## Run all three as a loop next time
+
+The `clarify` loop runs the same three skills in order. It writes the complaints down before
+anything is rewritten, and its gate checks each complaint against the new page, the new
+strings and the blueprint.
+
+```bash
+npx skilldrop-cli install --loop clarify
+```
+
+Then ask, for example: *"Run the clarify loop on our permit page, form and last quarter's
+calls."* At G14 it says which complaints the new words reach, and which need the service
+itself to change, with an owner for each.
+
 ## What you have now
 
 A page residents can read on a phone, a string table a developer can paste in, and a

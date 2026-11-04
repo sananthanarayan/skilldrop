@@ -1,12 +1,12 @@
 # skilldrop
 
-> 113 portable skills for the artifacts knowledge work ships (ADRs, design docs,
+> 111 portable skills for the artifacts knowledge work ships (ADRs, design docs,
 > PRDs, runbooks, threat models, decks, postmortems), plus 15 loops that sequence them
 > behind gates. A loop orders skills; a skill never calls a skill, so every one of the
-> 113 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
+> 111 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 1.3.0.
+> Version 1.4.0.
 
 ## Start here
 
@@ -109,7 +109,6 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use ai-adoption-rollout](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-ai-adoption-rollout.md) *(how-to)*: Plan the human rollout of an AI tool or workflow to an organisation
 - [Use ai-readiness-assessment](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-ai-readiness-assessment.md) *(how-to)*: Score an organisation's or team's readiness to adopt AI tooling across six gating dimensions
 - [Use ai-usage-policy](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-ai-usage-policy.md) *(how-to)*: Draft an organisation's AI use policy or staff guidance from what it has told you about its people, tools, data and worries
-- [Use ai-usage-report](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-ai-usage-report.md) *(how-to)*: Generate a per-user or team-level report on how AI tools are being used
 - [Use ai-use-case-triage](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-ai-use-case-triage.md) *(how-to)*: Turn a pile of candidate AI use cases into a ranked portfolio
 - [Use api-contract-draft](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-api-contract-draft.md) *(how-to)*: Draft an OpenAPI 3.1 contract from a feature brief or story
 - [Use application-form-answers](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-application-form-answers.md) *(how-to)*: Prepare the answers to a job application form from the person's resume
@@ -154,7 +153,6 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use job-fit-analysis](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-job-fit-analysis.md) *(how-to)*: Compare a job posting with a resume and say honestly whether to apply
 - [Use judge-audit](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-judge-audit.md) *(how-to)*: Audit whether an LLM-as-judge, or a panel of judges, can be trusted for the decision its scores drive, before anyone acts on them
 - [Use launch-readiness](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-launch-readiness.md) *(how-to)*: Produce a go/no-go launch readiness report for a merged change before it goes live
-- [Use lean-canvas](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-lean-canvas.md) *(how-to)*: Turn a startup or internal-product idea into a lean canvas that finds what could kill it
 - [Use llm-eval-harness](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-llm-eval-harness.md) *(how-to)*: Design an evaluation harness for an LLM-powered feature
 - [Use mcp-pairing](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-mcp-pairing.md) *(how-to)*: Recommend which MCP servers to connect for a loop, workflow or task, stage by stage, with the narrowest access that works
 - [Use md-to-confluence](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-md-to-confluence.md) *(how-to)*: Turn a Markdown runbook, design note or guide into a Confluence page
@@ -248,7 +246,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Skills that ship scripts](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/skills-with-scripts.md) *(reference)*: Every skill that ships scripts and what each declares it needs — packages, environment variables, hosts, programs and files — and how to invoke a skill from Claude Code or any other IDE.
 - [Updates and the install ledger](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/update-and-ledger.md) *(reference)*: What outdated, update, diff and doctor compare and decide — the ledger file, how edited files become .upstream, every update flag, and the edge cases.
 - [Versioning and what stays stable](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/versioning-and-stability.md) *(reference)*: What skilldrop promises from 1.0.0 — the CLI, skill folders and names, scripts' flags and exit codes, loops, packs, the GitHub Action and plugin names — what each kind of release can change, and how deprecation and retirement work.
-- [From use-case to deployed agent — the AI engineering workflow](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/ai-engineering-workflow.md) *(tutorial)*: End-to-end AI adoption: triage the use case, assess org readiness, design the loop and agents, threat-model the system, build the evals, measure what shipped.
+- [From use-case to deployed agent — the AI engineering workflow](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/ai-engineering-workflow.md) *(tutorial)*: End-to-end AI adoption: triage the use case, assess org readiness, design the loop and agents, threat-model the system, build the evals.
 - [From complaint to closed incident](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/complaint-to-closed-incident.md) *(tutorial)*: A user complaint triggers a full response cycle — discover what's broken, operate to fix it, and close the loop with a postmortem and runbook update. Uses the discover and operate loops.
 - [From a dashboard request to numbers people can defend](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/dashboard-request-to-defensible-numbers.md) *(tutorial)*: Run the measure loop on a real request. The spec cuts the charts that serve no decision, the SQL review catches a join that inflated revenue, and the loop stops for the metric owners instead of picking between two teams' definitions of an active customer.
 - [From story to merged code — the dev-team workflow](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/dev-team-workflow.md) *(tutorial)*: A complete dev-team session: split the story, implement with checkpoints, gate with the review panel, document what shipped.
@@ -271,12 +269,12 @@ except `api-builder` requires `core`, which installs with it.
 
 - **core** (5 skills, loops: ship-a-draft): The cross-role toolkit every pack builds on: structured intake, document critique, the review council, output hygiene, and the decision graph behind a codebase, plus the ship-a-draft wrapper. Installed automatically with every role pack.
 - **solution-architect** (11 skills, loops: design, requires core): Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.
-- **product-manager** (10 skills, loops: discover, requires core): Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, and success measurement.
+- **product-manager** (9 skills, loops: discover, requires core): Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, and success measurement.
 - **dev-team** (20 skills, loops: build, modernize, release, requires core): Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, pull request descriptions, a ranked technical-debt register, migrations, launch readiness, release notes, agent-policy files, and code-quality gates.
 - **sre-oncall** (8 skills, loops: operate, requires core): Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.
 - **stakeholder-comms** (4 skills, requires core): Non-technical audiences: audience profiling, exec summaries, decision logs, and guides. Decks live in the design pack.
 - **design** (2 skills, requires core): On-brand visual work: capture a brand once as a brand.json the Word and PowerPoint converters apply, and plan a deck slide by slide for its audience.
-- **ai-engineering** (15 skills, loops: adopt, ship-agent, requires core): Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, and AI-usage reporting.
+- **ai-engineering** (14 skills, loops: adopt, ship-agent, requires core): Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, and AI-usage reporting.
 - **api-builder** (4 skills): Skills for teams building on the Anthropic API — prompt caching, token budgeting, eval generation for skills, and tool-use schema writing.
 - **converters** (5 skills, requires core): Turn Markdown into Word, Excel, PowerPoint and Confluence files that people outside engineering can open, and turn their files back into Markdown. Standard-library Python scripts, with nothing to install.
 - **experience-design** (5 skills, loops: clarify, requires core): The experience around a product: the structure people navigate, the content and interface words they read, the components they use, and the service behind it all.
@@ -291,13 +289,13 @@ except `api-builder` requires `core`, which installs with it.
 
 ## Outcomes — browse by why you are here
 
-- **decide-what-to-build** (13 skills): Turn a direction into a committed, measurable plan: press releases, strategy frameworks, OKRs, business cases, requirements, PRDs, and the metrics that will say whether it worked.
+- **decide-what-to-build** (12 skills): Turn a direction into a committed, measurable plan: press releases, strategy frameworks, OKRs, business cases, requirements, PRDs, and the metrics that will say whether it worked.
 - **design-the-system** (18 skills): Commit the shape before the code: decision records, design docs, diagrams, API and data contracts, migration and threat models, and the design of any agentic parts.
 - **build-and-review-software** (24 skills): The loop around the code itself: supervised implementation, adversarial review panels, test plans, triage, pull request descriptions, a ranked technical-debt register, accessibility and static-analysis passes, and the policy files agents read.
 - **build-on-the-claude-api** (4 skills): Skills for teams building directly on the Anthropic API — prompt caching strategy, token budgeting, eval generation, and tool-use schema writing.
 - **run-and-recover-the-service** (11 skills): Operate what shipped: runbooks, observability design, release notes, incident communication, and the postmortem that closes the loop.
 - **explain-it-to-decision-makers** (6 skills): Get a non-technical audience to a decision: audience profiling, deck outlines and real decks, exec summaries, decision logs, and how-to guides.
-- **govern-ai-use** (8 skills): Adopt AI deliberately and prove what it is doing: readiness assessment, use-case triage, rollout plans, acceptable-use policy, adoption staging, and usage reporting.
+- **govern-ai-use** (7 skills): Adopt AI deliberately and prove what it is doing: readiness assessment, use-case triage, rollout plans, acceptable-use policy, adoption staging, and usage reporting.
 - **create-on-brand-collateral** (2 skills): Make collateral that looks like it came from your team: capture the brand once, then build decks with your logo, colours and fonts.
 - **get-a-draft-ready-to-ship** (8 skills): The passes either side of a generator: collect a messy input into a structured brief, critique the argument, and strip the machine artifacts before it leaves the building.
 - **design-the-experience** (5 skills): Shape what people see and read before it's built: information architecture, interface copy, content specs, component specs and service blueprints.
@@ -321,10 +319,10 @@ except `api-builder` requires `core`, which installs with it.
 - [catalogue.json](https://sananthanarayan.github.io/skilldrop/catalogue.json): every skill, loop, pack and outcome as machine-readable JSON — name, description, tier, tags, related. Prefer this over scraping the site.
 - [model-routing.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/model-routing.json): the abstract tier per skill (light/standard/heavy) and the provider map that resolves a tier to a concrete model.
 - [catalogue.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/catalogue.json): pack display order and outcome membership; each pack's metadata is in `packs/<pack>/pack.json`.
-- All 113 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
+- All 111 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
 
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 71 RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 73 RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.

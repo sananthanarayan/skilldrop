@@ -127,6 +127,13 @@ CLI_BASE = ["--disable-slash-commands", "--strict-mcp-config", "--no-session-per
 # Settings for an agent run: commands run in Claude Code's OS sandbox, which blocks writes
 # outside the working directory and all network access.
 CLI_SANDBOX = json.dumps({"sandbox": {"enabled": True, "autoAllowBashIfSandboxed": True}})
+# Even sandboxed, Claude Code holds a compound command ("python3 x.py; echo $?") for approval, and
+# a headless run has nobody to approve it, so a skill's script can fail to run for no reason of its
+# own. --allow-bash allows every Bash command; the sandbox still blocks writes outside the working
+# directory and all network. Off by default so a trial stays comparable with the runs before it.
+CLI_SANDBOX_ALLOW_BASH = json.dumps({"sandbox": {"enabled": True, "autoAllowBashIfSandboxed": True},
+                                     "permissions": {"allow": ["Bash"]}})
+ALLOW_BASH = False  # set from --allow-bash
 VIEWER = os.path.join(ROOT, "packs", "converters", "skills", "file-to-markdown", "scripts", "to_markdown.py")
 
 
@@ -405,14 +412,17 @@ def deps_bin(skill):
     py = os.path.join(venv, "Scripts" if os.name == "nt" else "bin", "python")
     if not os.path.exists(py):
         os.makedirs(DEPS_HOME, exist_ok=True)
-        tmp = venv + ".%d.tmp" % os.getpid()
+        tmp = venv + ".%d.%d.tmp" % (os.getpid(), threading.get_ident())  # two workers can race here
         subprocess.run([sys.executable, "-m", "venv", tmp], check=True, capture_output=True)
         tpy = os.path.join(tmp, "Scripts" if os.name == "nt" else "bin", "python")
         r = subprocess.run([tpy, "-m", "pip", "install", "--quiet", "--disable-pip-version-check", "-r",
                             requirements(skill)], capture_output=True, text=True)
         if r.returncode != 0:
             shutil.rmtree(tmp, ignore_errors=True)
-            raise APIError("could not install %s's requirements: %s" % (skill, r.stderr.strip()[-300:]))
+            hint = ("" if "No matching distribution" not in r.stderr else
+                    " (this is Python %d.%d; a pin can need a newer one, so run run_bench.py with that Python)"
+                    % sys.version_info[:2])
+            raise APIError("could not install %s's requirements%s: %s" % (skill, hint, r.stderr.strip()[-300:]))
         try:
             os.replace(tmp, venv)
         except OSError:  # another worker finished first
@@ -449,7 +459,7 @@ def cli_agent(model, system, user, skill=None, files=None, layout="full", env_sk
         open(sysfile, "w", encoding="utf-8").write(system)
         text, resp = cli_run(["--model", model, "--append-system-prompt-file", sysfile, "--restricted",
                               "--tools", "Read,Write,Edit,Glob,Grep,Bash", "--permission-mode", "acceptEdits",
-                              "--settings", CLI_SANDBOX, "--max-budget-usd", "3"], user, ws, 900, env)
+                              "--settings", CLI_SANDBOX_ALLOW_BASH if ALLOW_BASH else CLI_SANDBOX, "--max-budget-usd", "3"], user, ws, 900, env)
         left = workspace_files(ws, files)
         return text + ("\n\n<files_in_workspace>\n%s\n</files_in_workspace>" % left if left else ""), resp
 
@@ -491,6 +501,8 @@ def cost_of(model, usage):
 
 def cache_path(kind, model, system, user, trial, files=None, extra=None):
     parts = [kind, model, system, user, trial] + ([BACKEND + "/agent-1"] if BACKEND != "api" else [])
+    if ALLOW_BASH and kind == "gen" and BACKEND != "api":
+        parts.append("allow-bash")  # a run that could use compound commands is a different run
     if extra:
         parts.append(extra)
     if files and BACKEND != "api":
@@ -1038,6 +1050,8 @@ def loop_arms(loop, md):
             ("baseline", NONINTERACTIVE, None, None))
 
 
+LOOP_ARM_TOKENS = {"loop": 31000, "stages": 21000, "baseline": 9500}
+
 LOOP_PAIRS = (("pairwise", "loop", "baseline"), ("loop_vs_stages", "loop", "stages"),
               ("stages_vs_baseline", "stages", "baseline"))
 
@@ -1190,8 +1204,10 @@ def estimate_loops(units, floor_units, judge_model):
             if deps_key(env_skill):
                 extra = (extra or "") + "/deps/" + deps_key(env_skill)
             fresh += not os.path.exists(cache_path("gen", model, system, e["prompt"], trial, files, extra))
-            # a loop arm reads the loop and stage skills it is given: about as much again as its prompt
-            total += ((2 * len(system) + len(e["prompt"])) / 4 * pin + 6000 * pout) / 1e6
+            # An agent session reads files and runs turns, so a prompt-length guess runs low. Each arm is
+            # priced at its measured cost in output-token equivalents, from the first loop run
+            # (2026-11-04, Sonnet 5.5: $0.31 loop, $0.21 stages, $0.09 plain agent per run).
+            total += LOOP_ARM_TOKENS[arm] * pout / 1e6
             total += ((seen + 500) * jin + 500 * jout) / 1e6
         for qin, qout in judges:
             total += len(LOOP_PAIRS) * ((2 * seen + len(e["prompt"]) / 4) * qin + 100 * qout) / 1e6
@@ -1217,6 +1233,18 @@ def write_results(a, rows, floor, summary, md, spent, models, extra_pub):
             f.write("\n")
 
 
+def held_out_filter(evals, a):
+    """--held-out keeps the evals written without reading the skill or loop. --held-out-through
+    also drops those dated after the given day, so a second trial runs on the first trial's evals."""
+    through = getattr(a, "held_out_through", None)
+    if a.held_out or through:
+        evals = [(n, e) for n, e in evals if e.get("held_out")]
+    if through:
+        # held_out is a date (2026-10-18), or true on the oldest evals, which count as dated before any day
+        evals = [(n, e) for n, e in evals if not isinstance(e["held_out"], str) or e["held_out"] <= through]
+    return evals
+
+
 def main_loops(a, models, labels):
     """--loops: the loop, its skills without it, and the plain agent, on every loop eval."""
     all_loops = catalog.loops()
@@ -1225,8 +1253,7 @@ def main_loops(a, models, labels):
     if unknown:
         sys.exit(f"unknown loop(s): {', '.join(unknown)}")
     evals = [(lp, e) for lp in names for e in loop_evals(lp)]
-    if a.held_out:
-        evals = [(lp, e) for lp, e in evals if e.get("held_out")]
+    evals = held_out_filter(evals, a)
     if a.evals:
         ids = {i.strip() for i in a.evals.split(",")}
         evals = [(lp, e) for lp, e in evals if str(e.get("id")) in ids]
@@ -1339,6 +1366,9 @@ def main():
     ap.add_argument("--skills", help="comma-separated skill names (default: all)")
     ap.add_argument("--held-out", action="store_true",
                     help="run only the evals flagged held_out, written without reading the skill")
+    ap.add_argument("--held-out-through", metavar="YYYY-MM-DD",
+                    help="run only held-out evals dated on or before this day, to repeat an earlier trial on the "
+                         "evals it had (implies --held-out)")
     ap.add_argument("--evals", help="comma-separated eval ids to run within each skill, e.g. 6,7 for new held-out "
                     "evals only (default: all)")
     ap.add_argument("--models", default="standard",
@@ -1354,6 +1384,9 @@ def main():
                     help="routing check: a model within this of the best score counts as adequate (default 0.05)")
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--no-floor", action="store_true", help="skip grading the non-answer")
+    ap.add_argument("--allow-bash", action="store_true",
+                    help="claude-cli only: allow every Bash command inside the sandbox, so a compound command "
+                         "isn't held for an approval nobody can give. Not comparable with runs made without it")
     ap.add_argument("--tools-arm", action="store_true",
                     help="claude-cli only: for each skill that ships scripts, also run its scripts without its "
                          "instructions, and judge that arm against the plain agent and against the skill (RFC-0067)")
@@ -1366,8 +1399,10 @@ def main():
                     help="also write the summary (no outputs) to FILE; docs/benchmarks/latest.json is what the site reads")
     a = ap.parse_args()
 
-    global BACKEND, SECOND_JUDGE, TOOLS_ARM
-    BACKEND, SECOND_JUDGE, TOOLS_ARM = a.backend, a.second_judge, a.tools_arm
+    global BACKEND, SECOND_JUDGE, TOOLS_ARM, ALLOW_BASH
+    BACKEND, SECOND_JUDGE, TOOLS_ARM, ALLOW_BASH = a.backend, a.second_judge, a.tools_arm, a.allow_bash
+    if ALLOW_BASH and BACKEND != "claude-cli":
+        sys.exit("--allow-bash needs --backend claude-cli: through the API there is no shell")
     if a.loops is not None:
         if a.skills or a.tools_arm:
             sys.exit("--loops can't be combined with --skills or --tools-arm: a run measures skills or loops, not both")
@@ -1389,8 +1424,7 @@ def main():
     if a.loops is not None:
         return main_loops(a, models, labels)
     evals = [(s, e) for s in skills for e in (load(s, "evals.json") or {}).get("evals", [])]
-    if a.held_out:
-        evals = [(s, e) for s, e in evals if e.get("held_out")]
+    evals = held_out_filter(evals, a)
     if a.evals:
         ids = {i.strip() for i in a.evals.split(",")}
         evals = [(s, e) for s, e in evals if str(e.get("id")) in ids]

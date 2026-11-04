@@ -1,11 +1,11 @@
 {
   "name": "slide-outliner",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Outline an architecture review or technical pitch deck — slide titles, key points per slide, and speaker notes. Does NOT generate PowerPoint/Keynote files; produces a structured outline the user can paste into any deck tool. Use when the user is preparing for an architecture review, design review, sales pitch, partner meeting, or steering-committee presentation.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
   "env": { "required": [], "optional": [] },
   "related": [],
   "tags": ["presentation", "deck", "outline", "stakeholder-communication"],
-  "model": { "tier": "standard", "rationale": "Outlines a deck to a time budget. Structuring, not deep reasoning." }
+  "model": { "tier": "light", "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 86% and 90% of checks in two tier trials, against standard's 83% and heavy's 83% and 93%, within 5 points of the best both times." }
 }

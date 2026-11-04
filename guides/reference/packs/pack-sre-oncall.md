@@ -49,7 +49,7 @@ Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/sre-oncall/skills/capac
 
 Review actual cloud spend from a cost export (AWS CUR or Data Exports, GCP billing export, Azure cost details) and produce a ranked savings report — idle and unattached resources, oversized instances backed by utilisation evidence, storage tiering, data transfer hot spots, commitment coverage and untagged spend — each finding with a monthly saving computed from the bill, a confidence level and an ease rating.
 
-Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/sre-oncall/skills/cloud-cost-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/cloud-cost-review/)
+Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/sre-oncall/skills/cloud-cost-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/cloud-cost-review/)
 
 **Use it when** the user shares a cost CSV and says "where are we wasting money", "review our AWS bill", "why did the cloud bill jump this month", "find savings in our GCP/Azure spend", or "should we buy savings plans".
 
@@ -72,14 +72,13 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/sre-oncall/skills/cloud
 - Estimating cost before launch, or projecting at 3× or 10× growth. Use `capacity-cost-model`.
 - Designing telemetry or a logging budget from scratch. Use `observability-plan`, though this skill flags logging cost as a hot spot.
 - Writing up an incident, including a cost spike from a runaway job. Use `postmortem-generator`.
-- Reporting AI tool usage or spend by user. Use `ai-usage-report`.
 - Defining business KPIs for a feature or product. Use `success-metrics`.
 
 ### `delivery-metrics-report`
 
 Produce a delivery metrics report for one service from deployment, incident and pull-request exports — the DORA metrics (deployment frequency, change lead time, change fail rate, failed deployment recovery time) plus flow metrics (WIP, cycle time p50/p85, throughput), computed by a script with per-week trends and explicit data gaps, then interpreted for what changed and why.
 
-Tier **standard** · v0.1.4 · [SKILL.md](../../../packs/sre-oncall/skills/delivery-metrics-report/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/delivery-metrics-report/)
+Tier **standard** · v0.1.5 · [SKILL.md](../../../packs/sre-oncall/skills/delivery-metrics-report/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/delivery-metrics-report/)
 
 **Use it when** the user wants DORA metrics, says "how are we doing on the four keys", "what's our change failure rate", "compute lead time and deploy frequency from this CSV", or "build our delivery metrics report".
 
@@ -102,14 +101,13 @@ Tier **standard** · v0.1.4 · [SKILL.md](../../../packs/sre-oncall/skills/deliv
 - Writing up one incident: timeline, impact, contributing factors. Use `postmortem-generator`.
 - Designing SLOs, alerts or dashboards for a service. Use `observability-plan`.
 - Product or business outcome metrics (activation, retention, revenue). Use `success-metrics`.
-- Reporting how people use AI tools. Use `ai-usage-report`.
 - Forecasting infrastructure cost or capacity. Use `capacity-cost-model`.
 
 ### `incident-comms`
 
 Draft audience-segmented updates during a live incident — customer status-page posts, internal stakeholder updates, and exec notifications — each leading with user-facing impact, never speculative cause or ETA, always naming the next-update time.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/sre-oncall/skills/incident-comms/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/incident-comms/)
+Tier **light** · v0.1.1 · [SKILL.md](../../../packs/sre-oncall/skills/incident-comms/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/incident-comms/)
 
 **Use it when** an incident is in progress and the user needs a status page post, customer notification, internal update, exec brief, or the resolved/all-clear message.
 
@@ -162,7 +160,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/sre-oncall/skills/obser
 
 Write a blameless incident postmortem from the raw material (chat scrollback, alert history, timeline, notes) for the audience and length the user names — the cause stated as the change and the gap that let it through, never a person even when the notes name one; who or what noticed first and how late; known kept apart from still-unknown; and follow-up actions that close the gap. Invents no times, figures, owners or severities. Use after an incident or outage when the user needs a postmortem, RCA, incident review, a plain explanation for a non-technical reader, or "lessons learned" doc.
 
-Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/sre-oncall/skills/postmortem-generator/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/postmortem-generator/)
+Tier **light** · v0.2.1 · [SKILL.md](../../../packs/sre-oncall/skills/postmortem-generator/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/postmortem-generator/)
 
 **A good result:**
 

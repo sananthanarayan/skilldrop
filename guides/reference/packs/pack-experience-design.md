@@ -109,7 +109,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/experience-design/skill
 
 Build a service blueprint — per step, the evidence the customer sees, the customer's actions, frontstage staff and system actions, backstage actions, and support processes, separated by the lines of interaction, visibility and internal interaction, with fail points, wait times and owners marked — as a table plus a Mermaid diagram and the ranked fixes.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/experience-design/skills/service-blueprint/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/service-blueprint/)
+Tier **light** · v0.1.1 · [SKILL.md](../../../packs/experience-design/skills/service-blueprint/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/service-blueprint/)
 
 **Use it when** the user wants a service blueprint, "what happens behind the scenes when a customer does X", to find where a service breaks or stalls, or to take a journey map down to the people, systems and handoffs that deliver it.
 
@@ -136,7 +136,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/experience-design/skill
 
 Write the interface copy for a flow or component — buttons, labels, hints, errors, empty states, confirmations, loading and success messages — as a string table where each string has its context, a character budget, a recommended version and one variant, with error messages that say what happened and what to do next, and a terminology list so the same thing has the same name everywhere.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/experience-design/skills/ux-writing/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/ux-writing/)
+Tier **light** · v0.1.1 · [SKILL.md](../../../packs/experience-design/skills/ux-writing/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/ux-writing/)
 
 **Use it when** the user wants UI copy, microcopy, button text, error messages, empty states, "write the strings for this screen", or "our wording is inconsistent".
 

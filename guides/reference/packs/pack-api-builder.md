@@ -66,7 +66,7 @@ Tier **standard** · v1.0.0 · [SKILL.md](../../../packs/api-builder/skills/toke
 
 Takes a function description (name, purpose, parameters) and writes a valid Anthropic tool_use JSON schema, with type annotations, required fields, and a description for each parameter. Adds a Python client.messages.create(tools=[...]) snippet only when asked.
 
-Tier **standard** · v1.0.2 · [SKILL.md](../../../packs/api-builder/skills/tool-use-schema-writer/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/tool-use-schema-writer/)
+Tier **light** · v1.0.3 · [SKILL.md](../../../packs/api-builder/skills/tool-use-schema-writer/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/tool-use-schema-writer/)
 
 **Use it when** wiring a Claude agent to a function or API, designing tools for a multi-agent system, or documenting an existing tool for agent consumption.
 

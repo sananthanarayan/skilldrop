@@ -82,7 +82,6 @@ The load-bearing idea: **the bottleneck moves.** Each stage is limited by someth
 - ❌ Assessing organisational preconditions — data, policy ownership, incentives — that's [`ai-readiness-assessment`](../ai-readiness-assessment/SKILL.md), a different axis (a team can be governance-ready and stuck at stage 1).
 - ❌ Planning how a tool reaches people — cohorts, enablement, comms — that's [`ai-adoption-rollout`](../ai-adoption-rollout/SKILL.md).
 - ❌ Choosing which use cases to build — that's [`ai-use-case-triage`](../ai-use-case-triage/SKILL.md).
-- ❌ Reporting measured usage from telemetry — that's [`ai-usage-report`](../ai-usage-report/SKILL.md).
 - ❌ Designing one specific loop or fleet — that's `agent-loop-design` / `subagent-design`, which this skill routes *to*.
 
 ## Anti-patterns to avoid

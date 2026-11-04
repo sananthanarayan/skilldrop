@@ -20,6 +20,34 @@
         "Explains that re-drafting from the same incomplete brief reproduces the same gaps",
         "Does not run output-hygiene on a draft that is about to be rewritten"
       ]
+    },
+    {
+      "id": "ship-a-draft-adr-from-thread",
+      "held_out": "2026-11-04",
+      "prompt": "Can you turn this Slack thread (slack-thread.txt) into a proper ADR for moving the nightly statements job? It goes to the architecture review group on Thursday and I want it finished and ready to send, not a first draft I have to fix up.",
+      "assertions": [
+        "Produces a structured intake brief from the thread before drafting, and the ADR is written from that brief",
+        "The month-end queue capacity question Marta raised is carried into the brief and the ADR as open or a risk, not as settled",
+        "The ADR records option B as the decision, option A as rejected because it does not fix the 3h40m runtime, and option C as rejected for lack of approved budget, and keeps the unchanged statement file format and idempotent retries as requirements",
+        "After drafting, the ADR is critiqued with findings tied to sections and a G5 verdict in the critique's own terms (such as SHIP IT, SHIP WITH CHANGES or MAJOR REWRITE)",
+        "Any changes the critique calls for are made before the polish pass, and the polish pass runs last, on the revised ADR",
+        "The final ADR carries none of the thread's machine residue: no 'Generated with ExampleAI' or 'Summarised by ExampleBot' line and no 'Hope this helps' closer",
+        "Does not invent figures, dates or owners not in the thread, such as a queue capacity number, a migration date or a deadline for Marta's check"
+      ]
+    },
+    {
+      "id": "ship-a-draft-announcement-unsettled",
+      "held_out": "2026-11-04",
+      "prompt": "Need the customer announcement email for scheduled exports, to go to Team plan admins. Everything's in the ticket (ticket-PRD-412.md). Marketing want final copy today so please give me something finished I can just hand over.",
+      "assertions": [
+        "The intake brief, written before any drafting, flags the launch date, the price, and whether SFTP delivery is in as unsettled in the ticket",
+        "The draft leaves those three as clearly marked placeholders or open items instead of picking a value",
+        "The critique gate does not return SHIP IT; its verdict holds the email back (such as SHIP WITH CHANGES or MAJOR REWRITE) and names the unsettled date, price and scope as the reason",
+        "Tells the user plainly that the email is not ready to go to customers, and who in the ticket has to settle each item: Hannah and Oskar on SFTP scope and date, finance (Gwen, after the 10 November pricing committee) on price",
+        "If the polish pass runs, the placeholders survive it, and the reply does not present the email as final copy",
+        "Does not stop to ask questions; the brief, draft and critique are delivered in this run",
+        "Does not invent a launch date, price or feature scope the ticket has not settled, such as stating 12 November, 26 November or $15 a month as fact"
+      ]
     }
   ]
 }

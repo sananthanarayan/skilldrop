@@ -23,7 +23,7 @@ For analysts and the people who rely on their numbers: review SQL for the bugs t
 
 Spec a dashboard before anyone builds it — the audience and the decision it serves, the questions in priority order, one chart per question with the chart type and why, the defined metric behind each chart, filters, refresh cadence and freshness SLA, and a list of what is deliberately left off, with vanity metrics cut.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/data-analytics/skills/dashboard-spec/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/dashboard-spec/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/data-analytics/skills/dashboard-spec/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/dashboard-spec/)
 
 **Use it when** the user says "spec a dashboard", "what should go on our KPI dashboard", "the BI team needs requirements for a dashboard", "our dashboard has 40 charts and nobody uses it", or "design the exec dashboard".
 
@@ -44,7 +44,6 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/data-analytics/skills/d
 - Defining how one metric is calculated (formula, filters, timezone) — that's the metric owner's call; this skill flags the gap, it doesn't fill it
 - Choosing which metric judges a feature, with targets and a decision rule — that's `success-metrics`
 - Service health dashboards, SLOs and alerting — that's `observability-plan`
-- A report on AI tool usage from telemetry logs — that's `ai-usage-report`
 
 ### `sql-review`
 

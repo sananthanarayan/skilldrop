@@ -52,7 +52,6 @@ A good result:
 
 ## Use something else when
 
-- Tabulating AI usage/adoption telemetry — that's `ai-usage-report`
 - Product-outcome metrics for a feature (adoption, handle time) — that's `success-metrics`
 - Picking which model/vendor to buy on price, terms or support — this measures quality on your task, which is one input to that decision
 - The provider-specific API mechanics (token counting, streaming, tool-call format) — consult the provider's own reference; this skill is the eval methodology
@@ -65,4 +64,4 @@ A good result:
 
 - [SKILL.md](../../../packs/ai-engineering/skills/llm-eval-harness/SKILL.md), the instructions the agent reads
 - [Its page on the site](https://sananthanarayan.github.io/skilldrop/skills/llm-eval-harness/)
-- Related: [ai-usage-report](use-ai-usage-report.md), [success-metrics](use-success-metrics.md)
+- Related: [success-metrics](use-success-metrics.md)

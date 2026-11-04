@@ -1,6 +1,8 @@
 # AI Usage Telemetry — design doc
 
-> Companion to the `ai-usage-report` skill in skilldrop. This doc covers the *collection* side: what an MCP server (or any telemetry pipeline) needs to log so the report skill has signal to work with. It is the spec for a separate repo, not for skilldrop.
+> Written as the companion to skilldrop's `ai-usage-report` skill, retired in 1.4.0 (RFC-0072): the plain agent reports from an export as well without it. The collection design below stands on its own.
+>
+> Originally: companion to the `ai-usage-report` skill in skilldrop. This doc covers the *collection* side: what an MCP server (or any telemetry pipeline) needs to log so the report skill has signal to work with. It is the spec for a separate repo, not for skilldrop.
 
 ## Goals
 

@@ -54,7 +54,7 @@ Tier **heavy** · v0.1.5 · [SKILL.md](../../../packs/research/skills/hypothesis
 
 Turn a vague research question into a research plan — the decision the research serves, the precise question and sub-questions, what finding would change the decision, a method per sub-question (desk research, interviews, data pull, experiment), source types with inclusion and exclusion criteria, ready-to-run search strings, a stopping rule for when you have enough, and the deliverable. Starts by asking what decision the research is for.
 
-Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/research/skills/research-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/research-plan/)
+Tier **light** · v0.1.3 · [SKILL.md](../../../packs/research/skills/research-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/research-plan/)
 
 **Use it when** the user says "I need to research X", "help me scope this research", "how should I investigate…", "what should I look into before deciding…", or wants a research or discovery plan.
 
@@ -83,7 +83,7 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/research/skills/researc
 
 Answer a question from a set of sources the user supplied — papers, reports, articles, interview notes, emails — saying only what the material supports, labelling anything that comes from elsewhere where it appears, counting a source that repeats another once, and giving a labelled estimate when the user needs a figure the sources don't settle. Written in the length and format the user asked for; a full cited literature review only when that is the ask.
 
-Tier **standard** · v0.2.1 · [SKILL.md](../../../packs/research/skills/source-synthesis/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/source-synthesis/)
+Tier **light** · v0.2.2 · [SKILL.md](../../../packs/research/skills/source-synthesis/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/source-synthesis/)
 
 **Use it when** the user hands over several sources and asks to "synthesise these", "what do these papers say", "pull together what we know", "literature review", or "where do the sources agree and disagree".
 

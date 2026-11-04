@@ -206,6 +206,30 @@ class EstimateTest(unittest.TestCase):
         self.assertLessEqual(fresh, 6)
 
 
+class HeldOutFilterTest(unittest.TestCase):
+    def test_through_a_date_keeps_held_out_evals_up_to_that_day(self):
+        evals = [("a", {"id": 1}), ("a", {"id": 2, "held_out": "2026-10-18"}),
+                 ("a", {"id": 3, "held_out": "2026-10-20"}), ("b", {"id": 4, "held_out": True})]
+        args = type("A", (), {"held_out": False, "held_out_through": "2026-10-18"})()
+        self.assertEqual([e["id"] for _, e in run_bench.held_out_filter(evals, args)], [2, 4])
+        args.held_out_through, args.held_out = None, True
+        self.assertEqual([e["id"] for _, e in run_bench.held_out_filter(evals, args)], [2, 3, 4])
+        args.held_out = False
+        self.assertEqual(len(run_bench.held_out_filter(evals, args)), 4)
+
+
+class AllowBashTest(unittest.TestCase):
+    def test_allow_bash_changes_the_generation_key_and_nothing_else(self):
+        with mock.patch.object(run_bench, "BACKEND", "claude-cli"):
+            with mock.patch.object(run_bench, "ALLOW_BASH", False):
+                gen, jud = (run_bench.cache_path(k, "m", "s", "u", 0) for k in ("gen", "judge"))
+            with mock.patch.object(run_bench, "ALLOW_BASH", True):
+                gen2, jud2 = (run_bench.cache_path(k, "m", "s", "u", 0) for k in ("gen", "judge"))
+        self.assertNotEqual(gen, gen2)
+        self.assertEqual(jud, jud2)
+        self.assertIn('"allow": ["Bash"]', run_bench.CLI_SANDBOX_ALLOW_BASH)
+
+
 class FlagTest(unittest.TestCase):
     def run_bench(self, *args):
         return subprocess.run([sys.executable, os.path.join(ROOT, "run_bench.py")] + list(args) + ["--dry-run"],
@@ -221,6 +245,11 @@ class FlagTest(unittest.TestCase):
             r = self.run_bench("--backend", "claude-cli", "--loops", "research", *extra)
             self.assertNotEqual(r.returncode, 0)
             self.assertIn("can't be combined", r.stderr)
+
+    def test_allow_bash_refuses_the_api_backend(self):
+        r = self.run_bench("--allow-bash", "--skills", "adr-generator")
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("--allow-bash needs --backend claude-cli", r.stderr)
 
     def test_an_unknown_loop_is_named(self):
         r = self.run_bench("--backend", "claude-cli", "--loops", "no-such-loop")

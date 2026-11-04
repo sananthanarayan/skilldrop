@@ -5,7 +5,7 @@ description: Design an evaluation harness for an LLM-powered feature — a versi
 
 # llm-eval-harness
 
-Builds the measurement that turns "the new prompt feels better" into "the new prompt scores 0.91 vs 0.84 baseline, with zero regressions on the critical subset." Without it, every prompt or model change is a vibe with a deploy button. Provider-neutral by design — the harness shape is the same whether the feature runs on Claude, GPT, Gemini, or a local model; only the runner differs. Distinct from `ai-usage-report` (telemetry after the fact) and `success-metrics` (product outcomes) — this is the **dev-loop quality gate**.
+Builds the measurement that turns "the new prompt feels better" into "the new prompt scores 0.91 vs 0.84 baseline, with zero regressions on the critical subset." Without it, every prompt or model change is a vibe with a deploy button. Provider-neutral by design — the harness shape is the same whether the feature runs on Claude, GPT, Gemini, or a local model; only the runner differs. Distinct from `success-metrics` (product outcomes) — this is the **dev-loop quality gate**.
 
 ## How to respond
 
@@ -64,7 +64,6 @@ Builds the measurement that turns "the new prompt feels better" into "the new pr
 
 ## When NOT to use this skill
 
-- ❌ Tabulating AI usage/adoption telemetry — that's `ai-usage-report`
 - ❌ Product-outcome metrics for a feature (adoption, handle time) — that's `success-metrics`
 - ❌ Picking which model/vendor to buy on price, terms or support — this measures quality on your task, which is one input to that decision
 - ❌ The provider-specific API mechanics (token counting, streaming, tool-call format) — consult the provider's own reference; this skill is the eval methodology

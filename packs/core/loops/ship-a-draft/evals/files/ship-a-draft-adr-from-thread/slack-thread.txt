@@ -1,0 +1,47 @@
+#reporting-eng — thread started by Priya Raman, Mon 2 Nov 2026
+
+Priya Raman  10:12
+ok we need to stop pretending the nightly statements job is fine. it failed again on the 22nd. that's twice in October (9th and 22nd), both times because reports-01 got rebooted for patching mid-run and the cron job just died. ~1,900 customers didn't get their statement until we reran it by hand at 10am
+
+Tom Lindqvist  10:15
+and it's getting slower. last night's run was 3h40m. the window is 01:00 to 06:00 UTC because the finance team pulls the statements at 06:30. at the rate customer count is growing we're going to blow the window sometime next year
+
+Marta Szabo  10:21
+options I can see:
+A) keep cron on reports-01, add a second box with a lock so only one runs, plus retry on failure
+B) move it onto the job queue we already run for the email service. one job per customer, workers pick them up, failed ones retry on their own
+C) use the cloud provider's managed scheduler + functions
+
+Tom Lindqvist  10:24
+C is nice but there's no budget approved for it this year, I asked in September and got a no. not worth writing up as anything but rejected
+
+Priya Raman  10:26
+A fixes the reboot problem but not the runtime. it's still one process doing 3h40m of work
+
+Tom Lindqvist  10:30
+B gets us both. per-customer jobs means a reboot only kills the in-flight ones and they get retried, and we can add workers if we're getting close to the window
+
+Marta Szabo  10:33
+I'm fine with B in principle. my worry is month-end. the email service hammers the same queue on the 1st of every month (invoice emails). if statements and invoice emails land on the same night, does the queue keep up? I don't actually know its capacity
+
+Priya Raman  10:35
+can you find out?
+
+Marta Szabo  10:36
+I'll check with platform
+
+Jonas Weber  10:52
+dropping in the AI summary of the thread from the meeting notes bot, in case it helps:
+
+> **Summary:** The team is evaluating three options for the nightly statements job. Option B (job queue) is the leading candidate because it addresses both reliability and runtime. Option C is rejected due to budget. Open question: queue capacity at month-end.
+> Hope this helps! Let me know if you need anything else.
+> — Summarised by ExampleBot · Generated with ExampleAI (notes.example.com)
+
+Priya Raman  11:02
+so B, pending Marta's capacity check. we also need to keep the output the same, finance's import breaks if the statement file format changes. I'll write it up as an ADR for architecture review
+
+Tom Lindqvist  11:04
+👍 one more thing for the ADR: we'd need idempotent jobs, because a retried job must not send the same customer two statements
+
+Priya Raman  11:05
+yep

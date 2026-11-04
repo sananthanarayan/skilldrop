@@ -69,7 +69,6 @@ Writes the one-page brief a BI developer builds from, so the dashboard answers t
 - ❌ Defining how one metric is calculated (formula, filters, timezone) — that's the metric owner's call; this skill flags the gap, it doesn't fill it
 - ❌ Choosing which metric judges a feature, with targets and a decision rule — that's `success-metrics`
 - ❌ Service health dashboards, SLOs and alerting — that's `observability-plan`
-- ❌ A report on AI tool usage from telemetry logs — that's `ai-usage-report`
 
 ## Anti-patterns to avoid
 

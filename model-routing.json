@@ -107,8 +107,8 @@
       "rationale": "Structures a decision into MADR/Nygard. Some judgment on title/consequences; not adversarial."
     },
     "agent-adoption-stage": {
-      "tier": "standard",
-      "rationale": "Places a team on a fixed 5-stage ladder from observables and routes one unlock. Bounded diagnosis against a rubric; escalate via ambiguous-input when the observables are contradictory or the distribution is heavily skewed."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 79% and 86% of checks in two tier trials, against standard's 82% and heavy's 79% and 79%, within 5 points of the best both times."
     },
     "agent-budget": {
       "tier": "standard",
@@ -135,8 +135,8 @@
       "rationale": "Repo inspection plus synthesis against a fixed section order and line budget — the same shape as reverse-architecture. The judgment is the counterfactual test on each convention line, which is bounded; escalate via large-input on monorepos."
     },
     "ai-adoption-rollout": {
-      "tier": "standard",
-      "rationale": "Generates a phased people-rollout with gates and enablement from a stated tool and population. Structured planning against a fixed shape; escalate via ambiguous-input for large or politically contested rollouts."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 79% and 71% of checks in two tier trials, against standard's 75% and heavy's 64% and 64%, within 5 points of the best both times."
     },
     "ai-readiness-assessment": {
       "tier": "standard",
@@ -146,25 +146,21 @@
       "tier": "standard",
       "rationale": "Drafts a policy document against a fixed structure (tiers, behaviours, review matrix, exception route). Bounded generation; escalate via ambiguous-input where a regulatory regime is named or contested."
     },
-    "ai-usage-report": {
-      "tier": "standard",
-      "rationale": "Tabulates telemetry into a report. Mostly mechanical, but the 'AI theater' effectiveness call needs judgment."
-    },
     "ai-use-case-triage": {
-      "tier": "standard",
-      "rationale": "Scores candidates on weighted axes and forces a rejection list. Structured comparison with stated weights; escalate via ambiguous-input when candidates are numerous or the value data is contested."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 83% and 92% of checks in two tier trials, against standard's 81% and heavy's 85% and 92%, within 5 points of the best both times."
     },
     "api-contract-draft": {
-      "tier": "standard",
-      "rationale": "Schema synthesis against fixed conventions. The resource modeling needs judgment; the conventions bound it. Escalate via ambiguous-input on contested multi-team contracts."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 76% and 92% of checks in two tier trials, against standard's 69% and heavy's 69% and 76%, within 5 points of the best both times."
     },
     "application-form-answers": {
-      "tier": "standard",
-      "rationale": "Sorts questions into three kinds and drafts short answers from the resume. The hard rule is mechanical: a declaration is never answered for the person."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 88% and 94% of checks in two tier trials, against standard's 88% and heavy's 81% and 81%, within 5 points of the best both times."
     },
     "architecture-diagrams": {
-      "tier": "standard",
-      "rationale": "Translates prose to diagram syntax. Correctness matters; reasoning is bounded."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 93% and 100% of checks in two tier trials, against standard's 93% and heavy's 93% and 93%, within 5 points of the best both times."
     },
     "audience-profile": {
       "tier": "light",
@@ -219,8 +215,8 @@
       "rationale": "Multi-perspective deliberation + weighted reconciliation across distinct expert seats. Cheaper models collapse the seats into one voice and either manufacture or miss the real cruxes. Never downgrade."
     },
     "cover-letter": {
-      "tier": "standard",
-      "rationale": "A short letter from supplied facts, with a script listing every figure and name the person's material doesn't contain."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 100% and 100% of checks in two tier trials, against standard's 100% and heavy's 100% and 100%, within 5 points of the best both times."
     },
     "dashboard-spec": {
       "tier": "standard",
@@ -231,8 +227,8 @@
       "rationale": "Schema + SLA synthesis against fixed quality dimensions and an evolution matrix. Semantics capture needs care; bounded by the catalog. Escalate via large-input on wide schemas."
     },
     "decision-log": {
-      "tier": "light",
-      "rationale": "Extracts decisions/owners/dates from notes. Pattern extraction; escalate on long transcripts via large-input rule."
+      "tier": "standard",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier fell more than 5 points behind the best in both tier trials (79% and 61% against standard's 79%); one step up, to standard."
     },
     "delivery-metrics-report": {
       "tier": "standard",
@@ -243,8 +239,8 @@
       "rationale": "Reads a version diff, changelogs and CI evidence against a fixed checklist; the merge verdict follows from what is verified, not open-ended judgment."
     },
     "design-doc": {
-      "tier": "standard",
-      "rationale": "Synthesizes a design doc from a brief. Escalate to heavy via large-input or ambiguous-input when alternatives are genuinely contested."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 88% and 88% of checks in two tier trials, against standard's 92% and heavy's 91% and 91%, within 5 points of the best both times."
     },
     "design-system-spec": {
       "tier": "standard",
@@ -276,16 +272,16 @@
       "rationale": "Compression to one page. Needs to keep the right signal; escalate on very long source docs."
     },
     "feature-implement-loop": {
-      "tier": "standard",
-      "rationale": "Code + test generation against acceptance criteria. The adversarial pass delegates to devils-advocate (heavy) where available; the loop itself is generation."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 85% and 85% of checks in two tier trials, against standard's 85% and heavy's 76% and 85%, within 5 points of the best both times."
     },
     "feedback-synthesis": {
       "tier": "standard",
       "rationale": "Coding feedback into themes is bounded judgment; the counts by distinct person and segment come from its script."
     },
     "figma-diagrams": {
-      "tier": "standard",
-      "rationale": "API calls + spec generation. Bounded transformation."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 92% and 92% of checks in two tier trials, against standard's 92% and heavy's 75% and 92%, within 5 points of the best both times."
     },
     "file-to-markdown": {
       "tier": "light",
@@ -300,8 +296,8 @@
       "rationale": "Judgment-heavy: generating real rivals, rating every evidence-hypothesis cell honestly and resisting the favourite theory is where a fast pass fails; the script only does the arithmetic."
     },
     "incident-comms": {
-      "tier": "standard",
-      "rationale": "Audience-segmented message generation under a strict don't-retract discipline. Same shape as exec-summary/audience-profile — translation and altitude, not adversarial reasoning."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 93% and 100% of checks in two tier trials, against standard's 85% and heavy's 92% and 93%, within 5 points of the best both times."
     },
     "information-architecture": {
       "tier": "standard",
@@ -323,13 +319,9 @@
       "tier": "standard",
       "rationale": "Checks evidence against a fixed checklist. Bounded synthesis, not adversarial review."
     },
-    "lean-canvas": {
-      "tier": "standard",
-      "rationale": "Filling the canvas is structured; the value is in ranking assumptions by risk and naming the cheapest test that could kill the riskiest one."
-    },
     "llm-eval-harness": {
-      "tier": "standard",
-      "rationale": "Methodology synthesis against a fixed decision tree and pitfall catalog. Grading-method and metric choices need judgment but are bounded; escalate via ambiguous-input on novel task types."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 71% and 71% of checks in two tier trials, against standard's 71% and heavy's 71% and 71%, within 5 points of the best both times."
     },
     "mcp-pairing": {
       "tier": "standard",
@@ -340,8 +332,8 @@
       "rationale": "Mechanical conversion to Confluence storage format done by its script, with an optional publish; the model checks what was dropped and what will be overwritten."
     },
     "md-to-docx": {
-      "tier": "standard",
-      "rationale": "A stdlib script does the conversion; the model restructures the Markdown so it converts cleanly (heading levels, footnotes, HTML), reads each warning and explains the losses. Bounded editing, no open-ended generation."
+      "tier": "heavy",
+      "rationale": "Measured (RFC-0073): on its held-out evals the heavy tier met 79% and 93% of checks in two tier trials, against standard's 64% and light's 71% and 79%, more than 5 points ahead both times."
     },
     "md-to-pptx": {
       "tier": "light",
@@ -368,24 +360,24 @@
       "rationale": "Structured derivation against a fixed roll-up discipline; the causal-sentence and gap judgments need care but the template bounds them. Escalate via ambiguous-input when the company objectives themselves are contested."
     },
     "output-hygiene": {
-      "tier": "standard",
-      "rationale": "The mechanical pass is a deterministic script; the model does bounded rewriting of flagged prose against a fixed tell list, not adversarial review."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 100% and 100% of checks in two tier trials, against standard's 92% and heavy's 100% and 92%, within 5 points of the best both times."
     },
     "postmortem-generator": {
-      "tier": "standard",
-      "rationale": "Synthesizes a structured doc from incident notes. Contributing-factor chains need judgment but are bounded; escalate via large-input on huge scrollbacks."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 93% and 91% of checks in two tier trials, against standard's 92% and heavy's 90% and 87%, within 5 points of the best both times."
     },
     "pr-description-writer": {
-      "tier": "standard",
-      "rationale": "Reads a diff and rewrites it for a reviewer. Bounded by the diff; the judgment is in picking what a reviewer needs first."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 85% and 85% of checks in two tier trials, against standard's 85% and heavy's 77% and 85%, within 5 points of the best both times."
     },
     "prd-draft": {
       "tier": "standard",
       "rationale": "Synthesizes a structured requirements doc from a brief. The solution-language discipline needs care; bounded by the template. Escalate via ambiguous-input on contested scope."
     },
     "pre-merge-review": {
-      "tier": "standard",
-      "rationale": "Orchestration: runs a deterministic gate script, dispatches the (heavy) reviewer subagents, and renders a rule-based go/no-go. The adversarial reasoning is delegated to the panel, so the skill itself is coordination."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 93% and 93% of checks in two tier trials, against standard's 86% and heavy's 93% and 93%, within 5 points of the best both times."
     },
     "prfaq": {
       "tier": "standard",
@@ -400,8 +392,8 @@
       "rationale": "Sequencing behaviour-preserving steps follows known patterns (characterise, parallel change, strangle); escalate via ambiguous-input for contested rewrites."
     },
     "release-notes": {
-      "tier": "standard",
-      "rationale": "Classifies commits and rewrites them for a reader. The audience translation needs judgment; escalate via large-input on very long ranges."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 96% and 96% of checks in two tier trials, against standard's 91% and heavy's 100% and 98%, within 5 points of the best both times."
     },
     "rendering-strategy": {
       "tier": "standard",
@@ -412,12 +404,12 @@
       "rationale": "Question banks are rubric-shaped, but ranking by design impact and deriving falsification conditions for the specific feature is synthesis — above light."
     },
     "research-plan": {
-      "tier": "standard",
-      "rationale": "Structured planning against a fixed shape (decision, sub-questions, methods, criteria, stopping rule); needs judgment to cut scope but no adversarial reasoning."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 79% and 79% of checks in two tier trials, against standard's 79% and heavy's 79% and 79%, within 5 points of the best both times."
     },
     "resume-tailor": {
-      "tier": "standard",
-      "rationale": "Reorders and rewords existing content against a posting, with a script listing every figure and name the original doesn't contain."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 100% and 100% of checks in two tier trials, against standard's 100% and heavy's 100% and 100%, within 5 points of the best both times."
     },
     "reverse-architecture": {
       "tier": "standard",
@@ -444,20 +436,20 @@
       "rationale": "Matches questions to evidence and writes short answers. The hard rule is mechanical: no evidence, no answer."
     },
     "service-blueprint": {
-      "tier": "standard",
-      "rationale": "Structured mapping of a described service into fixed lanes, with fail points, waits and a ranking. Tracing causes needs judgment, but the lane structure and the input bound it."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 100% and 92% of checks in two tier trials, against standard's 92% and heavy's 85% and 92%, within 5 points of the best both times."
     },
     "skill-author": {
-      "tier": "standard",
-      "rationale": "Structured authoring against a fixed anatomy. The judgment is in the description and sibling boundaries, which the interview anchors; skill-review is the adversarial pass."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 100% and 93% of checks in two tier trials, against standard's 93% and heavy's 100% and 92%, within 5 points of the best both times."
     },
     "skill-review": {
       "tier": "heavy",
       "rationale": "Adversarial audit with a verdict: routing collisions and paraphrased safety issues are what a fast pass misses, and the lint script covers only the mechanical half."
     },
     "slide-outliner": {
-      "tier": "standard",
-      "rationale": "Outlines a deck to a time budget. Structuring, not deep reasoning."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 86% and 90% of checks in two tier trials, against standard's 83% and heavy's 83% and 93%, within 5 points of the best both times."
     },
     "slo-spec": {
       "tier": "standard",
@@ -476,8 +468,8 @@
       "rationale": "Formats Sonar API findings into a report. The hard analysis is Sonar's; this is synthesis. Escalate on very large diffs."
     },
     "source-synthesis": {
-      "tier": "standard",
-      "rationale": "Bounded synthesis over supplied text with a fixed citation format and strength criteria; the citation checker catches the mechanical failures, so mid-tier judgment is enough."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 83% and 78% of checks in two tier trials, against standard's 76% and heavy's 85% and 82%, within 5 points of the best both times."
     },
     "sql-review": {
       "tier": "heavy",
@@ -496,24 +488,24 @@
       "rationale": "Structured measurement design; the primary-metric and counter-metric choices need judgment but the template bounds it. Escalate via ambiguous-input when the goal itself is contested."
     },
     "team-status-report": {
-      "tier": "standard",
-      "rationale": "A script computes every count and the suggested RAG; the model writes plain-language summaries, attributes outside facts and frames risks and asks. Bounded writing over computed numbers."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 93% and 93% of checks in two tier trials, against standard's 93% and heavy's 93% and 93%, within 5 points of the best both times."
     },
     "tech-debt-register": {
       "tier": "standard",
       "rationale": "Structures and ranks items against stated evidence. Judgment is bounded: a cost with no evidence is recorded as unknown, not estimated."
     },
     "terraform-module": {
-      "tier": "standard",
-      "rationale": "Structured generation against fixed module conventions and a secure-defaults checklist; the judgment is bounded to choosing defaults and validation rules for a described need."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 100% and 100% of checks in two tier trials, against standard's 92% and heavy's 83% and 100%, within 5 points of the best both times."
     },
     "terraform-plan-review": {
       "tier": "heavy",
       "rationale": "Adversarial review of a destructive change: judging which replacements lose data, which access changes widen exposure, and what is out of scope needs careful reasoning; a missed destroy costs far more than the model."
     },
     "test-plan-generator": {
-      "tier": "standard",
-      "rationale": "Synthesizes a structured plan from a change description. Risk ranking needs judgment but is bounded; escalate via ambiguous-input on contested or high-stakes releases."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 76% and 92% of checks in two tier trials, against standard's 76% and heavy's 61% and 54%, within 5 points of the best both times."
     },
     "threat-model": {
       "tier": "heavy",
@@ -524,24 +516,24 @@
       "rationale": "Arithmetic breakdown plus heuristic judgment on dominant cost drivers — standard fits."
     },
     "tool-use-schema-writer": {
-      "tier": "standard",
-      "rationale": "Schema generation from natural-language description — structured output task that fits standard tier."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 94% and 94% of checks in two tier trials, against standard's 96% and heavy's 97% and 97%, within 5 points of the best both times."
     },
     "tracker-brief-sync": {
       "tier": "standard",
       "rationale": "Maps doc sections to items and writes acceptance criteria that restate requirements; a script checks the spec, writes the import file and computes drift. Bounded transformation with a deterministic check."
     },
     "user-journey-map": {
-      "tier": "standard",
-      "rationale": "Structured synthesis into a fixed four-row stage model plus bounded ranking judgment. Escalate via ambiguous-input when the persona or outcome is contested or research inputs conflict."
+      "tier": "heavy",
+      "rationale": "Measured (RFC-0073): on its held-out evals the heavy tier met 83% and 83% of checks in two tier trials, against standard's 75% and light's 67% and 75%, more than 5 points ahead both times."
     },
     "user-story-splitter": {
       "tier": "standard",
       "rationale": "Decomposes an epic into INVEST slices with testable ACs. Structured synthesis; escalation rules cover large or contradictory PRDs."
     },
     "ux-writing": {
-      "tier": "standard",
-      "rationale": "Short-form writing to fixed slot rules and character budgets, plus a terminology consistency pass. Bounded generation with clear checks."
+      "tier": "light",
+      "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 92% and 92% of checks in two tier trials, against standard's 83% and heavy's 75% and 83%, within 5 points of the best both times."
     },
     "web-performance-review": {
       "tier": "standard",

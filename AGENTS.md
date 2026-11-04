@@ -451,7 +451,7 @@ The README groups skills into these categories. Prefer adding to one of them ove
 5. **Diagrams** — visual artifacts (`architecture-diagrams`, `reverse-architecture`, `figma-diagrams`, `user-journey-map`).
 6. **Documentation** — written technical artifacts (`adr-generator`, `design-doc`, `runbook-generator`, `release-notes`).
 7. **Agent engineering** — designing agentic systems themselves (`agent-loop-design`, `subagent-design`, `agent-budget`, `agent-threat-model`, `agents-md-generator`).
-8. **AI adoption & observability** — measuring and gating AI usage itself (`ai-usage-report`, `llm-eval-harness`).
+8. **AI adoption & observability** — measuring and gating AI itself (`llm-eval-harness`, `judge-audit`).
 9. **Stakeholder communication** — non-technical audiences (`audience-profile`, `slide-outliner`, `exec-summary`, `decision-log`, `incident-comms`).
 
 A new section needs a use-case-first name, a one-sentence definition of what belongs in it, and at least one existing skill that would also fit there. Sections are cheap; ungrouped skills make the README harder to scan.

@@ -1,0 +1,1012 @@
+{
+ "date": "2026-11-04",
+ "backend": "claude-cli",
+ "judge_model": "claude-sonnet-5-5",
+ "trials": 1,
+ "scripted": [
+  "backlog-triage",
+  "brand-kit",
+  "cloud-cost-review",
+  "content-design",
+  "cover-letter",
+  "delivery-metrics-report",
+  "figma-diagrams",
+  "file-to-markdown",
+  "hypothesis-comparison",
+  "md-to-docx",
+  "md-to-xlsx",
+  "output-hygiene",
+  "pre-merge-review",
+  "resume-tailor",
+  "risk-register",
+  "skill-review",
+  "source-synthesis",
+  "sql-review",
+  "team-status-report",
+  "terraform-plan-review",
+  "tracker-brief-sync"
+ ],
+ "models": {
+  "claude-opus-5-5": {
+   "label": "heavy",
+   "evals": 216,
+   "runs": 216,
+   "skill": 0.8572365520282192,
+   "baseline": 0.8336144179894184,
+   "lift": 0.02362213403880072,
+   "lift_ci": [
+    0.0018683862433862418,
+    0.04451058201058197
+   ],
+   "win": 0.34953703703703703,
+   "win_ci": [
+    0.2916666666666667,
+    0.41435185185185186
+   ],
+   "second_judge": "claude-opus-5-5",
+   "win2": 0.3425925925925926,
+   "win2_ci": [
+    0.2800925925925926,
+    0.4074074074074074
+   ],
+   "judges_agree": 175,
+   "judges_decided": 211,
+   "cost_skill": 0.17929934259259261,
+   "cost_baseline": 0.13364488148148143,
+   "out_tokens_skill": 4064.189814814815,
+   "out_tokens_baseline": 3126.685185185185,
+   "truncated": 0,
+   "refused": 0,
+   "trial_range": 0.0,
+   "errors": 0,
+   "skipped": 0,
+   "by_kind": {
+    "held_out": {
+     "evals": 216,
+     "skills": 92,
+     "skill": 0.8572365520282192,
+     "baseline": 0.8336144179894184,
+     "lift": 0.02362213403880072,
+     "lift_ci": [
+      0.0018683862433862418,
+      0.04451058201058197
+     ],
+     "win": 0.34953703703703703,
+     "win_ci": [
+      0.2916666666666667,
+      0.41435185185185186
+     ],
+     "win2": 0.3425925925925926,
+     "win2_ci": [
+      0.2800925925925926,
+      0.4074074074074074
+     ]
+    }
+   }
+  }
+ },
+ "routing": [],
+ "floor": 0.17607473544973545,
+ "skills": [
+  {
+   "skill": "accessibility-audit",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7023809523809523,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.0,
+   "cost_skill": 0.1632147,
+   "cost_baseline": 0.1340783
+  },
+  {
+   "skill": "adr-generator",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.0,
+   "cost_skill": 0.1314014,
+   "cost_baseline": 0.09141294999999999
+  },
+  {
+   "skill": "agent-adoption-stage",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.7142857142857142,
+   "preferred": 0.0,
+   "cost_skill": 0.16826760000000002,
+   "cost_baseline": 0.09306985
+  },
+  {
+   "skill": "agent-budget",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6071428571428572,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.2198505,
+   "cost_baseline": 0.17033194999999998
+  },
+  {
+   "skill": "agent-loop-design",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.7142857142857142,
+   "preferred": 0.5,
+   "cost_skill": 0.15280059999999998,
+   "cost_baseline": 0.11699770000000001
+  },
+  {
+   "skill": "agent-threat-model",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 0.5,
+   "cost_skill": 0.1773164,
+   "cost_baseline": 0.09856229999999999
+  },
+  {
+   "skill": "agents-md-generator",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.13817820000000003,
+   "cost_baseline": 0.11019425000000001
+  },
+  {
+   "skill": "ai-adoption-rollout",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6428571428571428,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.2466604,
+   "cost_baseline": 0.15234674999999998
+  },
+  {
+   "skill": "ai-readiness-assessment",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428571,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.0,
+   "cost_skill": 0.14691615,
+   "cost_baseline": 0.09503685
+  },
+  {
+   "skill": "ai-usage-policy",
+   "model": "claude-opus-5-5",
+   "evals": 6,
+   "skill_met": 0.8928571428571428,
+   "baseline_met": 0.7351190476190476,
+   "preferred": 0.6666666666666666,
+   "cost_skill": 0.16160855,
+   "cost_baseline": 0.16329226666666666
+  },
+  {
+   "skill": "ai-use-case-triage",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 0.0,
+   "cost_skill": 0.19609700000000002,
+   "cost_baseline": 0.11942765
+  },
+  {
+   "skill": "api-contract-draft",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.6904761904761905,
+   "preferred": 0.0,
+   "cost_skill": 0.4602023,
+   "cost_baseline": 0.23811495000000002
+  },
+  {
+   "skill": "application-form-answers",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8125,
+   "baseline_met": 0.8125,
+   "preferred": 1.0,
+   "cost_skill": 0.1541656,
+   "cost_baseline": 0.1279759
+  },
+  {
+   "skill": "architecture-diagrams",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.1306785,
+   "cost_baseline": 0.183068
+  },
+  {
+   "skill": "audience-profile",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.5857142857142856,
+   "baseline_met": 0.7285714285714285,
+   "preferred": 0.5,
+   "cost_skill": 0.0986158,
+   "cost_baseline": 0.07124420000000001
+  },
+  {
+   "skill": "backlog-triage",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.1575366,
+   "cost_baseline": 0.11461914999999999
+  },
+  {
+   "skill": "brand-kit",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.8,
+   "preferred": 0.5,
+   "cost_skill": 0.2786268,
+   "cost_baseline": 0.2252973
+  },
+  {
+   "skill": "brief-intake",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.11557425,
+   "cost_baseline": 0.08114004999999999
+  },
+  {
+   "skill": "bug-triage",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.0,
+   "cost_skill": 0.1403265,
+   "cost_baseline": 0.093193
+  },
+  {
+   "skill": "business-case",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.5,
+   "cost_skill": 0.18604195,
+   "cost_baseline": 0.1301842
+  },
+  {
+   "skill": "capacity-cost-model",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.8571428571428571,
+   "preferred": 0.0,
+   "cost_skill": 0.31251035,
+   "cost_baseline": 0.22632405000000003
+  },
+  {
+   "skill": "cloud-cost-review",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.6428571428571428,
+   "preferred": 0.0,
+   "cost_skill": 0.254015,
+   "cost_baseline": 0.14861
+  },
+  {
+   "skill": "content-design",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.1903797,
+   "cost_baseline": 0.1048936
+  },
+  {
+   "skill": "council-review",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6428571428571428,
+   "baseline_met": 0.7142857142857143,
+   "preferred": 0.0,
+   "cost_skill": 0.1748454,
+   "cost_baseline": 0.0874465
+  },
+  {
+   "skill": "cover-letter",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.16139435000000002,
+   "cost_baseline": 0.10009584999999999
+  },
+  {
+   "skill": "dashboard-spec",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.6071428571428572,
+   "preferred": 0.0,
+   "cost_skill": 0.2206806,
+   "cost_baseline": 0.1497732
+  },
+  {
+   "skill": "data-contract",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6904761904761905,
+   "baseline_met": 0.75,
+   "preferred": 0.0,
+   "cost_skill": 0.26984085,
+   "cost_baseline": 0.13419894999999998
+  },
+  {
+   "skill": "decision-log",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7571428571428571,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.09005225,
+   "cost_baseline": 0.0587656
+  },
+  {
+   "skill": "delivery-metrics-report",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428572,
+   "baseline_met": 0.7738095238095238,
+   "preferred": 0.5,
+   "cost_skill": 0.201215,
+   "cost_baseline": 0.19099734999999998
+  },
+  {
+   "skill": "design-doc",
+   "model": "claude-opus-5-5",
+   "evals": 6,
+   "skill_met": 0.9077380952380952,
+   "baseline_met": 0.8154761904761906,
+   "preferred": 0.16666666666666666,
+   "cost_skill": 0.21402981666666665,
+   "cost_baseline": 0.19101269999999995
+  },
+  {
+   "skill": "design-system-spec",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6785714285714286,
+   "baseline_met": 0.5952380952380952,
+   "preferred": 0.0,
+   "cost_skill": 0.33598599999999995,
+   "cost_baseline": 0.20994449999999998
+  },
+  {
+   "skill": "devils-advocate",
+   "model": "claude-opus-5-5",
+   "evals": 6,
+   "skill_met": 0.8531746031746031,
+   "baseline_met": 0.8531746031746031,
+   "preferred": 0.75,
+   "cost_skill": 0.11913303333333335,
+   "cost_baseline": 0.11422023333333332
+  },
+  {
+   "skill": "doc-critique",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428572,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 0.0,
+   "cost_skill": 0.12268555,
+   "cost_baseline": 0.0678942
+  },
+  {
+   "skill": "dpia",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.5,
+   "cost_skill": 0.3145304000000001,
+   "cost_baseline": 0.25217275000000006
+  },
+  {
+   "skill": "eval-harness-generator",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.17043704999999998,
+   "cost_baseline": 0.14377565
+  },
+  {
+   "skill": "exec-summary",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8,
+   "baseline_met": 0.7285714285714285,
+   "preferred": 1.0,
+   "cost_skill": 0.09498595000000001,
+   "cost_baseline": 0.08835185
+  },
+  {
+   "skill": "feature-implement-loop",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.31196435,
+   "cost_baseline": 0.19061415
+  },
+  {
+   "skill": "figma-diagrams",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.09843919999999999,
+   "cost_baseline": 0.11866469999999998
+  },
+  {
+   "skill": "file-to-markdown",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7023809523809523,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.11566929999999999,
+   "cost_baseline": 0.11924299999999999
+  },
+  {
+   "skill": "guide-builder",
+   "model": "claude-opus-5-5",
+   "evals": 6,
+   "skill_met": 0.9345238095238094,
+   "baseline_met": 0.7966269841269841,
+   "preferred": 0.8333333333333334,
+   "cost_skill": 0.11670046666666667,
+   "cost_baseline": 0.12479416666666665
+  },
+  {
+   "skill": "hypothesis-comparison",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.6666666666666666,
+   "preferred": 0.5,
+   "cost_skill": 0.1427296,
+   "cost_baseline": 0.07395294999999999
+  },
+  {
+   "skill": "incident-comms",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.6785714285714286,
+   "preferred": 1.0,
+   "cost_skill": 0.13300754999999997,
+   "cost_baseline": 0.09146525
+  },
+  {
+   "skill": "information-architecture",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.5,
+   "cost_skill": 0.29319385,
+   "cost_baseline": 0.10852835
+  },
+  {
+   "skill": "job-fit-analysis",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 1.0,
+   "cost_skill": 0.10703175,
+   "cost_baseline": 0.08110020000000001
+  },
+  {
+   "skill": "launch-readiness",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.0,
+   "cost_skill": 0.1401215,
+   "cost_baseline": 0.0999783
+  },
+  {
+   "skill": "llm-eval-harness",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7142857142857143,
+   "baseline_met": 0.7142857142857142,
+   "preferred": 0.5,
+   "cost_skill": 0.13213315,
+   "cost_baseline": 0.1311912
+  },
+  {
+   "skill": "md-to-docx",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 1.0,
+   "cost_skill": 0.15160469999999998,
+   "cost_baseline": 0.5798704
+  },
+  {
+   "skill": "md-to-xlsx",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 1.0,
+   "preferred": 0.5,
+   "cost_skill": 0.14615815,
+   "cost_baseline": 0.37108045
+  },
+  {
+   "skill": "migration-plan",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.5,
+   "cost_skill": 0.20487515,
+   "cost_baseline": 0.1452207
+  },
+  {
+   "skill": "nfr-spec",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.6904761904761905,
+   "preferred": 0.0,
+   "cost_skill": 0.17592694999999997,
+   "cost_baseline": 0.1223451
+  },
+  {
+   "skill": "observability-plan",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 0.0,
+   "cost_skill": 0.2774563,
+   "cost_baseline": 0.15501790000000001
+  },
+  {
+   "skill": "okr-cascade",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.8452380952380952,
+   "preferred": 0.5,
+   "cost_skill": 0.23643450000000002,
+   "cost_baseline": 0.1278018
+  },
+  {
+   "skill": "output-hygiene",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.0,
+   "cost_skill": 0.144378,
+   "cost_baseline": 0.09540794999999999
+  },
+  {
+   "skill": "postmortem-generator",
+   "model": "claude-opus-5-5",
+   "evals": 6,
+   "skill_met": 0.8720238095238094,
+   "baseline_met": 0.8273809523809524,
+   "preferred": 0.3333333333333333,
+   "cost_skill": 0.13922199999999998,
+   "cost_baseline": 0.1308253
+  },
+  {
+   "skill": "pr-description-writer",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 0.5,
+   "cost_skill": 0.10065155,
+   "cost_baseline": 0.0682092
+  },
+  {
+   "skill": "prd-draft",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7619047619047619,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 0.0,
+   "cost_skill": 0.15232145,
+   "cost_baseline": 0.13094845
+  },
+  {
+   "skill": "pre-merge-review",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.16847499999999999,
+   "cost_baseline": 0.11707560000000002
+  },
+  {
+   "skill": "prfaq",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.75,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.0,
+   "cost_skill": 0.1451823,
+   "cost_baseline": 0.12611529999999999
+  },
+  {
+   "skill": "prompt-caching-advisor",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9,
+   "baseline_met": 0.8166666666666667,
+   "preferred": 1.0,
+   "cost_skill": 0.12731260000000003,
+   "cost_baseline": 0.10491080000000001
+  },
+  {
+   "skill": "release-notes",
+   "model": "claude-opus-5-5",
+   "evals": 6,
+   "skill_met": 0.9761904761904763,
+   "baseline_met": 0.9077380952380952,
+   "preferred": 0.5833333333333334,
+   "cost_skill": 0.08812051666666666,
+   "cost_baseline": 0.09006904999999998
+  },
+  {
+   "skill": "requirements-interview",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.0,
+   "cost_skill": 0.20954125,
+   "cost_baseline": 0.1935732
+  },
+  {
+   "skill": "research-plan",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.5,
+   "cost_skill": 0.18111475,
+   "cost_baseline": 0.10783835
+  },
+  {
+   "skill": "resume-tailor",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.9375,
+   "preferred": 0.5,
+   "cost_skill": 0.14652110000000002,
+   "cost_baseline": 0.1112357
+  },
+  {
+   "skill": "reverse-architecture",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.14581629999999998,
+   "cost_baseline": 0.09875605000000001
+  },
+  {
+   "skill": "risk-register",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.0,
+   "cost_skill": 0.33927759999999996,
+   "cost_baseline": 0.124383
+  },
+  {
+   "skill": "role-shortlist",
+   "model": "claude-opus-5-5",
+   "evals": 4,
+   "skill_met": 0.9375,
+   "baseline_met": 0.7366071428571428,
+   "preferred": 0.75,
+   "cost_skill": 0.08412235000000001,
+   "cost_baseline": 0.074573325
+  },
+  {
+   "skill": "runbook-generator",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428572,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.17739739999999998,
+   "cost_baseline": 0.20031675
+  },
+  {
+   "skill": "security-questionnaire-response",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 1.0,
+   "cost_skill": 0.23669390000000004,
+   "cost_baseline": 0.13666785
+  },
+  {
+   "skill": "service-blueprint",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 0.5,
+   "cost_skill": 0.23556375000000002,
+   "cost_baseline": 0.12534605000000001
+  },
+  {
+   "skill": "skill-author",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.5,
+   "cost_skill": 0.39550525000000003,
+   "cost_baseline": 0.17207324999999998
+  },
+  {
+   "skill": "skill-review",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.10975470000000001,
+   "cost_baseline": 0.0634509
+  },
+  {
+   "skill": "slide-outliner",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.8285714285714285,
+   "preferred": 0.0,
+   "cost_skill": 0.11374235,
+   "cost_baseline": 0.0760731
+  },
+  {
+   "skill": "soc2-evidence-map",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.75,
+   "baseline_met": 0.6666666666666666,
+   "preferred": 0.0,
+   "cost_skill": 0.6497556499999999,
+   "cost_baseline": 0.15034205
+  },
+  {
+   "skill": "sonar-onboard",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.5,
+   "cost_skill": 0.33083414999999994,
+   "cost_baseline": 0.2203017
+  },
+  {
+   "skill": "sonar-review",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8571428571428572,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.10293959999999999,
+   "cost_baseline": 0.07360919999999999
+  },
+  {
+   "skill": "source-synthesis",
+   "model": "claude-opus-5-5",
+   "evals": 6,
+   "skill_met": 0.8244047619047619,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.6666666666666666,
+   "cost_skill": 0.11012663333333333,
+   "cost_baseline": 0.13577703333333332
+  },
+  {
+   "skill": "sql-review",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.14890905000000002,
+   "cost_baseline": 0.1043499
+  },
+  {
+   "skill": "strategy-analysis",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6904761904761905,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.0,
+   "cost_skill": 0.11885675000000001,
+   "cost_baseline": 0.0829714
+  },
+  {
+   "skill": "subagent-design",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.0,
+   "cost_skill": 0.15669945000000002,
+   "cost_baseline": 0.1285099
+  },
+  {
+   "skill": "success-metrics",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 0.8571428571428572,
+   "preferred": 0.0,
+   "cost_skill": 0.13228230000000002,
+   "cost_baseline": 0.09396869999999999
+  },
+  {
+   "skill": "team-status-report",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9285714285714286,
+   "baseline_met": 1.0,
+   "preferred": 0.5,
+   "cost_skill": 0.12674905,
+   "cost_baseline": 0.061728450000000004
+  },
+  {
+   "skill": "tech-debt-register",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.7857142857142857,
+   "preferred": 0.0,
+   "cost_skill": 0.1613405,
+   "cost_baseline": 0.11933365
+  },
+  {
+   "skill": "terraform-module",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 1.0,
+   "baseline_met": 0.9285714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.3780456,
+   "cost_baseline": 0.26504779999999994
+  },
+  {
+   "skill": "terraform-plan-review",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.6904761904761905,
+   "baseline_met": 0.7738095238095238,
+   "preferred": 0.75,
+   "cost_skill": 0.0806922,
+   "cost_baseline": 0.060928899999999994
+  },
+  {
+   "skill": "test-plan-generator",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.5357142857142857,
+   "baseline_met": 0.7619047619047619,
+   "preferred": 0.5,
+   "cost_skill": 0.15666934999999999,
+   "cost_baseline": 0.10502025
+  },
+  {
+   "skill": "threat-model",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 0.8571428571428571,
+   "preferred": 0.5,
+   "cost_skill": 0.15190935,
+   "cost_baseline": 0.08275035
+  },
+  {
+   "skill": "token-budget-estimator",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.9166666666666667,
+   "baseline_met": 0.9166666666666667,
+   "preferred": 0.0,
+   "cost_skill": 0.17341165000000003,
+   "cost_baseline": 0.15443839999999998
+  },
+  {
+   "skill": "tool-use-schema-writer",
+   "model": "claude-opus-5-5",
+   "evals": 4,
+   "skill_met": 0.96875,
+   "baseline_met": 0.8705357142857143,
+   "preferred": 0.25,
+   "cost_skill": 0.09200389999999999,
+   "cost_baseline": 0.10686082499999999
+  },
+  {
+   "skill": "tracker-brief-sync",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.7857142857142857,
+   "baseline_met": 1.0,
+   "preferred": 0.0,
+   "cost_skill": 0.24125635,
+   "cost_baseline": 0.15264725
+  },
+  {
+   "skill": "user-journey-map",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 0.75,
+   "preferred": 0.5,
+   "cost_skill": 0.18730505,
+   "cost_baseline": 0.11421995
+  },
+  {
+   "skill": "user-story-splitter",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8452380952380952,
+   "baseline_met": 0.6785714285714286,
+   "preferred": 0.5,
+   "cost_skill": 0.21972765,
+   "cost_baseline": 0.12480915000000001
+  },
+  {
+   "skill": "ux-writing",
+   "model": "claude-opus-5-5",
+   "evals": 2,
+   "skill_met": 0.8333333333333333,
+   "baseline_met": 0.8333333333333333,
+   "preferred": 0.5,
+   "cost_skill": 0.47584479999999996,
+   "cost_baseline": 0.14783435
+  }
+ ]
+}

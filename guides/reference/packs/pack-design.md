@@ -48,7 +48,7 @@ Tier **standard** · v0.1.4 · [SKILL.md](../../../packs/design/skills/brand-kit
 
 Outline an architecture review or technical pitch deck — slide titles, key points per slide, and speaker notes. Does NOT generate PowerPoint/Keynote files; produces a structured outline the user can paste into any deck tool.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/design/skills/slide-outliner/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/slide-outliner/)
+Tier **light** · v0.1.1 · [SKILL.md](../../../packs/design/skills/slide-outliner/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/slide-outliner/)
 
 **Use it when** the user is preparing for an architecture review, design review, sales pitch, partner meeting, or steering-committee presentation.
 

@@ -1,0 +1,10 @@
+[
+  {"query": "we merged saved searches, how do we roll it out and are we ready to launch?", "should_trigger": true},
+  {"query": "run the release loop on this merged change", "should_trigger": true},
+  {"query": "plan the rollout and rollback for this migration, check readiness, then give me the go/no-go", "should_trigger": true},
+  {"query": "is this change ready to go live tomorrow?", "should_trigger": true},
+  {"query": "write release notes for v2.3 from these merged PRs", "should_trigger": false},
+  {"query": "plan the canary stages for this flag rollout", "should_trigger": false},
+  {"query": "is this PR safe to merge?", "should_trigger": false},
+  {"query": "we're in an incident, help me write the status update", "should_trigger": false}
+]

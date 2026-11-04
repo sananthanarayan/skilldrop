@@ -1,6 +1,6 @@
 {
   "name": "service-blueprint",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Build a service blueprint — per step, the evidence the customer sees, the customer's actions, frontstage staff and system actions, backstage actions, and support processes, separated by the lines of interaction, visibility and internal interaction, with fail points, wait times and owners marked — as a table plus a Mermaid diagram and the ranked fixes. Use when the user wants a service blueprint, \"what happens behind the scenes when a customer does X\", to find where a service breaks or stalls, or to take a journey map down to the people, systems and handoffs that deliver it.",
   "entrypoint": "SKILL.md",
   "deps": {
@@ -39,7 +39,7 @@
     "mermaid"
   ],
   "model": {
-    "tier": "standard",
-    "rationale": "Structured mapping of a described service into fixed lanes, with fail points, waits and a ranking. Tracing causes needs judgment, but the lane structure and the input bound it."
+    "tier": "light",
+    "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 100% and 92% of checks in two tier trials, against standard's 92% and heavy's 85% and 92%, within 5 points of the best both times."
   }
 }
