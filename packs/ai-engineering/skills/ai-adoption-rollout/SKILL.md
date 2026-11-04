@@ -47,7 +47,6 @@ Rollouts fail quietly. Licences get assigned, a launch email goes out, usage spi
 - ❌ Choosing which use case to roll out — that's [`ai-use-case-triage`](../ai-use-case-triage/SKILL.md).
 - ❌ Deciding whether the organisation is ready at all — that's [`ai-readiness-assessment`](../ai-readiness-assessment/SKILL.md).
 - ❌ Writing the rules for what may be put into the tool — that's [`ai-usage-policy`](../ai-usage-policy/SKILL.md).
-- ❌ Reporting on adoption that already happened — that's `ai-usage-report`.
 
 ## Anti-patterns to avoid
 

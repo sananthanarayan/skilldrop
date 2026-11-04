@@ -62,11 +62,10 @@ A good result:
 - Writing up one incident: timeline, impact, contributing factors. Use `postmortem-generator`.
 - Designing SLOs, alerts or dashboards for a service. Use `observability-plan`.
 - Product or business outcome metrics (activation, retention, revenue). Use `success-metrics`.
-- Reporting how people use AI tools. Use `ai-usage-report`.
 - Forecasting infrastructure cost or capacity. Use `capacity-cost-model`.
 
 ## Next
 
 - [SKILL.md](../../../packs/sre-oncall/skills/delivery-metrics-report/SKILL.md), the instructions the agent reads
 - [Its page on the site](https://sananthanarayan.github.io/skilldrop/skills/delivery-metrics-report/)
-- Related: [ai-usage-report](use-ai-usage-report.md), [capacity-cost-model](use-capacity-cost-model.md), [observability-plan](use-observability-plan.md), [postmortem-generator](use-postmortem-generator.md), [success-metrics](use-success-metrics.md)
+- Related: [capacity-cost-model](use-capacity-cost-model.md), [observability-plan](use-observability-plan.md), [postmortem-generator](use-postmortem-generator.md), [success-metrics](use-success-metrics.md)

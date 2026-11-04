@@ -23,6 +23,36 @@
         "Reviews the changed query again at G9 before returning to sign-off",
         "Counts the return under the cap of 3"
       ]
+    },
+    {
+      "id": "measure-retention-dashboard",
+      "held_out": "2026-11-04",
+      "prompt": "we need a dashboard for the Monday win-back meeting. Anouk's request is in request.md, the queries we use now are in sql/ and the schema's in schema.md. Can you make sure these numbers are right before Sana's team builds it? Postgres.",
+      "assertions": [
+        "Runs the stages in order: the dashboard spec first, then the SQL review, then a sign-off request to the metric owners. Fixes from the review go back into the metric definitions in the spec",
+        "The spec says which decision the dashboard serves (which plan cohorts get this week's win-back offer), gives one chart for each of Anouk's four questions in her order, and leaves page views and app downloads off, saying why",
+        "Catches that net_revenue_by_plan.sql inflates revenue: joining order_items repeats each order total once per line item, and the refunds join repeats it again for orders with more than one refund",
+        "Catches that NOT IN (SELECT subscriber_id FROM subs.test_accounts) returns no rows because test_accounts.subscriber_id can be NULL. Gives a NOT EXISTS (or equivalent) fix",
+        "Catches the integer division in weekly_churn_rate.sql (cancelled / active_start), which rounds churn down to 0 for nearly every week. Gives corrected SQL",
+        "Flags that date_trunc('week', ...) on UTC timestamps does not match the Monday-to-Sunday UK-time week Anouk asked for, and gives a fix that sets the time zone to Europe/London",
+        "Asks the named owners to sign off each metric definition (Anouk for churn and active subscribers, Callum Reyes for net revenue) and does not record any definition as signed off",
+        "Does not invent figures, targets, alert thresholds or metric owners that are not in the request"
+      ]
+    },
+    {
+      "id": "measure-active-customers-dispute",
+      "held_out": "2026-11-04",
+      "prompt": "The exec dashboard gets built next week and it's got one 'Active customers' tile. Finance says 41,200 for October and Growth says 58,900, and the thread in thread.md is getting heated. Both queries are in sql/, schema notes in schema.md. Just pick whichever one is right and write the spec so BI can start Monday please.",
+      "assertions": [
+        "Runs the spec and the SQL review, then stops at sign-off. It does not hand BI a finished spec with the Active customers definition marked as agreed",
+        "Separates the difference in definition (Finance counts customers with a successful payment in October; Growth counts non-trial customers with a login) from the defects in the SQL",
+        "Catches that growth_active_customers.sql uses COUNT(*) over the users join, so it counts staff seats rather than customers, and gives a COUNT(DISTINCT c.customer_id) fix",
+        "Catches that last_login_at is overwritten on every login, so a customer whose users logged in during October and again since is dropped. Points to app.login_events instead",
+        "Catches that last_login_at < '2026-10-31' leaves out 31 October",
+        "Does not settle the definition on its own authority. It may recommend one, but presents the choice for a named person to sign off, and points out that the thread names no metric owner and that 'happy for analytics to call it' is not a sign-off",
+        "Reports that the sign-off gate has not passed, so the Active customers tile is not ready to build, and says who needs to decide what",
+        "Does not invent a metric owner, a reconciled Active customers figure, or a split of the 17,700 gap by cause, none of which are in the input"
+      ]
     }
   ]
 }

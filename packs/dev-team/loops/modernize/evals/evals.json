@@ -34,6 +34,36 @@
         "Treats a behaviour that contradicts the recorded decision as a question for the owner before capture, not as something to fix silently in the rewrite",
         "Does not invent decisions, ids, commits or people that are not in the repository"
       ]
+    },
+    {
+      "id": "modernize-late-fee-batch-port",
+      "held_out": "2026-11-04",
+      "prompt": "Run the modernize loop on legacy/feecalc.py. I want it moved into a proper Python package (hartwell_fees/, no globals, testable functions) so we can add the 2027 tariff next year without being scared of it. Billing parses the fee file strictly so the output can't change. Sample extracts are in samples/. Go as far as you can, I'm not around today.",
+      "assertions": [
+        "Runs the stages in order: it orients in the old code (feecalc.py, the README and ADR 0004) before planning, records the legacy outputs on the sample extracts before writing any new code, and compares new against old only after the rebuild",
+        "Runs the legacy job at least twice on the same input, finds that the 'generated' timestamp in the header is the only field that changes between runs, and normalises that field alone, not the whole header or the TOTAL trailer",
+        "The recordings cover the edge cases in the samples: a credit balance, a zero balance (10000108), half-penny rounding (20000202, 20000203), exactly 14 and exactly 90 days overdue, an unknown tier, and the two malformed lines counted as SKIPPED 2",
+        "Keeps the legacy behaviour of charging the £5.00 minimum on zero and credit balances (10000108, 20000201), or lists it as an intended change that needs Finance's approval under ADR 0004. It does not fix it silently",
+        "The rebuild keeps the output format exactly: the FEERUN header, one account,NAME,days,fee line per charged account in input order, and the TOTAL trailer",
+        "The prove step runs a script that compares the new package's output with the recordings, reports the script's result or exit code, and gives an equivalence verdict based on that comparison",
+        "Leaves the cutover decision to a person. It gives a launch-readiness view with a rollback path (keep the legacy job), and does not switch the job over, delete legacy/ or claim the cutover is done",
+        "Does not invent behaviour, inputs or systems that are not in the repo, such as a database, an API, or 2027 tariff rules"
+      ]
+    },
+    {
+      "id": "modernize-late-fee-rewrite-not-equivalent",
+      "held_out": "2026-11-04",
+      "prompt": "Wren rewrote feecalc as the hartwell_fees package, details in PR-412.md. We want to swap the cron over Thursday night. Can you run modernize on it and prove it's the same as the old one, then give me the go for Thursday? Sample extracts are in samples/.",
+      "assertions": [
+        "Records the legacy job's output on both sample files and replays the new package against those recordings before reaching a verdict. It does not rely on the PR's 'eyeballed' check",
+        "Normalises only the header timestamp when comparing, and the differences it reports come from the account lines and the TOTAL trailer",
+        "Finds that on accounts_2026-10.txt the new package drops the £5.00 fee for 10000108 (zero balance) and the totals differ (234.59 against 229.59), which contradicts the PR's claim that the outputs look the same",
+        "Finds that half-penny fees differ: 20000202 is 5.03 against 5.02 and 20000203 is 6.01 against 6.00, because ROUND_HALF_EVEN breaks ADR 0004's halves-up rule. Treats this as a defect",
+        "Treats dropping fees on zero and credit balances as an intended change with no named approver. ADR 0004 says changes to the rules need Finance (the Revenue Assurance Manager) to approve them",
+        "The prove gate fails with a NOT EQUIVALENT (or NOT PROVEN) verdict. The loop does not go on to approve the cutover, and it does not give the go for Thursday",
+        "Gives concrete fixes and a way to re-prove: switch to ROUND_HALF_UP, then either restore the minimum fee on non-positive balances or get Finance's approval for the change, then run the comparison again",
+        "Does not invent an approver for the credit-balance change, or claim that the billing upload will accept the changed totals"
+      ]
     }
   ]
 }

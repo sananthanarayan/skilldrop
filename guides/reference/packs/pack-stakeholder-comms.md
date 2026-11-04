@@ -42,7 +42,7 @@ Tier **light** · v0.1.1 · [SKILL.md](../../../packs/stakeholder-comms/skills/a
 
 Extract decisions, action items, owners, and due dates from meeting notes, Slack threads, design-review transcripts, or any unstructured discussion. Produces a clean structured log the user can paste into a doc, tracker, or ADR queue.
 
-Tier **light** · v0.1.1 · [SKILL.md](../../../packs/stakeholder-comms/skills/decision-log/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/decision-log/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/stakeholder-comms/skills/decision-log/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/decision-log/)
 
 **Use it when** the user has notes/threads/transcripts and asks for a "decision log", "action items", "what did we agree", or "follow-ups".
 

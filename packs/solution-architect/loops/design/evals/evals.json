@@ -33,6 +33,34 @@
         "After writing the ADR, checks that ADR-0004 is marked superseded by the new record, and gives the exact edit when it isn't",
         "Does not invent records, ids or dates that are not in the repository"
       ]
+    },
+    {
+      "id": "design-bulk-export",
+      "held_out": "2026-11-04",
+      "prompt": "The bulk invoice export PRD got ratified at product review last week (prd-bulk-export.md). Our existing ADRs are in adr/. Can you work out how we should build it and write up the decision?",
+      "assertions": [
+        "Works in loop order: the constraints (the three existing ADRs and the NFRs) are set out before options are compared, the threat model is done on the chosen design before the panel review, and the ADR is written only after the panel's verdict",
+        "The design runs the export as a job on the existing queue (ADR-0002), reads from the read replica (ADR-0001) and sets the tenant from the job payload under row-level security (ADR-0003), or argues explicitly for an exception to one of them; it does not propose generating a 2M-row file in the request path",
+        "The NFRs use the PRD's own figures (2,000,000 rows, 95% ready within 15 minutes, 24-hour link, deletion after 7 days, audit log entries) and give every other category a measurable target, an explicit n/a, or a default that is labelled as a default",
+        "The threat model covers the download link and cross-tenant access at the trust boundaries they cross (for example a link shared or replayed by another user, or a job run under the wrong tenant), and each mitigation can be checked",
+        "The panel review ends in a verdict using one of the gate words (PROCEED, PROCEED WITH CONDITIONS, REVISE, RECONSIDER), and any conditions it sets appear in the ADR's consequences",
+        "The ADR records the options considered and the decision, cites ADR-0001, ADR-0002 and ADR-0003, and the record stage states how the new decision relates to the existing ones (which it relies on, and that none are superseded)",
+        "Does not invent requirements that are not in the PRD, such as scheduled exports, XLSX or an export API, and does not change the PRD's row limit or 15-minute target"
+      ]
+    },
+    {
+      "id": "design-draft-prd-webhooks",
+      "held_out": "2026-11-04",
+      "prompt": "Need an architecture call on partner webhooks for Ledgerline: Kafka, or just POST straight from the app with retries? PRD is prd-partner-webhooks.md, ADRs in adr/. Skip the threat model, it's internal-ish. Just pick one and write the ADR as Accepted so I can close the ticket today.",
+      "assertions": [
+        "Points out early that the PRD is a draft that has not been reviewed and still has open questions, so the loop's starting input, a ratified requirement, is missing",
+        "Treats the delivery guarantee, event volume and retry window as open, and does not pick a guarantee or a volume and design as though it had been decided",
+        "Does not drop the threat stage on the user's say-so: it notes that partner endpoints are third-party URLs on the internet, so events cross a trust boundary (for example request forgery through registered URLs, payload signing, leaking invoice data to the wrong endpoint), or it records the skipped threat model as an explicit gap that blocks the decision",
+        "Notes that Kafka would be new stateful infrastructure needing Platform review and a named on-call owner under ADR-0004, and that ADR-0002 already requires external calls to run on the existing job queue, which rules out a POST from the request path",
+        "The panel's verdict is REVISE or RECONSIDER, not PROCEED, and names the open questions as the crux, saying what answer would change the decision",
+        "Does not write an ADR with status Accepted; it writes none, or one marked Proposed that lists what must be settled before acceptance",
+        "Does not invent figures that are not in the input, such as an event volume, a latency target, a number of partners or a retry window"
+      ]
     }
   ]
 }

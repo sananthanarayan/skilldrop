@@ -1,0 +1,22 @@
+# Alert history: invoice-export, 2026-10-19 to 2026-10-27 (UTC)
+# time                 alert                 state     ack_by   duration
+2026-10-19 09:07:12  ExportWorkerHighCPU    FIRING    kenji    21m
+2026-10-19 09:28:40  ExportWorkerHighCPU    RESOLVED  -        -
+2026-10-20 09:11:03  ExportWorkerHighCPU    FIRING    kenji    14m
+2026-10-20 09:25:19  ExportWorkerHighCPU    RESOLVED  -        -
+2026-10-21 09:04:55  ExportWorkerHighCPU    FIRING    priya    33m
+2026-10-21 09:38:02  ExportWorkerHighCPU    RESOLVED  -        -
+2026-10-22 13:40:31  ExportWorkerHighCPU    FIRING    priya    6m
+2026-10-22 13:46:44  ExportWorkerHighCPU    RESOLVED  -        -
+2026-10-23 09:09:18  ExportWorkerHighCPU    FIRING    priya    18m
+2026-10-23 09:27:50  ExportWorkerHighCPU    RESOLVED  -        -
+2026-10-26 09:02:47  ExportWorkerHighCPU    FIRING    kenji    40m
+2026-10-26 09:42:13  ExportWorkerHighCPU    RESOLVED  -        -
+# 2026-10-27: no alerts fired between 09:00 and 12:00
+# Kubernetes events, 2026-10-27 (from kubectl get events, export-worker)
+2026-10-27 09:05:31  export-worker-7f9c-2  OOMKilled  restart 1
+2026-10-27 09:05:58  export-worker-7f9c-5  OOMKilled  restart 1
+2026-10-27 09:09:12  export-worker-7f9c-1  OOMKilled  restart 1
+...  (41 OOMKilled restarts total across 6 pods between 09:05 and 10:08)
+2026-10-27 10:08:47  export-worker-7f9c-4  OOMKilled  restart 7
+2026-10-27 10:09:30  export-worker-6b21-1  Started    (revision 37)

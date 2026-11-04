@@ -62,11 +62,10 @@ A good result:
 - Estimating cost before launch, or projecting at 3× or 10× growth. Use `capacity-cost-model`.
 - Designing telemetry or a logging budget from scratch. Use `observability-plan`, though this skill flags logging cost as a hot spot.
 - Writing up an incident, including a cost spike from a runaway job. Use `postmortem-generator`.
-- Reporting AI tool usage or spend by user. Use `ai-usage-report`.
 - Defining business KPIs for a feature or product. Use `success-metrics`.
 
 ## Next
 
 - [SKILL.md](../../../packs/sre-oncall/skills/cloud-cost-review/SKILL.md), the instructions the agent reads
 - [Its page on the site](https://sananthanarayan.github.io/skilldrop/skills/cloud-cost-review/)
-- Related: [ai-usage-report](use-ai-usage-report.md), [capacity-cost-model](use-capacity-cost-model.md), [observability-plan](use-observability-plan.md), [postmortem-generator](use-postmortem-generator.md), [success-metrics](use-success-metrics.md)
+- Related: [capacity-cost-model](use-capacity-cost-model.md), [observability-plan](use-observability-plan.md), [postmortem-generator](use-postmortem-generator.md), [success-metrics](use-success-metrics.md)

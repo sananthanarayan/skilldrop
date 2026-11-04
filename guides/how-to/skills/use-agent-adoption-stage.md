@@ -57,11 +57,10 @@ A good result:
 - Assessing organisational preconditions — data, policy ownership, incentives — that's [`ai-readiness-assessment`](../../../packs/ai-engineering/skills/ai-readiness-assessment/SKILL.md), a different axis (a team can be governance-ready and stuck at stage 1).
 - Planning how a tool reaches people — cohorts, enablement, comms — that's [`ai-adoption-rollout`](../../../packs/ai-engineering/skills/ai-adoption-rollout/SKILL.md).
 - Choosing which use cases to build — that's [`ai-use-case-triage`](../../../packs/ai-engineering/skills/ai-use-case-triage/SKILL.md).
-- Reporting measured usage from telemetry — that's [`ai-usage-report`](../../../packs/ai-engineering/skills/ai-usage-report/SKILL.md).
 - Designing one specific loop or fleet — that's `agent-loop-design` / `subagent-design`, which this skill routes *to*.
 
 ## Next
 
 - [SKILL.md](../../../packs/ai-engineering/skills/agent-adoption-stage/SKILL.md), the instructions the agent reads
 - [Its page on the site](https://sananthanarayan.github.io/skilldrop/skills/agent-adoption-stage/)
-- Related: [agent-budget](use-agent-budget.md), [agent-loop-design](use-agent-loop-design.md), [agent-threat-model](use-agent-threat-model.md), [agents-md-generator](use-agents-md-generator.md), [ai-adoption-rollout](use-ai-adoption-rollout.md), [ai-readiness-assessment](use-ai-readiness-assessment.md), [ai-usage-report](use-ai-usage-report.md), [ai-use-case-triage](use-ai-use-case-triage.md), [devils-advocate](use-devils-advocate.md), [pre-merge-review](use-pre-merge-review.md), [subagent-design](use-subagent-design.md)
+- Related: [agent-budget](use-agent-budget.md), [agent-loop-design](use-agent-loop-design.md), [agent-threat-model](use-agent-threat-model.md), [agents-md-generator](use-agents-md-generator.md), [ai-adoption-rollout](use-ai-adoption-rollout.md), [ai-readiness-assessment](use-ai-readiness-assessment.md), [ai-use-case-triage](use-ai-use-case-triage.md), [devils-advocate](use-devils-advocate.md), [pre-merge-review](use-pre-merge-review.md), [subagent-design](use-subagent-design.md)

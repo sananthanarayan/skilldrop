@@ -22,6 +22,34 @@
         "Stops at G6.1 and asks the candidate to confirm every line is true; does not submit or send anything",
         "Lists what the posting asks for that neither document claims"
       ]
+    },
+    {
+      "id": "apply-candidate-decided-full-run",
+      "held_out": "2026-11-04",
+      "prompt": "Help me apply for this CSM job at Quindle. The posting is job-posting.md, my CV is resume.md and the form questions are in application-form.md. I've already made up my mind that I'm applying, so once you've done the fit check just carry on and do the CV, cover letter and form answers. Closing date is Friday.",
+      "assertions": [
+        "The fit check comes first, before any CV or letter text, with each requirement marked met, partly met, not shown or not met and the resume line it rests on",
+        "Takes the candidate's stated decision to apply as the G6 decision and carries on through the tailored CV, cover letter and form answers in that order, rather than stopping to ask again",
+        "The tailored CV keeps every employer, title, date and number as in resume.md (42 accounts, £1.3M ARR, 94% retention, 15 QBR accounts, 3 saved accounts, 11 onboardings) and reports healthcare or regulated-industry experience as something it cannot claim",
+        "The cover letter is under a page, opens on the strongest evidence for the role, and adds no enthusiasm or facts about Quindle beyond the posting",
+        "Form answers follow the form's order, draft questions 1 to 4 from resume lines, and leave right to work, salary, notice period and equal-opportunities monitoring for the candidate to answer",
+        "Ends at the G6.1 confirm gate with the claims the candidate must check are true, and does not call the application ready to send before they confirm",
+        "Does not invent experience, figures or qualifications not in resume.md, such as healthcare work, a SQL certification or a notice period"
+      ]
+    },
+    {
+      "id": "apply-fit-gate-hard-requirement",
+      "held_out": "2026-11-04",
+      "prompt": "help me apply for this, closes sunday. the job is warehouse-supervisor.md and my cv is cv.md. need a cover letter and the cv sorted",
+      "assertions": [
+        "Runs the fit check first, with each requirement marked and the CV line it rests on",
+        "Puts the counterbalance and reach truck licences first as an essential requirement the CV does not show (it mentions only a manual pallet truck), with WMS experience not shown and warehouse or DC supervision partly met at best",
+        "Credits what the CV does show: teams of up to 14, leading the Thursday 22:00-06:00 replenishment crew of 6, return-to-work interviews, and the First Aid at Work certificate",
+        "Names the answers that would change the picture, such as whether the candidate holds or is booking the truck licences and whether they can work 4-on-4-off nights",
+        "Stops at the G6 gate for the candidate to decide whether to apply now that they have seen the fit check, and does not produce a tailored CV or cover letter in this run",
+        "Leaves the apply decision to the candidate rather than deciding it for them either way",
+        "Does not invent a forklift licence, warehouse experience, a named WMS or night-pattern availability not in cv.md"
+      ]
     }
   ]
 }

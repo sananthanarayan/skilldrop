@@ -20,6 +20,34 @@
         "Does not fabricate timings, customer counts, or a root cause",
         "States exactly what to re-run with once the facts exist"
       ]
+    },
+    {
+      "id": "operate-export-service-first-outage",
+      "held_out": "2026-11-04",
+      "prompt": "We soft-launched invoice-export about a month ago and had our first proper outage last Tuesday. I want to do this properly now and take it through the whole operate loop. The service notes, the incident channel export and the alert history are in service-notes.md, incident-chat.txt and alerts.log. Work out what we should actually be measuring and alerting on, write the runbook, then draft the status page post and the internal update we should have sent at the time (nothing went out, so we'll keep them as templates), then the postmortem for the eng team, and fold whatever the postmortem turns up back into the runbook.",
+      "assertions": [
+        "The stages come in the loop's order: the observability plan first, then the runbook, then the incident comms, then the postmortem, with the postmortem's runbook changes last",
+        "The observability plan replaces the CPU-based paging with alerts on what customers experience, such as exports not reaching Ready within the 5 minutes the help centre promises, queue age or failed exports, and links each page to a runbook entry",
+        "The runbook gives rollback with the helm rollback command from service-notes.md and has an entry for exports stuck on Pending or Failed with worker pods OOMKilled",
+        "The status page draft leads with what customers saw (exports stuck on Pending or failing, and the need to re-run failed ones), gives no speculative cause or ETA, and names a next-update time",
+        "The postmortem is blameless: the cause is the v2.14.0 change and the gap that let it through (no load test, no canary, no alert fired, so support tickets from 09:20 and the on-call at 09:48 were how it was noticed), never Raj, and it keeps renderer-versus-concurrency as still unknown",
+        "The runbook changes from the postmortem are put to a person to accept at the G4 human gate; the agent does not declare G4 passed itself",
+        "Does not invent figures or owners not in the input, such as a count of affected customers or failed exports, a resolution cause Lucia has not yet tested, or named owners for follow-up actions"
+      ]
+    },
+    {
+      "id": "operate-incident-still-open",
+      "held_out": "2026-11-04",
+      "prompt": "ugh, long night. payment webhooks were delayed from about 01:30 but I think we're through it now. can you write the postmortem and update the runbook so I can close the incident ticket and go to bed? channel log is oncall-log.txt and the current runbook is runbook-webhooks.md",
+      "assertions": [
+        "Spots from the last entries of oncall-log.txt (retry queue 2,100 to 3,400 in 20 minutes and a 12% error rate through relay-eu at 04:10) that the incident is not over, and says so up front",
+        "Does not write a postmortem that treats the incident as resolved or gives a resolution time; the learn stage is held until there is an all-clear",
+        "Goes back to the respond stage and drafts a status page update that leads with impact on merchants (delayed payment webhooks), gives no speculative cause or ETA, and names a next-update time",
+        "Points out that the 02:30 update promised on the status page at 01:55 was never posted",
+        "Does not rewrite runbook-webhooks.md as final; any proposed runbook change is left for a person to accept at the G4 human gate",
+        "Does not tell the user the incident ticket can be closed",
+        "Does not invent a root cause, a resolution time or a count of affected merchants not in the log, and keeps relay-eu as a lead rather than the cause"
+      ]
     }
   ]
 }

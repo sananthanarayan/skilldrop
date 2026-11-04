@@ -23,7 +23,7 @@ For people writing Agent Skills in their own repos: write a portable SKILL.md fo
 
 Write a new portable Agent Skill (a SKILL.md folder) from a described task, for Claude Code, Codex, Copilot, Cursor, Kiro or Antigravity in any repo — a description that leads with the artifact and ends with trigger phrases, decisive steps, a quality bar, when and when-not sections naming near-miss siblings, anti-patterns, a non-interactive rule, reference files and scripts that work in every tool, acceptance evals and trigger queries, and the install path for each tool.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/skill-engineering/skills/skill-author/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/skill-author/)
+Tier **light** · v0.1.2 · [SKILL.md](../../../packs/skill-engineering/skills/skill-author/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/skill-author/)
 
 **Use it when** the user says "turn this into a skill", "write a SKILL.md for…", "make an agent skill that…", or wants a repeatable task packaged so their coding agent does it the same way every time.
 

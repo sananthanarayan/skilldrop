@@ -15,13 +15,13 @@ npx skilldrop-cli install --pack dev-team     # or product-manager, solution-arc
 
 From a held-out eval, written blind from the skill's description:
 
-> *"We're taking ClaimLens to the investment committee on Thursday… Can you build a lean canvas for it and set out our riskiest assumptions and how we'd test them?"*
+> *"Our design agency sent the Figma file for Ostwick Museum's new signage as a JSON export… Can you (1) list the pages and the frames on each, (2) check the Final page against what the Brief page asks for, and (3) draft the comments I should leave for the agency on any frames with problems — one line each."*
 
-| Plain Claude Code | With [`lean-canvas`](https://sananthanarayan.github.io/skilldrop/skills/lean-canvas/) |
+| Plain Claude Code | With [`figma-diagrams`](https://sananthanarayan.github.io/skilldrop/skills/figma-diagrams/) |
 |---|---|
-| Finds the corrected break-even (~225 seats), then recommends *"scope the ask to Claims-only Phase 1"*. | *"Corrected, break-even is 225 seats — more than all three departments combined (215), so full rollout still doesn't cover running costs at £40/seat."* |
+| Finds the same three problems, then drafts comments of two sentences or more, and adds a fourth one about the Archive page that the file doesn't support. | *"The cover email is wrong on both counts. The Sign Types page has 11 frames, not 12, and Type 07 is missing."* Then one line per frame with a problem. |
 
-The blind judge picked the skill's answer: *"A misses this and recommends a Claims-only phase that cannot break even."*
+Both blind judges picked the skill's answer: *"A keeps each comment to a single sentence as asked, while B's main comments run to two sentences and its fourth comment is speculative."*
 
 ## The receipts
 

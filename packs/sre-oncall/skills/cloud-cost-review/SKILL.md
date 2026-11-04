@@ -107,7 +107,6 @@ This looks backward at a real bill. `capacity-cost-model` looks forward: it size
 - ❌ Estimating cost before launch, or projecting at 3× or 10× growth. Use `capacity-cost-model`.
 - ❌ Designing telemetry or a logging budget from scratch. Use `observability-plan`, though this skill flags logging cost as a hot spot.
 - ❌ Writing up an incident, including a cost spike from a runaway job. Use `postmortem-generator`.
-- ❌ Reporting AI tool usage or spend by user. Use `ai-usage-report`.
 - ❌ Defining business KPIs for a feature or product. Use `success-metrics`.
 
 ## Anti-patterns to avoid

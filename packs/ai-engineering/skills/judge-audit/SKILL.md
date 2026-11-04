@@ -9,7 +9,7 @@ Decides whether a judge's scores are good enough for one named decision, from th
 themselves, and answers the question the user asked. A grader can match an expert well overall
 and still over-score the very variant it is being used to pick. This skill audits judgements that
 already exist; designing the eval set and grading plan is `llm-eval-harness`, generating eval
-cases for a skill is `eval-harness-generator`, and measuring AI tool usage is `ai-usage-report`.
+cases for a skill is `eval-harness-generator`.
 
 ## How to respond
 
@@ -160,7 +160,6 @@ counts`, because a verdict without them is invented.
 
 - ❌ Designing the eval set, grading methods and pass bar for an LLM feature — `llm-eval-harness`
 - ❌ Generating eval cases for a skill's `evals/` folder — `eval-harness-generator`
-- ❌ Measuring how much teams use AI tools — `ai-usage-report`
 - ❌ Inter-rater reliability for humans only, with no model in the loop — the statistics transfer, but the bias checks here assume a model
 
 ## Anti-patterns to avoid

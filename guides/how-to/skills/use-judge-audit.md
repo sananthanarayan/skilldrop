@@ -63,11 +63,10 @@ A good result:
 
 - Designing the eval set, grading methods and pass bar for an LLM feature — `llm-eval-harness`
 - Generating eval cases for a skill's `evals/` folder — `eval-harness-generator`
-- Measuring how much teams use AI tools — `ai-usage-report`
 - Inter-rater reliability for humans only, with no model in the loop — the statistics transfer, but the bias checks here assume a model
 
 ## Next
 
 - [SKILL.md](../../../packs/ai-engineering/skills/judge-audit/SKILL.md), the instructions the agent reads
 - [Its page on the site](https://sananthanarayan.github.io/skilldrop/skills/judge-audit/)
-- Related: [ai-usage-report](use-ai-usage-report.md), [eval-harness-generator](use-eval-harness-generator.md), [llm-eval-harness](use-llm-eval-harness.md)
+- Related: [eval-harness-generator](use-eval-harness-generator.md), [llm-eval-harness](use-llm-eval-harness.md)

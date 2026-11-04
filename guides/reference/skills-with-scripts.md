@@ -19,7 +19,6 @@ What each one declares in its manifest: the packages to install, the environment
 |---|---|---|---|---|---|---|
 | [`agent-config-review`](../../packs/ai-engineering/skills/agent-config-review/SKILL.md) | ai-engineering | — | — | — | `git` | named-paths |
 | [`agent-incident-response`](../../packs/ai-engineering/skills/agent-incident-response/SKILL.md) | ai-engineering | — | — | — | `git` | named-paths |
-| [`ai-usage-report`](../../packs/ai-engineering/skills/ai-usage-report/SKILL.md) | ai-engineering | — | — | — | — | named-paths |
 | [`backlog-triage`](../../packs/trackers/skills/backlog-triage/SKILL.md) | trackers | — | — | — | — | named-paths |
 | [`behaviour-equivalence`](../../packs/dev-team/skills/behaviour-equivalence/SKILL.md) | dev-team | — | — | — | — | named-paths |
 | [`brand-kit`](../../packs/design/skills/brand-kit/SKILL.md) | design | — | — | — | — | none |
@@ -38,7 +37,6 @@ What each one declares in its manifest: the packages to install, the environment
 | [`hypothesis-comparison`](../../packs/research/skills/hypothesis-comparison/SKILL.md) | research | — | — | — | — | named-paths |
 | [`interactive-diagram`](../../packs/solution-architect/skills/interactive-diagram/SKILL.md) | solution-architect | — | — | — | — | project |
 | [`judge-audit`](../../packs/ai-engineering/skills/judge-audit/SKILL.md) | ai-engineering | — | — | — | — | named-paths |
-| [`lean-canvas`](../../packs/product-manager/skills/lean-canvas/SKILL.md) | product-manager | — | — | — | — | named-paths |
 | [`md-to-confluence`](../../packs/converters/skills/md-to-confluence/SKILL.md) | converters | — | `CONFLUENCE_EMAIL (optional)`, `CONFLUENCE_API_TOKEN (optional)`, `CONFLUENCE_PAT (optional)` | `*.atlassian.net` | — | named-paths |
 | [`md-to-docx`](../../packs/converters/skills/md-to-docx/SKILL.md) | converters | — | — | — | — | named-paths |
 | [`md-to-pptx`](../../packs/converters/skills/md-to-pptx/SKILL.md) | converters | — | — | — | — | named-paths |

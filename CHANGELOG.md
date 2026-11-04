@@ -8,6 +8,18 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.4.0 — 2026-11-04
+
+- **The first loops are measured.** On their held-out evals, the four loops from 1.3.0 were preferred to plain Claude Code in 75% and 69% of pairs by two blind judges. Against their own skills used without them, they came out even. `ship-agent` won every pair; `adopt` lost every pair to its own skills, and is next to be decided. The write-up is in [what the benchmark showed](guides/explanation/what-the-benchmark-showed.md#the-loops-measured-for-the-first-time).
+- **Every loop now has held-out evals.** The 11 older loops each have two, written blind from their descriptions, and `release` has evals for the first time.
+- **Two skills are retired: `ai-usage-report` and `lean-canvas`** ([RFC-0072](docs/rfcs/0072-the-last-three-and-figma-diagrams.md)). In each of three trials, with both judges, plain Claude Code did the job better, and neither adds a rule it breaks. If you installed one, it keeps working: `skilldrop outdated`, `update` and `doctor` name it, with the reason. For a costed decision, use `business-case`. `judge-audit` is being rebuilt, and `figma-diagrams` is kept now that its package installs in the benchmark.
+- **31 skills run on a different tier, set from two trials that agree** ([RFC-0073](docs/rfcs/0073-tiers-from-two-trials.md)). 28 move from standard to light, which met within 5 points of the best tier's checks both times, so they cost less to run. `md-to-docx` and `user-journey-map` move up to heavy, and `decision-log` up to standard. Run `skilldrop update` to pick up the new tiers.
+- **The benchmark lets a skill's scripts run.**
+  - `python3 run_bench.py --allow-bash` stops a compound command (`python3 x.py; echo $?`) being held for an approval a headless run can't give. It is off by default, so a trial stays comparable with earlier ones.
+  - `--held-out-through YYYY-MM-DD` repeats an earlier trial on the evals it had.
+  - A package pinned to a newer Python now says so when it can't install.
+  - The loop arm's cost estimate is now calibrated to real loop runs.
+
 ## 1.3.0 — 2026-11-03
 
 - **Four new loops cover packs that had none** ([RFC-0069](docs/rfcs/0069-adopt-ship-agent-provision-clarify-loops.md)). Install one with `npx skilldrop-cli install --loop <name>`.

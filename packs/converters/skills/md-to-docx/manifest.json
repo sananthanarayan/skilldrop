@@ -1,6 +1,6 @@
 {
   "name": "md-to-docx",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Turn a Markdown draft into a Word document (.docx) that someone outside engineering can open, edit and track changes in, with real Heading styles so the navigation pane and table of contents work, live hyperlinks, numbered and bulleted lists, tables, code blocks, embedded images and optional brand fonts and colours, and a warning for everything that could not be carried over. Use when the user wants a Markdown file as a Word doc, says \"send this as a .docx\", \"convert to Word\", \"legal needs it in Word\", or \"make this editable for the client\".",
   "entrypoint": "SKILL.md",
   "deps": {
@@ -39,7 +39,7 @@
   ],
   "permissions": {"network": [], "commands": [], "files": "named-paths"},
   "model": {
-    "tier": "standard",
-    "rationale": "A stdlib script does the conversion; the model restructures the Markdown so it converts cleanly (heading levels, footnotes, HTML), reads each warning and explains the losses. Bounded editing, no open-ended generation."
+    "tier": "heavy",
+    "rationale": "Measured (RFC-0073): on its held-out evals the heavy tier met 79% and 93% of checks in two tier trials, against standard's 64% and light's 71% and 79%, more than 5 points ahead both times."
   }
 }

@@ -62,7 +62,6 @@ A good result:
 - Defining how one metric is calculated (formula, filters, timezone) — that's the metric owner's call; this skill flags the gap, it doesn't fill it
 - Choosing which metric judges a feature, with targets and a decision rule — that's `success-metrics`
 - Service health dashboards, SLOs and alerting — that's `observability-plan`
-- A report on AI tool usage from telemetry logs — that's `ai-usage-report`
 
 ## Where a loop runs it
 
@@ -72,4 +71,4 @@ A good result:
 
 - [SKILL.md](../../../packs/data-analytics/skills/dashboard-spec/SKILL.md), the instructions the agent reads
 - [Its page on the site](https://sananthanarayan.github.io/skilldrop/skills/dashboard-spec/)
-- Related: [ai-usage-report](use-ai-usage-report.md), [observability-plan](use-observability-plan.md), [success-metrics](use-success-metrics.md)
+- Related: [observability-plan](use-observability-plan.md), [success-metrics](use-success-metrics.md)

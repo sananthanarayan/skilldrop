@@ -1,0 +1,9 @@
+[project]
+name = "cartcalc"
+version = "0.4.0"
+description = "Basket and checkout totals"
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.setuptools]
+packages = ["cartcalc"]

@@ -1,6 +1,6 @@
 {
   "name": "architecture-diagrams",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Generate architecture diagrams (Mermaid, PlantUML, C4) from a written description of a system. Supports AWS/Azure/GCP cloud topologies, microservice landscapes, sequence flows, container diagrams, and ER models. Use whenever the user asks for an architecture diagram, system sketch, flow diagram, or visualization of a design.",
   "entrypoint": "SKILL.md",
   "deps": {
@@ -25,7 +25,7 @@
     "architecture"
   ],
   "model": {
-    "tier": "standard",
-    "rationale": "Prose to diagram syntax. Correctness matters; reasoning is bounded."
+    "tier": "light",
+    "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 93% and 100% of checks in two tier trials, against standard's 93% and heavy's 93% and 93%, within 5 points of the best both times."
   }
 }

@@ -109,6 +109,20 @@ template and the autoscaling group (that plan should show 2 updates and nothing 
 treat encryption as a migration (snapshot, encrypted copy, restore, cut over), with deletion
 protection on first.
 
+## Run both steps as a loop next time
+
+The `provision` loop runs the same two skills in order. It adds the two checks this page did
+by hand: it writes the intended scope as resource addresses before any plan exists, and at
+apply time it confirms the planfile is the one that was reviewed.
+
+```bash
+npx skilldrop-cli install --loop provision
+```
+
+Then ask for the change, for example: *"Run the provision loop: a private bucket for nightly
+database backups."* The loop stops at G13 with the review's verdict. It stops again at G13.1
+for whoever runs `terraform apply`, and it never runs apply itself.
+
 ## What you have now
 
 A module other teams can call without getting a public bucket, and a plan review with three

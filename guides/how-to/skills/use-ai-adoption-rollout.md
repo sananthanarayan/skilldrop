@@ -57,7 +57,6 @@ A good result:
 - Choosing which use case to roll out — that's [`ai-use-case-triage`](../../../packs/ai-engineering/skills/ai-use-case-triage/SKILL.md).
 - Deciding whether the organisation is ready at all — that's [`ai-readiness-assessment`](../../../packs/ai-engineering/skills/ai-readiness-assessment/SKILL.md).
 - Writing the rules for what may be put into the tool — that's [`ai-usage-policy`](../../../packs/ai-engineering/skills/ai-usage-policy/SKILL.md).
-- Reporting on adoption that already happened — that's `ai-usage-report`.
 
 ## Where a loop runs it
 
@@ -67,4 +66,4 @@ A good result:
 
 - [SKILL.md](../../../packs/ai-engineering/skills/ai-adoption-rollout/SKILL.md), the instructions the agent reads
 - [Its page on the site](https://sananthanarayan.github.io/skilldrop/skills/ai-adoption-rollout/)
-- Related: [ai-readiness-assessment](use-ai-readiness-assessment.md), [ai-usage-policy](use-ai-usage-policy.md), [ai-usage-report](use-ai-usage-report.md), [ai-use-case-triage](use-ai-use-case-triage.md), [migration-plan](use-migration-plan.md)
+- Related: [ai-readiness-assessment](use-ai-readiness-assessment.md), [ai-usage-policy](use-ai-usage-policy.md), [ai-use-case-triage](use-ai-use-case-triage.md), [migration-plan](use-migration-plan.md)

@@ -1,12 +1,12 @@
 ---
 title: From use-case to deployed agent — the AI engineering workflow
-summary: End-to-end AI adoption: triage the use case, assess org readiness, design the loop and agents, threat-model the system, build the evals, measure what shipped.
+summary: End-to-end AI adoption: triage the use case, assess org readiness, design the loop and agents, threat-model the system, build the evals.
 kind: tutorial
 ---
 
 # From use-case to deployed agent — the AI engineering workflow
 
-Seven skills. The first two are stop gates — they exist to kill bad investments early. The rest build the system that will actually ship.
+Six skills. The first two are stop gates — they exist to kill bad investments early. The rest build the system that will actually ship.
 
 Install everything up front:
 
@@ -88,20 +88,26 @@ Evals are built before deployment, not after. Without them there is no way to kn
 
 ---
 
-## Measure what shipped
+## Run the stages as two loops
 
-**Skill:** `ai-usage-report`
+Two loops run most of this sequence in order, with the gates between the stages written
+down. `adopt` runs triage, readiness, a usage policy and the rollout, and scores readiness
+against the first use case. `ship-agent` runs the loop design, the budget, the threat model
+and the evals, then reviews the built agent's configuration before launch.
 
-After deployment, `ai-usage-report` produces the measurement report: how often the system ran, what it produced, where it escalated to humans, what the error rate was, and what the cost was. This is the evidence base for the next investment decision — whether to extend the system, fix it, or retire it.
+```bash
+npx skilldrop-cli install --loop adopt ship-agent
+```
 
-**Say:** *"Write an AI usage report for this deployed system: [describe what data you have — runs, outputs, escalations, costs]"*
+Then say *"Run the adopt loop on these ideas"* or *"Run the ship-agent loop on this agent"*.
+`adopt` stops for the sponsor at G11.1, and `ship-agent` stops for the agent's owner at G12.1.
 
 ---
 
 ## The full sequence
 
 ```
-ai-use-case-triage → ai-readiness-assessment → agent-loop-design → subagent-design → agent-threat-model → llm-eval-harness → ai-usage-report
+ai-use-case-triage → ai-readiness-assessment → agent-loop-design → subagent-design → agent-threat-model → llm-eval-harness
 ```
 
 The sequence front-loads the kills. A use case that fails triage does not consume a readiness assessment. A system that fails threat-modelling does not consume an eval build. The expensive work happens only after the cheap gates pass.

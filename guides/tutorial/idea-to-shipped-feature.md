@@ -216,7 +216,7 @@ On Monday the release owner records `G3.1 PROCEED`, and the flag opens in three 
 
 ### Post-ship monitoring
 
-Two weeks after launch, `ai-usage-report` tracks adoption: 340 exports in the first two weeks, 99.1% completion rate, p95 latency 38s. The "recent exports" page is used in 12% of sessions, confirming the fallback was worth building.
+Two weeks after launch, the export logs show adoption: 340 exports in the first two weeks, 99.1% completion rate, p95 latency 38s. The "recent exports" page is used in 12% of sessions, confirming the fallback was worth building.
 
 ### Incident
 

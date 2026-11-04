@@ -218,7 +218,7 @@ Tier **heavy** · v0.2.0 · [SKILL.md](../../../packs/dev-team/skills/devils-adv
 
 Implement a feature or story so it ends up *verified*, not just generated. Takes a description + acceptance criteria, writes code and tests, then runs an adversarial review pass that hunts for gaps (broken edge cases, baked-in assumptions, uncovered acceptance criteria), and re-generates to close them — looping until the review is clean or a 3-round cap is hit.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/feature-implement-loop/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/feature-implement-loop/)
+Tier **light** · v0.1.1 · [SKILL.md](../../../packs/dev-team/skills/feature-implement-loop/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/feature-implement-loop/)
 
 **Use it when** handed a ticket / story / feature spec with acceptance criteria and the goal is shippable, self-checked code — not a first draft.
 
@@ -293,7 +293,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/dev-team/skills/migrati
 
 Write the pull request title and description for one change, from the actual diff and commits: what changed and why, how it was tested with only the checks that were really run, what a reviewer should look at first, and the risk and rollback. It also reports what the diff contains that the commits don't mention, such as a dependency bump, a deleted test or a schema change.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/pr-description-writer/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/pr-description-writer/)
+Tier **light** · v0.1.1 · [SKILL.md](../../../packs/dev-team/skills/pr-description-writer/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/pr-description-writer/)
 
 **Use it when** the user asks to write a PR description, a pull request summary, a merge request body, or says "describe this change for review", "write up this branch".
 
@@ -316,7 +316,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/pr-desc
 
 Gate an existing change for merge — run one skill that fires the whole production-readiness pass. First a deterministic mechanical gate (lint + typecheck + tests, via a script whose exit code decides), then the three-reviewer panel dispatched in parallel — devils-advocate (correctness), security-reviewer (exploitability), code-quality (craft) — then a single READY / NOT READY verdict. Use before opening a PR or merging, when you want the full review fleet run on a diff you already have. Do NOT use to implement a feature from a spec (that's feature-implement-loop) or to review a document (that's doc-critique).
 
-Tier **standard** · v0.1.5 · [SKILL.md](../../../packs/dev-team/skills/pre-merge-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/pre-merge-review/)
+Tier **light** · v0.1.6 · [SKILL.md](../../../packs/dev-team/skills/pre-merge-review/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/pre-merge-review/)
 
 **Needs:** Python 3 for its scripts (standard library only).
 
@@ -370,7 +370,7 @@ Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/dev-team/skills/refacto
 
 Write release notes from a git log, a list of merged PRs or rough notes about what changed — for the audience and in the format the user names (a customer changelog page, an email, an in-app "what's new", store text, a CHANGELOG.md entry). Says nothing the input doesn't, writes a vague change only as far as it was described, puts breaking changes and anything the reader must do first, and keeps internal noise and working notes out of the text.
 
-Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/dev-team/skills/release-notes/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/release-notes/)
+Tier **light** · v0.2.1 · [SKILL.md](../../../packs/dev-team/skills/release-notes/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/release-notes/)
 
 **Use it when** the user wants release notes, a changelog entry, "what's in this release", a deploy announcement, or to summarise changes since the last tag.
 
@@ -500,7 +500,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/tech-de
 
 Generate a risk-based test plan for a feature, PR, or release — risks ranked by likelihood × impact, test cases pushed to the lowest pyramid level that catches the failure, every acceptance criterion mapped to a test, and an explicit "not tested" list.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/test-plan-generator/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/test-plan-generator/)
+Tier **light** · v0.1.1 · [SKILL.md](../../../packs/dev-team/skills/test-plan-generator/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/test-plan-generator/)
 
 **Use it when** the user asks for a test plan, test cases, a QA strategy for a change, "how should we test this", or pre-release test coverage.
 

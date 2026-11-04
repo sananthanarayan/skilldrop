@@ -56,7 +56,6 @@ A good result:
 - Planning the rollout once you've decided to go — that's [`ai-adoption-rollout`](../../../packs/ai-engineering/skills/ai-adoption-rollout/SKILL.md).
 - Writing the rules for what people may put into a tool — that's [`ai-usage-policy`](../../../packs/ai-engineering/skills/ai-usage-policy/SKILL.md).
 - A market or competitive question ("should we enter this space?") — that's `strategy-analysis`.
-- Measuring adoption that has already happened — that's `ai-usage-report`.
 - **Assessing how far an engineering team's agent practice has actually got** — agents in flight, who writes the code, what still gets reviewed — that's [`agent-adoption-stage`](../../../packs/ai-engineering/skills/agent-adoption-stage/SKILL.md). It's the orthogonal axis: this skill scores whether the *organisation* can adopt at all; that one scores how far the *practice* has got. A team can be governance-ready and stuck at stage 1, or running ten agents with no policy at all — run both when the answers disagree.
 
 ## Where a loop runs it
@@ -67,4 +66,4 @@ A good result:
 
 - [SKILL.md](../../../packs/ai-engineering/skills/ai-readiness-assessment/SKILL.md), the instructions the agent reads
 - [Its page on the site](https://sananthanarayan.github.io/skilldrop/skills/ai-readiness-assessment/)
-- Related: [agent-adoption-stage](use-agent-adoption-stage.md), [ai-adoption-rollout](use-ai-adoption-rollout.md), [ai-usage-policy](use-ai-usage-policy.md), [ai-usage-report](use-ai-usage-report.md), [ai-use-case-triage](use-ai-use-case-triage.md), [strategy-analysis](use-strategy-analysis.md)
+- Related: [agent-adoption-stage](use-agent-adoption-stage.md), [ai-adoption-rollout](use-ai-adoption-rollout.md), [ai-usage-policy](use-ai-usage-policy.md), [ai-use-case-triage](use-ai-use-case-triage.md), [strategy-analysis](use-strategy-analysis.md)

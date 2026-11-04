@@ -1,6 +1,6 @@
 {
   "name": "api-contract-draft",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Draft an OpenAPI 3.1 contract from a feature brief or story — resource-oriented paths, a full error catalog (RFC 9457), pagination/idempotency/versioning decided not deferred, examples on every operation, plus a decisions log so review argues choices instead of YAML. Use when the user wants to design an API, draft an OpenAPI/Swagger spec, define request/response shapes, or agree a contract between frontend/backend or two teams before code.",
   "entrypoint": "SKILL.md",
   "deps": {
@@ -27,7 +27,7 @@
     "asyncapi"
   ],
   "model": {
-    "tier": "standard",
-    "rationale": "Schema synthesis against fixed conventions. The resource modeling needs judgment; the conventions bound it. Escalate via ambiguous-input on contested multi-team contracts."
+    "tier": "light",
+    "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 76% and 92% of checks in two tier trials, against standard's 69% and heavy's 69% and 76%, within 5 points of the best both times."
   }
 }

@@ -358,7 +358,7 @@ evals:
 | Reading | Skills |
 |---|---|
 | The plain agent is preferred, in **each** trial (5) | `file-to-markdown`, and four skills since retired ([RFC-0068](../../docs/rfcs/0068-five-skills-that-lost-to-the-plain-agent.md)) |
-| The plain agent is preferred, over both trials together (3 more) | `ai-usage-report`, `judge-audit`, `lean-canvas` |
+| The plain agent is preferred, over both trials together (3 more) | `judge-audit`, and two skills since retired ([RFC-0072](../../docs/rfcs/0072-the-last-three-and-figma-diagrams.md)) |
 | Instructions help (5) | `agent-incident-response`, `codebase-tour`, `context-graph`, `dependency-upgrade-review`, `resume-tailor` |
 | The scripts carry it (2) | `feedback-synthesis`, `web-performance-review` |
 | Mixed (29) | the rest |
@@ -377,3 +377,72 @@ evals:
   which skills need their instructions, not whether skills do.
 - **The list was fixed before the reasons were read,** as the roadmap required. The reasons
   were then read only for those five, to decide on them.
+- **The next three were decided on a third trial** ([RFC-0072](../../docs/rfcs/0072-the-last-three-and-figma-diagrams.md)),
+  with every output read. Two added no rule the plain agent breaks and were retired.
+  `judge-audit` adds one (report each run on its own and name the items that flipped), and is
+  being rebuilt around it. `figma-diagrams`, re-run with its package installed, won 3 and 3.5
+  of 4 pairs, and was kept.
+- **That trial found two faults in the benchmark itself.** Claude Code holds a compound
+  command such as `python3 x.py; echo $?` for approval even inside the sandbox, and a headless
+  run has nobody to approve it. `judge-audit`'s own script was held in 7 of its 16 runs. And a
+  skill whose package needs a newer Python than the runner's couldn't install it.
+  `run_bench.py --allow-bash` lets every command run inside the sandbox. It is off by default,
+  so this trial stays comparable with the ones before; the next full run turns it on and starts
+  a new baseline.
+
+### A second trial on light and heavy
+
+On 4 November the 216 held-out evals of the first tier trial ran again on light and heavy,
+with the same two judges: [`tier-light-trial-2.json`](../../docs/benchmarks/tier-light-trial-2.json)
+and [`tier-heavy-trial-2.json`](../../docs/benchmarks/tier-heavy-trial-2.json).
+
+| Tier | Assertions met, skill | Without | Preferred blind, judge 1 | Judge 2 | Trial 1, judges 1 and 2 |
+|---|---|---|---|---|---|
+| light `claude-haiku-5-5` | 84% | 81% | 47% (41 to 54) | 46% (40 to 53) | 41%, 48% |
+| heavy `claude-opus-5-5` | 86% | 83% | 35% (29 to 41) | 34% (28 to 41) | 31%, 31% |
+
+- **The second trial repeats the first.** On heavy, both judges again preferred plain Opus 5.5
+  in about two pairs of three. On light the skills are close to even.
+- **31 skills changed tier** ([RFC-0073](../../docs/rfcs/0073-tiers-from-two-trials.md)). A
+  tier moves only when both trials agree:
+  - **28 moved from standard down to light,** where light met within 5 points of the best
+    tier's checks in both trials.
+  - **Two moved up to heavy,** `md-to-docx` and `user-journey-map`, where heavy was more than 5
+    points ahead in both.
+  - **`decision-log` moved from light up to standard.**
+  - **Four more measured heavier but stay on standard for now:** `bug-triage`, `prd-draft`,
+    `prompt-caching-advisor` and `subagent-design`. A heavy skill must ship an example that
+    shows its judgment, and these don't yet.
+  - **Four heavy skills where light did as well stay heavy:** `accessibility-audit`,
+    `doc-critique`, `skill-review` and `strategy-analysis`. The routing rule is that heavy is
+    never routed down.
+
+## The loops, measured for the first time
+
+A loop orders skills and puts a gate between them. The question a benchmark has to answer is
+whether the order and the gates add anything the skills don't. On 4 November the four loops
+added in 1.3.0 ran on their held-out evals in three arms: the loop, its stage skills installed
+without it, and the plain agent. That was two trials with the same two judges, as shipped in
+1.3.0 ([`loops-1.3.0.json`](../../docs/benchmarks/loops-1.3.0.json)).
+
+| | Loop | Its skills, no loop | Plain agent |
+|---|---|---|---|
+| Assertions met | 88% | 50% | 32% |
+| $ per run | $0.32 | $0.25 | $0.09 |
+
+| Blind pair | Judge 1 | Judge 2 |
+|---|---|---|
+| Loop preferred to the plain agent | 75% (50 to 94) | 69% (38 to 94) |
+| Loop preferred to its skills without it | 50% (19 to 81) | 62% (25 to 88) |
+| Its skills preferred to the plain agent | 81% (56 to 100) | 81% (56 to 100) |
+
+- **The loops beat the plain agent, and so do their skills.** Unlike the skills one at a time,
+  a sequence of them is preferred to plain Claude Code by both judges.
+- **Whether the order and gates add to the skills isn't settled.** The loop against its own
+  skills spans even for both judges, on eight evals.
+- **Per loop, one clear win and one clear loss.** `ship-agent` won every pair against both its
+  skills and the plain agent. `adopt` lost every pair to its own skills used without it, so it
+  is the first loop to get the keep, rebuild or retire question. `provision` and `clarify` are
+  mixed.
+- **A loop run costs about four times a plain one,** and one and a half times the skills alone.
+

@@ -106,7 +106,6 @@ It uses the metric names DORA currently publishes on [dora.dev](https://dora.dev
 - ❌ Writing up one incident: timeline, impact, contributing factors. Use `postmortem-generator`.
 - ❌ Designing SLOs, alerts or dashboards for a service. Use `observability-plan`.
 - ❌ Product or business outcome metrics (activation, retention, revenue). Use `success-metrics`.
-- ❌ Reporting how people use AI tools. Use `ai-usage-report`.
 - ❌ Forecasting infrastructure cost or capacity. Use `capacity-cost-model`.
 
 ## Anti-patterns to avoid

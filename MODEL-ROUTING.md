@@ -36,28 +36,29 @@ Shipped providers (Claude Code is filled in; the rest are templates you complete
 
 ## Per-skill assignments
 
+A sample per tier; `model-routing.json` has every skill. Since RFC-0073, a tier moves when two trials agree: down when the cheaper model meets within 5 points of the best tier's checks in both, up when the dearer one is more than 5 points ahead in both, one step at a time, and heavy never moves down.
+
 ### 🟢 light — mechanical
 | Skill | Why |
 |---|---|
 | `audience-profile` | Maps fixed audience archetypes to structural rules. Lookup, not synthesis. |
-| `decision-log` | Extracts decisions/owners/dates from notes. Pattern extraction. |
 | `sonar-onboard` | Scaffolds config from detected language + template. Deterministic fill-in. |
+| `architecture-diagrams` | Prose → diagram syntax. Correctness matters, reasoning bounded. |
+| `design-doc` | Synthesizes a design doc. *Escalates to heavy* on big/contested inputs. |
+| `figma-diagrams` | API calls + spec generation. Bounded transformation. |
+| `slide-outliner` | Outlines a deck to a time budget. |
 
 ### 🔵 standard — generation (the default)
 | Skill | Why |
 |---|---|
 | `adr-generator` | Structures a decision into MADR/Nygard. Bounded judgment. |
-| `architecture-diagrams` | Prose → diagram syntax. Correctness matters, reasoning bounded. |
+| `decision-log` | Extracts decisions, owners and dates from notes. Light fell behind in both tier trials (RFC-0073). |
 | `brief-intake` | Extraction + `[explicit]/[implied]/[inferred]` tagging. Tagging needs care. |
-| `design-doc` | Synthesizes a design doc. *Escalates to heavy* on big/contested inputs. |
 | `exec-summary` | One-page compression. *Escalates* on very long source docs. |
-| `figma-diagrams` | API calls + spec generation. Bounded transformation. |
 | `guide-builder` | Shapes notes into a styled guide. |
 | `reverse-architecture` | Extracts architecture from code/IaC. *Escalates* on large codebases. |
 | `runbook-generator` | Operational doc from service facts. |
-| `slide-outliner` | Outlines a deck to a time budget. |
 | `sonar-review` | Formats Sonar API findings into a report. The hard analysis is Sonar's. |
-| `ai-usage-report` | Tabulates telemetry; the "AI theater" call needs some judgment. |
 
 ### 🟣 heavy — reasoning (never downgraded)
 | Skill | Why |
