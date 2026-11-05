@@ -33,6 +33,7 @@ Converts the bug report someone *sent* into the ticket an engineer can *start* �
 ## Useful references in this skill
 
 - [`templates/bug-ticket.md`](templates/bug-ticket.md) — the ticket skeleton with the severity/priority matrix and the no-repro diagnostics list
+- [`examples/export-row-limit-escalation.md`](examples/export-row-limit-escalation.md) — worked example: a VP's S1/P1 for "exports losing data" that the log shows is a 10,000-row CSV cap, filed S3/P2
 
 ## Quality bar
 

@@ -1,12 +1,12 @@
 # skilldrop
 
 > 111 portable skills for the artifacts knowledge work ships (ADRs, design docs,
-> PRDs, runbooks, threat models, decks, postmortems), plus 15 loops that sequence them
+> PRDs, runbooks, threat models, decks, postmortems), plus 11 loops that sequence them
 > behind gates. A loop orders skills; a skill never calls a skill, so every one of the
 > 111 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 1.4.0.
+> Version 1.5.0.
 
 ## Start here
 
@@ -23,16 +23,12 @@ Five loops cover the lifecycle and are separated by reversibility (how expensive
 mistake is to unwind), which is also what decides who may sign off. One wrapper applies
 to any generator.
 
-- [adopt](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/ai-engineering/loops/adopt/LOOP.md) — *loop*, cap 3. Stages: triage -> readiness -> policy -> rollout -> sign-off. Gates: G11 (review), G11.1 (human).
-- [apply](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/career/loops/apply/LOOP.md) — *loop*, cap 3. Stages: fit -> tailor -> letter -> form -> confirm. Gates: G6 (human), G6.1 (human).
 - [build](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/dev-team/loops/build/LOOP.md) — *loop*, cap 3. Stages: shape -> implement -> verify -> decide. Gates: G2 (mechanical), G2.1 (human).
 - [clarify](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/experience-design/loops/clarify/LOOP.md) — *loop*, cap 3. Stages: page -> strings -> blueprint. Gates: G14 (review).
 - [comply](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/grc/loops/comply/LOOP.md) — *loop*, cap 3. Stages: register -> assess -> evidence -> check -> sign-off. Gates: G8 (mechanical), G8.1 (human).
 - [design](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/solution-architect/loops/design/LOOP.md) — *loop*, cap 3. Stages: constrain -> shape -> threat -> ratify -> record. Gates: G1 (review).
-- [discover](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/product-manager/loops/discover/LOOP.md) — *loop*, cap 3. Stages: gather -> structure -> specify -> ratify. Gates: G0 (human).
 - [measure](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/data-analytics/loops/measure/LOOP.md) — *loop*, cap 3. Stages: spec -> review -> sign-off. Gates: G9 (review), G9.1 (human).
 - [modernize](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/dev-team/loops/modernize/LOOP.md) — *loop*, cap 3. Stages: survey -> plan -> capture -> rebuild -> prove -> cutover. Gates: G10 (mechanical), G10.1 (human).
-- [operate](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/sre-oncall/loops/operate/LOOP.md) — *loop*, cap 3. Stages: instrument -> document -> respond -> learn. Gates: G4 (human).
 - [provision](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/infra-as-code/loops/provision/LOOP.md) — *loop*, cap 3. Stages: module -> plan -> apply. Gates: G13 (review), G13.1 (human).
 - [release](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/dev-team/loops/release/LOOP.md) — *loop*, cap 3. Stages: plan -> ready -> announce -> go. Gates: G3 (review), G3.1 (human).
 - [research](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/research/loops/research/LOOP.md) — *loop*, cap 3. Stages: plan -> synthesise -> compare. Gates: G7 (review).
@@ -56,8 +52,8 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 
 ## Guides
 
-- [Why loops](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/loops.md) *(explanation)*: Why skilldrop sequences skills in a separate primitive instead of letting skills call each other, and why there are five lifecycle loops rather than three.
-- [Operating model](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/operating-model.md) *(explanation)*: Know which stage your work is in, which loop and pack help there, and where the agent stops for your decision.
+- [Why loops](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/loops.md) *(explanation)*: Why skilldrop sequences skills in a separate primitive instead of letting skills call each other, why the lifecycle has five stages rather than three, and why only some of them run as loops.
+- [Operating model](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/operating-model.md) *(explanation)*: Know which stage your work is in, which loop or skills and pack help there, and where the agent stops for your decision.
 - [skilldrop, reviewed by its own skills](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/own-skills-on-own-site.md) *(explanation)*: The site's performance and accessibility, checked with the catalogue's own web-performance-review and accessibility-audit skills, the findings, and what was fixed. Pull requests are reviewed by pre-merge-review.
 - [Does the agent invent your resume?](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/resume-fabrication-comparison.md) *(explanation)*: The same 14 resume and cover-letter requests run with the career pack's skills and with plain Claude Code - how often each put something in the document that the person never said, and what kind of thing it was.
 - [What the benchmark showed](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/what-the-benchmark-showed.md) *(explanation)*: Five days of measuring skills against the agent without them - a large gain on the skills' own checks, no blind preference at first, a gain that did not survive new evals, and what the skills that do win have in common.
@@ -247,11 +243,11 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Updates and the install ledger](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/update-and-ledger.md) *(reference)*: What outdated, update, diff and doctor compare and decide — the ledger file, how edited files become .upstream, every update flag, and the edge cases.
 - [Versioning and what stays stable](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/versioning-and-stability.md) *(reference)*: What skilldrop promises from 1.0.0 — the CLI, skill folders and names, scripts' flags and exit codes, loops, packs, the GitHub Action and plugin names — what each kind of release can change, and how deprecation and retirement work.
 - [From use-case to deployed agent — the AI engineering workflow](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/ai-engineering-workflow.md) *(tutorial)*: End-to-end AI adoption: triage the use case, assess org readiness, design the loop and agents, threat-model the system, build the evals.
-- [From complaint to closed incident](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/complaint-to-closed-incident.md) *(tutorial)*: A user complaint triggers a full response cycle — discover what's broken, operate to fix it, and close the loop with a postmortem and runbook update. Uses the discover and operate loops.
+- [From complaint to closed incident](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/complaint-to-closed-incident.md) *(tutorial)*: A user complaint triggers a full response cycle — find what's broken, fix it, and close it with a postmortem and a runbook update — using the product-manager and sre-oncall skills in order.
 - [From a dashboard request to numbers people can defend](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/dashboard-request-to-defensible-numbers.md) *(tutorial)*: Run the measure loop on a real request. The spec cuts the charts that serve no decision, the SQL review catches a join that inflated revenue, and the loop stops for the metric owners instead of picking between two teams' definitions of an active customer.
 - [From story to merged code — the dev-team workflow](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/dev-team-workflow.md) *(tutorial)*: A complete dev-team session: split the story, implement with checkpoints, gate with the review panel, document what shipped.
 - [Follow one change through the loops](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/follow-a-change-through-the-loops.md) *(tutorial)*: A single realistic change — API rate limiting — walked from a stakeholder complaint to a closed incident, showing what each stage produces and what each gate actually refuses.
-- [From idea to shipped feature](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/idea-to-shipped-feature.md) *(tutorial)*: A product idea moves through all five lifecycle loops — discover, design, build, release, operate — with each gate refusing until its conditions are met.
+- [From idea to shipped feature](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/idea-to-shipped-feature.md) *(tutorial)*: A product idea moves through all five lifecycle stages — find the problem, design, build, release, run it — with each gate refusing until its conditions are met.
 - [From a Terraform module to a plan you can safely apply](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/module-to-safe-apply.md) *(tutorial)*: Write a reusable Terraform module with secure defaults, then review a plan that was meant to resize one app tier and would also have replaced a database, opened SSH to the internet and widened an IAM policy, with the infra-as-code pack.
 - [One Markdown draft, every reader's format](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/one-draft-every-format.md) *(tutorial)*: Take one Markdown report to a Word file for the people who edit it, a spreadsheet for the people who total it, and a slide deck for the meeting, then bring a reply back to Markdown, with the converters pack. Nothing is dropped without being named.
 - [From an unreadable page to a service people can use](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/page-to-service.md) *(tutorial)*: Rewrite a council permit page from what residents need, write every word on the application form, then blueprint the service behind it and find why two thirds of the calls are "where is my permit", with the experience-design pack.
@@ -269,12 +265,12 @@ except `api-builder` requires `core`, which installs with it.
 
 - **core** (5 skills, loops: ship-a-draft): The cross-role toolkit every pack builds on: structured intake, document critique, the review council, output hygiene, and the decision graph behind a codebase, plus the ship-a-draft wrapper. Installed automatically with every role pack.
 - **solution-architect** (11 skills, loops: design, requires core): Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.
-- **product-manager** (9 skills, loops: discover, requires core): Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, and success measurement.
+- **product-manager** (9 skills, requires core): Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, and success measurement.
 - **dev-team** (20 skills, loops: build, modernize, release, requires core): Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, pull request descriptions, a ranked technical-debt register, migrations, launch readiness, release notes, agent-policy files, and code-quality gates.
-- **sre-oncall** (8 skills, loops: operate, requires core): Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.
+- **sre-oncall** (8 skills, requires core): Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.
 - **stakeholder-comms** (4 skills, requires core): Non-technical audiences: audience profiling, exec summaries, decision logs, and guides. Decks live in the design pack.
 - **design** (2 skills, requires core): On-brand visual work: capture a brand once as a brand.json the Word and PowerPoint converters apply, and plan a deck slide by slide for its audience.
-- **ai-engineering** (14 skills, loops: adopt, ship-agent, requires core): Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, and AI-usage reporting.
+- **ai-engineering** (14 skills, loops: ship-agent, requires core): Adopt and build AI systems: readiness assessment, use-case triage, rollout and acceptable-use policy, plus agent loop design, subagent orchestration, spend budgets, agent security review, eval harnesses, and AI-usage reporting.
 - **api-builder** (4 skills): Skills for teams building on the Anthropic API — prompt caching, token budgeting, eval generation for skills, and tool-use schema writing.
 - **converters** (5 skills, requires core): Turn Markdown into Word, Excel, PowerPoint and Confluence files that people outside engineering can open, and turn their files back into Markdown. Standard-library Python scripts, with nothing to install.
 - **experience-design** (5 skills, loops: clarify, requires core): The experience around a product: the structure people navigate, the content and interface words they read, the components they use, and the service behind it all.
@@ -285,7 +281,7 @@ except `api-builder` requires `core`, which installs with it.
 - **infra-as-code** (2 skills, loops: provision, requires core): Terraform you can hand to another team and plans you can trust before apply: reusable modules with secure defaults, and a plan review that catches destroys, data loss, access widening and drift.
 - **frontend** (3 skills, requires core): For frontend engineers and the people who review their pages: read a Lighthouse report for what actually slows the page, find what makes a JavaScript bundle heavy, and choose how each route is rendered from what it needs.
 - **skill-engineering** (2 skills, requires core): For people writing Agent Skills in their own repos: write a portable SKILL.md folder from a described task, then audit any skill for routing, portability, safety, structure and evals before you share it.
-- **career** (5 skills, loops: apply, requires core): Job applications, for any occupation: a shortlist of which of an employer's roles to go for, an honest check of your resume against the posting, a tailored resume and a cover letter that say nothing you didn't, the application form's answers drafted from your resume, and a script that lists every figure and name in a draft that your own resume doesn't contain.
+- **career** (5 skills, requires core): Job applications, for any occupation: a shortlist of which of an employer's roles to go for, an honest check of your resume against the posting, a tailored resume and a cover letter that say nothing you didn't, the application form's answers drafted from your resume, and a script that lists every figure and name in a draft that your own resume doesn't contain.
 
 ## Outcomes — browse by why you are here
 
@@ -324,5 +320,5 @@ except `api-builder` requires `core`, which installs with it.
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 73 RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 74 RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.

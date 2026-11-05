@@ -107,7 +107,7 @@ SVG_DARK_PATH = os.path.join(ROOT, *SVG_DARK_REL.split("/"))
 # loop: (heading, start here when, ends with). Dict order is lifecycle order.
 LIFECYCLE = {
     "discover": ("Find the problem worth solving", "A request, a complaint or a strategy question arrives.",
-                 "a requirement a person ratified"),
+                 "a requirement someone agreed to"),
     "design":   ("Decide how to build it", "The problem is agreed, but not the approach.",
                  "a recorded decision (ADR)"),
     "build":    ("Build it", "The work is clear enough to write down. Bug fixes start here.",
@@ -117,11 +117,18 @@ LIFECYCLE = {
     "operate":  ("Run it", "The service is live, or something just broke.",
                  "a postmortem and runbook changes"),
 }
+# A lifecycle stage whose loop was retired (RFC-0074) keeps its card, drawn from its skills in
+# order and with no gate: the stage is still where the work is, and the skills still do it.
+# stage: (pack, [skills per step, in order])
+STAGE_SKILLS = {
+    "discover": ("product-manager", [["feedback-synthesis", "requirements-interview", "user-journey-map"],
+                                     ["prd-draft"]]),
+    "operate":  ("sre-oncall", [["observability-plan"], ["runbook-generator"], ["incident-comms"],
+                                ["postmortem-generator"]]),
+}
 OUTSIDE = {
     "ship-a-draft": ("Wrap any draft", "Before and after any generator, at any stage.",
                      "a document ready for its reader"),
-    "apply":        ("Apply for a job", "One person, one job posting, one resume.",
-                     "an application ready to send"),
     "research":     ("Answer a why question", "A decision turns on which explanation is true.",
                      "an answer the evidence carries"),
     "comply":       ("Sign off a risky change", "A launch, a vendor or new personal data.",
@@ -130,8 +137,6 @@ OUTSIDE = {
                      "a spec with signed-off metrics"),
     "modernize":    ("Replace legacy code safely", "A legacy component is being rewritten or moved.",
                      "a cutover a person accepted"),
-    "adopt":        ("Start using AI", "A team has AI ideas, no rules and no plan.",
-                     "a first wave its sponsor approved"),
     "ship-agent":   ("Ship an AI agent", "Someone is building an agent with tools.",
                      "a launch its owner signed"),
     "provision":    ("Change infrastructure safely", "New or changed Terraform is about to be applied.",
@@ -232,11 +237,11 @@ def _flow_svg(rows, left, top):
     return out, y
 
 
-def _card(name, spec, pack, copy, colour, x, y, width, stage_no=None, dashed=False):
-    """One loop's card. Returns (svg parts, height)."""
+def _card(name, spec, pack, copy, colour, x, y, width, stage_no=None, dashed=False, skills_only=False):
+    """One loop's card, or a skills-only stage's. Returns (svg parts, height)."""
     heading, start, ends = copy
     inner = width - 2 * PAD
-    label = (f"STAGE {stage_no} · {name}" if stage_no else name).upper()
+    label = (f"STAGE {stage_no} · {name}" if stage_no else name).upper() + (" · SKILLS, NO LOOP" if skills_only else "")
     chip_w = _tw(pack, 11, mono=True) + 16
     start_lines = _wrap(f"Start here when {start}", 13, inner)
     rows = _layout_flow(_flow(spec), inner)
@@ -269,16 +274,19 @@ def operating_model_svg(specs, homes, pack_order, dark=False):
     same picture for a dark page."""
     pal = PALETTE["dark" if dark else "light"]
     colour, neutral = (COLOUR_DARK, NEUTRAL_DARK) if dark else (COLOUR, NEUTRAL)
-    body, desc = [], ["Five lifecycle loops, in order."]
+    body, desc = [], ["Five lifecycle stages, in order."]
     y = 112
     centres = []
     for n, (name, copy) in enumerate(LIFECYCLE.items(), 1):
-        part, h = _card(name, specs[name], homes[name], copy, colour[name], CARD_X, y, CARD_W, stage_no=n)
+        only = name not in specs
+        spec = specs[name] if not only else {"stages": [{"skills": ss} for ss in STAGE_SKILLS[name][1]]}
+        pack = homes[name] if not only else STAGE_SKILLS[name][0]
+        part, h = _card(name, spec, pack, copy, colour[name], CARD_X, y, CARD_W, stage_no=n, skills_only=only)
         body += part
         centres.append((y + 22, colour[name], n))
         gates = ", ".join(f'{g["id"]} where {WHO[g["kind"]]}' for g in
-                          (st["gate"] for st in specs[name]["stages"] if "gate" in st))
-        desc.append(f"Stage {n}, {name}, in the {homes[name]} pack: {copy[0]}. "
+                          (st["gate"] for st in spec["stages"] if "gate" in st)) or "none; its skills, in order, with no loop"
+        desc.append(f"Stage {n}, {name}, in the {pack} pack: {copy[0]}. "
                     f"Start here when {copy[1][0].lower()}{copy[1][1:]} Gates: {gates}. Ends with {copy[2]}.")
         y += h + 22
     rail = [f'<line x1="{RAIL_X}" y1="{centres[0][0]}" x2="{RAIL_X}" y2="{centres[-1][0]}" class="rail"/>']
@@ -362,7 +370,7 @@ def build_svg():
         specs[name] = json.load(open(os.path.join(ldir, "loop.json"), encoding="utf-8"))
         homes[name] = os.path.basename(os.path.dirname(os.path.dirname(ldir)))
     missing = sorted(set(specs) - set(LIFECYCLE) - set(OUTSIDE))
-    gone = sorted((set(LIFECYCLE) | set(OUTSIDE)) - set(specs))
+    gone = sorted((set(LIFECYCLE) | set(OUTSIDE)) - set(specs) - set(STAGE_SKILLS))
     if missing or gone:
         return None, [f"{SVG_REL}: build_loops.py has no lines for loop '{m}' — add it to LIFECYCLE or OUTSIDE"
                       for m in missing] + [f"{SVG_REL}: build_loops.py names loop '{g}', which does not exist"

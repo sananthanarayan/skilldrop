@@ -758,15 +758,29 @@ def bench_section(b):
         "no human has checked them.</li>\n")
     how = ("a Claude Code agent session with file and shell tools, sandboxed in an empty directory"
            if b.get("backend") == "claude-cli" else "one model call with no tools")
+    # A run on held-out evals only has no author-written evals in it, and the prose must say so.
+    only_held = all(set(d.get("by_kind", {})) == {"held_out"} for d in b["models"].values())
+    who = ("Every eval in this run was written from the skill's description by someone who never read the skill, "
+           "so neither run is graded on a rubric it was shaped around." if only_held else
+           "The skill's author wrote the assertions, so the run without the skill is graded on a rubric it never saw.")
+    revised = ("Some skills were revised, or admitted, on verdicts from earlier runs of these evals, so this is the better guide "
+               "but not a clean one; <a href=\"../docs/explanation/what-the-benchmark-showed.html\">what the benchmark showed</a> "
+               "separates the evals nothing was decided on." if only_held else
+               "Skills that lost were revised after reading the judges' reasons and run again on the same evals, so part of the preference on "
+               "evals their author wrote is fitted to them. Evals written by someone who never read the skill are counted separately"
+               + (" above" if any(len(d.get("by_kind", {})) == 2 for d in b["models"].values()) else "")
+               + ". Some skills were later revised, or admitted, on the verdicts from those evals too, so that row is the better guide but not "
+               "a clean one; <a href=\"../docs/explanation/what-the-benchmark-showed.html\">what the benchmark showed</a> separates the evals "
+               "nothing was decided on.")
     return f"""<section aria-labelledby="measured"><h2 id="measured">Measured: with the skill and without it</h2>
 <p class="pk__lede">Each acceptance eval is run twice on the same model, once with the skill and once without, as {how}. Last run {esc(b['date'])}, judged by <code>{esc(b['judge_model'])}</code>, {b['trials']} trial{'s' if b['trials'] != 1 else ''} per eval.</p>
 {''.join(blocks)}
 <ul class="pk__bar">
-<li><b>Assertions met</b> is graded by a judge that doesn't know which run it is reading. The skill's author wrote the assertions, so the run without the skill is graded on a rubric it never saw. A non-answer meets {pc(b.get('floor'))} of them.</li>
+<li><b>Assertions met</b> is graded by a judge that doesn't know which run it is reading. {who} A non-answer meets {pc(b.get('floor'))} of them.</li>
 <li><b>Preferred by a blind judge</b> is the share of pairs where a judge that saw only the request and both results, in shuffled order, picked the skill's. 50% means no preference.</li>
 {second}<li>Ranges are 95% intervals over evals. A lift range that includes 0, or a preference range that includes 50%, is not a result.</li>
 <li>Most skills have one eval, so a single row below is an anecdote. The judge is a model. Cost is list price for the tokens used.</li>
-<li>Skills that lost were revised after reading the judges' reasons and run again on the same evals, so part of the preference on evals their author wrote is fitted to them. Evals written by someone who never read the skill are counted separately{" above" if any(len(d.get("by_kind", {})) == 2 for d in b["models"].values()) else ""}. Some skills were later revised, or admitted, on the verdicts from those evals too, so that row is the better guide but not a clean one; <a href="../docs/explanation/what-the-benchmark-showed.html">what the benchmark showed</a> separates the evals nothing was decided on.</li>
+<li>{revised}</li>
 </ul>
 <p>Reproduce it with <code>python3 run_bench.py</code> (<a href="{REPO_URL}/blob/main/docs/rfcs/0040-skill-benchmark.md">RFC-0040</a>).</p>
 </section>"""

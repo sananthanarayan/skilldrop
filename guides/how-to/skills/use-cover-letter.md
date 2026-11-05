@@ -57,10 +57,6 @@ A good result:
 - Rewriting the resume itself. Use `resume-tailor`.
 - Removing machine artifacts from a letter that is already written. Use `output-hygiene`.
 
-## Where a loop runs it
-
-- Stage `letter` of the [`apply` loop](../../../packs/career/loops/apply/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/career/skills/cover-letter/SKILL.md), the instructions the agent reads

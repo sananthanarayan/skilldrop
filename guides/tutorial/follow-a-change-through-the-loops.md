@@ -6,22 +6,27 @@ kind: tutorial
 
 # Follow one change through the loops
 
-One change, all four loops, start to finish. The point is not the artifacts — it is seeing
-**what each gate refuses**, because a gate that never refuses anything is decoration.
+One change, four stages, start to finish. The point is not the artifacts — it is seeing
+**what each gate refuses**, because a gate that never refuses anything is decoration. Two of
+the stages run as loops (`design`, `build`). Finding the problem and running the service run
+as skills in order: their loops were retired, because on held-out evals the same skills used
+without the loop were preferred.
 
 Install what you need as you go, or take it all up front:
 
 ```bash
-npx skilldrop-cli install --loop discover design build operate
+npx skilldrop-cli install --loop design build
+npx skilldrop-cli install --pack product-manager
+npx skilldrop-cli install --pack sre-oncall
 ```
 
 The change: *"Enterprise customers keep hitting our API limits and complaining."*
 
 ---
 
-## Loop 1 — `discover`
+## Find the problem worth solving
 
-### `gather` → `structure` → `specify` → **G0 (human)**
+### `requirements-interview` → `brief-intake` → `prd-draft` → **you agree it**
 
 **gather.** The signal arrived as a complaint from an account manager, so this is a
 conversation, not a journey map. Run [`requirements-interview`](../../packs/product-manager/skills/requirements-interview/SKILL.md).
@@ -40,23 +45,22 @@ Impact      [missing]   how many customers, how often
 > 🚩 **Missing for downstream:** `prd-draft` will refuse to write requirements without
 > a measured threshold and an affected-customer count.
 
-**This is the loop doing its job.** Two `[missing]` tags are worth more than a confident PRD
+**This is the order doing its job.** Two `[missing]` tags are worth more than a confident PRD
 built on a guess. Go get the numbers: 3 customers, ~40 rejections/day, current limit 100 req/min.
 
 **specify.** Run [`prd-draft`](../../packs/product-manager/skills/prd-draft/SKILL.md) on the now-complete brief.
 
-**G0 — human.** A person ratifies that *tiered limits per plan* is the problem worth solving.
-No script can tell you that you solved the wrong problem well, which is why this gate is a
-person and why an agent running non-interactively emits `BLOCKED: need ratification` rather
-than ticking it itself.
+**You agree it.** A person agrees that *tiered limits per plan* is the problem worth
+solving. No script can tell you that you solved the wrong problem well, so this decision is
+yours, not a gate's.
 
-**What G0 refuses:** an unratified brief. If your stakeholder says *"actually, they want
-burst capacity, not a higher ceiling"* — that is `RECONSIDER`, and it **leaves the loop**.
-Re-briefing cannot fix a wrong problem.
+**What you refuse:** a brief with `[missing]` fields nobody filled. If your stakeholder says
+*"actually, they want burst capacity, not a higher ceiling"*, start again from the
+interview: re-briefing cannot fix a wrong problem.
 
 ---
 
-## Loop 2 — `design`
+## Loop 1 — `design`
 
 ### `constrain` → `shape` → `threat` → **G1 (review)** → `record`
 
@@ -87,7 +91,7 @@ proposal in an ADR's clothes.
 
 ---
 
-## Loop 3 — `build`
+## Loop 2 — `build`
 
 ### `shape` → `implement` → **G2 (mechanical)** → `decide` → **G2.1 (human)**
 
@@ -112,9 +116,9 @@ a defect in the loop, not diligence.
 
 ---
 
-## Loop 4 — `operate`
+## Run it
 
-### `instrument` → `document` → `respond` → **G4 (human)**
+### `observability-plan` → `runbook-generator` → `incident-comms` → `postmortem-generator`
 
 **instrument.** [`observability-plan`](../../packs/sre-oncall/skills/observability-plan/SKILL.md): alert when
 429 rate exceeds 5% for any single key over 10 minutes. You cannot respond to what you never
@@ -127,12 +131,12 @@ procedure for that alert. An alert with no procedure wakes someone who then has 
 [`incident-comms`](../../packs/sre-oncall/skills/incident-comms/SKILL.md), staged: *detect*, *mitigate*,
 *resolve* have different audiences and different truths.
 
-**G4 — human, and the feedback edge that matters.**
+**learn, and the feedback edge that matters.**
 [`postmortem-generator`](../../packs/sre-oncall/skills/postmortem-generator/SKILL.md) is blameless and ends in
 **runbook deltas**. The finding: the runbook said "raise the limit," which treats the symptom.
-`REVISE` sends those deltas back to `document`, and the loop closes.
+Feed those deltas back to `runbook-generator`, and only then close the incident.
 
-**What G4 refuses:** a postmortem that changes no procedure — that is a story about an outage.
+**What you refuse:** a postmortem that changes no procedure — that is a story about an outage.
 And never guess the numbers to finish one; state the gap, because a postmortem's entire value
 is its accuracy.
 
@@ -140,14 +144,14 @@ is its accuracy.
 
 ## What you just saw
 
-| Gate | Kind | Refused |
+| Where | Who decides | Refused |
 |---|---|---|
-| **G0** | human | a brief with `[missing]` fields nobody filled |
-| **G1** | review | a design nobody attacked; untested consensus |
-| **G2** | mechanical | an argument — the exit code decides |
-| **G4** | human | a postmortem that changed no procedure |
+| Finding the problem | you | a brief with `[missing]` fields nobody filled |
+| **G1** | review panel | a design nobody attacked; untested consensus |
+| **G2** | script | an argument — the exit code decides |
+| Running it | you | a postmortem that changed no procedure |
 
-Four gates, four different kinds, chosen by **how expensive the mistake is to unwind** — a
+Each decision is made by whoever fits **how expensive the mistake is to unwind** — a
 re-brief, months of code, a revert, live users. That is the whole model.
 
 Every skill above also runs standalone. You can invoke

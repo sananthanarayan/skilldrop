@@ -63,10 +63,6 @@ A good result:
 - Backstage service wiring behind the touchpoints — `reverse-architecture` / `architecture-diagrams`
 - A committed feature needing requirements — `prd-draft`
 
-## Where a loop runs it
-
-- Stage `gather` of the [`discover` loop](../../../packs/product-manager/loops/discover/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/product-manager/skills/user-journey-map/SKILL.md), the instructions the agent reads

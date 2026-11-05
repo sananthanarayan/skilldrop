@@ -24,7 +24,7 @@ Prefer the official server, the one the vendor maintains. Every server below is 
 | **Atlassian** (official, Jira and Confluence, `https://mcp.atlassian.com/v2/mcp`) | Jira issues, epics and sprints; Confluence pages | `bug-triage`, `backlog-triage`, `team-status-report`, `user-story-splitter`, `prd-draft` | *"Fetch every open bug in project PAY created this week and run backlog-triage."* |
 | **Linear** (official, `https://mcp.linear.app/mcp`) | Issues, projects, cycles | `bug-triage`, `backlog-triage`, `team-status-report`, `user-story-splitter`, `prd-draft` | *"Fetch the current cycle for team ENG and run team-status-report."* |
 | **Figma** (official, `https://mcp.figma.com/mcp`) | Frames, components, variables, layout | `figma-diagrams`, `design-system-spec`, `information-architecture` | *"Fetch the components and variables in this Figma file and run design-system-spec."* |
-| **Sentry** (official, `https://mcp.sentry.dev/mcp`) | Issues, events, stack traces, releases | `incident-comms`, `postmortem-generator`, the `operate` loop | *"Fetch Sentry issue WEB-3F1 with its latest event and run incident-comms for an internal update."* |
+| **Sentry** (official, `https://mcp.sentry.dev/mcp`) | Issues, events, stack traces, releases | `incident-comms`, `postmortem-generator` | *"Fetch Sentry issue WEB-3F1 with its latest event and run incident-comms for an internal update."* |
 | **Supabase** (official, Postgres, `https://mcp.supabase.com/mcp`) | Schemas, tables, query results | `sql-review`, `dashboard-spec` | *"List the tables in the analytics schema, then run sql-review on the weekly active accounts query."* |
 | **AWS Billing and Cost Management** (official, AWS Labs, local: `awslabs.billing-cost-management-mcp-server`) | Cost Explorer spend, budgets, anomalies, Savings Plans and RI coverage | `cloud-cost-review` | *"Fetch last month's cost by service and any cost anomalies, then run cloud-cost-review."* |
 | **Slack** (official, `https://mcp.slack.com/mcp`) | Channel history, threads, search | `incident-comms`, `exec-summary`, `decision-log` | *"Read the #inc-2041 channel since 09:00 and run decision-log on the decisions made."* |
@@ -40,7 +40,7 @@ Install a skill with `npx skilldrop-cli install <skill>`, or its whole pack with
 | `product-manager` | `prd-draft` |
 | `solution-architect` | `figma-diagrams` |
 | `experience-design` | `design-system-spec`, `information-architecture` |
-| `sre-oncall` | `incident-comms`, `postmortem-generator`, `cloud-cost-review`, the `operate` loop |
+| `sre-oncall` | `incident-comms`, `postmortem-generator`, `cloud-cost-review` |
 | `data-analytics` | `sql-review`, `dashboard-spec` |
 | `stakeholder-comms` | `exec-summary`, `decision-log` |
 | `ai-engineering` | `agent-threat-model`, `ai-usage-policy` |
@@ -62,7 +62,7 @@ Fetch issue #311 from acme/web and run the build loop on it. Use the issue text 
 the shape stage. At the verify stage, fetch the PR diff before running pre-merge-review.
 ```
 
-In the `operate` loop, the `respond` and `learn` stages (`incident-comms`, `postmortem-generator`) get the most from Sentry and Slack: the incident timeline is already there.
+When you run a service, `incident-comms` and `postmortem-generator` get the most from Sentry and Slack: the incident timeline is already there.
 
 ## Config by tool
 

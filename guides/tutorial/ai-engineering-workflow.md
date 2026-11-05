@@ -88,19 +88,20 @@ Evals are built before deployment, not after. Without them there is no way to kn
 
 ---
 
-## Run the stages as two loops
+## Run the agent stages as a loop
 
-Two loops run most of this sequence in order, with the gates between the stages written
-down. `adopt` runs triage, readiness, a usage policy and the rollout, and scores readiness
-against the first use case. `ship-agent` runs the loop design, the budget, the threat model
-and the evals, then reviews the built agent's configuration before launch.
+The `ship-agent` loop runs the loop design, the budget, the threat model and the evals in
+order, with the gates between them written down, then reviews the built agent's configuration
+before launch. On its held-out evals it was preferred to both its own skills and the plain
+agent in every pair.
 
 ```bash
-npx skilldrop-cli install --loop adopt ship-agent
+npx skilldrop-cli install --loop ship-agent
 ```
 
-Then say *"Run the adopt loop on these ideas"* or *"Run the ship-agent loop on this agent"*.
-`adopt` stops for the sponsor at G11.1, and `ship-agent` stops for the agent's owner at G12.1.
+Then say *"Run the ship-agent loop on this agent"*. It stops at G12 when the threat model
+leaves a path open, and for the agent's owner at G12.1. The first two steps, triage and
+readiness, work best as the skills on their own, in the order above.
 
 ---
 

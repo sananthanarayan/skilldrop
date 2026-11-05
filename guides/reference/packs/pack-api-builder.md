@@ -38,7 +38,7 @@ Tier **standard** · v1.0.3 · [SKILL.md](../../../packs/api-builder/skills/eval
 
 Analyzes a prompt or conversation structure and identifies the highest-value cache breakpoints — where to insert cache_control checkpoints to minimize repeated token processing.
 
-Tier **standard** · v1.0.0 · [SKILL.md](../../../packs/api-builder/skills/prompt-caching-advisor/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/prompt-caching-advisor/)
+Tier **heavy** · v1.0.1 · [SKILL.md](../../../packs/api-builder/skills/prompt-caching-advisor/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/prompt-caching-advisor/)
 
 **Use it when** designing or optimizing a Claude API integration that uses prompt caching, when input costs are dominated by a static system prompt or few-shot block, or when a multi-turn conversation reprocesses the same context on every turn.
 

@@ -19,7 +19,10 @@ cases for a skill is `eval-harness-generator`.
 - **Use only what you were given.** Don't add facts, names, numbers, incidents, history, steps or sections the input doesn't contain. What you need and don't have is left out of the artifact and listed once at the end under "To confirm".
 - **Deliver from what you have.** When the request gives you something to work on, state your assumptions in a line and produce the result. When it gives you nothing to work on, ask for it in one or two plain sentences and say what you will do once you have it.
 - **Write for someone who has never heard of this skill.** No skill names, no paths or scripts from this folder, no internal terms, and nothing about how the run was set up. A next step is one plain sentence at the end that describes the work.
-- **For this skill:** The pass mark is the user's, never yours. Judge the numbers against the gate or criterion the user or their files state; when there is none, say what the numbers do to their decision. A threshold the input doesn't contain ("kappa ≥ 0.6", "n ≥ 100") never decides the answer.
+- **For this skill, three more:**
+  - **Every repeated run is its own row, then the flips by item id.** Name each item that changed verdict between runs, and say which of them the experts label positive. A pooled figure over two runs hides the items a decision turns on.
+  - **Answer the decision as the user will run it.** Judge their plan (their panel, their rollout, their threshold), not a stricter version you'd prefer. A swap into a three-person panel is judged as that swap.
+  - **The pass mark is the user's, never yours. ** Judge the numbers against the gate or criterion the user or their files state; when there is none, say what the numbers do to their decision. A threshold the input doesn't contain ("kappa ≥ 0.6", "n ≥ 100") never decides the answer.
 
 1. **Pin the decision, the user's criterion, and the comparison.** Find the decision (rank
    variants, publish a number, gate a release, act on single items) and the criterion the user
@@ -43,8 +46,10 @@ cases for a skill is `eval-harness-generator`.
    Several files are one run each, joined on the item id with columns resolved per file;
    `--gold` reads expert labels from their own file; `--judges` reads one column per judge;
    `--map` renames labels that mean the same; `--col` maps any other column. Given only counts,
-   rebuild one row per item and run it anyway; without a shell, use the formulas in
-   [`reference.md`](reference.md) and show the arithmetic.
+   rebuild one row per item and run it anyway. When the script can't run, for any reason,
+   count by hand from the files with the formulas in [`reference.md`](reference.md), show the
+   arithmetic, and deliver the same answer. The reply never mentions the script, a tool, an
+   approval or how the run was set up.
 
 3. **Quote every number from the output, with its subset, run and n.** All-rows and
    labelled-rows figures are different numbers; so are run 1 and run 2. ✅ *"On the 20 items the
@@ -108,20 +113,28 @@ cases for a skill is `eval-harness-generator`.
     spans it). "Which judge can we use" names one: ✅ *"Switch to the mid tier: it is the cheapest
     judge whose error doesn't move with length (bias shift −2 points against a 2.0-point gate);
     the small tier says relevant to 9 of 10 long passages the reviewer rejected."* — ❌ *"None
-    can be recommended until 100 more labels exist."* Conditions are actions with an n (label 30
-    more long passages); a small sample widens the interval, it doesn't withhold the answer.
+    can be recommended until 100 more labels exist."* Conditions are actions with an n (label more long
+    passages, sized as below); a small sample widens the interval, it doesn't withhold the answer.
     When the judge in use today also reads *can't tell*, the sample can't certify anyone: compare
     the candidate with the incumbent on the same items (the accuracy difference and its interval).
+    **More labels are sized, never stock.** When a condition is "label more", work out how many
+    from the interval: the n at which an interval of the width you observed would stop spanning
+    the user's bar, with the arithmetic in one line. ✅ *"At 4 of 6 caught, the interval is
+    30%–90%; about 40 more violations would narrow it to ±15 points, enough to tell 80% recall
+    from 50%."* — ❌ *"Label ~30 more."* When the file lacks a column the condition needs (a
+    severity, a timestamp), say so instead of sizing it.
     Kappa bands (Landis–Koch "moderate") appear only as labelled context, never as the reason.
     **One evidence standard for every subgroup.** If 30 cases are too few to clear one segment,
     12 are too few to clear another: give each its interval and decide them by the same rule.
-    The headline and the verdict word say the same thing: never "No" above *USE WITH
-    CONDITIONS*.
-    Verdict words: **TRUSTWORTHY FOR THIS DECISION**, **USE WITH CONDITIONS**, **DO NOT RELY ON IT**.
+    The headline and the verdict say the same thing: never "No" above "usable with conditions".
+    Say the verdict in plain words, in sentence case: *trustworthy for this decision*, *usable
+    with conditions* or *don't rely on it*. Never in capitals: a shouted verdict reads as alarm,
+    not evidence.
 
 13. **Write the reply short.** First line: the answer (yes/no, which judge, which arm it
     favours and by how much). Then the two to four numbers behind it, each with its subset and
-    run; what can't be measured; one next step that fits the user's deadline. No kappa tutorial,
+    run; with repeated runs, the per-run rows and the flipped item ids; one line on what the
+    data can't measure; one next step that fits the user's deadline. No kappa tutorial,
     no tables unless asked. A chat question gets a chat answer. Write only the files the user
     asked for, and delete any scratch files you made.
 
@@ -135,7 +148,7 @@ counts`, because a verdict without them is invented.
 
 - [`reference.md`](reference.md) — turning the user's gate into the number that answers it, kappa (unweighted, weighted, Fleiss') and Wilson formulas with worked tables, the both-orders protocol, and every input shape the script reads
 - [`scripts/judge_stats.py`](scripts/judge_stats.py) — per-group, per-run and pooled agreement, weighted kappa, rare-class precision and recall, flips joined on item id, position and length bias, `--gate` (stdlib only; `--self-test` checks the maths)
-- [`examples/summary-panel.md`](examples/summary-panel.md) — worked example: a three-judge panel on summary faithfulness, a USE WITH CONDITIONS verdict
+- [`examples/summary-panel.md`](examples/summary-panel.md) — worked example: a three-judge panel on summary faithfulness, a usable-with-conditions verdict
 
 ## Quality bar
 
@@ -144,7 +157,9 @@ counts`, because a verdict without them is invented.
 - **Statistics are stratified by the compared variable** before any pooled figure is quoted.
 - **Ordinal scores get weighted kappa, named as quadratic or linear.**
 - **A rare class gets its count, confusion, recall and precision with intervals,** not accuracy.
-- **Each run is reported on its own, with the flips,** joined on item id.
+- **Each run is reported on its own, then the flipped items by id,** and which of them are positives.
+- **The decision judged is the user's plan,** not a stricter stand-in.
+- **A "label more" condition carries an n worked out from the interval,** never a stock number.
 - **Every number matches the output for the subset and run it is labelled with,** n included.
 - **What the data cannot measure is named,** never estimated.
 
@@ -171,4 +186,6 @@ counts`, because a verdict without them is invented.
 - ❌ **Accuracy on a rare class.** 96% when 95% is the always-"fine" score.
 - ❌ **A pooled kappa for a comparison,** or unweighted kappa on a 1–5 scale.
 - ❌ **Position bias stated backwards,** or judgements counted as the unit instead of questions.
+- ❌ **"Label about 30 more."** A number with no arithmetic behind it reads as a guess, because it is one.
+- ❌ **Stopping, or narrating, when a tool won't run.** Count by hand and answer; the reader never needs to hear about the tooling.
 - ❌ **Leading with the stats dump.** The reader asked whether to act; tell them, then show why.

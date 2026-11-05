@@ -264,11 +264,16 @@ function readPacksCatalog(dir, source) {
 }
 
 /* RFC-0046: a skill that left the catalogue keeps a record in catalogue.json `retired`, so an
-   installed copy can say why it stopped updating instead of looking like an unreachable source. */
-function retiredNote(cat, s) {
+   installed copy can say why it stopped updating instead of looking like an unreachable source.
+   RFC-0074: a loop can be retired too; its record says "kind": "loop". `isLoop` picks the kind
+   the caller is asking about; left out, a record of either kind answers (search). */
+function retiredNote(cat, s, isLoop) {
   const r = cat && cat.retired && cat.retired[s];
   if (!r) return null;
-  return `'${s}' was retired in ${r.in}: ${r.why}` + (r.instead ? ` Use ${r.instead} instead.` : "");
+  const kind = r.kind || "skill";
+  if (isLoop !== undefined && kind !== (isLoop ? "loop" : "skill")) return null;
+  const what = kind === "loop" ? `The loop '${s}'` : `'${s}'`;
+  return `${what} was retired in ${r.in}: ${r.why}` + (r.instead ? ` Use ${r.instead} instead.` : "");
 }
 
 /* Minimal TOML read — the [pack] table's basic-string scalars (name, version, description).
@@ -1225,7 +1230,7 @@ function expandNames(args, cat) {
     return packMembers(ps, args.flags.pack, "skills");
   }
   if (!args._.length) die("nothing to install — pass skill names, --pack <name>, or --all");
-  for (const s of args._) if (!skillExists(cat, s)) die(retiredNote(cat, s) || `unknown skill '${s}' in catalog '${cat.source}'`);
+  for (const s of args._) if (!skillExists(cat, s)) die(retiredNote(cat, s, false) || `unknown skill '${s}' in catalog '${cat.source}'`);
   return args._.slice();
 }
 
@@ -1567,7 +1572,7 @@ function installedRows(flags) {
     const loop = isLoopEntry(entry);
     try {
       cat = resolveCatalog(src === BUNDLED ? undefined : src);
-      if (!loop && !unitExists(cat, s, loop)) retired = retiredNote(cat, s);
+      if (!unitExists(cat, s, loop)) retired = retiredNote(cat, s, loop);
       if (unitExists(cat, s, loop)) {
         current = unitMeta(cat, s, loop).version || null;
         // Same version, different files: the catalog changed the skill without bumping it.
@@ -1711,7 +1716,7 @@ function outdated(args) {
     console.log(`\n${drift.length} skill(s) changed upstream with the same version. Read the change first (skilldrop diff <skill>),` +
                 `\nthen take it with: skilldrop update --changed`);
   if (gone.length)
-    console.log(`\n${gone.length} retired skill(s) will not update. Keep them as they are, or remove them: skilldrop uninstall ${gone.map((r) => r.s).join(" ")}${targetHint(args.flags)}`);
+    console.log(`\n${gone.length} retired skill(s) or loop(s) will not update. Keep them as they are, or remove them: skilldrop uninstall ${gone.map((r) => r.s).join(" ")}${targetHint(args.flags)}`);
   console.log(stale.length ? `\n${stale.length} outdated — run: skilldrop update` : (drift.length || gone.length ? "" : "everything up to date."));
 }
 
@@ -1767,7 +1772,7 @@ function diff(args) {
   const loop = isLoopEntry(entry);
   const src = args.flags.from || (entry ? lsrc(entry) : BUNDLED);
   const cat = resolveCatalog(src === BUNDLED ? undefined : src);
-  if (!unitExists(cat, s, loop)) die(loop ? `'${s}' is no longer in catalog '${cat.source}'` : (retiredNote(cat, s) || `'${s}' is no longer in catalog '${cat.source}'`));
+  if (!unitExists(cat, s, loop)) die(retiredNote(cat, s, loop) || `'${s}' is no longer in catalog '${cat.source}'`);
   const theirs = unitHashes(cat, s, loop), mine = fileHashes(path.join(dest, s));
   const base = (entry && entry.files) || {};
   const changed = Object.keys(theirs).filter((f) => f in mine && mine[f] !== theirs[f]).sort();
@@ -1811,7 +1816,7 @@ function doctor(args) {
   else try { data = JSON.parse(raw); } catch (e) { add("error", `${lp} is not valid JSON`, "fix or delete it; skilldrop can't track updates until then"); }
   const names = Object.keys(data);
   for (const n of names) {
-    const note = !isLoopEntry(data[n]) && lsrc(data[n]) === BUNDLED && retiredNote(resolveCatalog(), n);
+    const note = lsrc(data[n]) === BUNDLED && retiredNote(resolveCatalog(), n, isLoopEntry(data[n]));
     if (note) add("warn", note, `skilldrop uninstall ${n}${targetHint(args.flags)}, or keep it as it is; it will not update`);
     if (!fs.existsSync(path.join(dest, n))) add("error", `${n} is in the ledger but its folder is gone`, `skilldrop install ${n} (or uninstall ${n} to drop the record)`);
     else if (!data[n].file) {
@@ -2293,7 +2298,7 @@ function installLoops(args) {
   }
   if (!names.length && args.flags.all) names = available.slice();
   if (!names.length) die("nothing to install — pass loop names, --pack <name>, or --all");
-  for (const n of names) if (!available.includes(n)) die(`unknown loop '${n}' in catalog '${cat.source}'`);
+  for (const n of names) if (!available.includes(n)) die(retiredNote(cat, n, true) || `unknown loop '${n}' in catalog '${cat.source}'`);
 
   let bad = 0;
   for (const n of names) {
@@ -2569,7 +2574,7 @@ function info(args) {
   if (args.flags.pack) return infoPack(args);
   const cat = resolveCatalog(args.flags.from);
   const s = args._[0] || die("pass a skill name, or --pack <name>");
-  if (!skillExists(cat, s)) die(retiredNote(cat, s) || `unknown skill '${s}' in catalog '${cat.source}'`);
+  if (!skillExists(cat, s)) die(retiredNote(cat, s, false) || `unknown skill '${s}' in catalog '${cat.source}'`);
   const m = manifestOf(cat, s);
   const ps = packsOf(cat) || {};
   const inPacks = Object.entries(ps).filter(([, p]) => p.skills.includes(s)).map(([n]) => n);

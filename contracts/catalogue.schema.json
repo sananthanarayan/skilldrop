@@ -31,13 +31,14 @@
     },
     "retired": {
       "type": "object",
-      "description": "RFC-0046. Skills removed from the catalogue, so an installed copy can say why it stopped updating. A retired name has no folder and nothing references it; validate.py checks both.",
+      "description": "RFC-0046. Skills (and, RFC-0074, loops) removed from the catalogue, so an installed copy can say why it stopped updating. A retired name has no folder and nothing references it; validate.py checks both.",
       "additionalProperties": {
         "type": "object",
         "additionalProperties": false,
         "required": ["in", "why"],
         "properties": {
           "in": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$", "description": "The skilldrop-cli version that removed it." },
+          "kind": { "enum": ["skill", "loop"], "description": "RFC-0074. What was retired; a record without it is a skill." },
           "why": { "type": "string", "description": "One sentence, shown by outdated, update, doctor, diff, info and install." },
           "instead": { "type": "string", "description": "A skill that covers the same job, when one does. Omit it when the agent without a skill does as well." }
         }

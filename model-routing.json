@@ -183,8 +183,8 @@
       "rationale": "Extraction + tagging [explicit]/[implied]/[inferred]. The tagging needs care — above light, below heavy."
     },
     "bug-triage": {
-      "tier": "standard",
-      "rationale": "Extraction plus judgment calls (severity vs priority, hypothesis ranking) — same shape as brief-intake: above light, below heavy."
+      "tier": "heavy",
+      "rationale": "Measured (RFC-0073): on its held-out evals the heavy tier met 92% and 92% of checks in two tier trials, against standard's 76% and light's 70% and 86%, more than 5 points ahead both times; moved once its examples/ oracle shipped (RFC-0074)."
     },
     "bundle-size-review": {
       "tier": "standard",
@@ -372,8 +372,8 @@
       "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 85% and 85% of checks in two tier trials, against standard's 85% and heavy's 77% and 85%, within 5 points of the best both times."
     },
     "prd-draft": {
-      "tier": "standard",
-      "rationale": "Synthesizes a structured requirements doc from a brief. The solution-language discipline needs care; bounded by the template. Escalate via ambiguous-input on contested scope."
+      "tier": "heavy",
+      "rationale": "Measured (RFC-0073): on its held-out evals the heavy tier met 85% and 76% of checks in two tier trials, against standard's 68% and light's 68% and 68%, more than 5 points ahead both times; moved once its examples/ oracle shipped (RFC-0074)."
     },
     "pre-merge-review": {
       "tier": "light",
@@ -384,8 +384,8 @@
       "rationale": "Synthesizes a press release and FAQs from a product concept against a fixed format. The specificity discipline needs care but the template bounds it; escalate via ambiguous-input when the concept itself is contested."
     },
     "prompt-caching-advisor": {
-      "tier": "standard",
-      "rationale": "Structural analysis of prompt with threshold arithmetic and pattern matching — above light, no need for heavy."
+      "tier": "heavy",
+      "rationale": "Measured (RFC-0073): on its held-out evals the heavy tier met 90% and 90% of checks in two tier trials, against standard's 63% and light's 83% and 73%, more than 5 points ahead both times; moved once its examples/ oracle shipped (RFC-0074)."
     },
     "refactor-plan": {
       "tier": "standard",
@@ -480,8 +480,8 @@
       "rationale": "Framework selection plus evidenced multi-factor judgment ending in a ranked, committal verdict. Cheaper models fill cells with generic filler, skip the TOWS crossings, and refuse to take a side. Never downgrade."
     },
     "subagent-design": {
-      "tier": "standard",
-      "rationale": "Design synthesis against a fixed topology catalog and role-card template. The fan-out-or-refuse judgment is bounded by the three-reasons rule; escalate via ambiguous-input on genuinely novel workflow shapes."
+      "tier": "heavy",
+      "rationale": "Measured (RFC-0073): on its held-out evals the heavy tier met 100% and 100% of checks in two tier trials, against standard's 86% and light's 85% and 86%, more than 5 points ahead both times; moved once its examples/ oracle shipped (RFC-0074)."
     },
     "success-metrics": {
       "tier": "standard",

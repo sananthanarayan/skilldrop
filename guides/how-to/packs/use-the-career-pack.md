@@ -69,16 +69,6 @@ A session takes about About half an hour for one application.
 
 You end with: A resume, a cover letter and a form's answers for one posting that you can defend line by line at interview, and a list of what the employer will notice is missing.
 
-## 4. Run it as a loop
-
-A loop runs the skills in order and stops at each gate for a verdict. Install and start one:
-
-```bash
-npx skilldrop-cli install --loop --pack career
-```
-
-- **apply**: Take one job posting and one resume to an application ready to send — an honest fit check, a tailored resume, a cover letter and the answers to the application form — with the candidate deciding whether to apply before any writing, and confirming every claim is true before anything is sent. Say "run the apply loop on this". Stages: fit [G6] → tailor → letter → form → confirm [G6.1].
-
 ## Next
 
 - [Every skill in the Job applications pack](../../reference/packs/pack-career.md): what each one makes, needs and hands off to

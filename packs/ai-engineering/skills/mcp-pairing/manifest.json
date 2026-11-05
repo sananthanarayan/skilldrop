@@ -1,6 +1,6 @@
 {
   "name": "mcp-pairing",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Recommend which MCP servers to connect for a loop, workflow or task, stage by stage, with the narrowest access that works — what outside context or action each stage needs, the server that provides it (only ones the user named or the vendor officially publishes), the scopes to grant (read-only by default, never write on a review or gate stage), what it must not be able to do, the export-file fallback that keeps the stage running without it, and which stages need no server at all. Use when the user asks \"which MCP servers should we hook up for this loop\", \"what should our agent connect to\", \"what token scopes does this stage need\", \"is this MCP setup too broad\", or wants to wire GitHub, GitLab, Jira, Linear, Slack, Sentry, Grafana or a database into an agent workflow.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },

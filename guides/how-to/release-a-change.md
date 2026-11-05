@@ -49,4 +49,4 @@ Go: ship it Monday after the freeze.
 
 `PROCEED` ships. `RECONSIDER` means the change is ready but the timing is wrong, so it waits instead of going back to the plan.
 
-After the change is live, the [`operate` loop](../reference/loops.md) picks up any detection or runbook gaps G3 sent its way. The [operating model](../explanation/operating-model.md) shows where this stage sits, and [from idea to shipped feature](../tutorial/idea-to-shipped-feature.md) walks one release through both gates.
+After the change is live, the `sre-oncall` skills pick up any detection or runbook gaps G3 sent their way: `observability-plan` for the missing alerts, `runbook-generator` for the missing procedures. The [operating model](../explanation/operating-model.md) shows where this stage sits, and [from idea to shipped feature](../tutorial/idea-to-shipped-feature.md) walks one release through both gates.

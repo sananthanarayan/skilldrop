@@ -58,10 +58,6 @@ A good result:
 - The post-incident analysis — that's `postmortem-generator`
 - The one-line observability *requirement* in a spec — that's `nfr-spec`; this is the full design beneath it
 
-## Where a loop runs it
-
-- Stage `instrument` of the [`operate` loop](../../../packs/sre-oncall/loops/operate/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/sre-oncall/skills/observability-plan/SKILL.md), the instructions the agent reads

@@ -57,10 +57,6 @@ A good result:
 - Writing the cover letter. Use `cover-letter`.
 - Critiquing the resume as a document, with no job in mind. Use `doc-critique`.
 
-## Where a loop runs it
-
-- Stage `fit` of the [`apply` loop](../../../packs/career/loops/apply/LOOP.md), where gate G6 decides
-
 ## Next
 
 - [SKILL.md](../../../packs/career/skills/job-fit-analysis/SKILL.md), the instructions the agent reads

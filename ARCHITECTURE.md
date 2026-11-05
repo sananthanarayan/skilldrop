@@ -38,24 +38,27 @@ which is why a loop installs into the skills directory and becomes invokable wit
 needing a loop primitive of its own. The cost of that choice: loops and skills share one
 namespace, so `validate.py` refuses a name collision.
 
-### The five lifecycle loops are separated by reversibility
+### The lifecycle stages are separated by reversibility
 
 Not by team, not by phase. The question is *how expensive is the mistake to unwind* — which
 is also what determines who is allowed to decide:
 
 | Loop | Mistake costs | Gate |
 |---|---|---|
-| `discover` | a re-brief | **G0** human |
+| find the problem (skills, no loop) | a re-brief | you agree the requirement |
 | `design` | months, unwound in code | **G1** review panel |
 | `build` | a revert | **G2** mechanical, then **G2.1** human |
 | `release` | users and data, often irreversible | **G3** review, then **G3.1** human |
-| `operate` | live users; irreversible | **G4** human |
+| run it (skills, no loop) | live users; irreversible | you close the incident |
 
-A gate code reads in lifecycle order: the whole number is the loop's place (G0 to G4), and a
-decimal is a second gate inside the same loop. Two loops sit outside the lifecycle and take
-the next numbers: `ship-a-draft` (**G5**) is a **wrapper** whose middle is any generator,
-chosen at run time, and `apply` (**G6**, **G6.1**) serves one person rather than a team
-(RFC-0044). Every gate answers from one shared vocabulary
+The first and last stages lost their loops in RFC-0074: on held-out evals their own skills,
+used without the loop, were preferred. A loop stays only where it is measured to add to its
+skills.
+
+A gate code reads in lifecycle order: the whole number is the loop's place (G1 to G3; G0 and G4 were
+retired with their loops), and a decimal is a second gate inside the same loop. The loops
+outside the lifecycle take the next numbers: `ship-a-draft` (**G5**) is a **wrapper** whose
+middle is any generator, chosen at run time, and the rest each do one job (RFC-0044). Every gate answers from one shared vocabulary
 ([`contracts/terminals.json`](contracts/terminals.json)) in five classes — pass, conditional,
 revise, redirect, blocked — so a gate cannot invent a new word for an outcome that has one.
 

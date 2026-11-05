@@ -5,7 +5,7 @@ description: Take merged code to live users through a planned, reversible rollou
 
 # release
 
-This loop covers the step between `build`, which ends when a human merges, and `operate`,
+This loop covers the step between `build`, which ends when a human merges, and running the service,
 which assumes the service is already live. A merge can be undone with a revert. A launch that
 has touched users or data often cannot be undone, so this loop gets its own gates instead of
 being folded into either neighbour.
@@ -39,8 +39,8 @@ being folded into either neighbour.
    `council-review`. `RECONSIDER` means it is ready but this is the wrong time, and the work
    waits instead of going back to `plan`.
 
-After `PROCEED`, the change is live and the work moves to `operate`. Gaps that G3 sent to
-`observability-plan` or `runbook-generator` are the first things `operate` picks up.
+After `PROCEED`, the change is live and the work moves to running it. Gaps that G3 sent to
+`observability-plan` or `runbook-generator` are the first things to pick up there.
 
 ## Verdicts
 
@@ -83,7 +83,7 @@ which end in `BLOCKED`.
 - **Rollback exists before readiness is judged.** A plan with no way back is the one thing that cannot be fixed after launch.
 - **Readiness rests on evidence.** Every check links to something; "we're good" is `not met`.
 - **Can and should are separate gates.** G3 says whether it can ship; G3.1 says whether it should ship now.
-- **Detection gaps leave this loop as hand-offs.** `operate` picks them up first, rather than discovering them during the first incident.
+- **Detection gaps leave this loop as hand-offs.** Running the service starts with them, rather than discovering them during the first incident.
 
 ## Anti-patterns to avoid
 

@@ -8,6 +8,16 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.5.0 — 2026-11-05
+
+- **Every loop is measured against its own skills, and four that lost are retired: `adopt`, `apply`, `discover` and `operate`** ([RFC-0074](docs/rfcs/0074-loops-measured-four-retired.md)). On held-out evals, each one's skills used without the loop were preferred, and each had a gate that stopped, narrowed or overrode the user.
+  - If you installed one, it keeps working. `skilldrop outdated`, `update` and `doctor` now name a retired loop, with the reason and what to use instead, and `install --loop` explains instead of failing.
+  - The lifecycle keeps its five stages. Finding the problem and running the service now use their skills in order, with no loop.
+- **Start with the loops that measurably help: `release`, `modernize` and `ship-agent`.** Each was preferred to both its own skills and plain Claude Code. `measure` is being rebuilt. Next, every loop keeps gate words and run-log talk out of its replies, the commonest reason a loop lost.
+- **A new published benchmark, with scripts free to run.** On 300 held-out evals on Sonnet 5.5, skills met 84% of checks against 76%, and were preferred in 44% and 42% of pairs. Skills that ship a script are now slightly ahead of the plain agent (52%); skills that are instructions alone still lose about two pairs in three. The evals page shows the new run.
+- **`judge-audit` 0.4.0 was rebuilt and is kept.** It reports each run separately and names the items that flipped, sizes "label more" from the interval instead of a stock number, and judges your plan as you'll run it. On fresh held-out evals both judges preferred it in 3 of 4 pairs.
+- **`bug-triage`, `prd-draft`, `prompt-caching-advisor` and `subagent-design` move to the heavy tier,** where both tier trials showed they do better. Each now ships a worked example of the judgment it adds. Run `skilldrop update` to pick them up.
+
 ## 1.4.0 — 2026-11-04
 
 - **The first loops are measured.** On their held-out evals, the four loops from 1.3.0 were preferred to plain Claude Code in 75% and 69% of pairs by two blind judges. Against their own skills used without them, they came out even. `ship-agent` won every pair; `adopt` lost every pair to its own skills, and is next to be decided. The write-up is in [what the benchmark showed](guides/explanation/what-the-benchmark-showed.md#the-loops-measured-for-the-first-time).

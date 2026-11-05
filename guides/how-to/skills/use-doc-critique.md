@@ -63,9 +63,7 @@ A good result:
 
 ## Where a loop runs it
 
-- Stage `sign-off` of the [`adopt` loop](../../../packs/ai-engineering/loops/adopt/LOOP.md), where gate G11.1 decides
 - Stage `sign-off` of the [`comply` loop](../../../packs/grc/loops/comply/LOOP.md), where gate G8.1 decides
-- Stage `ratify` of the [`discover` loop](../../../packs/product-manager/loops/discover/LOOP.md), where gate G0 decides
 - Stage `sign-off` of the [`measure` loop](../../../packs/data-analytics/loops/measure/LOOP.md), where gate G9.1 decides
 - Stage `critique` of the [`ship-a-draft` loop](../../../packs/core/loops/ship-a-draft/LOOP.md), where gate G5 decides
 

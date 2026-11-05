@@ -124,13 +124,14 @@ From each loop's `loop.json` (type in brackets). Use these when the user names t
 |---|---|
 | `build` | shape (generate) → implement (generate) → verify (verify, G2 mechanical) → decide (gate, human) |
 | `release` | plan (generate) → ready (verify) → announce (generate) → go (gate, human) |
-| `operate` | instrument (generate) → document (generate) → respond (generate) → learn (verify) |
-| `discover` | gather (generate) → structure (generate) → specify (generate) → ratify (gate) |
 | `design` | constrain (generate) → shape (generate) → threat (verify) → ratify (gate) → record (generate) |
 | `measure` | spec (generate) → review (verify) → sign-off (gate) |
 | `comply` | register → assess → evidence (generate) → check (verify) → sign-off (gate) |
 | `research` | plan (generate) → synthesise (generate) → compare (verify) |
 | `ship-a-draft` | intake (generate) → draft (generate) → critique (verify) → polish (verify) |
-| `apply` | fit (gate) → tailor → letter → form (generate) → confirm (verify) |
+| `modernize` | survey → plan → capture → rebuild (generate) → prove (verify, G10 mechanical) → cutover (gate, human) |
+| `ship-agent` | design → budget (generate) → threat (verify) → evals (generate) → launch (gate, human) |
+| `provision` | module (generate) → plan (verify) → apply (gate, human) |
+| `clarify` | page → strings (generate) → blueprint (verify) |
 
 If the user's copy of a loop has different stages, theirs wins.

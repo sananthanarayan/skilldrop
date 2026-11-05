@@ -306,8 +306,8 @@ this section.
    `agent-loop-design` mandates), `intent`, and `skills` (real folder names; `*` means any
    generator and is legal only in a `wrapper`).
 4. **Gates** carry a repo-unique `id` (`G2`, `G2.1`) that reads in lifecycle order: the whole
-   number is the loop's place (`discover` G0 through `operate` G4, then G5 and G6 for the loops
-   outside the lifecycle), and a decimal is a second gate inside the same loop (RFC-0044). A
+   number is the loop's place (G1 `design` through G3 `release`; G0 and G4 were retired with
+   their loops, and G5 and up are the loops outside the lifecycle), and a decimal is a second gate inside the same loop (RFC-0044). A
    gate has a `kind` (`mechanical` needs a real
    `script`; `review` and `human` must not have one), the `verdicts` they can emit, and
    `revise_to` naming an **earlier** stage. Every verdict must exist in

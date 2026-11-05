@@ -57,7 +57,6 @@ A good result:
 
 ## Where a loop runs it
 
-- Stage `structure` of the [`discover` loop](../../../packs/product-manager/loops/discover/LOOP.md)
 - Stage `intake` of the [`ship-a-draft` loop](../../../packs/core/loops/ship-a-draft/LOOP.md)
 
 ## Next

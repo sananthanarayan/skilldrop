@@ -55,10 +55,6 @@ A good result:
 - Tailoring the resume the form asks you to upload. Use `resume-tailor`.
 - Writing the cover letter the form asks you to attach. Use `cover-letter`.
 
-## Where a loop runs it
-
-- Stage `form` of the [`apply` loop](../../../packs/career/loops/apply/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/career/skills/application-form-answers/SKILL.md), the instructions the agent reads

@@ -1,6 +1,6 @@
 {
   "name": "prd-draft",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Draft a Product Requirements Document from a feature idea or brief — evidence-backed problem statement with zero solution language, testable MoSCoW-prioritized requirements, mandatory non-goals, and a success line per goal. Use when the user needs a PRD, wants to capture business requirements for a feature, or asks to turn an idea, pitch, or brief into a requirements doc.",
   "entrypoint": "SKILL.md",
   "deps": { "npm": [], "pip": [] },
@@ -12,5 +12,5 @@
     { "to": "design-doc", "when": "the what is agreed and the how is open", "purpose": "Design the system that satisfies these requirements.", "fallback": "If design-doc is absent, write the approach, the alternatives, and the trade-offs inline." }
   ],
   "tags": ["prd", "requirements", "product", "discovery", "moscow", "non-goals"],
-  "model": { "tier": "standard", "rationale": "Synthesizes a structured requirements doc from a brief. The solution-language discipline needs care; bounded by the template. Escalate via ambiguous-input on contested scope." }
+  "model": { "tier": "heavy", "rationale": "Measured (RFC-0073): on its held-out evals the heavy tier met 85% and 76% of checks in two tier trials, against standard's 68% and light's 68% and 68%, more than 5 points ahead both times; moved once its examples/ oracle shipped (RFC-0074)." }
 }

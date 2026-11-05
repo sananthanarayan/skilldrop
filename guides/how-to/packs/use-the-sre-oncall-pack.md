@@ -2,7 +2,6 @@
 title: Use the SRE / on-call pack
 summary: Install the SRE / on-call pack, run its first task, and follow a typical session step by step.
 kind: how-to
-stage: operate
 ---
 
 # Use the SRE / on-call pack
@@ -59,16 +58,6 @@ Bring:
    You get: Change fail rate, failed deployment recovery time, lead time and deployment frequency computed from the exports, with the weekly trend and the rows it had to skip.
 
 You end with: An observability plan, a runbook tied to its alerts, the incident updates you sent, and a postmortem whose deltas go back into the runbook.
-
-## 4. Run it as a loop
-
-A loop runs the skills in order and stops at each gate for a verdict. Install and start one:
-
-```bash
-npx skilldrop-cli install --loop --pack sre-oncall
-```
-
-- **operate**: Take a shipped service through detection, response, and learning — instrument it, write the runbook, communicate the incident, then feed the postmortem's deltas back into the runbook. Say "run the operate loop on this". Stages: instrument → document → respond → learn [G4].
 
 ## Next
 

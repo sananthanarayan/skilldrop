@@ -1,21 +1,23 @@
 ---
 title: From idea to shipped feature
-summary: A product idea moves through all five lifecycle loops — discover, design, build, release, operate — with each gate refusing until its conditions are met.
+summary: A product idea moves through all five lifecycle stages — find the problem, design, build, release, run it — with each gate refusing until its conditions are met.
 kind: tutorial
 stage: release
 ---
 
 # From idea to shipped feature
 
-A customer request becomes a shipped feature. This walkthrough takes one idea through all five lifecycle loops — `discover`, `design`, `build`, `release`, `operate` — and shows a real refusal at every gate. The refusals are the point: a gate that always passes is decoration.
+A customer request becomes a shipped feature. This walkthrough takes one idea through all five lifecycle stages and shows a real refusal at every gate. The refusals are the point: a gate that always passes is decoration. Three stages run as loops (`design`, `build`, `release`). Finding the problem and running the service run as skills in order: their loops were retired, because on held-out evals the same skills used without the loop were preferred.
 
-Install all five loops:
+Install the three loops and the two packs whose skills cover the other stages:
 
 ```bash
-npx skilldrop-cli install --loop discover design build release operate
+npx skilldrop-cli install --loop design build release
+npx skilldrop-cli install --pack product-manager
+npx skilldrop-cli install --pack sre-oncall
 ```
 
-The [operating model](../explanation/operating-model.md) shows the same five stages and their gates on one page.
+The [operating model](../explanation/operating-model.md) shows the same five stages on one page.
 
 The feature: *"Let users export their data as a CSV."*
 
@@ -23,52 +25,44 @@ The feature: *"Let users export their data as a CSV."*
 
 ## The situation
 
-A product manager receives the same request from three enterprise customers in a quarterly review: they need to export their account data for internal reporting. The PM wants to take it through the full loop sequence — not because the feature is complex, but because it touches data export, which means security and compliance matter.
+A product manager receives the same request from three enterprise customers in a quarterly review: they need to export their account data for internal reporting. The PM wants to take it through every stage — not because the feature is complex, but because it touches data export, which means security and compliance matter.
 
 ---
 
-## Loop 1 — `discover` (G0: human ratification)
+## Find the problem: the requirement you agree to
 
-### `signal-to-requirement`
+### `requirements-interview`
 
-The PM runs `signal-to-requirement` with the three customer requests as input. The skill surfaces ambiguities: which data, which users, what format, what size limits, what latency expectation?
+The PM runs `requirements-interview` with the three customer requests as input. The skill surfaces ambiguities: which data, which users, what format, what size limits, what latency expectation?
 
 After a short interview, the structured requirement:
 
 > "Authenticated users can export all data associated with their account as a CSV file. Export must complete within 60 seconds for accounts with fewer than 100,000 rows. Files are available for 24 hours after generation. No PII from other accounts may appear in the file."
 
-### `prd-generator`
+### `prd-draft`
 
-The PM runs `prd-generator` with the requirement. The PRD draft includes:
+The PM runs `prd-draft` with the requirement. The PRD draft includes:
 
 - User story: "As an account owner, I can download my data as CSV so that I can use it in my own reporting tools."
 - Acceptance criteria: users can trigger export, receive a download link, and the file contains only their data.
 - Out of scope: real-time exports, partial exports by date range.
 
-### `metrics-plan`
+### Success metrics
 
-`metrics-plan` defines success metrics: download completion rate (target: >98%), zero data-leakage incidents, p95 export time <45s for accounts under 100k rows.
+The PRD's success metrics: download completion rate (target: >98%), zero data-leakage incidents, p95 export time <45s for accounts under 100k rows.
 
-### Gate G0 — REVISE, then READY
+### You agree the requirement, after one revision
 
-The gate reads the PRD and acceptance criteria.
-
-First run returns `REVISE`:
+The PM reads the PRD before anyone designs against it, and sends it back once:
 
 ```
-G0 REVISE
 Acceptance criteria are under-specified. "Contains only their data" is not
 testable — the criteria must name the tables/fields in scope and explicitly
 state that cross-account rows are rejected at the query layer, not filtered
 after retrieval.
 ```
 
-The PM tightens the criteria: the export query is scoped to `WHERE account_id = :current_user_account_id`, cross-account filtering is enforced at the query layer not application layer, and the field list is enumerated. Re-running:
-
-```
-G0 PROCEED
-Requirement is specific and testable. Proceed to design.
-```
+The PM tightens the criteria: the export query is scoped to `WHERE account_id = :current_user_account_id`, cross-account filtering is enforced at the query layer not application layer, and the field list is enumerated. The requirement is now specific and testable, and the PM agrees it. Design starts.
 
 ---
 
@@ -212,7 +206,7 @@ On Monday the release owner records `G3.1 PROCEED`, and the flag opens in three 
 
 ---
 
-## Loop 5 — `operate` (G4: postmortem closes the loop)
+## Run it: from a silent failure to a changed runbook
 
 ### Post-ship monitoring
 
@@ -222,13 +216,11 @@ Two weeks after launch, the export logs show adoption: 340 exports in the first 
 
 On day 18, a silent failure pattern emerges: export jobs for accounts with files attached (stored as binary BLOBs) fail at the streaming step with no user notification. The 500s are logged but no alert fires because the job failure rate (0.3%) is below the alert threshold.
 
-`incident-response` triages the issue: the CSV writer does not handle binary columns — it attempts to encode BLOBs as UTF-8 and silently fails. Affected accounts have files attached. The fix: skip binary columns with a warning in the CSV header.
+The on-call engineer triages the issue, with `incident-comms` drafting the customer note: the CSV writer does not handle binary columns — it attempts to encode BLOBs as UTF-8 and silently fails. Affected accounts have files attached. The fix: skip binary columns with a warning in the CSV header.
 
 ### `postmortem-generator`
 
 ```
-G4 PROCEED
-
 Postmortem filed. Runbook delta:
 - Add BLOB column handling to the export worker's known-failure section
 - Add a per-job completion alert (not just aggregate rate) to the
@@ -236,10 +228,9 @@ Postmortem filed. Runbook delta:
   delay in detection
 - Update threat model: binary columns in user data were not enumerated
   as a risk surface
-Routing delta to runbook-generator for update.
 ```
 
-The updated runbook and a new threat model entry (binary column handling) are committed. Gate G4 closes the loop.
+The on-call engineer feeds the delta to `runbook-generator`, and adds the per-job alert with `observability-plan`. The updated runbook and a new threat model entry (binary column handling) are committed, and the engineer closes the incident.
 
 ---
 
@@ -247,11 +238,11 @@ The updated runbook and a new threat model entry (binary column handling) are co
 
 | Gate | What it blocked | What would have happened without it |
 |---|---|---|
-| G0 REVISE | Untestable acceptance criteria ("contains only their data") | Query-layer enforcement would have been an assumption, not a requirement — cross-account data leakage possible |
+| The PM's revision of the PRD | Untestable acceptance criteria ("contains only their data") | Query-layer enforcement would have been an assumption, not a requirement — cross-account data leakage possible |
 | G1 PROCEED WITH CONDITIONS | Missing audit log; no fallback if email fails | No compliance audit trail; users with failed emails would have no way to retrieve their export |
 | G2 BLOCKED | Audit log failure path silently swallowed | A log write failure during export would have been invisible — compliance gap, no alert |
 | G3 REVISE | Exports kept in S3 with no deletion rule | Every customer's data export would have stayed in the bucket indefinitely |
 | G3.1 RECONSIDER | Launching into the quarter-end freeze without the on-call engineer | A first-week problem would have landed on someone who did not know the export path |
-| G4 postmortem delta | Binary column handling not in threat model; per-job alerting missing | Next binary-column incident would have gone undetected for the same reason |
+| The postmortem's runbook delta | Binary column handling not in threat model; per-job alerting missing | Next binary-column incident would have gone undetected for the same reason |
 
-The gates did not slow the feature down. G0 REVISE caught a testability gap in the acceptance criteria — that conversation would have happened anyway, just later and more expensively in code review. G1's conditions added the audit log before build started, not after a compliance audit found it missing. G2's block caught a silent failure mode in a compliance-critical path. G3 kept customer data from piling up in a bucket, and G3.1 moved the launch by three days, not three weeks. G4 closed the loop on a gap the threat model did not anticipate.
+The gates did not slow the feature down. The PM's revision caught a testability gap in the acceptance criteria — that conversation would have happened anyway, just later and more expensively in code review. G1's conditions added the audit log before build started, not after a compliance audit found it missing. G2's block caught a silent failure mode in a compliance-critical path. G3 kept customer data from piling up in a bucket, and G3.1 moved the launch by three days, not three weeks. The postmortem's delta closed a gap the threat model did not anticipate.

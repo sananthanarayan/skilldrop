@@ -58,10 +58,6 @@ A good result:
 - Deciding whether the organisation is ready at all — that's [`ai-readiness-assessment`](../../../packs/ai-engineering/skills/ai-readiness-assessment/SKILL.md).
 - Writing the rules for what may be put into the tool — that's [`ai-usage-policy`](../../../packs/ai-engineering/skills/ai-usage-policy/SKILL.md).
 
-## Where a loop runs it
-
-- Stage `rollout` of the [`adopt` loop](../../../packs/ai-engineering/loops/adopt/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/ai-engineering/skills/ai-adoption-rollout/SKILL.md), the instructions the agent reads

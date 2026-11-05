@@ -57,10 +57,6 @@ A good result:
 - Writing the requirements themselves — `prd-draft`, after the interviews
 - Usability testing of an existing design — different method; this is problem discovery
 
-## Where a loop runs it
-
-- Stage `gather` of the [`discover` loop](../../../packs/product-manager/loops/discover/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/product-manager/skills/requirements-interview/SKILL.md), the instructions the agent reads
