@@ -100,6 +100,7 @@ A how-to and a reference page for every pack, generated from the pack's own file
 | Frontend | [Use the Frontend pack](how-to/packs/use-the-frontend-pack.md) | [Frontend pack reference](reference/packs/pack-frontend.md) |
 | Skill engineering | [Use the Skill engineering pack](how-to/packs/use-the-skill-engineering-pack.md) | [Skill engineering pack reference](reference/packs/pack-skill-engineering.md) |
 | Job applications | [Use the Job applications pack](how-to/packs/use-the-career-pack.md) | [Job applications pack reference](reference/packs/pack-career.md) |
+| Civil architect | [Use the Civil architect pack](how-to/packs/use-the-civil-architect-pack.md) | [Civil architect pack reference](reference/packs/pack-civil-architect.md) |
 <!-- pack-guides:end -->
 
 ### Per skill
@@ -128,6 +129,7 @@ One how-to for every skill: how to install it, the requests that route to it, wh
 | Frontend | [bundle-size-review](how-to/skills/use-bundle-size-review.md), [rendering-strategy](how-to/skills/use-rendering-strategy.md), [web-performance-review](how-to/skills/use-web-performance-review.md) |
 | Skill engineering | [skill-author](how-to/skills/use-skill-author.md), [skill-review](how-to/skills/use-skill-review.md) |
 | Job applications | [application-form-answers](how-to/skills/use-application-form-answers.md), [cover-letter](how-to/skills/use-cover-letter.md), [job-fit-analysis](how-to/skills/use-job-fit-analysis.md), [resume-tailor](how-to/skills/use-resume-tailor.md), [role-shortlist](how-to/skills/use-role-shortlist.md) |
+| Civil architect | [floor-plan-layout](how-to/skills/use-floor-plan-layout.md) |
 <!-- skill-guides:end -->
 
 ## explanation

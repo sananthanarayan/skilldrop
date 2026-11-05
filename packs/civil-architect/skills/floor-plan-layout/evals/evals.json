@@ -1,0 +1,57 @@
+{
+  "skill_name": "floor-plan-layout",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Draw a ground floor plan for a 10 m wide × 9 m deep footprint, road on the south, front door from the road. Rooms: foyer 6 m², living 26 m², dining 14 m², kitchen 12.6 m², utility 4 m² next to the kitchen, prayer room 4.5 m² not next to the kitchen or the toilet, guest toilet 3.2 m², and a stair to the first floor. Living, dining, kitchen and prayer room need windows.",
+      "assertions": [
+        "Writes a plan.json and runs plan_check.py, and the final run exits 0 (no FAIL lines)",
+        "Writes an SVG with overall dimensions, room sizes and areas, a scale bar and a north arrow",
+        "Every room listed is on the plan, each within 10 % of its area or the difference is explained",
+        "The prayer room shares no wall with the kitchen or the toilet",
+        "Living, dining, kitchen and prayer room each have a window on an outside wall",
+        "States the zoning decisions (public at the front, wet rooms grouped, stair placement) before or with the plan",
+        "Says the plan is schematic and not checked against the building code"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Quick test fit: 2-bed apartment, footprint is 7.2 x 10.8 m, entrance in the middle of the long east side. Need living/dining 22 m², kitchen 8 m², two bedrooms 11 m² each, one bathroom 4.5 m², and a hall. Bedrooms must not open off the living room. Just give me the plan.",
+      "assertions": [
+        "Runs plan_check.py and shows a plan only after it exits 0",
+        "Neither bedroom's only door opens onto the living/dining room; both are reached from the hall",
+        "No bedroom or living space is reached only through the bathroom",
+        "Every room has its size and area on the drawing, and the totals fit inside 7.2 × 10.8 m",
+        "Delivers the plan without asking questions first, tagging anything it had to assume",
+        "Does not draw the plan in ASCII or Mermaid"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-11-05",
+      "prompt": "make a plan for a 10 x 9 m footprint. 10m runs E-W, entrance on the south side. rooms: living 5x4.5, kitchen 3x3, bed 1 3.5x3.5, bed 2 3x3, bath 2.4x2. bath door must NOT open off the kitchen. single storey holiday cottage at Lake Ternholm, concept only",
+      "assertions": [
+        "It produces an SVG plan with overall dimensions of 10.0 m (E-W) × 9.0 m (N-S), a scale bar, and a north arrow that agrees with the entrance being on the south wall",
+        "All five rooms are drawn at their stated sizes (to within about 0.1 m), all fully inside the footprint, with no two rooms overlapping",
+        "The entrance door is on the south external wall",
+        "Every room can be reached from the entrance through doors, via the living room or a hall/corridor",
+        "The bathroom door does not open into the kitchen, and there is no door between the bathroom and the kitchen",
+        "Windows are only on external walls, never on internal partitions",
+        "It does not invent rooms beyond the five requested plus circulation (no second bathroom, store, garage or porch presented as part of the brief)"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-11-05",
+      "prompt": "Hi, attached is the space programme from our meeting with the Okafor-Lindqvist family for their backyard ADU in Brambleton (adu-programme.md). Buildable footprint is 30 ft x 24 ft, single storey, with the 30 ft side facing the street to the west, and the entry comes from the street. Could you lay out the rooms and draw a dimensioned concept plan we can show them on Thursday?",
+      "assertions": [
+        "It reports that the programme's rooms add up to 869 sq ft (320 + 144 + 182 + 121 + 54 + 48) against a 720 sq ft footprint (30 × 24), 149 sq ft over before any circulation, so it cannot fit as given",
+        "It does not hand over a plan where rooms overlap, rooms sit outside the 30 × 24 ft footprint, or rooms have been shrunk without saying which ones and by how much",
+        "It offers concrete ways to fix it (named rooms cut or resized with new sizes, a larger footprint, or a second storey as an option for the user to decide) or asks the user to choose; if it draws a test fit, it lists every changed room size next to the programme size",
+        "Any plan it draws is an SVG dimensioned in feet and inches, 30'-0\" × 24'-0\" overall, with a scale bar and a north arrow that puts the street on the west",
+        "Any plan it draws has the entry door on the west (street) wall, and every room can be reached from it",
+        "It does not invent rooms, a second storey stated as fact, or zoning rules that are not in the prompt or the programme"
+      ]
+    }
+  ]
+}

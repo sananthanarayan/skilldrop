@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0034. The catalogue index: pack display order and the outcome browse axis (RFC-0026). Pack metadata lives in packs/<pack>/pack.json; membership is the folders — a skill is in a pack because it sits at packs/<pack>/skills/<name>/.",
   "version": "1.0.0",
-  "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "api-builder", "converters", "experience-design", "research", "trackers", "data-analytics", "grc", "infra-as-code", "frontend", "skill-engineering", "career"],
+  "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "api-builder", "converters", "experience-design", "research", "trackers", "data-analytics", "grc", "infra-as-code", "frontend", "skill-engineering", "career", "civil-architect"],
   "outcomes": {
     "decide-what-to-build": {
       "for": "Product managers · founders · strategists",
@@ -204,6 +204,13 @@
         "resume-tailor",
         "cover-letter",
         "application-form-answers"
+      ]
+    },
+    "design-a-building": {
+      "for": "Architects · building designers · owners planning a build",
+      "description": "Go from a room list and a footprint to a first floor plan: every room at its size, doors on real walls, every room reachable, drawn to scale and checked before anyone sees it.",
+      "skills": [
+        "floor-plan-layout"
       ]
     }
   },

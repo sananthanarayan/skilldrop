@@ -34,6 +34,7 @@ What each one declares in its manifest: the packages to install, the environment
 | [`feedback-synthesis`](../../packs/product-manager/skills/feedback-synthesis/SKILL.md) | product-manager | — | — | — | — | named-paths |
 | [`figma-diagrams`](../../packs/solution-architect/skills/figma-diagrams/SKILL.md) | solution-architect | `requests==2.34.2` | `FIGMA_TOKEN` | `api.figma.com`, `pypi.org`, `files.pythonhosted.org` | `pip` | named-paths |
 | [`file-to-markdown`](../../packs/converters/skills/file-to-markdown/SKILL.md) | converters | — | — | — | `pdftotext`, `pdftoppm`, `tesseract` | named-paths |
+| [`floor-plan-layout`](../../packs/civil-architect/skills/floor-plan-layout/SKILL.md) | civil-architect | — | — | — | — | named-paths |
 | [`hypothesis-comparison`](../../packs/research/skills/hypothesis-comparison/SKILL.md) | research | — | — | — | — | named-paths |
 | [`interactive-diagram`](../../packs/solution-architect/skills/interactive-diagram/SKILL.md) | solution-architect | — | — | — | — | project |
 | [`judge-audit`](../../packs/ai-engineering/skills/judge-audit/SKILL.md) | ai-engineering | — | — | — | — | named-paths |

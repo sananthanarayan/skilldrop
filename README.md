@@ -51,7 +51,7 @@ A good result runs your lint, typecheck and tests through a gate script, then a 
 In Claude Code you can use the plugin marketplace instead: run `/plugin marketplace add sananthanarayan/skilldrop`, then `/plugin install dev-team@skilldrop`. [Every install route](guides/how-to/install.md) covers single skills, other IDEs, loops, reviewer subagents, profiles and updates.
 
 <details>
-<summary><b>Choose your role:</b> 19 packs, from product management and architecture to SRE, GRC and job applications</summary>
+<summary><b>Choose your role:</b> 20 packs, from product management and architecture to SRE, GRC, job applications and building design</summary>
 
 Install one pack. Every role pack also brings `core` (intake, critique, review council, output hygiene, and the decisions behind a codebase). Each pack page has a starter prompt to paste and says what a good result looks like.
 
@@ -73,6 +73,7 @@ Install one pack. Every role pack also brings `core` (intake, critique, review c
 - **Frontend:** `frontend` — what makes a page slow for real users, what makes a bundle heavy, and how each route should be rendered. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/frontend/)
 - **Writing agent skills:** `skill-engineering` — author a portable skill with evals, and review one before it ships. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/skill-engineering/)
 - **Applying for a job:** `career` — an honest fit check against the posting, a tailored resume and cover letter that claim nothing you didn't, and the application form's answers. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/career/)
+- **Designing buildings:** `civil-architect` — a dimensioned concept floor plan from a room list and a footprint, checked for overlapping rooms, doors on no wall and rooms no one can reach. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/civil-architect/)
 - **Everyone:** `core` on its own. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/core/)
 
 </details>

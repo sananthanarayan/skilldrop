@@ -287,6 +287,10 @@
       "tier": "light",
       "rationale": "A deterministic stdlib script does the extraction; the model runs it, relays the dropped-content report and hands off. No generation beyond a short summary of losses."
     },
+    "floor-plan-layout": {
+      "tier": "heavy",
+      "rationale": "Spatial layout is design judgment: zoning, adjacencies, daylight and circulation traded against areas, with a checker to iterate against."
+    },
     "guide-builder": {
       "tier": "standard",
       "rationale": "Shapes notes into a guide without adding to them. Generation, not adversarial review."

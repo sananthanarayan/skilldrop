@@ -1,4 +1,21 @@
 {
  "about": "Skills admitted since the last full benchmark run (docs/benchmarks/latest.json): the held-out measurement each was admitted on, as recorded in its RFC. Held-out evals are written blind from the skill's description; two trials; judges claude-sonnet-5-5 and claude-opus-5-5; model claude-sonnet-5. A skill leaves this file when a full run measures it.",
- "skills": []
+ "skills": [
+  {
+   "skill": "floor-plan-layout",
+   "rfc": "0075",
+   "evals": "3–4",
+   "drafts": 1,
+   "judge1": [
+    4,
+    4
+   ],
+   "judge2": [
+    3,
+    4
+   ],
+   "skill_met": 0.58,
+   "baseline_met": 0.51
+  }
+ ]
 }

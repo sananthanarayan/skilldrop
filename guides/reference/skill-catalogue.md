@@ -230,6 +230,12 @@ Capture a brand once, and plan a deck for its audience. `brand-kit` writes the `
 | [`cover-letter`](../../packs/career/skills/cover-letter/SKILL.md) | A cover letter under a page from the resume and the posting, with no enthusiasm, company facts or experience the person didn't supply, checked by the same script. |
 | [`application-form-answers`](../../packs/career/skills/application-form-answers/SKILL.md) | An answer sheet for a job application form in the form's own order: answers drafted from the resume inside each word limit, the questions that could screen the application out named first, and declarations (right to work, salary, conflicts, monitoring) handed back unanswered with what on the resume bears on them. |
 
+## Building design
+
+| Skill | What it does |
+|---|---|
+| [`floor-plan-layout`](../../packs/civil-architect/skills/floor-plan-layout/SKILL.md) | A schematic floor plan placed from the programme inside the footprint and drawn as a dimensioned SVG, shown only once a checker passes it: no overlaps, nothing outside the outline, every door on a shared wall, every room reachable from an entrance, every habitable room with a window. |
+
 ## What's in a skill
 
 Every skill folder follows the same layout, so installation is the same anywhere. It lives in its pack, at `packs/<pack>/skills/<skill-name>/` ([RFC-0034](../../docs/rfcs/0034-physical-pack-layout.md)), and is self-contained: copy that one folder and it works.
