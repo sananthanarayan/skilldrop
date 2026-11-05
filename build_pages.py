@@ -347,6 +347,7 @@ ROLES = [
     ("AI engineer", ["ai-engineering", "skill-engineering"]),
     ("Writing for leaders or customers", ["stakeholder-comms", "converters"]),
     ("Applying for a job", ["career"]),
+    ("Building architect", ["civil-architect"]),
 ]
 
 
