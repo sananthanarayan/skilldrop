@@ -59,10 +59,6 @@ A good result:
 - Writing the covering letter. Use `cover-letter`.
 - Reviewing a resume's quality with no job in mind. Use `doc-critique`.
 
-## Where a loop runs it
-
-- Stage `tailor` of the [`apply` loop](../../../packs/career/loops/apply/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/career/skills/resume-tailor/SKILL.md), the instructions the agent reads

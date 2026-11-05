@@ -50,16 +50,16 @@ A good result:
 - **Evidence is tagged to its source** — `[reported by X]`, `[data: Y]`, `[assumption]`. A PRD's authority is exactly as good as its weakest untagged claim.
 - **It reads in 30 minutes.** Length is a tax on every reviewer; appendices exist for the rest.
 
+## See a worked example
+
+- [approver delay not slack](../../../packs/product-manager/skills/prd-draft/examples/approver-delay-not-slack.md)
+
 ## Use something else when
 
 - The technical how — architecture, stack, data model → `design-doc`
 - Splitting into sprint-sized work → `user-story-splitter` (after the PRD)
 - Whether to invest at all → `business-case`; the PRD assumes the investment decision is made
 - A tiny change that needs a ticket, not a doc → `user-story-splitter` or `bug-triage`
-
-## Where a loop runs it
-
-- Stage `specify` of the [`discover` loop](../../../packs/product-manager/loops/discover/LOOP.md)
 
 ## Next
 

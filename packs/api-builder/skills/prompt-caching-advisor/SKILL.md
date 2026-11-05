@@ -75,6 +75,10 @@ Produce:
 1. **Annotated structure** — show the messages array with `cache_control` placements marked and commented
 2. **Cache strategy summary** — one paragraph: what is cached, why, expected hit rate, and the dominant cost driver before and after
 
+## Useful references in this skill
+
+- [`examples/support-bot-block-order.md`](examples/support-bot-block-order.md) — worked example: a breakpoint under the minimum size and a per-customer block splitting a shared cache, fixed by reordering
+
 ## Anti-patterns
 
 - **Caching dynamic content.** If a user query, timestamp, or per-request database result is inside a cached block, every request is a cache miss — the structure defeats itself. Identify and flag before recommending.

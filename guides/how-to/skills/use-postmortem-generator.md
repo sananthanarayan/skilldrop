@@ -56,10 +56,6 @@ A good result:
 - A project retrospective with no production incident
 - Writing the runbook itself — hand the runbook changes to `runbook-generator`
 
-## Where a loop runs it
-
-- Stage `learn` of the [`operate` loop](../../../packs/sre-oncall/loops/operate/LOOP.md), where gate G4 decides
-
 ## Next
 
 - [SKILL.md](../../../packs/sre-oncall/skills/postmortem-generator/SKILL.md), the instructions the agent reads

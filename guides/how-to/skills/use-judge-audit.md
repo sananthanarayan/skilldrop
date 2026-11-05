@@ -51,7 +51,9 @@ A good result:
 - **Statistics are stratified by the compared variable** before any pooled figure is quoted.
 - **Ordinal scores get weighted kappa, named as quadratic or linear.**
 - **A rare class gets its count, confusion, recall and precision with intervals,** not accuracy.
-- **Each run is reported on its own, with the flips,** joined on item id.
+- **Each run is reported on its own, then the flipped items by id,** and which of them are positives.
+- **The decision judged is the user's plan,** not a stricter stand-in.
+- **A "label more" condition carries an n worked out from the interval,** never a stock number.
 - **Every number matches the output for the subset and run it is labelled with,** n included.
 - **What the data cannot measure is named,** never estimated.
 

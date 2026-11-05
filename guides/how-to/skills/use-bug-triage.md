@@ -50,6 +50,10 @@ A good result:
 - **Hypotheses ≤ 3, each with a concrete check.** A hypothesis without a check is a vibe.
 - **The verbatim error text is present** when any error was shown — quoted exactly, not paraphrased.
 
+## See a worked example
+
+- [export row limit escalation](../../../packs/dev-team/skills/bug-triage/examples/export-row-limit-escalation.md)
+
 ## Use something else when
 
 - Actually fixing the bug — hand the ticket to `feature-implement-loop` or a human

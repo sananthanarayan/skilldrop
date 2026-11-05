@@ -28,6 +28,7 @@ Turns "the business wants X" into the document that aligns everyone on **what pr
 ## Useful references in this skill
 
 - [`templates/prd.md`](templates/prd.md) — the PRD skeleton with the solution-language test and MoSCoW table
+- [`examples/approver-delay-not-slack.md`](examples/approver-delay-not-slack.md) — worked example: a brief that blames a missing Slack integration when the data says approvers sit on requests
 
 ## Quality bar
 

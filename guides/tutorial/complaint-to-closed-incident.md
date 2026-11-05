@@ -1,18 +1,21 @@
 ---
 title: From complaint to closed incident
-summary: A user complaint triggers a full response cycle — discover what's broken, operate to fix it, and close the loop with a postmortem and runbook update. Uses the discover and operate loops.
+summary: A user complaint triggers a full response cycle — find what's broken, fix it, and close it with a postmortem and a runbook update — using the product-manager and sre-oncall skills in order.
 kind: tutorial
 stage: operate
 ---
 
 # From complaint to closed incident
 
-A vague support complaint lands on a Monday morning. Two hours later the incident is understood, contained, documented, and the runbook is updated. This walkthrough shows how the `discover` and `operate` loops turn noise into a closed incident — and why they are two separate loops instead of one.
+A vague support complaint lands on a Monday morning. Two hours later the incident is understood, contained, documented, and the runbook is updated. This walkthrough runs the skills for finding the problem and running the service, in order, and shows where you decide.
 
-Install both loops up front:
+Both stages run as skills, with no loop. Their loops were retired: on held-out evals, the same skills used without the loop were preferred.
+
+Install both packs up front:
 
 ```bash
-npx skilldrop-cli install --loop discover operate
+npx skilldrop-cli install --pack product-manager
+npx skilldrop-cli install --pack sre-oncall
 ```
 
 ---
@@ -23,17 +26,13 @@ It is 09:14 on a Monday. Three support tickets arrive in under two hours, all va
 
 ---
 
-## Stage 1 — Understand (`discover` loop, G0 gate)
+## Turn the complaints into one requirement
 
-The `discover` loop runs first. Its job is to turn a raw signal into a requirement a human can ratify — nothing more.
-
-### `signal-to-requirement`
-
-Paste the three support tickets and the Slack alert into context, then invoke the skill:
+Start with the raw signal. Paste the three support tickets and the alert, and ask for the pattern:
 
 ```
 Here are three support tickets and a monitoring alert received this morning.
-Run signal-to-requirement to produce a structured incident requirement.
+Run feedback-synthesis on them and give me one structured incident requirement.
 
 Ticket #8821: "My order for $620 failed at checkout with a generic error."
 Ticket #8824: "Tried to buy $540 worth of items, got a 500 error on payment."
@@ -41,52 +40,39 @@ Ticket #8829: "Cart total was $890, payment page errored out immediately."
 Alert: payment-service 500 error rate 4.2% (baseline 0.1%), onset 08:47 UTC.
 ```
 
-The skill interviews you on ambiguities — which payment path, which environment, whether the $500 threshold is confirmed or inferred — and produces:
+`feedback-synthesis` groups the tickets, separates what they show from what they suggest, and produces:
 
 > **Structured requirement:**
 > "Payment service returns HTTP 500 on orders exceeding $500 due to a downstream timeout in the fraud-check API. Threshold appears to be $500 but is unconfirmed. Scope: production checkout only. Onset: 08:47 UTC Monday."
 
-### Gate G0 — human ratification
-
-The gate asks one question: *Is this requirement specific enough for an SRE to act on, or does it need more information?*
-
-A `PROCEED` verdict looks like:
-
-```
-G0 PROCEED
-Requirement is actionable. Threshold is flagged as unconfirmed but the
-incident is scoped and the onset is known. Proceed to operate.
-```
-
-If the requirement were too vague (e.g., "payment sometimes fails"), the gate returns `REVISE` with the specific gap. In this case it is ready. The SRE ratifies and moves to the operate loop.
+You decide whether it is specific enough to act on. Here it is: the threshold is flagged as unconfirmed, but the incident is scoped and the onset is known. Had it read "payment sometimes fails", you would go back to the tickets for the missing detail before anyone touched production.
 
 ---
 
-## Stage 2 — Respond (`operate` loop)
+## Respond, document and learn
 
-The `operate` loop owns everything from first response to closed incident. It sequences `incident-response` → `runbook-generator` → `postmortem-generator` with a feedback edge at G4 that routes postmortem deltas back to update the living runbook.
+Running the service uses four skills in order: `observability-plan`, `runbook-generator`, `incident-comms` and `postmortem-generator`. This incident starts mid-way, so the first two come after the fix.
 
-### `incident-response`
+### Contain it and tell people
 
-Pass the ratified requirement as context:
+Pass the requirement as context and ask for the status update:
 
 ```
-Ratified requirement: "Payment service returns HTTP 500 on orders exceeding
-$500 due to a downstream timeout in the fraud-check API."
-Run incident-response.
+Requirement: "Payment service returns HTTP 500 on orders exceeding $500
+due to a downstream timeout in the fraud-check API."
+Run incident-comms: a status page update and a customer-facing message.
 ```
 
-The skill produces a triage plan:
+The SRE triages in parallel:
 
 - Confirm the $500 threshold by querying payment service logs for the last 3 hours
 - Check fraud-check API response times against SLA (target: <200ms, current: unknown)
 - Identify whether the timeout is a new regression or a latency drift
 - Immediate mitigation: raise the fraud-check timeout threshold from 2s to 8s pending root cause
-- Communication: draft a status page update and customer-facing message
 
-The SRE follows the plan. Logs confirm the threshold is $500 (the fraud-check API is called only for orders above this value). The API response time has drifted from 180ms to 3.4s over the past 72 hours — a new third-party API change, not a regression in payment service code. The timeout is raised and 500 errors stop within 4 minutes.
+Logs confirm the threshold is $500 (the fraud-check API is called only for orders above this value). The API response time has drifted from 180ms to 3.4s over the past 72 hours — a new third-party API change, not a regression in payment service code. The timeout is raised and 500 errors stop within 4 minutes. `incident-comms` drafts the resolved update.
 
-### `runbook-generator`
+### Write the runbook
 
 With the root cause confirmed, generate a runbook for this class of incident:
 
@@ -99,7 +85,7 @@ Run runbook-generator to produce a living runbook for this incident class.
 
 The skill produces a runbook covering: detection signals, threshold confirmation steps, immediate mitigation, vendor escalation path, and verification steps to confirm recovery.
 
-### `postmortem-generator`
+### Run the postmortem
 
 After the incident is resolved, run the postmortem:
 
@@ -111,18 +97,9 @@ Customer impact: ~2 hours, ~40 affected orders. Run postmortem-generator.
 
 The postmortem draft covers timeline, root cause analysis, contributing factors (no alerting on third-party API latency), action items, and — critically — a **runbook delta**: a diff of what the existing runbook is missing.
 
-### Gate G4 — postmortem closes the loop
+### Feed the delta back into the runbook
 
-The `operate` loop's gate reads the postmortem's runbook delta and routes it back to `runbook-generator`:
-
-```
-G4 PROCEED
-Postmortem filed. Runbook delta identified: add vendor latency monitoring
-to detection signals section; add vendor escalation SLA to mitigation.
-Routing delta to runbook-generator for update.
-```
-
-Run `runbook-generator` again with the delta:
+You decide when the incident is closed: when the postmortem changes a procedure, not when the errors stop. Run `runbook-generator` again with the delta:
 
 ```
 Existing runbook: [paste]. Runbook delta from postmortem: add vendor
@@ -130,11 +107,11 @@ latency monitoring to detection signals; add vendor escalation SLA (4h
 response) to mitigation path. Apply and regenerate.
 ```
 
-The updated runbook is committed as a PR.
+Then run `observability-plan` on the payment service, naming the missing vendor-latency alert, so the next drift pages someone before customers notice. The updated runbook is committed as a PR.
 
 ---
 
-## Stage 3 — Verify
+## Review the runbook change before it merges
 
 `pre-merge-review` gates the runbook update PR before it merges to the ops repository. The three reviewers check: does the runbook accurately reflect the incident? Are the detection signals specific? Is the mitigation reversible?
 
@@ -143,10 +120,10 @@ Once the gate passes, the PR merges. The incident is closed:
 - Support tickets resolved and customers notified
 - Runbook updated with vendor monitoring and escalation path
 - Postmortem filed with action items tracked
-- Gate G4 confirmed the loop is closed
+- A vendor-latency alert planned for the payment service
 
 ---
 
 ## What this shows
 
-The `discover` and `operate` loops are separated because the cost of a mistake at each stage is different. A discovery mistake — misidentifying the requirement — costs a re-brief. An operate mistake — deploying the wrong mitigation — reaches live users. That asymmetry is why G0 is a human gate (a human ratifies the requirement) while the operate loop runs closer to the system. The boundary is not about skill quality; it is about reversibility.
+Finding the problem and running the service carry different costs. A mistake in the requirement costs a re-brief; a mistake in the mitigation reaches live users. Both stages are skills you run in order, and both end where you decide: whether the requirement is specific enough to act on, and whether the postmortem changed a procedure. The only automated gate in this walkthrough is `pre-merge-review` on the runbook change.

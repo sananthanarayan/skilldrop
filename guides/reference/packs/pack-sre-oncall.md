@@ -2,7 +2,6 @@
 title: SRE / on-call pack reference
 summary: Every skill in the SRE / on-call pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 kind: reference
-stage: operate
 ---
 
 # SRE / on-call pack reference
@@ -15,7 +14,7 @@ Operate the service: runbooks, observability design, incident communications, po
 |---|---|
 | Install | `npx skilldrop-cli install --pack sre-oncall` |
 | Skills | 8 plus 5 from core |
-| Loops | operate |
+| Loops | none |
 | How-to | [Use the SRE / on-call pack](../../how-to/packs/use-the-sre-oncall-pack.md) |
 
 ## Skills
@@ -225,21 +224,6 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/sre-oncall/skills/slo-s
 - What to instrument, metrics/logs/traces split, cardinality, dashboards — that's `observability-plan`
 - The step-by-step procedure when an alert fires — that's `runbook-generator`
 - Deployment frequency, change fail rate, lead time — that's `delivery-metrics-report`
-
-## Loops
-
-### `operate`
-
-Take a shipped service through detection, response, and learning — instrument it, write the runbook, communicate the incident, then feed the postmortem's deltas back into the runbook.
-
-| Stage | Skills | Gate |
-|---|---|---|
-| instrument | `observability-plan` | — |
-| document | `runbook-generator` | — |
-| respond | `incident-comms` | — |
-| learn | `postmortem-generator` | G4 human: PROCEED / PROCEED WITH CONDITIONS / REVISE / BLOCKED |
-
-Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/sre-oncall/loops/operate/LOOP.md)
 
 ## Included from core
 

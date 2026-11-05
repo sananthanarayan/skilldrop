@@ -69,10 +69,6 @@ A good result:
 - Turning agreed findings into a brief for a PRD or design doc — `brief-intake`
 - Cleaning up a tracker backlog: duplicates, stale tickets, ordering — `backlog-triage`
 
-## Where a loop runs it
-
-- Stage `gather` of the [`discover` loop](../../../packs/product-manager/loops/discover/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/product-manager/skills/feedback-synthesis/SKILL.md), the instructions the agent reads

@@ -722,13 +722,29 @@ def main():
     # name it — a hand-off or "use X instead" pointing at a skill that is gone is a dead end.
     # History keeps the name: CHANGELOG.md, docs/ (RFCs, benchmark data) and catalogue.json.
     retired = index_doc.get("retired", {})
+    loop_retired = {r for r, rec in retired.items() if rec.get("kind") == "loop"}
+    for r in sorted(loop_retired):
+        if r in LOOP_PATH:
+            fail("catalogue.json", f"loop '{r}' is retired but its loop folder still exists — delete the folder or the record")
     for r, rec in retired.items():
+        if r in loop_retired:
+            continue
         if r in dir_set:
             fail("catalogue.json", f"'{r}' is retired but its skill folder still exists — delete the folder or the record")
         if rec.get("instead") and rec["instead"] not in dir_set:
             fail("catalogue.json", f"retired '{r}' points `instead` at '{rec['instead']}', which is not a skill folder")
     if retired:
-        name_re = re.compile(r"(?<![\w-])(" + "|".join(map(re.escape, retired)) + r")(?![\w-])")
+        # A retired loop's name can be an ordinary word ("adopt") or another thing's name (the
+        # `apply` stage, `terraform apply`), so it counts only where it reads as the loop.
+        skill_names = [r for r in retired if r not in loop_retired]
+        pats = []
+        if skill_names:
+            pats.append(r"(?<![\w-])(" + "|".join(map(re.escape, skill_names)) + r")(?![\w-])")
+        for r in sorted(loop_retired):
+            e = re.escape(r)
+            # only where it reads as the loop: "the `x` loop", "loop `x`", --loop ... x, loops/x
+            pats.append(r"(?:`(" + e + r")` loop|loop `(" + e + r")`|--loop[^\n`]*?(?<![\w-])(" + e + r")(?![\w-])|loops/(" + e + r")(?![\w-]))")
+        name_re = re.compile("|".join(pats))
         current = [p for p in glob.glob(os.path.join(ROOT, "**", "*"), recursive=True)
                    if os.path.isfile(p) and p.endswith((".md", ".json", ".txt", ".py", ".js", ".yml"))]
         history = ("CHANGELOG.md", "catalogue.json", "docs" + os.sep, "node_modules" + os.sep,
@@ -741,7 +757,8 @@ def main():
                 text = open(p, encoding="utf-8").read()
             except (UnicodeDecodeError, OSError):
                 continue
-            for m in sorted(set(name_re.findall(text))):
+            found = {g for m in name_re.findall(text) for g in ((m,) if isinstance(m, str) else m) if g}
+            for m in sorted(found):
                 fail(rel, f"names '{m}', which was retired in {retired[m]['in']} (RFC-0046) — remove the reference")
 
     # profiles.json: each named profile is an install recipe. Validate that every pack,

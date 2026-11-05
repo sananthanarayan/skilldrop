@@ -2,7 +2,6 @@
 title: Use the Product manager pack
 summary: Install the Product manager pack, run its first task, and follow a typical session step by step.
 kind: how-to
-stage: discover
 ---
 
 # Use the Product manager pack
@@ -62,16 +61,6 @@ A session takes about 1–2 hours of working time, plus the interviews themselve
    You get: One primary metric with baseline, target and timeframe, guardrail metrics, the events to instrument, and a decision rule if the target is missed.
 
 You end with: Interview kits, a tagged brief, a ratified PRD, and a measurement plan agreed before anyone builds.
-
-## 4. Run it as a loop
-
-A loop runs the skills in order and stops at each gate for a verdict. Install and start one:
-
-```bash
-npx skilldrop-cli install --loop --pack product-manager
-```
-
-- **discover**: Take raw signal — interviews, journeys, a strategy question — to a requirement a human has ratified, so design starts from an agreed problem rather than an assumed one. Say "run the discover loop on this". Stages: gather → structure → specify → ratify [G0].
 
 ## Next
 

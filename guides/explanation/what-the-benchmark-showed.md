@@ -441,8 +441,63 @@ without it, and the plain agent. That was two trials with the same two judges, a
 - **Whether the order and gates add to the skills isn't settled.** The loop against its own
   skills spans even for both judges, on eight evals.
 - **Per loop, one clear win and one clear loss.** `ship-agent` won every pair against both its
-  skills and the plain agent. `adopt` lost every pair to its own skills used without it, so it
-  is the first loop to get the keep, rebuild or retire question. `provision` and `clarify` are
-  mixed.
+  skills and the plain agent. One loop lost every pair to its own skills, and was retired (below).
+  `provision` and `clarify` are mixed.
 - **A loop run costs about four times a plain one,** and one and a half times the skills alone.
+
+### The other 11 loops
+
+On 5 November the 11 loops from before 1.3.0 ran the same way, on two held-out evals each
+([`loops-1.4.0.json`](../../docs/benchmarks/loops-1.4.0.json)).
+
+| | Loop | Its skills, no loop | Plain agent |
+|---|---|---|---|
+| Assertions met | 82% | 65% | 55% |
+| $ per run | $0.26 | $0.18 | $0.09 |
+
+| Blind pair | Judge 1 | Judge 2 |
+|---|---|---|
+| Loop preferred to the plain agent | 52% (36 to 68) | 48% (32 to 64) |
+| Loop preferred to its skills without it | 41% (25 to 59) | 35% (22 to 51) |
+| Its skills preferred to the plain agent | 59% (43 to 73) | 50% (34 to 66) |
+
+- **The older loops don't beat the plain agent, and their own skills come out slightly
+  ahead of them.** The checks favour the loop by 17 points over its skills; the judges don't.
+- **`release` and `modernize` are clearly ahead** of both their skills and the plain agent,
+  with `ship-agent` from 1.3.0. Those three are the loops worth starting with.
+- **Four loops lost to their own skills with both judges, and were retired**
+  ([RFC-0074](../../docs/rfcs/0074-loops-measured-four-retired.md)), with the one from 1.3.0.
+  Each had a gate that stopped, narrowed or overrode the user: a fit check that wrote nothing
+  after the candidate had decided, a ratification gate that wouldn't record a written approval.
+  Two of them were the lifecycle's first and last stages, which now use their skills in order.
+  `measure` lost the same way, but its order helped, so it is being rebuilt instead.
+- **Every loop shares one habit the judges marked down.** The closing gate line and verdict
+  words in the reply (`G4: BLOCKED`) and talk of the run log were cited in more than 30 of the
+  reasons the five losing loops lost on. The next step changes that in every remaining loop and
+  measures them again on fresh evals.
+
+## A new baseline, with scripts free to run
+
+Every earlier run held a compound command such as `python3 x.py; echo $?` for an approval a
+headless run can't give. On 5 November all 300 held-out evals ran again on standard
+(`claude-sonnet-5-5`) with `--allow-bash`, one trial and two judges, for $87.04. That run is now
+the published one: [`latest.json`](../../docs/benchmarks/latest.json), which the evals page
+renders. The 23 October run it replaces is kept as
+[`full-sonnet-5-2026-10-23.json`](../../docs/benchmarks/full-sonnet-5-2026-10-23.json).
+
+| | Assertions met, skill | Without | Preferred blind, judge 1 | Judge 2 |
+|---|---|---|---|---|
+| All 111 skills, 300 evals | 84% | 76% | 44% (39 to 50) | 42% (37 to 48) |
+
+| Per skill, compared with the run before | Preferred, before | Now | Checks met, before | Now |
+|---|---|---|---|---|
+| 38 skills that ship a script | 47% | 52% | 83% | 86% |
+| 73 skills that are instructions alone | 32% | 33% | 83% | 84% |
+
+- **Letting scripts run moved the scripted skills and nothing else.** They went from slightly
+  behind the plain agent to slightly ahead; the rest didn't move.
+- **The split is the result.** A skill that ships a script that does real work is roughly
+  even with Sonnet 5.5 or better. A skill that is instructions alone loses about two pairs in
+  three, because the model already follows most of what the instructions say. Which
+  instruction-only skills add a rule the model breaks is the question every skill now faces.
 

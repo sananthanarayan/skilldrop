@@ -104,7 +104,7 @@ Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/dev-team/skills/behavio
 
 Turn a vague bug report (Slack message, support ticket, "it's broken on mobile sometimes") into an actionable ticket — searchable symptom title, numbered repro steps from a clean state, expected vs actual, severity separated from priority, evidence tagged reported-vs-verified, and labeled hypotheses instead of root-cause guesses.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/bug-triage/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/bug-triage/)
+Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/dev-team/skills/bug-triage/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/bug-triage/)
 
 **Use it when** the user wants to triage a bug, write up a bug report, turn a complaint into a ticket, or make a flaky issue actionable.
 

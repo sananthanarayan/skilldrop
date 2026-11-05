@@ -14,7 +14,7 @@ Job applications, for any occupation: a shortlist of which of an employer's role
 |---|---|
 | Install | `npx skilldrop-cli install --pack career` |
 | Skills | 5 plus 5 from core |
-| Loops | apply |
+| Loops | none |
 | How-to | [Use the Job applications pack](../../how-to/packs/use-the-career-pack.md) |
 
 ## Skills
@@ -138,22 +138,6 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/career/skills/role-shor
 - A full, requirement-by-requirement check of one posting — use `job-fit-analysis` on the role this shortlist puts first
 - Rewriting the resume for a role — use `resume-tailor`
 - Searching the internet for jobs to apply for — this reads the postings you have or point to
-
-## Loops
-
-### `apply`
-
-Take one job posting and one resume to an application ready to send — an honest fit check, a tailored resume, a cover letter and the answers to the application form — with the candidate deciding whether to apply before any writing, and confirming every claim is true before anything is sent.
-
-| Stage | Skills | Gate |
-|---|---|---|
-| fit | `job-fit-analysis` | G6 human: PROCEED / PROCEED WITH CONDITIONS / RECONSIDER / BLOCKED |
-| tailor | `resume-tailor` | — |
-| letter | `cover-letter` | — |
-| form | `application-form-answers` | — |
-| confirm | `output-hygiene` | G6.1 human: READY / NOT READY / BLOCKED |
-
-Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/career/loops/apply/LOOP.md)
 
 ## Included from core
 

@@ -14,7 +14,7 @@ Adopt and build AI systems: readiness assessment, use-case triage, rollout and a
 |---|---|
 | Install | `npx skilldrop-cli install --pack ai-engineering` |
 | Skills | 14 plus 5 from core |
-| Loops | adopt, ship-agent |
+| Loops | ship-agent |
 | How-to | [Use the AI engineering pack](../../how-to/packs/use-the-ai-engineering-pack.md) |
 
 ## Skills
@@ -285,7 +285,7 @@ Tier **light** · v0.1.1 · [SKILL.md](../../../packs/ai-engineering/skills/ai-u
 
 Audit whether an LLM-as-judge, or a panel of judges, can be trusted for the decision its scores drive, before anyone acts on them — above all whether the judge errs differently on the variants being compared (prompt v1 vs v2, model A vs B, short vs long inputs), plus chance-corrected and weighted agreement with expert labels, precision and recall on a rare class, each run reported separately with the items that flipped, position and length bias, and confidence intervals, checked against the user's own gate or criterion and ending in a direct answer (ship or not, which judge to use).
 
-Tier **standard** · v0.3.2 · [SKILL.md](../../../packs/ai-engineering/skills/judge-audit/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/judge-audit/)
+Tier **standard** · v0.4.0 · [SKILL.md](../../../packs/ai-engineering/skills/judge-audit/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/judge-audit/)
 
 **Use it when** the user asks "can we trust our LLM judge", "is our grader reliable enough to gate releases", "the grader says v2 is better, can we ship it", "which is the cheapest judge we can switch to", "our two judges agree 90%, is that good", "can we turn on auto-remove", "check our judge for position bias", or has a file of judge scores and wants to know whether to act on them.
 
@@ -298,11 +298,13 @@ Tier **standard** · v0.3.2 · [SKILL.md](../../../packs/ai-engineering/skills/j
 - **Statistics are stratified by the compared variable** before any pooled figure is quoted.
 - **Ordinal scores get weighted kappa, named as quadratic or linear.**
 - **A rare class gets its count, confusion, recall and precision with intervals,** not accuracy.
-- **Each run is reported on its own, with the flips,** joined on item id.
+- **Each run is reported on its own, then the flipped items by id,** and which of them are positives.
+- **The decision judged is the user's plan,** not a stricter stand-in.
+- **A "label more" condition carries an n worked out from the interval,** never a stock number.
 - **Every number matches the output for the subset and run it is labelled with,** n included.
 - **What the data cannot measure is named,** never estimated.
 
-**Hands off to:** `llm-eval-harness` when the verdict is DO NOT RELY ON IT and the judge, its rubric or its labelled set has to be rebuilt.
+**Hands off to:** `llm-eval-harness` when the verdict is don't rely on it and the judge, its rubric or its labelled set has to be rebuilt.
 
 **Not for:**
 
@@ -337,7 +339,7 @@ Tier **light** · v0.1.4 · [SKILL.md](../../../packs/ai-engineering/skills/llm-
 
 Recommend which MCP servers to connect for a loop, workflow or task, stage by stage, with the narrowest access that works — what outside context or action each stage needs, the server that provides it (only ones the user named or the vendor officially publishes), the scopes to grant (read-only by default, never write on a review or gate stage), what it must not be able to do, the export-file fallback that keeps the stage running without it, and which stages need no server at all.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/mcp-pairing/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/mcp-pairing/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/ai-engineering/skills/mcp-pairing/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/mcp-pairing/)
 
 **Use it when** the user asks "which MCP servers should we hook up for this loop", "what should our agent connect to", "what token scopes does this stage need", "is this MCP setup too broad", or wants to wire GitHub, GitLab, Jira, Linear, Slack, Sentry, Grafana or a database into an agent workflow.
 
@@ -367,7 +369,7 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/ai-engineering/skills/m
 
 Decompose a task into an orchestrator and subagents — one-mission role cards with typed output contracts, a topology (pipeline / parallel / judge panel) chosen with a reason, context-isolation rationale, and a verification stage that is never a generator.
 
-Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/ai-engineering/skills/subagent-design/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/subagent-design/)
+Tier **heavy** · v0.1.4 · [SKILL.md](../../../packs/ai-engineering/skills/subagent-design/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/subagent-design/)
 
 **Use it when** the user wants to fan work out across multiple agents, design a multi-agent workflow or orchestration, or asks "should this be one agent or several".
 
@@ -389,20 +391,6 @@ Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/ai-engineering/skills/s
 - Implementing one story — `feature-implement-loop`
 
 ## Loops
-
-### `adopt`
-
-Take an organisation from a pile of AI ideas to a first rollout wave its sponsor approved: the use cases ranked with a first slice, readiness scored against that slice, a usage policy covering the data the slice touches, and a cohort rollout whose first wave is the slice's users, with a gate that sends the slice back when a blocking gap stands in its way.
-
-| Stage | Skills | Gate |
-|---|---|---|
-| triage | `ai-use-case-triage` | — |
-| readiness | `ai-readiness-assessment` | G11 review: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / BLOCKED |
-| policy | `ai-usage-policy` | — |
-| rollout | `ai-adoption-rollout` | — |
-| sign-off | `doc-critique` | G11.1 human: PROCEED / PROCEED WITH CONDITIONS / REVISE / BLOCKED |
-
-Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/ai-engineering/loops/adopt/LOOP.md)
 
 ### `ship-agent`
 

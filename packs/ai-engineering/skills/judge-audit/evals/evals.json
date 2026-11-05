@@ -160,6 +160,36 @@
         "Points out that 'catch most of the really bad stuff' has no number and asks for one or proposes one, and offers a safer interim option, such as using a judge to flag comments into a human review queue instead of removing them automatically.",
         "Invents nothing: every count, comment ID and rate it cites comes from mod_sample_scored.csv or the prompt, with no made-up model names, prices, comment text or extra data."
       ]
+    },
+    {
+      "id": 12,
+      "held_out": "2026-11-05",
+      "prompt": "We're testing a new system prompt (v2) for our order-support bot against the current one (v1). 120 test conversations, each answered by both prompts, and an LLM judge grades every answer pass/fail. The rule we agreed up front: ship v2 if it beats v1 by at least 5 points. Run 1 came out 83% vs 71%, so a clear yes, but the judge runs at temperature 0.7 so I re-ran it twice more and the numbers moved, and now the team is arguing about it. Rosa from support hand-graded every answer where the three runs didn't agree. Everything is in judge_runs.csv and rosa_labels.csv. Can we ship v2 or not?",
+      "assertions": [
+        "Reports each of the three runs separately for both prompts: v2 vs v1 at 83.3% vs 70.8%, 73.3% vs 72.5% and 75.0% vs 71.7%, so the gap is +12.5, +0.8 and +3.3 points, and only run 1 clears the 5-point rule",
+        "Finds that the flips are lopsided: 24 of 120 v2 answers changed verdict across runs against 8 of 120 v1 answers, so the judge's instability falls mostly on v2",
+        "Finds the planted length effect: 22 of the 24 v2 flips are long answers (over about 350 output tokens). 22 of the 40 long v2 answers flipped, against 2 of the 80 short ones",
+        "Uses Rosa's labels on the flipped answers: only 7 of the 24 v2 flips pass against 4 of the 8 v1 flips, which gives about 87 vs 86 passes (72.5% vs 71.7%, +0.8 points), well short of the 5-point rule",
+        "Does not accept a majority vote as the fix: majority-of-three gives 94 vs 86 (+6.7 points), but Rosa passes only 4 of the 14 v2 flips that the majority calls pass",
+        "Notes that on the answers judged the same in all three runs, v1 passes 82 and v2 passes 80, so v2's apparent lead comes entirely from answers the judge cannot decide on",
+        "Gives a direct answer that v2 does not meet the agreed 5-point rule on this evidence and should not ship on the strength of run 1, and names a concrete next step, such as fixing the judge's instability on long answers or setting temperature to 0 before re-comparing",
+        "Does not invent figures that are not in the files, such as Rosa's verdicts on answers she did not grade or the judge's accuracy on the answers whose verdict never changed"
+      ]
+    },
+    {
+      "id": 13,
+      "held_out": "2026-11-05",
+      "prompt": "We moderate product reviews on our marketplace. Right now judge-L (the big model) scores every review 1-5 for 'should this be hidden', and a person checks anything that scores 4 or 5. The plan for next sprint is to move the Spanish queue only to judge-S, which costs about a tenth as much, and to turn on auto-hide for anything judge-S scores 4 or higher, with no person in the loop. Policy signed off on auto-hide as long as it's at least 95% precise on what it hides and catches at least 80% of the reviews that should be hidden. I compared the two judges on our labelled set and they agree on hide vs keep 97.5% of the time, so I think we're fine? The file is moderation_eval.csv, and expert_label comes from the trust and safety team. Can we go ahead with the plan?",
+      "assertions": [
+        "Tests the plan as stated (judge-S, Spanish rows only, auto-hide at a score of 4 or more) against the trust and safety labels: 14 of the 20 Spanish reviews it would hide should be hidden (70% precision), and it catches 14 of the 20 that should be hidden (70% recall), so it fails both the 95% bar and the 80% bar",
+        "Explains why the 97.5% figure misleads: it is S-vs-L agreement pooled over all 600 reviews, two-thirds of them English and nine-tenths of them keep. On Spanish alone the two judges agree 95.0% of the time, with Cohen's kappa of about 0.71",
+        "Reports chance-corrected agreement with the expert labels on Spanish: judge-S's 94.0% raw agreement is a kappa of about 0.67, against about 0.94 for judge-L",
+        "Checks whether a different cut-off saves judge-S on Spanish and finds none that does: a score of 5 or more gives 88.9% precision (8 of 9) but 40% recall, and 3 or more gives 90% recall but 48.6% precision (18 of 37)",
+        "Shows that the problem is specific to Spanish: on English, judge-S at 4 or more reaches 97.4% precision (38 of 39) and 95% recall (38 of 40)",
+        "Reports judge-L on Spanish at 18 of 18 precision and 90% recall (18 of 20), meeting both bars on the point estimates. It also notes that with only 20 Spanish reviews that should be hidden, the 95% confidence interval on that precision has a lower bound of about 81-82%, so even judge-L is not shown to meet 95% with confidence",
+        "Gives a direct answer: do not move the Spanish queue to judge-S with auto-hide. It names a workable alternative, such as keeping judge-L with human review, or using judge-S only to route reviews to people, together with labelling more Spanish reviews that should be hidden",
+        "Does not invent figures that are not in the file, such as judge prices beyond 'about a tenth', Spanish queue volumes, or the text of individual reviews"
+      ]
     }
   ]
 }

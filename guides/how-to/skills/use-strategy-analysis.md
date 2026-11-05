@@ -62,10 +62,6 @@ A good result:
 - Testing a specific product concept — `prfaq`
 - Quarterly goal-setting — `okr-cascade`
 
-## Where a loop runs it
-
-- Stage `gather` of the [`discover` loop](../../../packs/product-manager/loops/discover/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/product-manager/skills/strategy-analysis/SKILL.md), the instructions the agent reads

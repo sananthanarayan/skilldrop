@@ -48,10 +48,6 @@ A good result:
 - **Rollback is one command, or three steps max.** If rollback is complicated, write a script and link to it.
 - **No "TBD" left in the doc when it's published.** Move TBDs to a "known gaps" section so they're explicit, not hidden.
 
-## Where a loop runs it
-
-- Stage `document` of the [`operate` loop](../../../packs/sre-oncall/loops/operate/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/sre-oncall/skills/runbook-generator/SKILL.md), the instructions the agent reads

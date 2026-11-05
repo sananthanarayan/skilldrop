@@ -6,22 +6,20 @@ kind: reference
 
 # The loops, stage by stage
 
-Why loops exist and why there are five lifecycle loops is in [Why loops](../explanation/loops.md). This page is the reference: what each one takes and produces, and its stages.
+Why loops exist is in [Why loops](../explanation/loops.md). This page is the reference: what each one takes and produces, and its stages.
 
 
 skilldrop ships **loops**, not just parts. A loop is a named sequence of stages over existing skills with a gate between them: [`packs/<pack>/loops/<name>/LOOP.md`](../../packs) is what an agent reads, `loop.json` is the machine-readable contract ([RFC-0028](../../docs/rfcs/0028-loops-as-a-primitive.md)). **Nothing comes out of a loop until it passes that loop's gate.**
 
 A loop *sequences* skills — it never contains one. Every skill stays independently installable and runnable on its own, which is what keeps a single-folder copy working in Cursor, Kiro, or Aider.
 
-Five loops cover the lifecycle, and they are separated by **reversibility** — how expensive the mistake is to unwind — which is why each gets its own gate rather than folding into a neighbour:
+The lifecycle has five stages, separated by **reversibility**: how expensive the mistake is to unwind. Three of them have a loop. The loops for the first stage (find the problem) and the last (run it) were retired ([RFC-0074](../../docs/rfcs/0074-loops-measured-four-retired.md)), because on held-out evals their own skills, used without the loop, were preferred. Those stages use their skills in order: `feedback-synthesis`, `requirements-interview` or `user-journey-map`, then `prd-draft`; and `observability-plan`, `runbook-generator`, `incident-comms`, then `postmortem-generator`.
 
 | Loop | Takes | Gate | Produces | Mistake costs |
 |---|---|---|---|---|
-| [`discover`](../../packs/product-manager/loops/discover/LOOP.md) | interviews, journeys, a strategy question | **G0** human — a person ratifies the brief | a ratified requirement | a re-brief |
-| [`design`](../../packs/solution-architect/loops/design/LOOP.md) | a ratified requirement | **G1** review — `council-review`'s panel | a recorded decision (ADR) | months, unwound in code |
+| [`design`](../../packs/solution-architect/loops/design/LOOP.md) | an agreed requirement | **G1** review — `council-review`'s panel | a recorded decision (ADR) | months, unwound in code |
 | [`build`](../../packs/dev-team/loops/build/LOOP.md) | an agreed requirement or triaged defect | **G2** mechanical — `pre-merge-review`'s gate script decides | merged code | a revert |
 | [`release`](../../packs/dev-team/loops/release/LOOP.md) | merged code | **G3** review — `launch-readiness` on evidence; **G3.1** human go/no-go | a live, reversible rollout | users and data, often irreversible |
-| [`operate`](../../packs/sre-oncall/loops/operate/LOOP.md) | a shipped service | **G4** human — the incident is closed | a postmortem and runbook deltas | live users, irreversible |
 
 Plus one **wrapper**, which is not a lifecycle stage but the two passes either side of *any* generator:
 
@@ -29,16 +27,14 @@ Plus one **wrapper**, which is not a lifecycle stage but the two passes either s
 |---|---|---|---|
 | [`ship-a-draft`](../../packs/core/loops/ship-a-draft/LOOP.md) | raw notes, a transcript, a ticket | **G5** review — `doc-critique`'s verdict | a stakeholder-ready artifact |
 
-And nine loops outside the delivery lifecycle, each for one job that runs alongside it:
+And seven loops outside the delivery lifecycle, each for one job that runs alongside it:
 
 | Loop | Takes | Gate | Produces | Mistake costs |
 |---|---|---|---|---|
-| [`apply`](../../packs/career/loops/apply/LOOP.md) | a job posting and a resume | **G6** human — the candidate decides to apply; **G6.1** human — the candidate confirms every line is true | a tailored resume and cover letter, ready to send | a claim the candidate cannot back at interview |
 | [`research`](../../packs/research/loops/research/LOOP.md) | a question that turns on why something happened, and the sources | **G7** review — does diagnostic evidence separate the leading explanation? | an answer with its confidence, tied to the decision it serves | a decision made on a favourite theory |
 | [`comply`](../../packs/grc/loops/comply/LOOP.md) | a change that carries risk: a launch, a vendor, new personal data | **G8** mechanical — the register's own script; **G8.1** human — the risk owner signs | a register, a DPIA and an evidence map that agree, signed by the owner | a risk accepted on a control that doesn't exist |
 | [`measure`](../../packs/data-analytics/loops/measure/LOOP.md) | a dashboard request and the SQL behind its numbers | **G9** review — every query reviewed; **G9.1** human — each metric's owner confirms its definition | a dashboard spec whose numbers are defined and reviewed | a wrong number made to look settled by a chart |
 | [`modernize`](../../packs/dev-team/loops/modernize/LOOP.md) | a legacy component to rewrite or move | **G10** mechanical — the new component matches recordings of the old; **G10.1** human — the cutover | a replacement that behaves the same, cut over by a person | a migration that changes behaviour nobody approved |
-| [`adopt`](../../packs/ai-engineering/loops/adopt/LOOP.md) | AI ideas, a team, and no rules or plan yet | **G11** review — does a blocking gap sit on what the first slice needs?; **G11.1** human — the sponsor approves the first wave | a ranked first slice, a policy for its data and a rollout whose pilot is its users | a policy and rollout written for a slice that can't start |
 | [`ship-agent`](../../packs/ai-engineering/loops/ship-agent/LOOP.md) | an agent's job, tools and data | **G12** review — does every lethal-trifecta path have an architectural fix?; **G12.1** human — the owner decides the launch | a design, budget, threat model and eval plan, then a launch review of the built configuration | an agent that can be talked into sending private data out |
 | [`provision`](../../packs/infra-as-code/loops/provision/LOOP.md) | an infrastructure need, then a saved plan | **G13** review — the real plan against the scope written with the module; **G13.1** human — the plan applied is the plan reviewed | a module and an apply a person approved | a destroyed database or an access rule nobody asked for |
 | [`clarify`](../../packs/experience-design/loops/clarify/LOOP.md) | a confusing page and form, and the complaints | **G14** review — do the new words reach the fail points behind the complaints? | a page, strings and a blueprint that says which complaints need the service to change | better words that leave the same calls coming |
@@ -46,38 +42,6 @@ And nine loops outside the delivery lifecycle, each for one job that runs alongs
 Every gate emits a verdict from one shared vocabulary ([`contracts/terminals.json`](../../contracts/terminals.json)) in five classes — pass, conditional, revise, redirect, blocked — so `READY`, `PROCEED` and `SHIP IT` are recognisably the same kind of answer. The diagrams below render on GitHub; their Mermaid sources live in [`docs/loops/`](../../docs/loops) for re-rendering.
 
 *Diagrams below are generated from each loop's `loop.json` by [`build_loops.py`](../../build_loops.py) — edit the contract, not the picture.*
-
-## `discover` — raw signal to a ratified requirement
-
-Interviews, journeys and strategy questions become one tagged brief, then numbered requirements a **human ratifies** before any design starts.
-
-<!-- loop:discover:start -->
-
-```mermaid
-%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
-flowchart LR
-    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
-    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
-    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
-    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
-
-    gather["gather<br/><small>requirements-interview +3</small>"]:::gen
-    structure["structure<br/><small>brief-intake</small>"]:::gen
-    specify["specify<br/><small>prd-draft</small>"]:::gen
-    ratify["ratify<br/><small>doc-critique</small>"]:::gate
-    G0{"G0 · human"}:::gate
-    DONE(["complete"]):::ship
-
-    gather --> structure
-    structure --> specify
-    specify --> ratify
-    ratify --> G0
-    G0 == "PROCEED" ==> DONE
-
-    G0 -- "REVISE (max 3)" --> structure
-```
-
-<!-- loop:discover:end -->
 
 ## `design` — a requirement to a recorded decision
 
@@ -183,38 +147,6 @@ flowchart LR
 
 <!-- loop:release:end -->
 
-## `operate` — a shipped service through detection and learning
-
-Instrument, write the runbook, communicate the incident, then feed the postmortem's runbook deltas straight back into the runbook. The one loop whose failures are live.
-
-<!-- loop:operate:start -->
-
-```mermaid
-%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
-flowchart LR
-    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
-    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
-    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
-    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
-
-    instrument["instrument<br/><small>observability-plan</small>"]:::gen
-    document["document<br/><small>runbook-generator</small>"]:::gen
-    respond["respond<br/><small>incident-comms</small>"]:::gen
-    learn["learn<br/><small>postmortem-generator</small>"]:::review
-    G4{"G4 · human"}:::gate
-    DONE(["complete"]):::ship
-
-    instrument --> document
-    document --> respond
-    respond --> learn
-    learn --> G4
-    G4 == "PROCEED" ==> DONE
-
-    G4 -- "REVISE (max 3)" --> document
-```
-
-<!-- loop:operate:end -->
-
 ## `ship-a-draft` — raw input to a stakeholder-ready artifact
 
 The wrapper: structured intake before any generator, critique and a machine-residue scrub after. Loops back through intake — not the draft — until it's approved.
@@ -246,42 +178,6 @@ flowchart LR
 ```
 
 <!-- loop:ship-a-draft:end -->
-
-## `apply` — one posting and one resume to an application ready to send
-
-An honest fit check first, and the candidate decides whether to apply before anything is written. Then a tailored resume and a cover letter that claim nothing the candidate didn't supply, which the **candidate confirms** line by line before sending.
-
-<!-- loop:apply:start -->
-
-```mermaid
-%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
-flowchart LR
-    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
-    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
-    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
-    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
-
-    fit["fit<br/><small>job-fit-analysis</small>"]:::gate
-    tailor["tailor<br/><small>resume-tailor</small>"]:::gen
-    letter["letter<br/><small>cover-letter</small>"]:::gen
-    form["form<br/><small>application-form-answers</small>"]:::gen
-    confirm["confirm<br/><small>output-hygiene</small>"]:::review
-    G6{"G6 · human"}:::gate
-    G6_1{"G6.1 · human"}:::gate
-    DONE(["complete"]):::ship
-
-    fit --> G6
-    G6 == "PROCEED" ==> tailor
-    tailor --> letter
-    letter --> form
-    form --> confirm
-    confirm --> G6_1
-    G6_1 == "READY" ==> DONE
-
-    G6_1 -- "NOT READY (max 3)" --> tailor
-```
-
-<!-- loop:apply:end -->
 
 ## `research` — a why question to an answer the evidence carries
 
@@ -421,43 +317,6 @@ flowchart LR
 ```
 
 <!-- loop:modernize:end -->
-
-## `adopt` — a pile of AI ideas to a first wave its sponsor approved
-
-Readiness is scored **against the first slice**, not the whole organisation, so a gap only stops the use cases that need what is missing. The pilot is the slice's own users, and the **sponsor** approves the first wave.
-
-<!-- loop:adopt:start -->
-
-```mermaid
-%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
-flowchart LR
-    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
-    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
-    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
-    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
-
-    triage["triage<br/><small>ai-use-case-triage</small>"]:::gen
-    readiness["readiness<br/><small>ai-readiness-assessment</small>"]:::review
-    policy["policy<br/><small>ai-usage-policy</small>"]:::gen
-    rollout["rollout<br/><small>ai-adoption-rollout</small>"]:::gen
-    sign-off["sign-off<br/><small>doc-critique</small>"]:::gate
-    G11{"G11 · review"}:::gate
-    G11_1{"G11.1 · human"}:::gate
-    DONE(["complete"]):::ship
-
-    triage --> readiness
-    readiness --> G11
-    G11 == "PROCEED" ==> policy
-    policy --> rollout
-    rollout --> sign-off
-    sign-off --> G11_1
-    G11_1 == "PROCEED" ==> DONE
-
-    G11 -- "REVISE (max 3)" --> triage
-    G11_1 -- "REVISE (max 3)" --> policy
-```
-
-<!-- loop:adopt:end -->
 
 ## `ship-agent` — an agent's job to a launch its owner signed
 

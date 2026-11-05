@@ -57,10 +57,6 @@ A good result:
 - Planning the human rollout of a chosen use case — that's [`ai-adoption-rollout`](../../../packs/ai-engineering/skills/ai-adoption-rollout/SKILL.md).
 - Writing requirements for the thing you picked — that's `prd-draft`.
 
-## Where a loop runs it
-
-- Stage `triage` of the [`adopt` loop](../../../packs/ai-engineering/loops/adopt/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/ai-engineering/skills/ai-use-case-triage/SKILL.md), the instructions the agent reads

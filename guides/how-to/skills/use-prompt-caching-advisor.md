@@ -47,6 +47,10 @@ A good result:
 - **One breakpoint per logical boundary.** A system prompt with three sections (instructions, reference docs, examples) can have up to three breakpoints. More than four breakpoints on a single request is a signal the structure needs rethinking.
 - **The last block caches everything before it.** This is the most common misunderstanding — the cache breakpoint is not a marker for just that block, it's a marker for the entire prefix up to that point.
 
+## See a worked example
+
+- [support bot block order](../../../packs/api-builder/skills/prompt-caching-advisor/examples/support-bot-block-order.md)
+
 ## Next
 
 - [SKILL.md](../../../packs/api-builder/skills/prompt-caching-advisor/SKILL.md), the instructions the agent reads

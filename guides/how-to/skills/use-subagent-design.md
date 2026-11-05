@@ -51,6 +51,10 @@ A good result:
 - **Verification is adversarial and separate** — never the generator, never "the orchestrator double-checks".
 - **The budget line exists** — per-agent tier + fleet cap, sourced or tagged.
 
+## See a worked example
+
+- [help center localization](../../../packs/ai-engineering/skills/subagent-design/examples/help-center-localization.md)
+
 ## Use something else when
 
 - Designing the loop that wraps the fan-out (caps, gates, exits) — `agent-loop-design`

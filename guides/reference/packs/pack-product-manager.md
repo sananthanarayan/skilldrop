@@ -2,7 +2,6 @@
 title: Product manager pack reference
 summary: Every skill in the Product manager pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 kind: reference
-stage: discover
 ---
 
 # Product manager pack reference
@@ -15,7 +14,7 @@ Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, i
 |---|---|
 | Install | `npx skilldrop-cli install --pack product-manager` |
 | Skills | 9 plus 5 from core |
-| Loops | discover |
+| Loops | none |
 | How-to | [Use the Product manager pack](../../how-to/packs/use-the-product-manager-pack.md) |
 
 ## Skills
@@ -106,7 +105,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/product-manager/skills/
 
 Draft a Product Requirements Document from a feature idea or brief — evidence-backed problem statement with zero solution language, testable MoSCoW-prioritized requirements, mandatory non-goals, and a success line per goal.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/product-manager/skills/prd-draft/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/prd-draft/)
+Tier **heavy** · v0.1.1 · [SKILL.md](../../../packs/product-manager/skills/prd-draft/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/prd-draft/)
 
 **Use it when** the user needs a PRD, wants to capture business requirements for a feature, or asks to turn an idea, pitch, or brief into a requirements doc.
 
@@ -255,21 +254,6 @@ Tier **heavy** · v0.1.3 · [SKILL.md](../../../packs/product-manager/skills/use
 - Internal/employee process mapping — this skill is outside-in; org-internal flows are a process diagram (`architecture-diagrams` sequence flows)
 - Backstage service wiring behind the touchpoints — `reverse-architecture` / `architecture-diagrams`
 - A committed feature needing requirements — `prd-draft`
-
-## Loops
-
-### `discover`
-
-Take raw signal — interviews, journeys, a strategy question — to a requirement a human has ratified, so design starts from an agreed problem rather than an assumed one.
-
-| Stage | Skills | Gate |
-|---|---|---|
-| gather | `requirements-interview`, `user-journey-map`, `strategy-analysis`, `feedback-synthesis` | — |
-| structure | `brief-intake` | — |
-| specify | `prd-draft` | — |
-| ratify | `doc-critique` | G0 human: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / BLOCKED |
-
-Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/product-manager/loops/discover/LOOP.md)
 
 ## Included from core
 

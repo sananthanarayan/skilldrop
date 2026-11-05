@@ -62,7 +62,6 @@ A good result:
 
 ## Where a loop runs it
 
-- Stage `confirm` of the [`apply` loop](../../../packs/career/loops/apply/LOOP.md), where gate G6.1 decides
 - Stage `polish` of the [`ship-a-draft` loop](../../../packs/core/loops/ship-a-draft/LOOP.md)
 
 ## Next

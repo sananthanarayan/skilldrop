@@ -57,10 +57,6 @@ A good result:
 - A planned-maintenance notice (no failure, no pressure) — a normal scheduled-comms template, not this
 - Pre-writing a generic incident-comms *policy* — this drafts live messages; the policy is a runbook section
 
-## Where a loop runs it
-
-- Stage `respond` of the [`operate` loop](../../../packs/sre-oncall/loops/operate/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/sre-oncall/skills/incident-comms/SKILL.md), the instructions the agent reads

@@ -39,6 +39,7 @@ Produces an **orchestration plan**: which subagents exist, what each one alone i
 ## Useful references in this skill
 
 - [`templates/orchestration-plan.md`](templates/orchestration-plan.md) — role cards, topology diagram, aggregation/verification, budget line
+- [`examples/help-center-localization.md`](examples/help-center-localization.md) — worked example: a translator grading its own work, a middle layer with no job and auto-publishing, cut to a pipeline with one justified check
 
 ## Quality bar
 
