@@ -65,7 +65,9 @@ A session takes about 1–3 hours for one product area.
 5. **`service-blueprint`**: Describe one customer scenario and what you know about the teams and systems behind it.
    You get: A blueprint table and Mermaid diagram with fail points, waits, pains traced to causes, and 2–3 ranked fixes.
    **You decide:** Which fix becomes committed work.
-6. **`doc-critique`**: Run it on any of the specs before you share them.
+6. **`locale-check`**: Hand over the source strings and the translated files before release.
+   You get: Whether the release is safe to ship, and each failure by locale with the corrected string or a note for the translator.
+7. **`doc-critique`**: Run it on any of the specs before you share them.
    You get: A verdict and severity-tagged findings with a fix for each.
 
 You end with: A tested-or-testable structure, the content and strings for a key page and flow, a buildable component spec, and a service blueprint with the fixes ranked.

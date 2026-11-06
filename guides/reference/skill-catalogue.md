@@ -186,6 +186,7 @@ Capture a brand once, and plan a deck for its audience. `brand-kit` writes the `
 | [`design-system-spec`](../../packs/experience-design/skills/design-system-spec/SKILL.md) | Component spec: purpose and boundary, numbered anatomy, variant axes, every state by token name, behaviour, content rules, keyboard/ARIA/contrast cited to checked WCAG 2.2 criteria, and engineering questions. |
 | [`information-architecture`](../../packs/experience-design/skills/information-architecture/SKILL.md) | Sitemap and navigation model from a content inventory: task-based groups, user-word labels with a rationale table, global/local/utility nav, Mermaid diagram, findability risks, and a tree-test or card-sort plan. |
 | [`service-blueprint`](../../packs/experience-design/skills/service-blueprint/SKILL.md) | Service blueprint for one scenario: evidence, customer, frontstage, backstage and support lanes with the three lines, owners, fail points and waits, pains traced to causes, Mermaid, ranked fixes. |
+| [`locale-check`](../../packs/experience-design/skills/locale-check/SKILL.md) | Pre-release translation QA. A stdlib script checks every target locale against the source across JSON, ARB, gettext, Android and iOS files: missing keys, dropped placeholders, ICU syntax and select keywords, the plural forms each language needs, markup balance and character budgets; reordered placeholders and named screens are read for meaning. The reply leads with ship or not, then the fixes by locale. |
 | [`ux-writing`](../../packs/experience-design/skills/ux-writing/SKILL.md) | Interface string table for a flow: every button, label, error, empty, loading and success string with context, character budget, a variant, and a terminology list. |
 
 ## Governance, risk & compliance
@@ -235,6 +236,13 @@ Capture a brand once, and plan a deck for its audience. `brand-kit` writes the `
 | Skill | What it does |
 |---|---|
 | [`floor-plan-layout`](../../packs/civil-architect/skills/floor-plan-layout/SKILL.md) | A schematic floor plan placed from the programme inside the footprint and drawn as a dimensioned SVG, shown only once a checker passes it: no overlaps, nothing outside the outline, every door on a shared wall, every room reachable from an entrance, every habitable room with a window. |
+
+## Events
+
+| Skill | What it does |
+|---|---|
+| [`seating-plan`](../../packs/event-planner/skills/seating-plan/SKILL.md) | Table plan for a seated event, checked by a stdlib script: every guest seated once, capacity, together groups, keep-apart pairs, step-free tables and fixed seats; drawn as a room plan with names at each table. |
+| [`run-of-show`](../../packs/event-planner/skills/run-of-show/SKILL.md) | Timed running order checked by a stdlib script for room overlaps, people in two places or without walking time, changeovers shorter than a room needs and items outside venue hours; drawn as a timeline per room. |
 
 ## What's in a skill
 

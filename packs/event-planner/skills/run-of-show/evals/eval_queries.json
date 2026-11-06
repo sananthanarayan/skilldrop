@@ -1,0 +1,30 @@
+[
+ {
+  "query": "put together a run of show for the conference, two rooms, here are the sessions",
+  "should_trigger": true
+ },
+ {
+  "query": "I need the minute-by-minute for the launch event",
+  "should_trigger": true
+ },
+ {
+  "query": "check this agenda for speaker clashes",
+  "should_trigger": true
+ },
+ {
+  "query": "make a running order for the festival main stage",
+  "should_trigger": true
+ },
+ {
+  "query": "seat the dinner guests, keep the two CEOs apart",
+  "should_trigger": false
+ },
+ {
+  "query": "plan the phases and rollback for our product launch",
+  "should_trigger": false
+ },
+ {
+  "query": "write the release notes for the launch",
+  "should_trigger": false
+ }
+]

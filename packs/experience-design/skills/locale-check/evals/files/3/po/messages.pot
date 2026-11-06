@@ -1,0 +1,23 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#: app/inbox.py:12
+msgid "Inbox"
+msgstr ""
+
+#: app/inbox.py:20
+#, python-format
+msgid "%(name)s sent you %(count)d messages"
+msgstr ""
+
+#: app/inbox.py:31
+msgid "%d unread message"
+msgid_plural "%d unread messages"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/settings.py:8
+msgctxt "verb"
+msgid "Archive"
+msgstr ""

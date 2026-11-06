@@ -1,0 +1,160 @@
+/* Tidewatch — Localizable.strings (ko) */
+
+/* Tab bar */
+"tab.forecast" = "예보";
+
+/* Tab bar */
+"tab.spots" = "스팟";
+
+/* Tab bar */
+"tab.surf" = "서핑";
+
+/* Tab bar */
+"tab.settings" = "설정";
+
+/* Tide panel */
+"tide.high" = "만조";
+
+/* Tide panel */
+"tide.low" = "간조";
+
+/* Tide panel */
+"tide.rising" = "밀물";
+
+/* Tide panel */
+"tide.falling" = "썰물";
+
+/* Tide panel */
+"tide.next_high" = "다음 만조: %@";
+
+/* Tide panel */
+"tide.summary" = "만조 %1$@, 간조 %2$@";
+
+/* Conditions card */
+"swell.height" = "너울: %.1f m";
+
+/* Conditions card */
+"swell.period" = "주기: %d초";
+
+/* Conditions card */
+"water.temp" = "수온: %.1f°";
+
+/* Conditions card */
+"wind.speed" = "바람: %2$@에서 %1$d km/h";
+
+/* Spots list */
+"spot.updated" = "%1$@ %2$@ 전 업데이트됨";
+
+/* Safety alert banner */
+"alert.rip.title" = "이안류 경보";
+
+/* Safety alert banner */
+"alert.rip.body" = "강한 이안류가 있습니다. 수영을 권장하지 않습니다.";
+
+/* Safety alert banner */
+"alert.lightning.title" = "근처 낙뢰";
+
+/* Safety alert banner */
+"alert.lightning.body" = "물 밖으로 나와 해변을 떠나세요.";
+
+/* Safety alert banner */
+"alert.uv.body" = "자외선 지수 %d. 자외선 차단제를 바르세요.";
+
+/* Spots list */
+"spot.add" = "스팟 추가";
+
+/* Spots list */
+"spot.remove" = "스팟 삭제";
+
+/* Spots list */
+"spot.remove.confirm" = "%@을(를) 내 스팟에서 삭제할까요?";
+
+/* Spots list */
+"spot.search.placeholder" = "해변 검색";
+
+/* Spots list */
+"spot.empty" = "저장된 스팟이 없습니다";
+
+/* Forecast screen */
+"forecast.updated" = "%@ 업데이트됨";
+
+/* Forecast screen */
+"forecast.offline" = "오프라인 상태입니다. 마지막 예보를 표시합니다.";
+
+/* Forecast screen */
+"forecast.refresh" = "새로고침";
+
+/* Forecast screen */
+"forecast.source" = "데이터 출처: %@";
+
+/* Settings */
+"settings.units" = "단위";
+
+/* Settings */
+"settings.units.metric" = "미터법";
+
+/* Settings */
+"settings.units.imperial" = "야드파운드법";
+
+/* Settings */
+"settings.notifications" = "알림";
+
+/* Settings */
+"settings.notifications.footer" = "저장한 스팟의 상황이 바뀌면 알려 드립니다.";
+
+/* Settings */
+"settings.dawn_patrol" = "새벽 서핑 알림";
+
+/* Settings */
+"settings.dawn_patrol.time" = "%@에 알림";
+
+/* Settings */
+"settings.privacy" = "개인정보 보호";
+
+/* Settings */
+"settings.about" = "Tidewatch 정보";
+
+/* Settings */
+"settings.version" = "버전 %@ (%d)";
+
+/* Onboarding */
+"onboarding.title" = "바다에 나가기 전에 확인하세요";
+
+/* Onboarding */
+"onboarding.location" = "주변 해변을 찾으려면 위치 접근을 허용하세요.";
+
+/* Onboarding */
+"onboarding.continue" = "계속";
+
+/* Onboarding */
+"onboarding.skip" = "나중에";
+
+/* Error banner */
+"error.network" = "예보를 불러오지 못했습니다. 연결을 확인하세요.";
+
+/* Error banner */
+"error.location_denied" = "위치 서비스가 꺼져 있습니다. 설정에서 켜세요.";
+
+/* Share sheet */
+"share.forecast" = "예보 공유";
+
+/* Share sheet */
+"share.message" = "%1$@ 서핑 상태: %2$@";
+
+/* Home-screen widget */
+"widget.title" = "오늘의 물때";
+
+/* Home-screen widget */
+"widget.placeholder" = "앱에서 스팟을 선택하세요";
+
+/* Surf rating */
+"rating.good" = "좋음";
+
+/* Surf rating */
+"rating.fair" = "보통";
+
+/* Surf rating */
+"rating.poor" = "나쁨";
+
+/* Surf rating */
+"rating.flat" = "파도 없음";

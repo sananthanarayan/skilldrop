@@ -1,0 +1,38 @@
+[
+  {
+    "query": "check these translation files before we release",
+    "should_trigger": true
+  },
+  {
+    "query": "QA the locale JSON the agency sent back for German and Polish",
+    "should_trigger": true
+  },
+  {
+    "query": "why does the French Android build crash on this strings.xml",
+    "should_trigger": true
+  },
+  {
+    "query": "will the German strings fit on the buttons? here are the files and the limits",
+    "should_trigger": true
+  },
+  {
+    "query": "are the plural forms right in our ru.po and ar.json?",
+    "should_trigger": true
+  },
+  {
+    "query": "translate these button labels into French",
+    "should_trigger": false
+  },
+  {
+    "query": "write the error messages for our checkout form",
+    "should_trigger": false
+  },
+  {
+    "query": "rewrite our help page in plain English",
+    "should_trigger": false
+  },
+  {
+    "query": "make the wording consistent across the settings screens",
+    "should_trigger": false
+  }
+]

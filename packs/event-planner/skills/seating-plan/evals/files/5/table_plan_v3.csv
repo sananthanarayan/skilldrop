@@ -1,0 +1,94 @@
+Table,Seat,Guest,Organisation
+Table 1,1,Signe Halvard,Halvard Freight
+Table 1,2,Yvonne Delacroix,Halvard Freight
+Table 1,3,Rosalind Sorensen,Halvard Freight
+Table 1,4,Ivo Delacroix,Halvard Freight
+Table 1,5,Petra Wakefield,Halvard Freight
+Table 1,6,Zoltan Gallacher,Halvard Freight
+Table 1,7,Petra Jedrzejczak,Halvard Freight
+Table 1,8,Pradeep Lindahl,Halvard Freight
+Table 1,9,Aaron Rasmussen,Halvard Freight
+Table 1,10,Elliot Wakefield,Halvard Freight
+Table 2,1,Lionel Fothergill,Marrow & Lyle LLP
+Table 2,2,Elliot Engstrom,Marrow & Lyle LLP
+Table 2,3,Ivo O'Hare,Marrow & Lyle LLP
+Table 2,4,Gideon Navarro,Marrow & Lyle LLP
+Table 2,5,Ursula Jedrzejczak,Marrow & Lyle LLP
+Table 2,6,Tilda Lanigan,Marrow & Lyle LLP
+Table 3,1,Conor Grieve,Corvane Haulage
+Table 3,2,Nils Navarro,Corvane Haulage
+Table 3,3,Ingrid Rasmussen,Corvane Haulage
+Table 3,4,Lionel Eckhart,Corvane Haulage
+Table 3,5,Tilda Hardcastle,Corvane Haulage
+Table 3,6,Conor Castell,Corvane Haulage
+Table 3,7,Katya Kaplan,Corvane Haulage
+Table 3,8,Ottilie Pemberton,Corvane Haulage
+Table 4,1,Farah Iwasaki,Tessaly Ports
+Table 4,2,Ingrid Jedrzejczak,Tessaly Ports
+Table 4,3,Katya Cuthbert,Tessaly Ports
+Table 4,4,Hassan Mbeki,Tessaly Ports
+Table 4,5,Hassan Lanigan,Tessaly Ports
+Table 4,6,Rosalind Vossberg,Tessaly Ports
+Table 4,7,Lionel Abbott,Tessaly Ports
+Table 4,8,Joaquin Cuthbert,Tessaly Ports
+Table 5,1,Professor Anjali Rao,Judging panel
+Table 5,2,Rosalind Yorath,Judging panel
+Table 5,3,Farah Fothergill,Judging panel
+Table 5,4,Vikram Barlow,Judging panel
+Table 5,5,Dez Kavanagh,Host (comedian)
+Table 5,6,Kieran Gallacher,Host (comedian)
+Table 5,7,Xavier Wakefield,Self-employed
+Table 6,1,Lionel Hardcastle,Brindle Logistics
+Table 6,2,Ivo Lanigan,Brindle Logistics
+Table 6,3,Gemma Abbott,Brindle Logistics
+Table 6,4,Oren Jarrow,Brindle Logistics
+Table 6,5,Zoltan Hardcastle,Brindle Logistics
+Table 6,6,Stellan Grieve,Brindle Logistics
+Table 6,7,Kieran Hardcastle,Brindle Logistics
+Table 6,8,Vikram Brannigan,Brindle Logistics
+Table 7,1,Nils Vossberg,Quillon Cold Chain
+Table 7,2,Oren Zielinski,Quillon Cold Chain
+Table 7,3,Yvonne Jedrzejczak,Quillon Cold Chain
+Table 7,4,Vikram Delacroix,Quillon Cold Chain
+Table 7,5,Gemma Thackeray,Quillon Cold Chain
+Table 7,6,Jasmine Barlow,Quillon Cold Chain
+Table 7,7,Priyanka Desai,Desai Freight Forwarding
+Table 7,8,Leila Hollis,Larchmont Shipping
+Table 8,1,Graham Oduya,Orbis Parcel
+Table 8,2,Lionel Wakefield,Orbis Parcel
+Table 8,3,Bastian Lindahl,Orbis Parcel
+Table 8,4,Nadia Hollis,Orbis Parcel
+Table 8,5,Deepa Thackeray,Kestrel Fleet Leasing
+Table 8,6,Gideon Lindahl,Kestrel Fleet Leasing
+Table 8,7,Aaron Eckhart,Kestrel Fleet Leasing
+Table 8,8,Gemma Rasmussen,Kestrel Fleet Leasing
+Table 9,1,Ugo Wakefield,Fenmoor Rail Freight
+Table 9,2,Ivo Pemberton,Fenmoor Rail Freight
+Table 9,3,Katya Vossberg,Fenmoor Rail Freight
+Table 9,4,Aaron Yorath,Fenmoor Rail Freight
+Table 9,5,Lionel Pemberton,Fenmoor Rail Freight
+Table 9,6,Beatriz Grieve,Ostrander Customs Brokers
+Table 9,7,Rosalind Faulkner,Ostrander Customs Brokers
+Table 9,8,Hassan Delacroix,Ostrander Customs Brokers
+Table 10,1,Leila O'Hare,Pallister Warehousing
+Table 10,2,Valentina Zielinski,Pallister Warehousing
+Table 10,3,Stellan Jarrow,Pallister Warehousing
+Table 10,4,Hassan Gallacher,Pallister Warehousing
+Table 10,5,Valentina Jedrzejczak,Trant Marine
+Table 10,6,Marisol Castell,Haddow Couriers
+Table 10,7,Ingrid Quayle,Haddow Couriers
+Table 10,8,Bastian Ainsworth,Self-employed
+Table 11,1,Moira Ashgrove,Northbridge Awards
+Table 11,2,Duncan Pell,Pell Advisory
+Table 11,3,Petra Hardcastle,Northbridge Awards
+Table 11,4,Hassan Navarro,Northbridge Awards
+Table 11,5,Oren Fothergill,Northbridge Awards
+Table 11,6,Ursula Barlow,Wexcombe Port Authority
+Table 11,7,Rafael Faulkner,Wexcombe Port Authority
+Table 11,8,Marcus Fothergill,Self-employed
+Table 12,1,Petra Navarro,Gorsedale Logistics
+Table 12,2,Ivo Brannigan,Gorsedale Logistics
+Table 12,3,Rachel Vint,Vint Consulting
+Table 12,4,Gemma Castell,Ruddock Express
+Table 12,5,Tilda Barlow,Ruddock Express
+Table 12,6,Priyanka Desai,Desai Freight Forwarding

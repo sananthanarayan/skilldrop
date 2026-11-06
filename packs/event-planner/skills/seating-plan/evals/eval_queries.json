@@ -1,0 +1,30 @@
+[
+ {
+  "query": "make the seating plan for our wedding, 120 guests, here's the list",
+  "should_trigger": true
+ },
+ {
+  "query": "who sits where at the gala? keep the board apart from the press",
+  "should_trigger": true
+ },
+ {
+  "query": "check my table plan before I print the place cards",
+  "should_trigger": true
+ },
+ {
+  "query": "seat these conference dinner guests by company, tables of 10",
+  "should_trigger": true
+ },
+ {
+  "query": "write the minute-by-minute for the wedding day",
+  "should_trigger": false
+ },
+ {
+  "query": "draw a floor plan for the venue's new function room, 12 x 18 m",
+  "should_trigger": false
+ },
+ {
+  "query": "map the guest's journey from booking a ticket to arriving at the gala",
+  "should_trigger": false
+ }
+]

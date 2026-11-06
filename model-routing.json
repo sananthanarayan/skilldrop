@@ -287,6 +287,18 @@
       "tier": "light",
       "rationale": "A deterministic stdlib script does the extraction; the model runs it, relays the dropped-content report and hands off. No generation beyond a short summary of losses."
     },
+    "seating-plan": {
+      "tier": "standard",
+      "rationale": "Assigning guests against overlapping rules is bounded judgment; the script decides whether every rule holds."
+    },
+    "run-of-show": {
+      "tier": "standard",
+      "rationale": "Ordering a day around rooms and people is bounded judgment; the script decides whether anything clashes."
+    },
+    "locale-check": {
+      "tier": "standard",
+      "rationale": "The script finds every mechanical defect; the model ranks them by what breaks first, writes the mechanical fixes and reads reordered and named-screen strings for meaning."
+    },
     "floor-plan-layout": {
       "tier": "heavy",
       "rationale": "Spatial layout is design judgment: zoning, adjacencies, daylight and circulation traded against areas, with a checker to iterate against."

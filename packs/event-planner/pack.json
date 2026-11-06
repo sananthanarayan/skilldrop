@@ -1,0 +1,61 @@
+{
+  "description": "Seated dinners and event days that hold together: a table plan where every guest has one seat and every together, keep-apart and access request holds, and a run of show where no room or person is booked twice and every changeover has the time it needs, each checked by a script and drawn before anyone prints it.",
+  "display_name": "Event planner",
+  "keywords": [
+    "events",
+    "event planning",
+    "seating plan",
+    "table plan",
+    "wedding",
+    "run of show",
+    "running order",
+    "agenda",
+    "conference"
+  ],
+  "links": {
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/event-planner/"
+  },
+  "maintainers": [
+    {
+      "name": "sananthanarayan"
+    }
+  ],
+  "first-value": {
+    "audience-posture": "non-technical",
+    "prerequisites": [
+      "The guest list with households and requests, or the day's sessions with rooms and times",
+      "Python 3 on the machine, which the checking and drawing scripts run on"
+    ],
+    "starter-task": "Get a checked seating plan from a guest list and a few requests",
+    "starter-prompt": "Seat these 36 wedding guests at four tables of 10 (the head table seats 6). Keep each household together, keep Dan and Priya apart, and Grandma Rose uses a wheelchair, so she needs table 1, which is step-free. Here's the list: <paste it>.",
+    "verification": "seating-plan replies with a table of who sits where, names any request it couldn't meet and why, lists dietary needs per table, and saves a drawing of the room with names at each table, after a check that every guest has one seat and every request holds.",
+    "recovery": "If seating-plan does not activate, ask for it by name (\"use seating-plan\"). If a request can't be met, say which one may give, and ask again."
+  },
+  "requires": [
+    "core"
+  ],
+  "journey": {
+    "when": "You're running a seated dinner or a day of sessions, and want a plan that won't fall apart on the day.",
+    "you_bring": [
+      "the guest list, with households, access needs and dietary needs",
+      "the tables: how many, seats each, which are step-free",
+      "who must sit together and who must be kept apart",
+      "the day's sessions, rooms, speakers and venue hours"
+    ],
+    "steps": [
+      {
+        "skill": "run-of-show",
+        "you_do": "Give it the sessions, rooms, speakers and the venue's hours.",
+        "you_get": "A running order with every changeover and break, checked so no room or person is booked twice, and a timeline per room.",
+        "decide": "Accept the moves it proposes for any clash, or name what may give."
+      },
+      {
+        "skill": "seating-plan",
+        "you_do": "Give it the guest list, the tables and the requests.",
+        "you_get": "A table-by-table plan with every request held or named, the caterer's list per table, and a drawing of the room.",
+        "decide": "Print the place cards, or ask for another arrangement."
+      }
+    ],
+    "you_end_with": "A running order the crew can work from and a seating plan the venue can set, both checked."
+  }
+}

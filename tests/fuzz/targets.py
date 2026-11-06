@@ -103,6 +103,15 @@ TARGETS = [
     ("feedback-themes", "feedback-synthesis", "theme_counts.py", ["{in}", "-o", "{out}"], ".csv", (0, 1, 2), [
         b"id,person,segment,theme,quote\n1,P1,SMB,pricing,Too dear for us\n2,P2,Enterprise,pricing,Fine\n3,P1,SMB,onboarding,Lost\n",
     ]),
+    ("seating", "seating-plan", "seating_check.py", ["{in}", "--svg", "{out}"], ".json", (0, 1, 2), [
+        b'{"tables":[{"id":"A","capacity":2}],"guests":[{"id":"g","name":"G"}],"assignments":{"A":["g"]}}',
+    ]),
+    ("show", "run-of-show", "show_check.py", ["{in}", "--svg", "{out}"], ".json", (0, 1, 2), [
+        b'{"items":[{"title":"X","room":"R","start":"09:00","end":"10:00"}]}',
+    ]),
+    ("locale-json", "locale-check", "locale_check.py", ["{in}", "{in}", "--json", "-o", "{out}"], ".json", (0, 1, 2), [
+        b'{"a":{"x_one":"{{count}} x","x_other":"{{count}} xs","g":"{n, plural, one {# a} other {# b}}","t":"<b>{v}</b> %1$s"}}',
+    ]),
     ("citations", "source-synthesis", "citations.py", ["{in}", "-o", "{out}"], ".md", (0, 1, 2), [
         b"# Findings\n\nRetention fell by a third [S1:p4]. Two teams disagree [S2:p7][S3].\n\n## Sources\n\n"
         b"- S1: Survey 2026\n- S2: Interviews\n- S3: Tickets\n",

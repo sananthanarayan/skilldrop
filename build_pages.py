@@ -348,6 +348,7 @@ ROLES = [
     ("Writing for leaders or customers", ["stakeholder-comms", "converters"]),
     ("Applying for a job", ["career"]),
     ("Building architect", ["civil-architect"]),
+    ("Event planner", ["event-planner"]),
 ]
 
 

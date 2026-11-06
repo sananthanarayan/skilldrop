@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 316" width="1280" height="316" font-family="Helvetica, Arial, sans-serif">
+<rect width="1280" height="316" fill="#ffffff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Run of show</text>
+<line x1="150.0" y1="60" x2="150.0" y2="252" stroke="#cfd8dc"/>
+<text x="150.0" y="57" font-size="10" text-anchor="middle" fill="#607d8b">08:00</text>
+<line x1="205.0" y1="60" x2="205.0" y2="252" stroke="#eceff1"/>
+<line x1="260.0" y1="60" x2="260.0" y2="252" stroke="#cfd8dc"/>
+<text x="260.0" y="57" font-size="10" text-anchor="middle" fill="#607d8b">09:00</text>
+<line x1="315.0" y1="60" x2="315.0" y2="252" stroke="#eceff1"/>
+<line x1="370.0" y1="60" x2="370.0" y2="252" stroke="#cfd8dc"/>
+<text x="370.0" y="57" font-size="10" text-anchor="middle" fill="#607d8b">10:00</text>
+<line x1="425.0" y1="60" x2="425.0" y2="252" stroke="#eceff1"/>
+<line x1="480.0" y1="60" x2="480.0" y2="252" stroke="#cfd8dc"/>
+<text x="480.0" y="57" font-size="10" text-anchor="middle" fill="#607d8b">11:00</text>
+<line x1="535.0" y1="60" x2="535.0" y2="252" stroke="#eceff1"/>
+<line x1="590.0" y1="60" x2="590.0" y2="252" stroke="#cfd8dc"/>
+<text x="590.0" y="57" font-size="10" text-anchor="middle" fill="#607d8b">12:00</text>
+<line x1="645.0" y1="60" x2="645.0" y2="252" stroke="#eceff1"/>
+<line x1="700.0" y1="60" x2="700.0" y2="252" stroke="#cfd8dc"/>
+<text x="700.0" y="57" font-size="10" text-anchor="middle" fill="#607d8b">13:00</text>
+<line x1="755.0" y1="60" x2="755.0" y2="252" stroke="#eceff1"/>
+<line x1="810.0" y1="60" x2="810.0" y2="252" stroke="#cfd8dc"/>
+<text x="810.0" y="57" font-size="10" text-anchor="middle" fill="#607d8b">14:00</text>
+<line x1="865.0" y1="60" x2="865.0" y2="252" stroke="#eceff1"/>
+<line x1="920.0" y1="60" x2="920.0" y2="252" stroke="#cfd8dc"/>
+<text x="920.0" y="57" font-size="10" text-anchor="middle" fill="#607d8b">15:00</text>
+<line x1="975.0" y1="60" x2="975.0" y2="252" stroke="#eceff1"/>
+<line x1="1030.0" y1="60" x2="1030.0" y2="252" stroke="#cfd8dc"/>
+<text x="1030.0" y="57" font-size="10" text-anchor="middle" fill="#607d8b">16:00</text>
+<line x1="1085.0" y1="60" x2="1085.0" y2="252" stroke="#eceff1"/>
+<line x1="1140.0" y1="60" x2="1140.0" y2="252" stroke="#cfd8dc"/>
+<text x="1140.0" y="57" font-size="10" text-anchor="middle" fill="#607d8b">17:00</text>
+<line x1="1195.0" y1="60" x2="1195.0" y2="252" stroke="#eceff1"/>
+<line x1="1250.0" y1="60" x2="1250.0" y2="252" stroke="#cfd8dc"/>
+<text x="1250.0" y="57" font-size="10" text-anchor="middle" fill="#607d8b">18:00</text>
+<text x="20" y="96" font-size="12" fill="#263238">Auditorium</text><line x1="150" y1="124" x2="1250.0" y2="124" stroke="#b0bec5"/>
+<rect x="150.0" y="62" width="1100.0" height="60" fill="#f1f8e9" opacity="0.6"/>
+<rect x="205.0" y="68" width="55.0" height="48" fill="#fff8e1" stroke="#ffb300" stroke-dasharray="3,2"/>
+<rect x="260.0" y="66" width="82.5" height="52" rx="4" fill="#e3f2fd" stroke="#1565c0" stroke-width="1"/>
+<text x="264.0" y="84" font-size="10" fill="#0d47a1">Launch keyno…</text><text x="264.0" y="98" font-size="9" fill="#546e7a">09:00–09:45</text>
+<rect x="379.2" y="66" width="110.0" height="52" rx="4" fill="#e3f2fd" stroke="#1565c0" stroke-width="1"/>
+<text x="383.2" y="84" font-size="10" fill="#0d47a1">Customer panel</text><text x="383.2" y="98" font-size="9" fill="#546e7a">10:05–11:05</text>
+<rect x="535.0" y="66" width="110.0" height="52" rx="4" fill="#e3f2fd" stroke="#1565c0" stroke-width="1"/>
+<text x="539.0" y="84" font-size="10" fill="#0d47a1">Lunch</text><text x="539.0" y="98" font-size="9" fill="#546e7a">11:30–12:30</text>
+<rect x="1085.0" y="66" width="55.0" height="52" rx="4" fill="#e3f2fd" stroke="#1565c0" stroke-width="1"/>
+<text x="1089.0" y="84" font-size="10" fill="#0d47a1">Closing…</text><text x="1089.0" y="98" font-size="9" fill="#546e7a">16:30–17:00</text>
+<text x="20" y="160" font-size="12" fill="#263238">Demo lab</text><line x1="150" y1="188" x2="1250.0" y2="188" stroke="#b0bec5"/>
+<rect x="260.0" y="126" width="880.0" height="60" fill="#f1f8e9" opacity="0.6"/>
+<rect x="351.7" y="130" width="82.5" height="52" rx="4" fill="#e3f2fd" stroke="#1565c0" stroke-width="1"/>
+<text x="355.7" y="148" font-size="10" fill="#0d47a1">Live demo: s…</text><text x="355.7" y="162" font-size="9" fill="#546e7a">09:50–10:35</text>
+<rect x="700.0" y="130" width="275.0" height="52" rx="4" fill="#e3f2fd" stroke="#1565c0" stroke-width="1"/>
+<text x="704.0" y="148" font-size="10" fill="#0d47a1">Hands-on lab</text><text x="704.0" y="162" font-size="9" fill="#546e7a">13:00–15:30</text>
+<text x="20" y="224" font-size="12" fill="#263238">Foyer</text><line x1="150" y1="252" x2="1250.0" y2="252" stroke="#b0bec5"/>
+<rect x="150.0" y="190" width="1100.0" height="60" fill="#f1f8e9" opacity="0.6"/>
+<rect x="205.0" y="194" width="55.0" height="52" rx="4" fill="#e3f2fd" stroke="#1565c0" stroke-width="1"/>
+<text x="209.0" y="212" font-size="10" fill="#0d47a1">Doors a…</text><text x="209.0" y="226" font-size="9" fill="#546e7a">08:30–09:00</text>
+<text x="20" y="282" font-size="12" fill="#2e7d32">PASS: no clashes</text><text x="20" y="298" font-size="10" fill="#666">Dashed amber: setup before an item · green band: room open</text>
+</svg>

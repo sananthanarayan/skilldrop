@@ -1,0 +1,160 @@
+/* Tidewatch — Localizable.strings (it) */
+
+/* Tab bar */
+"tab.forecast" = "Previsioni";
+
+/* Tab bar */
+"tab.spots" = "Spot";
+
+/* Tab bar */
+"tab.surf" = "Surf";
+
+/* Tab bar */
+"tab.settings" = "Impostazioni";
+
+/* Tide panel */
+"tide.high" = "Alta marea";
+
+/* Tide panel */
+"tide.low" = "Bassa marea";
+
+/* Tide panel */
+"tide.rising" = "In crescita";
+
+/* Tide panel */
+"tide.falling" = "In calo";
+
+/* Tide panel */
+"tide.next_high" = "Prossima alta marea alle %@";
+
+/* Tide panel */
+"tide.summary" = "Bassa marea alle %1$@, alta marea alle %2$@";
+
+/* Conditions card */
+"swell.height" = "Onda: %.1f m";
+
+/* Conditions card */
+"swell.period" = "Periodo: %d s";
+
+/* Conditions card */
+"water.temp" = "Temperatura dell'acqua: %.1f°";
+
+/* Conditions card */
+"wind.speed" = "Vento: %1$d km/h da %2$@";
+
+/* Spots list */
+"spot.updated" = "%1$@ aggiornato %2$@ fa";
+
+/* Safety alert banner */
+"alert.rip.title" = "Allerta correnti di risacca";
+
+/* Safety alert banner */
+"alert.rip.body" = "Forti correnti di risacca. Il nuoto è consigliato.";
+
+/* Safety alert banner */
+"alert.lightning.title" = "Fulmini nelle vicinanze";
+
+/* Safety alert banner */
+"alert.lightning.body" = "Esci dall'acqua e allontanati dalla spiaggia.";
+
+/* Safety alert banner */
+"alert.uv.body" = "L'indice UV è %d. Usa la crema solare.";
+
+/* Spots list */
+"spot.add" = "Aggiungi spot";
+
+/* Spots list */
+"spot.remove" = "Rimuovi spot";
+
+/* Spots list */
+"spot.remove.confirm" = "Rimuovere %@ dai tuoi spot?";
+
+/* Spots list */
+"spot.search.placeholder" = "Cerca spiagge";
+
+/* Spots list */
+"spot.empty" = "Nessuno spot salvato";
+
+/* Forecast screen */
+"forecast.updated" = "Aggiornato %@";
+
+/* Forecast screen */
+"forecast.offline" = "Sei offline. Mostriamo l'ultima previsione.";
+
+/* Forecast screen */
+"forecast.refresh" = "Aggiorna";
+
+/* Forecast screen */
+"forecast.source" = "Dati da %@";
+
+/* Settings */
+"settings.units" = "Unità";
+
+/* Settings */
+"settings.units.metric" = "Metrico";
+
+/* Settings */
+"settings.units.imperial" = "Imperiale";
+
+/* Settings */
+"settings.notifications" = "Notifiche";
+
+/* Settings */
+"settings.notifications.footer" = "Ti avviseremo quando cambiano le condizioni nei tuoi spot salvati.";
+
+/* Settings */
+"settings.dawn_patrol" = "Promemoria all'alba";
+
+/* Settings */
+"settings.dawn_patrol.time" = "Ricordamelo alle %@";
+
+/* Settings */
+"settings.privacy" = "Privacy";
+
+/* Settings */
+"settings.about" = "Informazioni su Tidewatch";
+
+/* Settings */
+"settings.version" = "Versione %@ (%d)";
+
+/* Onboarding */
+"onboarding.title" = "Informati prima di entrare in acqua";
+
+/* Onboarding */
+"onboarding.location" = "Consenti l'accesso alla posizione per trovare spiagge vicine.";
+
+/* Onboarding */
+"onboarding.continue" = "Continua";
+
+/* Onboarding */
+"onboarding.skip" = "Non ora";
+
+/* Error banner */
+"error.network" = "Impossibile caricare le previsioni. Controlla la connessione.";
+
+/* Error banner */
+"error.location_denied" = "La posizione è disattivata. Attivala in Impostazioni.";
+
+/* Share sheet */
+"share.forecast" = "Condividi previsioni";
+
+/* Share sheet */
+"share.message" = "Il surf a %1$@ è %2$@";
+
+/* Home-screen widget */
+"widget.title" = "Maree di oggi";
+
+/* Home-screen widget */
+"widget.placeholder" = "Scegli uno spot nell'app";
+
+/* Surf rating */
+"rating.good" = "Buono";
+
+/* Surf rating */
+"rating.fair" = "Discreto";
+
+/* Surf rating */
+"rating.poor" = "Scarso";
+
+/* Surf rating */
+"rating.flat" = "Piatto";

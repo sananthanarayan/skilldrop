@@ -1,0 +1,44 @@
+{
+  "name": "run-of-show",
+  "version": "0.1.1",
+  "description": "Turn an event's agenda into a timed run of show — every session, speaker, changeover and break with its start, end, room and who's needed — and check it with a script for two things in one room at once, a speaker booked in two places, changeovers shorter than the turnaround and anything outside venue hours, drawn as a timeline per room. Use when an organiser asks for \"a run of show\", \"a running order\", \"the minute-by-minute for the day\", \"check the agenda for clashes\", or has sessions, speakers and rooms for a conference, launch, festival or wedding day.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "seating-plan"
+  ],
+  "handoff": [
+    {
+      "to": "seating-plan",
+      "when": "the day includes a seated meal or dinner",
+      "purpose": "Seat the dinner guests so every together, apart and access request holds.",
+      "fallback": "If seating-plan is absent, list each table with its guests and check by hand that no table is over its count and every keep-apart pair is split."
+    }
+  ],
+  "tags": [
+    "events",
+    "run-of-show",
+    "agenda",
+    "schedule",
+    "conference",
+    "timeline",
+    "svg"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "Reads the show.json it is given and writes the SVG to the path passed with --svg."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "Ordering a day around rooms and people is bounded judgment; the script decides whether anything clashes."
+  }
+}
