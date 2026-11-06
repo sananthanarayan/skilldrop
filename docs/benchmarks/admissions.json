@@ -80,6 +80,22 @@
    ],
    "skill_met": 1.0,
    "baseline_met": 1.0
+  },
+  {
+   "skill": "furniture-layout",
+   "rfc": "0077",
+   "evals": "8–9",
+   "drafts": 3,
+   "judge1": [
+    2,
+    4
+   ],
+   "judge2": [
+    2,
+    4
+   ],
+   "skill_met": 0.91,
+   "baseline_met": 0.91
   }
  ]
 }

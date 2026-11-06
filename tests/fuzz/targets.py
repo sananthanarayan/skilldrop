@@ -112,6 +112,9 @@ TARGETS = [
     ("show", "run-of-show", "show_check.py", ["{in}", "--svg", "{out}"], ".json", (0, 1, 2), [
         b'{"items":[{"title":"X","room":"R","start":"09:00","end":"10:00"}]}',
     ]),
+    ("furniture-layout", "furniture-layout", "layout_check.py", ["{in}", "--svg", "{out}", "--max-seconds", "5"], ".json", (0, 1, 2), [
+        b'{"size":[4,3.5],"doors":[{"at":[3.4,0],"width":0.8,"hinge":"right"}],"furniture":[{"name":"Bed","type":"bed","width":1.6,"depth":2,"at":[1.2,1.5],"facing":"S"}]}',
+    ]),
     ("locale-json", "locale-check", "locale_check.py", ["{in}", "{in}", "--json", "-o", "{out}"], ".json", (0, 1, 2), [
         b'{"a":{"x_one":"{{count}} x","x_other":"{{count}} xs","g":"{n, plural, one {# a} other {# b}}","t":"<b>{v}</b> %1$s"}}',
     ]),

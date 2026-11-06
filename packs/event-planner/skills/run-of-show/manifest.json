@@ -1,6 +1,6 @@
 {
   "name": "run-of-show",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Turn an event's agenda into a timed run of show — every session, speaker, changeover and break with its start, end, room and who's needed — and check it with a script for two things in one room at once, a speaker booked in two places, changeovers shorter than the turnaround and anything outside venue hours, drawn as a timeline per room. Use when an organiser asks for \"a run of show\", \"a running order\", \"the minute-by-minute for the day\", \"check the agenda for clashes\", or has sessions, speakers and rooms for a conference, launch, festival or wedding day.",
   "entrypoint": "SKILL.md",
   "deps": {

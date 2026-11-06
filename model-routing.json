@@ -303,6 +303,10 @@
       "tier": "standard",
       "rationale": "The script finds every mechanical defect; the model ranks them by what breaks first, writes the mechanical fixes and reads reordered and named-screen strings for meaning."
     },
+    "furniture-layout": {
+      "tier": "heavy",
+      "rationale": "Furnishing a room is design judgment: zones, focal wall and circulation traded against clearances, with a checker that tests each requirement where it applies."
+    },
     "floor-plan-layout": {
       "tier": "heavy",
       "rationale": "Spatial layout is design judgment: zoning, adjacencies, daylight and circulation traded against areas, with a checker to iterate against."

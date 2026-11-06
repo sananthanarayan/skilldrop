@@ -24,7 +24,7 @@ room, so a broken request is found before the organiser prints place cards.
   column, only when they ask for one. Given a pasted list, reply with a table. Write every
   deliverable the request names, such as place-card order or the caterer's list.
 - **Working files stay out of sight.** The checker's input and any intermediate file go in a
-  temporary folder outside the working directory, or are deleted before you reply. Draw the
+  private temporary folder made for this run alone (`mktemp -d`, never a fixed path such as `/tmp/seating`, which another session can read or overwrite), and are deleted before you reply. Never overwrite a file the person gave you: write the corrected copy beside it under a plain name (`rota-fixed.csv`), and leave theirs as it was. Draw the
   room only when a drawing is asked for or the venue needs a floor plan, and then once. Never
   leave anything running in the background.
 - **Carry every field through, without reshaping their file.** Every detail the person gave
@@ -65,10 +65,11 @@ room, so a broken request is found before the organiser prints place cards.
    `seating-plan.svg`, never inside this folder.
 
    ```bash
+   work=$(mktemp -d 2>/dev/null || mktemp -d ./.work.XXXXXX)   # a private folder for this run only
    # Claude Code
-   python3 "${CLAUDE_SKILL_DIR}/scripts/seating_check.py" "$TMPDIR/seating.json"
+   python3 "${CLAUDE_SKILL_DIR}/scripts/seating_check.py" "$work/seating.json"
    # Other IDEs (from the skill folder); add --svg only when a drawing is wanted
-   python3 scripts/seating_check.py /tmp/seating/seating.json --svg seating-plan.svg
+   python3 scripts/seating_check.py "$work/seating.json" --svg seating-plan.svg
    ```
 
    Exit 0 means every rule holds; 1 means one is broken; 2 means the file is malformed. Move
@@ -148,5 +149,7 @@ The order-of-the-day timings, the speeches and the changeovers belong to `run-of
 - ❌ **An extra "change" or "dietary" column in the venue's file.** They print from its exact columns; the changes and the meals go in the reply or the caterer's list.
 - ❌ **Treating dietary needs as a seating rule.** They go to the caterer, per guest and table.
 - ❌ **Dropping a column the person gave.** The meal choices are what the venue needs next.
+- ❌ **A fixed temporary path.** Two sessions at once share it, and one plan leaks into the other.
+- ❌ **Overwriting the person's own file.** They lose the version they sent.
 - ❌ **A JSON file and a drawing nobody asked for** left beside their guest list.
 - ❌ **Telling them the fixes instead of making them.** Hand back the corrected file.

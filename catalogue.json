@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0034. The catalogue index: pack display order and the outcome browse axis (RFC-0026). Pack metadata lives in packs/<pack>/pack.json; membership is the folders — a skill is in a pack because it sits at packs/<pack>/skills/<name>/.",
   "version": "1.0.0",
-  "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "api-builder", "converters", "experience-design", "research", "trackers", "data-analytics", "grc", "infra-as-code", "frontend", "skill-engineering", "career", "civil-architect", "operations-manager", "event-planner"],
+  "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "api-builder", "converters", "experience-design", "research", "trackers", "data-analytics", "grc", "infra-as-code", "frontend", "skill-engineering", "career", "civil-architect", "operations-manager", "event-planner", "interior-designer"],
   "outcomes": {
     "decide-what-to-build": {
       "for": "Product managers · founders · strategists",
@@ -227,6 +227,13 @@
       "skills": [
         "seating-plan",
         "run-of-show"
+      ]
+    },
+    "furnish-a-room": {
+      "for": "Interior designers · homeowners · office managers",
+      "description": "Fit a room's furniture at real sizes with every door, bed side, chair and route clear, and each turning space where it's needed, drawn to scale and checked.",
+      "skills": [
+        "furniture-layout"
       ]
     }
   },

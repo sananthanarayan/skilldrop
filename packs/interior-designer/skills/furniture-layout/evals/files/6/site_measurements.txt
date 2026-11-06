@@ -1,0 +1,14 @@
+WRENFOLD CAFE - unit 3, Tannery Yard - measured survey (Dale, 28/10)
+All dims internal, finished wall to finished wall, mm. Origin = SW corner (inside corner by the entrance), x runs east, y runs north.
+
+Room: 10.2 m (E-W) x 6.8 m (N-S). Flat floor, no steps.
+
+South wall (shopfront, glazed): entrance door opening x=600 to x=1500 (900 leaf), hinged on the west jamb (x=600),
+  opens INWARDS into the cafe. Rest of the south wall is glazing from x=2000 to x=10000, sill at 450 - chairs can back onto it.
+West wall: accessible WC door, opening y=4800 to y=5650 (850 leaf), hinged at the north jamb (y=5650), opens OUT into the cafe
+  (it has to, it's the accessible WC).
+North wall: serving counter is staying where it is - 4.0 m long x 800 deep, from x=6200 to the east wall (x=10200), y=6000-6800.
+East wall: blank. Radiators are on the north wall behind the counter so no issue.
+Structural column (steel, boxed in): 400 x 400, x=2950-3350, y=5300-5700. Can't move it, obviously.
+
+Kitchen is through the back of the counter, not our problem.

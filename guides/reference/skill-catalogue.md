@@ -250,6 +250,12 @@ Capture a brand once, and plan a deck for its audience. `brand-kit` writes the `
 | [`seating-plan`](../../packs/event-planner/skills/seating-plan/SKILL.md) | Table plan for a seated event, checked by a stdlib script: every guest seated once, capacity, together groups, keep-apart pairs, step-free tables and fixed seats; drawn as a room plan with names at each table. |
 | [`run-of-show`](../../packs/event-planner/skills/run-of-show/SKILL.md) | Timed running order checked by a stdlib script for room overlaps, people in two places or without walking time, changeovers shorter than a room needs and items outside venue hours; drawn as a timeline per room. |
 
+## Interiors
+
+| Skill | What it does |
+|---|---|
+| [`furniture-layout`](../../packs/interior-designer/skills/furniture-layout/SKILL.md) | One room's furniture at real sizes, drawn as a dimensioned SVG only after a stdlib script passes it: no overlaps, nothing in a door's swing, bed sides, chair pull-backs and wardrobe doors clear, a walking route to every piece, and turning circles tested where each is required. |
+
 ## What's in a skill
 
 Every skill folder follows the same layout, so installation is the same anywhere. It lives in its pack, at `packs/<pack>/skills/<skill-name>/` ([RFC-0034](../../docs/rfcs/0034-physical-pack-layout.md)), and is self-contained: copy that one folder and it works.

@@ -1,0 +1,20 @@
+ROOM 214 - accessible king - Harbour Quay Hotel (refurb, furniture install w/c 16 Nov)
+
+Geometry (from the designer's CAD; origin = SW internal corner, x east, y north, mm):
+- Overall room 5000 (x) by 5600 (y).
+- Entrance lobby: between the built-in wardrobe (x 0-1500) and the bathroom pod (x 2850-5000), from y 0 to y 2400.
+  The bedroom is the full width above y 2400.
+- Entrance door: south wall, opening x 1600-2500, 900 leaf, hinged at x 2500, opens INTO the room.
+- Bathroom door: in the pod's west wall (x 2850), opening y 1200-2050, 850 leaf, hinged at y 2050, opens OUT into the lobby.
+- Window: east wall, y 3800-5200.
+- The wardrobe and the bathroom pod are built - they are not moving.
+
+BRAND STANDARD - ACCESSIBLE GUEST ROOM (extract, section 4.3)
+a) No furniture may overlap other furniture or the fixed joinery, or sit outside the room.
+b) Nothing within the swing of any door.
+c) Bed: a clear strip at least 1500 wide along one long side of the bed (wheelchair transfer + turning) and at least 800
+   along the other long side, measured from the bed edge to the nearest furniture or wall, over the length of the bed
+   below the bedside tables. 900 clear at the foot of the bed.
+d) 1500 diameter turning circle clear of furniture and walls in front of the bathroom door (the door swing may overlap it).
+e) Desk: 750 clear in front of the desk for the chair to pull out.
+f) 900 clear route from the entrance door to the bed's 1500 side, to the desk and to the bathroom door.

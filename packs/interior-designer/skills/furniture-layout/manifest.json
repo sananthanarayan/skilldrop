@@ -1,0 +1,44 @@
+{
+  "name": "furniture-layout",
+  "version": "0.2.1",
+  "description": "Lay out the furniture in a room at real sizes and draw it as a dimensioned SVG, with a script that fails the layout when pieces overlap or leave the room, block a door's swing, or leave a walkway, bed side, chair pull-back or wheelchair turning space narrower than it needs. Use when a designer or homeowner asks to \"lay out this living room\", \"will a king bed fit\", \"arrange the furniture\", \"plan this office for 8 desks\", \"check the clearances\", or has a room's size, its doors and windows and a list of furniture.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "floor-plan-layout"
+  ],
+  "handoff": [
+    {
+      "to": "floor-plan-layout",
+      "when": "the room's size or its walls aren't settled yet, or the person wants the whole floor planned",
+      "purpose": "Plan the rooms and their doors first, so each room has a size to furnish.",
+      "fallback": "If floor-plan-layout is absent, ask for the room's width, depth and door positions, or take them from a drawing the person has, before placing any furniture."
+    }
+  ],
+  "tags": [
+    "interior-design",
+    "furniture",
+    "layout",
+    "clearances",
+    "space-planning",
+    "svg",
+    "dimensions"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "Reads the layout.json it is given and writes the SVG to the path passed with --svg."
+  },
+  "model": {
+    "tier": "heavy",
+    "rationale": "Furnishing a room is design judgment: zones, focal wall and circulation traded against clearances, with a checker to iterate against."
+  }
+}

@@ -1,12 +1,12 @@
 # skilldrop
 
-> 116 portable skills for the artifacts knowledge work ships (ADRs, design docs,
+> 117 portable skills for the artifacts knowledge work ships (ADRs, design docs,
 > PRDs, runbooks, threat models, decks, postmortems), plus 11 loops that sequence them
 > behind gates. A loop orders skills; a skill never calls a skill, so every one of the
-> 116 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
+> 117 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 1.7.0.
+> Version 1.8.0.
 
 ## Start here
 
@@ -84,6 +84,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use the Frontend pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-frontend-pack.md) *(how-to)*: Install the Frontend pack, run its first task, and follow a typical session step by step.
 - [Use the Governance, risk and compliance pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-grc-pack.md) *(how-to)*: Install the Governance, risk and compliance pack, run its first task, and follow a typical session step by step.
 - [Use the Infrastructure as code pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-infra-as-code-pack.md) *(how-to)*: Install the Infrastructure as code pack, run its first task, and follow a typical session step by step.
+- [Use the Interior designer pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-interior-designer-pack.md) *(how-to)*: Install the Interior designer pack, run its first task, and follow a typical session step by step.
 - [Use the Operations manager pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-operations-manager-pack.md) *(how-to)*: Install the Operations manager pack, run its first task, and follow a typical session step by step.
 - [Use the Product manager pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-product-manager-pack.md) *(how-to)*: Install the Product manager pack, run its first task, and follow a typical session step by step.
 - [Use the Research pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-research-pack.md) *(how-to)*: Install the Research pack, run its first task, and follow a typical session step by step.
@@ -145,6 +146,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use figma-diagrams](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-figma-diagrams.md) *(how-to)*: Work with Figma and FigJam files via the Figma REST API
 - [Use file-to-markdown](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-file-to-markdown.md) *(how-to)*: Convert a Word document, PowerPoint deck, Excel workbook, web page, CSV, JSON, text file, email (.eml or Outlook .msg) or PDF into clean Markdown
 - [Use floor-plan-layout](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-floor-plan-layout.md) *(how-to)*: Lay out a schematic floor plan from a space programme and a footprint, and draw it as a dimensioned SVG
+- [Use furniture-layout](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-furniture-layout.md) *(how-to)*: Lay out the furniture in a room at real sizes and draw it as a dimensioned SVG, with a script that fails the layout when pieces overlap or leave the room, block a door's…
 - [Use guide-builder](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-guide-builder.md) *(how-to)*: Turn raw notes, a spec, a thread or a messy procedure into a guide someone else can follow
 - [Use hypothesis-comparison](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-hypothesis-comparison.md) *(how-to)*: Compare rival explanations for an observation with analysis of competing hypotheses (ACH)
 - [Use incident-comms](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-incident-comms.md) *(how-to)*: Draft audience-segmented updates during a live incident
@@ -239,6 +241,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Frontend pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-frontend.md) *(reference)*: Every skill in the Frontend pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Governance, risk and compliance pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-grc.md) *(reference)*: Every skill in the Governance, risk and compliance pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Infrastructure as code pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-infra-as-code.md) *(reference)*: Every skill in the Infrastructure as code pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
+- [Interior designer pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-interior-designer.md) *(reference)*: Every skill in the Interior designer pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Operations manager pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-operations-manager.md) *(reference)*: Every skill in the Operations manager pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Product manager pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-product-manager.md) *(reference)*: Every skill in the Product manager pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Research pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-research.md) *(reference)*: Every skill in the Research pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
@@ -296,6 +299,7 @@ except `api-builder` requires `core`, which installs with it.
 - **civil-architect** (1 skills, requires core): Building design from a client's room list and a footprint: a schematic floor plan placed at real sizes and drawn as a dimensioned SVG, shown only once a script has checked it for overlapping rooms, rooms outside the footprint, doors on no shared wall, rooms no one can reach and habitable rooms with no window.
 - **operations-manager** (1 skills, requires core): Staff rotas from who is available, what each shift needs and the working-time rules: a week or fortnight built and drawn as a grid, shown only once a script has checked every shift's cover and skills, and every person's hours, rest between shifts and days in a row.
 - **event-planner** (2 skills, requires core): Seated dinners and event days that hold together: a table plan where every guest has one seat and every together, keep-apart and access request holds, and a run of show where no room or person is booked twice and every changeover has the time it needs, each checked by a script and drawn before anyone prints it.
+- **interior-designer** (1 skills, requires core): Furniture plans for one room: every piece at its real size and facing the way it's used, drawn as a dimensioned SVG, and shown only once a script has checked it for overlaps, pieces in a door's swing, blocked bed sides, chair pull-backs and wardrobe doors, and a clear walking route to everything.
 
 ## Outcomes — browse by why you are here
 
@@ -317,6 +321,7 @@ except `api-builder` requires `core`, which installs with it.
 - **design-a-building** (1 skills): Go from a room list and a footprint to a first floor plan: every room at its size, doors on real walls, every room reachable, drawn to scale and checked before anyone sees it.
 - **staff-the-shifts** (1 skills): Turn who is available and what each shift needs into a rota with every shift covered by the right people, and nobody double-booked, over their hours or short of rest.
 - **plan-an-event** (2 skills): Seat every guest with the people they should and shouldn't be near, and run the day with no room or person booked twice.
+- **furnish-a-room** (1 skills): Fit a room's furniture at real sizes with every door, bed side, chair and route clear, and each turning space where it's needed, drawn to scale and checked.
 
 ## Reviewer subagents
 
@@ -332,10 +337,10 @@ except `api-builder` requires `core`, which installs with it.
 - [catalogue.json](https://sananthanarayan.github.io/skilldrop/catalogue.json): every skill, loop, pack and outcome as machine-readable JSON — name, description, tier, tags, related. Prefer this over scraping the site.
 - [model-routing.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/model-routing.json): the abstract tier per skill (light/standard/heavy) and the provider map that resolves a tier to a concrete model.
 - [catalogue.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/catalogue.json): pack display order and outcome membership; each pack's metadata is in `packs/<pack>/pack.json`.
-- All 116 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
+- All 117 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
 
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 76 RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 77 RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.

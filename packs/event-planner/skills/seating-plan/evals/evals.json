@@ -129,6 +129,36 @@
         "Returns a printable table plan (each table with its guests' names) and lists the changes it made, leaving guests who were already correctly seated where they were",
         "Does not invent guests, seats or tables not in the files (no Table 10, no extra chair at the top table)"
       ]
+    },
+    {
+      "id": 10,
+      "held_out": "2026-11-08",
+      "prompt": "We're running the Bramblecote Hospice quiz night on Saturday. Attached is the export from our ticketing site (quiz_night_registrations.csv) and the hall's notes (hall_notes.txt). Teams sit together, one team per table, and solo players go into teams that have space - no team over 8. Can you do the seating plan? I need something to hand the hall team for setting up and something for the chip shop, who deliver the suppers to the tables.",
+      "assertions": [
+        "Seats exactly the 65 guests with completed tickets, each once - Mungo Wadebridge's refunded solo ticket (order QN-2099) is not seated as a second person",
+        "Puts each team at its own table with no table over capacity, including table 10 which seats only 6, and no team over 8 after solo players are added",
+        "Puts solo player Gideon Youlden on The Know-It-Owls with their partner Hamish Youlden, and keeps Lorna Nethercott off the table of Selwyn Cundall (Quizzy Rascals)",
+        "Seats both wheelchair users - Wilf Rudge (Les Quizerables) and solo player Lorna Brockhurst - at step-free tables 1-6, not on the raised area",
+        "Gives the hall team a room plan or list by table number with the number of chairs at each table and the names at each table",
+        "Gives the chip shop per-table supper counts that add up to 45 fish, 12 halloumi and 8 tofu, and flags by table the coeliac (gluten-free batter), the severe nut allergy and the no-dairy guest",
+        "Leaves attendee emails and phone numbers out of both the hall and the chip-shop handouts",
+        "Does not invent guests, supper choices, dietary needs or tables not in the export or hall notes"
+      ]
+    },
+    {
+      "id": 11,
+      "held_out": "2026-11-08",
+      "prompt": "I'm social secretary at our rowing club and I've had a go at the table plan for our 50th anniversary dinner. Can you check table_plan_draft.csv against rsvp_list.csv and notes_for_the_plan.txt, fix what's wrong and send it back in the same format so I can forward it to the venue?",
+      "assertions": [
+        "Finds that Xander Vosper is seated twice (on Table 7 and on Table 3) and seats them once in the fix",
+        "Finds that Table 5 has 11 people against 10 seats and brings it to 10 or fewer by moving a whole booking",
+        "Finds that wheelchair user Callum Stallard and companion Mungo Stallard are on Table 8 on the balcony (stairs only) and moves them together to a ground-floor table 1-6",
+        "Finds that Greer Gascoigne and Ulrika Gascoigne (booking KR316) are split between Table 2 and Table 6, and reunites them",
+        "Names the clash between the President's wish for all five founders on the top table and the Welfare Officer's request to keep Piers Abernethy and Jolene Ivesley apart - both are on Table 1 in the draft - and does not quietly drop either one; it either leaves the choice to the secretary or says which it put first and why",
+        "The corrected plan seats all 76 people on the RSVP list exactly once, no table over 10, every booking together, and keeps Mungo Nancarrow and Gwenllian Oldroyd at different tables",
+        "Returns the plan in the same three-column format (Table, Name, Booking ref) as the draft",
+        "Does not invent guests, tables, seats or requests not in the input, such as a tenth table or an extra seat squeezed onto Table 1"
+      ]
     }
   ]
 }

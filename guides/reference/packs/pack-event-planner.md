@@ -23,7 +23,7 @@ Seated dinners and event days that hold together: a table plan where every guest
 
 Turn an event's agenda into a timed run of show — every session, speaker, changeover and break with its start, end, room and who's needed — and check it with a script for two things in one room at once, a speaker booked in two places, changeovers shorter than the turnaround and anything outside venue hours, drawn as a timeline per room.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/event-planner/skills/run-of-show/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/run-of-show/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/event-planner/skills/run-of-show/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/run-of-show/)
 
 **Use it when** an organiser asks for "a run of show", "a running order", "the minute-by-minute for the day", "check the agenda for clashes", or has sessions, speakers and rooms for a conference, launch, festival or wedding day.
 
@@ -54,7 +54,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/event-planner/skills/ru
 
 Seat guests at tables for a wedding, gala, conference dinner or awards night, and check the chart with a script — every guest seated once, no table over capacity, people who must sit together together, people who must be kept apart apart, wheelchair users at accessible places — drawn as a room plan with names at each table.
 
-Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/event-planner/skills/seating-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/seating-plan/)
+Tier **standard** · v0.1.3 · [SKILL.md](../../../packs/event-planner/skills/seating-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/seating-plan/)
 
 **Use it when** an organiser asks to "make the seating plan", "who sits where", "seat these 120 guests", "check my table plan", or has a guest list with groups and keep-apart requests.
 
