@@ -84,4 +84,4 @@ judge. Loop sessions run longer than skill sessions, because each one reads seve
 
 ## Decision
 
-Accepted.
+Implemented in 1.3.0: `run_bench.py --loops`. The first loop measurements are in RFC-0074.

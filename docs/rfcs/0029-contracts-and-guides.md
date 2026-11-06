@@ -1,7 +1,7 @@
 ---
 rfc: 0029
 title: Machine-readable contracts, guides, and an architecture doc
-status: accepted
+status: implemented
 date: 2026-09-25
 author: sanjay-ananth
 ---
@@ -80,5 +80,5 @@ protecting.
 
 ## Decision
 
-Accepted 2026-09-25. Implemented by the PR adding `contracts/{skill,pack,agent,guide}.schema.json`,
+Accepted 2026-09-25 and implemented by the PR adding `contracts/{skill,pack,agent,guide}.schema.json`,
 `check_schema()` in `validate.py`, `guides/`, and `ARCHITECTURE.md`.

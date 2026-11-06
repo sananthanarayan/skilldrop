@@ -55,7 +55,7 @@ or advice the model already gets right is not that.
 | `interior-designer` | `furniture-layout` | heavy | `layout_check.py`: overlap, containment, door swing, use clearances, a walkway route on a grid, turning space; a dimensioned plan |
 | `experience-design` | `locale-check` | standard | `locale_check.py`: keys, placeholders, ICU, CLDR plural categories, tags, budgets across JSON, ARB, .po, Android and iOS files |
 
-The rules every one of them carries, from what lost before (RFC-0071, RFC-0075):
+The rules every one of them carries, from what lost before (RFC-0075):
 - the reply leads with the plan or the answer, for the person who asked;
 - no script, file format, skill name or skill-folder path in the reply;
 - drawings are saved in the working directory;
@@ -137,6 +137,6 @@ rests on draft 2.
 
 `event-planner` ships with `seating-plan` and `run-of-show`, `operations-manager` ships with
 `shift-roster` (draft 3), and `locale-check` joins `experience-design`. `interior-designer`
-doesn't ship: `furniture-layout` lost on both drafts. It is kept on the local branch
-`sanjay-ananth/ops-interior-wip`, for a draft that returns files in their exact columns and
-gives the checker a time bound, to be measured on fresh evals.
+didn't ship with them: `furniture-layout` lost on both drafts. Its third draft was admitted in
+[RFC-0077](0077-furniture-layout-third-draft-and-private-work-folders.md), and the pack shipped
+in 1.8.0.
