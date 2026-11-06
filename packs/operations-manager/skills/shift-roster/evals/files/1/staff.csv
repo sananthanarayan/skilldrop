@@ -1,0 +1,8 @@
+name,role,max_hours,contracted_hours,cannot_work
+Rosa Diaz,nurse,37.5,37.5,
+Kwame Asante,nurse,37.5,30,Sat; Sun
+Lin Chen,nurse,30,22.5,Mon
+Marta Silva,healthcare assistant,37.5,37.5,
+Owen Price,healthcare assistant,24,22.5,Thu
+Priti Nair,nurse; healthcare assistant,37.5,30,Fri night
+Sofia Ruiz,healthcare assistant,30,24,Wed

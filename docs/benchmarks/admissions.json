@@ -16,6 +16,70 @@
    ],
    "skill_met": 0.58,
    "baseline_met": 0.51
+  },
+  {
+   "skill": "locale-check",
+   "rfc": "0076",
+   "evals": "6–7",
+   "drafts": 2,
+   "judge1": [
+    3,
+    4
+   ],
+   "judge2": [
+    2,
+    4
+   ],
+   "skill_met": 0.91,
+   "baseline_met": 0.78
+  },
+  {
+   "skill": "seating-plan",
+   "rfc": "0076",
+   "evals": "6–7",
+   "drafts": 2,
+   "judge1": [
+    2,
+    4
+   ],
+   "judge2": [
+    2,
+    4
+   ],
+   "skill_met": 1.0,
+   "baseline_met": 1.0
+  },
+  {
+   "skill": "run-of-show",
+   "rfc": "0076",
+   "evals": "6–7",
+   "drafts": 2,
+   "judge1": [
+    2,
+    4
+   ],
+   "judge2": [
+    3,
+    4
+   ],
+   "skill_met": 0.84,
+   "baseline_met": 0.81
+  },
+  {
+   "skill": "shift-roster",
+   "rfc": "0076",
+   "evals": "8–9",
+   "drafts": 3,
+   "judge1": [
+    2,
+    4
+   ],
+   "judge2": [
+    2,
+    4
+   ],
+   "skill_met": 1.0,
+   "baseline_met": 1.0
   }
  ]
 }

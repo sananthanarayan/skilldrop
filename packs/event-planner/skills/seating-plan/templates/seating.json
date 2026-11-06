@@ -1,0 +1,28 @@
+{
+  "room": {"width": 14, "depth": 10},
+  "exits": [[0, 5], [14, 9]],
+  "tables": [
+    {"id": "Head", "capacity": 8, "shape": "rect", "at": [7, 1.5], "accessible": true},
+    {"id": "T1", "capacity": 10, "shape": "round", "at": [3, 5], "accessible": true},
+    {"id": "T2", "capacity": 10, "shape": "round", "at": [7, 5.5]},
+    {"id": "T3", "capacity": 10, "shape": "round", "at": [11, 5]}
+  ],
+  "guests": [
+    {"id": "g1", "name": "Mira Osei", "party": "Couple"},
+    {"id": "g2", "name": "Tom Hale", "party": "Couple"},
+    {"id": "g3", "name": "Ruth Osei", "party": "Osei", "needs": ["wheelchair"], "dietary": "vegetarian"},
+    {"id": "g4", "name": "Kwame Osei", "party": "Osei"},
+    {"id": "g5", "name": "Dana Hale", "party": "Hale", "needs": ["near exit"]},
+    {"id": "g6", "name": "Pete Hale", "party": "Hale", "dietary": "gluten-free"},
+    {"id": "g7", "name": "Lena Brook", "party": ""}
+  ],
+  "together": [["g3", "g4"]],
+  "apart": [["g4", "g6"]],
+  "fixed": {"g1": "Head", "g2": "Head"},
+  "assignments": {
+    "Head": ["g1", "g2"],
+    "T1": ["g3", "g4", "g7"],
+    "T2": [],
+    "T3": ["g5", "g6"]
+  }
+}

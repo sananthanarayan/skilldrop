@@ -1,0 +1,20 @@
+msgid ""
+msgstr ""
+"Language: ja\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Inbox"
+msgstr "受信トレイ"
+
+#, python-format
+msgid "%(name)s sent you %(count)d messages"
+msgstr "%(name)sさんから%(count)d件のメッセージ"
+
+msgid "%d unread message"
+msgid_plural "%d unread messages"
+msgstr[0] "未読メッセージ%d件"
+
+msgctxt "verb"
+msgid "Archive"
+msgstr "アーカイブする"

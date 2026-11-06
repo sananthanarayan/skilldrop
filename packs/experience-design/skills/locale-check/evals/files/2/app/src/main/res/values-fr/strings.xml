@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome">Bon retour, %1$s !</string>
+    <string name="synced">%s : %d itinéraires synchronisés</string>
+    <string name="offline">Vous êtes hors ligne. Les itinéraires seront synchronisés à l'heure de la reconnexion.</string>
+    <plurals name="routes_saved">
+        <item quantity="one">%d itinéraire enregistré</item>
+        <item quantity="many">%d d\'itinéraires enregistrés</item>
+        <item quantity="other">%d itinéraires enregistrés</item>
+    </plurals>
+    <string name="delete_confirm">Supprimer <b>%1$s</b> ?</string>
+</resources>

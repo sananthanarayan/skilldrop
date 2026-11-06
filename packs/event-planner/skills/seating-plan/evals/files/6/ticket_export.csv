@@ -1,0 +1,117 @@
+Order #,Ticket #,Order date,Ticket type,Purchaser,Attendee first name,Attendee surname,Dietary requirements,Access requirements,Seating request,Purchaser email
+1058,50001,13/10/2026,Pair,Wendy Pickering,Wendy,Pickering,Vegan,,,wendy.pickering@mail.example
+1058,50002,13/10/2026,Pair,Wendy Pickering,Ursula,Uttley,Vegan,,,wendy.pickering@mail.example
+1053,50003,02/10/2026,Pair,Oscar Brearley,Oscar,Brearley,,,,oscar.brearley@post.example
+1053,50004,02/10/2026,Pair,Oscar Brearley,Daniel,Sowerby,Gluten free,,,oscar.brearley@post.example
+1016,50005,23/10/2026,Individual,Chidi Okonjo,Chidi,Okonjo,,,Please sit us with the Ferris party,chidi.okonjo@inbox.example
+1016,50006,23/10/2026,Individual,Chidi Okonjo,Adaeze,Okonjo,,,,chidi.okonjo@inbox.example
+1016,50007,23/10/2026,Individual,Chidi Okonjo,Sienna,Sugden,Vegetarian,,,chidi.okonjo@inbox.example
+1016,50008,23/10/2026,Individual,Chidi Okonjo,Ursula,Caldwell,,,,chidi.okonjo@inbox.example
+1094,50009,28/09/2026,Individual,Vernon Sowerby,Vernon,Sowerby,,,,vernon.sowerby@post.example
+1094,50010,28/09/2026,Individual,Vernon Sowerby,Callum,Varley,,,,vernon.sowerby@post.example
+1094,50011,28/09/2026,Individual,Vernon Sowerby,Malcolm,Booth,,,,vernon.sowerby@post.example
+1094,50012,28/09/2026,Individual,Vernon Sowerby,Bruno,Illingworth,Vegetarian,,,vernon.sowerby@post.example
+1033,50013,18/09/2026,Pair,Rafael Jagger,Rafael,Jagger,Vegetarian,,,rafael.jagger@post.example
+1033,50014,18/09/2026,Pair,Rafael Jagger,Thea,Jagger,,,,rafael.jagger@post.example
+1046,50015,13/08/2026,Pair,Elliot Oddie,Elliot,Oddie,,,,elliot.oddie@mail.example
+1046,50016,13/08/2026,Pair,Elliot Oddie,Kofi,Oddie,,,,elliot.oddie@mail.example
+1075,50017,05/08/2026,Pair,Esme Nuttall,Esme,Nuttall,,,,esme.nuttall@post.example
+1075,50018,05/08/2026,Pair,Esme Nuttall,Zachary,Bramley,Vegetarian,,,esme.nuttall@post.example
+1035,50019,01/09/2026,Pair,Rosa Hebblethwaite,Rosa,Hebblethwaite,,,,rosa.hebblethwaite@inbox.example
+1035,50020,01/09/2026,Pair,Rosa Hebblethwaite,Adele,Ackroyd,,,,rosa.hebblethwaite@inbox.example
+1063,50021,23/08/2026,Pair,Mark Varden,Mark,Varden,Gluten free,,,mark.varden@inbox.example
+1063,50022,23/08/2026,Pair,Mark Varden,Helen,Varden,Vegetarian,,,mark.varden@inbox.example
+1027,50023,05/10/2026,Individual,Pauline Delaney,Pauline,Delaney,Vegetarian,,With Sandra Marsh's lot please (her other order),pauline.delaney@mail.example
+1027,50024,05/10/2026,Individual,Pauline Delaney,Leah,Hebblethwaite,,,,pauline.delaney@mail.example
+1027,50025,05/10/2026,Individual,Pauline Delaney,Kofi,Stansfield,,,,pauline.delaney@mail.example
+1027,50026,05/10/2026,Individual,Pauline Delaney,Jonah,Yardley,Vegetarian,,,pauline.delaney@mail.example
+1101,50027,27/10/2026,Individual,Felix Dimmock,Felix,Dimmock,Vegetarian,,,felix.dimmock@mail.example
+1101,50028,27/10/2026,Individual,Felix Dimmock,Kerry,Jessop,,,,felix.dimmock@mail.example
+1101,50029,27/10/2026,Individual,Felix Dimmock,Horace,Stansfield,,,,felix.dimmock@mail.example
+1101,50030,27/10/2026,Individual,Felix Dimmock,Yasmin,Sugden,,,,felix.dimmock@mail.example
+1096,50031,24/10/2026,Individual,Clive Barraclough,Clive,Barraclough,,,,clive.barraclough@mail.example
+1096,50032,24/10/2026,Individual,Clive Barraclough,Marcus,Greatorex,,,,clive.barraclough@mail.example
+1096,50033,24/10/2026,Individual,Clive Barraclough,Gloria,Underhill,,,,clive.barraclough@mail.example
+1096,50034,24/10/2026,Individual,Clive Barraclough,Otto,Jagger,,,,clive.barraclough@mail.example
+1082,50035,27/09/2026,Pair,Xavier Thackray,Xavier,Thackray,,,,xavier.thackray@inbox.example
+1082,50036,27/09/2026,Pair,Xavier Thackray,Daisy,Thackray,,,,xavier.thackray@inbox.example
+1009,50037,08/10/2026,Corporate table of 10,Zara Ramsden,Zara,Ramsden,,,Sponsor table - Tindale Glassworks,zara.ramsden@tindale.example
+1009,50038,08/10/2026,Corporate table of 10,Zara Ramsden,Ruby,Jessop,Vegan,,,zara.ramsden@tindale.example
+1009,50039,08/10/2026,Corporate table of 10,Zara Ramsden,Imelda,Nuttall,Vegetarian,,,zara.ramsden@tindale.example
+1009,50040,08/10/2026,Corporate table of 10,Zara Ramsden,George,Abbott,,,,zara.ramsden@tindale.example
+1009,50041,08/10/2026,Corporate table of 10,Zara Ramsden,Noah,Abbott,,,,zara.ramsden@tindale.example
+1009,50042,08/10/2026,Corporate table of 10,Zara Ramsden,Noah,Quayle,,,,zara.ramsden@tindale.example
+1009,50043,08/10/2026,Corporate table of 10,Zara Ramsden,Olive,Kirkwood,,,,zara.ramsden@tindale.example
+1009,50044,08/10/2026,Corporate table of 10,Zara Ramsden,Dominic,Dimmock,,,,zara.ramsden@tindale.example
+1009,50045,08/10/2026,Corporate table of 10,Zara Ramsden,Horace,Hirst,,,,zara.ramsden@tindale.example
+1009,50046,08/10/2026,Corporate table of 10,Zara Ramsden,Jasmine,Varley,,,,zara.ramsden@tindale.example
+1108,50047,03/08/2026,Individual,Esme Wainwright,Esme,Wainwright,,,,esme.wainwright@mail.example
+1024,50048,28/10/2026,Individual,Sandra Marsh,Sandra,Marsh,,,,sandra.marsh@mail.example
+1024,50049,28/10/2026,Individual,Sandra Marsh,Celia,Eckersley,,,,sandra.marsh@mail.example
+1024,50050,28/10/2026,Individual,Sandra Marsh,Bella,Northcott,Vegetarian,,,sandra.marsh@mail.example
+1024,50051,28/10/2026,Individual,Sandra Marsh,Wendy,Tordoff,Vegetarian,,,sandra.marsh@mail.example
+1024,50052,28/10/2026,Individual,Sandra Marsh,Keira,Fairbairn,,,,sandra.marsh@mail.example
+1024,50053,28/10/2026,Individual,Sandra Marsh,Xavier,Quayle,,,,sandra.marsh@mail.example
+1103,50054,10/10/2026,Individual,Celia Pogson,Celia,Pogson,,,,celia.pogson@post.example
+1103,50055,10/10/2026,Individual,Celia Pogson,Freya,Holloway,,,,celia.pogson@post.example
+1103,50056,10/10/2026,Individual,Celia Pogson,Keira,Dobson,,,,celia.pogson@post.example
+1103,50057,10/10/2026,Individual,Celia Pogson,Fergus,Underhill,Gluten free,,,celia.pogson@post.example
+1092,50058,20/10/2026,Individual,Adele Yardley,Adele,Yardley,,,,adele.yardley@mail.example
+1092,50059,20/10/2026,Individual,Adele Yardley,Violet,Northcott,,,,adele.yardley@mail.example
+1092,50060,20/10/2026,Individual,Adele Yardley,Rosa,Quayle,,,,adele.yardley@mail.example
+1037,50061,02/08/2026,Pair,Lucy Varden,Lucy,Varden,,,,lucy.varden@post.example
+1037,50062,02/08/2026,Pair,Lucy Varden,Simon,Teague,Vegetarian,,,lucy.varden@post.example
+1066,50063,23/09/2026,Pair,Alice Sowerby,Alice,Sowerby,,,,alice.sowerby@mail.example
+1066,50064,23/09/2026,Pair,Alice Sowerby,Hannah,Nuttall,,,,alice.sowerby@mail.example
+1044,50065,02/09/2026,Pair,Grace Illingworth,Grace,Illingworth,,,,grace.illingworth@post.example
+1044,50066,02/09/2026,Pair,Grace Illingworth,Ruby,Illingworth,,,,grace.illingworth@post.example
+1120,50067,13/08/2026,Individual,Carol Pike,Carol,Pike,,,My sister Joanne Pike is coming (order 1068) - could I sit with her and Martin?,carol.pike@inbox.example
+1006,50068,20/10/2026,Corporate table of 10,Niamh Nuttall,Niamh,Nuttall,,,Sponsor table - Halberd & Vey Solicitors,niamh.nuttall@halberd.example
+1006,50069,20/10/2026,Corporate table of 10,Niamh Nuttall,Maya,Illingworth,,,,niamh.nuttall@halberd.example
+1006,50070,20/10/2026,Corporate table of 10,Niamh Nuttall,Gemma,Lumb,,,,niamh.nuttall@halberd.example
+1006,50071,20/10/2026,Corporate table of 10,Niamh Nuttall,Nadine,Dimmock,,,,niamh.nuttall@halberd.example
+1006,50072,20/10/2026,Corporate table of 10,Niamh Nuttall,Kofi,Wilkinson,,,,niamh.nuttall@halberd.example
+1006,50073,20/10/2026,Corporate table of 10,Niamh Nuttall,Stefan,Thackray,,,,niamh.nuttall@halberd.example
+1006,50074,20/10/2026,Corporate table of 10,Niamh Nuttall,Cressida,Gilchrist,Vegetarian,,,niamh.nuttall@halberd.example
+1006,50075,20/10/2026,Corporate table of 10,Niamh Nuttall,Liam,Mallinson,,,,niamh.nuttall@halberd.example
+1006,50076,20/10/2026,Corporate table of 10,Niamh Nuttall,Agnes,Hirst,Vegetarian,,,niamh.nuttall@halberd.example
+1006,50077,20/10/2026,Corporate table of 10,Niamh Nuttall,Yasmin,Ellery,,,,niamh.nuttall@halberd.example
+1085,50078,08/10/2026,Individual,Freya Dimmock,Freya,Dimmock,Vegetarian,,,freya.dimmock@mail.example
+1085,50079,08/10/2026,Individual,Freya Dimmock,Liam,Kettlewell,,,,freya.dimmock@mail.example
+1085,50080,08/10/2026,Individual,Freya Dimmock,Jasmine,Roebuck,,,,freya.dimmock@mail.example
+1110,50081,17/10/2026,Individual,Chloe Oddie,Chloe,Oddie,,,,chloe.oddie@post.example
+1019,50082,01/08/2026,Individual,Lorraine Ferris,Lorraine,Ferris,,,,lorraine.ferris@post.example
+1019,50083,01/08/2026,Individual,Lorraine Ferris,Keith,Ferris,Vegan,,,lorraine.ferris@post.example
+1019,50084,01/08/2026,Individual,Lorraine Ferris,Samuel,Wainwright,,,,lorraine.ferris@post.example
+1019,50085,01/08/2026,Individual,Lorraine Ferris,Hannah,Rushworth,,,,lorraine.ferris@post.example
+1032,50086,13/09/2026,Pair,Nigel Ashworth,Nigel,Ashworth,,,,nigel.ashworth@mail.example
+1032,50087,13/09/2026,Pair,Nigel Ashworth,Ruth,Ashworth,,Wheelchair user,,nigel.ashworth@mail.example
+1001,50088,17/09/2026,Corporate table of 10,Gordon Haverstock,Gordon,Haverstock,,Wheelchair user,Sponsor table - Quernstone Freight,gordon.haverstock@quernstone.example
+1001,50089,17/09/2026,Corporate table of 10,Gordon Haverstock,Kofi,Thackray,Vegetarian,,,gordon.haverstock@quernstone.example
+1001,50090,17/09/2026,Corporate table of 10,Gordon Haverstock,Marcus,Gilchrist,Vegan,,,gordon.haverstock@quernstone.example
+1001,50091,17/09/2026,Corporate table of 10,Gordon Haverstock,Violet,Varley,Vegetarian,,,gordon.haverstock@quernstone.example
+1001,50092,17/09/2026,Corporate table of 10,Gordon Haverstock,Nadine,Ramsden,Vegetarian,,,gordon.haverstock@quernstone.example
+1001,50093,17/09/2026,Corporate table of 10,Gordon Haverstock,Vernon,Pogson,,,,gordon.haverstock@quernstone.example
+1001,50094,17/09/2026,Corporate table of 10,Gordon Haverstock,Ben,Fairbairn,Vegetarian,,,gordon.haverstock@quernstone.example
+1001,50095,17/09/2026,Corporate table of 10,Gordon Haverstock,Ruby,Yardley,Gluten free,,,gordon.haverstock@quernstone.example
+1001,50096,17/09/2026,Corporate table of 10,Gordon Haverstock,Kerry,Ormerod,Vegan,,,gordon.haverstock@quernstone.example
+1001,50097,17/09/2026,Corporate table of 10,Gordon Haverstock,Otto,Stansfield,,,,gordon.haverstock@quernstone.example
+1068,50098,10/08/2026,Pair,Joanne Pike,Joanne,Pike,,,,joanne.pike@post.example
+1068,50099,10/08/2026,Pair,Joanne Pike,Martin,Pike,,,,joanne.pike@post.example
+1105,50100,12/09/2026,Individual,Maya Fothergill,Maya,Fothergill,,,,maya.fothergill@post.example
+1105,50101,12/09/2026,Individual,Maya Fothergill,Sienna,Thackray,,,,maya.fothergill@post.example
+1105,50102,12/09/2026,Individual,Maya Fothergill,Yusuf,Wilkinson,Nut allergy (severe),,,maya.fothergill@post.example
+1105,50103,12/09/2026,Individual,Maya Fothergill,Harry,Bramley,,,,maya.fothergill@post.example
+1105,50104,12/09/2026,Individual,Maya Fothergill,Edith,Ramsden,,,,maya.fothergill@post.example
+1029,50105,01/10/2026,Individual,Graham Pemberton,Graham,Pemberton,,,,graham.pemberton@post.example
+1029,50106,01/10/2026,Individual,Graham Pemberton,Josie,Pemberton,Gluten free,Wheelchair user,,graham.pemberton@post.example
+1029,50107,01/10/2026,Individual,Graham Pemberton,Ingrid,Pemberton,Vegetarian,,,graham.pemberton@post.example
+1029,50108,01/10/2026,Individual,Graham Pemberton,Yasmin,Pemberton,,,,graham.pemberton@post.example
+1029,50109,01/10/2026,Individual,Graham Pemberton,Ruby,Pemberton,,,,graham.pemberton@post.example
+1029,50110,01/10/2026,Individual,Graham Pemberton,Willa,Pemberton,Gluten free,,,graham.pemberton@post.example
+1104,50111,27/08/2026,Individual,Imogen Hale,Imogen,Hale,,,,imogen.hale@mail.example
+1104,50112,27/08/2026,Individual,Imogen Hale,Kerry,Kirkwood,Vegetarian,,,imogen.hale@mail.example
+1104,50113,27/08/2026,Individual,Imogen Hale,Harry,Sugden,,,,imogen.hale@mail.example
+1104,50114,27/08/2026,Individual,Imogen Hale,Willa,Greatorex,,,,imogen.hale@mail.example
+1104,50115,27/08/2026,Individual,Imogen Hale,Kitty,Dobson,,,,imogen.hale@mail.example
+1113,50116,04/10/2026,Individual,Leah Pickering,Leah,Pickering,,,,leah.pickering@mail.example

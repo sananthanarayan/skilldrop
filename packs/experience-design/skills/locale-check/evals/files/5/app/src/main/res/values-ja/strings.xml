@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Parcelo</string>
+    <string name="tab_home">ホーム</string>
+    <string name="tab_track">追跡</string>
+    <string name="tab_send">送る</string>
+    <string name="tab_account">アカウント</string>
+    <string name="action_continue">続ける</string>
+    <string name="action_cancel">キャンセル</string>
+    <string name="action_retry">再試行</string>
+    <string name="action_save">保存</string>
+    <string name="action_scan">ラベルをスキャン</string>
+    <string name="action_share">共有</string>
+    <string name="login_title">Parcelo にログイン</string>
+    <string name="login_email_hint">メールアドレス</string>
+    <string name="login_password_hint">パスワード</string>
+    <string name="login_forgot">パスワードをお忘れですか？</string>
+    <string name="greeting">%1$s さん、こんにちは</string>
+    <string name="track_title">荷物を追跡</string>
+    <string name="track_hint">追跡番号を入力</string>
+    <string name="order_status_title">注文 %d</string>
+    <string name="status_in_transit">輸送中</string>
+    <string name="status_out_for_delivery">配達中</string>
+    <string name="status_delivered">配達済み</string>
+    <string name="status_delivered_at">%2$s %1$s に配達済み</string>
+    <string name="status_exception">配達に問題があります</string>
+    <string name="eta_label">お届け予定：%1$s</string>
+    <string name="delivery_window_note">配達当日の朝、配達員から1時間の配達時間帯をSMSでお知らせします。</string>
+    <string name="send_title">荷物を送る</string>
+    <string name="send_recipient_hint">受取人の名前</string>
+    <string name="send_address_hint">お届け先住所</string>
+    <string name="send_weight_label">重さ：%1$.1f kg</string>
+    <string name="send_price">料金：%1$s</string>
+    <string name="send_confirm_route">この荷物を %1$s から %2$s へ送りますか？</string>
+    <string name="send_confirm_button">支払って送る</string>
+    <string name="pickup_scheduled">%1$s %2$s〜%3$s に集荷を予約しました</string>
+    <string name="account_title">アカウント</string>
+    <string name="account_addresses">保存済みの住所</string>
+    <string name="account_payment">支払い方法</string>
+    <string name="account_notifications">通知</string>
+    <string name="account_language">言語</string>
+    <string name="account_sign_out">ログアウト</string>
+    <string name="card_ending">末尾 %1$s のカード</string>
+    <string name="error_network">接続できません。ネットワークを確認して、もう一度お試しください。</string>
+    <string name="error_address">その住所が見つかりませんでした。</string>
+    <string name="error_weight">荷物の重さは最大 %1$d kg です。</string>
+    <string name="support_title">ヘルプ</string>
+    <string name="support_chat">チャットで問い合わせ</string>
+    <string name="rating_prompt">%1$s の配達はいかがでしたか？</string>
+    <string name="share_tracking">%1$s からの荷物を追跡：%2$s</string>
+    <string name="notification_channel_updates">配達の最新情報</string>
+    <plurals name="parcels_in_transit">
+        <item quantity="other">%d 個の荷物が配送中</item>
+    </plurals>
+    <plurals name="photos_selected">
+        <item quantity="other">%d 枚の写真を選択済み</item>
+    </plurals>
+    <plurals name="days_until_return">
+        <item quantity="other">返品期限まであと %d 日</item>
+    </plurals>
+</resources>

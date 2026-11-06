@@ -1,0 +1,22 @@
+day,shift,start,end,staff,role
+Mon,Early,06:00,14:00,Nadia Haddad,pharmacist
+Mon,Early,06:00,14:00,Tom Okafor,till
+Mon,Late,14:00,22:00,Joel Park,pharmacist
+Mon,Late,14:00,22:00,Priya Shah,dispenser
+Tue,Early,06:00,14:00,Nadia Haddad,pharmacist
+Tue,Early,06:00,14:00,Sam Reid,till
+Tue,Late,14:00,22:00,Joel Park,pharmacist
+Tue,Late,14:00,22:00,Priya Shah,dispenser
+Wed,Early,06:00,14:00,Nadia Haddad,pharmacist
+Wed,Early,06:00,14:00,Priya Shah,dispenser
+Wed,Late,14:00,22:00,Joel Park,pharmacist
+Wed,Late,14:00,22:00,Tom Okafor,till
+Thu,Early,06:00,14:00,Nadia Haddad,pharmacist
+Thu,Early,06:00,14:00,Tom Okafor,till
+Thu,Mid,10:00,18:00,Tom Okafor,till
+Thu,Late,14:00,22:00,Joel Park,pharmacist
+Thu,Late,14:00,22:00,Priya Shah,dispenser
+Fri,Early,06:00,14:00,Sam Reid,pharmacist
+Fri,Early,06:00,14:00,Priya Shah,dispenser
+Fri,Late,14:00,22:00,Joel Park,pharmacist
+Fri,Late,14:00,22:00,Tom Okafor,till

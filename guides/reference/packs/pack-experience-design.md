@@ -13,7 +13,7 @@ The experience around a product: the structure people navigate, the content and 
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack experience-design` |
-| Skills | 5 plus 5 from core |
+| Skills | 6 plus 5 from core |
 | Loops | clarify |
 | How-to | [Use the Experience design pack](../../how-to/packs/use-the-experience-design-pack.md) |
 
@@ -104,6 +104,35 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/experience-design/skill
 - What one page should say and in what order — that's `content-design`
 - The exact wording of menu items, buttons and errors across a flow — that's `ux-writing`
 - The requirements and scope of a new feature — that's `prd-draft`
+
+### `locale-check`
+
+Check a product's translations against the source strings before they ship — every key present, every placeholder ({name}, %s, %1$d, ICU plural and select) carried over intact, the plural forms each language needs, markup tags balanced, and strings over their character budget — with a script that reads JSON, ARB, gettext .po, Android strings.xml and iOS .strings, and lists each problem with its key and locale.
+
+Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/experience-design/skills/locale-check/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/locale-check/)
+
+**Use it when** someone asks to "check the translations", "QA these locale files", "will the German fit", "why does the French build crash on this string", or hands over locale files before a release.
+
+**Needs:** Python 3 for its scripts (standard library only).
+
+**A good result:**
+
+- **Every target is checked, every finding read against its source string.** A count with no check behind it is a guess.
+- **Crashes first, then wrong screens, then overflow, then style.** The reader fixes in that order.
+- **A mechanical fix comes with the corrected string;** a wording fix goes to a translator.
+- **Plural forms are judged by the target language's rules,** not the source's: Polish needs four, Arabic six, Japanese one.
+- **Nothing is translated or edited unasked,** and nothing is cut: a dubious string is flagged, not removed.
+- **Every reordered placeholder is read for meaning,** not passed because the syntax is valid.
+- **Every length limit the person states is measured.** "It fits" always has a count behind it.
+- **What wasn't checked is said in one line.**
+
+**Hands off to:** `ux-writing` when a source string is the cause: too long for its slot in every language, two strings for one concept, or a sentence built from fragments.
+
+**Not for:**
+
+- Writing the source strings, button labels or error messages: that's `ux-writing`
+- Writing or restructuring the page content itself: that's `content-design`
+- "Translate this into French": that's translation, and this skill only checks it
 
 ### `service-blueprint`
 

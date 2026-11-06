@@ -1,0 +1,15 @@
+{
+  "published_end": "17:30",
+  "turnaround": 10,
+  "rooms": [
+    {"name": "Main hall", "open": "08:00", "close": "18:00", "turnaround": 15},
+    {"name": "Studio B", "open": "09:00", "close": "17:30"}
+  ],
+  "travel": [{"between": ["Main hall", "Studio B"], "minutes": 5}],
+  "items": [
+    {"id": "doors", "title": "Doors and registration", "room": "Main hall", "start": "08:30", "end": "09:00", "people": ["Front of house"]},
+    {"id": "key", "title": "Opening keynote", "room": "Main hall", "start": "09:15", "duration": 45, "people": ["Ana Ruiz", "AV crew"], "setup": 15},
+    {"id": "ws1", "title": "Workshop: pricing", "room": "Studio B", "start": "10:10", "end": "11:00", "people": ["Ana Ruiz"]},
+    {"id": "panel", "title": "Customer panel", "room": "Main hall", "start": "10:15", "end": "11:15", "people": ["Joe Park", "AV crew"], "changeover": 20}
+  ]
+}

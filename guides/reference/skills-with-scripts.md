@@ -38,6 +38,7 @@ What each one declares in its manifest: the packages to install, the environment
 | [`hypothesis-comparison`](../../packs/research/skills/hypothesis-comparison/SKILL.md) | research | — | — | — | — | named-paths |
 | [`interactive-diagram`](../../packs/solution-architect/skills/interactive-diagram/SKILL.md) | solution-architect | — | — | — | — | project |
 | [`judge-audit`](../../packs/ai-engineering/skills/judge-audit/SKILL.md) | ai-engineering | — | — | — | — | named-paths |
+| [`locale-check`](../../packs/experience-design/skills/locale-check/SKILL.md) | experience-design | — | — | — | — | named-paths |
 | [`md-to-confluence`](../../packs/converters/skills/md-to-confluence/SKILL.md) | converters | — | `CONFLUENCE_EMAIL (optional)`, `CONFLUENCE_API_TOKEN (optional)`, `CONFLUENCE_PAT (optional)` | `*.atlassian.net` | — | named-paths |
 | [`md-to-docx`](../../packs/converters/skills/md-to-docx/SKILL.md) | converters | — | — | — | — | named-paths |
 | [`md-to-pptx`](../../packs/converters/skills/md-to-pptx/SKILL.md) | converters | — | — | — | — | named-paths |
@@ -48,6 +49,9 @@ What each one declares in its manifest: the packages to install, the environment
 | [`resume-tailor`](../../packs/career/skills/resume-tailor/SKILL.md) | career | — | — | — | — | named-paths |
 | [`risk-register`](../../packs/grc/skills/risk-register/SKILL.md) | grc | — | — | — | — | named-paths |
 | [`rollout-plan`](../../packs/dev-team/skills/rollout-plan/SKILL.md) | dev-team | — | — | — | — | none |
+| [`run-of-show`](../../packs/event-planner/skills/run-of-show/SKILL.md) | event-planner | — | — | — | — | named-paths |
+| [`seating-plan`](../../packs/event-planner/skills/seating-plan/SKILL.md) | event-planner | — | — | — | — | named-paths |
+| [`shift-roster`](../../packs/operations-manager/skills/shift-roster/SKILL.md) | operations-manager | — | — | — | — | named-paths |
 | [`skill-review`](../../packs/skill-engineering/skills/skill-review/SKILL.md) | skill-engineering | — | — | — | — | named-paths |
 | [`slo-spec`](../../packs/sre-oncall/skills/slo-spec/SKILL.md) | sre-oncall | — | — | — | — | named-paths |
 | [`source-synthesis`](../../packs/research/skills/source-synthesis/SKILL.md) | research | — | — | — | — | named-paths |

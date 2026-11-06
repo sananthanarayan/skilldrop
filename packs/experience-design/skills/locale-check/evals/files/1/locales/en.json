@@ -1,0 +1,12 @@
+{
+  "checkout": {
+    "title": "Checkout",
+    "pay_button": "Pay {amount}",
+    "items_one": "{{count}} item in your basket",
+    "items_other": "{{count}} items in your basket",
+    "delivery": "Arrives by {date}.",
+    "promo_applied": "Code <b>{code}</b> applied.",
+    "saved_cards": "{count, plural, one {# saved card} other {# saved cards}}",
+    "error_declined": "Your card was declined. Try another card."
+  }
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome">¡Hola de nuevo, %1$s!</string>
+    <string name="synced">Se sincronizaron %1$d rutas desde %2$s</string>
+    <string name="offline">Sin conexión. Las rutas se sincronizarán cuando te vuelvas a conectar.</string>
+    <plurals name="routes_saved">
+        <item quantity="one">%d ruta guardada</item>
+        <item quantity="other">%d rutas guardadas</item>
+    </plurals>
+    <string name="delete_confirm">¿Eliminar %1$s?</string>
+</resources>

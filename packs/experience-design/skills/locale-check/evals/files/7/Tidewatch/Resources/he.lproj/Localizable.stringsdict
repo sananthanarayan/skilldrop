@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>forecast.days.count</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@days@</string>
+		<key>days</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>תחזית ליום אחד</string>
+			<key>two</key>
+			<string>תחזית ליומיים</string>
+			<key>many</key>
+			<string>תחזית ל-%d ימים</string>
+			<key>other</key>
+			<string>תחזית ל-%d ימים</string>
+		</dict>
+	</dict>
+	<key>swell.count</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@swells@</string>
+		<key>swells</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d סדרת גלים בדרך</string>
+			<key>two</key>
+			<string>%d סדרות גלים בדרך</string>
+			<key>many</key>
+			<string>%d סדרות גלים בדרך</string>
+			<key>other</key>
+			<string>%d סדרות גלים בדרך</string>
+		</dict>
+	</dict>
+	<key>spots.saved.count</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@spots@</string>
+		<key>spots</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d חוף שמור</string>
+			<key>two</key>
+			<string>%d חופים שמורים</string>
+			<key>many</key>
+			<string>%d חופים שמורים</string>
+			<key>other</key>
+			<string>%d חופים שמורים</string>
+		</dict>
+	</dict>
+	<key>alerts.active.count</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@alerts@</string>
+		<key>alerts</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d התראה פעילה</string>
+			<key>two</key>
+			<string>%d התראות פעילות</string>
+			<key>many</key>
+			<string>%d התראות פעילות</string>
+			<key>other</key>
+			<string>%d התראות פעילות</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

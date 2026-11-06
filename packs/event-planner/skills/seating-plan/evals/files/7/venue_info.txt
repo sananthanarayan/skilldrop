@@ -1,0 +1,16 @@
+Ashgrove Academy Year 13 Leavers' Prom - Fri 2 July 2027 - Brackenridge Hall (main hall)
+
+13 round tables, 8 chairs each - no extra chairs (the venue was firm about this, fire exits).
+Tables 1 and 2 are on the level by the ramp from the car park entrance. Tables 3-13 are down the
+three steps on the main floor, so anyone in a wheelchair has to be on table 1 or 2 (max 2 wheelchairs a table).
+Table 13 is the staff table by the fire doors - all six staff sit there.
+
+Layout from the stage end:
+  stage
+  [1] [2]      <- level, by the ramp
+  [3] [4] [5]
+  [6] [7] [8]
+  [9] [10] [11]
+  [12] [13]   <- 13 by fire doors
+
+Everyone in a friendship group (from the ticket form) sits together - that's what they were promised.

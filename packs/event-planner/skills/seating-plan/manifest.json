@@ -1,0 +1,44 @@
+{
+  "name": "seating-plan",
+  "version": "0.1.2",
+  "description": "Seat guests at tables for a wedding, gala, conference dinner or awards night, and check the chart with a script — every guest seated once, no table over capacity, people who must sit together together, people who must be kept apart apart, wheelchair users at accessible places — drawn as a room plan with names at each table. Use when an organiser asks to \"make the seating plan\", \"who sits where\", \"seat these 120 guests\", \"check my table plan\", or has a guest list with groups and keep-apart requests.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "run-of-show"
+  ],
+  "handoff": [
+    {
+      "to": "run-of-show",
+      "when": "the seating is settled and the day's timings are next",
+      "purpose": "Time the day around the dinner: doors, speeches, courses and the changeovers between them.",
+      "fallback": "If run-of-show is absent, list the day's items with a start, end and room each, and check by hand that no room or person is booked twice."
+    }
+  ],
+  "tags": [
+    "events",
+    "seating",
+    "wedding",
+    "gala",
+    "table-plan",
+    "svg",
+    "constraints"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "Reads the seating.json it is given and writes the SVG to the path passed with --svg."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "Assigning guests against overlapping rules is bounded judgment; the script decides whether every rule holds."
+  }
+}

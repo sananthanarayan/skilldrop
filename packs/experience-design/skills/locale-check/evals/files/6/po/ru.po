@@ -1,0 +1,608 @@
+# Marlin Backup translations.
+# Copyright (C) 2026 Marlin Software
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: marlin-backup 4.2\n"
+"Report-Msgid-Bugs-To: l10n@marlin.example\n"
+"POT-Creation-Date: 2026-10-28 09:14+0000\n"
+"PO-Revision-Date: 2026-11-03 16:21+0000\n"
+"Last-Translator: Irina Volkova <irina.v@example.org>\n"
+"Language-Team: Russian\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: src/ui/toolbar.c:635
+msgid "Start at login"
+msgstr "Запускать при входе в систему"
+
+#: src/ui/toolbar.c:659
+msgid "Could not export the device."
+msgstr "Не удалось экспортировать устройство."
+
+#: src/vault/vault.c:483
+msgid "Could not duplicate the job."
+msgstr "Не удалось дублировать задание."
+
+#: src/restore/restore.c:604
+msgid "Export device"
+msgstr "Экспортировать устройство"
+
+#: src/ui/prefs.c:469
+msgid "Preferences"
+msgstr "Настройки"
+
+#: src/ui/toolbar.c:200
+msgctxt "toolbar"
+msgid "Back Up Now"
+msgstr "Создать копию"
+
+#: src/vault/vault.c:710
+msgid "Duplicate schedule"
+msgstr "Дублировать расписание"
+
+#: src/restore/restore.c:831
+msgid "Open rule"
+msgstr "Открыть правило"
+
+#: src/ui/toolbar.c:826
+msgid "Could not export the vault."
+msgstr "Не удалось экспортировать хранилище."
+
+#: src/ui/prefs.c:132
+msgid "Could not rename the device."
+msgstr "Не удалось переименовать устройство."
+
+#: src/vault/vault.c:869
+msgid "About Marlin Backup"
+msgstr "О программе Marlin Backup"
+
+#: src/ui/prefs.c:268
+msgid "Verify rule"
+msgstr "Проверить правило"
+
+#: src/net/sync.c:720
+msgid "Encryption key could not be verified."
+msgstr ""
+
+#: src/net/sync.c:273
+msgid "Open device"
+msgstr "Открыть устройство"
+
+#: src/restore/restore.c:742
+msgid "<b>Warning:</b> this vault is not encrypted."
+msgstr "<b>Внимание:</b> это хранилище не зашифровано."
+
+#: src/restore/restore.c:51
+msgid "Restore complete."
+msgstr "Восстановление завершено."
+
+#: src/restore/restore.c:883
+msgid "Edit schedule"
+msgstr "Изменить расписание"
+
+#: src/vault/vault.c:794
+msgid "Select a snapshot"
+msgstr "Выберите снимок"
+
+#: src/vault/vault.c:559
+msgid "Select a device"
+msgstr "Выберите устройство"
+
+#: src/ui/prefs.c:830
+#, c-format
+msgid "%d job is waiting"
+msgid_plural "%d jobs are waiting"
+msgstr[0] "%d задание ожидает"
+msgstr[1] "%d задания ожидают"
+msgstr[2] "%d заданий ожидают"
+
+#: src/ui/toolbar.c:167
+msgid "Edit snapshot"
+msgstr "Изменить снимок"
+
+#: src/ui/main_window.c:878
+msgid "Run on battery power"
+msgstr "Выполнять при работе от батареи"
+
+#: src/restore/restore.c:57
+msgid "Duplicate rule"
+msgstr "Дублировать правило"
+
+#: src/ui/main_window.c:418
+#, c-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d час назад"
+msgstr[1] "%d часа назад"
+msgstr[2] "%d часов назад"
+
+#: src/restore/restore.c:420
+msgid "Could not rename the rule."
+msgstr "Не удалось переименовать правило."
+
+#: src/jobs/runner.c:830
+msgid "Could not export the job."
+msgstr "Не удалось экспортировать задание."
+
+#: src/restore/restore.c:346
+msgid "Could not rename the schedule."
+msgstr "Не удалось переименовать расписание."
+
+#: src/net/sync.c:340
+msgid "Could not edit the rule."
+msgstr "Не удалось изменить правило."
+
+#: src/ui/toolbar.c:738
+msgid "Could not delete the vault."
+msgstr "Не удалось удалить хранилище."
+
+#: src/ui/prefs.c:836
+#, c-format
+msgid "%d file skipped"
+msgid_plural "%d files skipped"
+msgstr[0] "Пропущен %d файл"
+msgstr[1] "Пропущено %d файла"
+msgstr[2] "Пропущено %d файлов"
+
+#: src/jobs/runner.c:530
+msgid "Confirm passphrase"
+msgstr "Подтвердите парольную фразу"
+
+#: src/vault/vault.c:533
+msgid "Export job"
+msgstr "Экспортировать задание"
+
+#: src/ui/prefs.c:91
+msgid "Could not duplicate the snapshot."
+msgstr "Не удалось дублировать снимок."
+
+#: src/jobs/runner.c:524
+msgid "Delete snapshot"
+msgstr "Удалить снимок"
+
+#: src/vault/vault.c:875
+msgid "Could not duplicate the device."
+msgstr "Не удалось дублировать устройство."
+
+#: src/ui/toolbar.c:551
+msgid "Open schedule"
+msgstr "Открыть расписание"
+
+#: src/ui/toolbar.c:203
+msgctxt "toolbar"
+msgid "Add Folder"
+msgstr "Добавить папку"
+
+#: src/jobs/runner.c:257
+msgid "Rename snapshot"
+msgstr "Переименовать снимок"
+
+#: src/ui/toolbar.c:463
+msgid "Verify vault"
+msgstr "Проверить хранилище"
+
+#: src/jobs/runner.c:200
+msgid "Export rule"
+msgstr "Экспортировать правило"
+
+#: src/restore/restore.c:863
+#, c-format
+msgid "Keep snapshots for %d day"
+msgid_plural "Keep snapshots for %d days"
+msgstr[0] "Хранить снимки %d день"
+msgstr[1] "Хранить снимки %d дня"
+msgstr[2] "Хранить снимки %d дней"
+
+#: src/net/sync.c:679
+msgid "Delete schedule"
+msgstr "Удалить расписание"
+
+#: src/restore/restore.c:585
+#, c-format
+msgid "%d error"
+msgid_plural "%d errors"
+msgstr[0] "%d ошибка"
+msgstr[1] "%d ошибки"
+msgstr[2] "%d ошибок"
+
+#: src/ui/prefs.c:602
+msgid "Could not duplicate the rule."
+msgstr "Не удалось дублировать правило."
+
+#: src/restore/restore.c:325
+msgid "Could not verify the snapshot."
+msgstr "Не удалось проверить снимок."
+
+#: src/ui/prefs.c:521
+msgid "Select a job"
+msgstr "Выберите задание"
+
+#: src/ui/toolbar.c:212
+msgctxt "toolbar"
+msgid "Pause"
+msgstr "Пауза"
+
+#: src/ui/toolbar.c:416
+msgid "Rename rule"
+msgstr "Переименовать правило"
+
+#: src/ui/main_window.c:706
+msgid "Export snapshot"
+msgstr "Экспортировать снимок"
+
+#: src/restore/restore.c:360
+msgid "Exclude hidden files"
+msgstr "Исключать скрытые файлы"
+
+#: src/ui/prefs.c:409
+msgid "Could not delete the schedule."
+msgstr "Не удалось удалить расписание."
+
+#: src/net/sync.c:863
+msgid "Edit device"
+msgstr "Изменить устройство"
+
+#: src/net/sync.c:372
+#, c-format
+msgid "Version %s is available."
+msgstr "Доступна версия %s."
+
+#: src/ui/prefs.c:785
+msgid "Show in file manager"
+msgstr "Показать в файловом менеджере"
+
+#: src/ui/main_window.c:896
+msgid "Could not edit the vault."
+msgstr "Не удалось изменить хранилище."
+
+#: src/vault/vault.c:864
+msgid "Could not verify the schedule."
+msgstr "Не удалось проверить расписание."
+
+#: src/ui/toolbar.c:167
+msgctxt "toolbar"
+msgid "Schedule"
+msgstr "Расписание"
+
+#: src/ui/toolbar.c:232
+msgid "Duplicate vault"
+msgstr "Дублировать хранилище"
+
+#: src/ui/toolbar.c:227
+msgctxt "toolbar"
+msgid "Browse"
+msgstr "Обзор"
+
+#: src/restore/restore.c:801
+msgid "Could not delete the device."
+msgstr "Не удалось удалить устройство."
+
+#: src/ui/prefs.c:196
+msgid "Could not open the snapshot."
+msgstr "Не удалось открыть снимок."
+
+#: src/ui/toolbar.c:704
+msgid "Could not verify the vault."
+msgstr "Не удалось проверить хранилище."
+
+#: src/restore/restore.c:143
+#, c-format
+msgid "Speed limit: %d KB/s"
+msgstr "Ограничение скорости: %d КБ/с"
+
+#: src/ui/toolbar.c:75
+msgctxt "toolbar"
+msgid "Restore"
+msgstr "Восстановить"
+
+#: src/ui/main_window.c:333
+msgid "Could not edit the schedule."
+msgstr "Не удалось изменить расписание."
+
+#: src/ui/toolbar.c:499
+msgid "Select a vault"
+msgstr "Выберите хранилище"
+
+#: src/ui/toolbar.c:237
+msgctxt "toolbar"
+msgid "Logs"
+msgstr "Журнал"
+
+#: src/ui/prefs.c:214
+msgid "Could not delete the job."
+msgstr "Не удалось удалить задание."
+
+#: src/vault/vault.c:182
+msgid "Export schedule"
+msgstr "Экспортировать расписание"
+
+#: src/ui/main_window.c:662
+#, c-format
+msgid "Snapshot %1$s taken on %2$s"
+msgstr "%2$s создан снимок %1$s"
+
+#: src/ui/prefs.c:774
+msgid "Rename job"
+msgstr "Переименовать задание"
+
+#: src/restore/restore.c:494
+#, c-format
+msgid "Drag folders here to add them to <i>%s</i>."
+msgstr "Перетащите папки сюда, чтобы добавить их в <i>%s</i>."
+
+#: src/ui/main_window.c:160
+msgid "Could not edit the snapshot."
+msgstr "Не удалось изменить снимок."
+
+#: src/ui/toolbar.c:522
+msgid "Verify device"
+msgstr "Проверить устройство"
+
+#: src/ui/toolbar.c:762
+msgid "Edit rule"
+msgstr "Изменить правило"
+
+#: src/restore/restore.c:833
+msgid "Open snapshot"
+msgstr "Открыть снимок"
+
+#: src/vault/vault.c:294
+#, c-format
+msgid "%d device connected"
+msgid_plural "%d devices connected"
+msgstr[0] "Подключено %d устройство"
+msgstr[1] "Подключено %d устройства"
+msgstr[2] "Подключено %d устройств"
+
+#: src/ui/toolbar.c:210
+msgid "Could not open the schedule."
+msgstr "Не удалось открыть расписание."
+
+#: src/vault/vault.c:778
+msgid "Duplicate snapshot"
+msgstr "Дублировать снимок"
+
+#: src/ui/prefs.c:758
+msgid "Sign out"
+msgstr "Выйти"
+
+#: src/jobs/runner.c:395
+msgid "Could not export the rule."
+msgstr "Не удалось экспортировать правило."
+
+#: src/jobs/runner.c:480
+msgid "Rename vault"
+msgstr "Переименовать хранилище"
+
+#: src/restore/restore.c:745
+#, c-format
+msgid "Vault %s is %d%% full"
+msgstr "Хранилище %s заполнено на %d%%"
+
+#: src/ui/toolbar.c:515
+msgid "Export vault"
+msgstr "Экспортировать хранилище"
+
+#: src/ui/toolbar.c:239
+msgctxt "toolbar"
+msgid "Help"
+msgstr "Справка"
+
+#: src/ui/toolbar.c:445
+msgid "Duplicate job"
+msgstr "Дублировать задание"
+
+#: src/vault/vault.c:846
+msgid "Edit job"
+msgstr "Изменить задание"
+
+#: src/ui/toolbar.c:453
+msgid "Could not open the device."
+msgstr "Не удалось открыть устройство."
+
+#: src/jobs/runner.c:423
+msgid "Restore to original location"
+msgstr "Восстановить в исходное расположение"
+
+#: src/net/sync.c:642
+msgid "Delete rule"
+msgstr "Удалить правило"
+
+#: src/ui/toolbar.c:687
+#, c-format
+msgid "Uploading to %s…"
+msgstr "Загрузка в %s…"
+
+#: src/ui/toolbar.c:479
+msgid "Could not export the schedule."
+msgstr "Не удалось экспортировать расписание."
+
+#: src/ui/prefs.c:827
+msgid "Could not verify the rule."
+msgstr "Не удалось проверить правило."
+
+#: src/vault/vault.c:786
+msgid "Could not export the snapshot."
+msgstr "Не удалось экспортировать снимок."
+
+#: src/vault/vault.c:415
+msgid "Check for updates"
+msgstr "Проверить обновления"
+
+#: src/jobs/runner.c:805
+msgid "Duplicate device"
+msgstr "Дублировать устройство"
+
+#: src/net/sync.c:637
+msgid "Back up only on unmetered networks"
+msgstr "Создавать копии только в безлимитных сетях"
+
+#: src/vault/vault.c:320
+msgid "Could not rename the job."
+msgstr "Не удалось переименовать задание."
+
+#: src/jobs/runner.c:515
+#, c-format
+msgid "Signed in as %s"
+msgstr "Вы вошли как %s"
+
+#: src/ui/main_window.c:723
+msgid "Could not rename the snapshot."
+msgstr "Не удалось переименовать снимок."
+
+#: src/ui/prefs.c:791
+msgid "Verify schedule"
+msgstr "Проверить расписание"
+
+#: src/vault/vault.c:421
+msgid "Could not verify the job."
+msgstr "Не удалось проверить задание."
+
+#: src/ui/toolbar.c:189
+#, c-format
+msgid "Last backup: %s"
+msgstr "Последняя резервная копия: %s"
+
+#: src/jobs/runner.c:746
+#, c-format
+msgid "Connection to %s timed out."
+msgstr "Время ожидания подключения к %s истекло."
+
+#: src/ui/main_window.c:444
+msgid "Could not edit the job."
+msgstr "Не удалось изменить задание."
+
+#: src/ui/prefs.c:829
+msgid "Could not open the rule."
+msgstr "Не удалось открыть правило."
+
+#: src/vault/vault.c:849
+#, c-format
+msgid "Disk %s has less than %d GB free."
+msgstr "На диске %s свободно меньше %d ГБ."
+
+#: src/vault/vault.c:46
+msgid "Verify snapshot"
+msgstr "Проверить снимок"
+
+#: src/restore/restore.c:636
+msgid "Select a rule"
+msgstr "Выберите правило"
+
+#: src/ui/toolbar.c:869
+#, c-format
+msgid "Read the <a href=\"%s\">restore guide</a> before you continue."
+msgstr "Прочитайте <a href=\"%s\">руководство по восстановлению</a>, прежде чем продолжить."
+
+#: src/net/sync.c:465
+msgid "Quit"
+msgstr "Выход"
+
+#: src/net/sync.c:733
+msgid "Rename schedule"
+msgstr "Переименовать расписание"
+
+#: src/net/sync.c:675
+msgid "Open job"
+msgstr "Открыть задание"
+
+#: src/jobs/runner.c:142
+msgid "Select a schedule"
+msgstr "Выберите расписание"
+
+#: src/ui/prefs.c:316
+msgid "Passphrase"
+msgstr "Парольная фраза"
+
+#: src/ui/main_window.c:73
+msgid "Could not duplicate the schedule."
+msgstr "Не удалось дублировать расписание."
+
+#: src/vault/vault.c:830
+#, c-format
+msgid "%d snapshot pruned"
+msgid_plural "%d snapshots pruned"
+msgstr[0] "Удалён %d снимок"
+msgstr[1] "Удалено %d снимков"
+
+#: src/restore/restore.c:751
+msgid "Edit vault"
+msgstr "Изменить хранилище"
+
+#: src/ui/prefs.c:203
+msgid "Could not duplicate the vault."
+msgstr "Не удалось дублировать хранилище."
+
+#: src/vault/vault.c:143
+msgid "Could not delete the rule."
+msgstr "Не удалось удалить правило."
+
+#: src/ui/prefs.c:559
+msgid "Could not delete the snapshot."
+msgstr "Не удалось удалить снимок."
+
+#: src/ui/toolbar.c:115
+msgctxt "toolbar"
+msgid "Settings"
+msgstr "Настройки"
+
+#: src/net/sync.c:505
+msgid "Could not rename the vault."
+msgstr "Не удалось переименовать хранилище."
+
+#: src/ui/toolbar.c:729
+msgid "Delete vault"
+msgstr "Удалить хранилище"
+
+#: src/ui/prefs.c:677
+msgid "Passphrases do not match."
+msgstr "Парольные фразы не совпадают."
+
+#: src/ui/prefs.c:248
+msgid "Could not open the vault."
+msgstr "Не удалось открыть хранилище."
+
+#: src/ui/toolbar.c:94
+msgctxt "toolbar"
+msgid "Verify Vault"
+msgstr "Проверка копий"
+
+#: src/ui/toolbar.c:895
+msgid "Open vault"
+msgstr "Открыть хранилище"
+
+#: src/jobs/runner.c:812
+msgid "Could not verify the device."
+msgstr "Не удалось проверить устройство."
+
+#: src/vault/vault.c:74
+msgid "Restore to another folder…"
+msgstr "Восстановить в другую папку…"
+
+#: src/jobs/runner.c:791
+msgid "Could not edit the device."
+msgstr "Не удалось изменить устройство."
+
+#: src/net/sync.c:313
+msgid "Could not open the job."
+msgstr "Не удалось открыть задание."
+
+#: src/ui/main_window.c:463
+msgid "Verify job"
+msgstr "Проверить задание"
+
+#: src/ui/toolbar.c:651
+msgid "Rename device"
+msgstr "Переименовать устройство"
+
+#: src/ui/prefs.c:676
+msgid "Delete device"
+msgstr "Удалить устройство"
+
+#: src/ui/prefs.c:472
+msgid "Delete job"
+msgstr "Удалить задание"

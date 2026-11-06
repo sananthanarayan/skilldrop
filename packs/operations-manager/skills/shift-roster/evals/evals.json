@@ -1,0 +1,135 @@
+{
+  "skill_name": "shift-roster",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Can you make next week's rota for the ward? Staff and their limits are in staff.csv and the shifts we need covered are in shifts.csv. Use our usual rule of at least 11 hours between shifts.",
+      "assertions": [
+        "Leads with the rota as a readable table of days and people (or shifts), not with a description of how it was made",
+        "Every Day and Evening shift on all seven days has one nurse and one healthcare assistant, or the reply names the shift it couldn't cover and why",
+        "Nobody is rostered on a day they can't work (Kwame at weekends, Lin on Monday, Owen on Thursday, Sofia on Wednesday, Priti on Friday evening)",
+        "No one gets less than 11 hours between an Evening shift ending at 22:00 and a Day shift starting at 07:30 the next morning",
+        "Nobody is over their maximum hours, and hours per person are shown against contracted hours",
+        "States any rule it assumed that the request didn't give, such as the days-in-a-row limit, with its value",
+        "Saves the week drawing in the working directory, not inside the skill's folder",
+        "Does not mention a script, a JSON file or the skill's name in the reply"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Here's this week's pharmacy rota (rota.csv) and the team (staff.csv). Before I send it out, can you check it? Don't change it, just tell me what's wrong.",
+      "assertions": [
+        "Flags every short rest, 8 hours each: Priya Shah from Tuesday's late to Wednesday's early and from Thursday's late to Friday's early, and Tom Okafor from Wednesday's late to Thursday's early",
+        "Flags Tom Okafor on two overlapping Thursday shifts (Early 06:00-14:00 and Mid 10:00-18:00), and 40 hours against his 30-hour maximum",
+        "Flags Sam Reid filling the pharmacist role on Friday's early shift without being a pharmacist, leaving the shift without one",
+        "Gives each problem one line with a suggested fix, such as Nadia Haddad, who is free, taking Friday's early pharmacist shift",
+        "Does not rewrite or return a changed rota, since the person asked only for a check",
+        "Does not invent rules, staff or shifts that aren't in the files",
+        "Does not mention a script, a JSON file or the skill's name in the reply"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Rota the night team for next week from team.md. Non-interactive, no follow-up questions.",
+      "assertions": [
+        "Works out that two forklift drivers on five nights is 80 forklift hours, and Gus (40) and Hana (32) can give only 72",
+        "Says plainly that the week can't be fully covered with the forklift need, rather than publishing a rota that breaks a rule",
+        "Names the smallest change that would fix it, such as one more forklift-trained person or one night with a single driver agreed",
+        "Covers every picker need on all five nights",
+        "Gives the closest rota only if it is clearly marked with the one night that is short",
+        "Keeps everyone within 5 nights in a row and their maximum hours",
+        "Does not invent extra staff or change anyone's maximum hours"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-11-06",
+      "prompt": "Can you do next week's rota for the restaurant? Week of Mon 16 Nov. Availability export from the staff app is availability_export_wk47.csv (22 of us) and my notes, rules and the stuff carried over from last week are in rota_notes.txt. Shifts I need covering:\n\nShift       | Times        | Mon | Tue | Wed | Thu | Fri | Sat | Sun\nAM Kitchen  | 08:00-16:00  |  2  |  2  |  2  |  2  |  2  |  2  |  2\nPM Kitchen  | 15:00-23:00  |  2  |  2  |  2  |  2  |  3  |  3  |  3\nAM Floor    | 10:00-16:00  |  2  |  2  |  2  |  2  |  3  |  3  |  3\nPM Floor    | 16:00-23:30  |  3  |  3  |  3  |  3  |  4  |  4  |  4\nBar         | 17:00-00:00  |  1  |  1  |  1  |  1  |  2  |  2  |  1\n\nNeed it by tonight so I can post it, I'm on the pass all afternoon so won't be checking messages.",
+      "assertions": [
+        "Builds the rota, runs the roster check script on it, and presents a rota only after a run with no failures",
+        "Fills all 35 shifts at the headcounts in the table (81 person-shifts in total), with only chefs in the kitchen shifts and only bar-trained staff (Rory Byrne, Mei Tan, Priya Nair, Alex Duarte, Grace Holloway) on the bar",
+        "Has a keyholder on every 08:00 AM Kitchen and every Bar shift: Marta Kowalczyk opens Monday (Joel Adeyemi would be on his 6th day in a row), Joel opens Saturday and Sunday (Marta is on holiday), Rory closes Monday and Tuesday (Grace unavailable) and Grace closes Wednesday (Rory unavailable); Dani Okafor is never put on the bar",
+        "Applies last week's carry-over: Joel and Imani Clarke are not rostered on Monday (it would be a 6th consecutive day), and neither Priya (closed the bar at midnight Sunday, 10 h rest) nor Luca Ferri (PM Floor to 23:30 Sunday, 10.5 h rest) is on Monday's 10:00 AM Floor",
+        "Leaves nobody with less than 11 hours between shifts within the week: no PM Floor (ends 23:30) or Bar (ends 00:00) followed by a next-day AM Floor (10:00), and no PM Kitchen (ends 23:00) followed by a next-day AM Kitchen (08:00)",
+        "Keeps everyone within their max hours, one shift a day, and no more than 5 days in a row, and never on a day marked Unavailable, Holiday or outside an AM-only / PM-only limit; Ellis Grant (17) gets only AM Floor shifts and at most two of them (16 h max), and Sana Iqbal at most two (16 h max)",
+        "Shows the result as a week grid (people or shifts by day, Mon 16 to Sun 22) with each person's weekly hours",
+        "Does not invent staff, agency cover, extra shifts or rules that are not in the export, the notes or the prompt"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-11-06",
+      "prompt": "Can you check my rota for the 16th to the 29th before I send it out? It's rota_draft_16-29nov.csv (saved from my spreadsheet) and staff_list.csv has everyone's licences, contracts and leave. Rules: at least 11 hours between shifts, max 6 days in a row, nobody over their contracted hours in a week (weeks are Mon-Sun), 48 max by law. Every Early and every Late needs at least one FLT driver and one first aider on it, and so does the Sunday Early - the Saturday Mid doesn't need either. Headcounts are weekday Early 5, Late 4, Saturday Early 3 and Mid 2, Sunday Early 3. Everyone was off on Sunday the 15th for stocktake. Fix whatever you can and tell me what you can't.",
+      "assertions": [
+        "Runs the roster check script on the draft as supplied and reports what it fails before changing anything",
+        "Finds Owen Price double-booked on Sat 21/11, on both the Early (06:00-14:00) and the Mid (10:00-18:00)",
+        "Finds Ben Ashworth on the Late on Tue 24/11 (ends 22:00) and the Early on Wed 25/11 (starts 06:00): 8 hours' rest against the 11-hour rule",
+        "Finds Yasmin Khoury on 32 hours in week 2 (Mon 23 Early, Tue 24 Late, Wed 25 Late, Fri 27 Early) against her 24-hour contract",
+        "Says the Sun 29/11 Early has no FLT driver and none can be rostered: all four licence holders are out (Wojciech Nowak and Callum Reid on holiday, Abena Mensah does no Sundays, Delphine Moreau at a wedding); it leaves this as an open gap for the manager to decide (for example outside cover or moving the work) rather than rostering a licence holder who is on leave or calling it fixed",
+        "Does not flag correct entries as errors: Megan Doyle's six days in a row (Thu 19 to Tue 24) are within the limit, Late Friday into Mid Saturday (12 hours, Megan on 20-21/11 and Harpreet Gill on 27-28/11) is legal, and people at exactly their contracted hours are not over",
+        "Fixes the three fixable problems with named replacements who are available, keep each shift's headcount and FLT/first-aid cover, and break no other rule, then re-runs the check so only the Sunday 29 FLT gap remains",
+        "Does not invent staff, agency workers, licences or leave that are not in the two files"
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-11-07",
+      "prompt": "I run the claims helpline at Quillmoor Mutual and need the rota for the fortnight Mon 16 to Sun 29 Nov. The staff list is our PeopleHub export (peoplehub_staff_export.csv), availability is everything people have sent me (availability_notes.txt), and the shifts with what each one needs are in rota_template.csv. Rules: at least 11 hours between one shift ending and the next starting, nobody more than 5 days in a row, nobody over their contracted hours in a Mon-Sun week (no overtime budget this month), and one shift a day. Bethan, Tom and Lewis all worked Sat 14 and Sun 15 Nov (they were off Fri 13th), so count those days. Send me back the sheet filled in, plus a grid for each week with one row per person and their hours, that I can pin up in the office.",
+      "assertions": [
+        "Fills all 24 shifts in rota_template.csv to the headcount asked (3 on each weekday Early and Late, 2 on each Saturday and Sunday, 68 places in all), and every shift has at least one team leader on it (Bethan Morgan, Dariusz Kowal or Amara Osei)",
+        "Every weekday Late and both Saturday shifts have at least one Welsh speaker (Bethan Morgan, Rhys Llewellyn or Catrin Hughes)",
+        "Keeps to the availability notes: Jade Whitlock only on Earlies or Sundays, Catrin Hughes never on a Tuesday or Thursday, Lewis Grant only on Friday Lates and weekends, Megan Doyle not on 25-27 Nov, Kwame Mensah never on a Sunday, Priya Nair not on a Monday Late, Rhys Llewellyn not on the Wed 18 Nov Early, Sofia Marchetti not on Fri 20 Nov, Amara Osei never on a Wednesday, and Dariusz Kowal never on a Wednesday Late",
+        "Nobody does a Late (ends 21:30) followed by the next day's Early (starts 07:30), which would leave only 10 hours' rest, and nobody has two shifts on one day",
+        "Nobody goes over their contracted hours in either Mon-Sun week (for example Amara Osei, Catrin Hughes and Jade Whitlock 24h at most, Lewis Grant 16h at most, Priya Nair 32h at most), and the weekly hours on the grid match the shifts given",
+        "Nobody works more than 5 days in a row, counting 14-15 Nov for Bethan Morgan, Tom Ashdown and Lewis Grant (so none of them works every day from Mon 16 to Thu 19 Nov) and counting across the weekend between the two weeks",
+        "Returns rota_template.csv filled in with its columns unchanged, plus a grid for each week with one row per person and their weekly hours",
+        "Does not roster Gareth Penry, who is a Welsh-speaking team leader but is marked as a Leaver (31/10/2026) in the export, and does not invent staff, agency cover or overtime that is not in the input"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-11-07",
+      "prompt": "Here's next week's rota for Harbourside clinic (w/c 30 Nov), rota_wc_30nov.csv, straight out of our rota tool, with the staff list and my leave notes. Can you check it before I send it out? Rules: 11 hours off between shifts, no more than 5 days in a row, nobody over their contracted hours, nobody in two places at once, and Saturday minor injuries must have a prescriber on. Fix what you can and send me back the sheet in the same format, plus a list of who I need to tell about a change. If something can't be fixed, tell me straight.",
+      "assertions": [
+        "Flags that Ola Adebayo is down for both the Wed 2 Dec Early HCA shift (07:30-15:30) and the Wed phlebotomy clinic (08:00-12:00), and fixes it by giving the clinic to someone with phlebotomy who is free that morning (Nadia Fern, who does only the phlebotomy clinic and has hours to spare, fits)",
+        "Flags that Gwen Pryce has the Thu 3 Dec Late (ends 21:00) and then the Fri 4 Dec Early (starts 07:30), only 10.5 hours' rest, and fixes it without creating a new breach (for example Joel Ambrose or Lena Varga takes the Thursday Late, or Gwen and Marek Novak swap Friday shifts)",
+        "Flags that Hannah Brook is rostered 32 hours (Early Reception Mon to Thu) on a 24-hour contract, and moves one of those shifts to a receptionist who has spare hours and enough rest (Callum Reid on Thursday or Priti Desai on Monday or Tuesday work; Priti on Thursday does not, as she is on the Wednesday Late)",
+        "Flags that the Sat 5 Dec Minor Injuries prescriber slot has Fran Teale, who is not a prescriber, and says it cannot be filled from this staff list: the only prescribers are Joel Ambrose (Mon-Fri contract) and Lena Varga (on leave 4-6 Dec). It is left as a gap for the manager to decide on, not shown as fixed",
+        "Raises no false alarms: Gwen Pryce's five days in a row at exactly 40 hours, Aisha Rahman's Thursday Late followed by the Friday 08:00 phlebotomy clinic (exactly 11 hours), and Marek Novak's Friday Late followed by Saturday are all reported as fine or not raised",
+        "Returns rota_wc_30nov.csv in the same columns with only the rows that need to change altered and the changes marked, plus a list of who to tell, covering each person whose shifts changed",
+        "The returned rota, checked again, has no double-bookings, no rest gaps under 11 hours, nobody over contract and nobody past 5 days in a row, and the Saturday prescriber gap is the only problem left",
+        "Does not invent a bank or locum prescriber, or any member of staff who is not in staff_list.csv"
+      ]
+    },
+    {
+      "id": 8,
+      "held_out": "2026-11-07",
+      "prompt": "I run Brackenmoor Leisure Centre and I need the staff rota for the fortnight Mon 23 Nov to Sun 6 Dec 2026. Attached: staff_export.csv (everyone, contracted hours and current quals, from the HR system), availability_form_responses.csv (what people put on the availability form) and cover_requirements.csv (how many people each area needs on each shift and what they must hold). Rules: nobody goes over their contracted hours in either week (Mon-Sun) - there's no overtime budget, count the full shift length; one shift per person per day; at least 11 hours off between one shift ending and the next starting; no more than 6 days in a row. Please build the full two weeks and lay it out so I can pin it up in the staff room.",
+      "assertions": [
+        "Fills all 170 shift places implied by cover_requirements.csv for the fortnight (e.g. 3 lifeguards on every weekday early and late, 4 on every weekend AM and PM, 3 swim teachers on both Saturdays) with no place left empty",
+        "Every duty manager shift goes to one of the five staff holding the Duty Manager qualification (Fenella Orchard, Kwame Asante-Byrne, Marisol Penhale, Rhiannon Tull, Tadeusz Wren), every pool lifeguard place to an NPLQ holder, and every swim-lesson place to a Swim Teacher L2 holder",
+        "Nobody exceeds their contracted hours in either week: for example, the 16-hour casual lifeguards (Rory Venn, Theo Blackwood, Owen Garside) and Ifeoma Barrett (10 hours) stay at or under their totals",
+        "Nobody works a weekday Late lifeguard shift (ends 22:15) followed by a weekday Early (starts 06:00 or 06:15) the next day, and nobody goes from a Friday late (ends 22:00 or 22:15) to a Saturday AM shift (at most 9.75 hours' rest), since both break the 11-hour rest rule",
+        "Respects the availability form: no Rhiannon Tull shifts 30 Nov - 2 Dec, no Callum Feeney shifts 4 - 6 Dec, no weekday shifts starting before 15:00 for the casual lifeguards, Nikhil Rao only on Tuesdays, Thursdays and Saturdays, and no Sunday shifts for Fenella Orchard or Siobhan Daley",
+        "Nobody is given two shifts on the same day or more than 6 consecutive days",
+        "Presents the result as a week-by-week grid (one for each week) of staff against days that can be pinned up, and reports a check of the finished rota against the rules rather than just asserting it is fine",
+        "Does not invent staff, agency or relief workers not in staff_export.csv, and does not give anyone a qualification they do not hold in the export"
+      ]
+    },
+    {
+      "id": 9,
+      "held_out": "2026-11-07",
+      "prompt": "I'm the deputy manager at Quillmere House care home. Here's my draft rota for w/c 7 Dec (rota_export_07-13Dec.csv, exported from our rostering system), plus staff_list.csv and leave_and_restrictions.txt. Rules: every shift has a medication-trained senior, nobody over their contracted hours, one shift per person per day, 11 hours off between shifts, max 6 days in a row. Can you check it and fix whatever's wrong, then send the file back in the same layout so I can upload it straight back into the system tonight.",
+      "assertions": [
+        "Catches that Bronwen Tilsley is booked on both the Tue 08 Dec Early and the Late shift the same day (they overlap 14:00-14:30) and gives one of the two rows to someone else",
+        "Catches that Ravi Chaudhry works Fri 11 Dec Late (finishes 21:30) and then Sat 12 Dec Early (starts 07:00) - only 9.5 hours' rest - and fixes it",
+        "Catches that the Senior Carer on Thu 10 Dec Late is Bilal Qureshi, a Care Assistant who is not medication trained, and replaces them with a medication-trained senior",
+        "Catches that Patrice Delacroix is rostered for 25.5 hours against a 22.5-hour contract and brings them back within it",
+        "Flags the Sunday 13 Dec Night senior slot as one that cannot be covered from the staff list: Adaeze Moorcroft is on approved leave, Philippa Strand and Godfrey Achterberg are days only, Rosalind Ebo can't do Sunday nights, Declan Furness is on leave and Yasmin Okonedo-Hart can't do Sundays - and it does not leave Adaeze on it or put a non-medication-trained carer in the senior role",
+        "Every replacement it makes is itself legal: qualified, available per leave_and_restrictions.txt, within contracted hours, with 11 hours' rest either side and no second shift that day",
+        "Returns the rota in the same columns and row layout as rota_export_07-13Dec.csv (Date, Day, Shift, Start, End, Role, Staff ID, Staff Name), changing only the rows that needed fixing and listing each change",
+        "Does not invent agency or bank staff, names or staff IDs that are not in staff_list.csv to fill the Sunday night gap"
+      ]
+    }
+  ]
+}

@@ -8,6 +8,16 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.7.0 — 2026-11-07
+
+- **A new pack for event planners: `event-planner`, with `seating-plan` and `run-of-show`** ([RFC-0076](docs/rfcs/0076-three-profession-packs-and-locale-check.md)). Install it with `npx skilldrop-cli install --pack event-planner`.
+  - **`seating-plan`** seats your guest list against your rules: everyone seated once, no table over capacity, groups together, keep-apart pairs apart, and wheelchair users at accessible places. It hands back the plan in your own format, with meals and needs carried through and any conflict flagged.
+  - **`run-of-show`** turns an agenda into a timed running order. It checks for two things in one room, a person in two places, changeovers shorter than the room needs, and anything outside venue hours, then gives each room its own sheet.
+  - On fresh held-out evals the blind judges preferred each to plain Claude Code in at least half the pairs.
+- **`locale-check` in `experience-design` checks translations before a release.** It reads JSON, ARB, gettext, Android and iOS string files, and reports missing keys, broken placeholders and ICU messages, the plural forms each language needs, unbalanced tags and strings over a limit you give. It also reads every reordered placeholder for meaning, so a swapped "from" and "to" doesn't pass. It answers ship or don't ship first. On fresh held-out evals it was preferred in 3 of 4 and 2 of 4 pairs, and met 91% of checks against 78%.
+- **A new pack for anyone who rosters staff: `operations-manager`, with `shift-roster`.** Give it who's available, what each shift needs and your working-time rules. It builds the rota and checks it before you see it: every shift covered by the right people, and nobody double-booked, over their hours, short of rest between shifts or past the consecutive-day limit. Hand it your own sheet to fix and it comes back in the same columns, with every change listed. It was admitted on its third draft, with the blind judges preferring it in half the pairs on fresh held-out evals. Install it with `npx skilldrop-cli install --pack operations-manager`.
+- **`interior-designer` (furniture layouts) was built and measured, and doesn't ship.** In two drafts the judges preferred plain Claude Code's layouts. The RFC has the numbers.
+
 ## 1.6.0 — 2026-11-05
 
 - **A new pack for architects: `civil-architect`, with `floor-plan-layout`** ([RFC-0075](docs/rfcs/0075-civil-architect-pack.md)). Give it a room list and a footprint, and it places every room at its size, then draws a dimensioned SVG plan with door swings, windows, a scale bar and a north arrow. It shows you the plan only after a checker passes it: no overlapping rooms, nothing outside the footprint, every door on a wall its two rooms share, every room reachable from an entrance, every habitable room with a window. On held-out evals both blind judges preferred it to plain Claude Code (4 of 4 and 3 of 4 pairs). Install it with `npx skilldrop-cli install --pack civil-architect`.

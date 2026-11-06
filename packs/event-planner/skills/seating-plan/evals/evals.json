@@ -1,0 +1,134 @@
+{
+  "skill_name": "seating-plan",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Can you do the seating for our anniversary dinner? 30 guests, three round tables of 10, guest list attached (guests.csv). Table 1 is the only step-free one. Keep households together, and please keep Cal Reed and Ivy Lowe apart — long story.",
+      "assertions": [
+        "Seats all 30 guests, each exactly once, with no table over 10",
+        "Every household from the list sits at one table",
+        "Cal Reed and Ivy Lowe are at different tables",
+        "Rosa Vega, who uses a wheelchair, is at table 1",
+        "Leads with a table-by-table list of who sits where",
+        "Lists the dietary needs per table for the caterer",
+        "Saves a drawing of the room under a plain name in the working directory and names it",
+        "Does not mention scripts, JSON or the skill's own files in the reply"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our venue coordinator sent this table plan (table-plan.txt). Can you check it before we print place cards? Don't redo it, just tell me what's wrong and how to fix it.",
+      "assertions": [
+        "Finds that table 1 has 9 guests for 8 seats",
+        "Finds that Cal Reed and Ivy Lowe, who must not sit together, are both at table 1",
+        "Finds that Rosa Vega, who uses a wheelchair, is at table 2, which isn't step-free",
+        "Finds that the Ota household is split between tables 3 and 4",
+        "Gives a fix for each problem that moves as few guests as possible",
+        "Does not hand back a rewritten plan for the whole room",
+        "Does not invent guests, tables or requests that aren't in the file"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Seat the awards dinner (brief.txt, guests.csv). Northwind asked for all 12 of their people at one table. Non-interactive, no follow-up questions.",
+      "assertions": [
+        "Says plainly that 12 people can't sit at one 10-seat table",
+        "Proposes the smallest change, such as splitting Northwind across two neighbouring tables or a larger table if the venue has one, and says which",
+        "Seats every other company's guests together by company",
+        "Seats every guest exactly once, with no table over 10",
+        "Does not quietly seat 12 at a table of 10 or drop guests to make it fit",
+        "States any assumption it made, tagged"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-11-06",
+      "prompt": "Hi! Can you do our seating plan? We're getting married at Hollins Barn on 12 December. The RSVP export from our wedding website is rsvp_export.csv and all my notes (who can't sit together etc) are in seating_notes.txt. The barn has a top table for 8 and 12 round tables of 10. I need to send the plan to the venue on Monday so please just do the whole thing.",
+      "assertions": [
+        "Writes the plan, runs the seating check script on it, and shows the final chart only after a run with no failures",
+        "Seats exactly the 118 guests who accepted (126 rows on the export, 8 declined): none of Hamish and Lorna Petrie, Ana and Paulo Reis, Moira and Iain Duncan, Felix Brandt or Kofi Osei appears, and the rest of Kofi's party (Martin, Abigail and Efua Osei) is still seated",
+        "Puts exactly the 8 named people on the top table (Ellie Marsh, Rob Achterberg, Alan and Sue Achterberg, Kit and Dana Mwangi, Jess and Sam Okoro), with the other 110 at the 12 rounds and no round over 10",
+        "Keeps every RSVP party at one table, and seats the 10 uni guests (parties 14, 17, 21 and 27) together on one table",
+        "Seats Edna Price, Joseph Achterberg and Priya Sandhu (wheelchair users) only at tables 1-4, with no more than two wheelchair users at any table; this puts the uni table among tables 1-4, and Bev and Neil Talbot sit at Edna's table with the rest of her party",
+        "Keeps all five keep-apart pairs at different tables: Gordon Marsh / Bev Talbot, Callum Price / Fern Okafor, Darren Hale / Lee Hale, Nigel Fairbairn / Martin Osei, Tasha Quinn / Imogen Rowe (Callum is in Edna's party, so Fern cannot be at that table)",
+        "Draws a room plan with the top table and tables 1-12 laid out, each labelled with its number and the names seated at it, showing tables 1-4 as the step-free ground-floor tables",
+        "Does not invent guests, plus-ones, tables or extra seats that are not in the export, the notes or the prompt"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-11-06",
+      "prompt": "Final table plan for Thursday's awards dinner is table_plan_v3.csv. The registrations export is registrations.csv and my notes are organiser_notes.txt. Can you check it before it goes to the venue tomorrow morning and fix anything that's wrong? Venue is 12 rounds of 8, and tables 9-12 are up on the mezzanine.",
+      "assertions": [
+        "Runs the seating check script on the plan as supplied and reports what it fails before changing anything",
+        "Finds Table 1 has 10 people (all of Halvard Freight) against a hard maximum of 8, and says the sponsor's request for all ten at one table cannot be met; it seats 8 at Table 1 and the other 2 at a main-floor table with room (Table 2 has 2 empty seats) and flags this as something for the organiser to raise with Halvard, rather than leaving 10 at Table 1 or saying the request is met",
+        "Finds Priyanka Desai seated twice, at Table 7 and Table 12, and keeps her in only one seat",
+        "Finds Duncan Pell at Table 11 with Moira Ashgrove despite the keep-apart note, and moves one of them",
+        "Finds Rachel Vint, a wheelchair user, at Table 12 on the mezzanine and moves her to a main-floor table (1-8) with a free seat",
+        "Does not flag correct entries as errors: Corvane Haulage (Table 3) and Brindle Logistics (Table 6) are already apart, Graham Oduya is already on the main floor at Table 8, and tables with exactly 8 are full, not over",
+        "Gives a corrected plan that seats all 92 registered guests exactly once with every table at 8 or fewer, and re-runs the check so only the Halvard split remains",
+        "Does not invent guests, a 13th table, extra chairs or a larger table the venue has not offered"
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-11-07",
+      "prompt": "Can you do the seating plan for the Lantern Hill Hospice Winter Gala on Sat 12 Dec? The ticket export is ticket_export.csv, my notes (top table, sponsors and who has to be kept apart) are in bridgets_notes.txt, and the venue's floor plan notes are in venue_floorplan_notes.txt. I need something I can give the venue: a list by table number with the names and the dietary counts for each table, and a room plan with the names at each table. And an A-Z list of guests with their table numbers for the welcome desk, please.",
+      "assertions": [
+        "Seats all 128 guests (the 116 in the ticket export plus the 12 top-table guests in the notes) exactly once, with no table over its places: 12 at Table 1 and 10 at each of Tables 2-13",
+        "Table 1 holds exactly the 12 top-table people listed in bridgets_notes.txt",
+        "Everyone on an order sits at one table, and the linked orders share a table as asked: the Okonjo order (1016) with the Ferris order (1019), Sandra Marsh's order (1024) with Pauline Delaney's (1027), and Carol Pike (1120) with Joanne and Martin Pike (1068)",
+        "The five keep-apart pairs are all at different tables: Lucy and Mark Varden, Imogen Hale and Clive Barraclough, Graham Pemberton and Nigel Ashworth, Liam Kettlewell and Sienna Sugden, and Esme Wainwright and Yasmin Sugden",
+        "The three wheelchair users sit at tables 5, 9 or 13, no more than 2 to a table: Gordon Haverstock's Quernstone Freight table on Table 5 (the only front-row table with level access), and the Pemberton and Ashworth orders on 9 and 13, one each, since Graham Pemberton and Nigel Ashworth must be kept apart",
+        "The three sponsor tables (Quernstone Freight, Halberd & Vey Solicitors, Tindale Glassworks) are all on the front row, Tables 2-5",
+        "Gives the venue a table-by-table list with dietary counts per table that add up to the totals across all 128 guests (23 vegetarian, 7 vegan, 6 gluten free, 2 severe nut allergy, including the top table), plus a room plan with names at each table and an A-Z list with table numbers",
+        "Does not invent guests, a 14th table or extra chairs, and does not give anyone a dietary need or access need that is not in the export or the notes"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-11-07",
+      "prompt": "This is my seating plan for the Year 13 prom (prom_seating_v3.csv) - the venue prints the place cards straight from it, so it has to be right. The ticket list with everyone's friendship group and access needs is ticket_list.csv, the head of year's keep-apart list is keep_apart_CONFIDENTIAL.txt, and venue_info.txt has the hall layout. Can you check it, fix what's wrong and send it back in the same format, plus a plan of the hall with names on each table I can put on the screen at the door? If there's anything you can't fix, tell me what I need to decide.",
+      "assertions": [
+        "Flags that Table 9 has 9 people against 8 chairs, and fixes it by moving one person who is not in a friendship group (Preston Zielinski or Tegan Ahmed) to a table with a spare seat, without splitting any friendship group",
+        "Flags that Sana Kerr and Lily-Mae Oakes, who are on the keep-apart list, are both on Table 6, and fixes it by moving one of their friendship groups (G17 or G18) to another table, whole, without putting any other keep-apart pair together",
+        "Flags that Kieran Doherty, a wheelchair user, is on Table 11, which is down the steps, and moves him with his whole group (G08, 6 people) to Table 1 or 2 (for example by swapping G08 with G14 on Table 2)",
+        "Says that friendship group G03 (10 students) cannot sit together because no table seats more than 8 and extra chairs aren't allowed, so it stays split (best kept on neighbouring tables, as Tables 3 and 4 are now) and is put to the organiser as a decision rather than shown as fixed",
+        "Raises no false alarms: Amira Saleh on Table 1, the staff table (13) with 6 people, and keep-apart pairs on neighbouring but different tables (Rosie Sykes on 8, Callum Hartley on 9) are not reported as problems",
+        "The returned plan seats all 100 people once each, has no table over 8, has every keep-apart pair on different tables, has both wheelchair users on Table 1 or 2 and all six staff on Table 13, and splits no friendship group other than G03",
+        "Returns prom_seating_v3.csv in the same Table, Seat, Name layout, plus a hall plan with the names at each table",
+        "Does not invent students, staff, a 14th table or a 9th chair at any table"
+      ]
+    },
+    {
+      "id": 8,
+      "held_out": "2026-11-07",
+      "prompt": "I'm organising Velmora Analytics' kick-off dinner. Can you do the seating plan? Attached: registrations_export.csv (straight out of the event booking system), room_layout.md (the venue's floor plan and rules) and seating_requests.txt (the rules HR and leadership gave me). I need every guest at a table and something I can hand to the venue.",
+      "assertions": [
+        "Seats exactly 144 guests: the export has 146 rows, but Elowen Larkspur and Xanthe Oakshott are each registered twice, and each is seated once",
+        "No table has more than 10 people and no extra table or 11th cover is added",
+        "All four wheelchair users (Ulric Greythorn, Isolde Eastwick, Fintan Oakshott, Kalinda Pilbeam) are at tables 13, 14 or 15, with no more than two wheelchair users at any one table",
+        "Platform Engineering (10 including plus-ones, among them Ulric Greythorn) and Leeds Support (9 including plus-ones, among them Isolde Eastwick) are each seated whole at one of the accessible tables 13-15",
+        "Every sit-together group in seating_requests.txt is at a single table: the six named teams, each client party with its account manager, and every plus-one with the person who brought them",
+        "Every keep-apart pair is at different tables, including the competing clients Yusuf Ravensworth / Chidi Fujimoto and Noor Drummond / Bram Quarrie",
+        "Draws the plan as the room: the 15 tables in the venue's layout and numbering with the stage, and the names at each table, and reports a check of the finished plan against the rules",
+        "Does not invent names for the three unnamed plus-ones (registered only as guests of Thaddeus Underhill, Rufaro Yelverton, Zelda Abernethy) and does not seat anyone who is not in the export"
+      ]
+    },
+    {
+      "id": 9,
+      "held_out": "2026-11-07",
+      "prompt": "I've done the table plan for my colleague Maureen's retirement party (table_plan.csv). The guest list is guest_list.csv and all the rules and Maureen's wishes are in notes.txt. Can you check it, sort out anything that's wrong and send it back ready to print? I'm printing the table cards first thing tomorrow.",
+      "assertions": [
+        "Catches that Hamish Moreau appears twice (Table 6 and Table 4) and leaves them at one table only",
+        "Catches that Table 2 has 11 people at a table for 10 and brings it back to 10 or fewer",
+        "Catches that Noor Underhill and Lysander Dunmore are at the same table (Table 8) despite the keep-apart note and separates them",
+        "Catches that Fintan Rendall, a wheelchair user, is at Table 9 on the stepped terrace and moves them to a step-free table (1-7)",
+        "Says plainly that Maureen's wish to have both Graham Petherick and Lorraine Petherick on the top table cannot be met because they are on the keep-apart list, takes one of them off Table 1 or asks which to keep, and does not present the plan as meeting every request",
+        "The returned plan seats all 83 guests on guest_list.csv exactly once, keeps every couple and family together and puts no one at a terrace table who uses a wheelchair",
+        "Returns a printable table plan (each table with its guests' names) and lists the changes it made, leaving guests who were already correctly seated where they were",
+        "Does not invent guests, seats or tables not in the files (no Table 10, no extra chair at the top table)"
+      ]
+    }
+  ]
+}

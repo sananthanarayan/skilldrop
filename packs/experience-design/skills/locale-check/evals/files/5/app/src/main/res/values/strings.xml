@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Parcelo</string>
+    <string name="tab_home">Home</string>
+    <string name="tab_track">Track</string>
+    <string name="tab_send">Send</string>
+    <string name="tab_account">Account</string>
+    <string name="action_continue">Continue</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_retry">Try again</string>
+    <string name="action_save">Save</string>
+    <string name="action_scan">Scan label</string>
+    <string name="action_share">Share</string>
+    <string name="login_title">Sign in to Parcelo</string>
+    <string name="login_email_hint">Email address</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_forgot">Forgot password?</string>
+    <!-- %1$s = first name -->
+    <string name="greeting">Hi %1$s</string>
+    <string name="track_title">Track a parcel</string>
+    <string name="track_hint">Enter tracking number</string>
+    <!-- %s = order reference, e.g. PX-48213 -->
+    <string name="order_status_title">Order %s</string>
+    <string name="status_in_transit">In transit</string>
+    <string name="status_out_for_delivery">Out for delivery</string>
+    <string name="status_delivered">Delivered</string>
+    <!-- %1$s = time, %2$s = date -->
+    <string name="status_delivered_at">Delivered at %1$s on %2$s</string>
+    <string name="status_exception">Delivery problem</string>
+    <!-- %1$s = date -->
+    <string name="eta_label">Expected %1$s</string>
+    <string name="delivery_window_note">Your courier will text you a one-hour window on the morning of delivery.</string>
+    <string name="send_title">Send a parcel</string>
+    <string name="send_recipient_hint">Recipient name</string>
+    <string name="send_address_hint">Delivery address</string>
+    <!-- %1$.1f = weight in kg -->
+    <string name="send_weight_label">Weight: %1$.1f kg</string>
+    <!-- %1$s = formatted price -->
+    <string name="send_price">Price: %1$s</string>
+    <!-- %1$s = origin city, %2$s = destination city -->
+    <string name="send_confirm_route">Send this parcel from %1$s to %2$s?</string>
+    <string name="send_confirm_button">Pay and send</string>
+    <!-- %1$s = date, %2$s = start time, %3$s = end time -->
+    <string name="pickup_scheduled">Pickup booked for %1$s between %2$s and %3$s</string>
+    <string name="account_title">Your account</string>
+    <string name="account_addresses">Saved addresses</string>
+    <string name="account_payment">Payment methods</string>
+    <string name="account_notifications">Notifications</string>
+    <string name="account_language">Language</string>
+    <string name="account_sign_out">Sign out</string>
+    <!-- %1$s = last four digits -->
+    <string name="card_ending">Card ending in %1$s</string>
+    <string name="error_network">No connection. Check your network and try again.</string>
+    <string name="error_address">We could not find that address.</string>
+    <!-- %1$d = max weight -->
+    <string name="error_weight">Parcels can weigh up to %1$d kg.</string>
+    <string name="support_title">Help</string>
+    <string name="support_chat">Chat with us</string>
+    <!-- %1$s = courier name -->
+    <string name="rating_prompt">How was your delivery from %1$s?</string>
+    <!-- %1$s = sender name, %2$s = tracking link -->
+    <string name="share_tracking">Track my parcel from %1$s: %2$s</string>
+    <string name="notification_channel_updates">Delivery updates</string>
+    <string name="support_email" translatable="false">help@parcelo.example</string>
+    <plurals name="parcels_in_transit">
+        <item quantity="one">%d parcel on its way</item>
+        <item quantity="other">%d parcels on their way</item>
+    </plurals>
+    <plurals name="photos_selected">
+        <item quantity="one">%d photo selected</item>
+        <item quantity="other">%d photos selected</item>
+    </plurals>
+    <plurals name="days_until_return">
+        <item quantity="one">%d day left to return</item>
+        <item quantity="other">%d days left to return</item>
+    </plurals>
+</resources>

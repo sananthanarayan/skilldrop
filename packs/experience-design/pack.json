@@ -58,6 +58,11 @@
         "decide": "Which fix becomes committed work."
       },
       {
+        "skill": "locale-check",
+        "you_do": "Hand over the source strings and the translated files before release.",
+        "you_get": "Whether the release is safe to ship, and each failure by locale with the corrected string or a note for the translator."
+      },
+      {
         "skill": "doc-critique",
         "you_do": "Run it on any of the specs before you share them.",
         "you_get": "A verdict and severity-tagged findings with a fix for each."

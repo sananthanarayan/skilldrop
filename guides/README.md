@@ -101,6 +101,8 @@ A how-to and a reference page for every pack, generated from the pack's own file
 | Skill engineering | [Use the Skill engineering pack](how-to/packs/use-the-skill-engineering-pack.md) | [Skill engineering pack reference](reference/packs/pack-skill-engineering.md) |
 | Job applications | [Use the Job applications pack](how-to/packs/use-the-career-pack.md) | [Job applications pack reference](reference/packs/pack-career.md) |
 | Civil architect | [Use the Civil architect pack](how-to/packs/use-the-civil-architect-pack.md) | [Civil architect pack reference](reference/packs/pack-civil-architect.md) |
+| Operations manager | [Use the Operations manager pack](how-to/packs/use-the-operations-manager-pack.md) | [Operations manager pack reference](reference/packs/pack-operations-manager.md) |
+| Event planner | [Use the Event planner pack](how-to/packs/use-the-event-planner-pack.md) | [Event planner pack reference](reference/packs/pack-event-planner.md) |
 <!-- pack-guides:end -->
 
 ### Per skill
@@ -120,7 +122,7 @@ One how-to for every skill: how to install it, the requests that route to it, wh
 | AI engineering | [agent-adoption-stage](how-to/skills/use-agent-adoption-stage.md), [agent-budget](how-to/skills/use-agent-budget.md), [agent-config-review](how-to/skills/use-agent-config-review.md), [agent-incident-response](how-to/skills/use-agent-incident-response.md), [agent-loop-design](how-to/skills/use-agent-loop-design.md), [agent-threat-model](how-to/skills/use-agent-threat-model.md), [ai-adoption-rollout](how-to/skills/use-ai-adoption-rollout.md), [ai-readiness-assessment](how-to/skills/use-ai-readiness-assessment.md), [ai-usage-policy](how-to/skills/use-ai-usage-policy.md), [ai-use-case-triage](how-to/skills/use-ai-use-case-triage.md), [judge-audit](how-to/skills/use-judge-audit.md), [llm-eval-harness](how-to/skills/use-llm-eval-harness.md), [mcp-pairing](how-to/skills/use-mcp-pairing.md), [subagent-design](how-to/skills/use-subagent-design.md) |
 | API builder | [eval-harness-generator](how-to/skills/use-eval-harness-generator.md), [prompt-caching-advisor](how-to/skills/use-prompt-caching-advisor.md), [token-budget-estimator](how-to/skills/use-token-budget-estimator.md), [tool-use-schema-writer](how-to/skills/use-tool-use-schema-writer.md) |
 | Converters | [file-to-markdown](how-to/skills/use-file-to-markdown.md), [md-to-confluence](how-to/skills/use-md-to-confluence.md), [md-to-docx](how-to/skills/use-md-to-docx.md), [md-to-pptx](how-to/skills/use-md-to-pptx.md), [md-to-xlsx](how-to/skills/use-md-to-xlsx.md) |
-| Experience design | [content-design](how-to/skills/use-content-design.md), [design-system-spec](how-to/skills/use-design-system-spec.md), [information-architecture](how-to/skills/use-information-architecture.md), [service-blueprint](how-to/skills/use-service-blueprint.md), [ux-writing](how-to/skills/use-ux-writing.md) |
+| Experience design | [content-design](how-to/skills/use-content-design.md), [design-system-spec](how-to/skills/use-design-system-spec.md), [information-architecture](how-to/skills/use-information-architecture.md), [locale-check](how-to/skills/use-locale-check.md), [service-blueprint](how-to/skills/use-service-blueprint.md), [ux-writing](how-to/skills/use-ux-writing.md) |
 | Research | [hypothesis-comparison](how-to/skills/use-hypothesis-comparison.md), [research-plan](how-to/skills/use-research-plan.md), [source-synthesis](how-to/skills/use-source-synthesis.md) |
 | Trackers | [backlog-triage](how-to/skills/use-backlog-triage.md), [team-status-report](how-to/skills/use-team-status-report.md), [tracker-brief-sync](how-to/skills/use-tracker-brief-sync.md) |
 | Data and analytics | [dashboard-spec](how-to/skills/use-dashboard-spec.md), [sql-review](how-to/skills/use-sql-review.md) |
@@ -130,6 +132,8 @@ One how-to for every skill: how to install it, the requests that route to it, wh
 | Skill engineering | [skill-author](how-to/skills/use-skill-author.md), [skill-review](how-to/skills/use-skill-review.md) |
 | Job applications | [application-form-answers](how-to/skills/use-application-form-answers.md), [cover-letter](how-to/skills/use-cover-letter.md), [job-fit-analysis](how-to/skills/use-job-fit-analysis.md), [resume-tailor](how-to/skills/use-resume-tailor.md), [role-shortlist](how-to/skills/use-role-shortlist.md) |
 | Civil architect | [floor-plan-layout](how-to/skills/use-floor-plan-layout.md) |
+| Operations manager | [shift-roster](how-to/skills/use-shift-roster.md) |
+| Event planner | [run-of-show](how-to/skills/use-run-of-show.md), [seating-plan](how-to/skills/use-seating-plan.md) |
 <!-- skill-guides:end -->
 
 ## explanation

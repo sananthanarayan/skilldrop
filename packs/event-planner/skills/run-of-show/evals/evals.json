@@ -1,0 +1,103 @@
+{
+  "skill_name": "run-of-show",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's the summit agenda (agenda.md). Turn it into a run of show the crew can work from, and sort out any clashes.",
+      "assertions": [
+        "Gives a running order with start, end, room and who's needed for every item, sorted by time",
+        "Finds that Dr. Lena Ortiz is due in Room 2 at 09:45, the minute her keynote ends, with a 5-minute walk, and moves one item to fix it",
+        "Finds that the keynote's 20 minutes of stage setup collides with registration if registration is on the main stage, or states where registration is",
+        "Finds that the main stage runs items back to back with less than its 15-minute turnaround (the break after the panel, the talk after the break, lunch, and the lightning talks), and re-times them",
+        "Finds that closing at 16:45 for 60 minutes runs past the published 17:30 finish",
+        "Lists every change it made, and why",
+        "Saves a timeline drawing under a plain name and names it",
+        "Does not mention scripts, JSON or the skill's own files in the reply"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Can you check this schedule for clashes (schedule.csv)? It's going to the printer tonight. Just tell me what's wrong — don't redo it.",
+      "assertions": [
+        "Finds that June Park is booked in Hall A's investor update and Hall B's roadmap deep dive at once, from 10:15 to 10:30",
+        "Does not report the 11:30 Q&A as a clash: Mo Reyes and June Park are both free by then",
+        "Notes that Hall A runs straight from one item into the next at 09:30, 10:30 and 10:40 with no changeover, and says the room needs time or states the turnaround it assumed",
+        "Gives one fix per clash that moves as little as possible",
+        "Does not hand back a rewritten schedule",
+        "Does not invent rooms, people or venue hours not in the file"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Make the minute-by-minute for the wedding day from these notes (notes.txt). Non-interactive, no follow-up questions.",
+      "assertions": [
+        "Makes every part of the day an item with a start and end, including drinks, speeches and cake",
+        "Gives the band its hour of setup and soundcheck in the barn before 19:30, while dinner is in the same room, and flags that as a clash or resolves it",
+        "Keeps everything in the barn within its 23:30 close",
+        "States the assumptions it made (turnaround, durations it had to guess), tagged",
+        "Leads with the running order as a table",
+        "Does not invent suppliers, names or times not implied by the notes"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-11-06",
+      "prompt": "Can you turn our sessions into a run of show for Fieldwork 2026 (Tue 1 Dec, Kelso Exchange)? sessions_export.csv is everything accepted from the CFP tool, 24 sessions. venue_and_crew.txt has the rooms, turnaround times, the fixed bits of the day and the AV crew, and speaker availability is in the notes column of the export. I need the minute-by-minute for every room that I can hand to the crew and the room hosts.",
+      "assertions": [
+        "Writes the run of show, runs the run-of-show check script on it, and shows it only after a run with no failures, with a timeline per room (Main Hall, Birch Room, Cedar Room, Workshop Lab)",
+        "Schedules all 24 sessions from the export exactly once, each with its start, end, room and who is needed (speakers or chair plus that room's AV tech), at the length given in the export",
+        "Keeps the fixed parts of the day: opening keynote 09:00-09:45 and closing keynote 17:00-17:45 in the Main Hall with nothing else running, nothing in any room during lunch (12:30-13:30) or the afternoon break (15:15-15:35), and everything inside the 08:00-18:30 venue hours",
+        "Never has two things in one room at once, and leaves at least each room's turnaround between sessions (Main Hall 15 min, Birch and Cedar 10 min, Workshop Lab 20 min)",
+        "Never has anyone in two places at once, with at least 10 minutes between a person's sessions in different rooms: Ines Varga (FW-09, FW-22 and the FW-03 panel), Hollis Grant (both panels), Sven Aaltonen and Priti Raman (their talks and the FW-23 workshop), and the other speakers with two sessions",
+        "Honours speaker availability: the FW-03 panel and FW-12 (Kofi Mensah-Baird) start at or after 12:15, FW-04 and the FW-06 panel (Lena Ostrowski) end by 14:30, FW-13 (Odile Fournier) starts at 11:00 or later, and FW-14 (Jarrah Whitcombe) ends by 16:00",
+        "Puts each session in a room that suits its request and fits its expected attendance: Main Hall requests in the Main Hall, the three workshops in the Workshop Lab, and FW-09 (72), FW-11 (66) and FW-17 (63) in the Birch Room, not the 60-seat Cedar Room",
+        "Does not invent sessions, speakers, crew or breaks that are not in the export or the venue notes"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-11-06",
+      "prompt": "This is the running order for Anouk and Callum's wedding at Hollow Farm on Saturday 21 November (runsheet_v4.csv, from our planning sheet). Everything the venue and suppliers have told us is pasted into venue_and_suppliers.txt. Can you check it for clashes and anything that breaks the venue's rules, and fix what you can? I'm meeting the couple first thing Monday so I need to know what I have to ask them about.",
+      "assertions": [
+        "Runs the run-of-show check script on the runsheet as supplied and reports what it fails before changing anything",
+        "Finds the Coach House booked twice at once: Groom prep photos 12:15-12:45 overlaps the Caterer staff briefing 12:30-13:00",
+        "Finds Wren (photographer) booked in two places: Couple portraits in the Orchard 16:15-16:45 and Family group photos on the Front Lawn 16:30-17:00",
+        "Finds the Barn turnaround after the ceremony too short: the ceremony ends 15:45 and guests are called back to their seats at 17:00 (75 minutes, and the flip row itself allows only 60) against the venue's 90-minute minimum",
+        "Finds Band set 3 (23:00-23:45) runs past the 23:00 amplified-music limit, and shows it can't be fixed by moving things: with the 15:00 ceremony, 90-minute flip, 15-minute call to seats, 2-hour meal, 45-minute speeches after the meal, 45-minute dance-floor flip and 10-minute first dance, the band can't start before about 21:10, leaving about 110 minutes, room for two 45-minute sets and one break but not three",
+        "Puts the band problem to the couple as their decision (for example two sets, shorter sets agreed with the band, or speeches moved), and does not leave a set running past 23:00 or cut any venue turnaround below its minimum",
+        "Does not flag correct entries as errors: the 45-minute dance-floor flip (20:00-20:45) meets the venue minimum, and the Orchard, Front Lawn and Terrace need no turnaround",
+        "Does not invent suppliers, times or permissions that are not in the runsheet or the notes, such as a later music licence or a band agreement to shorter sets"
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-11-07",
+      "prompt": "Kettleby Folk & Word Festival is Sat 6 March. Here's the acts list from our booker (acts_from_booker.csv) and the rooms, hours and crew from the venue (venue_rooms_and_crew.txt). Can you build the running order for the day, with every set's start, end, room and who's needed, and check it for clashes before it goes out? I need a run sheet for each room's stage manager (CSV is fine) and a timeline of the day for each room that I can stick on the production office wall.",
+      "assertions": [
+        "Schedules all 25 items in the booker's list once each, in their booked rooms and at their booked lengths (7 in the Main Hall, 9 in the Studio, 5 in the Library Room, 4 on the Courtyard Stage), each with a start, an end and who's needed",
+        "No two items overlap in one room, and every changeover is at least the room's turnaround: 30 min in the Main Hall, 15 in the Studio and on the Courtyard Stage, 10 in the Library Room",
+        "Everything sits inside room hours: nothing in the Main Hall before 14:00 and nothing after the 23:00 curfew, the Library Room finished by 17:30, the Courtyard Stage within 12:00-15:30, and the Studio within 11:30-22:00 with the Sea Fret film last",
+        "Keeps the fixed points: The Marrowbone Few on at 21:30 (so 21:30-22:45), Storytime with Mabel Quist at 12:00-12:45, the Folk Radio Kettleby broadcast at 18:00-19:00, Hazel & the Hum off by 19:00 and Ollie Brandt done by 14:30",
+        "No one is booked in two places: Tamsin Ellery (Corvid Lane and her solo set), Dev Ashraf (hosting the slam and his Courtyard set), Juniper Strand (Studio set and Library workshop) and Ruth Penhaligon, the BSL interpreter (Writing the Land, the poetry slam, Kit Harrow), each have at least 15 minutes between rooms",
+        "Notes how tight three rooms are: the Library Room (325 of 330 minutes with changeovers), the Courtyard Stage (205 of 210) and the Main Hall before the headliner (415 of the 420 minutes from 14:00 to 21:00) each have only 5 minutes to spare, so they have to run back to back from opening",
+        "Delivers a run sheet per room with start, end, item and who's needed (performers, that room's crew, and Ruth where a session is BSL interpreted), plus a timeline drawn for each room",
+        "Does not invent acts, crew, a second interpreter, extra rooms or different set lengths that are not in the input"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-11-07",
+      "prompt": "This is our draft run of show for the Lumio Fold 2 launch on Thu 21 Jan at the Granary Rooms (runsheet_draft_v4.csv). Can you check it before it goes to the venue and the AV company? The venue rules and our fixed points are in venue_and_fixed_times.txt. Fix what you can, send it back as the same sheet, and give me a short list of anything I need to decide.",
+      "assertions": [
+        "Flags that the Developer breakout (11:00-11:45) and the Retail partners briefing (11:30-12:15) are both in Studio B at once, and moves the briefing so neither speaker clashes (for example to 11:55-12:40, after the 10-min turnaround and before lunch)",
+        "Flags that Imran Kestrel is down for the keynote in the Hall (10:00-10:40) and the Tech Weekly interview in the Green Room (10:30-10:50) at once, and moves the interview to a free Green Room slot at least 10 minutes after he leaves the Hall",
+        "Flags that the Hall has only 10 minutes between the keynote (ends 10:40) and the Product demo (10:50) against the 20-min reset, and moves the demo to 11:00-11:40, which still leaves 20 minutes before the 12:00 panel and 10 minutes before Ana Ruiz's 11:50 interview",
+        "Flags that Closing & customer awards (17:45-18:45) runs past the 18:00 deadline for clearing the Hall, and explains that moving things can't fix it: after the fixed livestream the Hall needs 225 minutes (three sessions and three 20-min resets) but only 180 are left, the morning is full once the demo moves (125 of 125 minutes between the keynote and lunch), lunch and the livestream are fixed, and Studio B seats only 80. So about 45 minutes have to be cut, and that goes on the list of decisions",
+        "Does not quietly shorten or drop a session in the returned sheet to make the Hall fit; any cut is put to the user as a choice",
+        "Raises no false alarms: the 20-min Hall resets in the afternoon, the 5-min Green Room turnarounds (15:35 to 15:40, 16:00 to 16:05), the Studio B 15-min gaps and Imran's 15:15 interview after the livestream are not reported as problems",
+        "Returns runsheet_draft_v4.csv in the same columns with the changed rows marked, plus a short list of decisions",
+        "Does not invent speakers, rooms, crew or new fixed times that are not in the input"
+      ]
+    }
+  ]
+}
