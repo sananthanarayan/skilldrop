@@ -1,7 +1,7 @@
 ---
 rfc: 0014
 title: Interop with the agentbundle ecosystem
-status: superseded-in-part   # outbound export retired by RFC-0027; inbound reader still live
+status: implemented
 date: 2026-07-28
 author: sananthanarayan
 ---
@@ -82,6 +82,9 @@ Anti-patterns this bans: (1) hand-editing `.claude-plugin/*.json` (drift-guarded
   deferred rather than rushed.
 
 ## Decision
+
+> **Implemented, then narrowed.** The inbound reader (`--from` an agentbundle-style catalogue) shipped and is still live. The outbound export was retired by [RFC-0027](0027-retire-agentbundle-export.md).
+
 
 Adopt **Path C now, Path A never, Path B via a generated view.** The clarified ask is *shared
 schema, bidirectional, no code coupling* — agentbundle can set skilldrop as a catalogue source and

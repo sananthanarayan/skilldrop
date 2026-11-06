@@ -58,7 +58,6 @@ Bullets say what a user can now do, not which files moved.
   - **`provision`** (infra-as-code) takes a Terraform change from module to apply. The real plan is reviewed against a scope written before the plan existed (G13), and the person running apply confirms it's the plan that was reviewed (G13.1). The loop never runs `apply` itself.
   - **`clarify`** (experience-design) rewrites a page and its form from the complaints, then blueprints the service behind them. The blueprint shows which complaints new words can't stop, and sends those to the service's owner (G14).
 - **Benchmark a loop against its own skills.** `python3 run_bench.py --backend claude-cli --loops <name|all>` runs each loop eval three ways: the loop, its stage skills without the loop, and plain Claude Code. Blind judges then say whether the loop's order and gates add anything its skills don't ([RFC-0070](docs/rfcs/0070-benchmarking-loops.md)). The four new loops ship with held-out evals written blind from their descriptions; no loop has been measured yet.
-- **`figure-check` was built and is not shipped.** It traced every figure in a draft to its source. On held-out evals it met more checks than plain Claude Code, but the judges preferred the plain agent's replies in both drafts it went through ([RFC-0071](docs/rfcs/0071-figure-check.md)).
 
 ## 1.2.0 — 2026-10-27
 

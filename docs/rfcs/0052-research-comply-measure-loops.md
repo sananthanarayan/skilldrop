@@ -1,7 +1,7 @@
 ---
 rfc: 0052
 title: Research, comply and measure loops
-status: accepted
+status: implemented
 date: 2026-10-19
 author: sanjay-ananth
 ---
@@ -66,4 +66,4 @@ as well without it. The definition happens in `spec`, and its owner confirms it 
 
 ## Decision
 
-Accepted. Shipped in 0.16.29.
+Implemented in 0.16.29.

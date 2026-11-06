@@ -1,7 +1,7 @@
 ---
 rfc: 0028
 title: Loops as a primitive
-status: accepted
+status: implemented
 date: 2026-09-25
 author: sananthanarayan
 ---
@@ -106,7 +106,7 @@ a loop sequences skills and makes no model call of its own, so it carries no tie
 
 ## Decision
 
-Accepted 2026-09-25. Loops ship as the third primitive with `build` and `ship-a-draft`;
+Accepted 2026-09-25 and implemented. Loops ship as the third primitive with `build` and `ship-a-draft`;
 `discover`, `design` and `operate` follow in the next release along with directional
 hand-offs. Implemented by the PR that adds `loops/`, `contracts/`, and the `validate.py`
 loops pass.

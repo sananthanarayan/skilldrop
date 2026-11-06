@@ -63,9 +63,6 @@ from its description alone.
   Ordering them would add stages nobody needs.
 - **`agent-adoption-stage` in `adopt`.** It places an engineering team on the coding-agent
   ladder, a different question from "where does this organisation start".
-- **A figures gate in `ship-a-draft` (G5.1).** It was built with this RFC, on `figure-check`
-  ([RFC-0071](0071-figure-check.md)). That skill lost its admission twice, so the gate went
-  with it.
 
 ## Decision
 

@@ -1,7 +1,7 @@
 ---
 rfc: 0047
 title: A shortlist of an employer's roles, measured on saved postings
-status: accepted
+status: implemented
 date: 2026-10-18
 author: sananthanarayan
 ---
@@ -63,7 +63,7 @@ if both blind judges prefer it to plain Claude Code in at least half the held-ou
 
 ## Decision
 
-Accepted with the roadmap item, and admitted in 0.16.20.
+Implemented: accepted with the roadmap item, and admitted in 0.16.20.
 
 | Evals | Pairs won, judge 1 | Judge 2 | Assertions met, skill | Without |
 |---|---|---|---|---|

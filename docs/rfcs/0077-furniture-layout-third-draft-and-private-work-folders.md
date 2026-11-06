@@ -17,9 +17,6 @@ judges' reasons named three faults:
 - **Two timed-out runs.** Two runs produced nothing in 15 minutes.
 - **The client's file changed shape.** It came back with different columns.
 
-`seating-plan` shipped at the bar, and its losses pointed to a venue handout and to how
-conflicts are settled.
-
 ## Fit check
 
 No new skill or primitive. This is a third draft of one measured skill, which makes it a new
@@ -56,20 +53,11 @@ and a library reading-room schedule (check). Two trials, judges `claude-sonnet-5
 | Skill | Draft | Pairs won (judges 1, 2, of 4) | Checks met: skill / plain |
 |---|---|---|---|
 | `furniture-layout` | 3 (0.2.0) | 2, 2 | 91% / 91% |
-| `seating-plan` | patch 0.2.0 (venue sheets) | 1.5, 1 | 100% / 94% |
 
 - **`furniture-layout` won the build in all 4 pairs.** It was the only arm to hand over a
   scaled, dimensioned drawing. It lost the check eval, once because of the leaked drawing
   above and both times for overwriting the client's CSV. Both faults are fixed in 0.2.1. It
   is admitted at the bar, on draft 3.
-- **The `seating-plan` patch did worse,** and is not shipped.
-  - Its "keep the row order" rule returned a fixed plan with tables scattered through the
-    file, where the judges wanted it sorted by table.
-  - Its contact-details rule produced a false claim that the list held emails and phone
-    numbers.
-
-  The shipped 0.1.2 stays, with the work-folder fix as 0.1.3. The four new held-out evals stay
-  in its evals for the next attempt.
 
 ## Alternatives considered
 
@@ -81,5 +69,5 @@ and a library reading-room schedule (check). Two trials, judges `claude-sonnet-5
 
 ## Decision
 
-`interior-designer` ships with `furniture-layout` 0.2.1. `seating-plan` stays on 0.1.2,
-patched to 0.1.3. The work-folder and never-overwrite fix goes into all four checker skills.
+`interior-designer` ships with `furniture-layout` 0.2.1. The work-folder and never-overwrite fix
+goes into all four checker skills as patch releases.

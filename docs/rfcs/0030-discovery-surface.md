@@ -1,7 +1,7 @@
 ---
 rfc: 0030
 title: Discovery surface — llms.txt, site repositioning, tutorial, loop evals
-status: accepted
+status: implemented
 date: 2026-09-25
 author: sanjay-ananth
 ---
@@ -82,5 +82,5 @@ sibling loop.
 
 ## Decision
 
-Accepted 2026-09-25. Implemented by the PR adding `build_llms.py`, `llms.txt`, the site
+Accepted 2026-09-25 and implemented by the PR adding `build_llms.py`, `llms.txt`, the site
 repositioning, `guides/tutorial/`, and `loops/*/evals/`.

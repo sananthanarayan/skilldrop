@@ -1,7 +1,7 @@
 ---
 rfc: 0010
 title: Install-target table (splitting tool identity from install path)
-status: draft
+status: implemented
 date: 2026-07-26
 author: sananthanarayan
 ---
@@ -104,4 +104,4 @@ The path-set argument also got stronger independently: `.agents/skills/` is now 
 
 ## Decision
 
-{Pending — the three decisions above are open. Nothing is implemented; `0687d37` documented the discovery paths as an interim measure.}
+Implemented in 0.13.8. The CLI's `SKILL_DIRS` table maps each tool to its project and user skills directories, and `target()` reads it, so adding a tool is a table row (Claude Code, Cursor, Kiro, Codex, Antigravity, Copilot). The three decisions went as recommended: one ledger per directory, one directory per invocation, and hooks projected per target only under `--with-hooks`. The `skilldrop paths` command was not built; [install targets](../../guides/reference/install-targets.md) lists every path instead.
