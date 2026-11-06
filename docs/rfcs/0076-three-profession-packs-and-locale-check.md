@@ -55,7 +55,7 @@ or advice the model already gets right is not that.
 | `interior-designer` | `furniture-layout` | heavy | `layout_check.py`: overlap, containment, door swing, use clearances, a walkway route on a grid, turning space; a dimensioned plan |
 | `experience-design` | `locale-check` | standard | `locale_check.py`: keys, placeholders, ICU, CLDR plural categories, tags, budgets across JSON, ARB, .po, Android and iOS files |
 
-The rules every one of them carries, from what lost before (RFC-0075):
+The rules every one of them carries, from what lost before:
 - the reply leads with the plan or the answer, for the person who asked;
 - no script, file format, skill name or skill-folder path in the reply;
 - drawings are saved in the working directory;

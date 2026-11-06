@@ -26,7 +26,6 @@ Bullets say what a user can now do, not which files moved.
 ## 1.6.0 — 2026-11-05
 
 - **A new pack for architects: `civil-architect`, with `floor-plan-layout`** ([RFC-0075](docs/rfcs/0075-civil-architect-pack.md)). Give it a room list and a footprint, and it places every room at its size, then draws a dimensioned SVG plan with door swings, windows, a scale bar and a north arrow. It shows you the plan only after a checker passes it: no overlapping rooms, nothing outside the footprint, every door on a wall its two rooms share, every room reachable from an entrance, every habitable room with a window. On held-out evals both blind judges preferred it to plain Claude Code (4 of 4 and 3 of 4 pairs). Install it with `npx skilldrop-cli install --pack civil-architect`.
-- **Two more building skills were measured and not shipped: a site feasibility check and a space programme.** Plain Claude Code got the same setbacks, FAR and area totals right, and the judges preferred its answers. The RFC has the numbers.
 
 ## 1.5.0 — 2026-11-05
 
