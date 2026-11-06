@@ -1,0 +1,60 @@
+{
+  "description": "Furniture plans for one room: every piece at its real size and facing the way it's used, drawn as a dimensioned SVG, and shown only once a script has checked it for overlaps, pieces in a door's swing, blocked bed sides, chair pull-backs and wardrobe doors, and a clear walking route to everything.",
+  "display_name": "Interior designer",
+  "keywords": [
+    "interior design",
+    "furniture",
+    "layout",
+    "space planning",
+    "clearances",
+    "room plan",
+    "bedroom",
+    "living room",
+    "office fit-out"
+  ],
+  "links": {
+    "documentation": "https://sananthanarayan.github.io/skilldrop/packs/interior-designer/"
+  },
+  "maintainers": [
+    {
+      "name": "sananthanarayan"
+    }
+  ],
+  "first-value": {
+    "audience-posture": "non-technical",
+    "prerequisites": [
+      "The room's width and depth, where its door and windows are, and the furniture you want in it",
+      "Python 3 on the machine, which the checker and drawing script run on"
+    ],
+    "starter-task": "Get a checked, dimensioned furniture plan for one room",
+    "starter-prompt": "Lay out our bedroom: 3.6 m wide × 3.3 m deep, door at the right end of the south wall opening in, window centred on the north wall with a 0.9 m sill. Furniture: a king bed (1.8 × 2.0 m), two nightstands, a 1.2 m wardrobe with hinged doors, and a small desk with a chair.",
+    "verification": "furniture-layout states its zoning in a few lines, writes an SVG plan with the room's dimensions, every piece with its size, its clearances shaded and the walking route drawn, and says plainly what it changed or couldn't fit.",
+    "recovery": "If furniture-layout does not activate, ask for it by name (\"use furniture-layout\"). If a piece won't fit, ask for the best smaller option, or say which piece may go."
+  },
+  "requires": [
+    "core"
+  ],
+  "journey": {
+    "when": "You have a room and a list of furniture, and want to know what fits and where.",
+    "you_bring": [
+      "the room's width and depth, or its corner measurements if it isn't a rectangle",
+      "the doors (which way they open) and the windows",
+      "the furniture, with sizes if you know them",
+      "anything that must stay clear, such as a radiator or a balcony door"
+    ],
+    "steps": [
+      {
+        "skill": "furniture-layout",
+        "you_do": "Give it the room, its doors and windows, and the furniture list.",
+        "you_get": "Zoning in a few lines, then a dimensioned SVG plan that has passed the clearance check, with every piece's size and where it goes.",
+        "decide": "Keep the plan, or ask for another arrangement."
+      },
+      {
+        "skill": "furniture-layout",
+        "you_do": "Ask for a variant: a bigger bed, a desk added, a wheelchair-turning space.",
+        "you_get": "Another checked plan, or the exact number that keeps a piece out and the best option that fits."
+      }
+    ],
+    "you_end_with": "A furniture plan that fits, ready to measure against the real room."
+  }
+}

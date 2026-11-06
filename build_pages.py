@@ -350,6 +350,7 @@ ROLES = [
     ("Building architect", ["civil-architect"]),
     ("Operations manager", ["operations-manager"]),
     ("Event planner", ["event-planner"]),
+    ("Interior designer", ["interior-designer"]),
 ]
 
 

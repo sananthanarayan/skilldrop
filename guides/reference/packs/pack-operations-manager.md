@@ -23,7 +23,7 @@ Staff rotas from who is available, what each shift needs and the working-time ru
 
 Build a staff rota for a week or a fortnight from who is available, what each shift needs and the working-time rules, and check it with a script before anyone sees it — every shift covered with the right skills, nobody double-booked, over their hours, short of rest between shifts or past the consecutive-day limit — drawn as a week grid.
 
-Tier **standard** · v0.2.0 · [SKILL.md](../../../packs/operations-manager/skills/shift-roster/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/shift-roster/)
+Tier **standard** · v0.2.1 · [SKILL.md](../../../packs/operations-manager/skills/shift-roster/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/shift-roster/)
 
 **Use it when** a manager asks to "make the rota", "build next week's schedule", "who should work which shift", "check this rota", "fill these shifts", or has staff availability and shift needs for a shop, restaurant, clinic, warehouse or call centre.
 

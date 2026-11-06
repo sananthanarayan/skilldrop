@@ -1,6 +1,6 @@
 {
   "name": "seating-plan",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Seat guests at tables for a wedding, gala, conference dinner or awards night, and check the chart with a script — every guest seated once, no table over capacity, people who must sit together together, people who must be kept apart apart, wheelchair users at accessible places — drawn as a room plan with names at each table. Use when an organiser asks to \"make the seating plan\", \"who sits where\", \"seat these 120 guests\", \"check my table plan\", or has a guest list with groups and keep-apart requests.",
   "entrypoint": "SKILL.md",
   "deps": {

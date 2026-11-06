@@ -32,7 +32,7 @@ the team.
   days and change you write is read from the check's per-person summary and its comparison
   with their original, run on the final rota. Never from memory of an earlier draft.
 - **Working files stay out of sight.** The check's input and any intermediate file go in a
-  temporary folder outside the working directory, or are deleted before you reply. Draw the
+  private temporary folder made for this run alone (`mktemp -d`, never a fixed path such as `/tmp/roster`, which another session can read or overwrite), and are deleted before you reply. Never overwrite a file the person gave you: write the corrected copy beside it under a plain name (`rota-fixed.csv`), and leave theirs as it was. Draw the
   week grid only when a drawing is asked for, or as the one extra file named in one line.
   Never leave anything running in the background; wait for it.
 - **Carry every field through.** Every column or note the person gave about a person or a
@@ -70,10 +70,11 @@ the team.
 4. **Check it, and fix every failure before showing anything.**
 
    ```bash
+   work=$(mktemp -d 2>/dev/null || mktemp -d ./.work.XXXXXX)   # a private folder for this run only
    # Claude Code
-   python3 "${CLAUDE_SKILL_DIR}/scripts/roster_check.py" "$TMPDIR/roster.json"
+   python3 "${CLAUDE_SKILL_DIR}/scripts/roster_check.py" "$work/roster.json"
    # Other IDEs (from the skill folder); add --svg only when a drawing is wanted
-   python3 scripts/roster_check.py /tmp/rota/roster.json --svg rota-week-of-2026-11-09.svg
+   python3 scripts/roster_check.py "$work/roster.json" --svg rota-week-of-2026-11-09.svg
    ```
 
    Exit 0 means no failures, 1 means a failure, and 2 means the input can't be read. Fix only
@@ -162,5 +163,7 @@ flagged in the reply. With no staff or no shifts at all, emit
 - ❌ **Searching every arrangement by hand.** Build one, check, fix what fails, five rounds at most.
 - ❌ **Reshuffling their rota** to fix three problems. Fix the three, and list them.
 - ❌ **Ignoring "don't put her on more than she needs".** A note is a rule.
+- ❌ **A fixed temporary path.** Two sessions at once share it, and one plan leaks into the other.
+- ❌ **Overwriting the person's own file.** They lose the version they sent.
 - ❌ **A JSON file and a drawing nobody asked for** left beside their files.
 - ❌ **"The script says…"** The manager wants the rota and what's wrong with it, not how it was checked.

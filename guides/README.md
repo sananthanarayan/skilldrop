@@ -103,6 +103,7 @@ A how-to and a reference page for every pack, generated from the pack's own file
 | Civil architect | [Use the Civil architect pack](how-to/packs/use-the-civil-architect-pack.md) | [Civil architect pack reference](reference/packs/pack-civil-architect.md) |
 | Operations manager | [Use the Operations manager pack](how-to/packs/use-the-operations-manager-pack.md) | [Operations manager pack reference](reference/packs/pack-operations-manager.md) |
 | Event planner | [Use the Event planner pack](how-to/packs/use-the-event-planner-pack.md) | [Event planner pack reference](reference/packs/pack-event-planner.md) |
+| Interior designer | [Use the Interior designer pack](how-to/packs/use-the-interior-designer-pack.md) | [Interior designer pack reference](reference/packs/pack-interior-designer.md) |
 <!-- pack-guides:end -->
 
 ### Per skill
@@ -134,6 +135,7 @@ One how-to for every skill: how to install it, the requests that route to it, wh
 | Civil architect | [floor-plan-layout](how-to/skills/use-floor-plan-layout.md) |
 | Operations manager | [shift-roster](how-to/skills/use-shift-roster.md) |
 | Event planner | [run-of-show](how-to/skills/use-run-of-show.md), [seating-plan](how-to/skills/use-seating-plan.md) |
+| Interior designer | [furniture-layout](how-to/skills/use-furniture-layout.md) |
 <!-- skill-guides:end -->
 
 ## explanation

@@ -1,0 +1,23 @@
+Reading room - Ashby Moor Library - notes for the furniture re-plan
+(Rosalind Achebe, branch librarian, Nov 2026)
+
+Room: 10.0 m west to east, 7.2 m south to north, rectangular, no columns.
+X and Y in the schedule are to the south-west corner of each piece, from the west
+wall and the south wall. Sizes are as the piece sits in the room.
+
+Main door: south wall, opening from 4000 to 4900 mm from the west wall. Opens into the
+room, hinged at the west side.
+Fire exit: east wall, opening from 5800 to 6700 mm from the south wall. Opens outward.
+Window bay: west wall between S1 and S2 (2000 to 3300 mm from the south wall).
+
+S1 and S2 are bolted to the floor and wall and are staying. T5 stays where it is - the
+only floor box with power and data for it is under it.
+
+Our standards (from the county's library design guide):
+- main routes (main door to the fire exit, and main door to T5) at least 1200 clear
+- at least 1000 between shelving ranges
+- 900 clear behind the chairs on the long sides of a reading table, to pull the chair
+  out (measure from the table edge)
+- nothing in the swing of the main door
+- a 1500 x 1500 turning space for the wheelchair user at T5, in front of T5 in the
+  window bay, so they aren't sitting out in the walkway

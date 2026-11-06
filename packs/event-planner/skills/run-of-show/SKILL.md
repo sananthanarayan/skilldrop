@@ -22,7 +22,7 @@ clash is found in the plan, not on the day.
   deliverable the request names: a minute-by-minute per room, a crew sheet with turnarounds,
   resets and host notes, a speaker call sheet.
 - **Working files stay out of sight.** The checker's input and any intermediate file go in a
-  temporary folder outside the working directory, or are deleted before you reply. Draw the
+  private temporary folder made for this run alone (`mktemp -d`, never a fixed path such as `/tmp/show`, which another session can read or overwrite), and are deleted before you reply. Never overwrite a file the person gave you: write the corrected copy beside it under a plain name (`rota-fixed.csv`), and leave theirs as it was. Draw the
   timeline only when a drawing is asked for, and then once. Never leave anything running in
   the background.
 - **Carry every field through.** Every column or note the person gave per item (crew, cues,
@@ -58,10 +58,11 @@ clash is found in the plan, not on the day.
    `run-of-show.svg`, never inside this folder.
 
    ```bash
+   work=$(mktemp -d 2>/dev/null || mktemp -d ./.work.XXXXXX)   # a private folder for this run only
    # Claude Code
-   python3 "${CLAUDE_SKILL_DIR}/scripts/show_check.py" "$TMPDIR/show.json"
+   python3 "${CLAUDE_SKILL_DIR}/scripts/show_check.py" "$work/show.json"
    # Other IDEs (from the skill folder); add --svg only when a drawing is wanted
-   python3 scripts/show_check.py /tmp/show/show.json --svg run-of-show.svg
+   python3 scripts/show_check.py "$work/show.json" --svg run-of-show.svg
    ```
 
    Exit 0 means no clashes; 1 means a clash (an overlap in a room, a person in two places or
@@ -138,4 +139,6 @@ Who sits where at the dinner belongs to `seating-plan`.
 - ❌ **Re-timing the whole day unasked** when one move fixes the clash.
 - ❌ **One merged table when they asked for a sheet per room.** The crew in room B needs room B's sheet.
 - ❌ **Describing the fixes instead of making them.** Hand back the corrected runsheet.
+- ❌ **A fixed temporary path.** Two sessions at once share it, and one plan leaks into the other.
+- ❌ **Overwriting the person's own file.** They lose the version they sent.
 - ❌ **A JSON file and a drawing nobody asked for** left beside their files.

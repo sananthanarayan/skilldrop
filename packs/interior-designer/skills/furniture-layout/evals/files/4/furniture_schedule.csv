@@ -1,0 +1,15 @@
+Ref,Description,Qty,W (mm),D (mm),H (mm),Room,Notes
+F01,Bench desk 1600 x 800 (straight),7,1600,800,740,Open office,
+F02,Height-adjustable desk 1600 x 800,1,1600,800,650-1250,Open office,for Noor
+F03,Task chair,9,680,680,,Open office / Director's office,8 open office + 1 director
+F04,Mobile pedestal 3-drawer,8,420,580,600,Open office,lives under the desk
+F05,"Storage cabinet, 2 door",3,1000,450,1200,Open office,
+F06,Printer / MFD station,1,800,600,1000,Open office,"needs a socket, any wall"
+F07,Meeting table,1,2400,1000,740,Meeting room,seats 8
+F08,Meeting chair (stacking),8,550,560,,Meeting room,
+F09,Credenza,1,1600,450,750,Meeting room,
+F10,Executive desk,1,1400,700,740,Director's office,
+F11,Visitor chair,2,600,600,,Director's office,
+F12,Bookcase,1,800,350,1800,Director's office,
+F13,Cafe table,1,1200,800,740,Kitchenette,
+F14,Cafe chair,4,500,520,,Kitchenette,

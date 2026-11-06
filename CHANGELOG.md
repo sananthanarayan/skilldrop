@@ -8,6 +8,11 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.8.0 — 2026-11-08
+
+- **A new pack for interior designers: `interior-designer`, with `furniture-layout`** ([RFC-0077](docs/rfcs/0077-furniture-layout-third-draft-and-private-work-folders.md)). Give it a room, its doors and windows, and your furniture list. It lays the pieces out at real sizes and draws a dimensioned plan, checked for overlaps, door swings, bed sides, chair pull-back, a clear route to every piece, and turning space exactly where you need it ("in front of the bathroom door", "beside the bed"), never somewhere else in the room. Install it with `npx skilldrop-cli install --pack interior-designer`.
+- **`shift-roster`, `seating-plan`, `run-of-show` and `furniture-layout` keep each session's working files private.** Before, two sessions running at once could read each other's files. Each now uses a folder of its own, and writes a corrected copy beside your file instead of over it. Run `skilldrop update` to pick this up.
+
 ## 1.7.0 — 2026-11-07
 
 - **A new pack for event planners: `event-planner`, with `seating-plan` and `run-of-show`** ([RFC-0076](docs/rfcs/0076-three-profession-packs-and-locale-check.md)). Install it with `npx skilldrop-cli install --pack event-planner`.
