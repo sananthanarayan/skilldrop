@@ -1,0 +1,38 @@
+[
+  {
+    "query": "make next week's rota for the shop, here's who's available",
+    "should_trigger": true
+  },
+  {
+    "query": "check this staff rota before I publish it",
+    "should_trigger": true
+  },
+  {
+    "query": "who should work which shift this weekend? we need two baristas and a keyholder each day",
+    "should_trigger": true
+  },
+  {
+    "query": "fill these night shifts for the warehouse team without breaking the 11-hour rest rule",
+    "should_trigger": true
+  },
+  {
+    "query": "build a fortnight schedule for our clinic nurses",
+    "should_trigger": true
+  },
+  {
+    "query": "write the weekly status update for the ops team",
+    "should_trigger": false
+  },
+  {
+    "query": "model how much our cloud capacity will cost next quarter",
+    "should_trigger": false
+  },
+  {
+    "query": "write a job ad for a shift supervisor",
+    "should_trigger": false
+  },
+  {
+    "query": "plan the sprint and assign stories to engineers",
+    "should_trigger": false
+  }
+]

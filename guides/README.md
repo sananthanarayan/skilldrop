@@ -101,6 +101,7 @@ A how-to and a reference page for every pack, generated from the pack's own file
 | Skill engineering | [Use the Skill engineering pack](how-to/packs/use-the-skill-engineering-pack.md) | [Skill engineering pack reference](reference/packs/pack-skill-engineering.md) |
 | Job applications | [Use the Job applications pack](how-to/packs/use-the-career-pack.md) | [Job applications pack reference](reference/packs/pack-career.md) |
 | Civil architect | [Use the Civil architect pack](how-to/packs/use-the-civil-architect-pack.md) | [Civil architect pack reference](reference/packs/pack-civil-architect.md) |
+| Operations manager | [Use the Operations manager pack](how-to/packs/use-the-operations-manager-pack.md) | [Operations manager pack reference](reference/packs/pack-operations-manager.md) |
 | Event planner | [Use the Event planner pack](how-to/packs/use-the-event-planner-pack.md) | [Event planner pack reference](reference/packs/pack-event-planner.md) |
 <!-- pack-guides:end -->
 
@@ -131,6 +132,7 @@ One how-to for every skill: how to install it, the requests that route to it, wh
 | Skill engineering | [skill-author](how-to/skills/use-skill-author.md), [skill-review](how-to/skills/use-skill-review.md) |
 | Job applications | [application-form-answers](how-to/skills/use-application-form-answers.md), [cover-letter](how-to/skills/use-cover-letter.md), [job-fit-analysis](how-to/skills/use-job-fit-analysis.md), [resume-tailor](how-to/skills/use-resume-tailor.md), [role-shortlist](how-to/skills/use-role-shortlist.md) |
 | Civil architect | [floor-plan-layout](how-to/skills/use-floor-plan-layout.md) |
+| Operations manager | [shift-roster](how-to/skills/use-shift-roster.md) |
 | Event planner | [run-of-show](how-to/skills/use-run-of-show.md), [seating-plan](how-to/skills/use-seating-plan.md) |
 <!-- skill-guides:end -->
 

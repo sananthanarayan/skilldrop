@@ -51,6 +51,7 @@ What each one declares in its manifest: the packages to install, the environment
 | [`rollout-plan`](../../packs/dev-team/skills/rollout-plan/SKILL.md) | dev-team | — | — | — | — | none |
 | [`run-of-show`](../../packs/event-planner/skills/run-of-show/SKILL.md) | event-planner | — | — | — | — | named-paths |
 | [`seating-plan`](../../packs/event-planner/skills/seating-plan/SKILL.md) | event-planner | — | — | — | — | named-paths |
+| [`shift-roster`](../../packs/operations-manager/skills/shift-roster/SKILL.md) | operations-manager | — | — | — | — | named-paths |
 | [`skill-review`](../../packs/skill-engineering/skills/skill-review/SKILL.md) | skill-engineering | — | — | — | — | named-paths |
 | [`slo-spec`](../../packs/sre-oncall/skills/slo-spec/SKILL.md) | sre-oncall | — | — | — | — | named-paths |
 | [`source-synthesis`](../../packs/research/skills/source-synthesis/SKILL.md) | research | — | — | — | — | named-paths |

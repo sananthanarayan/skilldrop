@@ -1,12 +1,12 @@
 ---
 rfc: 0076
-title: An event-planner pack and a locale check (operations-manager and interior-designer measured, not admitted)
+title: Event-planner and operations-manager packs and a locale check (interior-designer measured, not admitted)
 status: implemented
 date: 2026-11-06
 author: sanjay-ananth
 ---
 
-# RFC-0076: An event-planner pack and a locale check (operations-manager and interior-designer measured, not admitted)
+# RFC-0076: Event-planner and operations-manager packs and a locale check (interior-designer measured, not admitted)
 
 ## Problem / use case
 
@@ -80,7 +80,7 @@ only, and measured on two fresh blind evals.
 | `locale-check` | 0, 0 | 3, 2 | 91% / 78% | yes |
 | `run-of-show` | 1, 0 | 2, 3 | 84% / 81% | yes |
 | `seating-plan` | 0, 1 | 2, 2 | 100% / 100% | yes, at the bar |
-| `shift-roster` | 2, 1 | 2, 1 | 100% / 100% | no |
+| `shift-roster` | 2, 1 | 2, 1; draft 3: 2, 2 | 100% / 100% (draft 3) | yes, on draft 3, at the bar |
 | `furniture-layout` | 0, 0 | 2, 1 of 3, and one run timed out twice | 88% / 96% | no |
 
 **What the first drafts lost on.** Sonnet 5.5, with a shell, made valid rotas, seating plans,
@@ -116,11 +116,27 @@ meaning error no check catches, and it's named here as its known gap.
 - **Localization as a new pack.** One skill, used by the same people who write the strings
   in `experience-design`, so it joins that pack.
 
+**Draft 3 of `shift-roster`,** measured on two more fresh blind evals (8 and 9), made three
+changes:
+- a file the person gave comes back in exactly its columns, with every change listed in the
+  reply instead of in a new column;
+- the reply's per-person facts and change list are quoted from the checker's `--summary` and
+  `--compare` output on the final rota, so they can't contradict it;
+- the fixing is bounded at five check-and-fix rounds.
+
+It won 2 of 4 pairs with each judge, the same bar `seating-plan` passed. The judges credited
+an availability note honoured that the plain agent broke, the full rota in the reply, and the
+export layout kept. It lost on how to return a slot that can't be filled.
+
+`seating-plan` 0.1.2 gets the same column fix as a patch. On evals 8 and 9 it won 1 of 4 with
+judge 1 and 3 of 4 with judge 2. The judges split on a real conflict in the request: a
+keep-apart pair, and a guest of honour who wants both of them at the top table. Its admission
+rests on draft 2.
+
 ## Decision
 
-`event-planner` ships with `seating-plan` and `run-of-show`, and `locale-check` joins
-`experience-design`. `operations-manager` and `interior-designer` don't ship: each one's
-only skill lost on both drafts. Both are kept on the local branch
-`sanjay-ananth/ops-interior-wip`, for a third draft. That draft would drop the change-note
-column, return files in their exact original columns, and give the furniture checker a time
-bound. It would be measured on fresh evals.
+`event-planner` ships with `seating-plan` and `run-of-show`, `operations-manager` ships with
+`shift-roster` (draft 3), and `locale-check` joins `experience-design`. `interior-designer`
+doesn't ship: `furniture-layout` lost on both drafts. It is kept on the local branch
+`sanjay-ananth/ops-interior-wip`, for a draft that returns files in their exact columns and
+gives the checker a time bound, to be measured on fresh evals.

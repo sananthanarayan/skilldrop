@@ -16,18 +16,21 @@ room, so a broken request is found before the organiser prints place cards.
 
 **These rules come before the steps and outrank them:**
 
-- **Deliver in the person's format first.** Given a guest list CSV or spreadsheet, hand back
-  the seating in the same columns with a table column added, ready for the venue; fixing
-  their plan, return their file corrected, with a `change` column saying what moved and why.
-  Given a pasted list, reply with a table. Write every deliverable the request names, such as
-  place-card order or the caterer's list.
+- **Their file comes back in exactly its own shape.** Fixing their plan, return their file
+  with the same columns, column order, headers and row order, and only the cells a rule
+  forces changed, ready for the venue to print from. Building from a guest list, hand back
+  their columns plus only the table (and seat) columns the plan needs. Every change goes in
+  the reply, not the file: the guest, what moved and why. Add a change column, or any other
+  column, only when they ask for one. Given a pasted list, reply with a table. Write every
+  deliverable the request names, such as place-card order or the caterer's list.
 - **Working files stay out of sight.** The checker's input and any intermediate file go in a
   temporary folder outside the working directory, or are deleted before you reply. Draw the
   room only when a drawing is asked for or the venue needs a floor plan, and then once. Never
   leave anything running in the background.
-- **Carry every field through.** Every column the person gave per guest (meal choice, dietary
-  need, party, notes) appears in the deliverable, and each conflict between them is flagged:
-  a vegan guest who chose the beef, a child in a seat marked for a speaker.
+- **Carry every field through, without reshaping their file.** Every detail the person gave
+  per guest (meal choice, dietary need, party, notes) reaches the reply or the deliverable it
+  belongs in, such as the caterer's list, and each conflict between them is flagged: a vegan
+  guest who chose the beef, a child in a seat marked for a speaker.
 - **Soft notes are rules.** "Keep the grandparents near the door", "not by the speakers":
   build them in, and say which you couldn't meet.
 - **Fixing their plan means minimal changes.** Move only the guests a rule forces, list each
@@ -116,7 +119,8 @@ The order-of-the-day timings, the speeches and the changeovers belong to `run-of
 - **Tables fill evenly:** no half-empty table without a reason.
 - **The reply leads with who sits where,** in a table the organiser could print.
 - **Nothing is invented:** no guest, request or table that wasn't given.
-- **The plan comes back in the person's format,** with every field they gave per guest and each conflict flagged.
+- **Their file comes back in its exact columns and row order,** with every change listed in the reply, not in the file.
+- **Every detail they gave per guest reaches the reply or the deliverable it belongs in,** and each conflict is flagged.
 - **Their notes are honoured,** and their own plan changes only where a rule forces it.
 - **No working file is left in their folder.**
 
@@ -141,6 +145,7 @@ The order-of-the-day timings, the speeches and the changeovers belong to `run-of
 - ❌ **Seating in guest-list order.** Fixed seats, access needs and groups go first, or they end up split.
 - ❌ **One half-empty table at the back** while others are full. Spread the space.
 - ❌ **Mentioning files, formats or tools in the reply.** The organiser wants names at tables.
+- ❌ **An extra "change" or "dietary" column in the venue's file.** They print from its exact columns; the changes and the meals go in the reply or the caterer's list.
 - ❌ **Treating dietary needs as a seating rule.** They go to the caterer, per guest and table.
 - ❌ **Dropping a column the person gave.** The meal choices are what the venue needs next.
 - ❌ **A JSON file and a drawing nobody asked for** left beside their guest list.

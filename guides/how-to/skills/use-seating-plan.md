@@ -51,7 +51,8 @@ A good result:
 - **Tables fill evenly:** no half-empty table without a reason.
 - **The reply leads with who sits where,** in a table the organiser could print.
 - **Nothing is invented:** no guest, request or table that wasn't given.
-- **The plan comes back in the person's format,** with every field they gave per guest and each conflict flagged.
+- **Their file comes back in its exact columns and row order,** with every change listed in the reply, not in the file.
+- **Every detail they gave per guest reaches the reply or the deliverable it belongs in,** and each conflict is flagged.
 - **Their notes are honoured,** and their own plan changes only where a rule forces it.
 - **No working file is left in their folder.**
 

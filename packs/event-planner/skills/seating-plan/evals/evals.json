@@ -99,6 +99,36 @@
         "Returns prom_seating_v3.csv in the same Table, Seat, Name layout, plus a hall plan with the names at each table",
         "Does not invent students, staff, a 14th table or a 9th chair at any table"
       ]
+    },
+    {
+      "id": 8,
+      "held_out": "2026-11-07",
+      "prompt": "I'm organising Velmora Analytics' kick-off dinner. Can you do the seating plan? Attached: registrations_export.csv (straight out of the event booking system), room_layout.md (the venue's floor plan and rules) and seating_requests.txt (the rules HR and leadership gave me). I need every guest at a table and something I can hand to the venue.",
+      "assertions": [
+        "Seats exactly 144 guests: the export has 146 rows, but Elowen Larkspur and Xanthe Oakshott are each registered twice, and each is seated once",
+        "No table has more than 10 people and no extra table or 11th cover is added",
+        "All four wheelchair users (Ulric Greythorn, Isolde Eastwick, Fintan Oakshott, Kalinda Pilbeam) are at tables 13, 14 or 15, with no more than two wheelchair users at any one table",
+        "Platform Engineering (10 including plus-ones, among them Ulric Greythorn) and Leeds Support (9 including plus-ones, among them Isolde Eastwick) are each seated whole at one of the accessible tables 13-15",
+        "Every sit-together group in seating_requests.txt is at a single table: the six named teams, each client party with its account manager, and every plus-one with the person who brought them",
+        "Every keep-apart pair is at different tables, including the competing clients Yusuf Ravensworth / Chidi Fujimoto and Noor Drummond / Bram Quarrie",
+        "Draws the plan as the room: the 15 tables in the venue's layout and numbering with the stage, and the names at each table, and reports a check of the finished plan against the rules",
+        "Does not invent names for the three unnamed plus-ones (registered only as guests of Thaddeus Underhill, Rufaro Yelverton, Zelda Abernethy) and does not seat anyone who is not in the export"
+      ]
+    },
+    {
+      "id": 9,
+      "held_out": "2026-11-07",
+      "prompt": "I've done the table plan for my colleague Maureen's retirement party (table_plan.csv). The guest list is guest_list.csv and all the rules and Maureen's wishes are in notes.txt. Can you check it, sort out anything that's wrong and send it back ready to print? I'm printing the table cards first thing tomorrow.",
+      "assertions": [
+        "Catches that Hamish Moreau appears twice (Table 6 and Table 4) and leaves them at one table only",
+        "Catches that Table 2 has 11 people at a table for 10 and brings it back to 10 or fewer",
+        "Catches that Noor Underhill and Lysander Dunmore are at the same table (Table 8) despite the keep-apart note and separates them",
+        "Catches that Fintan Rendall, a wheelchair user, is at Table 9 on the stepped terrace and moves them to a step-free table (1-7)",
+        "Says plainly that Maureen's wish to have both Graham Petherick and Lorraine Petherick on the top table cannot be met because they are on the keep-apart list, takes one of them off Table 1 or asks which to keep, and does not present the plan as meeting every request",
+        "The returned plan seats all 83 guests on guest_list.csv exactly once, keeps every couple and family together and puts no one at a terrace table who uses a wheelchair",
+        "Returns a printable table plan (each table with its guests' names) and lists the changes it made, leaving guests who were already correctly seated where they were",
+        "Does not invent guests, seats or tables not in the files (no Table 10, no extra chair at the top table)"
+      ]
     }
   ]
 }

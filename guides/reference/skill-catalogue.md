@@ -237,6 +237,12 @@ Capture a brand once, and plan a deck for its audience. `brand-kit` writes the `
 |---|---|
 | [`floor-plan-layout`](../../packs/civil-architect/skills/floor-plan-layout/SKILL.md) | A schematic floor plan placed from the programme inside the footprint and drawn as a dimensioned SVG, shown only once a checker passes it: no overlaps, nothing outside the outline, every door on a shared wall, every room reachable from an entrance, every habitable room with a window. |
 
+## Operations
+
+| Skill | What it does |
+|---|---|
+| [`shift-roster`](../../packs/operations-manager/skills/shift-roster/SKILL.md) | A week or fortnight rota from availability, shift needs and working-time rules, checked by a script for cover by skill, double-booking, hours, rest across midnight and days in a row, and handed back in the person's own sheet with every change listed. |
+
 ## Events
 
 | Skill | What it does |

@@ -54,7 +54,7 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/event-planner/skills/ru
 
 Seat guests at tables for a wedding, gala, conference dinner or awards night, and check the chart with a script — every guest seated once, no table over capacity, people who must sit together together, people who must be kept apart apart, wheelchair users at accessible places — drawn as a room plan with names at each table.
 
-Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/event-planner/skills/seating-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/seating-plan/)
+Tier **standard** · v0.1.2 · [SKILL.md](../../../packs/event-planner/skills/seating-plan/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/seating-plan/)
 
 **Use it when** an organiser asks to "make the seating plan", "who sits where", "seat these 120 guests", "check my table plan", or has a guest list with groups and keep-apart requests.
 
@@ -68,7 +68,8 @@ Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/event-planner/skills/se
 - **Tables fill evenly:** no half-empty table without a reason.
 - **The reply leads with who sits where,** in a table the organiser could print.
 - **Nothing is invented:** no guest, request or table that wasn't given.
-- **The plan comes back in the person's format,** with every field they gave per guest and each conflict flagged.
+- **Their file comes back in its exact columns and row order,** with every change listed in the reply, not in the file.
+- **Every detail they gave per guest reaches the reply or the deliverable it belongs in,** and each conflict is flagged.
 - **Their notes are honoured,** and their own plan changes only where a rule forces it.
 - **No working file is left in their folder.**
 

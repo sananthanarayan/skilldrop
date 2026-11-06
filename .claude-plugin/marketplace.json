@@ -504,6 +504,32 @@
       "homepage": "https://sananthanarayan.github.io/skilldrop/packs/civil-architect/"
     },
     {
+      "name": "operations-manager",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/sananthanarayan/skilldrop.git",
+        "path": "packs/operations-manager",
+        "ref": "plugins"
+      },
+      "description": "Staff rotas from who is available, what each shift needs and the working-time rules: a week or fortnight built and drawn as a grid, shown only once a script has checked every shift's cover and skills, and every person's hours, rest between shifts and days in a row. (6 skills)",
+      "version": "1.7.0",
+      "author": {
+        "name": "Sanjay Ananthanarayan",
+        "url": "https://github.com/sananthanarayan"
+      },
+      "keywords": [
+        "rota",
+        "roster",
+        "schedule",
+        "shifts",
+        "staffing",
+        "workforce",
+        "coverage",
+        "working time"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/operations-manager/"
+    },
+    {
       "name": "event-planner",
       "source": {
         "source": "git-subdir",

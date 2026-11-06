@@ -1,9 +1,9 @@
 # skilldrop
 
-> 115 portable skills for the artifacts knowledge work ships (ADRs, design docs,
+> 116 portable skills for the artifacts knowledge work ships (ADRs, design docs,
 > PRDs, runbooks, threat models, decks, postmortems), plus 11 loops that sequence them
 > behind gates. A loop orders skills; a skill never calls a skill, so every one of the
-> 115 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
+> 116 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
 > Version 1.7.0.
@@ -84,6 +84,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use the Frontend pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-frontend-pack.md) *(how-to)*: Install the Frontend pack, run its first task, and follow a typical session step by step.
 - [Use the Governance, risk and compliance pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-grc-pack.md) *(how-to)*: Install the Governance, risk and compliance pack, run its first task, and follow a typical session step by step.
 - [Use the Infrastructure as code pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-infra-as-code-pack.md) *(how-to)*: Install the Infrastructure as code pack, run its first task, and follow a typical session step by step.
+- [Use the Operations manager pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-operations-manager-pack.md) *(how-to)*: Install the Operations manager pack, run its first task, and follow a typical session step by step.
 - [Use the Product manager pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-product-manager-pack.md) *(how-to)*: Install the Product manager pack, run its first task, and follow a typical session step by step.
 - [Use the Research pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-research-pack.md) *(how-to)*: Install the Research pack, run its first task, and follow a typical session step by step.
 - [Use the Skill engineering pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-skill-engineering-pack.md) *(how-to)*: Install the Skill engineering pack, run its first task, and follow a typical session step by step.
@@ -185,6 +186,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use seating-plan](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-seating-plan.md) *(how-to)*: Seat guests at tables for a wedding, gala, conference dinner or awards night, and check the chart with a script
 - [Use security-questionnaire-response](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-security-questionnaire-response.md) *(how-to)*: Answer a customer's security questionnaire from your own evidence
 - [Use service-blueprint](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-service-blueprint.md) *(how-to)*: Build a service blueprint
+- [Use shift-roster](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-shift-roster.md) *(how-to)*: Build a staff rota for a week or a fortnight from who is available, what each shift needs and the working-time rules, and check it with a script before anyone sees it
 - [Use skill-author](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-skill-author.md) *(how-to)*: Write a new portable Agent Skill (a SKILL.md folder) from a described task, for Claude Code, Codex, Copilot, Cursor, Kiro or Antigravity in any repo
 - [Use skill-review](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-skill-review.md) *(how-to)*: Audit an existing Agent Skill folder (SKILL.md plus its scripts, references and evals) for Claude Code, Codex, Copilot, Cursor, Kiro or Antigravity, and return a READY /…
 - [Use slide-outliner](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-slide-outliner.md) *(how-to)*: Outline an architecture review or technical pitch deck
@@ -237,6 +239,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Frontend pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-frontend.md) *(reference)*: Every skill in the Frontend pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Governance, risk and compliance pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-grc.md) *(reference)*: Every skill in the Governance, risk and compliance pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Infrastructure as code pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-infra-as-code.md) *(reference)*: Every skill in the Infrastructure as code pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
+- [Operations manager pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-operations-manager.md) *(reference)*: Every skill in the Operations manager pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Product manager pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-product-manager.md) *(reference)*: Every skill in the Product manager pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Research pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-research.md) *(reference)*: Every skill in the Research pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Skill engineering pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-skill-engineering.md) *(reference)*: Every skill in the Skill engineering pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
@@ -291,6 +294,7 @@ except `api-builder` requires `core`, which installs with it.
 - **skill-engineering** (2 skills, requires core): For people writing Agent Skills in their own repos: write a portable SKILL.md folder from a described task, then audit any skill for routing, portability, safety, structure and evals before you share it.
 - **career** (5 skills, requires core): Job applications, for any occupation: a shortlist of which of an employer's roles to go for, an honest check of your resume against the posting, a tailored resume and a cover letter that say nothing you didn't, the application form's answers drafted from your resume, and a script that lists every figure and name in a draft that your own resume doesn't contain.
 - **civil-architect** (1 skills, requires core): Building design from a client's room list and a footprint: a schematic floor plan placed at real sizes and drawn as a dimensioned SVG, shown only once a script has checked it for overlapping rooms, rooms outside the footprint, doors on no shared wall, rooms no one can reach and habitable rooms with no window.
+- **operations-manager** (1 skills, requires core): Staff rotas from who is available, what each shift needs and the working-time rules: a week or fortnight built and drawn as a grid, shown only once a script has checked every shift's cover and skills, and every person's hours, rest between shifts and days in a row.
 - **event-planner** (2 skills, requires core): Seated dinners and event days that hold together: a table plan where every guest has one seat and every together, keep-apart and access request holds, and a run of show where no room or person is booked twice and every changeover has the time it needs, each checked by a script and drawn before anyone prints it.
 
 ## Outcomes — browse by why you are here
@@ -311,6 +315,7 @@ except `api-builder` requires `core`, which installs with it.
 - **build-agent-skills** (2 skills): Write and review Agent Skills for any tool: a portable SKILL.md with evals, and an audit of an existing skill before it ships.
 - **apply-for-a-job** (5 skills): Choose which of an employer's roles to go for, then prepare one application that is tailored and true: an honest fit check against the posting, a resume reworked without adding a claim, a cover letter built only from what you supplied, and the application form's answers drafted from your resume.
 - **design-a-building** (1 skills): Go from a room list and a footprint to a first floor plan: every room at its size, doors on real walls, every room reachable, drawn to scale and checked before anyone sees it.
+- **staff-the-shifts** (1 skills): Turn who is available and what each shift needs into a rota with every shift covered by the right people, and nobody double-booked, over their hours or short of rest.
 - **plan-an-event** (2 skills): Seat every guest with the people they should and shouldn't be near, and run the day with no room or person booked twice.
 
 ## Reviewer subagents
@@ -327,7 +332,7 @@ except `api-builder` requires `core`, which installs with it.
 - [catalogue.json](https://sananthanarayan.github.io/skilldrop/catalogue.json): every skill, loop, pack and outcome as machine-readable JSON — name, description, tier, tags, related. Prefer this over scraping the site.
 - [model-routing.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/model-routing.json): the abstract tier per skill (light/standard/heavy) and the provider map that resolves a tier to a concrete model.
 - [catalogue.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/catalogue.json): pack display order and outcome membership; each pack's metadata is in `packs/<pack>/pack.json`.
-- All 115 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
+- All 116 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
 
 ## Optional
 
