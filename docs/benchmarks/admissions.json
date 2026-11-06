@@ -96,6 +96,38 @@
    ],
    "skill_met": 0.91,
    "baseline_met": 0.91
+  },
+  {
+   "skill": "contract-check",
+   "rfc": "0078",
+   "evals": "2–3",
+   "drafts": 1,
+   "judge1": [
+    3,
+    4
+   ],
+   "judge2": [
+    2,
+    4
+   ],
+   "skill_met": 0.86,
+   "baseline_met": 0.75
+  },
+  {
+   "skill": "cap-table",
+   "rfc": "0078",
+   "evals": "2–3",
+   "drafts": 1,
+   "judge1": [
+    2,
+    4
+   ],
+   "judge2": [
+    4,
+    4
+   ],
+   "skill_met": 0.79,
+   "baseline_met": 0.75
   }
  ]
 }

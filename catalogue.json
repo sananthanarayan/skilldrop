@@ -238,11 +238,10 @@
     },
     "handle-the-legal-basics": {
       "for": "Founders without a lawyer on retainer",
-      "description": "Sign agreements you understand, know what a round does to your ownership, and keep your privacy policy true to what your app does, with a clear line on what is worth paying a lawyer for.",
+      "description": "Sign agreements you understand and know what a round does to your ownership, with a clear line on what is worth paying a lawyer for.",
       "skills": [
         "contract-check",
-        "cap-table",
-        "privacy-policy-check"
+        "cap-table"
       ]
     }
   },

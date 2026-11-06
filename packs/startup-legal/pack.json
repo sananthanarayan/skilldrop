@@ -1,5 +1,5 @@
 {
-  "description": "Legal groundwork for a startup that can't yet pay a lawyer for everything: an agreement checked before you sign it (blanks, broken cross-references, mismatched amounts, the renewal date, and the clauses that hurt a small company, with wording to ask for), your cap table modelled through SAFEs, notes and a priced round, and your privacy policy checked against what the app's code actually sends to third parties. Each says what is worth a lawyer's hour.",
+  "description": "Legal groundwork for a startup that can't yet pay a lawyer for everything: an agreement checked before you sign it (blanks, broken cross-references, mismatched amounts, the renewal date, and the clauses that hurt a small company, with wording to ask for), and your cap table modelled through SAFEs, notes and a priced round. Each says what is worth a lawyer's hour.",
   "display_name": "Startup legal",
   "keywords": [
     "legal",
@@ -9,9 +9,7 @@
     "NDA",
     "SAFE",
     "cap table",
-    "dilution",
-    "privacy policy",
-    "GDPR"
+    "dilution"
   ],
   "links": {
     "documentation": "https://sananthanarayan.github.io/skilldrop/packs/startup-legal/"
@@ -32,13 +30,14 @@
     "verification": "contract-check opens with a verdict and the three things that matter most, lists each mechanical fault with its clause number (blanks, references to clauses or exhibits that don't exist, amounts whose words and figures disagree), gives wording to ask for on each clause that hurts you, and gives the renewal notice deadline as a date.",
     "recovery": "If contract-check does not activate, ask for it by name (\"use contract-check\"). If your agreement is a PDF, save it as Word or text first."
   },
-  "requires": ["core"],
+  "requires": [
+    "core"
+  ],
   "journey": {
     "when": "You're a founder without a lawyer on retainer, and an agreement, a round or a launch is coming.",
     "you_bring": [
       "the agreement you've been sent, or your own template",
-      "your cap table, SAFEs and any term sheet",
-      "your app's code and its privacy policy"
+      "your cap table, SAFEs and any term sheet"
     ],
     "steps": [
       {
@@ -52,13 +51,8 @@
         "you_do": "Give it your shareholders, SAFEs, notes and the term sheet.",
         "you_get": "What each founder and investor owns after the round, what each SAFE converted at, and what the pool top-up cost you.",
         "decide": "Which valuation and pool terms to negotiate for."
-      },
-      {
-        "skill": "privacy-policy-check",
-        "you_do": "Point it at the app's code and the privacy policy.",
-        "you_get": "Every service the policy doesn't disclose, every sentence the code makes untrue, and the text to paste in."
       }
     ],
-    "you_end_with": "Agreements you understand before signing, a cap table you can defend in a negotiation, and a privacy policy that matches the product."
+    "you_end_with": "Agreements you understand before signing, and a cap table you can defend in a negotiation."
   }
 }

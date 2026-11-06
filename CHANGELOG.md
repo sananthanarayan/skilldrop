@@ -8,6 +8,13 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.9.0 — 2026-11-06
+
+- **A new pack for founders without a lawyer on retainer: `startup-legal`** ([RFC-0078](docs/rfcs/0078-startup-legal-pack.md)). Install it with `npx skilldrop-cli install --pack startup-legal`.
+  - **`contract-check`** reviews an agreement before you sign or send it. It finds blanks left in, references to clauses or exhibits that don't exist, amounts whose words and figures disagree, dates that don't exist, and the last day to give notice before an auto-renewal. Then it reads the agreement from your side for liability, indemnities, IP, payment and exclusivity, and gives you wording to ask for. Both blind judges preferred it to plain Claude Code (3 of 4 and 2 of 4 pairs).
+  - **`cap-table`** works out who owns what after a round: post- and pre-money SAFEs, notes with interest, the cap or the discount, and the option-pool top-up, with what that top-up costs you in money. Its figures are checked to add up. Judges preferred it in 2 of 4 and 4 of 4 pairs.
+  - Each one ends with at most two specific things worth a lawyer's hour, instead of a disclaimer.
+
 ## 1.8.0 — 2026-11-08
 
 - **A new pack for interior designers: `interior-designer`, with `furniture-layout`** ([RFC-0077](docs/rfcs/0077-furniture-layout-third-draft-and-private-work-folders.md)). Give it a room, its doors and windows, and your furniture list. It lays the pieces out at real sizes and draws a dimensioned plan, checked for overlaps, door swings, bed sides, chair pull-back, a clear route to every piece, and turning space exactly where you need it ("in front of the bathroom door", "beside the bed"), never somewhere else in the room. Install it with `npx skilldrop-cli install --pack interior-designer`.

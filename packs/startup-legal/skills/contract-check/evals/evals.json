@@ -13,6 +13,34 @@
         "Notes 'the Client' is used where the agreement defines 'the Customer'",
         "Does not mention a script or the skill's name, and does not invent clauses that aren't in the agreement"
       ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-11-06",
+      "prompt": "our first contractor sent this over, can you check consulting-agreement.md before I sign? anything I should push back on",
+      "assertions": [
+        "It works out that the founder is the client, Halyard Robotics ('Company'), hiring the consultant, and reviews the terms from Halyard's side",
+        "It flags the date that doesn't exist (February 30, 2027) in the opening paragraph and the fee in clause 2.1 where the words (Twelve Thousand Dollars) disagree with the figures ($21,000), and says the right amount has to be confirmed before signing",
+        "It flags the blank expense cap in clause 2.3, the numbering that jumps from section 6 to section 8 (there is no section 7), and the reference in clause 11.2 to an Exhibit C that isn't attached",
+        "It says that under clauses 6.1–6.3 Halyard will not own the robot-housing designs it is paying for (it gets only a non-exclusive internal licence, and the consultant can license the same designs to others), and asks for the IP to be assigned to Halyard on payment",
+        "It flags the one-sided, uncapped indemnity in clauses 10.1 and 9.3: Halyard covers the consultant even for claims that the consultant's own designs infringe someone else's IP. It asks for the indemnity to be mutual, or for the consultant to give the IP-infringement indemnity",
+        "It flags the termination imbalance in clauses 3.2–3.4: the consultant can walk away on 5 days' notice, Halyard can only end the agreement for an uncured breach, and Halyard still owes the full fee on any termination. It asks for a right to terminate for convenience that pays only for work done",
+        "It does not invent clauses, auto-renewal terms, notice deadlines, amounts or parties that are not in the agreement"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-11-06",
+      "prompt": "I'm the founder of Brightmoor Analytics, a 6-person UK company. We make Brightmoor Insight, planning-analytics software for local councils. Calder Systems want to resell it to councils, and their lawyer sent over reseller-agreement.md. We're the Supplier. Is it ready to sign, and what should I push back on before our call on Thursday? Also, if the first year goes badly, what's the last date I can tell them we don't want it to roll over?",
+      "assertions": [
+        "It flags that 'Territory' is defined twice and the two definitions conflict (England and Wales in clause 1.6; the United Kingdom and the Republic of Ireland in clause 3.1), and says which one widens the exclusivity",
+        "It flags that 'Net Revenue', the basis for Brightmoor's 60% share in clause 5.1, is never defined; that clause 6.1 refers to a Schedule 3 that doesn't exist; that the onboarding fee in clause 5.3 says fifteen thousand pounds in words but GBP 50,000 in figures; and that Calder's registered office is left blank, even though clause 13.2 sends notices there",
+        "It gives the non-renewal deadline as 1 January 2028 (90 days before the Initial Term ends on 31 March 2028; 31 December 2027 is also acceptable if it counts clear days). It points out that 1 January 2028 is a Saturday and a bank holiday and that notice must go by recorded delivery, so it should be sent well before then. It also warns that a missed deadline locks Brightmoor in for 24 more months, to 31 March 2030",
+        "It flags the exclusivity in clauses 2.1–2.4: Brightmoor is barred from selling to any public-sector body in the Territory, which is its whole market, while Calder has no minimum sales commitment and can appoint sub-resellers. It asks for minimum targets, the right to end exclusivity if they're missed, a narrower territory, or a carve-out for direct sales",
+        "It flags the liability imbalance: Brightmoor's liability is unlimited (clause 11.3) and it gives a broad indemnity for anything 'in connection with' the agreement (clause 10.1), while Calder's liability is capped at GBP 10,000 (clause 11.2). It asks for a mutual cap, for example tied to fees paid, and for the indemnity to be narrowed to IP-infringement claims",
+        "It flags the pay-when-paid terms in clause 5.2: Brightmoor is paid only 90 days after the end of the month in which the council pays Calder, and not at all if the council doesn't pay, so Brightmoor carries Calder's credit risk. It asks for fixed payment terms counted from Calder's invoice to the council",
+        "It does not invent clauses, schedules, prices, dates or parties that are not in the agreement, and it does not present its review as legal advice that replaces a solicitor"
+      ]
     }
   ]
 }

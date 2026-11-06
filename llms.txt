@@ -1,12 +1,12 @@
 # skilldrop
 
-> 120 portable skills for the artifacts knowledge work ships (ADRs, design docs,
+> 119 portable skills for the artifacts knowledge work ships (ADRs, design docs,
 > PRDs, runbooks, threat models, decks, postmortems), plus 11 loops that sequence them
 > behind gates. A loop orders skills; a skill never calls a skill, so every one of the
-> 120 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
+> 119 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 1.8.0.
+> Version 1.9.0.
 
 ## Start here
 
@@ -175,7 +175,6 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use prd-draft](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-prd-draft.md) *(how-to)*: Draft a Product Requirements Document from a feature idea or brief
 - [Use pre-merge-review](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-pre-merge-review.md) *(how-to)*: Gate an existing change for merge
 - [Use prfaq](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-prfaq.md) *(how-to)*: Write an Amazon-style PR/FAQ
-- [Use privacy-policy-check](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-privacy-policy-check.md) *(how-to)*: Check a startup's privacy policy against what its app actually does
 - [Use prompt-caching-advisor](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-prompt-caching-advisor.md) *(how-to)*: Analyzes a prompt or conversation structure and identifies the highest-value cache breakpoints
 - [Use refactor-plan](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-refactor-plan.md) *(how-to)*: Plan paying down one piece of technical debt as a refactor that serves the goal it is blocking
 - [Use release-notes](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-release-notes.md) *(how-to)*: Write release notes from a git log, a list of merged PRs or rough notes about what changed
@@ -305,7 +304,7 @@ except `api-builder` requires `core`, which installs with it.
 - **operations-manager** (1 skills, requires core): Staff rotas from who is available, what each shift needs and the working-time rules: a week or fortnight built and drawn as a grid, shown only once a script has checked every shift's cover and skills, and every person's hours, rest between shifts and days in a row.
 - **event-planner** (2 skills, requires core): Seated dinners and event days that hold together: a table plan where every guest has one seat and every together, keep-apart and access request holds, and a run of show where no room or person is booked twice and every changeover has the time it needs, each checked by a script and drawn before anyone prints it.
 - **interior-designer** (1 skills, requires core): Furniture plans for one room: every piece at its real size and facing the way it's used, drawn as a dimensioned SVG, and shown only once a script has checked it for overlaps, pieces in a door's swing, blocked bed sides, chair pull-backs and wardrobe doors, and a clear walking route to everything.
-- **startup-legal** (3 skills, requires core): Legal groundwork for a startup that can't yet pay a lawyer for everything: an agreement checked before you sign it (blanks, broken cross-references, mismatched amounts, the renewal date, and the clauses that hurt a small company, with wording to ask for), your cap table modelled through SAFEs, notes and a priced round, and your privacy policy checked against what the app's code actually sends to third parties. Each says what is worth a lawyer's hour.
+- **startup-legal** (2 skills, requires core): Legal groundwork for a startup that can't yet pay a lawyer for everything: an agreement checked before you sign it (blanks, broken cross-references, mismatched amounts, the renewal date, and the clauses that hurt a small company, with wording to ask for), and your cap table modelled through SAFEs, notes and a priced round. Each says what is worth a lawyer's hour.
 
 ## Outcomes — browse by why you are here
 
@@ -328,7 +327,7 @@ except `api-builder` requires `core`, which installs with it.
 - **staff-the-shifts** (1 skills): Turn who is available and what each shift needs into a rota with every shift covered by the right people, and nobody double-booked, over their hours or short of rest.
 - **plan-an-event** (2 skills): Seat every guest with the people they should and shouldn't be near, and run the day with no room or person booked twice.
 - **furnish-a-room** (1 skills): Fit a room's furniture at real sizes with every door, bed side, chair and route clear, and each turning space where it's needed, drawn to scale and checked.
-- **handle-the-legal-basics** (3 skills): Sign agreements you understand, know what a round does to your ownership, and keep your privacy policy true to what your app does, with a clear line on what is worth paying a lawyer for.
+- **handle-the-legal-basics** (2 skills): Sign agreements you understand and know what a round does to your ownership, with a clear line on what is worth paying a lawyer for.
 
 ## Reviewer subagents
 
@@ -344,7 +343,7 @@ except `api-builder` requires `core`, which installs with it.
 - [catalogue.json](https://sananthanarayan.github.io/skilldrop/catalogue.json): every skill, loop, pack and outcome as machine-readable JSON — name, description, tier, tags, related. Prefer this over scraping the site.
 - [model-routing.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/model-routing.json): the abstract tier per skill (light/standard/heavy) and the provider map that resolves a tier to a concrete model.
 - [catalogue.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/catalogue.json): pack display order and outcome membership; each pack's metadata is in `packs/<pack>/pack.json`.
-- All 120 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
+- All 119 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
 
 ## Optional
 

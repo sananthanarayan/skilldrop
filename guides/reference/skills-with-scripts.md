@@ -48,7 +48,6 @@ What each one declares in its manifest: the packages to install, the environment
 | [`md-to-xlsx`](../../packs/converters/skills/md-to-xlsx/SKILL.md) | converters | — | — | — | — | named-paths |
 | [`output-hygiene`](../../packs/core/skills/output-hygiene/SKILL.md) | core | — | — | — | — | named-paths |
 | [`pre-merge-review`](../../packs/dev-team/skills/pre-merge-review/SKILL.md) | dev-team | — | — | — | `git`, `ruff`, `mypy`, `pytest`, `*` | project |
-| [`privacy-policy-check`](../../packs/startup-legal/skills/privacy-policy-check/SKILL.md) | startup-legal | — | — | — | — | named-paths |
 | [`rendering-strategy`](../../packs/frontend/skills/rendering-strategy/SKILL.md) | frontend | — | — | — | — | named-paths |
 | [`resume-tailor`](../../packs/career/skills/resume-tailor/SKILL.md) | career | — | — | — | — | named-paths |
 | [`risk-register`](../../packs/grc/skills/risk-register/SKILL.md) | grc | — | — | — | — | named-paths |

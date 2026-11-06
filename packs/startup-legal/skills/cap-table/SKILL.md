@@ -20,7 +20,8 @@ SAFEs, and checks that the post-money equals price × shares and ownership sums 
 - **Answer the founder first, in a founder's words.** Lead with the number they asked for:
   ✅ *"After the round you each own 28.3 %, down from 45 % today. The pool top-up costs you
   about $1.1M of the headline $16M."* Never mention a script, a JSON file, this skill's name
-  or a path inside its folder.
+  or a path inside its folder, never call your work "the check" or "a tool", and never show
+  a temporary path.
 - **Every number in the reply comes from the computed cap table,** run on the final inputs.
   Never do conversion arithmetic in your head, and never round a percentage the table didn't.
 - **Say which terms you assumed, and which way each one cuts.** A SAFE's type (post-money or

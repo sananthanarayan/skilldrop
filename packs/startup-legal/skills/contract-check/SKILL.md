@@ -21,7 +21,7 @@ agent reads for those, from the founder's side.
 - **Lead with the verdict and the few things that matter.** ✅ *"Don't sign it as is. Three
   things: liability is uncapped for you and capped at three months' fees for them (6.1), the
   fee is still a blank (3.1), and 8.2 says Section 14.3 survives termination, but there is no
-  14.3."* Then the rest. Never mention a script, this skill's name, or a path inside its folder.
+  14.3."* Then the rest. Never mention a script, this skill's name, or a path inside its folder, never call your work "the check" or "a tool", and never show a temporary path.
 - **Every mechanical finding comes from the check,** with its clause number. Never claim a
   cross-reference is broken, or a term undefined, from a read alone.
 - **Read for the founder's side.** Say who the founder is in the agreement (customer,

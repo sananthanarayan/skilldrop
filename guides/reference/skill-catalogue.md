@@ -262,7 +262,6 @@ Capture a brand once, and plan a deck for its audience. `brand-kit` writes the `
 |---|---|
 | [`contract-check`](../../packs/startup-legal/skills/contract-check/SKILL.md) | An agreement checked before a founder signs or sends it: a script finds blanks left in, references to clauses or exhibits that don't exist, numbering that skips, terms defined twice or never defined, amounts whose words and figures disagree, impossible dates and each renewal notice deadline; then a read from the founder's side for liability, indemnities, IP, payment, renewal and exclusivity, with wording to ask for. |
 | [`cap-table`](../../packs/startup-legal/skills/cap-table/SKILL.md) | Who owns what through post- and pre-money SAFEs, convertible notes with interest and a priced round with an option-pool top-up: each conversion price and whether the cap or discount set it, what the top-up costs the founders in money, the table before and after, and other valuations, checked to sum to 100 %. |
-| [`privacy-policy-check`](../../packs/startup-legal/skills/privacy-policy-check/SKILL.md) | A privacy policy checked against the app's code: a script finds the analytics, ad pixels, session replay, AI APIs, payments and other services that receive users' data, then each one the policy doesn't disclose, each policy sentence the code makes untrue, and the missing sections, with text to paste in. |
 
 ## What's in a skill
 
