@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Write eval cases for this SKILL.md so I can put them in its evals folder",
+    "should_trigger": true
+  },
+  {
+    "query": "Generate trigger queries and pass/fail criteria for the release-notes skill",
+    "should_trigger": true
+  },
+  {
+    "query": "I'm about to edit a skill — build me a regression set from its SKILL.md first",
+    "should_trigger": true
+  },
+  {
+    "query": "Check this skill behaves as documented: draft eval cases covering its anti-patterns",
+    "should_trigger": true
+  },
+  {
+    "query": "Design an eval harness for our customer-support chatbot's RAG pipeline",
+    "should_trigger": false
+  },
+  {
+    "query": "Help me author a brand-new skilldrop skill from scratch, manifest and all",
+    "should_trigger": false
+  },
+  {
+    "query": "We need a golden set and LLM-judge rubric for our summarization feature in production",
+    "should_trigger": false
+  }
+]

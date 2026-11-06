@@ -1,0 +1,20 @@
+services:
+  web:
+    build: ./web
+    ports: ["8080:80"]
+  api:
+    build: ./api
+    environment:
+      DATABASE_URL: postgresql://larder@db/larder
+      REDIS_URL: redis://queue:6379/0
+    depends_on: [db, queue]
+  worker:
+    build: ./worker
+    environment:
+      REDIS_URL: redis://queue:6379/0
+      MAILER_URL: https://api.mailer.example/v1/send
+    depends_on: [queue]
+  db:
+    image: postgres:16
+  queue:
+    image: redis:7

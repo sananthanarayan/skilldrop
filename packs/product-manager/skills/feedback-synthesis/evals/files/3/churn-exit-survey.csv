@@ -1,0 +1,11 @@
+response_id,account_id,plan,staff_band,months_as_customer,primary_reason,comment
+X-01,F-3011,Starter,1-25,7,Too expensive,"Couldn't justify it for three vans."
+X-02,F-3027,Team,26-100,14,Missing feature,"When a tech was off, reassigning his jobs double-booked people. Happened weekly."
+X-03,F-3034,Team,26-100,22,Switched to competitor,"Moved to a tool that handles reassignment properly."
+X-04,F-3040,Starter,1-25,4,Business closed,""
+X-05,F-3052,Team,26-100,11,Missing feature,"Double bookings when we moved jobs between engineers. Customers turned up to no one."
+X-06,F-3058,Business,101-500,18,Product too hard to use,"Dispatchers found re-planning a day after a sick call took ages and kept clashing."
+X-07,F-3063,Starter,1-25,9,Too expensive,"Price went up and we're tiny."
+X-08,F-3071,Team,26-100,30,Other,"Our office manager left and nobody else learned it."
+X-09,F-3079,Business,101-500,16,Missing feature,"Reassigning jobs created overlaps the system didn't warn about."
+X-10,F-3085,Team,26-100,12,Switched to competitor,"Cheaper elsewhere."

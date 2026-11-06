@@ -1,0 +1,21 @@
+Kestrel Reach Rowing Club - 50th Anniversary Dinner, Saturday 28 November
+Notes for the table plan (from the social secretary)
+
+Venue: the Boathouse function room. 9 tables, each seats 10, including the top table
+(Table 1). Tables 1-6 are on the ground floor. Tables 7-9 are on the balcony, which is
+up a flight of stairs - there is no lift.
+
+Rules we always use:
+- everyone on one booking sits at the same table
+- anyone with access needs on the ground floor, with whoever they came with
+
+From Verity (President):
+"I'd love all five of our surviving founder members on the top table with Piers Gascoigne and me,
+and our guest speaker - it's their night really."
+
+From the Welfare Officer:
+"Please make sure Piers Abernethy and Jolene Ivesley are not on the same table. I can't say
+more than that, but it matters."
+"Also keep Mungo Nancarrow and Gwenllian Oldroyd apart - the boat-shed dispute."
+
+I've done a first go at the plan (table_plan_draft.csv). The RSVP list is rsvp_list.csv.

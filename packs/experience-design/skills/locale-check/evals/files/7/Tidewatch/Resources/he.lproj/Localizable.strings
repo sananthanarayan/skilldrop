@@ -1,0 +1,157 @@
+/* Tidewatch — Localizable.strings (he) */
+
+/* Tab bar */
+"tab.forecast" = "תחזית";
+
+/* Tab bar */
+"tab.spots" = "חופים";
+
+/* Tab bar */
+"tab.surf" = "גלישה";
+
+/* Tab bar */
+"tab.settings" = "הגדרות";
+
+/* Tide panel */
+"tide.high" = "גאות";
+
+/* Tide panel */
+"tide.low" = "שפל";
+
+/* Tide panel */
+"tide.rising" = "עולה";
+
+/* Tide panel */
+"tide.falling" = "יורד";
+
+/* Tide panel */
+"tide.next_high" = "הגאות הבאה ב-%@";
+
+/* Tide panel */
+"tide.summary" = "שפל ב-%1$@, גאות ב-%2$@";
+
+/* Conditions card */
+"swell.height" = "גובה גלים: %.1f מ׳";
+
+/* Conditions card */
+"swell.period" = "מחזור: %d שנ׳";
+
+/* Conditions card */
+"water.temp" = "טמפרטורת המים: %d°";
+
+/* Conditions card */
+"wind.speed" = "רוח: %1$d קמ״ש מכיוון %2$@";
+
+/* Spots list */
+"spot.updated" = "לפני %2$@ עודכן %1$@";
+
+/* Safety alert banner */
+"alert.rip.title" = "אזהרת זרמי סחף";
+
+/* Safety alert banner */
+"alert.rip.body" = "זרמי סחף חזקים. לא מומלץ לשחות.";
+
+/* Safety alert banner */
+"alert.lightning.title" = "ברקים בקרבת מקום";
+
+/* Safety alert banner */
+"alert.lightning.body" = "צאו מהמים ומהחוף.";
+
+/* Safety alert banner */
+"alert.uv.body" = "מדד ה-UV הוא %d. מרחו קרם הגנה.";
+
+/* Spots list */
+"spot.add" = "הוספת חוף";
+
+/* Spots list */
+"spot.remove" = "הסרת חוף";
+
+/* Spots list */
+"spot.remove.confirm" = "להסיר את %@ מהחופים שלך?";
+
+/* Spots list */
+"spot.search.placeholder" = "חיפוש חופים";
+
+/* Spots list */
+"spot.empty" = "עדיין אין חופים שמורים";
+
+/* Forecast screen */
+"forecast.updated" = "עודכן %@";
+
+/* Forecast screen */
+"forecast.offline" = "אין חיבור. מוצגת התחזית האחרונה.";
+
+/* Forecast screen */
+"forecast.refresh" = "רענון";
+
+/* Forecast screen */
+"forecast.source" = "נתונים מ-%@";
+
+/* Settings */
+"settings.units" = "יחידות";
+
+/* Settings */
+"settings.units.metric" = "מטרי";
+
+/* Settings */
+"settings.units.imperial" = "אימפריאלי";
+
+/* Settings */
+"settings.notifications" = "התראות";
+
+/* Settings */
+"settings.dawn_patrol" = "תזכורת לגלישת שחר";
+
+/* Settings */
+"settings.dawn_patrol.time" = "להזכיר לי ב-%@";
+
+/* Settings */
+"settings.privacy" = "פרטיות";
+
+/* Settings */
+"settings.about" = "אודות Tidewatch";
+
+/* Settings */
+"settings.version" = "גרסה %@ (%d)";
+
+/* Onboarding */
+"onboarding.title" = "דעו לפני שאתם נכנסים למים";
+
+/* Onboarding */
+"onboarding.location" = "אפשרו גישה למיקום כדי למצוא חופים בקרבתכם.";
+
+/* Onboarding */
+"onboarding.continue" = "המשך";
+
+/* Onboarding */
+"onboarding.skip" = "לא עכשיו";
+
+/* Error banner */
+"error.network" = "לא ניתן לטעון את התחזית. בדקו את החיבור.";
+
+/* Error banner */
+"error.location_denied" = "שירותי המיקום כבויים. הפעילו אותם בהגדרות.";
+
+/* Share sheet */
+"share.forecast" = "שיתוף התחזית";
+
+/* Share sheet */
+"share.message" = "הגלישה ב-%1$@: %2$@";
+
+/* Home-screen widget */
+"widget.title" = "הגאות והשפל היום";
+
+/* Home-screen widget */
+"widget.placeholder" = "בחרו חוף באפליקציה";
+
+/* Surf rating */
+"rating.good" = "טוב";
+
+/* Surf rating */
+"rating.fair" = "סביר";
+
+/* Surf rating */
+"rating.poor" = "חלש";
+
+/* Surf rating */
+"rating.flat" = "שטוח";

@@ -1,0 +1,46 @@
+{
+  "name": "design-system-spec",
+  "version": "0.1.0",
+  "description": "Write a design system component spec — purpose, anatomy, variants, every state (default, hover, focus, active, disabled, error, loading), the design tokens each part uses by name, behaviour, content rules, accessibility (keyboard, focus order, ARIA role, contrast, target size) cited to WCAG 2.2 criteria, do/don't examples, and the open questions engineering must answer. Use when the user wants a component spec, design system documentation, \"spec out this button / modal / text field\", a component's states and tokens, or a design-to-engineering hand-off for a component.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "accessibility-audit",
+    "brand-kit",
+    "information-architecture",
+    "ux-writing"
+  ],
+  "handoff": [
+    {
+      "to": "accessibility-audit",
+      "when": "the component is built",
+      "purpose": "Check the real component against WCAG 2.2 AA, which a spec can't prove.",
+      "fallback": "If accessibility-audit is absent, test it by hand: tab through every state, use it with a screen reader, and measure text and border contrast."
+    },
+    {
+      "to": "ux-writing",
+      "when": "the content rules are set and the product needs the actual strings",
+      "purpose": "Write labels, helper text and errors to the spec's rules.",
+      "fallback": "If ux-writing is absent, give one example string per slot that follows the content rules."
+    }
+  ],
+  "tags": [
+    "design-system",
+    "component-spec",
+    "ui",
+    "tokens",
+    "accessibility",
+    "wcag"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Fills a fixed spec shape (anatomy, states, tokens, accessibility) against a checked WCAG list. Needs care on states and keyboard patterns, but the structure bounds it."
+  }
+}

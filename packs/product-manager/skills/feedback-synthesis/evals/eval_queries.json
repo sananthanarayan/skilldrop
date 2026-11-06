@@ -1,0 +1,46 @@
+[
+  {
+    "query": "Here are 200 support tickets and last quarter's NPS comments. What are customers actually telling us?",
+    "should_trigger": true
+  },
+  {
+    "query": "Affinity map these eight interview notes into themes with quotes",
+    "should_trigger": true
+  },
+  {
+    "query": "Find the themes in our app store reviews and tell me what to fix first",
+    "should_trigger": true
+  },
+  {
+    "query": "Sales says every prospect wants SSO. Check that against the call notes and churn survey before it goes in the brief",
+    "should_trigger": true
+  },
+  {
+    "query": "Synthesise this CSAT export into the top customer pain points by segment",
+    "should_trigger": true
+  },
+  {
+    "query": "Write me an interview guide for talking to churned customers next week",
+    "should_trigger": false
+  },
+  {
+    "query": "Map our customer's onboarding journey from sign-up to first invoice, with pains at each stage",
+    "should_trigger": false
+  },
+  {
+    "query": "Summarise what these five industry reports say about four-day weeks",
+    "should_trigger": false
+  },
+  {
+    "query": "Churn jumped 3 points in August. Which of these explanations fits the evidence best?",
+    "should_trigger": false
+  },
+  {
+    "query": "Clean up our Jira backlog: duplicates, stale tickets and what to pull next",
+    "should_trigger": false
+  },
+  {
+    "query": "Turn this Slack thread about the export bug into a brief for the PRD",
+    "should_trigger": false
+  }
+]

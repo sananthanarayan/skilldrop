@@ -1,0 +1,12 @@
+{
+  "name": "Harbourline Logistics",
+  "colors": {
+    "primary": "#1D4E89",
+    "accent": "#F2A5",
+    "text": "#1F1F1F"
+  },
+  "fonts": {
+    "heading": "Georgia",
+    "body": { "family": "Arial" }
+  }
+}

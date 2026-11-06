@@ -1,0 +1,110 @@
+{
+ "type": "waterfall",
+ "title": "Where a slow checkout spent its time",
+ "unit": "ms",
+ "question": "Why did this checkout take 1.8 seconds?",
+ "summary": "Two thirds of it was the Stripe call, and most of that was waiting on Stripe, not the TLS handshake. A cache miss on prices cost another 350 ms before payment even started.",
+ "spans": [
+  {
+   "id": "a1",
+   "label": "POST /checkout",
+   "start": 0,
+   "end": 1840,
+   "service": "api",
+   "evidence": [
+    "checkout-trace.jsonl:1#POST /checkout"
+   ]
+  },
+  {
+   "id": "a2",
+   "label": "verify session",
+   "start": 4,
+   "end": 38,
+   "service": "api",
+   "parent": "a1",
+   "evidence": [
+    "checkout-trace.jsonl:2#verify session"
+   ]
+  },
+  {
+   "id": "a3",
+   "label": "price cart",
+   "start": 40,
+   "end": 420,
+   "service": "api",
+   "parent": "a1",
+   "evidence": [
+    "checkout-trace.jsonl:3#price cart"
+   ]
+  },
+  {
+   "id": "a4",
+   "label": "redis MGET price:*",
+   "start": 42,
+   "end": 61,
+   "service": "redis",
+   "parent": "a3",
+   "evidence": [
+    "checkout-trace.jsonl:4#redis MGET price:*"
+   ]
+  },
+  {
+   "id": "a5",
+   "label": "select price from products (cache miss)",
+   "start": 64,
+   "end": 410,
+   "service": "postgres",
+   "parent": "a3",
+   "evidence": [
+    "checkout-trace.jsonl:5#select price from products (cache miss)"
+   ]
+  },
+  {
+   "id": "a6",
+   "label": "stripe.PaymentIntent.create",
+   "start": 430,
+   "end": 1620,
+   "service": "stripe",
+   "parent": "a1",
+   "evidence": [
+    "checkout-trace.jsonl:6#stripe.PaymentIntent.create"
+   ]
+  },
+  {
+   "id": "a7",
+   "label": "TLS handshake api.stripe.com",
+   "start": 431,
+   "end": 520,
+   "service": "stripe",
+   "parent": "a6",
+   "evidence": [
+    "checkout-trace.jsonl:7#TLS handshake api.stripe.com"
+   ]
+  },
+  {
+   "id": "a8",
+   "label": "insert into orders",
+   "start": 1625,
+   "end": 1790,
+   "service": "postgres",
+   "parent": "a1",
+   "evidence": [
+    "checkout-trace.jsonl:8#insert into orders"
+   ]
+  },
+  {
+   "id": "a9",
+   "label": "publish fulfilment",
+   "start": 1792,
+   "end": 1836,
+   "service": "rabbitmq",
+   "parent": "a1",
+   "evidence": [
+    "checkout-trace.jsonl:9#publish fulfilment"
+   ]
+  }
+ ],
+ "notes": [
+  "One trace, from checkout-trace.jsonl. It says where this request spent its time, not how often checkouts are this slow."
+ ]
+}

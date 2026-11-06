@@ -1,0 +1,34 @@
+{
+  "name": "contract-check",
+  "version": "0.1.0",
+  "description": "Check an agreement before a founder signs or sends it — a script finds the mechanical faults a read-through misses (blanks left in, cross-references to clauses or exhibits that don't exist, numbering that skips, terms defined twice or used undefined, amounts in words that disagree with the figures, dates that don't exist, and the date notice must be given to stop an auto-renewal) — then reads it for the terms that hurt a small company: uncapped liability, one-sided indemnities, IP that leaves, exclusivity, auto-renewal, payment and termination traps. Use when a founder says \"review this contract before I sign\", \"check this NDA / MSA / SaaS agreement / consulting agreement\", \"anything wrong with this agreement\", \"what should I push back on\", or \"is this ready to send\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [],
+  "tags": [
+    "contract",
+    "agreement",
+    "nda",
+    "msa",
+    "legal",
+    "redline",
+    "startup"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "Reads the agreement it is given (.md, .txt or .docx) and writes nothing."
+  },
+  "model": {
+    "tier": "heavy",
+    "rationale": "The mechanical faults come from the script; reading every clause from the founder's side and writing the wording to ask for is legal judgment."
+  }
+}

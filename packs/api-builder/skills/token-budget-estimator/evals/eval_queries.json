@@ -1,0 +1,30 @@
+[
+  {
+    "query": "How many tokens will this agentic workflow use per session?",
+    "should_trigger": true
+  },
+  {
+    "query": "Size a cost budget for our new Claude integration before we build it",
+    "should_trigger": true
+  },
+  {
+    "query": "Our agent's token usage is way higher than expected — break down where it's going",
+    "should_trigger": true
+  },
+  {
+    "query": "Suggest max_tokens limits per component for this multi-turn tool-using agent",
+    "should_trigger": true
+  },
+  {
+    "query": "Exactly where should the cache_control checkpoints go in this prompt?",
+    "should_trigger": false
+  },
+  {
+    "query": "Put spending caps and budget kill-switches on our fleet of autonomous agents",
+    "should_trigger": false
+  },
+  {
+    "query": "Design the agent loop: when to stop, retry, and hand back to the user",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,11 @@
+[
+  { "query": "Dependabot wants to bump express from 4.19 to 5.0, can I merge the PR?", "should_trigger": true },
+  { "query": "review this Renovate PR, it updates 14 packages in package-lock.json", "should_trigger": true },
+  { "query": "is this actions/checkout SHA pin in the dependabot PR actually the v4.2.2 commit?", "should_trigger": true },
+  { "query": "I bumped pydantic and regenerated poetry.lock, anything in the lockfile diff I should worry about before merging?", "should_trigger": true },
+  { "query": "check this go.mod / go.sum diff from the deps update PR, CI is green", "should_trigger": true },
+  { "query": "review my PR that adds rate limiting to the checkout API before I merge", "should_trigger": false },
+  { "query": "write the release notes for our 3.2.0 release from the merged PRs", "should_trigger": false },
+  { "query": "plan our migration from React 17 to React 19 across the four frontend apps", "should_trigger": false },
+  { "query": "scan the skills I'm about to install for risky scripts", "should_trigger": false }
+]

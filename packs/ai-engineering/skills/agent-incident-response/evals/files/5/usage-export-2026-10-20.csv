@@ -1,0 +1,13 @@
+date_hour_utc,project,api_key_name,model,requests,input_tokens,output_tokens,cost_usd,user_agent
+2026-10-18T02:00Z,ops,ops-shared,model-medium,40,400000,60000,2.10,triage-agent/1.4
+2026-10-19T02:00Z,ops,ops-shared,model-medium,40,400000,60000,2.10,triage-agent/1.4
+2026-10-19T23:00Z,ops,ops-shared,model-large,600,9000000,1200000,225.00,python-requests/2.31
+2026-10-20T00:00Z,ops,ops-shared,model-large,900,13500000,1800000,337.50,python-requests/2.31
+2026-10-20T01:00Z,ops,ops-shared,model-large,900,13500000,1800000,337.50,python-requests/2.31
+2026-10-20T02:00Z,ops,ops-shared,model-medium,1800,54000000,2700000,202.50,triage-agent/1.4
+2026-10-20T03:00Z,ops,ops-shared,model-medium,2100,63000000,3150000,236.25,triage-agent/1.4
+2026-10-20T04:00Z,ops,ops-shared,model-medium,2100,63000000,3150000,236.25,triage-agent/1.4
+2026-10-20T05:00Z,ops,ops-shared,model-medium,2000,60000000,3000000,225.00,triage-agent/1.4
+2026-10-20T05:00Z,ops,ops-shared,model-large,900,13500000,1800000,337.50,python-requests/2.31
+2026-10-20T06:00Z,ops,ops-shared,model-medium,2100,63000000,3150000,236.25,triage-agent/1.4
+2026-10-20T07:00Z,ops,ops-shared,model-medium,2100,63000000,3150000,236.25,triage-agent/1.4

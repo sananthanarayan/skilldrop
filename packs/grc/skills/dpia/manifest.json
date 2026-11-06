@@ -1,0 +1,47 @@
+{
+  "name": "dpia",
+  "version": "0.1.0",
+  "description": "Draft a data protection impact assessment (DPIA) for one processing activity in the structure GDPR Article 35(7) requires — a systematic description of the processing and its purposes, necessity and proportionality, risks to the rights and freedoms of individuals, and the measures to address them — with a data inventory (categories, special category data, data subjects, sources, recipients, transfers outside the EEA, retention), the lawful basis per purpose, a likelihood × severity risk table scored for harm to people, residual risk, a view on prior consultation, and the open questions for the DPO. Use when the user needs a DPIA or PIA, is launching something that processes personal data in a new or risky way, or asks \"do we need a DPIA\", \"write the DPIA for…\", \"privacy impact assessment\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "agent-threat-model",
+    "ai-usage-policy",
+    "risk-register",
+    "soc2-evidence-map",
+    "threat-model"
+  ],
+  "handoff": [
+    {
+      "to": "threat-model",
+      "when": "the processing runs on a new system whose security design hasn't been assessed",
+      "purpose": "Find the security threats to the system so the DPIA's measures section can cite them.",
+      "fallback": "If threat-model is absent, list the security measures the vendor or team states (access control, encryption, logging) in §5 and add a DPO question asking for a security review."
+    },
+    {
+      "to": "risk-register",
+      "when": "the DPIA leaves residual risks the business has accepted",
+      "purpose": "Track the accepted residual risks with an owner and review date alongside other organisational risks.",
+      "fallback": "If risk-register is absent, list each accepted residual risk with its owner and review trigger in §8."
+    }
+  ],
+  "tags": [
+    "dpia",
+    "gdpr",
+    "privacy",
+    "data-protection",
+    "grc",
+    "compliance"
+  ],
+  "model": {
+    "tier": "heavy",
+    "rationale": "Legal-structure judgment: screening, choosing a lawful basis per purpose, spotting inferred special category data and transfers, and scoring harm to individuals. Errors are costly and the input is usually incomplete."
+  }
+}

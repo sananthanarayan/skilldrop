@@ -1,0 +1,359 @@
+{
+ "lighthouseVersion": "12.6.1",
+ "requestedUrl": "https://www.fernhill.example/events/autumn-lights",
+ "mainDocumentUrl": "https://www.fernhill.example/events/autumn-lights",
+ "finalDisplayedUrl": "https://www.fernhill.example/events/autumn-lights",
+ "finalUrl": "https://www.fernhill.example/events/autumn-lights",
+ "fetchTime": "2026-10-14T09:47:12.330Z",
+ "gatherMode": "navigation",
+ "runWarnings": [],
+ "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.0.0 Safari/537.36",
+ "environment": {
+  "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36 Chrome-Lighthouse",
+  "hostUserAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.0.0 Safari/537.36",
+  "benchmarkIndex": 1530.0
+ },
+ "configSettings": {
+  "output": [
+   "json"
+  ],
+  "maxWaitForFcp": 30000,
+  "maxWaitForLoad": 45000,
+  "pauseAfterFcpMs": 1000,
+  "pauseAfterLoadMs": 1000,
+  "networkQuietThresholdMs": 1000,
+  "cpuQuietThresholdMs": 1000,
+  "formFactor": "mobile",
+  "throttling": {
+   "rttMs": 150,
+   "throughputKbps": 1638.4,
+   "requestLatencyMs": 562.5,
+   "downloadThroughputKbps": 1474.5600000000002,
+   "uploadThroughputKbps": 675,
+   "cpuSlowdownMultiplier": 2
+  },
+  "throttlingMethod": "simulate",
+  "screenEmulation": {
+   "mobile": true,
+   "width": 412,
+   "height": 823,
+   "deviceScaleFactor": 1.75,
+   "disabled": false
+  },
+  "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+  "onlyCategories": [
+   "performance"
+  ],
+  "channel": "cli"
+ },
+ "categories": {
+  "performance": {
+   "id": "performance",
+   "title": "Performance",
+   "score": 0.71,
+   "auditRefs": [
+    {
+     "id": "first-contentful-paint",
+     "weight": 10,
+     "group": "metrics",
+     "acronym": "FCP"
+    },
+    {
+     "id": "largest-contentful-paint",
+     "weight": 25,
+     "group": "metrics",
+     "acronym": "LCP"
+    },
+    {
+     "id": "total-blocking-time",
+     "weight": 30,
+     "group": "metrics",
+     "acronym": "TBT"
+    },
+    {
+     "id": "cumulative-layout-shift",
+     "weight": 25,
+     "group": "metrics",
+     "acronym": "CLS"
+    },
+    {
+     "id": "speed-index",
+     "weight": 10,
+     "group": "metrics",
+     "acronym": "SI"
+    }
+   ]
+  }
+ },
+ "audits": {
+  "first-contentful-paint": {
+   "id": "first-contentful-paint",
+   "title": "First Contentful Paint",
+   "score": 0.9,
+   "scoreDisplayMode": "numeric",
+   "numericValue": 1640,
+   "numericUnit": "millisecond",
+   "displayValue": "1.6 s"
+  },
+  "largest-contentful-paint": {
+   "id": "largest-contentful-paint",
+   "title": "Largest Contentful Paint",
+   "score": 0.62,
+   "scoreDisplayMode": "numeric",
+   "numericValue": 3480,
+   "numericUnit": "millisecond",
+   "displayValue": "3.5 s"
+  },
+  "total-blocking-time": {
+   "id": "total-blocking-time",
+   "title": "Total Blocking Time",
+   "score": 0.57,
+   "scoreDisplayMode": "numeric",
+   "numericValue": 520,
+   "numericUnit": "millisecond",
+   "displayValue": "520 ms"
+  },
+  "cumulative-layout-shift": {
+   "id": "cumulative-layout-shift",
+   "title": "Cumulative Layout Shift",
+   "score": 1,
+   "scoreDisplayMode": "numeric",
+   "numericValue": 0.018,
+   "numericUnit": "unitless",
+   "displayValue": "0.018"
+  },
+  "speed-index": {
+   "id": "speed-index",
+   "title": "Speed Index",
+   "score": 0.78,
+   "scoreDisplayMode": "numeric",
+   "numericValue": 3620,
+   "numericUnit": "millisecond",
+   "displayValue": "3.6 s"
+  },
+  "largest-contentful-paint-element": {
+   "id": "largest-contentful-paint-element",
+   "title": "Largest Contentful Paint element",
+   "score": 0,
+   "scoreDisplayMode": "metricSavings",
+   "displayValue": "3,480 ms",
+   "metricSavings": {
+    "LCP": 980
+   },
+   "details": {
+    "type": "list",
+    "items": [
+     {
+      "type": "table",
+      "headings": [
+       {
+        "key": "node",
+        "valueType": "node",
+        "label": "Element"
+       }
+      ],
+      "items": [
+       {
+        "node": {
+         "type": "node",
+         "lhId": "1-9-H1",
+         "path": "1,HTML,1,BODY,0,DIV,0,MAIN,0,HEADER,0,H1",
+         "selector": "div#root > main > header.event-header > h1",
+         "nodeLabel": "Autumn Lights at Fernhill Gardens",
+         "snippet": "<h1 class=\"event-header__title\">"
+        }
+       }
+      ]
+     },
+     {
+      "type": "table",
+      "headings": [
+       {
+        "key": "phase",
+        "valueType": "text",
+        "label": "Phase"
+       },
+       {
+        "key": "percent",
+        "valueType": "text",
+        "label": "% of LCP"
+       },
+       {
+        "key": "timing",
+        "valueType": "ms",
+        "label": "Timing"
+       }
+      ],
+      "items": [
+       {
+        "phase": "TTFB",
+        "timing": 510,
+        "percent": "15%"
+       },
+       {
+        "phase": "Load Delay",
+        "timing": 0,
+        "percent": "0%"
+       },
+       {
+        "phase": "Load Time",
+        "timing": 0,
+        "percent": "0%"
+       },
+       {
+        "phase": "Render Delay",
+        "timing": 2970,
+        "percent": "85%"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "long-tasks": {
+   "id": "long-tasks",
+   "title": "Avoid long main-thread tasks",
+   "score": 1,
+   "scoreDisplayMode": "informative",
+   "displayValue": "3 long tasks found",
+   "details": {
+    "type": "table",
+    "headings": [
+     {
+      "key": "url",
+      "valueType": "url"
+     },
+     {
+      "key": "startTime",
+      "valueType": "ms"
+     },
+     {
+      "key": "duration",
+      "valueType": "ms"
+     }
+    ],
+    "items": [
+     {
+      "url": "https://www.fernhill.example/static/js/seatmap.4f2a91.js",
+      "duration": 410,
+      "startTime": 1900
+     },
+     {
+      "url": "https://www.fernhill.example/static/js/app.8c1d07.js",
+      "duration": 190,
+      "startTime": 1450
+     },
+     {
+      "url": "https://www.tagpilot.example/tp.js?id=TP-000111",
+      "duration": 70,
+      "startTime": 3050
+     }
+    ]
+   }
+  },
+  "third-party-summary": {
+   "id": "third-party-summary",
+   "title": "Reduce the impact of third-party code",
+   "score": 1,
+   "scoreDisplayMode": "metricSavings",
+   "metricSavings": {
+    "TBT": 20
+   },
+   "details": {
+    "type": "table",
+    "headings": [
+     {
+      "key": "entity",
+      "valueType": "text"
+     },
+     {
+      "key": "mainThreadTime",
+      "valueType": "ms"
+     },
+     {
+      "key": "blockingTime",
+      "valueType": "ms"
+     }
+    ],
+    "items": [
+     {
+      "entity": "TagPilot",
+      "mainThreadTime": 180,
+      "blockingTime": 20,
+      "transferSize": 98000
+     }
+    ]
+   }
+  },
+  "bootup-time": {
+   "id": "bootup-time",
+   "title": "JavaScript execution time",
+   "score": 0.5,
+   "scoreDisplayMode": "metricSavings",
+   "displayValue": "1.4 s",
+   "metricSavings": {
+    "TBT": 260
+   },
+   "numericValue": 1350,
+   "numericUnit": "millisecond",
+   "details": {
+    "type": "table",
+    "headings": [
+     {
+      "key": "url",
+      "valueType": "url"
+     },
+     {
+      "key": "total",
+      "valueType": "ms"
+     },
+     {
+      "key": "scripting",
+      "valueType": "ms"
+     }
+    ],
+    "items": [
+     {
+      "url": "https://www.fernhill.example/static/js/seatmap.4f2a91.js",
+      "total": 690,
+      "scripting": 612
+     },
+     {
+      "url": "https://www.fernhill.example/static/js/app.8c1d07.js",
+      "total": 480,
+      "scripting": 401
+     },
+     {
+      "url": "https://www.tagpilot.example/tp.js?id=TP-000111",
+      "total": 180,
+      "scripting": 152
+     }
+    ]
+   }
+  }
+ },
+ "entities": [
+  {
+   "name": "fernhill.example",
+   "origins": [
+    "https://www.fernhill.example"
+   ],
+   "isFirstParty": true,
+   "isUnrecognized": true
+  },
+  {
+   "name": "ChatterBox",
+   "origins": [
+    "https://widget.chatterbox.example"
+   ],
+   "isFirstParty": false
+  },
+  {
+   "name": "TagPilot",
+   "origins": [
+    "https://www.tagpilot.example"
+   ],
+   "isFirstParty": false
+  }
+ ]
+}

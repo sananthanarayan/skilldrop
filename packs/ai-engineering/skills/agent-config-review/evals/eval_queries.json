@@ -1,0 +1,12 @@
+[
+  {"query": "Can you review our .claude/settings.json and .mcp.json before the team starts using Claude Code on this repo?", "should_trigger": true},
+  {"query": "Is my ~/.codex/config.toml safe? I run it with a profile that skips approvals", "should_trigger": true},
+  {"query": "Is Bash(python3:*) in the allow list a problem if we deny curl?", "should_trigger": true},
+  {"query": "Audit the agent permissions in this repo: hooks, sandbox, subagents, the lot", "should_trigger": true},
+  {"query": "This repo we cloned has a SessionStart hook in its Claude settings. Safe to open it?", "should_trigger": true},
+  {"query": "Which MCP servers should our release loop connect to, and with what token scopes?", "should_trigger": false},
+  {"query": "Threat-model our support agent: it reads tickets, queries the customer DB and can send email", "should_trigger": false},
+  {"query": "Write the policy for which AI coding tools staff may use with client code", "should_trigger": false},
+  {"query": "How should I split this migration across subagents, and what should each one be told?", "should_trigger": false},
+  {"query": "The agent committed our GitHub token to a public repo an hour ago. What do I do?", "should_trigger": false}
+]

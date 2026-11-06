@@ -1,0 +1,25 @@
+Session ID,Title,Format,Length (mins),Speaker(s),Room request,Expected attendance,Speaker notes
+FW-01,Opening keynote: Data as a public utility,Keynote,45,Tobias Rennick,Main Hall,380,
+FW-22,Workshop: Hands-on with QGIS,Workshop,90,Ines Varga,Workshop Lab,24,Needs the lab laptops
+FW-20,Plain-language metadata,Talk,30,Ngozi Eze,Breakout,29,
+FW-08,Lightning talks (5 x 5 min),Lightning,25,Ana Dorsey; Ben Kwarteng; Cass Ludlow; Dmitri Volk; Esi Mensah,Main Hall,150,
+FW-09,Mapping informal settlements from the air,Talk,30,Ines Varga,Breakout,72,
+FW-23,Workshop: Cleaning messy CSVs,Workshop,90,Sven Aaltonen; Priti Raman,Workshop Lab,24,Needs the lab laptops
+FW-19,Timetables as a public good,Talk,30,Marguerite Achebe-Lund,Breakout,44,
+FW-10,Postcodes are not places,Talk,30,Sven Aaltonen,Breakout,45,
+FW-03,Panel: Who owns the street?,Panel,45,Ines Varga; Tobias Rennick; Kofi Mensah-Baird; Hollis Grant (chair),Main Hall,250,Must be in Main Hall
+FW-11,Flood data for people who aren't hydrologists,Talk,30,Priti Raman,Breakout,66,
+FW-17,"Small councils, big spreadsheets",Talk,45,Hamid Sarraf,Breakout,63,
+FW-04,Open budgets in five councils,Talk,30,Lena Ostrowski,Main Hall,210,Lena has to leave at 14:30 for a flight
+FW-24,Workshop: Accessibility audit of a data portal,Workshop,60,Ngozi Eze,Workshop Lab,20,Needs the lab laptops
+FW-21,Archiving the council website,Talk,25,Tomasz Wrona,Breakout,33,
+FW-16,Consent and the census,Talk,30,Yusra Benali,Breakout,41,
+FW-18,Schools data without the league tables,Talk,30,Bettina Kroll,Breakout,35,
+FW-14,Ten things I got wrong about APIs,Talk,25,Jarrah Whitcombe,Breakout,58,Jarrah needs to be away by 16:00
+FW-02,Closing keynote: What we owe the next decade,Keynote,45,Ama Owusu-Leith,Main Hall,360,
+FW-15,Grants data: following the money,Talk,30,Rafa Quintero,Breakout,49,
+FW-13,Building a register nobody asked for,Talk,30,Odile Fournier,Breakout,38,Odile can't get there before 11:00
+FW-05,The data behind the bus timetable,Talk,45,Marguerite Achebe-Lund,Main Hall,190,
+FW-12,"Street trees, counted by volunteers",Talk,30,Kofi Mensah-Baird,Breakout,52,Kofi arrives on the 11:40 train - nothing before 12:15
+FW-06,Panel: Funding the commons,Panel,45,Ama Owusu-Leith; Lena Ostrowski; Rafa Quintero; Hollis Grant (chair),Main Hall,230,
+FW-07,The ethics of scraping public sites,Talk,30,Yusra Benali,Main Hall,170,

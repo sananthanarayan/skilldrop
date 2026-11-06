@@ -1,0 +1,171 @@
+{
+  "captchaResult": "CAPTCHA_NOT_NEEDED",
+  "kind": "pagespeedonline#result",
+  "id": "https://www.fernhollow-outfitters.example/p/ridgeline-insulated-jacket",
+  "analysisUTCTimestamp": "2026-10-19T09:12:44.000Z",
+  "loadingExperience": {
+    "id": "https://www.fernhollow-outfitters.example",
+    "initial_url": "https://www.fernhollow-outfitters.example/p/ridgeline-insulated-jacket",
+    "origin_fallback": true,
+    "overall_category": "SLOW",
+    "metrics": {
+      "LARGEST_CONTENTFUL_PAINT_MS": {
+        "percentile": 2400,
+        "distributions": [
+          { "min": 0, "max": 2500, "proportion": 0.77 },
+          { "min": 2500, "max": 4000, "proportion": 0.16 },
+          { "min": 4000, "proportion": 0.07 }
+        ],
+        "category": "FAST"
+      },
+      "INTERACTION_TO_NEXT_PAINT": {
+        "percentile": 540,
+        "distributions": [
+          { "min": 0, "max": 200, "proportion": 0.52 },
+          { "min": 200, "max": 500, "proportion": 0.21 },
+          { "min": 500, "proportion": 0.27 }
+        ],
+        "category": "SLOW"
+      },
+      "CUMULATIVE_LAYOUT_SHIFT_SCORE": {
+        "percentile": 4,
+        "distributions": [
+          { "min": 0, "max": 10, "proportion": 0.88 },
+          { "min": 10, "max": 25, "proportion": 0.08 },
+          { "min": 25, "proportion": 0.04 }
+        ],
+        "category": "FAST"
+      }
+    }
+  },
+  "originLoadingExperience": {
+    "id": "https://www.fernhollow-outfitters.example",
+    "overall_category": "SLOW",
+    "metrics": {
+      "LARGEST_CONTENTFUL_PAINT_MS": { "percentile": 2400, "category": "FAST" },
+      "INTERACTION_TO_NEXT_PAINT": { "percentile": 540, "category": "SLOW" },
+      "CUMULATIVE_LAYOUT_SHIFT_SCORE": { "percentile": 4, "category": "FAST" }
+    }
+  },
+  "lighthouseResult": {
+    "lighthouseVersion": "12.2.1",
+    "requestedUrl": "https://www.fernhollow-outfitters.example/p/ridgeline-insulated-jacket",
+    "finalDisplayedUrl": "https://www.fernhollow-outfitters.example/p/ridgeline-insulated-jacket",
+    "fetchTime": "2026-10-19T09:12:44.000Z",
+    "configSettings": {
+      "formFactor": "mobile",
+      "throttlingMethod": "simulate",
+      "throttling": { "rttMs": 150, "throughputKbps": 1638.4, "cpuSlowdownMultiplier": 4 },
+      "screenEmulation": { "mobile": true, "width": 412, "height": 823, "deviceScaleFactor": 1.75 },
+      "onlyCategories": ["performance"]
+    },
+    "categories": {
+      "performance": { "id": "performance", "title": "Performance", "score": 0.91 }
+    },
+    "audits": {
+      "first-contentful-paint": { "id": "first-contentful-paint", "score": 0.99, "numericValue": 1180, "displayValue": "1.2 s" },
+      "speed-index": { "id": "speed-index", "score": 0.97, "numericValue": 2650, "displayValue": "2.7 s" },
+      "largest-contentful-paint": { "id": "largest-contentful-paint", "score": 0.88, "numericValue": 2600, "displayValue": "2.6 s" },
+      "total-blocking-time": { "id": "total-blocking-time", "score": 0.8, "numericValue": 290, "displayValue": "290 ms" },
+      "cumulative-layout-shift": { "id": "cumulative-layout-shift", "score": 1, "numericValue": 0.03, "displayValue": "0.03" },
+      "interactive": { "id": "interactive", "score": 0.79, "numericValue": 4900, "displayValue": "4.9 s" },
+      "largest-contentful-paint-element": {
+        "id": "largest-contentful-paint-element",
+        "score": 0,
+        "displayValue": "2,600 ms",
+        "details": {
+          "type": "list",
+          "items": [
+            {
+              "type": "table",
+              "headings": [{ "key": "node", "valueType": "node", "label": "Element" }],
+              "items": [
+                { "node": { "type": "node", "selector": "div.pdp-gallery > img.hero-product-image", "nodeLabel": "Ridgeline Insulated Jacket in Moss" } }
+              ]
+            },
+            {
+              "type": "table",
+              "headings": [
+                { "key": "phase", "valueType": "text", "label": "Phase" },
+                { "key": "timing", "valueType": "ms", "label": "Timing" }
+              ],
+              "items": [
+                { "phase": "TTFB", "timing": 620 },
+                { "phase": "Load Delay", "timing": 980 },
+                { "phase": "Load Time", "timing": 640 },
+                { "phase": "Render Delay", "timing": 360 }
+              ]
+            }
+          ]
+        }
+      },
+      "layout-shifts": {
+        "id": "layout-shifts",
+        "score": 1,
+        "displayValue": "1 layout shift found",
+        "details": {
+          "type": "table",
+          "items": [
+            { "node": { "type": "node", "selector": "section.reviews-summary", "nodeLabel": "4.6 out of 5 (212 reviews)" }, "score": 0.03 }
+          ]
+        }
+      },
+      "render-blocking-resources": {
+        "id": "render-blocking-resources",
+        "score": 0.5,
+        "displayValue": "Potential savings of 150 ms",
+        "details": {
+          "type": "opportunity",
+          "overallSavingsMs": 150,
+          "items": [
+            { "url": "https://www.fernhollow-outfitters.example/static/css/pdp.71c3.css", "totalBytes": 48210, "wastedMs": 150 }
+          ]
+        }
+      },
+      "unused-javascript": {
+        "id": "unused-javascript",
+        "score": 0.5,
+        "displayValue": "Potential savings of 188 KiB",
+        "details": {
+          "type": "opportunity",
+          "overallSavingsMs": 450,
+          "overallSavingsBytes": 192512,
+          "items": [
+            { "url": "https://www.fernhollow-outfitters.example/static/js/vendor.91ad.js", "totalBytes": 241664, "wastedBytes": 98304, "wastedPercent": 40.7 },
+            { "url": "https://widget.chatnest.example/v3/launcher.js", "totalBytes": 131072, "wastedBytes": 61440, "wastedPercent": 46.9 },
+            { "url": "https://cdn.lumenreviews.example/embed.js", "totalBytes": 65536, "wastedBytes": 32768, "wastedPercent": 50.0 }
+          ]
+        }
+      },
+      "third-party-summary": {
+        "id": "third-party-summary",
+        "score": 1,
+        "displayValue": "Third-party code blocked the main thread for 94 ms",
+        "details": {
+          "type": "table",
+          "summary": { "wastedBytes": 268288, "wastedMs": 94 },
+          "items": [
+            { "entity": "ChatNest", "transferSize": 131072, "mainThreadTime": 820, "blockingTime": 0 },
+            { "entity": "Lumen Reviews", "transferSize": 65536, "mainThreadTime": 410, "blockingTime": 94 },
+            { "entity": "TagHarbor", "transferSize": 71680, "mainThreadTime": 260, "blockingTime": 0 }
+          ]
+        }
+      },
+      "long-tasks": {
+        "id": "long-tasks",
+        "score": 1,
+        "displayValue": "5 long tasks found",
+        "details": {
+          "type": "table",
+          "items": [
+            { "url": "https://www.fernhollow-outfitters.example/static/js/vendor.91ad.js", "startTime": 1540, "duration": 202 },
+            { "url": "https://cdn.lumenreviews.example/embed.js", "startTime": 2310, "duration": 144 },
+            { "url": "https://www.fernhollow-outfitters.example/static/js/pdp-cart.8c1e.js", "startTime": 2780, "duration": 94 },
+            { "url": "https://widget.chatnest.example/v3/launcher.js", "startTime": 5210, "duration": 184 },
+            { "url": "https://widget.chatnest.example/v3/launcher.js", "startTime": 5640, "duration": 121 }
+          ]
+        }
+      }
+    }
+  }
+}

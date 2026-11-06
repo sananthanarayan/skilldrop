@@ -1,0 +1,60 @@
+{
+  "$comment": "RFC-0057. A legacy component replaced without changing what it does. The old system's behaviour is recorded before anything is rebuilt, a script decides G10 from the recordings, and a person decides the cutover, because only they can accept the coverage and the listed changes.",
+  "name": "modernize",
+  "version": "0.2.0",
+  "description": "Replace or rewrite a legacy component without changing what it does: orient in the old code, plan the restructuring and the move, record the old system's behaviour before anything is rebuilt, rebuild in small steps, prove the new one gives the same results on the recordings, and cut over only when a person accepts the evidence. Use when the user is migrating, rewriting or porting a legacy service, batch job or module (COBOL to Java, Python 2 to 3, a monolith to a service, one framework to another), says \"run the modernize loop\", or asks how to replace old code without breaking what depends on it.",
+  "entrypoint": "LOOP.md",
+  "kind": "loop",
+  "cap": 3,
+  "stages": [
+    {
+      "id": "survey",
+      "type": "generate",
+      "intent": "Find the boundary the component is replaced at, what crosses it, who calls it, and the traps in the old code, each cited to a file; then the recorded decisions that govern it, and which of them the code has drifted from.",
+      "skills": ["codebase-tour", "context-graph"]
+    },
+    {
+      "id": "plan",
+      "type": "generate",
+      "intent": "Sequence the work: behaviour-preserving restructuring steps, and the phases of any data, schema or platform move.",
+      "skills": ["refactor-plan", "migration-plan"]
+    },
+    {
+      "id": "capture",
+      "type": "generate",
+      "intent": "Record the old system's inputs and outputs at the boundary, run it twice to find its nondeterminism, and write the normalisation rules, before any new code exists.",
+      "skills": ["behaviour-equivalence"]
+    },
+    {
+      "id": "rebuild",
+      "type": "generate",
+      "intent": "Build the new component in the planned steps, each reviewed and merged on its own.",
+      "skills": ["feature-implement-loop"]
+    },
+    {
+      "id": "prove",
+      "type": "verify",
+      "intent": "Replay the recordings against the new component and compare after the rules; the script's exit code decides.",
+      "skills": ["behaviour-equivalence"],
+      "gate": {
+        "id": "G10",
+        "kind": "mechanical",
+        "script": "packs/dev-team/skills/behaviour-equivalence/scripts/golden_diff.py",
+        "verdicts": ["READY", "NOT READY", "BLOCKED"],
+        "revise_to": "rebuild"
+      }
+    },
+    {
+      "id": "cutover",
+      "type": "gate",
+      "intent": "A person accepts the coverage the recordings give and every listed intended change, and decides the cutover. The readiness check informs that decision; it does not make it.",
+      "skills": ["launch-readiness"],
+      "gate": {
+        "id": "G10.1",
+        "kind": "human",
+        "verdicts": ["PROCEED", "PROCEED WITH CONDITIONS", "REVISE", "RECONSIDER", "BLOCKED"],
+        "revise_to": "capture"
+      }
+    }
+  ]
+}

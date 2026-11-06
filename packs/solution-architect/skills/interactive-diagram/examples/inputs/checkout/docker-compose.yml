@@ -1,0 +1,20 @@
+services:
+  api:
+    build: ./api
+    environment:
+      DATABASE_URL: postgresql://shop@db/shop
+      REDIS_URL: redis://cache:6379/0
+      BROKER_URL: amqp://broker
+    depends_on: [db, cache, broker]
+  worker:
+    build: ./worker
+    environment:
+      DATABASE_URL: postgresql://shop@db/shop
+      BROKER_URL: amqp://broker
+    depends_on: [db, broker]
+  db:
+    image: postgres:16
+  cache:
+    image: redis:7
+  broker:
+    image: rabbitmq:3

@@ -1,0 +1,75 @@
+{
+  "skill_name": "slo-spec",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We need SLOs for our order service before the reliability review next week. Everything I know about it is in order-service.md: the journeys, traffic, what we measure today and the last 90 days. Give us SLIs, targets, error budgets, the alerts that should page, and an error-budget policy.",
+      "assertions": [
+        "Opens with the decisions and blockers in the first lines: that 99.99% for checkout is not achievable while every order depends on PayRail at 99.9%, and that the proposed worker timer cannot be the checkout SLI",
+        "Rejects order_worker_process_seconds as the checkout SLI because it starts after the queue wait, cites the 14 September backlog (about 3 minutes of queue wait while p99 stayed 400 ms) as the evidence, and measures checkout end to end from the load balancer request to the confirmation the customer sees",
+        "Defines every SLI as good events over valid events with both sides spelled out, including what is excluded from valid (for example card declines or 4xx validation errors), and does not use CPU, pod restarts or queue depth as an SLI",
+        "Sets a checkout target at or below 99.9% with the reason (PayRail's 99.9% SLO and the history), and says what redundancy or fallback a higher target would need",
+        "Gives each error budget in minutes and in bad requests at the stated traffic, and the numbers match the formulas (for example 99.9% over 30 days is 43.2 minutes, or 144,000 bad requests at 4,800,000 search requests a day)",
+        "Alerts use burn rate over a long and a short window (such as 14.4x over 1 h with 5 m, 6x over 6 h with 30 m, 1x over 3 d ticketing), each with the budget consumed when it fires, and none is a raw error-rate threshold",
+        "Treats the admin API as low traffic: shows that about 600 requests a day gives well under one expected bad request per alert window, and does not copy the customer paging set onto it (uses a longer window, a synthetic probe, or office-hours tickets, with the reason)",
+        "The error-budget policy names owners from the input (Priya Raman, Tom Okafor, Dana Whitlock) or roles, a release freeze except fixes when the budget is spent, and an exception route; it does not invent people, traffic figures, history or dependency SLOs that are not in the file"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Quick one: our API's SLO is 99.95% over 28 days and we do about 2 million requests a day. How much error budget is that, and what burn-rate alerts should page us? Right now we page whenever the error rate goes above 0.05% for 5 minutes.",
+      "assertions": [
+        "Answers in the first lines with the budget: 20.16 minutes of full outage and 28,000 bad requests per 28 days",
+        "Says the current rule (above 0.05% for 5 minutes) is a 1x burn over 5 minutes that pages on about 3–4 failed requests and a negligible share of the budget, and recommends replacing it",
+        "Recommends multi-window burn-rate alerts with long and short windows, two paging and one ticketing (for example 14.4x over 1 h with 5 m, 6x over 6 h with 30 m, 1x over 3 d with 6 h)",
+        "States for each alert the error rate that trips it (for example 0.72% for 14.4x) and the budget consumed when it fires, adjusted for the 28-day window (about 2.14%, 5.36% and 10.71%) rather than the 30-day 2/5/10%",
+        "Numbers are computed, not rounded guesses: no 'about 20 minutes' or 'roughly 30k'",
+        "Stays a short chat answer: no full SLO document, no error-budget policy section, no sections the question did not ask for",
+        "Does not invent journeys, dependencies, team names or traffic patterns not in the prompt"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Can you write our error-budget policy for catalogue-search? The status page is in search-slo-status.md. Our VP also wants to bump the target to 99.99% so the team takes it seriously; I'd like your view on that too.",
+      "assertions": [
+        "Opens by advising against 99.99% in plain words: the service missed 99.5% in both windows (about 99.3% and 99.43% achieved), and 99.99% shrinks the budget from 201.6 minutes / 168,000 bad requests to about 4 minutes / 3,360 bad requests per 28 days",
+        "Says the problem is that nothing changed when the budget was spent (releases continued at 3–4 a week), which a policy fixes and a tighter target does not",
+        "The policy has thresholds tied to budget states, with what changes at each: reliability work prioritised before the budget is gone, and a release freeze except fixes and security patches when it is spent",
+        "Names owners from the input (Marta Lindqvist, Owen Achterberg, Helen Varga) or their roles, and says the policy is agreed in advance by engineering and product",
+        "Includes an exception route: who can approve a release during a freeze, in writing, and how it is recorded",
+        "Handles budget spent by a dependency: the shared Postgres cluster accounted for about 62% and 30% of the two windows, so the policy escalates to its owner (Kofi Mensah, Data Platform) with the numbers rather than only freezing search releases, while noting that search's own releases also overspent the budget",
+        "Does not invent incidents, people, dependency SLOs or numbers not in the file"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-20",
+      "prompt": "I'm the tech lead on payments-api at Larkspur Pay. Our only alert is the one in alerts/payments-api.rules.yaml and it paged on-call 31 times in the last 90 days, mostly for nothing. Leadership wants proper SLOs for the charges API before Q1. Can you define SLOs for POST /v1/charges and GET /v1/charges/{id}, work out the error budget, and give me burn-rate alerts to replace the current rule (what pages vs what's a ticket)? 90-day numbers are in metrics/summary-90d.md and our dependencies are in docs/dependencies.md. Also, our VP of product wants 99.99% on charges. Is that realistic?",
+      "assertions": [
+        "Answers the 99.99% question directly with a no (or 'not today'), and grounds it in the inputs: the Halberd gateway's 99.95% SLA alone allows 0.05% failures, five times a 0.01% budget, and there is no secondary acquirer until Corvid in Q2 2027; it may also note that Halberd and the Ledger DB in series (99.95% x 99.95%) come to about 99.90%.",
+        "Spots that the current rule counts 402 card_declined as errors, and that the 26 card-testing decline spikes caused most of the 31 pages. Its availability SLI treats a correct decline (and other 4xx such as 400/422/409/429) as not-bad, and leaves /healthz probe traffic out of valid events.",
+        "Measures the availability SLI from the ingress LB metric (lb_requests_total), not the app metric http_server_requests_total, and says why: the LB-only 502s during pod restarts, worth about 0.02% (LB 0.06% vs app 0.04% 5xx on POST /v1/charges).",
+        "Picks a POST /v1/charges availability target near 99.9% (anything from 99.9% to 99.95% is fine if justified against the ~99.91-99.96% monthly history and the dependency SLAs), and states the 30-day budget correctly. At 99.9% that is 43.2 minutes and about 93,312 bad requests at 36 req/s average (93.3M requests); at 99.95% it is 21.6 minutes and about 46,656.",
+        "Gives multi-window burn-rate alerts with a page/ticket split, and states for each one the burn rate, the windows, and the share of the 30-day budget used when it fires (e.g. 14.4x over 1h with a 5m short window is 2%, 6x over 6h/30m is 5%, and 1x over 3d as a ticket is 10%). It converts at least the fast-burn threshold into an error rate for the chosen target (14.4x at 99.9% is a 1.44% error ratio).",
+        "Defines a separate latency SLI for POST /v1/charges, with a threshold taken from the given distribution (e.g. under 2,000 ms, met by 99.12% today, or under 3,000 ms at 99.71%), not an arbitrary p99. It treats GET /v1/charges/{id} as its own SLO with its own budget (about 57,024 bad requests per 30 days at 99.9% and 22 req/s).",
+        "Flags at least one dependency risk that is not obvious: the idempotency Redis has no SLO and fails closed (503), or the fraud-scoring 99.9% SLO does not cap the charge SLO because it fails open.",
+        "Invents nothing that isn't in the inputs: no metric names other than lb_requests_total / lb_request_duration_seconds_bucket / http_server_requests_total / http_server_request_duration_seconds_bucket, no traffic figures, dependency SLAs or incident counts beyond those given. Any replacement rule YAML it writes uses those metric names and labels."
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-20",
+      "prompt": "hey, Dana (my manager) wants 'four nines' for Tally (our internal expense approval app) so it can go in the quarterly ops review. im the only dev on it. can you write up the SLO + whatever alerting makes sense? my notes are in ops-notes.md. we dont have prometheus, app logs go to Loki and theres an uptime checker pinging /health every minute",
+      "assertions": [
+        "Tells the user plainly, near the top, that 99.99% is not a realistic or useful target for Tally, with numbers: at ~41,800 requests/month (1,900 x 22) it allows only about 4 failed requests a month (or 4.32 minutes per 30 days), and PeopleCore's 99.5% SLA alone allows up to 0.5% (about 216 minutes a month) with no cache or fallback.",
+        "Proposes a target based on the history in the notes: about 99.85% in July (61/40,300), 99.94% in August (23/37,900) and 99.67% in September (140/42,600), with the PeopleCore outage driving September. The target lands somewhere around 99.5% to 99.9%, not 99.99%.",
+        "Catches that PingDeck's 99.95% says almost nothing about users: /health is a static {\"ok\": true} that doesn't touch Postgres or PeopleCore, and checks are paused during the Sunday reboot. It bases the SLI on nginx access logs in Loki (good = non-5xx over valid requests), or on a deep synthetic check, not on the current /health.",
+        "Says outright whether the SLI counts requests or minutes, and why that matters here: the weekly 02:00-02:20 Sunday reboot (~87 minutes a month) affects almost no requests under a request-based SLI, but under a time-based one it would use up more than a 99.9% budget (43.2 min) by itself.",
+        "Handles low traffic explicitly, for example a minimum request count before an alert can fire, long windows (hours/days instead of 5 minutes), or alerting on absolute counts of failed submissions. It notes that with ~16 requests per 5 minutes in business hours, one error looks like a huge burn rate.",
+        "Fits the alerting to a single developer with no on-call: nothing pages 24/7. Alerts go to Jonah during business hours as notifications or tickets, with month-end (Marisol Teague's close) as the time that matters most.",
+        "Includes a short error-budget policy that names real owners from the notes (Jonah Okafor, Dana Whitfield, optionally Marisol Teague as stakeholder) and concrete actions such as pausing feature work, or adding an approver cache or fallback for PeopleCore. It stays short and doesn't invent a team, rota or process the notes don't support.",
+        "Invents nothing that isn't in the inputs: no Prometheus metrics (the user said they don't have Prometheus), no traffic, error or SLA figures beyond those in ops-notes.md, and no additional people or systems. Any Loki/LogQL queries reference only the nginx access-log fields the notes mention (status, path, request_time)."
+      ]
+    }
+  ]
+}

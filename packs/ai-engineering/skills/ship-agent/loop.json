@@ -1,0 +1,53 @@
+{
+  "$comment": "RFC-0069. An agent from idea to a launch a person signed. The threat model is the gate because a path from untrusted content to private data and out is fixed in the design, not in the config; the launch gate is human because only the owner can accept the residual risk and the eval result together.",
+  "name": "ship-agent",
+  "version": "0.1.0",
+  "description": "Take an AI agent from an idea to a launch a person signed: the loop spec with its exit criteria and cap, the spend caps per stage, a threat model where every lethal-trifecta path has an architectural fix, an eval harness with its pass bar set before the first run, and a review of the real agent configuration before launch, with a gate that sends the design back when a path to exfiltration stays open. Use when the user says \"we're building an agent\", \"design and ship this agent safely\", \"run the ship-agent loop\", or wants an agent taken from design to launch with its risks and evals settled.",
+  "entrypoint": "LOOP.md",
+  "kind": "loop",
+  "cap": 3,
+  "stages": [
+    {
+      "id": "design",
+      "type": "generate",
+      "intent": "Specify the loop: its job and observable done, the generate-verify-gate cycle, the cap, the human gates at irreversible steps, and, when the work fans out, the subagents and their contracts.",
+      "skills": ["agent-loop-design", "subagent-design"]
+    },
+    {
+      "id": "budget",
+      "type": "generate",
+      "intent": "Set the model tier, token cap and abort rule per stage of the design, with cost per outcome as the governing number.",
+      "skills": ["agent-budget"]
+    },
+    {
+      "id": "threat",
+      "type": "verify",
+      "intent": "Threat-model the design's capabilities against the lethal trifecta and judge whether every unsafe path has an architectural fix.",
+      "skills": ["agent-threat-model"],
+      "gate": {
+        "id": "G12",
+        "kind": "review",
+        "verdicts": ["PROCEED", "PROCEED WITH CONDITIONS", "REVISE", "RECONSIDER", "BLOCKED"],
+        "revise_to": "design"
+      }
+    },
+    {
+      "id": "evals",
+      "type": "generate",
+      "intent": "Design the golden set, grading and metric, with the pass bar and regression gate fixed before the first run, and the threat model's attacks as adversarial cases.",
+      "skills": ["llm-eval-harness"]
+    },
+    {
+      "id": "launch",
+      "type": "gate",
+      "intent": "Once the agent is built: review its real configuration against the threat model, put the eval result beside the pass bar, and the owner decides the launch.",
+      "skills": ["agent-config-review"],
+      "gate": {
+        "id": "G12.1",
+        "kind": "human",
+        "verdicts": ["PROCEED", "PROCEED WITH CONDITIONS", "REVISE", "BLOCKED"],
+        "revise_to": "threat"
+      }
+    }
+  ]
+}

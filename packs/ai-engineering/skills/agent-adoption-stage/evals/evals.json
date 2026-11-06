@@ -1,0 +1,47 @@
+{
+  "skill_name": "agent-adoption-stage",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We bought Claude Code for our 60 engineers six months ago. Most people use it like autocomplete for one task at a time and still read every diff before merging. Two staff engineers run several sessions at once. Tests are flaky so nobody trusts them. Where are we and what's next?",
+      "assertions": [
+        "Places the team on exactly one stage — no range — citing the observables from the prompt (one agent at a time, every diff read)",
+        "Places on the median engineer and calls out the two power users as an outlier rather than counting them as the stage",
+        "Names the bottleneck as attention/trust rather than review throughput, and connects it to the untrusted test suite",
+        "Prescribes exactly one unlock — a self-verification loop the engineer trusts — not a list of improvements",
+        "Names a guardrail to retire (reading every diff) alongside the one to introduce",
+        "Routes the unlock to a concrete implementation rather than to a product name",
+        "Ends with an observable that would prove the unlock landed and a re-measure date",
+        "Credits the source framework"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "I'm VP Engineering at Tessaline Freight (route-planning software, 64 engineers across six teams). The exec team wants to know how far along we really are with coding agents and what we should do next. I've got `agent-telemetry.csv` (exported from our agent platform), `dev-survey-summary.md`, `cto-offsite-memo.md` and `engineering-policy.md`. Write me the assessment and the one thing we should change next. One page max, it goes into the exec pack. They've also asked me to rank our engineers individually by how well they've adopted agents, so please include that.",
+      "assertions": [
+        "It judges adoption from the telemetry rather than the survey or the CTO memo: about half the engineers (34 of 64) were active in the last 30 days, and active engineers mostly run one agent at a time",
+        "It says the CTO memo's claim that agents write about 80% of the code is contradicted by the telemetry (81 of 374 merged PRs in September, about 22%, were agent-authored), and notes the survey is self-reported from 29 of 64 engineers",
+        "It identifies code review as what is holding progress back, citing the roughly three-day wait for agent PRs and/or the 19 agent PRs closed unreviewed, and links it to the rule requiring two human reviewers including a senior engineer",
+        "The recommended next step does not depend on buying the Enterprise tier, because the CFO has frozen new tooling contracts and upgrades until April 2027",
+        "It does not rank individual engineers, and says the telemetry is only broken down by team",
+        "It does not invent figures, teams or policies that are not in the files",
+        "It fits on one page (roughly 500 words or fewer)"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "i'm the finance director at a housing charity. our 4 developers got AI coding agent licences about 6 months ago and I sign off the bill, so I want to know if it's working. from what I can tell, one of them (Marek) says he runs 3 or 4 agents at once, the other three mostly use it like fancy autocomplete. every change still goes through our lead developer, who reviews everything before it goes live, and she's swamped. what should we do next? a few bullets please, I'm not technical",
+      "assertions": [
+        "It gives an assessment and a recommendation in this reply rather than asking questions first",
+        "It says adoption is uneven: one developer works with several agents at once while the other three mostly use it as autocomplete",
+        "It names the lead developer's review load as a limit on getting more value, since more agent output means more for her to review",
+        "It recommends one main next step rather than a long list of options",
+        "It does not suggest letting changes go live without review; any change to the review process keeps a check before changes go live",
+        "It does not invent usage figures, costs or productivity numbers that were not given",
+        "It is a few bullets in plain language, without unexplained technical jargon"
+      ]
+    }
+  ]
+}

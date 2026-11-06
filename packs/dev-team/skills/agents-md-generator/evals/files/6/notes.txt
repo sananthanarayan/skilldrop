@@ -1,0 +1,8 @@
+how to do the end of term marks (so i dont forget again)
+
+1. put the exported marks from the gradebook in raw_marks.csv
+2. Rscript clean_marks.R   <- fixes the blank cells and the late penalty
+3. Rscript make_report.R   <- makes the final sheet
+
+then check grades_final.csv by hand and send it to the exams office. i fix a few by hand
+after moderation so dont lose those!!

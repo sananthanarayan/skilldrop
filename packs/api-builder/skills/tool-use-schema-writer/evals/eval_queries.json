@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Write the tool_use JSON schema for this function so Claude can call it",
+    "should_trigger": true
+  },
+  {
+    "query": "Turn this TypeScript API client method into an Anthropic tool definition",
+    "should_trigger": true
+  },
+  {
+    "query": "I have three functions for my agent — write their tool schemas so the model picks the right one",
+    "should_trigger": true
+  },
+  {
+    "query": "Document this existing endpoint as a tool the agent can consume, with required fields",
+    "should_trigger": true
+  },
+  {
+    "query": "Design the control loop for my tool-using agent — stop conditions and retries",
+    "should_trigger": false
+  },
+  {
+    "query": "Split this workflow across an orchestrator and specialist subagents",
+    "should_trigger": false
+  },
+  {
+    "query": "Draft the OpenAPI contract for our new public REST API",
+    "should_trigger": false
+  }
+]

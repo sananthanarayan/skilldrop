@@ -1,0 +1,11 @@
+{
+  "name": "tool-use-schema-writer",
+  "version": "1.0.3",
+  "description": "Takes a function description (name, purpose, parameters) and writes a valid Anthropic tool_use JSON schema, with type annotations, required fields, and a description for each parameter. Adds a Python client.messages.create(tools=[...]) snippet only when asked. Use when wiring a Claude agent to a function or API, designing tools for a multi-agent system, or documenting an existing tool for agent consumption.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": ["agent-loop-design", "subagent-design"],
+  "tags": ["claude-api", "tool-use", "json-schema", "sdk", "agents"],
+  "model": { "tier": "light", "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 94% and 94% of checks in two tier trials, against standard's 96% and heavy's 97% and 97%, within 5 points of the best both times." }
+}

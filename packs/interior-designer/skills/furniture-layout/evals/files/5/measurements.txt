@@ -1,0 +1,16 @@
+Flat 3, 14 Pellow Road - measurements + doors
+
+all cm, internal. X/Y in the layout sheet = bottom-left corner of the piece measured from the room's
+bottom-left (south-west) corner, plan drawn north up. W is the size along X (east-west), D along Y (north-south).
+
+LIVING ROOM 520 x 410 (E-W x N-S)
+  hall door: south wall, opening 430-510, hinged at 510 (east side), 80 leaf, opens into the room
+  balcony door: north wall, opening 400-490, sliding (no swing)
+BEDROOM 290 x 290
+  door: south wall, opening 200-280, hinged at 280, 80 leaf, opens in
+  window north wall (bed head goes under it, fine)
+STUDY 260 x 300
+  door: south wall, opening 15-95, hinged at 15 (west side), 80 leaf, opens in
+  window north wall, desk goes under it
+
+wardrobe is going in the hall cupboard so not in the bedroom

@@ -1,0 +1,11 @@
+[
+  { "query": "is this change ready to merge?", "should_trigger": true },
+  { "query": "run all the reviewers on my branch before I open the PR", "should_trigger": true },
+  { "query": "production-readiness review of this diff", "should_trigger": true },
+  { "query": "gate my PR — lint, tests, and a full review", "should_trigger": true },
+  { "query": "review this branch and tell me if it's safe to ship", "should_trigger": true },
+  { "query": "implement this feature from the ticket's acceptance criteria", "should_trigger": false },
+  { "query": "just find the bugs in this function", "should_trigger": false },
+  { "query": "critique this design doc", "should_trigger": false },
+  { "query": "should we use Postgres or DynamoDB for this?", "should_trigger": false }
+]

@@ -1,0 +1,100 @@
+{
+  "inputs": {
+    "node_modules/preact/dist/preact.module.js": {
+      "bytes": 11480,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/preact/hooks/dist/hooks.module.js": {
+      "bytes": 3620,
+      "imports": [
+        {
+          "path": "node_modules/preact/dist/preact.module.js",
+          "kind": "import-statement",
+          "original": "preact"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/api.ts": {
+      "bytes": 3960,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/composer.tsx": {
+      "bytes": 6850,
+      "imports": [
+        {
+          "path": "node_modules/preact/dist/preact.module.js",
+          "kind": "import-statement",
+          "original": "preact"
+        },
+        {
+          "path": "node_modules/preact/hooks/dist/hooks.module.js",
+          "kind": "import-statement",
+          "original": "preact/hooks"
+        },
+        {
+          "path": "src/api.ts",
+          "kind": "import-statement",
+          "original": "./api"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/styles.ts": {
+      "bytes": 4210,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/widget.ts": {
+      "bytes": 1420,
+      "imports": [
+        {
+          "path": "node_modules/preact/dist/preact.module.js",
+          "kind": "import-statement",
+          "original": "preact"
+        },
+        {
+          "path": "src/composer.tsx",
+          "kind": "import-statement",
+          "original": "./composer"
+        },
+        {
+          "path": "src/styles.ts",
+          "kind": "import-statement",
+          "original": "./styles"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "dist/widget.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "src/widget.ts",
+      "inputs": {
+        "src/widget.ts": {
+          "bytesInOutput": 612
+        },
+        "src/composer.tsx": {
+          "bytesInOutput": 3108
+        },
+        "src/api.ts": {
+          "bytesInOutput": 1874
+        },
+        "src/styles.ts": {
+          "bytesInOutput": 3950
+        },
+        "node_modules/preact/dist/preact.module.js": {
+          "bytesInOutput": 10214
+        },
+        "node_modules/preact/hooks/dist/hooks.module.js": {
+          "bytesInOutput": 1436
+        }
+      },
+      "bytes": 21312
+    }
+  }
+}

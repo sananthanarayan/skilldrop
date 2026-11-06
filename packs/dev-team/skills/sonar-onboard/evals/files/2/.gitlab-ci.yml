@@ -1,0 +1,32 @@
+stages:
+  - test
+  - build
+
+python-tests:
+  stage: test
+  image: python:3.12
+  script:
+    - pip install -e . pytest pytest-cov
+    - pytest --cov=src/wayline --cov-report=xml:build/coverage.xml
+  artifacts:
+    paths:
+      - build/coverage.xml
+
+web-tests:
+  stage: test
+  image: node:20
+  script:
+    - cd web
+    - npm ci
+    - npm test
+  artifacts:
+    paths:
+      - web/coverage/lcov.info
+
+web-build:
+  stage: build
+  image: node:20
+  script:
+    - cd web
+    - npm ci
+    - npm run build

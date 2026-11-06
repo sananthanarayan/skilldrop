@@ -1,0 +1,34 @@
+[
+  {
+    "query": "How do we test this prompt change without shipping a quality regression?",
+    "should_trigger": true
+  },
+  {
+    "query": "Build an eval set and pass bar for our ticket-classification LLM",
+    "should_trigger": true
+  },
+  {
+    "query": "We want an LLM judge to grade helpfulness on our chatbot — how should we set that up?",
+    "should_trigger": true
+  },
+  {
+    "query": "Set up a regression gate before we keep iterating on our RAG prompts",
+    "should_trigger": true
+  },
+  {
+    "query": "Generate eval cases for this skilldrop SKILL.md so I can drop them in its evals folder",
+    "should_trigger": false
+  },
+  {
+    "query": "Summarize how much each team used AI tools last month from this telemetry",
+    "should_trigger": false
+  },
+  {
+    "query": "Compare Claude, GPT, and Gemini for our document-extraction use case and recommend one",
+    "should_trigger": false
+  },
+  {
+    "query": "What adoption and handle-time metrics should we track for the new AI feature?",
+    "should_trigger": false
+  }
+]

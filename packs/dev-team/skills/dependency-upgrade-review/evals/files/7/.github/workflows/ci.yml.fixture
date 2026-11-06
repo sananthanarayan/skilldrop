@@ -1,0 +1,67 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d1f0a9c7e5b2846f0c1a7d9e3b5f8c2a6d4e017 # v4.2.2
+      - uses: actions/setup-node@6b2e8d0f4a1c3957e2a8c4f6b0d9a1c3e5f7b8d2 # v4.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d1f0a9c7e5b2846f0c1a7d9e3b5f8c2a6d4e017 # v4.2.2
+      - uses: actions/setup-node@6b2e8d0f4a1c3957e2a8c4f6b0d9a1c3e5f7b8d2 # v4.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run format:check
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d1f0a9c7e5b2846f0c1a7d9e3b5f8c2a6d4e017 # v4.2.2
+      - uses: actions/setup-node@6b2e8d0f4a1c3957e2a8c4f6b0d9a1c3e5f7b8d2 # v4.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d1f0a9c7e5b2846f0c1a7d9e3b5f8c2a6d4e017 # v4.2.2
+      - uses: actions/setup-node@6b2e8d0f4a1c3957e2a8c4f6b0d9a1c3e5f7b8d2 # v4.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm test
+
+  build-and-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d1f0a9c7e5b2846f0c1a7d9e3b5f8c2a6d4e017 # v4.2.2
+      - uses: actions/setup-node@6b2e8d0f4a1c3957e2a8c4f6b0d9a1c3e5f7b8d2 # v4.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      # Runs the test suite against the built dist/ bundle, not src/.
+      - run: npm run test:dist

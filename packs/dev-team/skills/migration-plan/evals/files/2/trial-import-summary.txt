@@ -1,0 +1,9 @@
+Trial import into Haemora staging
+Run date: 9 Oct
+
+Rows in DonorTrack export:          401,200
+Duplicates merged by dedupe script:   9,300
+Records loaded into Haemora:        395,400
+Rejected rows:                            0
+
+Result: SUCCESS

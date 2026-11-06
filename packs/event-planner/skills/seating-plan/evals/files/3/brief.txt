@@ -1,0 +1,4 @@
+Awards dinner, Harbour Room. Six rounds of 10.
+The Northwind Logistics table: 12 people from Northwind who all asked to sit together (list below).
+Every other company's guests are seated by company; full list in guests.csv.
+Northwind: Ada Holm, Ben Ruiz, Cora Lind, Dino Pace, Ema Sato, Fred Okoye, Gia Moss, Hugo Wren, Isla Grant, Jack Tan, Kira Vos, Liam Cho

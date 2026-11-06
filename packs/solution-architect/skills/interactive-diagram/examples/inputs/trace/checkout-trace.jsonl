@@ -1,0 +1,9 @@
+{"span": "POST /checkout", "id": "a1", "parent": null, "service": "api", "start_ms": 0, "end_ms": 1840}
+{"span": "verify session", "id": "a2", "parent": "a1", "service": "api", "start_ms": 4, "end_ms": 38}
+{"span": "price cart", "id": "a3", "parent": "a1", "service": "api", "start_ms": 40, "end_ms": 420}
+{"span": "redis MGET price:*", "id": "a4", "parent": "a3", "service": "redis", "start_ms": 42, "end_ms": 61}
+{"span": "select price from products (cache miss)", "id": "a5", "parent": "a3", "service": "postgres", "start_ms": 64, "end_ms": 410}
+{"span": "stripe.PaymentIntent.create", "id": "a6", "parent": "a1", "service": "stripe", "start_ms": 430, "end_ms": 1620}
+{"span": "TLS handshake api.stripe.com", "id": "a7", "parent": "a6", "service": "stripe", "start_ms": 431, "end_ms": 520}
+{"span": "insert into orders", "id": "a8", "parent": "a1", "service": "postgres", "start_ms": 1625, "end_ms": 1790}
+{"span": "publish fulfilment", "id": "a9", "parent": "a1", "service": "rabbitmq", "start_ms": 1792, "end_ms": 1836}

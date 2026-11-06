@@ -1,0 +1,15 @@
+[
+  { "query": "Write an AGENTS.md for this repo", "should_trigger": true },
+  { "query": "Our AGENTS.md is stale — review it", "should_trigger": true },
+  { "query": "The agent keeps running commands that don't exist in our project", "should_trigger": true },
+  { "query": "Set this codebase up for agentic coding", "should_trigger": true },
+  { "query": "Create a CLAUDE.md for this project", "should_trigger": true },
+  { "query": "What should go in an agent instructions file?", "should_trigger": true },
+
+  { "query": "Write a CONTRIBUTING.md for this repo", "should_trigger": false },
+  { "query": "Document what this service does for new hires", "should_trigger": false },
+  { "query": "Reverse-engineer the architecture of this codebase", "should_trigger": false },
+  { "query": "Write a runbook for this service", "should_trigger": false },
+  { "query": "Review this design doc for gaps", "should_trigger": false },
+  { "query": "Design a supervised agent loop", "should_trigger": false }
+]

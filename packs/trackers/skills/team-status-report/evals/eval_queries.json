@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Write this week's status report for the checkout team from the Jira export",
+    "should_trigger": true
+  },
+  {
+    "query": "Are we on track this sprint? Here's our Linear cycle export, give me shipped, blocked and slipped with a RAG",
+    "should_trigger": true
+  },
+  {
+    "query": "Turn our GitHub project board into a weekly stakeholder update with risks and asks",
+    "should_trigger": true
+  },
+  {
+    "query": "End-of-sprint report against what we committed: what shipped, what slipped, who's blocked",
+    "should_trigger": true
+  },
+  {
+    "query": "Summarise this 30-page design doc into one page for the exec team",
+    "should_trigger": false
+  },
+  {
+    "query": "Find the duplicates and stale tickets in our backlog export",
+    "should_trigger": false
+  },
+  {
+    "query": "Record that we decided to delay Klarna to Q1, with the options we considered",
+    "should_trigger": false
+  }
+]

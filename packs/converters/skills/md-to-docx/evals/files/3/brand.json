@@ -1,0 +1,12 @@
+{
+  "name": "Wexcombe Grounds Ltd",
+  "colors": {
+    "primary": "#2F6B3A",
+    "accent": "#C8A2",
+    "text": "#1F1F1F"
+  },
+  "fonts": {
+    "heading": "Georgia",
+    "body": "Calibri"
+  }
+}

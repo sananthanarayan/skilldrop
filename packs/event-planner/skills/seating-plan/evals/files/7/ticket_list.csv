@@ -1,0 +1,101 @@
+Ticket,Name,Form,Friendship group,Access needs,Dietary,Paid
+P001,Iris Ahmed,13E,G19,,,Y
+P002,Maisie Firth,13D,G05,,,Y
+P003,Leila Iqbal,13E,G11,,,Y
+P004,Paige Eastwood,13D,G20,,,Y
+P005,Hollie Gaskell,13C,G04,,,Y
+P006,Freddie Yeadon,13F,G02,,,Y
+P007,Dylan Quinlan,13F,G02,,,Y
+P008,Zak Walmsley,13C,G15,,,Y
+P009,Neve Bairstow,13D,G04,,,Y
+P010,Bilal Dalby,13F,G07,,,Y
+P011,Ronan Nowak,13E,G03,,Halal,Y
+P012,Lewis Pashley,13E,G13,,,Y
+P013,Vanessa Ibbotson,13F,G02,,,Y
+P014,Nia Brennan,13D,G13,,,Y
+P015,Hamza Ibbotson,13B,G02,,Halal,Y
+P016,Brooke Iqbal,13F,G13,,Vegetarian,Y
+P017,Rosie Rowntree,13D,G03,,Vegetarian,Y
+P018,Nathan Hussain,13A,G12,,,Y
+P019,Tia Garside,13E,G19,,Halal,Y
+P020,Ellie Walmsley,13D,G09,,,Y
+P021,Reece Zielinski,13A,G01,,,Y
+P022,Emre Clough,13A,G19,,Vegan,Y
+P023,Aaliyah Oakes,13F,G05,,,Y
+P024,Maisie Ahmed,13B,G14,,Vegan,Y
+P025,Bilal Lister,13E,G06,,,Y
+P026,Amira Saleh,13E,G11,Wheelchair user,,Y
+P027,Hamza Walmsley,13D,G01,,No pork,Y
+P028,Ava Moorhouse,13B,G06,,,Y
+P029,Callum Hartley,13E,G04,,Halal,Y
+P030,Mia Kerr,13B,G05,,,Y
+P031,Tyler Ibbotson,13A,,,Vegan,Y
+P032,Ronan Thornber,13A,G14,,,Y
+P033,Will Pashley,13F,G20,,,Y
+P034,Sophie Naylor,13E,G08,,,Y
+P035,Emre Cockcroft,13F,G08,,No pork,Y
+P036,Cody Whitworth,13D,G09,,,Y
+P037,Hollie Pilling,13D,G14,,,Y
+P038,Tia Vance,13C,G13,,Vegan,Y
+P039,Lewis Oakes,13E,G18,,,Y
+P040,Ava Naylor,13E,G12,,No pork,Y
+P041,Aaliyah Tranter,13C,G19,,,Y
+P042,Preston Zielinski,13D,,,Vegan,Y
+P043,Malik Whitworth,13F,G17,,,Y
+P044,Imani Esposito,13D,G03,,Halal,Y
+P045,Yara Kowalczyk,13A,G03,,No pork,Y
+P046,Ava Eastwood,13A,G16,,,Y
+P047,Ethan Gaskell,13B,G14,,,Y
+P048,Eden Cockcroft,13E,G03,,,Y
+P049,Orla Dalby,13C,G17,,,Y
+P050,Neve Hussain,13E,G11,,,Y
+P051,Rosie Sykes,13C,G07,,,Y
+P052,Cody Dyson,13D,G03,,,Y
+P053,Nia Hartley,13C,G01,,,Y
+P054,Harvey Brennan,13E,G08,,Halal,Y
+P055,Bilal Nowak,13A,G04,,,Y
+P056,Nathan Quinlan,13B,G06,,Vegan,Y
+P057,Tyler Bairstow,13A,G02,,,Y
+P058,Neve Moorhouse,13F,G17,,,Y
+P059,Erin Hussain,13B,G15,,No pork,Y
+P060,Callum Bairstow,13E,,,Vegetarian,Y
+P061,Nathan Dyson,13B,G03,,No pork,Y
+P062,Lewis Fenn,13B,G14,,,Y
+P063,Lacey Tranter,13B,G13,,,Y
+P064,Saanvi Ventress,13A,G01,,No pork,Y
+P065,Nia Saleh,13B,G19,,,Y
+P066,Rhys Firth,13F,G15,,,Y
+P067,Ronan Duckworth,13C,G12,,,Y
+P068,Megan Gaskell,13B,G18,,,Y
+P069,Jayden Hartley,13E,G03,,,Y
+P070,Kieran Doherty,13F,G08,Wheelchair user,,Y
+P071,Ffion Duckworth,13A,G07,,,Y
+P072,Keeley Tranter,13F,G03,,Halal,Y
+P073,Lily-Mae Oakes,13A,G18,,,Y
+P074,Malik Jowett,13D,G04,,,Y
+P075,Orla Iqbal,13F,G02,,Halal,Y
+P076,Jodie Garside,13C,G14,,Vegan,Y
+P077,Cerys Tranter,13A,G05,,,Y
+P078,Hamza Doherty,13D,G03,,,Y
+P079,Dylan Brennan,13E,G06,,,Y
+P080,Dylan Firth,13B,G02,,,Y
+P081,Keeley Birtwistle,13F,,,Vegan,Y
+P082,Erin McAteer,13E,G10,,,Y
+P083,Megan Naylor,13A,G01,,,Y
+P084,Malik Kowalczyk,13F,G16,,No pork,Y
+P085,Eden Riaz,13D,G01,,,Y
+P086,Reece Cawthorne,13D,G01,,,Y
+P087,Ffion Gaskell,13D,G08,,,Y
+P088,Cody Zielinski,13D,G08,,,Y
+P089,Tegan Ahmed,13F,,,,Y
+P090,Sana Kerr,13A,G17,,Vegetarian,Y
+P091,Dylan Vance,13B,G01,,No pork,Y
+P092,Iris Dyson,13B,G11,,Vegan,Y
+P093,Preston Cawthorne,13C,G18,,,Y
+P094,Ellie Ahmed,13F,G10,,,Y
+S01,Mr D. Okafor (Head of Year 13),Staff,STAFF,,,n/a
+S02,Ms R. Bhatti,Staff,STAFF,,,n/a
+S03,Mr J. Lunn,Staff,STAFF,,,n/a
+S04,Mrs E. Castellano,Staff,STAFF,,,n/a
+S05,Ms F. Adair,Staff,STAFF,,,n/a
+S06,Mr P. Greaves,Staff,STAFF,,,n/a

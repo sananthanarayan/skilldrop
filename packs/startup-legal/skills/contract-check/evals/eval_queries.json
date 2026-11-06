@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Review this contract before I sign it",
+    "should_trigger": true
+  },
+  {
+    "query": "Check this NDA the customer sent us",
+    "should_trigger": true
+  },
+  {
+    "query": "What should I push back on in this MSA?",
+    "should_trigger": true
+  },
+  {
+    "query": "Is our consulting agreement ready to send?",
+    "should_trigger": true
+  },
+  {
+    "query": "Compare these three vendors' pricing in a table",
+    "should_trigger": false
+  },
+  {
+    "query": "Fill in this security questionnaire from our policies",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the DPIA for our new analytics feature",
+    "should_trigger": false
+  }
+]

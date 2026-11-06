@@ -1,0 +1,104 @@
+{
+  "skill_name": "devils-advocate",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's the payment-retry handler I just finished — it retries failed charges up to 3 times with exponential backoff, and the tests pass. Review it before I open the PR.",
+      "assertions": [
+        "Every finding has a reproducible scenario a senior engineer can replay mentally — named input, current behavior, expected behavior",
+        "Every finding cites file:line, not just a section or function name",
+        "Severity is calibrated — blockers do not outnumber majors; inflated findings are demoted",
+        "Findings are grouped by the four lenses (edge cases, assumptions, staff-engineer pushback, test-coverage gaps), skipping lenses that do not apply rather than padding",
+        "Test-coverage gaps name the concrete missing test case, not 'add more tests'",
+        "Assertion theater is called out — tests that execute the code without asserting the behavior",
+        "Output ends with a 'what's solid' section so the author knows what not to touch",
+        "The review scopes to the change under review, never sweeping the whole codebase"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-05",
+      "prompt": "Just finished the volunteer shift sign-up feature for the food bank's scheduling app (signups.py, tests in test_signups.py). Volunteers sign up until the shift's full, after that they go on a waitlist, and when someone cancels the first person on the waitlist gets the spot. No cancelling inside 24 hours of the shift. Tests all pass. Anything I've missed before I merge?",
+      "assertions": [
+        "It flags that sign_up compares the confirmed count with > instead of >=, so a shift with capacity N confirms N+1 volunteers",
+        "It flags that cancel picks the waitlisted row with ORDER BY created_at DESC, so the most recent person on the waitlist is promoted, not the first",
+        "It flags that the same volunteer can sign up twice for one shift because nothing checks for an existing sign-up",
+        "It flags that the 24-hour cutoff subtracts local-time datetime.now() from a start time stored in UTC, so the window is off by the server's UTC offset",
+        "It points out that test_waitlist_when_full puts three volunteers into a capacity-2 shift before asserting, so it passes because of the capacity bug",
+        "It points out that test_no_waitlist_raises passes even when ShiftFull is never raised",
+        "It does not report SQL injection, since every query is parameterised",
+        "It says plainly that the change is not ready to merge as it stands"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-05",
+      "prompt": "wrote this quick script to dedupe our newsletter subscriber export before we import it into the new mail tool. worked fine on the 50-row sample i tried. good to run on the real file? it's about 40k rows, email is the third column\n\n```python\nimport sys\n\nrows = open(sys.argv[1]).read().split(\"\\n\")\nseen = {}\nfor r in rows[1:]:\n    if not r.strip():\n        continue\n    cols = r.split(\",\")\n    seen[cols[2]] = r\n\nout = open(sys.argv[1], \"w\")\nout.write(rows[0] + \"\\n\")\nfor r in seen.values():\n    out.write(r + \"\\n\")\n```",
+      "assertions": [
+        "It answers the question near the top: not as it stands, or only on a copy of the file",
+        "It flags that emails are compared exactly, so addresses differing only in letter case or surrounding spaces are kept as separate subscribers",
+        "It flags that split(\",\") breaks on a quoted field containing a comma, which shifts the column treated as the email",
+        "It flags that the script overwrites the input file in place with no backup, and recommends writing to a new file or keeping a copy",
+        "It notes that when rows share an email the last one wins, and that whether that is the right row to keep is something to confirm",
+        "It gives a concrete fix, such as reading with the csv module and normalising the email with strip and lower",
+        "It does not state as fact what the other columns hold or what the real file contains beyond what was given"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-06",
+      "prompt": "Finished the late fee feature for the tenant billing service (lateFees.ts, tests in lateFees.test.ts). Rules from finance: nothing if the invoice is 5 days or fewer past due. After that it's 1.5% of the balance for each calendar month the invoice has been overdue in, so one due 20 March and still open on 2 May has March, April and May. Capped at $75 per invoice in total. Never on paid or void invoices. A nightly job calls applyLateFees with every invoice. Tests are green. Can you go over it before I merge? Skip the style nits, I want the things that would actually bite us.",
+      "assertions": [
+        "It flags that monthsOverdue subtracts month numbers without the year, so an invoice due in November or December and still open in January gets a zero or negative count and no fee",
+        "It flags that the $75 cap is applied to one month's amount before multiplying by the months, so a large balance overdue for two or more months is charged more than $75 (for example $10,000 over two months gives $150)",
+        "It flags that applyLateFees adds the whole fee to the balance on every nightly run with nothing recording what was already charged, so the same invoice is charged again each night",
+        "It points out that the cap test uses a single month overdue, where a per-month cap and a total cap give the same $75, so it cannot catch the cap bug",
+        "It points out that the applyLateFees test only checks the balance went up after one run, and that no test runs it twice or checks the amount",
+        "It names a missing test for an invoice that is overdue across a year boundary",
+        "It does not report the grace-period check as a bug: charging nothing at 5 days late or fewer matches the stated rule",
+        "It says plainly that the change is not ready to merge as it stands"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-06",
+      "prompt": "agent wrote this migration for me. adds region onto orders so the regional dashboards don't need the join to customers. ran clean on my laptop db. postgres. the orders table in prod is big-ish, don't know the exact size. top 3 things i should worry about before i run it friday?\n\n```sql\nALTER TABLE orders ADD COLUMN region_code VARCHAR(2) NOT NULL;\n\nUPDATE orders\nSET region_code = (SELECT region FROM customers WHERE customers.id = orders.customer_id);\n\nCREATE INDEX idx_orders_region ON orders(region_code);\n```",
+      "assertions": [
+        "It flags that adding a NOT NULL column with no default fails on a table that already has rows, so the first statement will error on prod",
+        "It says the clean run on the laptop does not show the migration works on prod, for example because the local orders table may have been empty",
+        "It flags locking or long-running work on a large table, from the single full-table UPDATE or the non-concurrent index build, and gives a concrete mitigation such as batching the backfill or CREATE INDEX CONCURRENTLY",
+        "It flags that a customer with no region, or a region longer than 2 characters, would break the backfill, and says what customers.region holds is not known from what was given",
+        "It gives a corrected order of steps: add the column as nullable, backfill it, then add the NOT NULL constraint",
+        "It does not state the row count of orders, how long the migration will take, or what customers.region contains as fact",
+        "It leads with three main concerns as asked, and anything beyond the three is kept to a brief mention"
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-17",
+      "prompt": "I'm the reviewer on PR #412 for the Fernlocket loyalty service and it's meant to merge this afternoon. The change is in redeem.py, the tests are in test_redeem.py, and the author's description and test run are in PR_DESCRIPTION.md. Find what's wrong with it before it ships. Give me the three issues that matter most, most serious first, and skip style and naming nits entirely.",
+      "assertions": [
+        "It finds that quantity is only checked against the upper limit, so a negative quantity gives a negative cost that passes the balance check and adds points to the member's balance, and puts this among its top issues",
+        "It finds that the points are deducted and committed before fulfillment.ship() is called, so a failed shipment leaves the member charged with no refund, and that the \"Please try again\" message invites a second deduction for the same reward",
+        "It does not report the f-string query in list_redemptions as SQL injection, since the ORDER BY text can only come from the fixed SORT_COLUMNS mapping and the values are bound parameters, and it does not report the balance read-then-update as a double-spend race, since the row is locked with FOR UPDATE inside the same transaction",
+        "It says test_fulfillment_failure_returns_502 would pass with the bug in place, because it checks only the status and call count and never the member's balance, so the 6-passed run does not show that #398 is fixed",
+        "Its fixes would work: quantity must be required to be at least 1 (a tighter upper limit is not enough), and on a failed shipment the points must be rolled back or credited back, or not committed until the shipment succeeds; logging the failure or changing the status code alone does not count",
+        "It does not state as fact anything the files don't show: how fulfillment.ship() or the transaction helper behave beyond what the code and comments say, whether the fulfillment service rejects a negative quantity, how many members or redemptions there are, or what else calls redeem()",
+        "It leads with three issues, most serious first, and makes no style or naming comments; anything beyond the three is at most a brief mention"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-17",
+      "prompt": "hey quick one, can you check this before I push? it sends the weekly digest to all subscribers, max 8 at a time. we're on go 1.23. go test ./... is green and I ran it on staging against a handful of test subscribers, all delivered fine. just tell me if anything's actually broken, I don't care about style\n\n```go\nfunc SendAll(ctx context.Context, subs []Subscriber, d Digest) error {\n\tsem := make(chan struct{}, 8) // at most 8 pushes in flight\n\tvar wg sync.WaitGroup\n\tvar errs []error\n\n\tfor _, s := range subs {\n\t\twg.Add(1)\n\t\tsem <- struct{}{}\n\t\tgo func() {\n\t\t\tdefer wg.Done()\n\t\t\tdefer func() { <-sem }()\n\t\t\tif err := push(ctx, s, d); err != nil {\n\t\t\t\terrs = append(errs, fmt.Errorf(\"subscriber %s: %w\", s.ID, err))\n\t\t\t}\n\t\t}()\n\t}\n\n\twg.Wait()\n\treturn errors.Join(errs...)\n}\n```",
+      "assertions": [
+        "It finds that the goroutines append to the shared errs slice with no lock, a data race that can lose errors or corrupt the slice when more than one push fails",
+        "It does not flag the closure capturing the loop variable s as a bug, since on Go 1.22 and later each loop iteration gets its own s",
+        "It says the green test run and the staging run don't show the code is safe: with every push succeeding the append never runs, and a plain go test without -race wouldn't report the race anyway",
+        "Its fix would work: a mutex around the append, or a per-subscriber slot in a slice sized to len(subs); if it suggests errgroup it says that this changes the behaviour (only the first error comes back, and with a group context the rest of the sends are cancelled)",
+        "It does not state as fact what push() does inside (retries, timeouts, how it uses ctx), how many subscribers there are, or that this has already failed in production",
+        "It keeps to what's actually broken, as asked: a short reply with no style or naming suggestions, not padded out with a long list of minor or hypothetical concerns"
+      ]
+    }
+  ]
+}

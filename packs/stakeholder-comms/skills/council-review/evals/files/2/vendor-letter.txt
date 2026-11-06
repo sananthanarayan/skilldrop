@@ -1,0 +1,12 @@
+Kellbrook Systems Ltd
+Customer Support Notice
+
+To: Glenmarra Water, Operations Technology
+Date: 14 August 2026
+Re: Support lifecycle for Historian Server 6
+
+Standard support for Historian Server 6 ends on 31 March 2027.
+
+Customers who need more time to migrate may take Extended Support, which provides security patches and fault fixes until 31 March 2029. Extended Support is priced at £38,000 per year and can be cancelled at any anniversary.
+
+Please contact your account manager to arrange Extended Support.

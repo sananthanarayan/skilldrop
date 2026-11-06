@@ -1,0 +1,30 @@
+{
+  "openapi": "3.0.3",
+  "info": { "title": "cabinbook", "version": "1.4.0" },
+  "paths": {
+    "/bookings": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/BookingRequest" } }
+          }
+        },
+        "responses": { "201": { "description": "Created" } }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BookingRequest": {
+        "type": "object",
+        "required": ["cabinId", "checkIn", "nights"],
+        "properties": {
+          "cabinId": { "type": "string" },
+          "checkIn": { "type": "string", "format": "date" },
+          "nights": { "type": "integer", "minimum": 1, "maximum": 14 },
+          "guests": { "type": "integer", "minimum": 1, "maximum": 8 }
+        }
+      }
+    }
+  }
+}

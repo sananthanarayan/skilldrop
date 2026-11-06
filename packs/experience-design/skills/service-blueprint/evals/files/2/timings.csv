@@ -1,0 +1,5 @@
+step,median_elapsed_working_days,source
+Order placed to stock allocated,1,WMS timestamps
+Stock allocated to slot booking call made,3,Call log
+Slot booking call to delivery day,4,Courier calendar export
+Delivery day (window plus assembly),1,Courier handheld data

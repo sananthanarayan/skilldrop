@@ -1,0 +1,9 @@
+version: "2"
+sql:
+  - engine: postgresql
+    queries: internal/store/query.sql
+    schema: internal/store/schema.sql
+    gen:
+      go:
+        package: store
+        out: internal/store

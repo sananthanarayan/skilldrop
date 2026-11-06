@@ -1,0 +1,173 @@
+{
+  "lighthouseVersion": "12.2.1",
+  "requestedUrl": "https://www.quillstack.example/",
+  "finalDisplayedUrl": "https://www.quillstack.example/",
+  "fetchTime": "2026-10-16T14:03:27.512Z",
+  "userAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36",
+  "configSettings": {
+    "formFactor": "mobile",
+    "throttlingMethod": "simulate",
+    "throttling": { "rttMs": 150, "throughputKbps": 1638.4, "cpuSlowdownMultiplier": 4 },
+    "screenEmulation": { "mobile": true, "width": 412, "height": 823, "deviceScaleFactor": 1.75 },
+    "onlyCategories": ["performance"]
+  },
+  "categories": {
+    "performance": { "id": "performance", "title": "Performance", "score": 0.68 }
+  },
+  "audits": {
+    "first-contentful-paint": { "id": "first-contentful-paint", "score": 0.72, "numericValue": 2400, "displayValue": "2.4 s" },
+    "speed-index": { "id": "speed-index", "score": 0.8, "numericValue": 3900, "displayValue": "3.9 s" },
+    "largest-contentful-paint": { "id": "largest-contentful-paint", "score": 0.48, "numericValue": 4100, "displayValue": "4.1 s" },
+    "total-blocking-time": { "id": "total-blocking-time", "score": 0.72, "numericValue": 380, "displayValue": "380 ms" },
+    "cumulative-layout-shift": { "id": "cumulative-layout-shift", "score": 0.78, "numericValue": 0.14, "displayValue": "0.14" },
+    "interactive": { "id": "interactive", "score": 0.61, "numericValue": 6200, "displayValue": "6.2 s" },
+    "largest-contentful-paint-element": {
+      "id": "largest-contentful-paint-element",
+      "score": 0,
+      "displayValue": "4,100 ms",
+      "details": {
+        "type": "list",
+        "items": [
+          {
+            "type": "table",
+            "headings": [{ "key": "node", "valueType": "node", "label": "Element" }],
+            "items": [
+              { "node": { "type": "node", "selector": "section.hero > h1", "nodeLabel": "Ship releases your team trusts" } }
+            ]
+          },
+          {
+            "type": "table",
+            "headings": [
+              { "key": "phase", "valueType": "text", "label": "Phase" },
+              { "key": "timing", "valueType": "ms", "label": "Timing" }
+            ],
+            "items": [
+              { "phase": "TTFB", "timing": 540 },
+              { "phase": "Load Delay", "timing": 0 },
+              { "phase": "Load Time", "timing": 0 },
+              { "phase": "Render Delay", "timing": 3560 }
+            ]
+          }
+        ]
+      }
+    },
+    "layout-shifts": {
+      "id": "layout-shifts",
+      "score": 0,
+      "displayValue": "3 layout shifts found",
+      "details": {
+        "type": "table",
+        "headings": [
+          { "key": "node", "valueType": "node", "label": "Element", "subItemsHeading": { "key": "extra" } },
+          { "key": "score", "valueType": "numeric", "label": "Layout shift score", "subItemsHeading": { "key": "cause", "valueType": "text" } }
+        ],
+        "items": [
+          {
+            "node": { "type": "node", "selector": "body > main#content", "nodeLabel": "Ship releases your team trusts Quillstack runs your release checks…" },
+            "score": 0.091,
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                { "extra": { "type": "url", "value": "https://cdn.tallyconsent.example/v2/banner.js" }, "cause": "A late network request adjusted the page layout" }
+              ]
+            }
+          },
+          {
+            "node": { "type": "node", "selector": "section.hero > h1", "nodeLabel": "Ship releases your team trusts" },
+            "score": 0.038,
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                { "extra": { "type": "url", "value": "https://www.quillstack.example/fonts/northwind-sans-bold.woff2" }, "cause": "Web font loaded" }
+              ]
+            }
+          },
+          {
+            "node": { "type": "node", "selector": "section.social-proof > ul.logo-strip", "nodeLabel": "Trusted by teams at Brightmoor, Oakhaven Labs, Pellucid" },
+            "score": 0.011,
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                { "extra": { "type": "node", "selector": "ul.logo-strip > li > img.logo-brightmoor", "nodeLabel": "Brightmoor logo" }, "cause": "Unsized image element" }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "font-display": {
+      "id": "font-display",
+      "title": "All text remains visible during webfont loads",
+      "score": 1,
+      "details": { "type": "table", "items": [] }
+    },
+    "unsized-images": {
+      "id": "unsized-images",
+      "score": 0,
+      "details": {
+        "type": "table",
+        "items": [
+          { "url": "https://www.quillstack.example/img/logos/brightmoor.svg", "node": { "type": "node", "selector": "ul.logo-strip > li > img.logo-brightmoor", "nodeLabel": "Brightmoor logo" } }
+        ]
+      }
+    },
+    "render-blocking-resources": {
+      "id": "render-blocking-resources",
+      "score": 0,
+      "displayValue": "Potential savings of 620 ms",
+      "metricSavings": { "FCP": 620, "LCP": 620 },
+      "details": {
+        "type": "opportunity",
+        "overallSavingsMs": 620,
+        "items": [
+          { "url": "https://www.quillstack.example/_next/static/css/app-8d21.css", "totalBytes": 61440, "wastedMs": 470 },
+          { "url": "https://cdn.tallyconsent.example/v2/banner.css", "totalBytes": 14336, "wastedMs": 150 }
+        ]
+      }
+    },
+    "unused-javascript": {
+      "id": "unused-javascript",
+      "score": 0,
+      "displayValue": "Potential savings of 412 KiB",
+      "metricSavings": { "FCP": 900, "LCP": 1050 },
+      "details": {
+        "type": "opportunity",
+        "overallSavingsMs": 1900,
+        "overallSavingsBytes": 421888,
+        "items": [
+          { "url": "https://www.quillstack.example/_next/static/chunks/pages/index-c41d.js", "totalBytes": 229376, "wastedBytes": 151552, "wastedPercent": 66.1 },
+          { "url": "https://www.quillstack.example/_next/static/chunks/framework-3f9a.js", "totalBytes": 196608, "wastedBytes": 118784, "wastedPercent": 60.4 },
+          { "url": "https://js.pulsemetrics.example/tag.js", "totalBytes": 122880, "wastedBytes": 86016, "wastedPercent": 70.0 },
+          { "url": "https://cdn.tallyconsent.example/v2/banner.js", "totalBytes": 102400, "wastedBytes": 65536, "wastedPercent": 64.0 }
+        ]
+      }
+    },
+    "third-party-summary": {
+      "id": "third-party-summary",
+      "score": 0,
+      "displayValue": "Third-party code blocked the main thread for 200 ms",
+      "details": {
+        "type": "table",
+        "summary": { "wastedBytes": 239616, "wastedMs": 200 },
+        "items": [
+          { "entity": "TallyConsent", "transferSize": 116736, "mainThreadTime": 340, "blockingTime": 110 },
+          { "entity": "PulseMetrics", "transferSize": 122880, "mainThreadTime": 290, "blockingTime": 90 }
+        ]
+      }
+    },
+    "long-tasks": {
+      "id": "long-tasks",
+      "score": 1,
+      "displayValue": "4 long tasks found",
+      "details": {
+        "type": "table",
+        "items": [
+          { "url": "https://www.quillstack.example/_next/static/chunks/framework-3f9a.js", "startTime": 2510, "duration": 168 },
+          { "url": "https://cdn.tallyconsent.example/v2/banner.js", "startTime": 3020, "duration": 160 },
+          { "url": "https://js.pulsemetrics.example/tag.js", "startTime": 3480, "duration": 140 },
+          { "url": "https://www.quillstack.example/_next/static/chunks/pages/index-c41d.js", "startTime": 4150, "duration": 112 }
+        ]
+      }
+    }
+  }
+}

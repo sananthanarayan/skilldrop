@@ -1,0 +1,8 @@
+legacy_code,meaning,new_code
+PERM,Permanent deferral,PERMANENT
+TEMP-TATTOO,Tattoo or piercing in last 4 months,TEMPORARY
+TEMP-MED,Taking a deferring medication,TEMPORARY
+TEMP-PROC,Recent surgery or procedure,PROCEDURE
+TEMP-TRAVEL,Recent travel to a malaria-risk area,
+LOW-HB,Low haemoglobin at last attempt,LOW_HAEMOGLOBIN
+MED-REVIEW,Awaiting review by a medical officer,

@@ -1,0 +1,480 @@
+{
+ "lighthouseVersion": "12.6.1",
+ "requestedUrl": "https://news.quayside.example/2026/10/harbour-bridge-reopens",
+ "mainDocumentUrl": "https://news.quayside.example/2026/10/harbour-bridge-reopens",
+ "finalDisplayedUrl": "https://news.quayside.example/2026/10/harbour-bridge-reopens",
+ "finalUrl": "https://news.quayside.example/2026/10/harbour-bridge-reopens",
+ "fetchTime": "2026-10-15T07:30:44.018Z",
+ "gatherMode": "navigation",
+ "runWarnings": [],
+ "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.0.0 Safari/537.36",
+ "environment": {
+  "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36 Chrome-Lighthouse",
+  "hostUserAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.0.0 Safari/537.36",
+  "benchmarkIndex": 1488.0
+ },
+ "configSettings": {
+  "output": [
+   "json"
+  ],
+  "maxWaitForFcp": 30000,
+  "maxWaitForLoad": 45000,
+  "pauseAfterFcpMs": 1000,
+  "pauseAfterLoadMs": 1000,
+  "networkQuietThresholdMs": 1000,
+  "cpuQuietThresholdMs": 1000,
+  "formFactor": "mobile",
+  "throttling": {
+   "rttMs": 150,
+   "throughputKbps": 1638.4,
+   "requestLatencyMs": 562.5,
+   "downloadThroughputKbps": 1474.5600000000002,
+   "uploadThroughputKbps": 675,
+   "cpuSlowdownMultiplier": 4
+  },
+  "throttlingMethod": "simulate",
+  "screenEmulation": {
+   "mobile": true,
+   "width": 412,
+   "height": 823,
+   "deviceScaleFactor": 1.75,
+   "disabled": false
+  },
+  "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+  "onlyCategories": [
+   "performance"
+  ],
+  "channel": "cli"
+ },
+ "categories": {
+  "performance": {
+   "id": "performance",
+   "title": "Performance",
+   "score": 0.78,
+   "auditRefs": [
+    {
+     "id": "first-contentful-paint",
+     "weight": 10,
+     "group": "metrics",
+     "acronym": "FCP"
+    },
+    {
+     "id": "largest-contentful-paint",
+     "weight": 25,
+     "group": "metrics",
+     "acronym": "LCP"
+    },
+    {
+     "id": "total-blocking-time",
+     "weight": 30,
+     "group": "metrics",
+     "acronym": "TBT"
+    },
+    {
+     "id": "cumulative-layout-shift",
+     "weight": 25,
+     "group": "metrics",
+     "acronym": "CLS"
+    },
+    {
+     "id": "speed-index",
+     "weight": 10,
+     "group": "metrics",
+     "acronym": "SI"
+    }
+   ]
+  }
+ },
+ "audits": {
+  "first-contentful-paint": {
+   "id": "first-contentful-paint",
+   "title": "First Contentful Paint",
+   "score": 0.83,
+   "scoreDisplayMode": "numeric",
+   "numericValue": 2050,
+   "numericUnit": "millisecond",
+   "displayValue": "2.1 s"
+  },
+  "largest-contentful-paint": {
+   "id": "largest-contentful-paint",
+   "title": "Largest Contentful Paint",
+   "score": 0.72,
+   "scoreDisplayMode": "numeric",
+   "numericValue": 3120,
+   "numericUnit": "millisecond",
+   "displayValue": "3.1 s"
+  },
+  "total-blocking-time": {
+   "id": "total-blocking-time",
+   "title": "Total Blocking Time",
+   "score": 0.95,
+   "scoreDisplayMode": "numeric",
+   "numericValue": 140,
+   "numericUnit": "millisecond",
+   "displayValue": "140 ms"
+  },
+  "cumulative-layout-shift": {
+   "id": "cumulative-layout-shift",
+   "title": "Cumulative Layout Shift",
+   "score": 0.56,
+   "scoreDisplayMode": "numeric",
+   "numericValue": 0.2204,
+   "numericUnit": "unitless",
+   "displayValue": "0.22"
+  },
+  "speed-index": {
+   "id": "speed-index",
+   "title": "Speed Index",
+   "score": 0.9,
+   "scoreDisplayMode": "numeric",
+   "numericValue": 3310,
+   "numericUnit": "millisecond",
+   "displayValue": "3.3 s"
+  },
+  "server-response-time": {
+   "id": "server-response-time",
+   "title": "Reduce initial server response time",
+   "score": 0,
+   "scoreDisplayMode": "metricSavings",
+   "numericValue": 1420,
+   "numericUnit": "millisecond",
+   "displayValue": "Root document took 1,420 ms",
+   "metricSavings": {
+    "FCP": 1320,
+    "LCP": 1320
+   },
+   "details": {
+    "type": "opportunity",
+    "headings": [
+     {
+      "key": "url",
+      "valueType": "url"
+     },
+     {
+      "key": "responseTime",
+      "valueType": "timespanMs"
+     }
+    ],
+    "items": [
+     {
+      "url": "https://news.quayside.example/2026/10/harbour-bridge-reopens",
+      "responseTime": 1420
+     }
+    ],
+    "overallSavingsMs": 1320
+   }
+  },
+  "largest-contentful-paint-element": {
+   "id": "largest-contentful-paint-element",
+   "title": "Largest Contentful Paint element",
+   "score": 0,
+   "scoreDisplayMode": "metricSavings",
+   "displayValue": "3,120 ms",
+   "metricSavings": {
+    "LCP": 620
+   },
+   "details": {
+    "type": "list",
+    "items": [
+     {
+      "type": "table",
+      "headings": [
+       {
+        "key": "node",
+        "valueType": "node",
+        "label": "Element"
+       }
+      ],
+      "items": [
+       {
+        "node": {
+         "type": "node",
+         "lhId": "1-22-IMG",
+         "path": "1,HTML,1,BODY,2,DIV,0,ARTICLE,1,FIGURE,0,IMG",
+         "selector": "article > figure.article-lead > img.article-lead__image",
+         "nodeLabel": "Traffic crossing the reopened Harbour Bridge at dawn",
+         "snippet": "<img class=\"article-lead__image\" src=\"https://img.quayside.example/2026/10/bridge-1200.webp\" alt=\"Traffic crossing the reopened Harbour Bridge at dawn\" fetchpriority=\"high\">"
+        }
+       }
+      ]
+     },
+     {
+      "type": "table",
+      "headings": [
+       {
+        "key": "phase",
+        "valueType": "text",
+        "label": "Phase"
+       },
+       {
+        "key": "percent",
+        "valueType": "text",
+        "label": "% of LCP"
+       },
+       {
+        "key": "timing",
+        "valueType": "ms",
+        "label": "Timing"
+       }
+      ],
+      "items": [
+       {
+        "phase": "TTFB",
+        "timing": 1650,
+        "percent": "53%"
+       },
+       {
+        "phase": "Load Delay",
+        "timing": 180,
+        "percent": "6%"
+       },
+       {
+        "phase": "Load Time",
+        "timing": 820,
+        "percent": "26%"
+       },
+       {
+        "phase": "Render Delay",
+        "timing": 470,
+        "percent": "15%"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "layout-shifts": {
+   "id": "layout-shifts",
+   "title": "Avoid large layout shifts",
+   "score": 0,
+   "scoreDisplayMode": "metricSavings",
+   "metricSavings": {
+    "CLS": 0.22
+   },
+   "displayValue": "2 layout shifts found",
+   "details": {
+    "type": "table",
+    "headings": [
+     {
+      "key": "node",
+      "valueType": "node"
+     },
+     {
+      "key": "score",
+      "valueType": "numeric"
+     }
+    ],
+    "items": [
+     {
+      "node": {
+       "type": "node",
+       "lhId": "1-18-DIV",
+       "path": "1,HTML,1,BODY,1,DIV",
+       "selector": "body > div.ad-slot.ad-slot--top",
+       "nodeLabel": "Advertisement",
+       "snippet": "<div class=\"ad-slot ad-slot--top\" id=\"ad-top\">"
+      },
+      "score": 0.1503,
+      "subItems": {
+       "type": "subitems",
+       "items": [
+        {
+         "extra": {
+          "type": "url",
+          "value": "https://ads.adharbor.example/serve/frame.html"
+         },
+         "cause": "Injected iframe"
+        }
+       ]
+      }
+     },
+     {
+      "node": {
+       "type": "node",
+       "lhId": "1-22-IMG",
+       "path": "1,HTML,1,BODY,2,DIV,0,ARTICLE,1,FIGURE,0,IMG",
+       "selector": "article > figure.article-lead > img.article-lead__image",
+       "nodeLabel": "Traffic crossing the reopened Harbour Bridge at dawn",
+       "snippet": "<img class=\"article-lead__image\" src=\"https://img.quayside.example/2026/10/bridge-1200.webp\" alt=\"Traffic crossing the reopened Harbour Bridge at dawn\" fetchpriority=\"high\">"
+      },
+      "score": 0.0701,
+      "subItems": {
+       "type": "subitems",
+       "items": [
+        {
+         "extra": {
+          "type": "url",
+          "value": "https://img.quayside.example/2026/10/bridge-1200.webp"
+         },
+         "cause": "Unsized image element"
+        }
+       ]
+      }
+     }
+    ]
+   }
+  },
+  "unsized-images": {
+   "id": "unsized-images",
+   "title": "Image elements do not have explicit width and height",
+   "score": 0,
+   "scoreDisplayMode": "metricSavings",
+   "metricSavings": {
+    "CLS": 0
+   },
+   "details": {
+    "type": "table",
+    "headings": [
+     {
+      "key": "node",
+      "valueType": "node"
+     },
+     {
+      "key": "url",
+      "valueType": "url"
+     }
+    ],
+    "items": [
+     {
+      "node": {
+       "type": "node",
+       "lhId": "1-22-IMG",
+       "path": "1,HTML,1,BODY,2,DIV,0,ARTICLE,1,FIGURE,0,IMG",
+       "selector": "article > figure.article-lead > img.article-lead__image",
+       "nodeLabel": "Traffic crossing the reopened Harbour Bridge at dawn",
+       "snippet": "<img class=\"article-lead__image\" src=\"https://img.quayside.example/2026/10/bridge-1200.webp\" alt=\"Traffic crossing the reopened Harbour Bridge at dawn\" fetchpriority=\"high\">"
+      },
+      "url": "https://img.quayside.example/2026/10/bridge-1200.webp"
+     }
+    ]
+   }
+  },
+  "unused-css-rules": {
+   "id": "unused-css-rules",
+   "title": "Reduce unused CSS",
+   "score": 0.5,
+   "scoreDisplayMode": "metricSavings",
+   "displayValue": "Est savings of 69 KiB",
+   "metricSavings": {
+    "FCP": 150,
+    "LCP": 150
+   },
+   "details": {
+    "type": "opportunity",
+    "headings": [
+     {
+      "key": "url",
+      "valueType": "url"
+     },
+     {
+      "key": "totalBytes",
+      "valueType": "bytes"
+     },
+     {
+      "key": "wastedBytes",
+      "valueType": "bytes"
+     }
+    ],
+    "items": [
+     {
+      "url": "https://news.quayside.example/assets/site.css",
+      "totalBytes": 92000,
+      "wastedBytes": 71000,
+      "wastedPercent": 77.2
+     }
+    ],
+    "overallSavingsMs": 150,
+    "overallSavingsBytes": 71000
+   }
+  },
+  "long-tasks": {
+   "id": "long-tasks",
+   "title": "Avoid long main-thread tasks",
+   "score": 1,
+   "scoreDisplayMode": "informative",
+   "displayValue": "2 long tasks found",
+   "details": {
+    "type": "table",
+    "headings": [
+     {
+      "key": "url",
+      "valueType": "url"
+     },
+     {
+      "key": "startTime",
+      "valueType": "ms"
+     },
+     {
+      "key": "duration",
+      "valueType": "ms"
+     }
+    ],
+    "items": [
+     {
+      "url": "https://cdn.adharbor.example/hb/v5/adharbor.js",
+      "duration": 140,
+      "startTime": 2600
+     },
+     {
+      "url": "https://news.quayside.example/assets/article.js",
+      "duration": 74,
+      "startTime": 2210
+     }
+    ]
+   }
+  },
+  "third-party-summary": {
+   "id": "third-party-summary",
+   "title": "Reduce the impact of third-party code",
+   "score": 1,
+   "scoreDisplayMode": "metricSavings",
+   "metricSavings": {
+    "TBT": 90
+   },
+   "details": {
+    "type": "table",
+    "headings": [
+     {
+      "key": "entity",
+      "valueType": "text"
+     },
+     {
+      "key": "mainThreadTime",
+      "valueType": "ms"
+     },
+     {
+      "key": "blockingTime",
+      "valueType": "ms"
+     }
+    ],
+    "items": [
+     {
+      "entity": "AdHarbor",
+      "mainThreadTime": 380,
+      "blockingTime": 90,
+      "transferSize": 310000
+     }
+    ]
+   }
+  }
+ },
+ "entities": [
+  {
+   "name": "quayside.example",
+   "origins": [
+    "https://news.quayside.example",
+    "https://img.quayside.example"
+   ],
+   "isFirstParty": true,
+   "isUnrecognized": true
+  },
+  {
+   "name": "AdHarbor",
+   "origins": [
+    "https://cdn.adharbor.example",
+    "https://ads.adharbor.example"
+   ],
+   "isFirstParty": false
+  }
+ ]
+}

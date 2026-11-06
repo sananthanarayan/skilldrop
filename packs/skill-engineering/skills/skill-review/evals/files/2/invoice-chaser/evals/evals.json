@@ -1,0 +1,12 @@
+{
+  "skill_name": "invoice-chaser",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "chase the overdue invoices",
+      "assertions": [
+        "The output is good"
+      ]
+    }
+  ]
+}

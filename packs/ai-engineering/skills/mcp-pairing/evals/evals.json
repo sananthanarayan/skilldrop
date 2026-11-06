@@ -1,0 +1,76 @@
+{
+  "skill_name": "mcp-pairing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Which MCP servers should we hook up for our release loop? We use GitLab, Linear and Grafana. The loop is plan the rollout, check launch readiness, write the release notes, then a go/no-go call. We release about every two weeks.",
+      "assertions": [
+        "It opens with the plan in plain words — how many servers, which ones, read or write, and which stages need none — before any table",
+        "Every one of the four stages (plan, readiness, release notes, go/no-go) has its own row, including any that get no server",
+        "No write scope is granted to the readiness check or the go/no-go stage; the go/no-go decision stays with a person",
+        "Every grant is narrower than 'read-only': a named scope such as GitLab read_api, one project or team, or a Grafana Viewer role, with no admin or api-wide scope",
+        "Any write (publishing the release or notes) sits on a separate credential used only by the release-notes stage, or is handed to a person",
+        "It does not invent server names, packages, install commands or URLs the user didn't give; vendor servers are named only as the vendor's own, with how to confirm the publisher",
+        "Merge request text, comments or Linear issue text are called untrusted, and no stage that reads them is left holding write, exec or network tools",
+        "Every stage gets an export-file fallback, and at least one server is cut or argued for against the fortnightly cadence"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our on-call agent uses the config in mcp.json for two steps: drafting incident updates for the #inc channel, and writing the postmortem afterwards from the timeline, the Jira tickets and some database queries. A teammate set it up and it works, but I'm nervous. Tighten it — tell me what each step should actually be connected to.",
+      "assertions": [
+        "It flags the token values written into the config file and says to move them to environment variables or the tool's secret store, with the committed file holding variable names only",
+        "It drops the admin scopes (admin:org, Slack admin) and the broad repo and workflow scopes, naming the narrower scope each step needs",
+        "It flags the unpinned community packages (@harbourline/jira-mcp, @harbourline/pg-mcp@latest, @harbourline/slack-mcp) and gives the vetting checks: publisher, source available, pinned version, tools exposed, code or network reach",
+        "It replaces the app_owner connection to the primary database with a read-only role on a replica, scoped to what the postmortem needs, or with an exported query result",
+        "It says the Slack posting is the one write the incident-update step's output justifies, on a separate credential from history reading, or hands posting to a person, and the postmortem step gets no write",
+        "It calls Slack messages and Jira ticket text untrusted and does not leave a step that reads them holding the write or database tools it doesn't need",
+        "It does not invent replacement package names, URLs or install commands the user didn't give",
+        "Each step has an export-file fallback, such as the incident channel's thread exported to a file or the query result saved as CSV"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Once a month we research one competitor: plan the question, gather and summarise sources, then weigh the explanations for what they're doing. We want to give the agent a web browsing MCP server, Notion's MCP with write access so it can file the summary in our research space, and Google Drive so it can read our past reports. Good idea?",
+      "assertions": [
+        "It answers the question directly in the opening lines, with a clear verdict on the setup as proposed",
+        "Web pages are called untrusted input, and the stage that browses is not given Notion write or any other write or exec tool in the same session",
+        "The weigh-the-explanations stage is treated as a verify stage and gets read-only access or none",
+        "Notion write, if kept at all, goes only to the stage whose output is filing the summary, scoped to the one research space on its own credential; otherwise a person files it",
+        "Google Drive access is narrowed to the folder of past reports, read-only, or replaced by exported files",
+        "Given the monthly cadence, at least one server is cut in favour of an export file or saved pages, with the reason stated",
+        "It does not invent server names, packages or URLs the user didn't give, and names Notion's or Google's server only with how to confirm the publisher"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-20",
+      "prompt": "Our team runs a coding agent through the PR loop in docs/pr-loop.md. Someone set up the .mcp.json in the repo root a few months ago and it's committed so everyone gets the same tools. Before we roll this out to two more teams, can you check it? I want to know if it's too broad, what each stage actually needs, and what you'd change. Don't rewrite the loop itself, just the MCP side.",
+      "assertions": [
+        "Flags the GitHub token (and the Jira/Slack/DB secrets) pasted in plain text in a committed .mcp.json as an immediate problem: says to treat the tokens as exposed and rotate them, and to move secrets out of the file (environment variables or a secret store, referenced instead of stored inline).",
+        "Flags the classic PAT with admin:org and delete_repo (and workflow) as far too broad, and recommends a narrowly scoped token instead (e.g. a fine-grained token or app limited to example-org/orders-service with only the repository permissions the implement stage needs: contents and pull requests write, plus read for actions/checks).",
+        "Says the review stage must be read-only: the 'github-reviewer' entry with all toolsets and the ability to approve/merge contradicts the loop's own rule that only a human merges, and should become a read-only connection (diff, CI results, ticket) with no merge, approve, push or write tools.",
+        "Identifies the Jira server 'jira-mcp-plus-unofficial@latest' and the community Slack/Postgres packages as unknown-origin, unpinned third-party code that gets credentials, and recommends replacing them with the vendor's official server or the user's vetted one (or at minimum pinning and reviewing them), not trusting them as-is.",
+        "Recommends removing the Postgres connection entirely (or replacing it with a schema-only/read-only path such as a schema dump or migration files), since no stage in the loop needs a database and the current config gives the agent the prod owner role on the orders database.",
+        "Narrows Slack to what the announce stage actually needs: posting to the single #team-orders-dev channel (chat:write, invited to that channel), dropping history-reading scopes, users:read.email, chat:write.public and admin; and notes that the merge gate stage needs no MCP server at all.",
+        "Gives a per-stage breakdown (pick up, implement, review, merge gate, announce) stating for each what access it needs, what it must not be able to do, and a fallback if the server is unavailable (e.g. pasted or exported ticket text for pick-up, gh CLI or a saved diff/CI log for review, a human posting the Slack line).",
+        "Does not invent server package names, registry URLs, image names or MCP tool names that weren't in the user's files; where it recommends an official server it either names one the user already referenced (ghcr.io/github/github-mcp-server) or describes it generically and tells the user to confirm the vendor-published source."
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-20",
+      "prompt": "I'm the platform lead for the payments group. We want an agent to do first-pass on-call triage, roughly the flow in docs/oncall-triage.md. Nothing is wired up yet. We use self-hosted Sentry, Grafana Cloud, GitLab, Linear and Postgres. Which MCP servers should we connect for this, with what token scopes / roles, and is there anything you'd keep it away from? Security is going to review whatever you propose, so be specific.",
+      "assertions": [
+        "Organises the answer by the five stages (gather, correlate, check data, ticket, postmortem draft) and, for each, states what outside data or action the stage needs and which of the user's named systems supplies it.",
+        "Recommends read-only access for Sentry, Grafana and GitLab: e.g. Sentry token limited to reading events/issues/projects for payments-api (no project write/admin, no resolving issues), a Grafana service account with Viewer role, and a GitLab token with read-only scopes (read_api / read_repository) rather than the full 'api' scope.",
+        "For the database stage, recommends connecting only to the read replica (never the primary) with a dedicated read-only role, and calls out that the PCI card-data columns (pan_last4, card_token, billing_address) must be excluded, e.g. via a restricted view or column-level grants, rather than trusting the agent to avoid them; may also suggest statement timeouts/row limits.",
+        "Treats the ticket stage as the only stage that genuinely needs write access, and limits it to creating/updating issues in the PAY team in Linear (no admin, no access to other teams, no deletion), possibly noting a human could approve or the ticket could be created by a person from the agent's draft.",
+        "States that the postmortem draft stage needs no MCP server, since it writes markdown from what earlier stages already gathered.",
+        "Gives a no-server fallback per stage that keeps the loop working, e.g. exported Sentry event JSON, Grafana panel CSV/screenshot, a pasted git log or MR diff, psql output pasted by the on-call, and a markdown ticket draft the on-call files by hand.",
+        "Explicitly lists what each connection must not be able to do (e.g. no deploys, rollbacks or pipeline triggers from GitLab, no alert silencing or dashboard edits in Grafana, no writes or DDL on Postgres, no reading card data), in a form a security reviewer could check.",
+        "Does not invent MCP server package names, repository URLs or tool names for Sentry, Grafana, GitLab, Linear or Postgres; it either says to use the vendor's officially published server (to be confirmed by the user) or describes the capability generically, and notes that self-hosted Sentry may need verification that the official server supports a custom host."
+      ]
+    }
+  ]
+}

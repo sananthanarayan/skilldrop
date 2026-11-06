@@ -1,0 +1,10 @@
+# Kafka topics owned by the checkout team (cluster: larkspur-prod-1)
+topics:
+  - name: orders
+    partitions: 6
+    replication_factor: 3
+    config:
+      cleanup.policy: delete
+      retention.ms: 86400000        # 1 day
+      min.insync.replicas: 2
+    # Capacity note (Priya, ops): bump partitions to 24 before the November peak.

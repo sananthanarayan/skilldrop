@@ -1,0 +1,54 @@
+{
+  "skill_name": "md-to-xlsx",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Acme finance wants this in Excel: exports/northwind-invoices.csv. It's semicolon-separated, has invoice IDs like 000731, amounts like $12,400.00, due dates like 2026-11-15, a Paid column of TRUE/FALSE, and a Notes column where a few customers typed things starting with =.",
+      "assertions": [
+        "Runs md_to_xlsx.py on the CSV and writes a .xlsx",
+        "Leaves --formulas off and explains that cells starting with = from an export are kept as text because of formula injection",
+        "Reports that invoice IDs with leading zeros stay text so 000731 keeps its zeros",
+        "Reports the per-sheet summary (rows, columns, numbers, dates, booleans, text) and checks the amounts became numbers",
+        "Does not change, round or fill in any value from the CSV",
+        "Reopens or previews the workbook to confirm it opens, rather than relying on exit code 0"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Turn the tables in reports/q3-ops-review.md into a spreadsheet for Northwind's ops leads. There are four tables; two are under '## Results' and one has the heading '### Incidents by severity: P1 / P2 / P3 (Jul–Sep, all regions)'.",
+      "assertions": [
+        "Gives each table its own short heading before converting, so no sheet is named 'Results (2)' or cut off by the script",
+        "The incidents sheet name is 31 characters or fewer with no / or : in it",
+        "Lists every sheet with its name, rows and columns in the reply",
+        "Reports any WARN lines (renames, padded rows) with what was done about them",
+        "Does not invent rows, totals or values that are not in the Markdown"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "Finance want depot-costs-q3.md as a spreadsheet they can sort, filter and sum, each table on its own tab please. Save it as depot-costs-q3.xlsx. They'll paste the totals straight into the board pack, so it needs to be right.",
+      "assertions": [
+        "Writes depot-costs-q3.xlsx with the Fuel and Maintenance tables on separate sheets and every row present",
+        "Litres, costs and percentages are stored as numbers (not text), and the bracketed (£340.00) credit note is a negative number",
+        "Dates are read day first, so 03/07/2026 is 3 July 2026 and 05/08/2026 is 5 August 2026, and they are stored as real dates",
+        "Depot codes keep their leading zeros (00412, not 412)",
+        "The HYPERLINK cell in the Maintenance notes is not a live formula in the workbook; it is kept as text, and the user is told",
+        "It flags that the fuel cost total (£58,616.75) is not the sum of the rows (£58,166.75), since finance will paste it into the board pack, and does not silently change it",
+        "It does not invent rows, figures or tables that are not in the file"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "our running club's timing app spat out hollowmere-5k-results.json. can i get it as an excel file so I can sort people by time? that's all i need",
+      "assertions": [
+        "Writes an .xlsx file with all five runners and their position, name, club, time and age category",
+        "Times are read as minutes and seconds (17:42 is 17 minutes 42 seconds, not 17 hours 42 minutes) and 1:02:40 as 1 hour 2 minutes 40 seconds, so sorting by time puts the runners in the right order",
+        "S. Achterberg's missing club is left blank rather than filled in, and M. Duarte's extra note is kept or mentioned rather than silently dropped",
+        "It does not invent runners, times, clubs or categories",
+        "The reply is short and in plain words, and it delivers the file without asking questions first"
+      ]
+    }
+  ]
+}

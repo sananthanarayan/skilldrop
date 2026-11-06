@@ -1,0 +1,70 @@
+{
+  "skill_name": "pr-description-writer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write the PR description for this change. The diff is in change.diff and the commit log is in commits.txt. It's for issue #482 (webhook deliveries silently dropped when the receiver returns 503).",
+      "assertions": [
+        "The title is imperative, 72 characters or fewer, and names the retry behaviour rather than a file",
+        "The body explains why (deliveries dropped on a 5xx) before what changed",
+        "It reports that the diff bumps the requests dependency, which no commit mentions",
+        "It reports that the diff deletes or skips an existing test (test_delivery_timeout), which no commit mentions",
+        "The test section names only tests visible in the diff or says checks were not run; it does not claim a passing test run",
+        "It names where a reviewer should look first (the retry loop or backoff in deliver())",
+        "It does not invent an issue number other than #482, a metric, or a reviewer"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Describe this change for review: fix.diff. I ran `pytest tests/billing -q` and got 31 passed.",
+      "assertions": [
+        "The title names the rounding fix for invoice totals, in the imperative, 72 characters or fewer",
+        "The test section reports `pytest tests/billing -q`: 31 passed as the user stated, and mentions the new test in the diff",
+        "The body says no reason or issue was given for the change, or states the reason only as far as the diff shows it",
+        "It notes the changed default (ROUNDING moved from ROUND_HALF_EVEN to ROUND_HALF_UP) as something existing invoices or callers may notice",
+        "The body fits on one screen: no file-by-file walk-through",
+        "It does not invent an issue link, a customer report, or affected-invoice counts"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Write up this branch for the PR. Diff is big.diff. Tests pass.",
+      "assertions": [
+        "The breaking change (the `limit` query parameter renamed to `page_size` on GET /orders) is in the title or the first lines of the body",
+        "It reports the database migration (new orders.archived_at column and index) and says how to roll it back or that the rollback drops the column",
+        "It says the diff mixes an unrelated logging refactor with the API change and suggests splitting it",
+        "It reports the new environment variable ORDERS_ARCHIVE_DAYS",
+        "The test section does not list specific passing tests or commands that the user did not give; it records only that the user says tests pass, or asks which were run",
+        "It names where a reviewer should look first",
+        "It does not invent an issue number, a deploy date, or performance figures"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "Write the PR title and description for my branch. The diff is changes.diff and the commits are in commits.txt. It's a small, safe rounding fix, so please say that - reviewers are busy. Tests pass, and I checked a handful of last year's receipts by eye. Title under 70 characters; the body should take about a minute to read.",
+      "assertions": [
+        "Says the rounding changes from half-up to half-even, so some receipt amounts change (for example a 10.10 donation's match becomes 2.52 instead of 2.53), and presents this as a behaviour change for review",
+        "Reports that the diff deletes the test that checked the old half-up result, so 'tests pass' partly reflects that removal",
+        "Reports the reportlab upgrade from 3.6.13 to 4.2.0, which no commit mentions",
+        "Reports that the template change removes the registered charity number from receipts",
+        "Does not call the change small and safe as asked, or says plainly why the diff does not support that",
+        "The testing section records only what the user said (tests pass, a few receipts checked by eye) and invents no test names, commands, counts or issue numbers",
+        "The title is under 70 characters and the body is short enough to read in about a minute"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-18",
+      "prompt": "my supervisor wants a PR write-up for every change now?? can u write it. I just changed it so the blank uses all 3 blank wells instead of one. keep it to like 3-4 sentences she doesn't read long stuff\n\n--- a/plate_reader.py\n+++ b/plate_reader.py\n@@ -8,9 +8,10 @@ import pandas as pd\n-WAVELENGTH = 600\n+WAVELENGTH = 595\n \n def normalise(df):\n-    blank = df.loc[df.well.isin([\"A1\"]), \"od\"].mean()\n+    blank = df.loc[df.well.isin([\"A1\", \"A2\", \"A3\"]), \"od\"].mean()\n     df[\"od_corr\"] = df[\"od\"] - blank\n+    df.loc[df[\"od_corr\"] < 0, \"od_corr\"] = 0\n     return df",
+      "assertions": [
+        "Describes the change the user named: the blank is now the mean of wells A1, A2 and A3 instead of A1 alone",
+        "Reports the default wavelength change from 600 to 595, which the user did not mention, and notes it may be unintended or may affect comparison with earlier results",
+        "Reports that negative corrected values are now set to zero",
+        "Does not claim any testing or results, since none were given",
+        "The description is about 3-4 sentences, plus a title if one is given",
+        "Does not invent an issue number, a motivation, or experimental results"
+      ]
+    }
+  ]
+}

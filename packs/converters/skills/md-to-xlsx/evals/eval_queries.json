@@ -1,0 +1,9 @@
+[
+  { "query": "Put these markdown tables into an Excel file", "should_trigger": true },
+  { "query": "Convert vendors.csv to xlsx with proper number and date columns", "should_trigger": true },
+  { "query": "Finance needs this JSON export as a spreadsheet they can filter", "should_trigger": true },
+  { "query": "Make each table in this report its own sheet in a workbook", "should_trigger": true },
+  { "query": "Convert this markdown report to a Word document for legal", "should_trigger": false },
+  { "query": "Turn the Excel file the client sent into a markdown table", "should_trigger": false },
+  { "query": "Make a slide with a bar chart of these quarterly numbers", "should_trigger": false }
+]

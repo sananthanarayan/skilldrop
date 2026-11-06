@@ -1,0 +1,26 @@
+{
+  "title": "Living room, 5.0 × 4.2 m",
+  "units": "m",
+  "size": [5.0, 4.2],
+  "north": 0,
+  "min_walkway": 0.9,
+  "accessible": false,
+  "max_coverage": 0.5,
+  "doors": [
+    {"name": "Hall door", "at": [0.8, 0], "width": 0.9, "hinge": "left", "swing": "in", "entrance": true}
+  ],
+  "windows": [
+    {"at": [2.5, 4.2], "width": 1.8, "sill": 0.9}
+  ],
+  "obstacles": [
+    {"name": "Radiator", "type": "radiator", "rect": [1.8, 4.1, 1.4, 0.1]}
+  ],
+  "furniture": [
+    {"name": "Sofa", "type": "sofa", "width": 2.2, "depth": 0.9, "at": [0, 1.6], "facing": "E"},
+    {"name": "Coffee table", "type": "coffee_table", "width": 1.2, "depth": 0.6, "at": [1.3, 2.1], "facing": "E"},
+    {"name": "Armchair", "type": "armchair", "width": 0.85, "depth": 0.85, "at": [3.4, 3.2], "facing": "S"},
+    {"name": "TV unit", "type": "tv_unit", "width": 1.6, "depth": 0.45, "at": [4.55, 1.8], "facing": "W"},
+    {"name": "Bookcase", "type": "bookcase", "width": 1.0, "depth": 0.35, "at": [3.6, 0], "facing": "N"},
+    {"name": "Rug", "type": "rug", "width": 2.0, "depth": 1.6, "at": [1.0, 1.9]}
+  ]
+}

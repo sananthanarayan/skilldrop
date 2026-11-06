@@ -1,0 +1,265 @@
+{
+  "account": {
+    "delete": {
+      "confirm": "Konto löschen? Das kann nicht rückgängig gemacht werden."
+    },
+    "greeting": "Hallo {name}",
+    "member_since": "Mitglied seit {year}",
+    "privacy": "Lies unsere <link>Datenschutzerklärung</link> und <b>verwalte Cookies</b>.",
+    "role": "{role, select, admin {Administrator} member {Mitglied} other {Gast}}",
+    "welcome_back": "Willkommen zurück, {name}"
+  },
+  "address": {
+    "deliver_to": "Lieferung nach {postcode} {city}"
+  },
+  "app": {
+    "name": "Lumio"
+  },
+  "button": {
+    "add_to_cart": "In den Warenkorb",
+    "apply": "Anwenden",
+    "back": "Zurück",
+    "cancel": "Abbrechen",
+    "checkout": "Zur Kasse",
+    "close": "Schließen",
+    "contact_support": "Support kontaktieren",
+    "continue": "Weiter",
+    "create_account": "Konto erstellen",
+    "download_invoice": "Rechnung herunterladen",
+    "edit": "Bearbeiten",
+    "place_order": "Bestellung zahlungspflichtig abschließen",
+    "remove": "Entfernen",
+    "reset_password": "Passwort zurücksetzen",
+    "retry": "Erneut versuchen",
+    "save": "Speichern",
+    "sign_in": "Anmelden",
+    "sign_out": "Abmelden",
+    "track_order": "Sendung verfolgen",
+    "view_details": "Details anzeigen"
+  },
+  "cart": {
+    "empty": "Dein Warenkorb ist leer",
+    "free_shipping": "Noch <b>{amount}</b> bis zur kostenlosen Lieferung",
+    "item_removed": "{product} wurde aus deinem Warenkorb entfernt",
+    "items": {
+      "count": "{count, plural, one {# Artikel} other {# Artikel}}"
+    },
+    "points": "Mit dieser Bestellung sammelst du {points, plural, one {# Punkt} other {# Punkte}}",
+    "subtotal": "Zwischensumme: {total}"
+  },
+  "checkout": {
+    "shipping": {
+      "eta": "Lieferung bis {datum}"
+    },
+    "summary": {
+      "title": "Bestellübersicht"
+    }
+  },
+  "delivery": {
+    "days": "{days, plural, one {Lieferung in # Tag} other {Lieferung in # Tagen}}",
+    "slot": "Lieferung zwischen {start} und {end}"
+  },
+  "footer": {
+    "copyright": "© {year} Lumio Retail Ltd."
+  },
+  "form": {
+    "birth_date": {
+      "invalid": "Geburtsdatum ist ungültig",
+      "label": "Geburtsdatum",
+      "placeholder": "Geburtsdatum eingeben",
+      "required": "Geburtsdatum ist erforderlich"
+    },
+    "card_number": {
+      "invalid": "Kartennummer ist ungültig",
+      "label": "Kartennummer",
+      "placeholder": "Kartennummer eingeben",
+      "required": "Kartennummer ist erforderlich"
+    },
+    "city": {
+      "invalid": "Stadt ist ungültig",
+      "label": "Stadt",
+      "placeholder": "Stadt eingeben",
+      "required": "Stadt ist erforderlich"
+    },
+    "company": {
+      "invalid": "Firma ist ungültig",
+      "label": "Firma",
+      "placeholder": "Firma eingeben",
+      "required": "Firma ist erforderlich"
+    },
+    "country": {
+      "invalid": "Land ist ungültig",
+      "label": "Land",
+      "placeholder": "Land eingeben",
+      "required": "Land ist erforderlich"
+    },
+    "coupon": {
+      "invalid": "Gutscheincode ist ungültig",
+      "label": "Gutscheincode",
+      "placeholder": "Gutscheincode eingeben",
+      "required": "Gutscheincode ist erforderlich"
+    },
+    "cvc": {
+      "invalid": "Sicherheitscode ist ungültig",
+      "label": "Sicherheitscode",
+      "placeholder": "Sicherheitscode eingeben",
+      "required": "Sicherheitscode ist erforderlich"
+    },
+    "delivery_notes": {
+      "invalid": "Lieferhinweise ist ungültig",
+      "label": "Lieferhinweise",
+      "placeholder": "Lieferhinweise eingeben",
+      "required": "Lieferhinweise ist erforderlich"
+    },
+    "email": {
+      "invalid": "E-Mail-Adresse ist ungültig",
+      "label": "E-Mail-Adresse",
+      "placeholder": "E-Mail-Adresse eingeben",
+      "required": "E-Mail-Adresse ist erforderlich"
+    },
+    "expiry": {
+      "invalid": "Ablaufdatum ist ungültig",
+      "label": "Ablaufdatum",
+      "placeholder": "Ablaufdatum eingeben",
+      "required": "Ablaufdatum ist erforderlich"
+    },
+    "first_name": {
+      "invalid": "Vorname ist ungültig",
+      "label": "Vorname",
+      "placeholder": "Vorname eingeben",
+      "required": "Vorname ist erforderlich"
+    },
+    "gift_message": {
+      "invalid": "Geschenknachricht ist ungültig",
+      "label": "Geschenknachricht",
+      "placeholder": "Geschenknachricht eingeben",
+      "required": "Geschenknachricht ist erforderlich"
+    },
+    "last_name": {
+      "invalid": "Nachname ist ungültig",
+      "label": "Nachname",
+      "placeholder": "Nachname eingeben",
+      "required": "Nachname ist erforderlich"
+    },
+    "order_ref": {
+      "invalid": "Bestellnummer ist ungültig",
+      "label": "Bestellnummer",
+      "placeholder": "Bestellnummer eingeben",
+      "required": "Bestellnummer ist erforderlich"
+    },
+    "password": {
+      "invalid": "Passwort ist ungültig",
+      "label": "Passwort",
+      "placeholder": "Passwort eingeben",
+      "required": "Passwort ist erforderlich"
+    },
+    "phone": {
+      "invalid": "Telefonnummer ist ungültig",
+      "label": "Telefonnummer",
+      "placeholder": "Telefonnummer eingeben",
+      "required": "Telefonnummer ist erforderlich"
+    },
+    "postcode": {
+      "invalid": "Postleitzahl ist ungültig",
+      "label": "Postleitzahl",
+      "placeholder": "Postleitzahl eingeben",
+      "required": "Postleitzahl ist erforderlich"
+    },
+    "street": {
+      "invalid": "Straße und Hausnummer ist ungültig",
+      "label": "Straße und Hausnummer",
+      "placeholder": "Straße und Hausnummer eingeben",
+      "required": "Straße und Hausnummer ist erforderlich"
+    },
+    "username": {
+      "invalid": "Benutzername ist ungültig",
+      "label": "Benutzername",
+      "placeholder": "Benutzername eingeben",
+      "required": "Benutzername ist erforderlich"
+    },
+    "vat": {
+      "invalid": "USt-IdNr. ist ungültig",
+      "label": "USt-IdNr.",
+      "placeholder": "USt-IdNr. eingeben",
+      "required": "USt-IdNr. ist erforderlich"
+    }
+  },
+  "giftcard": {
+    "received": "Du hast von {sender} eine Geschenkkarte über {amount} erhalten"
+  },
+  "legal": {
+    "terms": "Mit deiner Bestellung stimmst du unseren <link>Verkaufsbedingungen</link> zu."
+  },
+  "nav": {
+    "about": "Über uns",
+    "account": "Konto",
+    "addresses": "Adressen",
+    "deals": "Angebote",
+    "gift_cards": "Geschenkkarten",
+    "help": "Hilfe",
+    "home": "Startseite",
+    "new_in": "Neuheiten",
+    "notifications": "Benachrichtigungen",
+    "orders": "Bestellungen",
+    "payment_methods": "Zahlungsarten",
+    "returns": "Rücksendungen",
+    "settings": "Einstellungen",
+    "shop": "Shop",
+    "wishlist": "Wunschliste"
+  },
+  "notifications": {
+    "unread": "{count, plural, one {# ungelesene Benachrichtigung} other {# ungelesene Benachrichtigungen}}"
+  },
+  "order": {
+    "confirmation": "Danke, {name}! Deine Bestellung {orderId} ist bestätigt.",
+    "placed_on": "Bestellt am {date}",
+    "status": {
+      "cancelled": "Storniert",
+      "delivered": "Zugestellt",
+      "failed": "Zahlung fehlgeschlagen",
+      "on_hold": "Angehalten",
+      "out_for_delivery": "In Zustellung",
+      "pending": "Ausstehend",
+      "processing": "In Bearbeitung",
+      "refunded": "Erstattet",
+      "returned": "Zurückgesendet",
+      "shipped": "Versandt"
+    },
+    "total": "Gesamtbetrag: {total}",
+    "tracking": "Sendungsnummer: {trackingId}"
+  },
+  "orders": {
+    "count": "{count, plural, one {# Bestellung} other {# Bestellungen}}"
+  },
+  "payment": {
+    "card_ending": "Karte mit Endziffern {last4}"
+  },
+  "promo": {
+    "banner": "<b>{percent} % Rabatt</b> auf deine erste Bestellung",
+    "expires": "Angebot endet am {date}"
+  },
+  "returns": {
+    "deadline": "Rücksendung bis {date}",
+    "policy": "Rücksendungen sind <b>30 Tage</b> lang kostenlos."
+  },
+  "reviews": {
+    "count": "{count, plural, one {# Bewertung} other {# Bewertungen}}",
+    "rating": "Mit {rating} von 5 bewertet"
+  },
+  "search": {
+    "placeholder": "Produkte suchen",
+    "results_for": "Ergebnisse für „{query}“"
+  },
+  "security": {
+    "notice": "Gib dein Passwort <b>niemals</b> weiter."
+  },
+  "stock": {
+    "left": "{count, plural, one {Nur noch # verfügbar} other {Nur noch # verfügbar}}"
+  },
+  "support": {
+    "hours": "Der Support ist von {openTime} bis {closeTime} erreichbar"
+  },
+  "wishlist": {
+    "count": "{count, plural, =0 {Deine Wunschliste ist leer} one {# gespeicherter Artikel} other {# gespeicherte Artikel}}"
+  }
+}

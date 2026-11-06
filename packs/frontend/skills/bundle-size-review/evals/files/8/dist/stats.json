@@ -1,0 +1,854 @@
+{
+  "version": "5.94.0",
+  "hash": "b71e0c4d9a2f3e8a61c5",
+  "time": 18342,
+  "builtAt": 1792142400000,
+  "publicPath": "/static/",
+  "outputPath": "/srv/build/dist",
+  "assetsByChunkName": {
+    "runtime": [
+      "runtime.3f1a9c.js"
+    ],
+    "vendors": [
+      "vendors.8c2d41.js"
+    ],
+    "app": [
+      "app.51be07.js"
+    ],
+    "landing": [
+      "landing.a07e93.js"
+    ],
+    "admin": [
+      "admin.e91c5d.js"
+    ]
+  },
+  "assets": [
+    {
+      "name": "runtime.3f1a9c.js",
+      "size": 2615,
+      "chunks": [
+        0
+      ],
+      "chunkNames": [
+        "runtime"
+      ],
+      "emitted": true
+    },
+    {
+      "name": "vendors.8c2d41.js",
+      "size": 281467,
+      "chunks": [
+        1
+      ],
+      "chunkNames": [
+        "vendors"
+      ],
+      "emitted": true
+    },
+    {
+      "name": "app.51be07.js",
+      "size": 9744,
+      "chunks": [
+        2
+      ],
+      "chunkNames": [
+        "app"
+      ],
+      "emitted": true
+    },
+    {
+      "name": "landing.a07e93.js",
+      "size": 3912,
+      "chunks": [
+        3
+      ],
+      "chunkNames": [
+        "landing"
+      ],
+      "emitted": true
+    },
+    {
+      "name": "admin.e91c5d.js",
+      "size": 82310,
+      "chunks": [
+        4
+      ],
+      "chunkNames": [
+        "admin"
+      ],
+      "emitted": true
+    }
+  ],
+  "entrypoints": {
+    "app": {
+      "name": "app",
+      "chunks": [
+        0,
+        1,
+        2
+      ],
+      "assets": [
+        {
+          "name": "runtime.3f1a9c.js",
+          "size": 2615
+        },
+        {
+          "name": "vendors.8c2d41.js",
+          "size": 281467
+        },
+        {
+          "name": "app.51be07.js",
+          "size": 9744
+        }
+      ],
+      "assetsSize": 293826,
+      "children": {}
+    },
+    "landing": {
+      "name": "landing",
+      "chunks": [
+        0,
+        1,
+        3
+      ],
+      "assets": [
+        {
+          "name": "runtime.3f1a9c.js",
+          "size": 2615
+        },
+        {
+          "name": "vendors.8c2d41.js",
+          "size": 281467
+        },
+        {
+          "name": "landing.a07e93.js",
+          "size": 3912
+        }
+      ],
+      "assetsSize": 287994,
+      "children": {}
+    }
+  },
+  "namedChunkGroups": {
+    "admin": {
+      "name": "admin",
+      "chunks": [
+        4
+      ],
+      "assets": [
+        {
+          "name": "admin.e91c5d.js",
+          "size": 82310
+        }
+      ],
+      "assetsSize": 82310
+    }
+  },
+  "chunks": [
+    {
+      "id": 0,
+      "names": [
+        "runtime"
+      ],
+      "files": [
+        "runtime.3f1a9c.js"
+      ],
+      "size": 6184,
+      "initial": true,
+      "entry": true,
+      "rendered": true,
+      "parents": [],
+      "children": []
+    },
+    {
+      "id": 1,
+      "names": [
+        "vendors"
+      ],
+      "files": [
+        "vendors.8c2d41.js"
+      ],
+      "size": 856176,
+      "initial": true,
+      "entry": false,
+      "rendered": true,
+      "parents": [],
+      "children": []
+    },
+    {
+      "id": 2,
+      "names": [
+        "app"
+      ],
+      "files": [
+        "app.51be07.js"
+      ],
+      "size": 16502,
+      "initial": true,
+      "entry": false,
+      "rendered": true,
+      "parents": [],
+      "children": [
+        4
+      ]
+    },
+    {
+      "id": 3,
+      "names": [
+        "landing"
+      ],
+      "files": [
+        "landing.a07e93.js"
+      ],
+      "size": 5392,
+      "initial": true,
+      "entry": false,
+      "rendered": true,
+      "parents": [],
+      "children": []
+    },
+    {
+      "id": 4,
+      "names": [
+        "admin"
+      ],
+      "files": [
+        "admin.e91c5d.js"
+      ],
+      "size": 215692,
+      "initial": false,
+      "entry": false,
+      "rendered": true,
+      "parents": [
+        2
+      ],
+      "children": []
+    }
+  ],
+  "modules": [
+    {
+      "id": "./src/polyfills.js",
+      "identifier": "./src/polyfills.js",
+      "name": "./src/polyfills.js",
+      "size": 112,
+      "chunks": [
+        2,
+        3
+      ],
+      "issuerName": null,
+      "reasons": [
+        {
+          "moduleName": null,
+          "type": "entry",
+          "userRequest": "./src/polyfills.js"
+        }
+      ]
+    },
+    {
+      "id": "./src/app/index.jsx",
+      "identifier": "./src/app/index.jsx",
+      "name": "./src/app/index.jsx",
+      "size": 2410,
+      "chunks": [
+        2
+      ],
+      "issuerName": null,
+      "reasons": [
+        {
+          "moduleName": null,
+          "type": "entry",
+          "userRequest": "./src/app/index.jsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/app/App.jsx",
+      "identifier": "./src/app/App.jsx",
+      "name": "./src/app/App.jsx",
+      "size": 5180,
+      "chunks": [
+        2
+      ],
+      "issuerName": "./src/app/index.jsx",
+      "reasons": [
+        {
+          "moduleName": "./src/app/index.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "./App"
+        }
+      ]
+    },
+    {
+      "id": "./src/app/BookingForm.jsx",
+      "identifier": "./src/app/BookingForm.jsx",
+      "name": "./src/app/BookingForm.jsx",
+      "size": 7920,
+      "chunks": [
+        2
+      ],
+      "issuerName": "./src/app/App.jsx",
+      "reasons": [
+        {
+          "moduleName": "./src/app/App.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "./BookingForm"
+        }
+      ]
+    },
+    {
+      "id": "./src/landing/index.jsx",
+      "identifier": "./src/landing/index.jsx",
+      "name": "./src/landing/index.jsx",
+      "size": 1140,
+      "chunks": [
+        3
+      ],
+      "issuerName": null,
+      "reasons": [
+        {
+          "moduleName": null,
+          "type": "entry",
+          "userRequest": "./src/landing/index.jsx"
+        }
+      ]
+    },
+    {
+      "id": "./src/landing/Hero.jsx",
+      "identifier": "./src/landing/Hero.jsx",
+      "name": "./src/landing/Hero.jsx",
+      "size": 3260,
+      "chunks": [
+        3
+      ],
+      "issuerName": "./src/landing/index.jsx",
+      "reasons": [
+        {
+          "moduleName": "./src/landing/index.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "./Hero"
+        }
+      ]
+    },
+    {
+      "id": "./src/utils/format.js",
+      "identifier": "./src/utils/format.js",
+      "name": "./src/utils/format.js",
+      "size": 880,
+      "chunks": [
+        2,
+        3
+      ],
+      "issuerName": "./src/landing/Hero.jsx",
+      "reasons": [
+        {
+          "moduleName": "./src/landing/Hero.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "../utils/format"
+        },
+        {
+          "moduleName": "./src/app/BookingForm.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "../utils/format"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/react/index.js",
+      "identifier": "./node_modules/react/index.js",
+      "name": "./node_modules/react/index.js",
+      "size": 190,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./src/app/App.jsx",
+      "reasons": [
+        {
+          "moduleName": "./src/app/App.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "react"
+        },
+        {
+          "moduleName": "./src/landing/Hero.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "react"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/react/cjs/react.production.min.js",
+      "identifier": "./node_modules/react/cjs/react.production.min.js",
+      "name": "./node_modules/react/cjs/react.production.min.js",
+      "size": 6930,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./node_modules/react/index.js",
+      "reasons": [
+        {
+          "moduleName": "./node_modules/react/index.js",
+          "type": "cjs require",
+          "userRequest": "./cjs/react.production.min.js"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/react/jsx-runtime.js",
+      "identifier": "./node_modules/react/jsx-runtime.js",
+      "name": "./node_modules/react/jsx-runtime.js",
+      "size": 214,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./src/app/App.jsx",
+      "reasons": [
+        {
+          "moduleName": "./src/app/App.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "react/jsx-runtime"
+        },
+        {
+          "moduleName": "./src/landing/Hero.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "react/jsx-runtime"
+        },
+        {
+          "moduleName": "./src/landing/index.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "react/jsx-runtime"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/react/cjs/react-jsx-runtime.production.min.js",
+      "identifier": "./node_modules/react/cjs/react-jsx-runtime.production.min.js",
+      "name": "./node_modules/react/cjs/react-jsx-runtime.production.min.js",
+      "size": 1026,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./node_modules/react/jsx-runtime.js",
+      "reasons": [
+        {
+          "moduleName": "./node_modules/react/jsx-runtime.js",
+          "type": "cjs require",
+          "userRequest": "./cjs/react-jsx-runtime.production.min.js"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/react-dom/client.js",
+      "identifier": "./node_modules/react-dom/client.js",
+      "name": "./node_modules/react-dom/client.js",
+      "size": 619,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./src/app/index.jsx",
+      "reasons": [
+        {
+          "moduleName": "./src/app/index.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "react-dom/client"
+        },
+        {
+          "moduleName": "./src/landing/index.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "react-dom/client"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/react-dom/index.js",
+      "identifier": "./node_modules/react-dom/index.js",
+      "name": "./node_modules/react-dom/index.js",
+      "size": 1363,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./node_modules/react-dom/client.js",
+      "reasons": [
+        {
+          "moduleName": "./node_modules/react-dom/client.js",
+          "type": "cjs require",
+          "userRequest": "react-dom"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/react-dom/cjs/react-dom.production.min.js",
+      "identifier": "./node_modules/react-dom/cjs/react-dom.production.min.js",
+      "name": "./node_modules/react-dom/cjs/react-dom.production.min.js",
+      "size": 131882,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./node_modules/react-dom/index.js",
+      "reasons": [
+        {
+          "moduleName": "./node_modules/react-dom/index.js",
+          "type": "cjs require",
+          "userRequest": "./cjs/react-dom.production.min.js"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/scheduler/index.js",
+      "identifier": "./node_modules/scheduler/index.js",
+      "name": "./node_modules/scheduler/index.js",
+      "size": 198,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./node_modules/react-dom/cjs/react-dom.production.min.js",
+      "reasons": [
+        {
+          "moduleName": "./node_modules/react-dom/cjs/react-dom.production.min.js",
+          "type": "cjs require",
+          "userRequest": "scheduler"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/scheduler/cjs/scheduler.production.min.js",
+      "identifier": "./node_modules/scheduler/cjs/scheduler.production.min.js",
+      "name": "./node_modules/scheduler/cjs/scheduler.production.min.js",
+      "size": 4180,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./node_modules/scheduler/index.js",
+      "reasons": [
+        {
+          "moduleName": "./node_modules/scheduler/index.js",
+          "type": "cjs require",
+          "userRequest": "./cjs/scheduler.production.min.js"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/lodash/lodash.js",
+      "identifier": "./node_modules/lodash/lodash.js",
+      "name": "./node_modules/lodash/lodash.js",
+      "size": 544098,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./src/utils/format.js",
+      "reasons": [
+        {
+          "moduleName": "./src/utils/format.js",
+          "type": "harmony import specifier",
+          "userRequest": "lodash"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/date-fns/esm/format/index.js",
+      "identifier": "./node_modules/date-fns/esm/format/index.js",
+      "name": "./node_modules/date-fns/esm/format/index.js",
+      "size": 18410,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./src/app/BookingForm.jsx",
+      "reasons": [
+        {
+          "moduleName": "./src/app/BookingForm.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "date-fns"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/date-fns/esm/parseISO/index.js",
+      "identifier": "./node_modules/date-fns/esm/parseISO/index.js",
+      "name": "./node_modules/date-fns/esm/parseISO/index.js",
+      "size": 9120,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./src/app/BookingForm.jsx",
+      "reasons": [
+        {
+          "moduleName": "./src/app/BookingForm.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "date-fns"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/date-fns/esm/locale/en-US/index.js",
+      "identifier": "./node_modules/date-fns/esm/locale/en-US/index.js",
+      "name": "./node_modules/date-fns/esm/locale/en-US/index.js",
+      "size": 11240,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./node_modules/date-fns/esm/format/index.js",
+      "reasons": [
+        {
+          "moduleName": "./node_modules/date-fns/esm/format/index.js",
+          "type": "harmony import specifier",
+          "userRequest": "../locale/en-US/index.js"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/@northwind/datepicker/dist/index.mjs",
+      "identifier": "./node_modules/@northwind/datepicker/dist/index.mjs",
+      "name": "./node_modules/@northwind/datepicker/dist/index.mjs",
+      "size": 48640,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./src/app/BookingForm.jsx",
+      "reasons": [
+        {
+          "moduleName": "./src/app/BookingForm.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "@northwind/datepicker"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/@northwind/datepicker/node_modules/date-fns/format.mjs",
+      "identifier": "./node_modules/@northwind/datepicker/node_modules/date-fns/format.mjs",
+      "name": "./node_modules/@northwind/datepicker/node_modules/date-fns/format.mjs",
+      "size": 17950,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./node_modules/@northwind/datepicker/dist/index.mjs",
+      "reasons": [
+        {
+          "moduleName": "./node_modules/@northwind/datepicker/dist/index.mjs",
+          "type": "harmony import specifier",
+          "userRequest": "date-fns"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/@northwind/datepicker/node_modules/date-fns/parse.mjs",
+      "identifier": "./node_modules/@northwind/datepicker/node_modules/date-fns/parse.mjs",
+      "name": "./node_modules/@northwind/datepicker/node_modules/date-fns/parse.mjs",
+      "size": 21300,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./node_modules/@northwind/datepicker/dist/index.mjs",
+      "reasons": [
+        {
+          "moduleName": "./node_modules/@northwind/datepicker/dist/index.mjs",
+          "type": "harmony import specifier",
+          "userRequest": "date-fns"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/@northwind/datepicker/node_modules/date-fns/locale/en-US.mjs",
+      "identifier": "./node_modules/@northwind/datepicker/node_modules/date-fns/locale/en-US.mjs",
+      "name": "./node_modules/@northwind/datepicker/node_modules/date-fns/locale/en-US.mjs",
+      "size": 10980,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./node_modules/@northwind/datepicker/node_modules/date-fns/format.mjs",
+      "reasons": [
+        {
+          "moduleName": "./node_modules/@northwind/datepicker/node_modules/date-fns/format.mjs",
+          "type": "harmony import specifier",
+          "userRequest": "./locale/en-US.mjs"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/whatwg-fetch/fetch.js",
+      "identifier": "./node_modules/whatwg-fetch/fetch.js",
+      "name": "./node_modules/whatwg-fetch/fetch.js",
+      "size": 19764,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./src/polyfills.js",
+      "reasons": [
+        {
+          "moduleName": "./src/polyfills.js",
+          "type": "harmony side effect evaluation",
+          "userRequest": "whatwg-fetch"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/promise-polyfill/src/polyfill.js",
+      "identifier": "./node_modules/promise-polyfill/src/polyfill.js",
+      "name": "./node_modules/promise-polyfill/src/polyfill.js",
+      "size": 1020,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./src/polyfills.js",
+      "reasons": [
+        {
+          "moduleName": "./src/polyfills.js",
+          "type": "harmony side effect evaluation",
+          "userRequest": "promise-polyfill/src/polyfill"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/promise-polyfill/src/index.js",
+      "identifier": "./node_modules/promise-polyfill/src/index.js",
+      "name": "./node_modules/promise-polyfill/src/index.js",
+      "size": 6540,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./node_modules/promise-polyfill/src/polyfill.js",
+      "reasons": [
+        {
+          "moduleName": "./node_modules/promise-polyfill/src/polyfill.js",
+          "type": "harmony import specifier",
+          "userRequest": "./index"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/promise-polyfill/src/finally.js",
+      "identifier": "./node_modules/promise-polyfill/src/finally.js",
+      "name": "./node_modules/promise-polyfill/src/finally.js",
+      "size": 512,
+      "chunks": [
+        1
+      ],
+      "issuerName": "./node_modules/promise-polyfill/src/index.js",
+      "reasons": [
+        {
+          "moduleName": "./node_modules/promise-polyfill/src/index.js",
+          "type": "harmony import specifier",
+          "userRequest": "./finally"
+        }
+      ]
+    },
+    {
+      "id": "./src/app/admin/Reports.jsx",
+      "identifier": "./src/app/admin/Reports.jsx",
+      "name": "./src/app/admin/Reports.jsx",
+      "size": 6300,
+      "chunks": [
+        4
+      ],
+      "issuerName": "./src/app/App.jsx",
+      "reasons": [
+        {
+          "moduleName": "./src/app/App.jsx",
+          "type": "import()",
+          "userRequest": "./admin/Reports"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/moment/moment.js",
+      "identifier": "./node_modules/moment/moment.js",
+      "name": "./node_modules/moment/moment.js",
+      "size": 173902,
+      "chunks": [
+        4
+      ],
+      "issuerName": "./src/app/admin/Reports.jsx",
+      "reasons": [
+        {
+          "moduleName": "./src/app/admin/Reports.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "moment"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/moment/locale sync recursive ^\\.\\/.*$",
+      "identifier": "./node_modules/moment/locale sync recursive ^\\.\\/.*$",
+      "name": "./node_modules/moment/locale sync recursive ^\\.\\/.*$",
+      "size": 3120,
+      "chunks": [
+        4
+      ],
+      "issuerName": "./node_modules/moment/moment.js",
+      "reasons": [
+        {
+          "moduleName": "./node_modules/moment/moment.js",
+          "type": "cjs require context",
+          "userRequest": "./locale"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/moment/locale/de.js",
+      "identifier": "./node_modules/moment/locale/de.js",
+      "name": "./node_modules/moment/locale/de.js",
+      "size": 9050,
+      "chunks": [
+        4
+      ],
+      "issuerName": "./node_modules/moment/locale sync recursive ^\\.\\/.*$",
+      "reasons": [
+        {
+          "moduleName": "./node_modules/moment/locale sync recursive ^\\.\\/.*$",
+          "type": "context element",
+          "userRequest": "./de"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/moment/locale/fr.js",
+      "identifier": "./node_modules/moment/locale/fr.js",
+      "name": "./node_modules/moment/locale/fr.js",
+      "size": 8800,
+      "chunks": [
+        4
+      ],
+      "issuerName": "./node_modules/moment/locale sync recursive ^\\.\\/.*$",
+      "reasons": [
+        {
+          "moduleName": "./node_modules/moment/locale sync recursive ^\\.\\/.*$",
+          "type": "context element",
+          "userRequest": "./fr"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/moment/locale/ja.js",
+      "identifier": "./node_modules/moment/locale/ja.js",
+      "name": "./node_modules/moment/locale/ja.js",
+      "size": 6100,
+      "chunks": [
+        4
+      ],
+      "issuerName": "./node_modules/moment/locale sync recursive ^\\.\\/.*$",
+      "reasons": [
+        {
+          "moduleName": "./node_modules/moment/locale sync recursive ^\\.\\/.*$",
+          "type": "context element",
+          "userRequest": "./ja"
+        }
+      ]
+    },
+    {
+      "id": "./node_modules/moment/locale/es.js",
+      "identifier": "./node_modules/moment/locale/es.js",
+      "name": "./node_modules/moment/locale/es.js",
+      "size": 8420,
+      "chunks": [
+        4
+      ],
+      "issuerName": "./node_modules/moment/locale sync recursive ^\\.\\/.*$",
+      "reasons": [
+        {
+          "moduleName": "./node_modules/moment/locale sync recursive ^\\.\\/.*$",
+          "type": "context element",
+          "userRequest": "./es"
+        }
+      ]
+    }
+  ],
+  "warnings": [],
+  "errors": []
+}

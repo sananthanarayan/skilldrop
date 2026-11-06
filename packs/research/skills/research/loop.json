@@ -1,0 +1,35 @@
+{
+  "$comment": "RFC-0052. A question to an answer the evidence can carry. The gate sits after the comparison because a synthesis can't tell you whether its own evidence separates the explanations; the matrix can.",
+  "name": "research",
+  "version": "0.1.0",
+  "description": "Take a question that turns on why something happened to an answer the evidence can carry: a plan tied to the decision it serves, a synthesis of the sources with every claim cited, and rival explanations ranked by how little evidence contradicts them, with a gate that sends the work back for the observation that would tell the leaders apart. Use when the user says \"research why…\", \"find out what's causing…\", \"run the research loop\", or needs a decision-ready answer on which explanation the evidence supports.",
+  "entrypoint": "LOOP.md",
+  "kind": "loop",
+  "cap": 3,
+  "stages": [
+    {
+      "id": "plan",
+      "type": "generate",
+      "intent": "Pin the decision the research serves, the precise question, what finding would change the decision, and when to stop, before any source is read.",
+      "skills": ["research-plan"]
+    },
+    {
+      "id": "synthesise",
+      "type": "generate",
+      "intent": "Say what the sources gathered under the plan support, every claim cited to a location, a repeated source counted once.",
+      "skills": ["source-synthesis"]
+    },
+    {
+      "id": "compare",
+      "type": "verify",
+      "intent": "Rank the rival explanations against the cited evidence, then judge whether that evidence is strong enough to carry the decision.",
+      "skills": ["hypothesis-comparison"],
+      "gate": {
+        "id": "G7",
+        "kind": "review",
+        "verdicts": ["PROCEED", "PROCEED WITH CONDITIONS", "REVISE", "RECONSIDER", "BLOCKED"],
+        "revise_to": "synthesise"
+      }
+    }
+  ]
+}

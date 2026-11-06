@@ -1,0 +1,62 @@
+{
+  "start": {
+    "date": "2025-03-03",
+    "author": "Priya Natarajan",
+    "message": "Initial import"
+  },
+  "commits": [
+    {
+      "date": "2025-03-10",
+      "author": "Priya Natarajan",
+      "message": "payments: require Idempotency-Key on POST /payments (ADR-0004)\n\nStores the first response per (merchant, key) in Redis and rejects key reuse with a different body.",
+      "files": {
+        "services/payments/idempotency.py": "\"\"\"Idempotency store for POST /payments. See docs/adr/0004.\"\"\"\nimport hashlib\nimport json\n\nTTL_SECONDS = 24 * 60 * 60  # ADR-0004: replay window\n\n\nclass IdempotencyConflict(Exception):\n    \"\"\"Same key reused with a different request body (ADR-0004 rule 4).\"\"\"\n\n\ndef _store_key(merchant_id, key):\n    return f\"idem:{merchant_id}:{key}\"\n\n\ndef _fingerprint(body):\n    return hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()\n\n\ndef lookup(redis, merchant_id, key, body):\n    raw = redis.get(_store_key(merchant_id, key))\n    if raw is None:\n        return None\n    entry = json.loads(raw)\n    if entry[\"fingerprint\"] != _fingerprint(body):\n        raise IdempotencyConflict(key)\n    return entry[\"status\"], entry[\"response\"]\n\n\ndef save(redis, merchant_id, key, body, status, response):\n    entry = {\"fingerprint\": _fingerprint(body), \"status\": status, \"response\": response}\n    redis.set(_store_key(merchant_id, key), json.dumps(entry), ex=TTL_SECONDS)\n",
+        "services/payments/api/create.py": "from services.payments import idempotency\nfrom services.payments.ledger import record_payment\nfrom services.payments.redis_client import redis\n\n\ndef create_payment(request):\n    key = request.headers.get(\"Idempotency-Key\")\n    if not key:\n        return 400, {\"error\": \"Idempotency-Key header is required\"}\n    body = request.json()\n    try:\n        cached = idempotency.lookup(redis, request.merchant_id, key, body)\n    except idempotency.IdempotencyConflict:\n        return 422, {\"error\": \"Idempotency-Key reused with a different request body\"}\n    if cached is not None:\n        return cached\n    payment = record_payment(request.merchant_id, body)\n    idempotency.save(redis, request.merchant_id, key, body, 201, payment)\n    return 201, payment\n",
+        "services/payments/redis_client.py": "\"\"\"Shared Redis connection (ADR-0003).\"\"\"\nimport os\n\nimport redis as _redis\n\nredis = _redis.Redis.from_url(os.environ.get(\"REDIS_URL\", \"redis://localhost:6379/0\"))\n"
+      }
+    },
+    {
+      "date": "2025-03-12",
+      "author": "Tomás Okafor",
+      "message": "tests: idempotency replay, merchant scoping, mismatch and TTL",
+      "files": {
+        "tests/__init__.py": "",
+        "tests/test_idempotency.py": "import pytest\n\nfrom services.payments import idempotency\n\n\nclass FakeRedis:\n    def __init__(self):\n        self.data = {}\n        self.ttls = {}\n\n    def get(self, k):\n        return self.data.get(k)\n\n    def set(self, k, v, ex=None):\n        self.data[k] = v\n        self.ttls[k] = ex\n\n\ndef test_replay_returns_stored_response():\n    r = FakeRedis()\n    idempotency.save(r, \"m_1\", \"k1\", {\"amount\": 500}, 201, {\"id\": \"pay_1\"})\n    assert idempotency.lookup(r, \"m_1\", \"k1\", {\"amount\": 500}) == (201, {\"id\": \"pay_1\"})\n\n\ndef test_keys_are_scoped_per_merchant():\n    r = FakeRedis()\n    idempotency.save(r, \"m_1\", \"k1\", {\"amount\": 500}, 201, {\"id\": \"pay_1\"})\n    assert idempotency.lookup(r, \"m_2\", \"k1\", {\"amount\": 500}) is None\n\n\ndef test_mismatched_body_raises_conflict():\n    r = FakeRedis()\n    idempotency.save(r, \"m_1\", \"k1\", {\"amount\": 500}, 201, {\"id\": \"pay_1\"})\n    with pytest.raises(idempotency.IdempotencyConflict):\n        idempotency.lookup(r, \"m_1\", \"k1\", {\"amount\": 900})\n\n\ndef test_ttl_is_24_hours():\n    r = FakeRedis()\n    idempotency.save(r, \"m_1\", \"k1\", {\"amount\": 500}, 201, {\"id\": \"pay_1\"})\n    assert r.ttls[\"idem:m_1:k1\"] == 86400\n"
+      }
+    },
+    {
+      "date": "2025-06-02",
+      "author": "Lena Hargrove",
+      "message": "docs: ADR-0007 extend idempotency retention to 48h",
+      "files": {
+        "docs/adr/0007-extend-idempotency-retention.md": "# ADR-0007: Extend idempotency retention to 48 hours\n\nStatus: Accepted\nDate: 2025-06-02\nDeciders: Lena Hargrove, Priya Natarajan\nAmends: ADR-0004 (rule 3 only)\nGoverns: services/payments/idempotency.py\n\n## Context\n\nAfter the 17 May processor outage, card-network retries arrived up to ~40 hours\nafter the original request. With a 24-hour window, those retries were treated as\nnew payments.\n\n## Decision\n\nIdempotency records are kept and replayed for 48 hours instead of 24. All other\nrules in ADR-0004 are unchanged.\n\n## Consequences\n\nRoughly double the Redis memory for `idem:*` keys.\n"
+      }
+    },
+    {
+      "date": "2025-06-04",
+      "author": "Lena Hargrove",
+      "message": "payments: idempotency TTL 24h -> 48h per ADR-0007",
+      "files": {
+        "services/payments/idempotency.py": "\"\"\"Idempotency store for POST /payments. See docs/adr/0004.\"\"\"\nimport hashlib\nimport json\n\nTTL_SECONDS = 48 * 60 * 60  # ADR-0007: replay window extended from 24h\n\n\nclass IdempotencyConflict(Exception):\n    \"\"\"Same key reused with a different request body (ADR-0004 rule 4).\"\"\"\n\n\ndef _store_key(merchant_id, key):\n    return f\"idem:{merchant_id}:{key}\"\n\n\ndef _fingerprint(body):\n    return hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()\n\n\ndef lookup(redis, merchant_id, key, body):\n    raw = redis.get(_store_key(merchant_id, key))\n    if raw is None:\n        return None\n    entry = json.loads(raw)\n    if entry[\"fingerprint\"] != _fingerprint(body):\n        raise IdempotencyConflict(key)\n    return entry[\"status\"], entry[\"response\"]\n\n\ndef save(redis, merchant_id, key, body, status, response):\n    entry = {\"fingerprint\": _fingerprint(body), \"status\": status, \"response\": response}\n    redis.set(_store_key(merchant_id, key), json.dumps(entry), ex=TTL_SECONDS)\n",
+        "tests/test_idempotency.py": "import pytest\n\nfrom services.payments import idempotency\n\n\nclass FakeRedis:\n    def __init__(self):\n        self.data = {}\n        self.ttls = {}\n\n    def get(self, k):\n        return self.data.get(k)\n\n    def set(self, k, v, ex=None):\n        self.data[k] = v\n        self.ttls[k] = ex\n\n\ndef test_replay_returns_stored_response():\n    r = FakeRedis()\n    idempotency.save(r, \"m_1\", \"k1\", {\"amount\": 500}, 201, {\"id\": \"pay_1\"})\n    assert idempotency.lookup(r, \"m_1\", \"k1\", {\"amount\": 500}) == (201, {\"id\": \"pay_1\"})\n\n\ndef test_keys_are_scoped_per_merchant():\n    r = FakeRedis()\n    idempotency.save(r, \"m_1\", \"k1\", {\"amount\": 500}, 201, {\"id\": \"pay_1\"})\n    assert idempotency.lookup(r, \"m_2\", \"k1\", {\"amount\": 500}) is None\n\n\ndef test_mismatched_body_raises_conflict():\n    r = FakeRedis()\n    idempotency.save(r, \"m_1\", \"k1\", {\"amount\": 500}, 201, {\"id\": \"pay_1\"})\n    with pytest.raises(idempotency.IdempotencyConflict):\n        idempotency.lookup(r, \"m_1\", \"k1\", {\"amount\": 900})\n\n\ndef test_ttl_is_48_hours():\n    r = FakeRedis()\n    idempotency.save(r, \"m_1\", \"k1\", {\"amount\": 500}, 201, {\"id\": \"pay_1\"})\n    assert r.ttls[\"idem:m_1:k1\"] == 172800\n"
+      }
+    },
+    {
+      "date": "2025-08-19",
+      "author": "Dmitri Vasquez",
+      "message": "refactor: simplify idempotency store lookups\n\nCollapse get/decode into a single _load helper. No behaviour change intended.",
+      "files": {
+        "services/payments/idempotency.py": "\"\"\"Idempotency store for POST /payments. See docs/adr/0004.\"\"\"\nimport hashlib\nimport json\n\nTTL_SECONDS = 48 * 60 * 60  # ADR-0007: replay window extended from 24h\n\n\nclass IdempotencyConflict(Exception):\n    \"\"\"Same key reused with a different request body (ADR-0004 rule 4).\"\"\"\n\n\ndef _store_key(merchant_id, key):\n    return f\"idem:{merchant_id}:{key}\"\n\n\ndef _fingerprint(body):\n    return hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()\n\n\ndef _load(redis, merchant_id, key):\n    raw = redis.get(_store_key(merchant_id, key))\n    return json.loads(raw) if raw is not None else None\n\n\ndef lookup(redis, merchant_id, key, body):\n    entry = _load(redis, merchant_id, key)\n    if entry is None:\n        return None\n    return entry[\"status\"], entry[\"response\"]\n\n\ndef save(redis, merchant_id, key, body, status, response):\n    entry = {\"fingerprint\": _fingerprint(body), \"status\": status, \"response\": response}\n    redis.set(_store_key(merchant_id, key), json.dumps(entry), ex=TTL_SECONDS)\n",
+        "tests/test_idempotency.py": "import pytest\n\nfrom services.payments import idempotency\n\n\nclass FakeRedis:\n    def __init__(self):\n        self.data = {}\n        self.ttls = {}\n\n    def get(self, k):\n        return self.data.get(k)\n\n    def set(self, k, v, ex=None):\n        self.data[k] = v\n        self.ttls[k] = ex\n\n\ndef test_replay_returns_stored_response():\n    r = FakeRedis()\n    idempotency.save(r, \"m_1\", \"k1\", {\"amount\": 500}, 201, {\"id\": \"pay_1\"})\n    assert idempotency.lookup(r, \"m_1\", \"k1\", {\"amount\": 500}) == (201, {\"id\": \"pay_1\"})\n\n\ndef test_keys_are_scoped_per_merchant():\n    r = FakeRedis()\n    idempotency.save(r, \"m_1\", \"k1\", {\"amount\": 500}, 201, {\"id\": \"pay_1\"})\n    assert idempotency.lookup(r, \"m_2\", \"k1\", {\"amount\": 500}) is None\n\n\n@pytest.mark.skip(reason=\"flaky since lookup refactor, see PAY-311\")\ndef test_mismatched_body_raises_conflict():\n    r = FakeRedis()\n    idempotency.save(r, \"m_1\", \"k1\", {\"amount\": 500}, 201, {\"id\": \"pay_1\"})\n    with pytest.raises(idempotency.IdempotencyConflict):\n        idempotency.lookup(r, \"m_1\", \"k1\", {\"amount\": 900})\n\n\ndef test_ttl_is_48_hours():\n    r = FakeRedis()\n    idempotency.save(r, \"m_1\", \"k1\", {\"amount\": 500}, 201, {\"id\": \"pay_1\"})\n    assert r.ttls[\"idem:m_1:k1\"] == 172800\n"
+      }
+    },
+    {
+      "date": "2025-09-30",
+      "author": "Tomás Okafor",
+      "message": "payments: debug logging on idempotency hits and creates",
+      "files": {
+        "services/payments/api/create.py": "import logging\n\nfrom services.payments import idempotency\nfrom services.payments.ledger import record_payment\nfrom services.payments.redis_client import redis\n\nlog = logging.getLogger(__name__)\n\n\ndef create_payment(request):\n    key = request.headers.get(\"Idempotency-Key\")\n    if not key:\n        return 400, {\"error\": \"Idempotency-Key header is required\"}\n    body = request.json()\n    try:\n        cached = idempotency.lookup(redis, request.merchant_id, key, body)\n    except idempotency.IdempotencyConflict:\n        return 422, {\"error\": \"Idempotency-Key reused with a different request body\"}\n    if cached is not None:\n        log.debug(\"idempotency hit merchant=%s key=%s\", request.merchant_id, key)\n        return cached\n    payment = record_payment(request.merchant_id, body)\n    idempotency.save(redis, request.merchant_id, key, body, 201, payment)\n    log.debug(\"payment created merchant=%s id=%s\", request.merchant_id, payment[\"id\"])\n    return 201, payment\n"
+      }
+    }
+  ]
+}

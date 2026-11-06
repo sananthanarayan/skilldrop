@@ -1,0 +1,265 @@
+{
+  "account": {
+    "delete": {
+      "confirm": "Supprimer votre compte ? Cette action est irréversible."
+    },
+    "greeting": "Bonjour {name}",
+    "member_since": "Membre depuis {year}",
+    "privacy": "Consultez notre <link>politique de confidentialité</link> et <b>gérez les cookies</b>.",
+    "role": "{role, select, admin {Administrateur} member {Membre} other {Invité}}",
+    "welcome_back": "Bon retour, {name}"
+  },
+  "address": {
+    "deliver_to": "Livraison à {postcode} {city}"
+  },
+  "app": {
+    "name": "Lumio"
+  },
+  "button": {
+    "add_to_cart": "Ajouter au panier",
+    "apply": "Appliquer",
+    "back": "Retour",
+    "cancel": "Annuler",
+    "checkout": "Passer au paiement",
+    "close": "Fermer",
+    "contact_support": "Contacter le support",
+    "continue": "Continuer",
+    "create_account": "Créer un compte",
+    "download_invoice": "Télécharger la facture",
+    "edit": "Modifier",
+    "place_order": "Passer la commande",
+    "remove": "Supprimer",
+    "reset_password": "Réinitialiser le mot de passe",
+    "retry": "Réessayer",
+    "save": "Enregistrer",
+    "sign_in": "Se connecter",
+    "sign_out": "Se déconnecter",
+    "track_order": "Suivre la commande",
+    "view_details": "Voir les détails"
+  },
+  "cart": {
+    "empty": "Votre panier est vide",
+    "free_shipping": "Plus que <b>{amount}</b> pour la livraison gratuite",
+    "item_removed": "{product} a été retiré de votre panier",
+    "items": {
+      "count": "{count, plural, one {# article} other {# articles}"
+    },
+    "points": "Cette commande vous rapporte {points, plural, one {# point} other {# points}}",
+    "subtotal": "Sous-total : {total}"
+  },
+  "checkout": {
+    "shipping": {
+      "eta": "Livraison prévue le {date}"
+    },
+    "summary": {
+      "title": "Récapitulatif de commande"
+    }
+  },
+  "delivery": {
+    "days": "{days, plural, one {Livraison en # jour} other {Livraison en # jours}}",
+    "slot": "Livraison entre {start} et {end}"
+  },
+  "footer": {
+    "copyright": "© {year} Lumio Retail Ltd."
+  },
+  "form": {
+    "birth_date": {
+      "invalid": "Date de naissance : valeur non valide",
+      "label": "Date de naissance",
+      "placeholder": "Saisissez votre date de naissance",
+      "required": "Date de naissance : champ obligatoire"
+    },
+    "card_number": {
+      "invalid": "Numéro de carte : valeur non valide",
+      "label": "Numéro de carte",
+      "placeholder": "Saisissez votre numéro de carte",
+      "required": "Numéro de carte : champ obligatoire"
+    },
+    "city": {
+      "invalid": "Ville : valeur non valide",
+      "label": "Ville",
+      "placeholder": "Saisissez votre ville",
+      "required": "Ville : champ obligatoire"
+    },
+    "company": {
+      "invalid": "Entreprise : valeur non valide",
+      "label": "Entreprise",
+      "placeholder": "Saisissez le nom de votre entreprise",
+      "required": "Entreprise : champ obligatoire"
+    },
+    "country": {
+      "invalid": "Pays : valeur non valide",
+      "label": "Pays",
+      "placeholder": "Saisissez votre pays",
+      "required": "Pays : champ obligatoire"
+    },
+    "coupon": {
+      "invalid": "Code promo : valeur non valide",
+      "label": "Code promo",
+      "placeholder": "Saisissez votre code promo",
+      "required": "Code promo : champ obligatoire"
+    },
+    "cvc": {
+      "invalid": "Code de sécurité : valeur non valide",
+      "label": "Code de sécurité",
+      "placeholder": "Saisissez le code de sécurité",
+      "required": "Code de sécurité : champ obligatoire"
+    },
+    "delivery_notes": {
+      "invalid": "Instructions de livraison : valeur non valide",
+      "label": "Instructions de livraison",
+      "placeholder": "Saisissez vos instructions de livraison",
+      "required": "Instructions de livraison : champ obligatoire"
+    },
+    "email": {
+      "invalid": "Adresse e-mail : valeur non valide",
+      "label": "Adresse e-mail",
+      "placeholder": "Saisissez votre adresse e-mail",
+      "required": "Adresse e-mail : champ obligatoire"
+    },
+    "expiry": {
+      "invalid": "Date d’expiration : valeur non valide",
+      "label": "Date d’expiration",
+      "placeholder": "Saisissez la date d’expiration",
+      "required": "Date d’expiration : champ obligatoire"
+    },
+    "first_name": {
+      "invalid": "Prénom : valeur non valide",
+      "label": "Prénom",
+      "placeholder": "Saisissez votre prénom",
+      "required": "Prénom : champ obligatoire"
+    },
+    "gift_message": {
+      "invalid": "Message cadeau : valeur non valide",
+      "label": "Message cadeau",
+      "placeholder": "Saisissez votre message cadeau",
+      "required": "Message cadeau : champ obligatoire"
+    },
+    "last_name": {
+      "invalid": "Nom : valeur non valide",
+      "label": "Nom",
+      "placeholder": "Saisissez votre nom",
+      "required": "Nom : champ obligatoire"
+    },
+    "order_ref": {
+      "invalid": "Numéro de commande : valeur non valide",
+      "label": "Numéro de commande",
+      "placeholder": "Saisissez votre numéro de commande",
+      "required": "Numéro de commande : champ obligatoire"
+    },
+    "password": {
+      "invalid": "Mot de passe : valeur non valide",
+      "label": "Mot de passe",
+      "placeholder": "Saisissez votre mot de passe",
+      "required": "Mot de passe : champ obligatoire"
+    },
+    "phone": {
+      "invalid": "Numéro de téléphone : valeur non valide",
+      "label": "Numéro de téléphone",
+      "placeholder": "Saisissez votre numéro de téléphone",
+      "required": "Numéro de téléphone : champ obligatoire"
+    },
+    "postcode": {
+      "invalid": "Code postal : valeur non valide",
+      "label": "Code postal",
+      "placeholder": "Saisissez votre code postal",
+      "required": "Code postal : champ obligatoire"
+    },
+    "street": {
+      "invalid": "Adresse : valeur non valide",
+      "label": "Adresse",
+      "placeholder": "Saisissez votre adresse",
+      "required": "Adresse : champ obligatoire"
+    },
+    "username": {
+      "invalid": "Nom d’utilisateur : valeur non valide",
+      "label": "Nom d’utilisateur",
+      "placeholder": "Saisissez votre nom d’utilisateur",
+      "required": "Nom d’utilisateur : champ obligatoire"
+    },
+    "vat": {
+      "invalid": "Numéro de TVA : valeur non valide",
+      "label": "Numéro de TVA",
+      "placeholder": "Saisissez votre numéro de TVA",
+      "required": "Numéro de TVA : champ obligatoire"
+    }
+  },
+  "giftcard": {
+    "received": "{sender} vous a offert une carte cadeau de {amount}"
+  },
+  "legal": {
+    "terms": "En passant commande, vous acceptez nos <link>conditions de vente</link>."
+  },
+  "nav": {
+    "about": "À propos",
+    "account": "Compte",
+    "addresses": "Adresses",
+    "deals": "Bons plans",
+    "gift_cards": "Cartes cadeaux",
+    "help": "Aide",
+    "home": "Accueil",
+    "new_in": "Nouveautés",
+    "notifications": "Notifications",
+    "orders": "Commandes",
+    "payment_methods": "Moyens de paiement",
+    "returns": "Retours",
+    "settings": "Paramètres",
+    "shop": "Boutique",
+    "wishlist": "Liste d’envies"
+  },
+  "notifications": {
+    "unread": "{count, plural, one {# notification non lue} other {# notifications non lues}}"
+  },
+  "order": {
+    "confirmation": "Merci, {name} ! Votre commande {orderId} est confirmée.",
+    "placed_on": "Passée le {date}",
+    "status": {
+      "cancelled": "Annulée",
+      "delivered": "Livrée",
+      "failed": "Échec du paiement",
+      "on_hold": "En suspens",
+      "out_for_delivery": "En cours de livraison",
+      "pending": "En attente",
+      "processing": "En cours de traitement",
+      "refunded": "Remboursée",
+      "returned": "Retournée",
+      "shipped": "Expédiée"
+    },
+    "total": "Total de la commande : {total}",
+    "tracking": "Numéro de suivi : {trackingId}"
+  },
+  "orders": {
+    "count": "{count, plural, one {# commande} other {# commandes}}"
+  },
+  "payment": {
+    "card_ending": "Carte se terminant par {last4}"
+  },
+  "promo": {
+    "banner": "<b>{percent} % de réduction<b> sur votre première commande",
+    "expires": "Offre valable jusqu’au {date}"
+  },
+  "returns": {
+    "deadline": "Retour avant le {date}",
+    "policy": "Les retours sont gratuits pendant <b>30 jours</b>."
+  },
+  "reviews": {
+    "count": "{count, plural, one {# avis} other {# avis}}",
+    "rating": "Noté {rating} sur 5"
+  },
+  "search": {
+    "placeholder": "Rechercher des produits",
+    "results_for": "Résultats pour « {query} »"
+  },
+  "security": {
+    "notice": "Ne communiquez <b>jamais</b> votre mot de passe."
+  },
+  "stock": {
+    "left": "{count, plural, one {Plus que # en stock} other {Plus que # en stock}}"
+  },
+  "support": {
+    "hours": "Le support est ouvert de {openTime} à {closeTime}"
+  },
+  "wishlist": {
+    "count": "{count, plural, =0 {Votre liste d’envies est vide} one {# article enregistré} other {# articles enregistrés}}"
+  }
+}

@@ -1,0 +1,11 @@
+[
+  { "query": "Should this task be one agent or several?", "should_trigger": true },
+  { "query": "Design a multi-agent workflow to audit all our repos", "should_trigger": true },
+  { "query": "My agent fan-out produces mush — help me add contracts and verification", "should_trigger": true },
+  { "query": "Pipeline or parallel for this multi-stage agent job?", "should_trigger": true },
+
+  { "query": "Design the loop with exit criteria and human gates for this automation", "should_trigger": false },
+  { "query": "Set a token budget for our agent workflows", "should_trigger": false },
+  { "query": "Run a council review on this architecture decision", "should_trigger": false },
+  { "query": "Implement this feature with tests", "should_trigger": false }
+]

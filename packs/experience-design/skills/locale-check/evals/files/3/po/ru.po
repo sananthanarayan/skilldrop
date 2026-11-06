@@ -1,0 +1,22 @@
+msgid ""
+msgstr ""
+"Language: ru\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Inbox"
+msgstr "Входящие"
+
+#, python-format
+msgid "%(name)s sent you %(count)d messages"
+msgstr "%(name)s отправил вам %(count)s сообщений"
+
+msgid "%d unread message"
+msgid_plural "%d unread messages"
+msgstr[0] "%d непрочитанное сообщение"
+msgstr[1] "%d непрочитанных сообщений"
+
+#, fuzzy
+msgctxt "verb"
+msgid "Archive"
+msgstr "Архив"

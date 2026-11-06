@@ -1,0 +1,10 @@
+Support ticket T-55102
+Channel: in-app "Contact us" form
+Received: 2026-10-16 09:02 (local time, UTC-4)
+Account: acct_7781
+
+Message from customer:
+I bought a day pass in the app this morning around 8:15 and got charged TWICE. The app froze
+on the payment spinner so I pressed Pay again. My bank now shows two $6.50 charges. And the
+pass never showed up in the app so I had to pay cash on the 8:30 bus as well!! Fix this and
+refund me. I'm on an iPhone, the app updated itself yesterday.

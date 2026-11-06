@@ -1,0 +1,34 @@
+[
+  {
+    "query": "I need to research whether we should move to usage-based pricing before the board meeting. Help me scope it.",
+    "should_trigger": true
+  },
+  {
+    "query": "How should I investigate why enterprise customers take so long to onboard? Give me a research plan.",
+    "should_trigger": true
+  },
+  {
+    "query": "Plan the desk research for a literature review on hybrid work, with search strings and inclusion criteria",
+    "should_trigger": true
+  },
+  {
+    "query": "My research on this keeps growing. Help me define the sub-questions and when to stop.",
+    "should_trigger": true
+  },
+  {
+    "query": "Here are five reports I've collected; synthesise them with citations",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the interview questions for the sponsor and the ops lead before we build the feature",
+    "should_trigger": false
+  },
+  {
+    "query": "Do a SWOT on our position against Contoso",
+    "should_trigger": false
+  },
+  {
+    "query": "Compare Postgres and DynamoDB for this workload",
+    "should_trigger": false
+  }
+]

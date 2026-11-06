@@ -1,0 +1,12 @@
+{
+  "checkout": {
+    "title": "Kasse",
+    "pay_button": "Jetzt sicher bezahlen: {amount}",
+    "items_one": "{{count}} Artikel im Warenkorb",
+    "items_other": "Artikel im Warenkorb",
+    "delivery": "Lieferung bis {date}.",
+    "promo_applied": "Code <b>{code}</b> angewendet.",
+    "saved_cards": "{count, plural, one {# gespeicherte Karte} other {# gespeicherte Karten}}",
+    "error_declined": "Ihre Karte wurde abgelehnt. Versuchen Sie eine andere Karte."
+  }
+}

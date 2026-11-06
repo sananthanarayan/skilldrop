@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Who is my audience and what rules should the deck follow?",
+    "should_trigger": true
+  },
+  {
+    "query": "What are the structural rules for presenting to a board versus engineers?",
+    "should_trigger": true
+  },
+  {
+    "query": "Profile this audience so I know how technical to go",
+    "should_trigger": true
+  },
+  {
+    "query": "We have a mixed exec and technical room — how should I pitch it?",
+    "should_trigger": true
+  },
+  {
+    "query": "Build the PowerPoint for the board meeting",
+    "should_trigger": false
+  },
+  {
+    "query": "Outline the slides for this deck",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the one-page executive summary",
+    "should_trigger": false
+  },
+  {
+    "query": "Map the customer's journey through our product",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,2 @@
+a3f9c21 fix rounding on donation receipts
+7be0d14 tidy receipt template

@@ -1,0 +1,5 @@
+a41c9e2 Retry webhook delivery on 5xx
+
+    Refs #482. Deliveries were dropped when the receiver returned 503.
+
+7be0d13 Add backoff between retries

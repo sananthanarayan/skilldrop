@@ -1,0 +1,23 @@
+{
+  "name": "civil-architect",
+  "version": "1.9.0",
+  "description": "Building design from a client's room list and a footprint: a schematic floor plan placed at real sizes and drawn as a dimensioned SVG, shown only once a script has checked it for overlapping rooms, rooms outside the footprint, doors on no shared wall, rooms no one can reach and habitable rooms with no window. (6 skills, 1 loop)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/civil-architect/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "architecture",
+    "architect",
+    "floor plan",
+    "test fit",
+    "concept plan",
+    "zoning",
+    "layout",
+    "dimensions",
+    "svg"
+  ]
+}

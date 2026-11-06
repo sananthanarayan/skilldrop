@@ -1,0 +1,29 @@
+{
+  "publicUrl": "https://media.hollowbrook.example.test",
+  "port": 8080,
+  "databaseUrl": "postgres://castbox:changeme@db.internal.test:5432/castbox",
+  "redisUrl": "redis://cache.internal.test:6379/0",
+  "storage": {
+    "bucket": "hollowbrook-uploads",
+    "publicBaseUrl": "https://uploads.example.test",
+    "webhookSecret": "PLACEHOLDER_WEBHOOK_SECRET"
+  },
+  "transcription": {
+    "baseUrl": "https://api.transcribe.example.test",
+    "apiKey": "PLACEHOLDER_TRANSCRIBE_KEY",
+    "language": "en"
+  },
+  "search": {
+    "url": "http://search.internal.test:7700",
+    "index": "episodes"
+  },
+  "cdn": {
+    "purgeUrl": "https://cdn.example.test/api/purge",
+    "token": "PLACEHOLDER_CDN_TOKEN"
+  },
+  "smtp": {
+    "host": "smtp.internal.test",
+    "port": 587,
+    "from": "studio@hollowbrook.example.test"
+  }
+}

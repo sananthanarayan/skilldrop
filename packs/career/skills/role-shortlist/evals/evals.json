@@ -1,0 +1,105 @@
+{
+  "skill_name": "role-shortlist",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I saved the Tamsworth Valley Health Board vacancies page as careers-index.html, and every posting I could open is in the postings folder. My CV is cv.md. Which of these should I actually apply for?",
+      "assertions": [
+        "The reply opens with Patient Pathway Coordinator and Medical Secretary - Cardiology as the roles to apply for, with a reason for each, before the role-by-role list",
+        "Senior Care Coordinator is under Skip, not Apply or Maybe, and the reason named is the professional registration (nurse, occupational therapist, physiotherapist or social worker) that the CV says she does not hold",
+        "The two Patient Pathway Coordinator postings (HV-2231-B and HV-2231-E) are one entry that lists both Bramwick and Elsford, not two ranked entries",
+        "Outpatient Booking Team Leader (HV-2176) is noted as closed and is not placed under Apply, Maybe or Skip",
+        "Waiting List Validation Lead is listed as not read because it is only a title in the listing with no posting saved, and it gets no verdict, no reason to apply and no stated requirements",
+        "All 11 vacancies in careers-index.html are accounted for, each appearing exactly once (10 entries once the duplicate is merged)",
+        "Data and Performance Analyst is not under Apply, and her Excel spreadsheet work is not counted as SQL or Power BI",
+        "It gives no percentage, score or match rating, and does not credit her with any registration, qualification, system or experience that is not in cv.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "This is my saved search from the job board: job-board-export.csv. Where I could open the full ad I saved it in the postings folder, named by its reference number. My CV is cv.md. I'm staying in Fenmoor and I can't do night shifts any more. Which of these are worth applying for?",
+      "assertions": [
+        "Warehouse Team Leader (FJ-10455) is under Skip with the nights-only shift named as the reason, even though the reply may note that his acting team leader experience fits",
+        "The two Reach Truck Operator rows (FJ-10422 and FJ-10587) are treated as one role, with both reference numbers noted, not ranked twice",
+        "VNA Truck Operator (FJ-10431) is not under Apply, the missing VNA licence is named, and his reach truck licence is not counted as meeting it",
+        "Forklift Driver - Days (FJ-10502), Stock Control Lead (FJ-10519) and Transport Clerk (FJ-10533) are listed as not read because only a snippet was saved, with no verdict on fit, and the reply suggests fetching their full postings",
+        "Reach Truck Operator is among the roles the reply opens with as worth applying for",
+        "For Inventory Controller (FJ-10476), the Korvex requirement is marked as not shown or as the open question, and his StockPilot experience is not presented as Korvex",
+        "All 10 rows in the export are accounted for, each appearing exactly once (9 entries once the duplicate is merged)",
+        "It does not credit him with a VNA licence, Korvex, multi-drop driving experience or any other licence or experience not in cv.md, and gives no percentage or match score"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Which should I go for, just the top two? I've worked in hotels for six years, front desk first and night manager for the last two at a 70-room hotel. I run a team of four on nights and do the rota and the end-of-night reports. I want to get back to working days.\n\n1. Guest Services Manager, The Marlowe, Penhallow - lead the front desk and concierge team at a 120-room hotel.\n2. Night Manager, Harbourside Lodge - overnight sole charge of a 90-room hotel, four nights on, four off.\n3. Reservations Supervisor, Ferrand Hotels - run a team of five handling group and online bookings, Monday to Friday days.\n4. Bar and Events Manager, The Old Mill Inn - personal licence holder required; run the bar and the weekend weddings.\n5. Revenue Analyst, Ferrand Hotels - set room rates using our revenue system; degree in a numerate subject preferred.\n6. Housekeeping Supervisor, The Marlowe, Penhallow - supervise 12 room attendants, early starts from 6am.",
+      "assertions": [
+        "It names exactly two roles as its picks, not a ranked list of all six",
+        "Night Manager is not one of the two picks, because the person said they want to work days",
+        "Bar and Events Manager is not a pick unless the reply names the personal licence as a question to settle first, since the person did not say they hold one",
+        "It says the picks rest on one-line descriptions rather than full postings, and that the full postings should be read before applying",
+        "It does not state any requirement, duty, pay or hours for a role beyond what that role's one line says",
+        "It says in a line or so that the other four were looked at, without a full write-up of each",
+        "It delivers the two picks from what was given, and does not refuse or stop to ask for a CV or the postings first",
+        "It gives no percentage or match score, and does not credit the person with a qualification, licence or system they did not mention"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "I'm a heavy diesel tech looking to move on from my current workshop. I saved Brackwater Freight's careers page as brackwater-careers.html and exported my saved TradesBoard listings as tradesboard-export.csv. My CV is mere-castell-cv.md. Which of these should I apply for? I'm staying in Tarnhaven: Marrowby and Port Halloran are both under an hour's drive, Kestrel Flats is about three and a half hours away. Give me my top three at most, ranked, and just a line on each of the others so I know why not. I'll be reading it on my phone at smoko so keep it tight.",
+      "assertions": [
+        "It recommends no more than three roles, and covers each of the other roles in about a line, not a full write-up",
+        "Every role it recommends is one of the Brackwater Heavy Diesel Technician at Tarnhaven (HDT-0412), the Tolley Earthmoving Hydraulics Technician, or the Marrowby Truck & Trailer Brake & Suspension Technician, and it does not set the Tolley or Marrowby role aside over items those postings list only as preferred or desirable (excavator experience, a forklift certificate, CoF inspection experience)",
+        "It rules out the Brackwater Senior Fleet Technician because night shifts are a required part of its roster and the CV says day shift only, even though the pay and experience fit; and it rules out the Halloran Haulage Mobile Service Technician (Class 4 licence required at start, she holds Class 2), the Kestrel Flats Workshop Supervisor (must live within 30 minutes of the site, no relocation, and she is staying in Tarnhaven), and the Fleet Reliability Engineer (a mechanical engineering degree is required and the CV shows a trade certificate)",
+        "It treats the Brackwater Heavy Diesel Technician on the careers page and the TradesBoard 'Heavy Diesel Mechanic (Tarnhaven depot)' listing as one role (both are ref HDT-0412), not two, while keeping the Port Halloran Heavy Diesel Technician (HDT-0431) as a separate role",
+        "For the Port Halloran Heavy Diesel Technician (HDT-0431) it says the saved page has only the title and a link, not the posting, and neither recommends it nor rules it out on the title alone; it suggests reading the full posting first",
+        "It accounts for all eight distinct roles across the two files: the three Brackwater featured roles, the Port Halloran listing, and the four other TradesBoard listings",
+        "It does not credit Mere with anything her CV does not show, such as a Class 4 licence, an engineering degree, a forklift certificate, CoF inspection experience, supervisory experience beyond mentoring one apprentice, or availability for nights, and it does not state what the Port Halloran posting says"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-18",
+      "prompt": "ok so my cousin sent me these from the local jobs group, which 2 should i actually go for?? 2 max, i dont have time to do more applications than that\n\nme: line cook 3 yrs at a pub kitchen in Dunmore Quay, food safety level 2 cert, no car so its the bus or nothing, and im on notice til 15 nov so cant start before that\n\n1. Commis chef - The Lantern Room, Dunmore Quay. 4 nights a wk, €15.10/hr, 1 yr kitchen exp, start asap\n2. Breakfast cook, Gullhaven Hotel (Gullhaven). 6am starts, own transport essential (no bus out there before 7). 2 yrs exp, €15.80\n3. chef de partie - Saltmarsh Bistro, Dunmore Quay. 2+ yrs line experience, food safety level 2. starting december. €16.40/hr\n4. Lantern Room Dunmore Quay - commis chef, 4 nights/week, 15.10 ph, kitchen exp 1yr+, start ASAP!!\n5. Head chef, Copperline Catering. food safety level 3 required + 5 yrs supervisory experience, €48k\n6. kitchen porter/cook - Brindle Café, he only sent the link: https://jobs.example.com/brindle-kp",
+      "assertions": [
+        "It picks no more than two roles, as asked, and keeps the reply short to match the quick question",
+        "It recognises that postings 1 and 4 are the same Lantern Room commis chef job and does not count them as two roles or use them as both picks",
+        "Its picks include the Saltmarsh Bistro chef de partie, and neither pick is the Gullhaven Hotel, Copperline Catering or Brindle Café job",
+        "It says the Gullhaven Hotel job is out because own transport is essential with 6am starts and there is no bus before 7, and the Copperline head chef job is out because it requires a level 3 food safety certificate and five years' supervisory experience, which the person doesn't have",
+        "For the Brindle Café job it says only a link was given, so the posting hasn't been read and the job can't be judged from its title; it neither recommends it nor rules it out",
+        "It points out that the Lantern Room wants someone to start as soon as possible while the person can't start until after 15 November, as something to raise or weigh, rather than treating the start date as fine",
+        "It does not credit the person with anything they didn't say, such as a car or driving licence, a level 3 food safety certificate, supervisory or chef de partie experience, or more than three years in kitchens, and it does not claim to know what the Brindle Café posting says"
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-18",
+      "prompt": "which 2 of these should i go for? bit about me: 3 yrs as a nursery assistant at a day nursery, level 3 childcare diploma, enhanced DBS. i dont drive. want term time / school hours, no weekends, 30ish hrs a week or more. based in Harwick.\n\n- Teaching Assistant, Elmfield Primary, Harwick - Year 2 reading and small groups, term time 8:30-3:30. Level 3 childcare or TA qualification required. Phonics experience a plus.\n- SEN Teaching Assistant, Brookside Academy, Harwick - 1:1 support for a Reception pupil with autism, term time 8:45-3:15. Must have experience in an early years or school setting. Makaton desirable.\n- Nursery Practitioner, Little Acorns, Harwick - full time, 7:30-6 shifts, working alternate Saturdays is a requirement. Level 3 required.\n- Forest School Assistant, Greenway Primary - outdoor learning across 3 sites, term time. Full driving licence and own vehicle essential.\n- Midday Supervisor, Harwick Junior School - 11:45-1:15 term time, lunchtime play and dinner hall. No experience needed.\n- Teaching Assistant, Ashby Lane Primary, Harwick - Year 4 maths and reading groups, term time 8:30-3:30, permanent. Previous TA experience in KS2 essential.",
+      "assertions": [
+        "Exactly two roles are given as picks, and they are the Elmfield Primary Teaching Assistant and the Brookside Academy SEN Teaching Assistant; no third role is offered as a pick",
+        "The Little Acorns Nursery Practitioner role is named as out because working alternate Saturdays is a requirement and she said no weekends, even though she meets its Level 3 requirement",
+        "The Greenway Primary Forest School Assistant role is named as out because a full driving licence and own vehicle are essential and she does not drive",
+        "The Ashby Lane Primary Teaching Assistant role is named as out or not met because previous KS2 TA experience is essential and her experience is as a nursery assistant, not a KS2 teaching assistant",
+        "Neither pick is ruled out or dropped over a preferred item: Makaton (desirable) at Brookside and phonics experience (a plus) at Elmfield may be noted as gaps or unknowns, but not as reasons she cannot apply",
+        "The Harwick Junior School Midday Supervisor role is not a pick, and the reason given is its hours (about 1.5 hours a day) against the 30-ish hours a week she asked for, not a missing qualification",
+        "The reply is short and contains no heading, section or line for unread, closed or duplicate roles (no 'Unread: none', 'Duplicates: none' or similar placeholder)",
+        "It says it judged from the short blurbs rather than full postings, does not say or assume she has phonics experience, Makaton, a driving licence or KS2 experience, and gives no percentage, score or match rating for any role"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-18",
+      "prompt": "I would be grateful for your advice on which one of the following vacancies I should prioritise. I hold a BSc (Hons) in Biomedical Science, awarded with a 2:1 in 2025, and completed a twelve-month placement year in a hospital microbiology laboratory before my final year. I am not yet HCPC registered. I live in Corlow, am seeking a permanent position, and owing to caring responsibilities I am able to work day shifts only, not nights.\n\n1. Biomedical Scientist (Band 5), Corlow General Hospital, Microbiology. Permanent; days with a weekend rota. HCPC registration as a Biomedical Scientist is essential.\n2. Laboratory Technician, Fenwick Water Services, Corlow. Permanent; Monday to Friday, days. Microbiological testing of drinking water samples. A degree in a biological science is required; experience in a UKAS ISO 17025-accredited laboratory is desirable.\n3. Medical Laboratory Assistant, Corlow General Hospital, Blood Sciences. Permanent. Sample reception and processing; a rotating shift pattern including nights is a requirement of the post.\n4. QC Microbiology Analyst, Treloar Pharmaceuticals, Corlow. Permanent; days. Environmental monitoring in a GMP facility. A minimum of two years' post-graduate experience in a GMP quality control laboratory is essential.\n5. Research Technician, University of Corlow, Cell Biology. Fixed-term contract of six months; days. Tissue culture support. A degree in a life science is required.",
+      "assertions": [
+        "Exactly one role is given as the recommendation, and it is the Laboratory Technician post at Fenwick Water Services",
+        "The Fenwick Water Services post is not ruled out or demoted because ISO 17025-accredited laboratory experience is not shown; that item is treated as desirable and may be noted as a gap or something to address, not as a bar",
+        "The Corlow General Hospital Biomedical Scientist post is named as out because HCPC registration is essential and she is not yet registered, even though it matches her microbiology placement",
+        "The Corlow General Hospital Medical Laboratory Assistant post is named as out because a rotating pattern including nights is required and she can work days only",
+        "The Treloar Pharmaceuticals QC Microbiology Analyst post is named as out because two years' post-graduate GMP QC experience is essential; the reply does not count her pre-final-year placement as post-graduate GMP experience",
+        "The University of Corlow Research Technician post is not the recommendation, and the reason given is that it is a six-month fixed-term contract when she asked for a permanent position",
+        "The reply is concise and contains no heading, section or line for unread, closed or duplicate roles (no 'Unread: none', 'Duplicates: none' or similar placeholder)",
+        "It says it worked from brief summaries rather than full postings, does not say or assume she has ISO 17025, GMP or accredited-laboratory experience, and gives no percentage, score or match rating for any role"
+      ]
+    }
+  ]
+}

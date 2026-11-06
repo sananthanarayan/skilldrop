@@ -1,0 +1,41 @@
+{
+  "$comment": "RFC-0052. A dashboard request to a spec whose every number is defined and whose every query has been reviewed. The spec comes first so only the queries behind charts that survive the cut list are reviewed; the metric's owner signs last, because only they can say a definition is what the business means.",
+  "name": "measure",
+  "version": "0.1.0",
+  "description": "Take a dashboard request to a spec a BI developer can build on numbers people can defend: the decision it serves and one chart per question, every metric defined, the SQL behind each metric reviewed for the bugs that quietly inflate a figure, and the metric owner's sign-off on each definition before anything is built. Use when the user says \"we need a dashboard for…\", \"run the measure loop\", \"make sure these numbers are right before the BI team builds it\", or two teams disagree about a number that is about to go on a dashboard.",
+  "entrypoint": "LOOP.md",
+  "kind": "loop",
+  "cap": 3,
+  "stages": [
+    {
+      "id": "spec",
+      "type": "generate",
+      "intent": "Pin the audience and the decision, keep only the charts that serve it, and name the defined metric behind each, flagging any metric nobody has defined.",
+      "skills": ["dashboard-spec"]
+    },
+    {
+      "id": "review",
+      "type": "verify",
+      "intent": "Review the query behind every metric that survived the cut list, correctness before performance, with corrected SQL and the queries that prove the fix.",
+      "skills": ["sql-review"],
+      "gate": {
+        "id": "G9",
+        "kind": "review",
+        "verdicts": ["READY", "NOT READY", "BLOCKED"],
+        "revise_to": "spec"
+      }
+    },
+    {
+      "id": "sign-off",
+      "type": "gate",
+      "intent": "Each metric's owner confirms its definition and the number its reviewed query now produces. The critique informs that decision; it does not make it.",
+      "skills": ["doc-critique"],
+      "gate": {
+        "id": "G9.1",
+        "kind": "human",
+        "verdicts": ["PROCEED", "PROCEED WITH CONDITIONS", "REVISE", "BLOCKED"],
+        "revise_to": "spec"
+      }
+    }
+  ]
+}

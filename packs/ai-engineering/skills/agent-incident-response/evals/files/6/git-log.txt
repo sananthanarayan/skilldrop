@@ -1,0 +1,12 @@
+$ git log --format='%h %ad %an  %s' --date=short -- .mcp.json
+e41c09a 2026-10-12 Sam Whitlock  chore: add notesync MCP server for meeting notes
+2c88f10 2026-09-03 Sam Whitlock  chore: add read-only postgres MCP
+
+$ git branch -r --contains e41c09a
+  origin/main
+  origin/feature/ledger-csv-export
+
+$ git log origin/main --format='%h %ad %an  %s' --date=short --since=2026-10-12
+b7d2e11 2026-10-19 Priya Raman  fix: rounding in invoice totals
+93a0f4c 2026-10-16 Tomasz Bielski  feat: export CSV for ledgers
+e41c09a 2026-10-12 Sam Whitlock  chore: add notesync MCP server for meeting notes

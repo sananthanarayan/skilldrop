@@ -1,0 +1,11 @@
+site_id,site_name,link_type,outage_start,outage_end,duration_hours,cause
+PS-04,Kinlochard,cellular,2026-07-03 14:10,2026-07-03 14:40,0.5,mast maintenance
+PS-12,Drumbeg,radio,2026-07-11 02:00,2026-07-11 03:15,1.25,interference
+PS-17,Hillend,cellular,2026-07-22 18:30,2026-07-23 01:45,7.25,mast power failure
+PS-09,Strathy Mill,cellular,2026-08-02 09:05,2026-08-02 09:20,0.25,unknown
+PS-31,Corrie Burn,cellular,2026-08-14 21:00,2026-08-15 06:30,9.5,storm damage to mast
+PS-22,Ardvane,radio,2026-08-19 11:40,2026-08-19 12:10,0.5,antenna realignment
+PS-40,Achmore,cellular,2026-09-06 16:00,2026-09-07 06:00,14,network operator fault
+PS-12,Drumbeg,radio,2026-09-15 07:30,2026-09-15 08:00,0.5,interference
+PS-27,Glenfeoch,cellular,2026-09-23 13:00,2026-09-23 14:30,1.5,SIM fault
+PS-04,Kinlochard,cellular,2026-09-29 22:10,2026-09-29 22:55,0.75,mast maintenance

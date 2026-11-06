@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Design the sitemap and navigation for our new customer portal",
+    "should_trigger": true
+  },
+  {
+    "query": "Users say they can't find anything in our help centre — restructure it",
+    "should_trigger": true
+  },
+  {
+    "query": "We're merging two products into one app; what should the main menu look like?",
+    "should_trigger": true
+  },
+  {
+    "query": "Where should the new invoicing feature live in our nav, and how would we test that?",
+    "should_trigger": true
+  },
+  {
+    "query": "Map the customer's journey from signing up to their first payroll run, with emotions and pain points",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a content spec for our pricing page: what questions it must answer and in what order",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the button labels, error messages and empty states for the invite-a-teammate flow",
+    "should_trigger": false
+  },
+  {
+    "query": "Draft a PRD for adding a reporting section to the app",
+    "should_trigger": false
+  }
+]

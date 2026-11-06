@@ -1,0 +1,104 @@
+{
+  "skill_name": "locale-check",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We ship the new checkout tomorrow in German, Polish and Arabic. The agency sent the files back this afternoon: locales/en.json is our source and locales/de.json, locales/pl.json and locales/ar.json are theirs. budget.json has the character limits design gave us for the pay button and the page title. Are we OK to ship?",
+      "assertions": [
+        "Opens with a plain answer that the release is not safe to ship as it stands, with the failures counted by locale",
+        "Flags that German checkout.items (the plural 'other' form) dropped {{count}}, and gives the corrected string with {{count}} restored",
+        "Flags that Polish checkout.items has only one and other, and says Polish also needs few and many",
+        "Flags that Arabic checkout.saved_cards (an ICU plural) is missing zero, two, few and many",
+        "Flags the Polish promo_applied string's unclosed <b> tag, with the corrected markup",
+        "Flags the German pay button as over its 22-character budget",
+        "Lists Arabic error_declined as untranslated (identical to the English) and routes it to a translator rather than translating it",
+        "Does not edit the locale files, and does not mention scripts, tools or skill names in the reply"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our Android build broke after merging the French and Spanish strings for Trailmark (app/src/main/res/values-fr and values-es; English is in values/). Can you find what's wrong and what else in those files will bite us?",
+      "assertions": [
+        "Identifies the unescaped apostrophe in the French offline string (l'heure) as what breaks the Android build, and gives the escaped form",
+        "Flags that the French synced string swaps the order of a %d and a %s, and gives the corrected string with numbered arguments, %2$s and %1$d",
+        "Flags that the Spanish delete_confirm string lost the <b> markup around the route name",
+        "Treats the missing Spanish plural 'many' as a warning, not a build failure",
+        "Does not report app_name, which is marked translatable=false, as missing",
+        "Ranks the build failure first, then the runtime problems, then the warnings",
+        "Does not invent strings, keys or files the input didn't contain"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Russian users see the unread count in English and the 'Archive' button in English too. Japanese looks fine. The gettext files are in po/: messages.pot, ru.po and ja.po. What's going on?",
+      "assertions": [
+        "Explains that ru.po's Plural-Forms header sets nplurals=2 where Russian needs 3, and that the unread-message plural therefore has too few forms",
+        "Explains that the 'Archive' entry is marked fuzzy, so msgfmt leaves it out and the English source shows",
+        "Flags that %(count)d became %(count)s in the 'sent you messages' string",
+        "Gives the corrected Plural-Forms header for Russian and says the third plural form needs a translator, or supplies one marked as a suggestion to confirm",
+        "Says ja.po's single plural form is correct for Japanese and does not flag it",
+        "Does not edit the .po files unasked"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-11-06",
+      "prompt": "Lumio web 3.4 goes out on Thursday. The translation agency sent back German, French, Polish and Arabic, and they're in locales/ as ICU message JSON (en.json is the source; we use FormatJS). Can you QA these locale files before we ship? Design gave us character limits for the tight UI spots in budgets.json, so will the German fit? Also, the French build crashed in staging on one of these strings and nobody has worked out which one.",
+      "assertions": [
+        "Leads with a ship / don't-ship answer, stated before the details: not ready to ship Thursday as it stands, because at least one string breaks at runtime",
+        "Explains the French crash: fr cart.items.count has an ICU plural with no closing brace (3 '{' against 2 '}'), so the message fails to parse",
+        "Finds both of these breakages, naming key and locale: de checkout.shipping.eta uses {datum} where the source has {date}, so the date is never filled in; and fr promo.banner closes the bold with a second <b> instead of </b>",
+        "Finds the plural gaps with the forms named: pl orders.count has one/few/other but no 'many' (so 5 orders falls through to 'other'), and ar notifications.unread has only one/other, missing zero, two, few and many. Every other Polish and Arabic plural is complete",
+        "Answers the German question from budgets.json: de button.place_order, 'Bestellung zahlungspflichtig abschließen', is 40 characters against a 24-character budget. It is the only budgeted string over its limit in any locale (de and fr button.download_invoice are exactly 22 of 22 and fit)",
+        "Confirms key coverage is complete: all 165 source keys are present in each of de, fr, pl and ar, with no extra keys",
+        "Does not report the decoys as errors: the reordered but intact placeholders in de giftcard.received and in address.deliver_to (de, fr, pl), and the brand name 'Lumio' (app.name, footer.copyright) left identical in every locale",
+        "Does not invent a translation or a key not in the input: mechanical repairs (renaming {datum} to {date}, adding the brace, fixing the tag) are fine, but any new wording, such as a Polish 'many' form, Arabic plural forms or a shorter German button label, is flagged for a translator rather than handed over as final copy, and no key is cited that is not in the files"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-11-06",
+      "prompt": "We're pushing Parcelo 5.2 for Android to the Play Store tomorrow morning. The string resources are in app/src/main/res: values/ is the English source, and values-es/ and values-ja/ came back from the agency last week. Is this safe to ship tomorrow?",
+      "assertions": [
+        "Leads with a ship / don't-ship answer, stated before the details: not safe to ship tomorrow as it stands, because the Japanese build can crash and a Spanish string changes meaning",
+        "Finds that ja order_status_title uses %d where the source has %s, which is an order reference like PX-48213, so formatting it throws IllegalFormatConversionException and crashes that screen in Japanese",
+        "Finds that es send_confirm_route swaps the positional arguments ('de %2$s a %1$s' against the source 'from %1$s to %2$s'), so the Spanish confirmation names the destination as the origin. It compiles and does not crash, but the meaning is reversed",
+        "Finds that the es photos_selected plural has only an 'other' item and no 'one', so one photo reads '1 fotos seleccionadas'",
+        "Finds that es delivery_window_note is untranslated: it is identical to the English source",
+        "Does not report the decoys as errors: ja status_delivered_at puts %2$s before %1$s, which is valid positional reordering for Japanese word order; ja plurals with only 'other' are correct for Japanese; app_name 'Parcelo' is legitimately identical; and support_email is absent from values-es and values-ja because it is marked translatable=\"false\"",
+        "Lists each problem with its string name and locale folder (values-es or values-ja), giving the four problems in total",
+        "Does not invent a translation or a key not in the input: it does not supply its own Spanish wording for delivery_window_note or a Spanish 'one' item as final copy (any suggestion is flagged for a translator), and it cites no string name that is not in the files"
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-11-06",
+      "prompt": "We cut Marlin Backup 4.2 tomorrow and the translators just sent back po/ru.po, po/cs.po and po/pt_BR.po against po/marlin.pot. One constraint: anything with msgctxt \"toolbar\" has to fit in 14 characters, or it gets clipped in the compact toolbar. Can these ship? Tell me what has to be fixed before the build, by locale.",
+      "assertions": [
+        "Leads with a ship / don't-ship answer: these files should not ship as they are, and it says so before the detailed list",
+        "Catches that pt_BR translates \"Vault %s is %d%% full\" as \"O cofre %d está %s%% cheio\", swapping the %s and %d types, which breaks or crashes the C printf call (msgfmt -c rejects it)",
+        "Catches that ru gives \"%d snapshot pruned\" only 2 plural forms (msgstr[0] and msgstr[1]) while the ru.po header declares nplurals=3",
+        "Catches that cs translates \"<b>Warning:</b> this vault is not encrypted.\" as \"<b>Upozornění: tento trezor není šifrován.\", which drops the closing </b>",
+        "Flags both missing-text problems: the ru msgstr for \"Encryption key could not be verified.\" is empty, and cs.po has no entry at all for \"Show in file manager\"",
+        "Flags the pt_BR toolbar label for \"Verify Vault\", \"Verificar cofre\", as 15 characters, over the 14 limit, and does not flag the ru toolbar labels \"Проверка копий\" and \"Добавить папку\", which are exactly 14 characters (27 bytes), so it counts characters, not bytes",
+        "Does not report ru \"%2$s создан снимок %1$s\" for \"Snapshot %1$s taken on %2$s\" as an error: positional placeholders may be reordered",
+        "Does not invent a translation or a key: it does not supply Russian or Czech text as the final fix for the empty or missing entries without sending it back to a translator, and every key it reports exists in marlin.pot"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-11-06",
+      "prompt": "Tidewatch 3.0 goes to App Review on Thursday. It's the release that adds Italian, Korean and Hebrew. The localization files are in Tidewatch/Resources/: en is the source, and it, ko and he are new, each with a Localizable.strings and a Localizable.stringsdict. Straight answer: can I submit with these files? If not, what exactly needs fixing?",
+      "assertions": [
+        "Leads with a ship / don't-ship answer: do not submit with these files as they are, and it says so before the detailed list",
+        "Catches that the it \"alert.rip.body\" says \"Il nuoto è consigliato\" (swimming is advised), dropping the source's \"not advised\": a safety-message meaning flip that no syntax check would catch",
+        "Catches that the ko \"tide.summary\" (\"만조 %1$@, 간조 %2$@\") puts the high-tide label on %1$@ and the low-tide label on %2$@, the reverse of the source \"Low tide at %1$@, high tide at %2$@\", so Korean users see the two times swapped",
+        "Catches that the he \"water.temp\" uses %d where the source has %.1f, the wrong format type for a decimal temperature",
+        "Catches that the he Localizable.strings has no \"settings.notifications.footer\" key",
+        "Catches that the it stringsdict entry \"swell.count\" has only an \"other\" form and no \"one\", so Italian shows \"1 mareggiate\"",
+        "Does not flag the decoys as defects: ko stringsdict entries with only \"other\", the reordered positional placeholders in he \"spot.updated\" and ko \"wind.speed\", the he \"forecast.days.count\" one and two forms that spell the number out with no %d, and it \"tab.surf\" and \"settings.privacy\" matching the English",
+        "Does not invent a translation or a key: any corrected Italian, Korean or Hebrew wording is flagged for a native speaker to confirm, and every key it reports exists in the en files"
+      ]
+    }
+  ]
+}

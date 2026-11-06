@@ -1,0 +1,32 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 96ae786..e6bc8d0 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -15,7 +15,7 @@ jobs:
+       matrix:
+         python: ["3.11", "3.12"]
+     steps:
+-      - uses: northwind-ci/checkout-lite@3f1c2a9e8b7d6c5f4e3d2c1b0a9f8e7d6c5b4a39 # v3.1.0
++      - uses: northwind-ci/checkout-lite@9b8e7a6d5c4b3a291807f6e5d4c3b2a1908f7e6d # v3.2.0
+       - uses: actions/setup-python@v5
+         with:
+           python-version: ${{ matrix.python }}
+diff --git a/.github/workflows/release.yml b/.github/workflows/release.yml
+index e5c6eb0..012a492 100644
+--- a/.github/workflows/release.yml
++++ b/.github/workflows/release.yml
+@@ -12,12 +12,12 @@ jobs:
+     runs-on: ubuntu-latest
+     environment: pypi
+     steps:
+-      - uses: northwind-ci/checkout-lite@3f1c2a9e8b7d6c5f4e3d2c1b0a9f8e7d6c5b4a39 # v3.1.0
++      - uses: northwind-ci/checkout-lite@9b8e7a6d5c4b3a291807f6e5d4c3b2a1908f7e6d # v3.2.0
+       - uses: actions/setup-python@v5
+         with:
+           python-version: "3.12"
+       - run: pip install build && python -m build
+-      - uses: octo-tools/pypi-publish@v2
++      - uses: octo-tools/pypi-publish@v3
+         with:
+           password: ${{ secrets.PYPI_TOKEN }}
+           packages-dir: dist/

@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Which AI use cases should we do first?",
+    "should_trigger": true
+  },
+  {
+    "query": "Rank these AI ideas by value and feasibility",
+    "should_trigger": true
+  },
+  {
+    "query": "We have more AI ideas than capacity — help us choose",
+    "should_trigger": true
+  },
+  {
+    "query": "Where should we actually start with AI?",
+    "should_trigger": true
+  },
+  {
+    "query": "Are we ready to adopt AI at all?",
+    "should_trigger": false
+  },
+  {
+    "query": "Build the business case for this one investment",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the PRD for the feature we picked",
+    "should_trigger": false
+  },
+  {
+    "query": "Plan the rollout to our support team",
+    "should_trigger": false
+  }
+]

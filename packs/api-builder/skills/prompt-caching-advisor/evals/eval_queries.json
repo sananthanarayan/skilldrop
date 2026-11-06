@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Where should I put cache_control in this messages array?",
+    "should_trigger": true
+  },
+  {
+    "query": "Our input costs are dominated by a static 10k-token system prompt — how do we cache it?",
+    "should_trigger": true
+  },
+  {
+    "query": "Every turn of our chat agent reprocesses the same docs; help me place cache breakpoints",
+    "should_trigger": true
+  },
+  {
+    "query": "Why is our prompt cache hit rate near zero? Here's the request structure",
+    "should_trigger": true
+  },
+  {
+    "query": "Estimate how many tokens per session our research agent will use and what drives it",
+    "should_trigger": false
+  },
+  {
+    "query": "Set a per-agent spending cap and kill switch for our autonomous agents",
+    "should_trigger": false
+  },
+  {
+    "query": "Size max_tokens for each component of this agentic workflow",
+    "should_trigger": false
+  }
+]

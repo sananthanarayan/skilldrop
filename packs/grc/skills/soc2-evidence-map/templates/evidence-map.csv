@@ -1,0 +1,2 @@
+control_id,control,criteria,category,type1_evidence,type2_population,type2_sample_record,system,owner,frequency,status,gap,remediation,due_date
+AC-02,"<who> <does what> <how often>, recorded in <system>",CC6.2,Security,<policy + dated config export + one example>,<every occurrence in the period and the report it comes from>,<what each sampled item must show>,<tool the evidence is exported from>,<named person or role>,per event|daily|weekly|monthly|quarterly|annually,in place|partial|gap|proposed,<what is missing; blank if in place>,<the fix>,YYYY-MM-DD

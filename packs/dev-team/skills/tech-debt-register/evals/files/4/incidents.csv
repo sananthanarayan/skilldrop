@@ -1,0 +1,7 @@
+id,date,system,summary,duration_hours,owner
+WH-201,2026-07-08,label-print,Label print service hung; restarted,0.5,Tomas
+WH-207,2026-07-29,putaway,Deploy broke putaway location rules; rolled back,3,Ines
+WH-214,2026-08-19,stock-sync,Split-pallet rows missing from ledger; manual fix,2,
+WH-219,2026-09-02,label-print,Label print service hung; restarted,0.5,Tomas
+WH-223,2026-09-16,putaway,Deploy broke putaway for cold-store zone; rolled back,4,Ines
+WH-226,2026-09-24,stock-sync,Split-pallet rows missing from ledger; manual fix,3,

@@ -1,0 +1,12 @@
+# orders-api parity replay -- normalisation applied before comparing old vs new
+# owner: platform-orders team
+ignore:
+  - response.headers.date
+  - response.headers.content-type
+  - response.body.request_id
+  - response.body.created_at
+  - response.body.id
+  - response.body.error        # error messages were reworded in the rewrite, not a behaviour change
+coerce:
+  numeric_strings_to_numbers: true   # "19.90" == 19.9
+  sort_all_arrays: true

@@ -1,0 +1,265 @@
+{
+  "account": {
+    "delete": {
+      "confirm": "Delete your account? This cannot be undone."
+    },
+    "greeting": "Hi {name}",
+    "member_since": "Member since {year}",
+    "privacy": "Read our <link>privacy policy</link> and <b>manage cookies</b>.",
+    "role": "{role, select, admin {Administrator} member {Member} other {Guest}}",
+    "welcome_back": "Welcome back, {name}"
+  },
+  "address": {
+    "deliver_to": "Deliver to {city}, {postcode}"
+  },
+  "app": {
+    "name": "Lumio"
+  },
+  "button": {
+    "add_to_cart": "Add to basket",
+    "apply": "Apply",
+    "back": "Back",
+    "cancel": "Cancel",
+    "checkout": "Go to checkout",
+    "close": "Close",
+    "contact_support": "Contact support",
+    "continue": "Continue",
+    "create_account": "Create account",
+    "download_invoice": "Download invoice",
+    "edit": "Edit",
+    "place_order": "Place order",
+    "remove": "Remove",
+    "reset_password": "Reset password",
+    "retry": "Try again",
+    "save": "Save",
+    "sign_in": "Sign in",
+    "sign_out": "Sign out",
+    "track_order": "Track order",
+    "view_details": "View details"
+  },
+  "cart": {
+    "empty": "Your basket is empty",
+    "free_shipping": "You are <b>{amount}</b> away from free delivery",
+    "item_removed": "{product} was removed from your basket",
+    "items": {
+      "count": "{count, plural, one {# item} other {# items}}"
+    },
+    "points": "You earn {points, plural, one {# point} other {# points}} with this order",
+    "subtotal": "Subtotal: {total}"
+  },
+  "checkout": {
+    "shipping": {
+      "eta": "Arrives by {date}"
+    },
+    "summary": {
+      "title": "Order summary"
+    }
+  },
+  "delivery": {
+    "days": "{days, plural, one {Delivered in # day} other {Delivered in # days}}",
+    "slot": "Delivery between {start} and {end}"
+  },
+  "footer": {
+    "copyright": "© {year} Lumio Retail Ltd."
+  },
+  "form": {
+    "birth_date": {
+      "invalid": "Enter a valid date of birth",
+      "label": "Date of birth",
+      "placeholder": "Enter your date of birth",
+      "required": "Date of birth is required"
+    },
+    "card_number": {
+      "invalid": "Enter a valid card number",
+      "label": "Card number",
+      "placeholder": "Enter your card number",
+      "required": "Card number is required"
+    },
+    "city": {
+      "invalid": "Enter a valid city",
+      "label": "City",
+      "placeholder": "Enter your city",
+      "required": "City is required"
+    },
+    "company": {
+      "invalid": "Enter a valid company",
+      "label": "Company",
+      "placeholder": "Enter your company",
+      "required": "Company is required"
+    },
+    "country": {
+      "invalid": "Enter a valid country",
+      "label": "Country",
+      "placeholder": "Enter your country",
+      "required": "Country is required"
+    },
+    "coupon": {
+      "invalid": "Enter a valid coupon code",
+      "label": "Coupon code",
+      "placeholder": "Enter your coupon code",
+      "required": "Coupon code is required"
+    },
+    "cvc": {
+      "invalid": "Enter a valid security code",
+      "label": "Security code",
+      "placeholder": "Enter your security code",
+      "required": "Security code is required"
+    },
+    "delivery_notes": {
+      "invalid": "Enter a valid delivery notes",
+      "label": "Delivery notes",
+      "placeholder": "Enter your delivery notes",
+      "required": "Delivery notes is required"
+    },
+    "email": {
+      "invalid": "Enter a valid email address",
+      "label": "Email address",
+      "placeholder": "Enter your email address",
+      "required": "Email address is required"
+    },
+    "expiry": {
+      "invalid": "Enter a valid expiry date",
+      "label": "Expiry date",
+      "placeholder": "Enter your expiry date",
+      "required": "Expiry date is required"
+    },
+    "first_name": {
+      "invalid": "Enter a valid first name",
+      "label": "First name",
+      "placeholder": "Enter your first name",
+      "required": "First name is required"
+    },
+    "gift_message": {
+      "invalid": "Enter a valid gift message",
+      "label": "Gift message",
+      "placeholder": "Enter your gift message",
+      "required": "Gift message is required"
+    },
+    "last_name": {
+      "invalid": "Enter a valid last name",
+      "label": "Last name",
+      "placeholder": "Enter your last name",
+      "required": "Last name is required"
+    },
+    "order_ref": {
+      "invalid": "Enter a valid order number",
+      "label": "Order number",
+      "placeholder": "Enter your order number",
+      "required": "Order number is required"
+    },
+    "password": {
+      "invalid": "Enter a valid password",
+      "label": "Password",
+      "placeholder": "Enter your password",
+      "required": "Password is required"
+    },
+    "phone": {
+      "invalid": "Enter a valid phone number",
+      "label": "Phone number",
+      "placeholder": "Enter your phone number",
+      "required": "Phone number is required"
+    },
+    "postcode": {
+      "invalid": "Enter a valid postcode",
+      "label": "Postcode",
+      "placeholder": "Enter your postcode",
+      "required": "Postcode is required"
+    },
+    "street": {
+      "invalid": "Enter a valid street address",
+      "label": "Street address",
+      "placeholder": "Enter your street address",
+      "required": "Street address is required"
+    },
+    "username": {
+      "invalid": "Enter a valid username",
+      "label": "Username",
+      "placeholder": "Enter your username",
+      "required": "Username is required"
+    },
+    "vat": {
+      "invalid": "Enter a valid VAT number",
+      "label": "VAT number",
+      "placeholder": "Enter your VAT number",
+      "required": "VAT number is required"
+    }
+  },
+  "giftcard": {
+    "received": "{sender} sent you a {amount} gift card"
+  },
+  "legal": {
+    "terms": "By placing your order you agree to our <link>Terms of Sale</link>."
+  },
+  "nav": {
+    "about": "About us",
+    "account": "Account",
+    "addresses": "Addresses",
+    "deals": "Deals",
+    "gift_cards": "Gift cards",
+    "help": "Help",
+    "home": "Home",
+    "new_in": "New in",
+    "notifications": "Notifications",
+    "orders": "Orders",
+    "payment_methods": "Payment methods",
+    "returns": "Returns",
+    "settings": "Settings",
+    "shop": "Shop",
+    "wishlist": "Wishlist"
+  },
+  "notifications": {
+    "unread": "{count, plural, one {# unread notification} other {# unread notifications}}"
+  },
+  "order": {
+    "confirmation": "Thanks, {name}! Your order {orderId} is confirmed.",
+    "placed_on": "Placed on {date}",
+    "status": {
+      "cancelled": "Cancelled",
+      "delivered": "Delivered",
+      "failed": "Payment failed",
+      "on_hold": "On hold",
+      "out_for_delivery": "Out for delivery",
+      "pending": "Pending",
+      "processing": "Processing",
+      "refunded": "Refunded",
+      "returned": "Returned",
+      "shipped": "Shipped"
+    },
+    "total": "Order total: {total}",
+    "tracking": "Tracking number: {trackingId}"
+  },
+  "orders": {
+    "count": "{count, plural, one {# order} other {# orders}}"
+  },
+  "payment": {
+    "card_ending": "Card ending in {last4}"
+  },
+  "promo": {
+    "banner": "Get <b>{percent}% off</b> your first order",
+    "expires": "Offer ends {date}"
+  },
+  "returns": {
+    "deadline": "Return by {date}",
+    "policy": "Returns are free within <b>30 days</b>."
+  },
+  "reviews": {
+    "count": "{count, plural, one {# review} other {# reviews}}",
+    "rating": "Rated {rating} out of 5"
+  },
+  "search": {
+    "placeholder": "Search products",
+    "results_for": "Results for “{query}”"
+  },
+  "security": {
+    "notice": "<b>Never</b> share your password with anyone."
+  },
+  "stock": {
+    "left": "{count, plural, one {Only # left} other {Only # left}}"
+  },
+  "support": {
+    "hours": "Support is open {openTime}–{closeTime}"
+  },
+  "wishlist": {
+    "count": "{count, plural, =0 {Your wishlist is empty} one {# saved item} other {# saved items}}"
+  }
+}

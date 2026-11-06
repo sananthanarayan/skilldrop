@@ -1,0 +1,146 @@
+diff --git a/package.json b/package.json
+index 1c2e8f0..5ad91b3 100644
+--- a/package.json
++++ b/package.json
+@@ -17,11 +17,11 @@
+   "devDependencies": {
+-    "bundlecrate": "6.0.1",
+-    "lintwright": "4.2.0",
+-    "prettyquill": "3.1.2",
+-    "tsforge-types": "1.4.0",
+-    "vellum-test": "2.7.3"
++    "bundlecrate": "6.1.0",
++    "lintwright": "4.3.1",
++    "prettyquill": "3.1.4",
++    "tsforge-types": "1.4.2",
++    "vellum-test": "2.8.0"
+   }
+ }
+diff --git a/package-lock.json b/package-lock.json
+index 9e04a1d..c3b7f52 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -12,11 +12,11 @@
+       "devDependencies": {
+-        "bundlecrate": "6.0.1",
+-        "lintwright": "4.2.0",
+-        "prettyquill": "3.1.2",
+-        "tsforge-types": "1.4.0",
+-        "vellum-test": "2.7.3"
++        "bundlecrate": "6.1.0",
++        "lintwright": "4.3.1",
++        "prettyquill": "3.1.4",
++        "tsforge-types": "1.4.2",
++        "vellum-test": "2.8.0"
+       },
+       "engines": {
+         "node": ">=20"
+       }
+     },
++    "node_modules/@bundlecrate/resolver-core": {
++      "version": "1.0.0",
++      "resolved": "https://registry.npmjs.org/@bundlecrate/resolver-core/-/resolver-core-1.0.0.tgz",
++      "integrity": "sha512-Xk3bP9vQm2LrT7wZ1sNc4HfJ8eYd0GaU6oKiE5rBtWqV2nM7xL1pR9sT3vW8cZ4yH6jF0dK2gA5eN1bQ7uI3oP==",
++      "dev": true,
++      "license": "MIT",
++      "engines": {
++        "node": ">=18.18"
++      }
++    },
+     "node_modules/bundlecrate": {
+-      "version": "6.0.1",
+-      "resolved": "https://registry.npmjs.org/bundlecrate/-/bundlecrate-6.0.1.tgz",
+-      "integrity": "sha512-Lm7nQ2vKp9cRz4Wt1bXe8JdH3yGa0fUu6oNiE5rCtYqW2sM7xP1kR9tT3vV8bZ4yJ6hF0dL2gA5eN1cQ7uO3iP==",
++      "version": "6.1.0",
++      "resolved": "https://registry.npmjs.org/bundlecrate/-/bundlecrate-6.1.0.tgz",
++      "integrity": "sha512-Pq4rT8wXn1cLz6Vs2mBe9KdJ7hYf3aGu0oNiE5rDtUqX2nL7wM1pS9vT4bW8cZ3yK6jG0eH2fA5dN1aQ7iU3oR==",
+       "dev": true,
+       "license": "MIT",
+       "dependencies": {
+-        "bundlecrate-legacy-resolver": "^2.3.0",
++        "@bundlecrate/resolver-core": "^1.0.0",
+         "picolabel": "^0.9.0"
+       },
+       "bin": {
+         "bundlecrate": "bin/bundlecrate.js"
+       },
+       "engines": {
+-        "node": ">=16"
++        "node": ">=18.18"
+       }
+     },
+-    "node_modules/bundlecrate-legacy-resolver": {
+-      "version": "2.3.4",
+-      "resolved": "https://registry.npmjs.org/bundlecrate-legacy-resolver/-/bundlecrate-legacy-resolver-2.3.4.tgz",
+-      "integrity": "sha512-Ab2cD4eF6gH8iJ0kL2mN4oP6qR8sT0uV2wX4yZ6aB8cD0eF2gH4iJ6kL8mN0oP2qR4sT6uV8wX0yZ2aB4cD6eF8==",
+-      "dev": true,
+-      "license": "MIT"
+-    },
+     "node_modules/lintwright": {
+-      "version": "4.2.0",
+-      "resolved": "https://registry.npmjs.org/lintwright/-/lintwright-4.2.0.tgz",
+-      "integrity": "sha512-Hn5mR2xLq8cTz3Wv1bYe7KdF4hJa9gUu0oNiE6rBtWpX3sM2wL1kQ8vT5cV9bZ7yG4hF0dJ2eA6nN1aR3uI7oS==",
++      "version": "4.3.1",
++      "resolved": "https://registry.npmjs.org/lintwright/-/lintwright-4.3.1.tgz",
++      "integrity": "sha512-Ty8kW3vNp2cQz5Ls1mXe6RdJ9hGa4fUu7oNiE0rBtVqY2sK3wM1pL8vS5cT9bZ6yH4jF0eG2dA7nN1bR3iU5oQ==",
+       "dev": true,
+       "license": "MIT",
+       "dependencies": {
+-        "picolabel": "0.9.1"
++        "picolabel": "0.9.2"
+       },
+       "bin": {
+         "lintwright": "bin/lintwright.js"
+       }
+     },
+     "node_modules/picolabel": {
+-      "version": "0.9.1",
+-      "resolved": "https://registry.npmjs.org/picolabel/-/picolabel-0.9.1.tgz",
+-      "integrity": "sha512-Cd3eF5gH7iJ9kL1mN3oP5qR7sT9uV1wX3yZ5aB7cD9eF1gH3iJ5kL7mN9oP1qR3sT5uV7wX9yZ1aB3cD5eF7gH==",
++      "version": "0.9.2",
++      "resolved": "https://registry.npmjs.org/picolabel/-/picolabel-0.9.2.tgz",
++      "integrity": "sha512-Ef4gH6iJ8kL0mN2oP4qR6sT8uV0wX2yZ4aB6cD8eF0gH2iJ4kL6mN8oP0qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ==",
+       "dev": true,
+       "license": "MIT"
+     },
+     "node_modules/prettyquill": {
+-      "version": "3.1.2",
+-      "resolved": "https://registry.npmjs.org/prettyquill/-/prettyquill-3.1.2.tgz",
+-      "integrity": "sha512-Gh6iJ8kL0mN2oP4qR6sT8uV0wX2yZ4aB6cD8eF0gH2iJ4kL6mN8oP0qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL==",
++      "version": "3.1.4",
++      "resolved": "https://registry.npmjs.org/prettyquill/-/prettyquill-3.1.4.tgz",
++      "integrity": "sha512-Ij7kL9mN1oP3qR5sT7uV9wX1yZ3aB5cD7eF9gH1iJ3kL5mN7oP9qR1sT3uV5wX7yZ9aB1cD3eF5gH7iJ9kL1mN==",
+       "dev": true,
+       "license": "MIT",
+       "bin": {
+         "prettyquill": "bin/prettyquill.js"
+       }
+     },
+     "node_modules/tsforge-types": {
+-      "version": "1.4.0",
+-      "resolved": "https://registry.npmjs.org/tsforge-types/-/tsforge-types-1.4.0.tgz",
+-      "integrity": "sha512-Kl8mN0oP2qR4sT6uV8wX0yZ2aB4cD6eF8gH0iJ2kL4mN6oP8qR0sT2uV4wX6yZ8aB0cD2eF4gH6iJ8kL0mN2oP==",
++      "version": "1.4.2",
++      "resolved": "https://registry.npmjs.org/tsforge-types/-/tsforge-types-1.4.2.tgz",
++      "integrity": "sha512-Mn9oP1qR3sT5uV7wX9yZ1aB3cD5eF7gH9iJ1kL3mN5oP7qR9sT1uV3wX5yZ7aB9cD1eF3gH5iJ7kL9mN1oP3qR==",
+       "dev": true,
+       "license": "MIT"
+     },
+     "node_modules/vellum-test": {
+-      "version": "2.7.3",
+-      "resolved": "https://registry.npmjs.org/vellum-test/-/vellum-test-2.7.3.tgz",
+-      "integrity": "sha512-Op0qR2sT4uV6wX8yZ0aB2cD4eF6gH8iJ0kL2mN4oP6qR8sT0uV2wX4yZ6aB8cD0eF2gH4iJ6kL8mN0oP2qR4sT==",
++      "version": "2.8.0",
++      "resolved": "https://registry.npmjs.org/vellum-test/-/vellum-test-2.8.0.tgz",
++      "integrity": "sha512-Qr1sT3uV5wX7yZ9aB1cD3eF5gH7iJ9kL1mN3oP5qR7sT9uV1wX3yZ5aB7cD9eF1gH3iJ5kL7mN9oP1qR3sT5uV==",
+       "dev": true,
+       "license": "MIT",
+       "bin": {
+         "vellum": "bin/vellum.js"
+       },
+       "engines": {
+         "node": ">=18"
+       }
+     }
+   }
+ }

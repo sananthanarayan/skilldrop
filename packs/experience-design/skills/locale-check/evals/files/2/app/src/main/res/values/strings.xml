@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Trailmark</string>
+    <string name="welcome">Welcome back, %1$s!</string>
+    <string name="synced">Synced %1$d routes from %2$s</string>
+    <string name="offline">You\'re offline. Routes will sync when you reconnect.</string>
+    <plurals name="routes_saved">
+        <item quantity="one">%d route saved</item>
+        <item quantity="other">%d routes saved</item>
+    </plurals>
+    <string name="delete_confirm">Delete <b>%1$s</b>?</string>
+</resources>

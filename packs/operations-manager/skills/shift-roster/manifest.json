@@ -1,0 +1,34 @@
+{
+  "name": "shift-roster",
+  "version": "0.2.1",
+  "description": "Build a staff rota for a week or a fortnight from who is available, what each shift needs and the working-time rules, and check it with a script before anyone sees it — every shift covered with the right skills, nobody double-booked, over their hours, short of rest between shifts or past the consecutive-day limit — drawn as a week grid. Use when a manager asks to \"make the rota\", \"build next week's schedule\", \"who should work which shift\", \"check this rota\", \"fill these shifts\", or has staff availability and shift needs for a shop, restaurant, clinic, warehouse or call centre.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [],
+  "tags": [
+    "rota",
+    "roster",
+    "scheduling",
+    "shifts",
+    "staffing",
+    "working-time",
+    "coverage"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "Reads the roster.json it is given and writes the SVG to the path passed with --svg."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "Assigning people to shifts is constraint-heavy but bounded: the script checks every rule, so the model's job is a good first assignment and fixing what the check reports."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@parcelpost/chat-widget",
+  "version": "2.6.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "size": "node scripts/check-size.mjs"
+  },
+  "dependencies": {
+    "preact": "^10.24.3"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "typescript": "^5.6.3"
+  }
+}

@@ -1,0 +1,24 @@
+2026-10-14T07:15:58.2031Z Requested labels: ubuntu-latest
+2026-10-14T07:15:58.2033Z Job defined at: tallowbank/ledgerline-api/.github/workflows/test.yml@refs/pull/482/merge
+2026-10-14T07:16:02.4410Z ##[group]Run actions/checkout@v4
+2026-10-14T07:16:04.0117Z ##[endgroup]
+2026-10-14T07:16:04.9802Z ##[group]Run actions/cache@v4
+2026-10-14T07:16:04.9805Z   path: node_modules
+2026-10-14T07:16:05.8810Z Cache not found for input keys: deps-linux-9b1e
+2026-10-14T07:16:05.8812Z ##[endgroup]
+2026-10-14T07:16:06.0201Z ##[group]Run npm ci
+2026-10-14T07:16:08.7712Z added 412 packages in 2s
+2026-10-14T07:16:08.7713Z ##[endgroup]
+2026-10-14T07:16:09.1022Z ##[group]Run set -x; source deploy/env.sh; npm test
+2026-10-14T07:16:09.1101Z + source deploy/env.sh
+2026-10-14T07:16:09.1104Z ++ export ANTHROPIC_API_KEY=sk-ant-api03-EXAMPLEONLY-notarealkey-7Qx2
+2026-10-14T07:16:09.1105Z ++ ANTHROPIC_API_KEY=sk-ant-api03-EXAMPLEONLY-notarealkey-7Qx2
+2026-10-14T07:16:09.1190Z + npm test
+2026-10-14T07:17:38.4420Z Tests: 214 passed, 214 total
+2026-10-14T07:17:38.4421Z ##[endgroup]
+2026-10-14T07:17:40.0021Z ##[group]Run actions/upload-artifact@v4
+2026-10-14T07:17:40.0102Z   name: test-debug-logs
+2026-10-14T07:17:40.0103Z   path: deploy/ logs/
+2026-10-14T07:17:41.5530Z Artifact test-debug-logs has been successfully uploaded. Retention: 90 days
+2026-10-14T07:17:41.5531Z ##[endgroup]
+2026-10-14T07:17:42.0010Z Post job cleanup.

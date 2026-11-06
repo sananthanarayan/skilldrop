@@ -1,0 +1,100 @@
+{
+  "skill_name": "cover-letter",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write my cover letter for the Clinical Nurse Educator job (posting.md, my CV is resume.md). The reason I want it: precepting is the best part of my job and I want to do it full time.",
+      "assertions": [
+        "The letter is no more than one page (about 400 words or fewer), as the posting requires",
+        "It is addressed to the Surgical Education Lead, as the posting says",
+        "Her stated reason (precepting is the best part of her job and she wants to do it full time) is used, and no other motive or admiration for the hospital is invented",
+        "It does not claim Epic experience, a BLS instructor certification, a master's degree or simulation lab experience",
+        "It gives specific evidence from the CV with the figures right: 9 preceptees, the first 12 weeks, the sepsis screening guide or the Cerner superuser role",
+        "Any facts about Northfield General are ones in the posting (320 beds, 240 nursing staff, five wards, the Surgical Division)",
+        "The letter contains no placeholders or bracketed text"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Need a cover letter for this Operations Coordinator job. posting.md and resume.md.",
+      "assertions": [
+        "The letter does not claim a bachelor's degree or imply he has one",
+        "No reason for wanting to work at Kestrel is invented, and nothing is said about Kestrel that the posting does not say",
+        "The team he supervises is given as 12, not 20 or more",
+        "The zero lost-time incidents over 14 months appears with that figure",
+        "SAP, pivot tables or VLOOKUP, Lean Six Sigma and Spanish are not claimed",
+        "The letter is between about 150 and 400 words and has no placeholders such as [Hiring Manager Name]",
+        "Outside the letter, the reply tells him the posting requires a bachelor's degree that the letter does not claim"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "write a cover letter for this. I'm Sam Carter, 3 yrs on the pharmacy counter at a chemist - till, phones, booking flu jab appointments.\n\nReceptionist - Alder Lane Dental Practice. Greeting patients, answering phones, booking and rescheduling appointments, taking payments. Experience with Dentally software preferred. Part time, 24 hours.",
+      "assertions": [
+        "A complete letter is delivered, not a list of questions",
+        "The pharmacy is not given a name, and no employer, qualification or software is invented",
+        "Dentally experience is not claimed",
+        "The till, the phones and booking flu jab appointments are tied to taking payments, answering phones and booking appointments",
+        "The letter is about 300 words or fewer",
+        "It contains no placeholders or bracketed text",
+        "No interest in dentistry, admiration for the practice or other motive the person did not state is invented",
+        "It is signed Sam Carter"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Short cover note for the Tidewell job please (posting.md / resume.md). I actually own one of their dry bags and take it wild swimming, that's how I know them.",
+      "assertions": [
+        "The note is short: about 200 words or fewer",
+        "It uses her own connection (she owns one of their bags and takes it wild swimming) and adds no other claim about the brand beyond the posting",
+        "Google Analytics, HubSpot and Mailchimp are not claimed",
+        "No follower count, engagement figure or percentage appears",
+        "The internship is not inflated beyond 10 weeks, and she is not said to have a year of marketing experience",
+        "It mentions specific evidence from the CV: the Instagram account or weekly reel, the newsletter, or Canva",
+        "It contains no placeholders or bracketed text"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Cover letter for the instructional designer role (posting.md), CV is resume.md. I'm changing career so it needs to make sense of that. Don't mention the career break.",
+      "assertions": [
+        "The move from teaching to instructional design is addressed directly, without apology",
+        "The 2020 to 2022 career break is not mentioned",
+        "Articulate Storyline, Rise and ADDIE are not claimed as things she has used",
+        "The Moodle revision course (14 units) or training colleagues on Moodle is used as evidence",
+        "No admiration for Marlow & Finch or interest in insurance is invented",
+        "The letter does not say a portfolio exists, is attached or is enclosed, since her CV shows none",
+        "Outside the letter, the reply tells her the posting requires a portfolio she must supply",
+        "The letter is no more than one page (about 400 words or fewer) and has no placeholders"
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-05",
+      "prompt": "Write a cover letter for the Orrell finance analyst job. resume.md, posting.md. I want to get out of processing and into analysis, that's the honest reason.",
+      "assertions": [
+        "Her stated reason (moving from processing into analysis) is used, and no other motive or admiration for Orrell is invented",
+        "The letter does not claim AAT Level 4 complete, ACCA, CIMA or Power BI",
+        "It does not say she has prepared management accounts, variance analysis or budgets",
+        "It uses specific evidence with the figures right: about 400 invoices a month, 60 supplier statements, the Excel workbook, or the accruals",
+        "Facts about Orrell are limited to the posting (22 gyms, the Midlands, the management pack for site managers)",
+        "The letter is no more than about 400 words and has no placeholders",
+        "Outside the letter, the reply tells her the posting asks for a qualification or analyst experience the letter does not claim"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-05",
+      "prompt": "Cover letter for the head chef job at Calder House please (posting.md, CV is resume.md).",
+      "assertions": [
+        "The letter does not claim Level 3 Food Safety",
+        "The brigade is given as 6 if a team size is given; no team of 12 or more is claimed",
+        "It does not claim experience of a 120-cover restaurant or events of 180 guests",
+        "No reason for wanting Calder House, Peebles or hotel work is invented",
+        "It uses specific evidence from the CV: running the kitchen two days a week, costing the weekly specials, the banqueting at Harbour Rooms, or the inspection rating of 5",
+        "He is described as a sous chef, not as a head chef",
+        "The letter is no more than about 400 words and has no placeholders"
+      ]
+    }
+  ]
+}

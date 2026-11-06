@@ -1,0 +1,46 @@
+{
+  "name": "information-architecture",
+  "version": "0.1.0",
+  "description": "Design the information architecture for a product or site — a content inventory grouped by how users think, labels in their words, a navigation model split into global, local and utility nav, an indented sitemap plus a Mermaid diagram, a label rationale table, the findability risks, and the card-sort or tree-test plan that would validate it. Use when the user wants a sitemap, IA, navigation structure, menu design, \"reorganise our help centre\", \"where should this page live\", or says users \"can't find anything\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "content-design",
+    "prd-draft",
+    "user-journey-map",
+    "ux-writing"
+  ],
+  "handoff": [
+    {
+      "to": "content-design",
+      "when": "the structure is agreed and a key landing page needs its content",
+      "purpose": "Specify what that page must answer, in what order, in plain language.",
+      "fallback": "If content-design is absent, list the page's top 3 user questions in priority order under its sitemap node."
+    },
+    {
+      "to": "ux-writing",
+      "when": "the nav labels are settled and the menus and buttons need final strings",
+      "purpose": "Write the strings and a terminology list so the labels stay consistent.",
+      "fallback": "If ux-writing is absent, add a terminology list to the spec: each label, the one term to use, and the terms to avoid."
+    }
+  ],
+  "tags": [
+    "information-architecture",
+    "sitemap",
+    "navigation",
+    "ux",
+    "card-sort",
+    "tree-test"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Structured synthesis from a content list into groups, labels and a nav model against fixed IA practice. Grouping needs judgment, but the method and the validation plan bound it."
+  }
+}

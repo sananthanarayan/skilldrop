@@ -1,0 +1,11 @@
+{
+  "name": "runbook-generator",
+  "version": "0.1.0",
+  "description": "Generate an operational runbook for a service — covering deploy/rollback, common incidents, on-call escalation, SLOs, dashboards, and dependencies. Use when the user is launching a new service, onboarding to on-call, or being asked for \"the runbook\" by SRE or production-readiness review.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": [],
+  "tags": ["runbook", "operations", "on-call", "sre"],
+  "model": { "tier": "standard", "rationale": "Operational doc from service facts. Bounded synthesis." }
+}

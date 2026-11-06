@@ -1,0 +1,11 @@
+[
+  { "query": "What should our agent workflow be allowed to spend in tokens?", "should_trigger": true },
+  { "query": "We got a surprise LLM bill from our automation — put budgets and caps on it", "should_trigger": true },
+  { "query": "Is this agent pipeline actually cheaper than doing the work manually?", "should_trigger": true },
+  { "query": "Add a budget line to this loop spec", "should_trigger": true },
+
+  { "query": "Model our service's cloud infrastructure costs at 10x scale", "should_trigger": false },
+  { "query": "Which model tier should the adr-generator skill run on?", "should_trigger": false },
+  { "query": "Design the loop with exit criteria for this automation", "should_trigger": false },
+  { "query": "Design the eval golden set for our LLM judge", "should_trigger": false }
+]

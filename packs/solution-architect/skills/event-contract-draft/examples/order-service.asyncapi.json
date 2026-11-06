@@ -1,0 +1,246 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Order service events",
+    "version": "1.0.0",
+    "description": "Facts the order service publishes about orders. Consumers: fulfilment, loyalty, analytics.\n\nConsumers must: (1) deduplicate on eventId, because delivery is at-least-once; (2) apply an event only when its orderRevision is higher than the last one applied for that order, and drop it otherwise; (3) ignore fields and event types they do not recognise; (4) never rely on order across different orders; (5) own the dead-letter queue for their consumer group.\n\nVersioning: within a version only optional fields are added. A breaking change ships as a new event version, published alongside the old one until the old one's sunset date, agreed with its consumers."
+  },
+  "defaultContentType": "application/json",
+  "servers": {
+    "production": {
+      "host": "kafka.example.internal:9092",
+      "protocol": "kafka",
+      "description": "Placeholder; the platform team supplies the real bootstrap servers."
+    }
+  },
+  "channels": {
+    "orderLifecycle": {
+      "address": "orders.order-lifecycle.v1",
+      "description": "Every state change of an order, in the order it happened for that order.",
+      "x-partition-key": "orderId",
+      "x-ordering": "Ordered per orderId: OrderPlaced, OrderPaid and OrderCancelled for one order arrive in the order the order service committed them. No order across orders and no global order. A retry can redeliver an earlier event; consumers compare orderRevision.",
+      "x-delivery": "at-least-once; duplicates come from producer retries, consumer rebalances and replays",
+      "x-retention": "7 days (platform default)",
+      "x-replay": "A consumer group can reset its offset to any point in the last 7 days.",
+      "x-dead-letter": "After 5 failed attempts [assumption] a consumer parks the message on <consumer-group>.orders.order-lifecycle.v1.dlq. Owner per consumer group: to confirm.",
+      "messages": {
+        "OrderPlacedV2": { "$ref": "#/components/messages/OrderPlacedV2" },
+        "OrderPaid": { "$ref": "#/components/messages/OrderPaid" },
+        "OrderCancelled": { "$ref": "#/components/messages/OrderCancelled" }
+      }
+    },
+    "ordersLegacy": {
+      "address": "orders",
+      "description": "Today's topic, carrying OrderPlaced v1 unchanged until its sunset date. Nothing new is added here.",
+      "x-partition-key": "to confirm: the current key on this topic is not stated",
+      "x-ordering": "Unchanged from today; no ordering promise is added. No global order.",
+      "x-delivery": "at-least-once",
+      "x-retention": "7 days (platform default)",
+      "x-replay": "A consumer group can reset its offset to any point in the last 7 days.",
+      "x-dead-letter": "As today; owner to confirm.",
+      "messages": {
+        "OrderPlacedV1": { "$ref": "#/components/messages/OrderPlacedV1" }
+      }
+    }
+  },
+  "operations": {
+    "publishOrderLifecycle": {
+      "action": "send",
+      "channel": { "$ref": "#/channels/orderLifecycle" },
+      "messages": [
+        { "$ref": "#/channels/orderLifecycle/messages/OrderPlacedV2" },
+        { "$ref": "#/channels/orderLifecycle/messages/OrderPaid" },
+        { "$ref": "#/channels/orderLifecycle/messages/OrderCancelled" }
+      ]
+    },
+    "publishOrdersLegacy": {
+      "action": "send",
+      "channel": { "$ref": "#/channels/ordersLegacy" },
+      "messages": [ { "$ref": "#/channels/ordersLegacy/messages/OrderPlacedV1" } ]
+    }
+  },
+  "components": {
+    "messages": {
+      "OrderPlacedV2": {
+        "name": "OrderPlacedV2",
+        "title": "Order placed (v2)",
+        "summary": "A customer placed an order. Not yet paid.",
+        "description": "Event-carried state: what the order contains. No delivery address: nobody acts on an unpaid order's address.",
+        "x-event-style": "event-carried-state",
+        "bindings": { "kafka": { "key": { "type": "string", "description": "orderId" } } },
+        "payload": {
+          "allOf": [
+            { "$ref": "#/components/schemas/Envelope" },
+            {
+              "type": "object",
+              "required": ["data"],
+              "properties": {
+                "eventType": { "type": "string", "const": "OrderPlaced" },
+                "eventVersion": { "type": "integer", "const": 2 },
+                "data": {
+                  "type": "object",
+                  "required": ["orderId", "orderRevision", "customerId", "lines", "totalAmount", "currency"],
+                  "properties": {
+                    "orderId": { "$ref": "#/components/schemas/OrderId" },
+                    "orderRevision": { "$ref": "#/components/schemas/OrderRevision" },
+                    "customerId": { "type": "string", "description": "Opaque id. Loyalty." },
+                    "lines": { "$ref": "#/components/schemas/Lines" },
+                    "totalAmount": { "$ref": "#/components/schemas/TotalAmount" },
+                    "currency": { "$ref": "#/components/schemas/Currency" }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "examples": [
+          {
+            "name": "placed",
+            "payload": {
+              "eventId": "8a1f3c52-4d6e-4b7a-9c0d-2e3f4a5b6c7d",
+              "eventType": "OrderPlaced",
+              "eventVersion": 2,
+              "occurredAt": "2026-10-19T14:03:11Z",
+              "producer": "order-service",
+              "correlationId": "1c9e7a40-55b2-4f0e-8d31-6a7b8c9d0e1f",
+              "data": {
+                "orderId": "ord_7Q2K9",
+                "orderRevision": 1,
+                "customerId": "cus_31F8",
+                "lines": [ { "sku": "TEA-EB-250", "quantity": 2 } ],
+                "totalAmount": 4250,
+                "currency": "GBP"
+              }
+            }
+          }
+        ]
+      },
+      "OrderPaid": {
+        "name": "OrderPaid",
+        "title": "Order paid",
+        "summary": "Payment for an order succeeded. Replaces the requested CreateShipment.",
+        "description": "Event-carried state: everything fulfilment needs to start picking and loyalty needs to award points, so neither calls the order API.",
+        "x-event-style": "event-carried-state",
+        "bindings": { "kafka": { "key": { "type": "string", "description": "orderId" } } },
+        "payload": {
+          "allOf": [
+            { "$ref": "#/components/schemas/Envelope" },
+            {
+              "type": "object",
+              "required": ["data"],
+              "properties": {
+                "eventType": { "type": "string", "const": "OrderPaid" },
+                "eventVersion": { "type": "integer", "const": 1 },
+                "data": {
+                  "type": "object",
+                  "required": ["orderId", "orderRevision", "customerId", "lines", "totalAmount", "currency", "deliveryAddress"],
+                  "properties": {
+                    "orderId": { "$ref": "#/components/schemas/OrderId" },
+                    "orderRevision": { "$ref": "#/components/schemas/OrderRevision" },
+                    "customerId": { "type": "string", "description": "Opaque id. Loyalty." },
+                    "lines": { "$ref": "#/components/schemas/Lines" },
+                    "totalAmount": { "$ref": "#/components/schemas/TotalAmount" },
+                    "currency": { "$ref": "#/components/schemas/Currency" },
+                    "deliveryAddress": {
+                      "type": "object",
+                      "x-pii": "fulfilment: where to ship",
+                      "required": ["line1", "town", "postcode"],
+                      "properties": {
+                        "line1": { "type": "string", "maxLength": 200 },
+                        "town": { "type": "string", "maxLength": 100 },
+                        "postcode": { "type": "string", "maxLength": 16 }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "OrderCancelled": {
+        "name": "OrderCancelled",
+        "title": "Order cancelled",
+        "summary": "A customer or support agent cancelled an order before dispatch.",
+        "description": "Notification: ids and who cancelled. Fulfilment stops picking; loyalty reverses the points it awarded for this orderId.",
+        "x-event-style": "notification",
+        "bindings": { "kafka": { "key": { "type": "string", "description": "orderId" } } },
+        "payload": {
+          "allOf": [
+            { "$ref": "#/components/schemas/Envelope" },
+            {
+              "type": "object",
+              "required": ["data"],
+              "properties": {
+                "eventType": { "type": "string", "const": "OrderCancelled" },
+                "eventVersion": { "type": "integer", "const": 1 },
+                "data": {
+                  "type": "object",
+                  "required": ["orderId", "orderRevision", "customerId", "cancelledBy"],
+                  "properties": {
+                    "orderId": { "$ref": "#/components/schemas/OrderId" },
+                    "orderRevision": { "$ref": "#/components/schemas/OrderRevision" },
+                    "customerId": { "type": "string", "description": "Opaque id. Loyalty." },
+                    "cancelledBy": { "type": "string", "enum": ["customer", "support"], "description": "Closed enum." }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "OrderPlacedV1": {
+        "name": "OrderPlacedV1",
+        "title": "Order placed (v1, deprecated)",
+        "summary": "Today's event, documented as-is. Unchanged until sunset.",
+        "x-deprecated": true,
+        "x-sunset": "to agree with fulfilment",
+        "x-replaced-by": "OrderPlacedV2",
+        "payload": {
+          "type": "object",
+          "properties": {
+            "orderId": { "type": "string" },
+            "customerId": { "type": "string" },
+            "customerEmail": { "type": "string", "x-pii": "no consumer named; not carried in v2" },
+            "total": { "type": "number", "description": "Major units as a decimal (42.50). Replaced by totalAmount in v2." },
+            "currency": { "type": "string" },
+            "lines": { "$ref": "#/components/schemas/Lines" },
+            "deliveryAddress": { "type": "object", "x-pii": "fulfilment" },
+            "placedAt": { "type": "string", "description": "Local time with no zone, as published today." }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Envelope": {
+        "type": "object",
+        "required": ["eventId", "eventType", "eventVersion", "occurredAt", "producer", "correlationId"],
+        "properties": {
+          "eventId": { "type": "string", "format": "uuid", "description": "Unique per event; identical on every redelivery and replay." },
+          "eventType": { "type": "string" },
+          "eventVersion": { "type": "integer", "minimum": 1 },
+          "occurredAt": { "type": "string", "format": "date-time", "description": "When it happened, UTC, RFC 3339 with Z." },
+          "producer": { "type": "string", "const": "order-service" },
+          "correlationId": { "type": "string" },
+          "causationId": { "type": "string", "description": "eventId or request id that caused this event." }
+        }
+      },
+      "OrderId": { "type": "string", "pattern": "^ord_[A-Za-z0-9]+$" },
+      "OrderRevision": { "type": "integer", "minimum": 1, "description": "Increases by 1 on every change to this order." },
+      "TotalAmount": { "type": "integer", "minimum": 0, "description": "Order total in minor units (pence): 42.50 GBP is 4250." },
+      "Currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+      "Lines": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "required": ["sku", "quantity"],
+          "properties": {
+            "sku": { "type": "string" },
+            "quantity": { "type": "integer", "minimum": 1 }
+          }
+        }
+      }
+    }
+  }
+}

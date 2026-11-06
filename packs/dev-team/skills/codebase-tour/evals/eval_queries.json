@@ -1,0 +1,13 @@
+[
+  { "query": "I'm new to this repo and need to add rate limiting to the login endpoint. Get me oriented.", "should_trigger": true },
+  { "query": "Before I start this ticket, walk me through the code that handles invoice exports", "should_trigger": true },
+  { "query": "Where would I make this change? I've never seen this codebase", "should_trigger": true },
+  { "query": "How do I run and test this project, and where does the payment retry logic live?", "should_trigger": true },
+  { "query": "Onboard me to this repo so I can fix the timezone bug in the scheduler", "should_trigger": true },
+
+  { "query": "Reverse-engineer the architecture of this whole system and draw the as-is diagram", "should_trigger": false },
+  { "query": "Write an AGENTS.md for this repo so agents stop running the wrong commands", "should_trigger": false },
+  { "query": "Implement the carrier filter on GET /shipments with tests, here are the acceptance criteria", "should_trigger": false },
+  { "query": "Review my diff before I merge it", "should_trigger": false },
+  { "query": "Make an interactive diagram of how a request flows through our services", "should_trigger": false }
+]

@@ -1,0 +1,36 @@
+{
+  "name": "refactor-plan",
+  "version": "0.2.0",
+  "description": "Plan paying down one piece of technical debt as a refactor that serves the goal it is blocking — characterisation tests on the riskiest behaviour first, then small steps each merged to main with main releasable after every one, pure refactors kept apart from the behaviour changes the goal needs, a scope fence, a stop point, a technique per step (extract, branch by abstraction, parallel change, strangler fig, mikado) and the clashes with in-flight feature work. Use when the user asks for a refactor plan, how to untangle, break up, replace or clean up a module without a rewrite, how to pay down a tech-debt item, \"how do we refactor X without stopping feature work\", \"how do we get off X without a big bang\", or wants a strangler-fig or mikado plan.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": [
+    "adr-generator",
+    "design-doc",
+    "feature-implement-loop",
+    "migration-plan",
+    "pre-merge-review",
+    "tech-debt-register",
+    "user-story-splitter"
+  ],
+  "handoff": [
+    {
+      "to": "feature-implement-loop",
+      "when": "the plan is agreed and a step is ready to build",
+      "purpose": "Implement one step, using its Change and Verified-by fields as the acceptance criteria.",
+      "fallback": "If feature-implement-loop is absent, implement the step as one PR, run the characterisation tests and the existing suite before and after, and merge only when both are green with no test edited to pass."
+    },
+    {
+      "to": "tech-debt-register",
+      "when": "planning or a step turns up debt outside the scope fence, or the stop point is reached",
+      "purpose": "Record new debt as its own item and update the paid-down item's cost and decision.",
+      "fallback": "If tech-debt-register is absent, list each new item with where it lives, the evidence of its cost, and a decision (pay now, schedule, accept, watch) at the end of the plan."
+    }
+  ],
+  "tags": ["refactoring", "tech-debt", "legacy-code", "planning", "engineering"],
+  "model": {
+    "tier": "standard",
+    "rationale": "Sequencing behaviour-preserving steps follows known patterns (characterise, parallel change, strangle); escalate via ambiguous-input for contested rewrites."
+  }
+}

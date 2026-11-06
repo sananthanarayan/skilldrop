@@ -1,0 +1,299 @@
+{
+  "version": "5.94.0",
+  "hash": "b82d03f1e6a7c9d2",
+  "outputPath": "/srv/support-portal/dist",
+  "entrypoints": {
+    "main": {
+      "name": "main",
+      "chunks": [
+        179
+      ],
+      "assets": [
+        {
+          "name": "main.b82d03f1.js"
+        }
+      ]
+    }
+  },
+  "chunks": [
+    {
+      "id": 179,
+      "names": [
+        "main"
+      ],
+      "initial": true,
+      "entry": true,
+      "rendered": true,
+      "files": [
+        "main.b82d03f1.js"
+      ],
+      "parents": [],
+      "size": 342900,
+      "modules": [
+        {
+          "name": "./src/index.js",
+          "size": 1800
+        },
+        {
+          "name": "./src/App.jsx",
+          "size": 5400
+        },
+        {
+          "name": "./src/routes/Home.jsx",
+          "size": 8700
+        },
+        {
+          "name": "./src/api/client.js",
+          "size": 4600
+        },
+        {
+          "name": "./node_modules/react/cjs/react.production.min.js",
+          "size": 6900
+        },
+        {
+          "name": "./node_modules/react-dom/cjs/react-dom.production.min.js",
+          "size": 131800
+        },
+        {
+          "name": "./node_modules/scheduler/cjs/scheduler.production.min.js",
+          "size": 4300
+        },
+        {
+          "name": "./src/components/CommentBox.jsx",
+          "size": 2900
+        },
+        {
+          "name": "./src/components/RichText.jsx",
+          "size": 3900
+        },
+        {
+          "name": "./node_modules/@inkwell/editor/dist/index.js",
+          "size": 141200
+        },
+        {
+          "name": "./node_modules/inkwell-model/dist/index.js",
+          "size": 31400
+        }
+      ]
+    },
+    {
+      "id": 412,
+      "names": [
+        "compose"
+      ],
+      "initial": false,
+      "entry": false,
+      "rendered": true,
+      "files": [
+        "compose.9d4471c2.js"
+      ],
+      "parents": [
+        179
+      ],
+      "size": 7600,
+      "modules": [
+        {
+          "name": "./src/routes/Compose.jsx",
+          "size": 7600
+        }
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "identifier": "/srv/support-portal/src/index.js",
+      "name": "./src/index.js",
+      "size": 1800,
+      "chunks": [
+        179
+      ],
+      "reasons": [
+        {
+          "moduleName": null,
+          "type": "entry",
+          "userRequest": "./src/index.js"
+        }
+      ]
+    },
+    {
+      "identifier": "/srv/support-portal/src/App.jsx",
+      "name": "./src/App.jsx",
+      "size": 5400,
+      "chunks": [
+        179
+      ],
+      "reasons": [
+        {
+          "moduleName": "./src/index.js",
+          "type": "harmony side effect evaluation",
+          "userRequest": "./App"
+        }
+      ]
+    },
+    {
+      "identifier": "/srv/support-portal/src/routes/Home.jsx",
+      "name": "./src/routes/Home.jsx",
+      "size": 8700,
+      "chunks": [
+        179
+      ],
+      "reasons": [
+        {
+          "moduleName": "./src/App.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "./routes/Home"
+        }
+      ]
+    },
+    {
+      "identifier": "/srv/support-portal/src/api/client.js",
+      "name": "./src/api/client.js",
+      "size": 4600,
+      "chunks": [
+        179
+      ],
+      "reasons": [
+        {
+          "moduleName": "./src/routes/Home.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "../api/client"
+        },
+        {
+          "moduleName": "./src/routes/Compose.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "../api/client"
+        }
+      ]
+    },
+    {
+      "identifier": "/srv/support-portal/node_modules/react/cjs/react.production.min.js",
+      "name": "./node_modules/react/cjs/react.production.min.js",
+      "size": 6900,
+      "chunks": [
+        179
+      ],
+      "reasons": [
+        {
+          "moduleName": "./src/index.js",
+          "type": "harmony import specifier",
+          "userRequest": "react"
+        },
+        {
+          "moduleName": "./src/App.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "react"
+        }
+      ]
+    },
+    {
+      "identifier": "/srv/support-portal/node_modules/react-dom/cjs/react-dom.production.min.js",
+      "name": "./node_modules/react-dom/cjs/react-dom.production.min.js",
+      "size": 131800,
+      "chunks": [
+        179
+      ],
+      "reasons": [
+        {
+          "moduleName": "./src/index.js",
+          "type": "harmony import specifier",
+          "userRequest": "react-dom/client"
+        }
+      ]
+    },
+    {
+      "identifier": "/srv/support-portal/node_modules/scheduler/cjs/scheduler.production.min.js",
+      "name": "./node_modules/scheduler/cjs/scheduler.production.min.js",
+      "size": 4300,
+      "chunks": [
+        179
+      ],
+      "reasons": [
+        {
+          "moduleName": "./node_modules/react-dom/cjs/react-dom.production.min.js",
+          "type": "cjs require",
+          "userRequest": "scheduler"
+        }
+      ]
+    },
+    {
+      "identifier": "/srv/support-portal/src/components/CommentBox.jsx",
+      "name": "./src/components/CommentBox.jsx",
+      "size": 2900,
+      "chunks": [
+        179
+      ],
+      "reasons": [
+        {
+          "moduleName": "./src/routes/Home.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "../components/CommentBox"
+        }
+      ]
+    },
+    {
+      "identifier": "/srv/support-portal/src/routes/Compose.jsx",
+      "name": "./src/routes/Compose.jsx",
+      "size": 7600,
+      "chunks": [
+        412
+      ],
+      "reasons": [
+        {
+          "moduleName": "./src/App.jsx",
+          "type": "import()",
+          "userRequest": "./routes/Compose"
+        }
+      ]
+    },
+    {
+      "identifier": "/srv/support-portal/src/components/RichText.jsx",
+      "name": "./src/components/RichText.jsx",
+      "size": 3900,
+      "chunks": [
+        179
+      ],
+      "reasons": [
+        {
+          "moduleName": "./src/components/CommentBox.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "./RichText"
+        },
+        {
+          "moduleName": "./src/routes/Compose.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "../components/RichText"
+        }
+      ]
+    },
+    {
+      "identifier": "/srv/support-portal/node_modules/@inkwell/editor/dist/index.js",
+      "name": "./node_modules/@inkwell/editor/dist/index.js",
+      "size": 141200,
+      "chunks": [
+        179
+      ],
+      "reasons": [
+        {
+          "moduleName": "./src/components/RichText.jsx",
+          "type": "harmony import specifier",
+          "userRequest": "@inkwell/editor"
+        }
+      ]
+    },
+    {
+      "identifier": "/srv/support-portal/node_modules/inkwell-model/dist/index.js",
+      "name": "./node_modules/inkwell-model/dist/index.js",
+      "size": 31400,
+      "chunks": [
+        179
+      ],
+      "reasons": [
+        {
+          "moduleName": "./node_modules/@inkwell/editor/dist/index.js",
+          "type": "harmony import specifier",
+          "userRequest": "inkwell-model"
+        }
+      ]
+    }
+  ]
+}

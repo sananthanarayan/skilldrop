@@ -1,0 +1,14 @@
+{
+  "name": "devils-advocate",
+  "version": "0.2.0",
+  "description": "Adversarial review of a code change before it merges — the real bugs, most consequential first, each checked against the code before it is reported, with a fix that works. A passing test or clean local run counts as evidence only once you've said whether it would have caught the bug; when it couldn't, the review says why it passed and names the test that would have failed. Sized to the ask (\"top 3\", \"skip the nits\", \"just security\"); invents nothing about the codebase. Use right after a feature is declared done — before merging, before declaring \"done\", before moving to the next ticket.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": ["design-doc", "doc-critique"],
+  "hooks": [
+    { "event": "pre-commit-review", "action": "devils-advocate", "description": "adversarially review staged changes before they land" }
+  ],
+  "tags": ["review", "code-review", "adversarial", "edge-cases", "future-proofing", "test-coverage", "dev-workflow"],
+  "model": { "tier": "heavy", "rationale": "Adversarial code review that must trace each finding and judge what the tests prove. Cheaper models miss edge cases and report false positives. Never downgrade." }
+}

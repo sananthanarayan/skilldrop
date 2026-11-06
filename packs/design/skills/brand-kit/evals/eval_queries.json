@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Here's our logo and brand colours \u2014 set up a brand kit we can reuse",
+    "should_trigger": true
+  },
+  {
+    "query": "Use our brand guidelines PDF so everything matches our style",
+    "should_trigger": true
+  },
+  {
+    "query": "Capture our fonts, colours and logo rules in one place",
+    "should_trigger": true
+  },
+  {
+    "query": "Make our decks and flyers on-brand \u2014 start with the brand settings",
+    "should_trigger": true
+  },
+  {
+    "query": "Build a PowerPoint deck for the board meeting",
+    "should_trigger": false
+  },
+  {
+    "query": "Make a flyer for our open day",
+    "should_trigger": false
+  },
+  {
+    "query": "Design a new logo for my startup",
+    "should_trigger": false
+  }
+]
