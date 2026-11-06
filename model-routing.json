@@ -194,6 +194,10 @@
       "tier": "heavy",
       "rationale": "Weighted multi-option judgment with a committal recommendation — cheaper models mis-weight costs, inflate benefits, and miss the flip-assumption. Never downgrade."
     },
+    "cap-table": {
+      "tier": "standard",
+      "rationale": "Turning SAFEs, notes and a term sheet into the script's input and explaining the result is bounded; the script does the conversion math."
+    },
     "capacity-cost-model": {
       "tier": "standard",
       "rationale": "Quantitative projection from a demand model against a fixed cost catalog. Headroom and scaling-cliff judgment is bounded by the reference; escalate via ambiguous-input on novel architectures."
@@ -209,6 +213,10 @@
     "content-design": {
       "tier": "standard",
       "rationale": "Rewrites source text from user needs under fixed plain-language rules, with a script for the readability numbers. Prioritising questions needs judgment, but facts come from the source."
+    },
+    "contract-check": {
+      "tier": "heavy",
+      "rationale": "The mechanical faults come from the script; reading every clause from the founder's side and writing the wording to ask for is legal judgment."
     },
     "council-review": {
       "tier": "heavy",
@@ -406,6 +414,10 @@
     "prfaq": {
       "tier": "standard",
       "rationale": "Synthesizes a press release and FAQs from a product concept against a fixed format. The specificity discipline needs care but the template bounds it; escalate via ambiguous-input when the concept itself is contested."
+    },
+    "privacy-policy-check": {
+      "tier": "standard",
+      "rationale": "The scan finds the services; confirming each in the code and writing disclosure text that names what each receives is bounded synthesis."
     },
     "prompt-caching-advisor": {
       "tier": "heavy",

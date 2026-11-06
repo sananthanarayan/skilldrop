@@ -104,6 +104,7 @@ A how-to and a reference page for every pack, generated from the pack's own file
 | Operations manager | [Use the Operations manager pack](how-to/packs/use-the-operations-manager-pack.md) | [Operations manager pack reference](reference/packs/pack-operations-manager.md) |
 | Event planner | [Use the Event planner pack](how-to/packs/use-the-event-planner-pack.md) | [Event planner pack reference](reference/packs/pack-event-planner.md) |
 | Interior designer | [Use the Interior designer pack](how-to/packs/use-the-interior-designer-pack.md) | [Interior designer pack reference](reference/packs/pack-interior-designer.md) |
+| Startup legal | [Use the Startup legal pack](how-to/packs/use-the-startup-legal-pack.md) | [Startup legal pack reference](reference/packs/pack-startup-legal.md) |
 <!-- pack-guides:end -->
 
 ### Per skill
@@ -136,6 +137,7 @@ One how-to for every skill: how to install it, the requests that route to it, wh
 | Operations manager | [shift-roster](how-to/skills/use-shift-roster.md) |
 | Event planner | [run-of-show](how-to/skills/use-run-of-show.md), [seating-plan](how-to/skills/use-seating-plan.md) |
 | Interior designer | [furniture-layout](how-to/skills/use-furniture-layout.md) |
+| Startup legal | [cap-table](how-to/skills/use-cap-table.md), [contract-check](how-to/skills/use-contract-check.md), [privacy-policy-check](how-to/skills/use-privacy-policy-check.md) |
 <!-- skill-guides:end -->
 
 ## explanation

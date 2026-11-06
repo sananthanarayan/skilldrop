@@ -1,0 +1,18 @@
+{
+  "skill_name": "contract-check",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Northgate sent their SaaS agreement, it's saas-agreement.md. We're Brightloop, the customer. The first year ends 1 July 2027. Anything I should push back on before I sign?",
+      "assertions": [
+        "Opens with a verdict and the few problems that matter most, not with a disclaimer",
+        "Flags the [●] fee in 3.1, the missing Exhibit C in 2.1, and the reference to Section 14.3 in 8.2, which doesn't exist",
+        "Flags 'thirty (60) days' in 3.2 and the impossible date 31 June 2026",
+        "Reads from the customer's side and flags the one-way indemnity in 6.3 and the one-sided liability cap in 6.1, each with wording to ask for",
+        "Gives the renewal notice deadline as 2 May 2027",
+        "Notes 'the Client' is used where the agreement defines 'the Customer'",
+        "Does not mention a script or the skill's name, and does not invent clauses that aren't in the agreement"
+      ]
+    }
+  ]
+}

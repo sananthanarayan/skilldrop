@@ -32,6 +32,7 @@
     "./packs/civil-architect/skills/",
     "./packs/operations-manager/skills/",
     "./packs/event-planner/skills/",
-    "./packs/interior-designer/skills/"
+    "./packs/interior-designer/skills/",
+    "./packs/startup-legal/skills/"
   ]
 }

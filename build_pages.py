@@ -351,6 +351,7 @@ ROLES = [
     ("Operations manager", ["operations-manager"]),
     ("Event planner", ["event-planner"]),
     ("Interior designer", ["interior-designer"]),
+    ("Startup founder", ["startup-legal"]),
 ]
 
 

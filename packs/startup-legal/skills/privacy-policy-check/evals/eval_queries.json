@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Is our privacy policy accurate for what the app actually does?",
+    "should_trigger": true
+  },
+  {
+    "query": "We added OpenAI and PostHog, do we need to update the privacy policy?",
+    "should_trigger": true
+  },
+  {
+    "query": "Check our privacy policy against the code before the App Store review",
+    "should_trigger": true
+  },
+  {
+    "query": "Does our privacy policy cover all the third parties we use?",
+    "should_trigger": true
+  },
+  {
+    "query": "Do a DPIA for our new face-matching feature",
+    "should_trigger": false
+  },
+  {
+    "query": "Answer this customer's security questionnaire",
+    "should_trigger": false
+  },
+  {
+    "query": "Map our SOC 2 controls to evidence",
+    "should_trigger": false
+  }
+]

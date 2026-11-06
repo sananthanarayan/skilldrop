@@ -1,0 +1,18 @@
+{
+  "skill_name": "cap-table",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Two founders, 4.5M shares each. 250k options granted, 750k unissued in the pool. SAFEs: $500k post-money at $8M cap; $125k post-money at $6M cap with 20% discount; $100k pre-money SAFE at $5M cap, 20% discount. Plus a $50k note at 6% from 2025-06-01, $5M cap, 20% discount. Term sheet: $16M pre, $4M lead + $1M follow-on, 10% pool post-money, closing 2026-12-15. What do we each own after?",
+      "assertions": [
+        "States each founder owns about 28.3 % after the round, down from 45 % today",
+        "Shows each SAFE and the note converting at its cap, with prices of about 0.7095, 0.5322, 0.4613 and 0.4613",
+        "Counts the note's interest: about $54,619 converts, not $50,000",
+        "Says the pool top-up (about 840,000 shares) comes out of the pre-money and gives its cost in money (about $1.1M, an effective pre-money near $14.9M)",
+        "The after-round table sums to 100 %",
+        "Does not mention a script, a JSON file or the skill's name in the reply",
+        "Does not invent a liquidation preference, vesting term or investor not in the prompt"
+      ]
+    }
+  ]
+}

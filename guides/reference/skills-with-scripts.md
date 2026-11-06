@@ -23,10 +23,12 @@ What each one declares in its manifest: the packages to install, the environment
 | [`behaviour-equivalence`](../../packs/dev-team/skills/behaviour-equivalence/SKILL.md) | dev-team | — | — | — | — | named-paths |
 | [`brand-kit`](../../packs/design/skills/brand-kit/SKILL.md) | design | — | — | — | — | none |
 | [`bundle-size-review`](../../packs/frontend/skills/bundle-size-review/SKILL.md) | frontend | — | — | `registry.npmjs.org` | `npx`, `npm`, `pnpm`, `yarn` | named-paths |
+| [`cap-table`](../../packs/startup-legal/skills/cap-table/SKILL.md) | startup-legal | — | — | — | — | named-paths |
 | [`cloud-cost-review`](../../packs/sre-oncall/skills/cloud-cost-review/SKILL.md) | sre-oncall | — | — | — | — | named-paths |
 | [`codebase-tour`](../../packs/dev-team/skills/codebase-tour/SKILL.md) | dev-team | — | — | — | — | none |
 | [`content-design`](../../packs/experience-design/skills/content-design/SKILL.md) | experience-design | — | — | — | — | none |
 | [`context-graph`](../../packs/core/skills/context-graph/SKILL.md) | core | — | — | — | `git` | named-paths |
+| [`contract-check`](../../packs/startup-legal/skills/contract-check/SKILL.md) | startup-legal | — | — | — | — | named-paths |
 | [`cover-letter`](../../packs/career/skills/cover-letter/SKILL.md) | career | — | — | — | — | named-paths |
 | [`delivery-metrics-report`](../../packs/sre-oncall/skills/delivery-metrics-report/SKILL.md) | sre-oncall | — | — | — | — | named-paths |
 | [`dependency-upgrade-review`](../../packs/dev-team/skills/dependency-upgrade-review/SKILL.md) | dev-team | — | — | `github.com`, `api.github.com`, `registry.npmjs.org`, `pypi.org`, `proxy.golang.org` | `git`, `gh`, `npm`, `pip`, `go` | named-paths |
@@ -46,6 +48,7 @@ What each one declares in its manifest: the packages to install, the environment
 | [`md-to-xlsx`](../../packs/converters/skills/md-to-xlsx/SKILL.md) | converters | — | — | — | — | named-paths |
 | [`output-hygiene`](../../packs/core/skills/output-hygiene/SKILL.md) | core | — | — | — | — | named-paths |
 | [`pre-merge-review`](../../packs/dev-team/skills/pre-merge-review/SKILL.md) | dev-team | — | — | — | `git`, `ruff`, `mypy`, `pytest`, `*` | project |
+| [`privacy-policy-check`](../../packs/startup-legal/skills/privacy-policy-check/SKILL.md) | startup-legal | — | — | — | — | named-paths |
 | [`rendering-strategy`](../../packs/frontend/skills/rendering-strategy/SKILL.md) | frontend | — | — | — | — | named-paths |
 | [`resume-tailor`](../../packs/career/skills/resume-tailor/SKILL.md) | career | — | — | — | — | named-paths |
 | [`risk-register`](../../packs/grc/skills/risk-register/SKILL.md) | grc | — | — | — | — | named-paths |

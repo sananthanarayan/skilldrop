@@ -1,0 +1,18 @@
+{
+  "skill_name": "privacy-policy-check",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're launching TidyHabit next week. Can you check our privacy policy (privacy-policy.md) against the app in the app/ folder? We wrote it from a template in the spring.",
+      "assertions": [
+        "Says the policy's 'we do not sell or share your personal information with third parties' is contradicted by the Meta pixel in src/layout.tsx",
+        "Names OpenAI as receiving the user's journal entry (src/coach.ts) and says the policy doesn't disclose it",
+        "Names PostHog, Sentry and Resend from package.json as not disclosed",
+        "Does not report Segment, which is only in devDependencies",
+        "Gives paste-ready text naming each service, what it receives and why",
+        "Lists missing sections: cookies, international transfers and children",
+        "Does not mention a script or the skill's name, and names no service that isn't in the code"
+      ]
+    }
+  ]
+}

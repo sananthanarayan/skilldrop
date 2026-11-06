@@ -582,6 +582,34 @@
         "office fit-out"
       ],
       "homepage": "https://sananthanarayan.github.io/skilldrop/packs/interior-designer/"
+    },
+    {
+      "name": "startup-legal",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/sananthanarayan/skilldrop.git",
+        "path": "packs/startup-legal",
+        "ref": "plugins"
+      },
+      "description": "Legal groundwork for a startup that can't yet pay a lawyer for everything: an agreement checked before you sign it (blanks, broken cross-references, mismatched amounts, the renewal date, and the clauses that hurt a small company, with wording to ask for), your cap table modelled through SAFEs, notes and a priced round, and your privacy policy checked against what the app's code actually sends to third parties. Each says what is worth a lawyer's hour. (8 skills)",
+      "version": "1.8.0",
+      "author": {
+        "name": "Sanjay Ananthanarayan",
+        "url": "https://github.com/sananthanarayan"
+      },
+      "keywords": [
+        "legal",
+        "startup",
+        "founder",
+        "contract review",
+        "NDA",
+        "SAFE",
+        "cap table",
+        "dilution",
+        "privacy policy",
+        "GDPR"
+      ],
+      "homepage": "https://sananthanarayan.github.io/skilldrop/packs/startup-legal/"
     }
   ]
 }
