@@ -1,0 +1,3 @@
+# Findings reviewed and confirmed false, by exact fingerprint (commit:file:rule:line).
+# A hostname in a vendor list (api2.amplitude.com) in a scanner that was later removed; not a credential.
+a0c2c4fa783ef639a3d5913ea9da1dc9d494518a:packs/startup-legal/skills/privacy-policy-check/scripts/policy_scan.py:generic-api-key:43
