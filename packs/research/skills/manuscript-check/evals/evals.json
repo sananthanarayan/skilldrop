@@ -1,0 +1,73 @@
+{
+  "skill_name": "manuscript-check",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm submitting paper.md to the journal next week. Can you check my citations and cross-references? It's APA 7th and the abstract limit is 50 words.",
+      "assertions": [
+        "Flags 'Kuh et al., 2009' (line 34) against Kuh et al. 2008 in the list",
+        "Flags 'Yeager (2016)' against the list's spelling 'Yeagar'",
+        "Flags Rosenbaum and Rubin (1983) as listed twice",
+        "Flags references to Section 6, Table 2 and Figure 3, which don't exist, and Figure 2 never being referred to",
+        "Flags Pascarella and Terenzini (2005) as never cited without deleting it unasked",
+        "Does not mention a script or the skill's name, and does not invent references or errors not in the file"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-11-09",
+      "prompt": "Can you check my references and figure numbering before I send this to the journal? It's paper.md, APA style.",
+      "assertions": [
+        "Flags (Okonkwo-Varga, 2019) in the Introduction as not matching the list, which has Okonkwo-Varga, J. (2018), and treats it as a near miss whose likely fix is correcting the in-text year to 2018 (or confirming which year is right), not as a missing reference",
+        "Flags 'Lindqvst & Moreau, 2020' (cited twice, in the Introduction and the Discussion) as a misspelling of Lindqvist, E., & Moreau, C. (2020) in the reference list, and suggests correcting the in-text spelling",
+        "Flags (Tamberlane, 2021) in the Introduction as a citation with no matching entry in the reference list, and says a reference must be added or the citation removed",
+        "Flags Feroz, A. (2017) as listed in the references but never cited in the text",
+        "Flags the reference to Figure 3 in the Results as pointing to a figure that does not exist (only Figures 1 and 2 have captions)",
+        "Notes the reference-list style inconsistency in the Delacroix-Hume and Petrov (2021) entry: full first names ('Brigitte', 'Stefan') instead of initials, unlike every other entry",
+        "Does not invent faults or references that are not in paper.md - for example it does not report Table 1, Figure 1, Figure 2, Vasquez-Tolland (2020) or Haldane-Ruiz et al. (2016) as problems, and does not make up a full reference for Tamberlane"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-11-09",
+      "prompt": "This is my pilot report for the Fernhollow Farm Trust board (report.md). I'm also going to cut it down and send it to a small journal that uses Vancouver referencing, so I want the version I have now to be right first. Could you check that every citation matches the reference list and the references are numbered properly, that all the figure, table and section cross-references work, and anything else that would embarrass me in front of the board or an editor? Please tell me exactly where each problem is and what you'd change.",
+      "assertions": [
+        "Finds that the references are not numbered in order of first citation: reference [4] is first cited (Introduction, second paragraph) before reference [3], so in Vancouver style the two should be swapped and renumbered",
+        "Finds that reference 11 is a duplicate of reference 5 (Castellanos and Whitcombe, 2022, same title and journal), and says to delete 11 and cite [5] in section 4.1 instead, renumbering what follows",
+        "Finds that reference 9 (Okafor-Brandt, 2023) is never cited in the text, so it should be cited or removed",
+        "Finds that section 3.1 refers to 'Section 4.3', which does not exist (section 4 has only 4.1 and 4.2)",
+        "Finds that Figure 2 has a caption but is never referred to in the text, and suggests where to cite it (e.g. in section 3 or 4.2 on watering)",
+        "Notes that reference 7 (Delahaye and Strand) is written in APA style (comma-separated initials with full stops, '&', year in brackets after the authors, full journal name) unlike the Vancouver format of every other entry, and shows the Vancouver form",
+        "Does not invent problems that are not in report.md - for example it does not report Figure 1, Table 1 or references 1, 2, 6, 8, 10 or 12 as missing or uncited, and does not claim any citation lacks a reference entry"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-11-09",
+      "prompt": "Check paper.md before I send it to the journal - references and cross-references, please.",
+      "assertions": [
+        "Flags 'Halvorsen, 2017' (Introduction) as a near miss for the reference Halvorsen (2019), and says the likelier fix is to correct the in-text year to 2019",
+        "Flags 'Pemberton (2017)' (Introduction) as a near miss for the reference 'Pembleton, A. (2017)' and asks which spelling is right rather than treating it as two different works",
+        "Flags 'Varga, 2021' (Discussion) as cited with no entry in the reference list and asks for the details, without inventing a reference for it",
+        "Flags 'Lindqvist, E. (2016)' as listed in References but never cited, to be cited or removed",
+        "Flags the Results' reference to 'Figure 3': only Figures 1 and 2 exist (captions after Table 1), so either a figure is missing or the reference should point to Figure 2",
+        "Flags that the abstract's 'raised mean soil moisture by 23%' disagrees with Table 1: wood chip 15.1% vs bare soil 11.6% is a relative increase of (15.1 - 11.6) / 11.6 = 30.2% (3.5 percentage points)",
+        "Does not invent references, author details, figures, data or results not in the file"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-11-09",
+      "prompt": "This is chapter 3 of my PhD thesis (chapter3.md). My supervisor, Dr. Imelda Faraday-Nwosu, wants the full draft by Friday and she is strict about references. Department style is numbered references in order of first citation in the text. Could you check that every citation matches the reference list, that the references are numbered correctly, and that the figure, table and section cross-references all work? She also reads closely for whether the abstract and results hang together with the methods, so flag anything there too. Please tell me exactly what to change, including any renumbering.",
+      "assertions": [
+        "Flags that references are not numbered in order of first citation: the text cites [1], [2], [5], [3], [4] in that order, so the fix renumbers old 5 to 3, old 3 to 4 and old 4 to 5 (1, 2, 6, 7 and 8 keep their numbers), updating both the list and the in-text citations",
+        "Flags references 7 and 9 (Hargreaves & Nakamura 2024, Battery variability in light electric vehicle fleets) as the same work listed twice in different journal-name styles; the fix merges them so the [9] citation in Section 3.2.3 becomes [7], leaving an 8-entry list",
+        "Flags citation [11] in the Results as having no entry in the reference list (the list ends at 9) and asks for the source rather than inventing one; once supplied it becomes the next number in order of first citation (9 after the merge)",
+        "Flags the cross-reference to 'Section 3.2.4' in the Introduction: Methods has only 3.2.1-3.2.3, and the likelier target is 3.2.2 (Charging regimes); and flags that Figure 2 (monthly depot temperature) has a caption but is never referred to in the text",
+        "Flags that the abstract's fleet-wide mean fade of 7.9% disagrees with Table 1's 'All bikes' figure of 7.0% (consistent with (27 x 6.4 + 15 x 8.1) / 42 = 7.0%), so the abstract is likely a transposition and should read 7.0%",
+        "Flags that the Results report a Kaplan-Meier analysis of time to 80% capacity that the Methods (3.2.3) never describe, so it must be added to the methods or dropped",
+        "Does not invent references, bibliographic details, data, figures or analyses not in the file"
+      ]
+    }
+  ]
+}

@@ -65,7 +65,7 @@ Install one pack. Every role pack also brings `core` (intake, critique, review c
 - **Building on the Claude API:** `api-builder` — prompt caching, token budgets, eval generation, tool schemas. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/api-builder/)
 - **Moving between formats:** `converters` — Markdown to Word, Excel and HTML, files back to Markdown, and Mermaid diagrams checked and rendered. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/converters/)
 - **Designing the experience:** `experience-design` — information architecture, UX writing, content design, component specs, service blueprints. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/experience-design/)
-- **Researching a question:** `research` — research plans, cited source synthesis, competing hypotheses. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/research/)
+- **Researching a question:** `research` — research plans, cited source synthesis, competing hypotheses, and a manuscript's citations and cross-references checked before submission. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/research/)
 - **Keeping the tracker straight:** `trackers` — backlog triage, weekly status from tracker data, briefs turned into issues. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/trackers/)
 - **Data and analytics:** `data-analytics` — metric definitions, SQL review, dashboard specs. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/data-analytics/)
 - **Governance, risk and compliance:** `grc` — DPIAs, SOC 2 evidence maps, risk registers, security questionnaire answers. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/grc/)

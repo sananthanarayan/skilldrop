@@ -363,6 +363,10 @@
       "tier": "light",
       "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 71% and 71% of checks in two tier trials, against standard's 71% and heavy's 71% and 71%, within 5 points of the best both times."
     },
+    "manuscript-check": {
+      "tier": "standard",
+      "rationale": "Citation and cross-reference matching come from the script; reading the reference list for style consistency is bounded."
+    },
     "mcp-pairing": {
       "tier": "standard",
       "rationale": "Matching a loop's stages to the context each needs and the narrowest access that provides it is bounded judgment over a short checklist."

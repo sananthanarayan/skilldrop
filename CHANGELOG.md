@@ -8,6 +8,11 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.12.0 — 2026-11-09
+
+- **`manuscript-check` joins `research`** ([RFC-0081](docs/rfcs/0081-manuscript-check.md)). Give it a paper, thesis chapter or report (Word, Markdown or text). It checks every citation against the reference list and every reference against the citations, numbered or author–year. It names near misses: the right author with another year, a misspelt name. It finds duplicate references, and Figure, Table and Section references to things that don't exist or are never mentioned. When numbered references are out of citation order, it gives the whole renumbering. Then it checks the abstract's and the text's numbers against your tables and results. It lost its first blind measurement and won its second (2 of 4 pairs with each judge). Run `npx skilldrop-cli install --pack research` to get it.
+- [What makes a skill beat the agent](guides/explanation/what-makes-a-skill-beat-the-agent.md) now covers sixteen profession skills.
+
 ## 1.11.1 — 2026-11-09
 
 - **`file-to-markdown` 0.4.1 no longer crashes on a damaged spreadsheet.** A cell that points at a shared string with an empty or non-numeric index now reads as blank, and the rest of the workbook converts. Run `skilldrop update` to pick it up.

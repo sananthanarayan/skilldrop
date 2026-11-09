@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Check my citations match my bibliography",
+    "should_trigger": true
+  },
+  {
+    "query": "Proofread my paper's references and figure numbering before submission",
+    "should_trigger": true
+  },
+  {
+    "query": "Is my thesis chapter ready to send to my supervisor? Check the cross-references",
+    "should_trigger": true
+  },
+  {
+    "query": "Check every figure and table in this report is referred to",
+    "should_trigger": true
+  },
+  {
+    "query": "Synthesise these ten papers into a literature review",
+    "should_trigger": false
+  },
+  {
+    "query": "Plan a research study on remote work and wellbeing",
+    "should_trigger": false
+  },
+  {
+    "query": "Critique this design document's structure",
+    "should_trigger": false
+  }
+]

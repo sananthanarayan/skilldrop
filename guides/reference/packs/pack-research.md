@@ -13,7 +13,7 @@ Take a question from vague to answered: plan the research around the decision it
 | | |
 |---|---|
 | Install | `npx skilldrop-cli install --pack research` |
-| Skills | 3 plus 5 from core |
+| Skills | 4 plus 5 from core |
 | Loops | research |
 | How-to | [Use the Research pack](../../how-to/packs/use-the-research-pack.md) |
 
@@ -49,6 +49,32 @@ Tier **heavy** · v0.1.5 · [SKILL.md](../../../packs/research/skills/hypothesis
 - Summarising what a set of sources says — `source-synthesis`
 - Reviewing someone's written argument for weak spots — `doc-critique`
 - Writing up an incident's timeline and causes once they're known — `postmortem-generator`
+
+### `manuscript-check`
+
+Check a paper, thesis chapter or report before it goes to a journal, a supervisor, examiners or a publisher — a script reads the manuscript and finds every citation with no reference (including near misses: the right author with another year, a misspelt name), references never cited, the same work listed twice, numbered references out of citation order, and Figure, Table and Section references to things that don't exist or are never mentioned, plus footnotes and the abstract's length — then reads the reference list for consistency of style.
+
+Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/research/skills/manuscript-check/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/manuscript-check/)
+
+**Use it when** someone asks to "check my references", "check my citations match the bibliography", "proofread my paper before submission", "check my figure and table numbering", "is my thesis chapter ready to send", or "check the cross-references in this report".
+
+**Needs:** Python 3 for its scripts (standard library only).
+
+**A good result:**
+
+- **Every citation is checked against the reference list, and every reference against the citations.**
+- **A near miss names the entry it nearly matches,** so the fix is one edit.
+- **Every Figure, Table and Section reference points at something that exists,** and every caption is mentioned.
+- **The reply leads with what a reviewer would catch,** with lines, and no mention of scripts or files.
+- **Nothing is deleted unasked,** and the likelier side of each mismatch is named.
+- **Their file is never overwritten,** and every change in a corrected copy is listed.
+
+**Not for:**
+
+- Whether a source supports the claim it's cited for: that is a reading of the sources (`source-synthesis` reads sources for a question)
+- Writing a literature review: plan it with `research-plan` and draft it from the sources
+- Plagiarism or similarity checking
+- Copy-editing the prose itself
 
 ### `research-plan`
 

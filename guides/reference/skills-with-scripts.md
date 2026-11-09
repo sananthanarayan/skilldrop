@@ -44,6 +44,7 @@ What each one declares in its manifest: the packages to install, the environment
 | [`judge-audit`](../../packs/ai-engineering/skills/judge-audit/SKILL.md) | ai-engineering | — | — | — | — | named-paths |
 | [`lease-check`](../../packs/startup-legal/skills/lease-check/SKILL.md) | startup-legal | — | — | — | — | named-paths |
 | [`locale-check`](../../packs/experience-design/skills/locale-check/SKILL.md) | experience-design | — | — | — | — | named-paths |
+| [`manuscript-check`](../../packs/research/skills/manuscript-check/SKILL.md) | research | — | — | — | — | named-paths |
 | [`md-to-confluence`](../../packs/converters/skills/md-to-confluence/SKILL.md) | converters | — | `CONFLUENCE_EMAIL (optional)`, `CONFLUENCE_API_TOKEN (optional)`, `CONFLUENCE_PAT (optional)` | `*.atlassian.net` | — | named-paths |
 | [`md-to-docx`](../../packs/converters/skills/md-to-docx/SKILL.md) | converters | — | — | — | — | named-paths |
 | [`md-to-pptx`](../../packs/converters/skills/md-to-pptx/SKILL.md) | converters | — | — | — | — | named-paths |

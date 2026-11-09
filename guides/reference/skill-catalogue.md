@@ -220,6 +220,7 @@ Capture a brand once, and plan a deck for its audience. `brand-kit` writes the `
 | [`hypothesis-comparison`](../../packs/research/skills/hypothesis-comparison/SKILL.md) | Analysis of competing hypotheses: consistency matrix, hypotheses ranked by evidence against them, diagnostic evidence and linchpins, and the next observation that discriminates. |
 | [`research-plan`](../../packs/research/skills/research-plan/SKILL.md) | A decision-led research plan: precise question, sub-questions with the finding that would change the decision, method per sub-question, inclusion criteria, search strings, stopping rule. |
 | [`source-synthesis`](../../packs/research/skills/source-synthesis/SKILL.md) | What a set of supplied sources supports on your question, in the size you asked for: nothing from outside unless labelled where it appears, echoes counted once, the sources' own sums checked, and a labelled estimate when you need a figure they don't settle. A fully cited literature review, with a citation checker, when that is the ask. |
+| [`manuscript-check`](../../packs/research/skills/manuscript-check/SKILL.md) | A paper, thesis chapter or report checked before submission: every citation against the reference list both ways, numbered or author-year, with near misses named (the right author with another year, a misspelt name), duplicate references, Figure, Table and Section references that don't exist or are never made, footnotes and abstract length, then the list read for style consistency. |
 
 ## Job applications
 

@@ -1,0 +1,36 @@
+{
+  "name": "manuscript-check",
+  "version": "0.1.0",
+  "description": "Check a paper, thesis chapter or report before it goes to a journal, a supervisor, examiners or a publisher — a script reads the manuscript and finds every citation with no reference (including near misses: the right author with another year, a misspelt name), references never cited, the same work listed twice, numbered references out of citation order, and Figure, Table and Section references to things that don't exist or are never mentioned, plus footnotes and the abstract's length — then reads the reference list for consistency of style. Use when someone asks to \"check my references\", \"check my citations match the bibliography\", \"proofread my paper before submission\", \"check my figure and table numbering\", \"is my thesis chapter ready to send\", or \"check the cross-references in this report\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "research-plan",
+    "source-synthesis"
+  ],
+  "tags": [
+    "citations",
+    "references",
+    "manuscript",
+    "thesis",
+    "academic-writing",
+    "cross-references"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "Reads the manuscript it is given and writes nothing."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "Citation and cross-reference matching come from the script; reading the reference list for style consistency is bounded."
+  }
+}

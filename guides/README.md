@@ -126,7 +126,7 @@ One how-to for every skill: how to install it, the requests that route to it, wh
 | API builder | [eval-harness-generator](how-to/skills/use-eval-harness-generator.md), [prompt-caching-advisor](how-to/skills/use-prompt-caching-advisor.md), [token-budget-estimator](how-to/skills/use-token-budget-estimator.md), [tool-use-schema-writer](how-to/skills/use-tool-use-schema-writer.md) |
 | Converters | [file-to-markdown](how-to/skills/use-file-to-markdown.md), [md-to-confluence](how-to/skills/use-md-to-confluence.md), [md-to-docx](how-to/skills/use-md-to-docx.md), [md-to-pptx](how-to/skills/use-md-to-pptx.md), [md-to-xlsx](how-to/skills/use-md-to-xlsx.md) |
 | Experience design | [content-design](how-to/skills/use-content-design.md), [design-system-spec](how-to/skills/use-design-system-spec.md), [information-architecture](how-to/skills/use-information-architecture.md), [locale-check](how-to/skills/use-locale-check.md), [service-blueprint](how-to/skills/use-service-blueprint.md), [ux-writing](how-to/skills/use-ux-writing.md) |
-| Research | [hypothesis-comparison](how-to/skills/use-hypothesis-comparison.md), [research-plan](how-to/skills/use-research-plan.md), [source-synthesis](how-to/skills/use-source-synthesis.md) |
+| Research | [hypothesis-comparison](how-to/skills/use-hypothesis-comparison.md), [manuscript-check](how-to/skills/use-manuscript-check.md), [research-plan](how-to/skills/use-research-plan.md), [source-synthesis](how-to/skills/use-source-synthesis.md) |
 | Trackers | [backlog-triage](how-to/skills/use-backlog-triage.md), [team-status-report](how-to/skills/use-team-status-report.md), [tracker-brief-sync](how-to/skills/use-tracker-brief-sync.md) |
 | Data and analytics | [dashboard-spec](how-to/skills/use-dashboard-spec.md), [sql-review](how-to/skills/use-sql-review.md) |
 | Governance, risk and compliance | [dpia](how-to/skills/use-dpia.md), [risk-register](how-to/skills/use-risk-register.md), [security-questionnaire-response](how-to/skills/use-security-questionnaire-response.md), [soc2-evidence-map](how-to/skills/use-soc2-evidence-map.md) |
@@ -148,7 +148,7 @@ One how-to for every skill: how to install it, the requests that route to it, wh
 - [Why loops](explanation/loops.md) — why sequencing is its own primitive, and why five loops
 - [Cost-aware model routing](../MODEL-ROUTING.md) — abstract tiers and the provider map
 - [What the benchmark showed](explanation/what-the-benchmark-showed.md) — the gain on skills' own checks, the blind preference, the held-out test that the revised skills failed, and what the winners share
-- [What makes a skill beat the agent](explanation/what-makes-a-skill-beat-the-agent.md) — fourteen profession skills measured blind: the kind that won, the kind that lost twice, and the rule that predicts it before anything is built
+- [What makes a skill beat the agent](explanation/what-makes-a-skill-beat-the-agent.md) — sixteen profession skills measured blind: the kind that won, the kind that lost twice, and the rule that predicts it before anything is built
 - [skilldrop, reviewed by its own skills](explanation/own-skills-on-own-site.md) — the site's performance and accessibility, checked with `web-performance-review` and `accessibility-audit`, the findings and the fixes, and `pre-merge-review` on pull requests
 - [Does the agent invent your resume?](explanation/resume-fabrication-comparison.md) — 14 resume and cover-letter requests with the career skills and without: what each added that the person never said
 

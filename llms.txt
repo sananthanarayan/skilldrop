@@ -1,12 +1,12 @@
 # skilldrop
 
-> 122 portable skills for the artifacts knowledge work ships (ADRs, design docs,
+> 123 portable skills for the artifacts knowledge work ships (ADRs, design docs,
 > PRDs, runbooks, threat models, decks, postmortems), plus 11 loops that sequence them
 > behind gates. A loop orders skills; a skill never calls a skill, so every one of the
-> 122 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
+> 123 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 1.11.1.
+> Version 1.12.0.
 
 ## Start here
 
@@ -56,7 +56,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Operating model](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/operating-model.md) *(explanation)*: Know which stage your work is in, which loop or skills and pack help there, and where the agent stops for your decision.
 - [skilldrop, reviewed by its own skills](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/own-skills-on-own-site.md) *(explanation)*: The site's performance and accessibility, checked with the catalogue's own web-performance-review and accessibility-audit skills, the findings, and what was fixed. Pull requests are reviewed by pre-merge-review.
 - [Does the agent invent your resume?](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/resume-fabrication-comparison.md) *(explanation)*: The same 14 resume and cover-letter requests run with the career pack's skills and with plain Claude Code - how often each put something in the document that the person never said, and what kind of thing it was.
-- [What makes a skill beat the agent](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/what-makes-a-skill-beat-the-agent.md) *(explanation)*: Fourteen profession skills, each measured blind against Claude Code without it - which kind won, which kind lost twice, and the rule that predicts the difference before anything is built.
+- [What makes a skill beat the agent](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/what-makes-a-skill-beat-the-agent.md) *(explanation)*: Sixteen profession skills, each measured blind against Claude Code without it - which kind won, which kind lost twice, and the rule that predicts the difference before anything is built.
 - [What the benchmark showed](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/what-the-benchmark-showed.md) *(explanation)*: Five days of measuring skills against the agent without them - a large gain on the skills' own checks, no blind preference at first, a gain that did not survive new evals, and what the skills that do win have in common.
 - [Author a new loop](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/author-a-loop.md) *(how-to)*: How to add a loop — the closed loop.json contract, the three stage types, gate rules, and the checks that will reject a loop that only looks like governance.
 - [Author a new skill](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/author-a-skill.md) *(how-to)*: The short version of the authoring path — what a skill must contain, what gates it, and where the full contributor rules live.
@@ -164,6 +164,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use lease-check](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-lease-check.md) *(how-to)*: Check a commercial lease before a startup signs it for its first office, studio or lab
 - [Use llm-eval-harness](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-llm-eval-harness.md) *(how-to)*: Design an evaluation harness for an LLM-powered feature
 - [Use locale-check](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-locale-check.md) *(how-to)*: Check a product's translations against the source strings before they ship
+- [Use manuscript-check](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-manuscript-check.md) *(how-to)*: Check a paper, thesis chapter or report before it goes to a journal, a supervisor, examiners or a publisher
 - [Use mcp-pairing](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-mcp-pairing.md) *(how-to)*: Recommend which MCP servers to connect for a loop, workflow or task, stage by stage, with the narrowest access that works
 - [Use md-to-confluence](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-md-to-confluence.md) *(how-to)*: Turn a Markdown runbook, design note or guide into a Confluence page
 - [Use md-to-docx](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-md-to-docx.md) *(how-to)*: Turn a Markdown draft into a Word document (.docx) that someone outside engineering can open, edit and track changes in, with real Heading styles so the navigation pane…
@@ -298,7 +299,7 @@ except `api-builder` requires `core`, which installs with it.
 - **api-builder** (4 skills): Skills for teams building on the Anthropic API — prompt caching, token budgeting, eval generation for skills, and tool-use schema writing.
 - **converters** (5 skills, requires core): Turn Markdown into Word, Excel, PowerPoint and Confluence files that people outside engineering can open, and turn their files back into Markdown. Standard-library Python scripts, with nothing to install.
 - **experience-design** (6 skills, loops: clarify, requires core): The experience around a product: the structure people navigate, the content and interface words they read, the components they use, and the service behind it all.
-- **research** (3 skills, loops: research, requires core): Take a question from vague to answered: plan the research around the decision it serves, synthesise the sources with every claim cited, and rank rival explanations by the evidence against them.
+- **research** (4 skills, loops: research, requires core): Take a question from vague to answered: plan the research around the decision it serves, synthesise the sources with every claim cited, and rank rival explanations by the evidence against them.
 - **trackers** (3 skills, requires core): For leads and PMs who run work in Jira, Linear or GitHub Projects: load a PRD into the tracker, triage the backlog, write the weekly status report, and check the tracker still matches the doc, all from an export or an MCP tool, with the numbers computed rather than estimated.
 - **data-analytics** (2 skills, loops: measure, requires core): For analysts and the people who rely on their numbers: review SQL for the bugs that quietly inflate a figure, and spec dashboards around a decision instead of every chart that was easy to make.
 - **grc** (4 skills, loops: comply, requires core): Governance, risk and compliance drafts for compliance leads, DPOs and risk owners: a risk register with a checked heat map, a GDPR data protection impact assessment, a SOC 2 control-to-evidence map, and answers to a customer security questionnaire drawn from your own evidence, each prepared for a qualified person to review.
@@ -325,7 +326,7 @@ except `api-builder` requires `core`, which installs with it.
 - **create-on-brand-collateral** (2 skills): Make collateral that looks like it came from your team: capture the brand once, then build decks with your logo, colours and fonts.
 - **get-a-draft-ready-to-ship** (8 skills): The passes either side of a generator: collect a messy input into a structured brief, critique the argument, and strip the machine artifacts before it leaves the building.
 - **design-the-experience** (6 skills): Shape what people see and read before it's built: information architecture, interface copy, content specs, component specs and service blueprints.
-- **research-a-question** (3 skills): Take a question to a sourced answer: a research plan with a stopping rule, a cited synthesis of the sources, and competing explanations weighed against the evidence.
+- **research-a-question** (4 skills): Take a question to a sourced answer: a research plan with a stopping rule, a cited synthesis of the sources, and competing explanations weighed against the evidence.
 - **define-and-trust-the-numbers** (2 skills): Make the numbers a business runs on mean one thing: SQL reviewed for wrong answers, and dashboards specced before they're built, with every number on them defined.
 - **manage-risk-and-compliance** (4 skills): Prepare the material compliance asks for: a data protection impact assessment, a SOC 2 evidence map, a risk register with owners and review dates, and answers to a customer's security questionnaire with the evidence behind each.
 - **build-agent-skills** (2 skills): Write and review Agent Skills for any tool: a portable SKILL.md with evals, and an audit of an existing skill before it ships.
@@ -351,10 +352,10 @@ except `api-builder` requires `core`, which installs with it.
 - [catalogue.json](https://sananthanarayan.github.io/skilldrop/catalogue.json): every skill, loop, pack and outcome as machine-readable JSON — name, description, tier, tags, related. Prefer this over scraping the site.
 - [model-routing.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/model-routing.json): the abstract tier per skill (light/standard/heavy) and the provider map that resolves a tier to a concrete model.
 - [catalogue.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/catalogue.json): pack display order and outcome membership; each pack's metadata is in `packs/<pack>/pack.json`.
-- All 122 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
+- All 123 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
 
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 79 RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 80 RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.
