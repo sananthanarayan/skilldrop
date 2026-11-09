@@ -727,6 +727,14 @@ def cell_ref(ref):
     return int(m.group(2)) - 1, n - 1
 
 
+def _int_or(text, default):
+    """int(text), or default when a damaged file leaves it empty or not a number."""
+    try:
+        return int(text)
+    except (TypeError, ValueError):
+        return default
+
+
 def xlsx_to_md(path, rep, max_rows=0):
     z = open_zip(path, ".xlsx")
     names = set(z.namelist())
@@ -749,10 +757,10 @@ def xlsx_to_md(path, rep, max_rows=0):
         nf = st.find(S + "numFmts")
         for f in (nf if nf is not None else []):
             code = re.sub(r'"[^"]*"|\[[^\]]*\]|\\.', "", f.get("formatCode", "")).lower()
-            custom[int(f.get("numFmtId"))] = bool(re.search(r"[dmyh]", code))
+            custom[_int_or(f.get("numFmtId"), -1)] = bool(re.search(r"[dmyh]", code))
         xfs = st.find(S + "cellXfs")
         for k, xf in enumerate(xfs if xfs is not None else []):
-            fid = int(xf.get("numFmtId", "0"))
+            fid = _int_or(xf.get("numFmtId", "0"), 0)
             if fid in BUILTIN_DATE_FMTS or custom.get(fid):
                 date_styles.add(k)
     rels = read_rels(z, "xl/_rels/workbook.xml.rels")
@@ -788,14 +796,15 @@ def xlsx_to_md(path, rep, max_rows=0):
             if c.find(S + "f") is not None:
                 formulas += 1
             if t == "s" and v is not None:
-                val = shared[int(v.text)] if int(v.text) < len(shared) else ""
+                i = _int_or(v.text, -1)          # an empty or non-numeric index reads as a blank cell
+                val = shared[i] if 0 <= i < len(shared) else ""
             elif t == "inlineStr":
                 val = "".join(x.text or "" for x in c.iter(S + "t"))
             elif t == "b" and v is not None:
                 val = "TRUE" if v.text == "1" else "FALSE"
             elif v is not None and v.text is not None:
                 val = v.text
-                if t == "n" and int(c.get("s", "0")) in date_styles:
+                if t == "n" and _int_or(c.get("s", "0"), 0) in date_styles:
                     try:
                         d = epoch + timedelta(days=float(val))
                         val = d.strftime("%Y-%m-%d") if float(val) == int(float(val)) \

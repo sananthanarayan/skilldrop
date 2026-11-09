@@ -23,7 +23,7 @@ Turn Markdown into Word, Excel, PowerPoint and Confluence files that people outs
 
 Convert a Word document, PowerPoint deck, Excel workbook, web page, CSV, JSON, text file, email (.eml or Outlook .msg) or PDF into clean Markdown. It keeps headings, lists, tables, links, bold and italic, slide titles and speaker notes. It saves embedded images beside the Markdown and links them, shows tracked changes as pending rather than accepted, and reports everything else it dropped (charts, comments, formulas), so the content can be read, reviewed or fed to another skill.
 
-Tier **light** · v0.4.0 · [SKILL.md](../../../packs/converters/skills/file-to-markdown/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/file-to-markdown/)
+Tier **light** · v0.4.1 · [SKILL.md](../../../packs/converters/skills/file-to-markdown/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/file-to-markdown/)
 
 **Use it when** the user hands over a .docx, .pptx, .xlsx, .html, .csv, .json, .eml, .msg or .pdf and says "read this", "turn this into markdown", "extract the text", or wants it critiqued or briefed.
 

@@ -8,6 +8,10 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.11.1 — 2026-11-09
+
+- **`file-to-markdown` 0.4.1 no longer crashes on a damaged spreadsheet.** A cell that points at a shared string with an empty or non-numeric index now reads as blank, and the rest of the workbook converts. Run `skilldrop update` to pick it up.
+
 ## 1.11.0 — 2026-11-09
 
 - **A new pack for teachers: `educator`, with `exam-paper-check`** ([RFC-0080](docs/rfcs/0080-educator-pack-and-vesting-schedule.md)). Give it your paper and mark scheme, as Word, Markdown or text. It reads your own files and adds up every part, question and the paper, counting an either/or once. It lines the mark scheme up against the paper part by part and weighs the marks against your objectives. Then it works each question through under the paper's conditions, catching problems like a square root nobody can do without a calculator. Install it with `npx skilldrop-cli install --pack educator`.

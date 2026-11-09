@@ -674,6 +674,15 @@ class ToMarkdownTest(unittest.TestCase):
         self.assertEqual(code, 0, err)
         self.assertEqual(md, "## Budget\n\n| Item |\n|---|\n")
 
+    def test_xlsx_shared_string_cell_with_an_empty_or_bad_index_reads_blank(self):
+        # found by the fuzzer: <v/> with no text made int(None) crash the whole conversion
+        rows = [(1, '<c r="A1" t="s"><v>0</v></c><c r="B1" t="s"><v/></c><c r="C1" t="s"><v>x</v></c>')]
+        with workdir() as d:
+            self._workbook(os.path.join(d, "b.xlsx"), rows)
+            code, md, err = to_md(d, "b.xlsx")
+        self.assertEqual(code, 0, err)
+        self.assertIn("| Item |", md)
+
     def test_xlsx_one_far_away_cell_does_not_build_a_huge_grid(self):
         rows = [(1, '<c r="A1" t="s"><v>0</v></c>'), (999999, '<c r="ZZZ999999" t="s"><v>1</v></c>')]
         with workdir() as d:
