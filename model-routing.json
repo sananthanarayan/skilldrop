@@ -275,6 +275,10 @@
       "tier": "standard",
       "rationale": "Contract drafting against the AsyncAPI shape with fixed rules on ordering, delivery and versioning; mid tier is enough."
     },
+    "exam-paper-check": {
+      "tier": "standard",
+      "rationale": "The arithmetic and the scheme-against-paper comparison come from the script; reading the questions for clarity and fairness is bounded judgment."
+    },
     "exec-summary": {
       "tier": "standard",
       "rationale": "Compression to one page. Needs to keep the right signal; escalate on very long source docs."
@@ -570,6 +574,10 @@
     "ux-writing": {
       "tier": "light",
       "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 92% and 92% of checks in two tier trials, against standard's 83% and heavy's 75% and 83%, within 5 points of the best both times."
+    },
+    "vesting-schedule": {
+      "tier": "standard",
+      "rationale": "Turning grant documents into the script's input and explaining leavers and acceleration is bounded; the script does the date arithmetic."
     },
     "web-performance-review": {
       "tier": "standard",

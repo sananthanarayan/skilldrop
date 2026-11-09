@@ -1,5 +1,5 @@
 {
-  "description": "Legal groundwork for a startup that can't yet pay a lawyer for everything: an agreement checked before you sign it (blanks, broken cross-references, mismatched amounts, the renewal date, and the clauses that hurt a small company, with wording to ask for), your cap table modelled through SAFEs, notes and a priced round, and your first office lease turned into its real commitment and exit dates. Each says what is worth a lawyer's hour.",
+  "description": "Legal groundwork for a startup that can't yet pay a lawyer for everything: an agreement checked before you sign it (blanks, broken cross-references, mismatched amounts, the renewal date, and the clauses that hurt a small company, with wording to ask for), your cap table modelled through SAFEs, notes and a priced round, vesting schedules with leavers, acceleration and the 83(b) deadline, and your first office lease turned into its real commitment and exit dates. Each says what is worth a lawyer's hour.",
   "display_name": "Startup legal",
   "keywords": [
     "legal",
@@ -10,6 +10,8 @@
     "SAFE",
     "cap table",
     "dilution",
+    "vesting",
+    "83(b)",
     "lease"
   ],
   "links": {
@@ -39,6 +41,7 @@
     "you_bring": [
       "the agreement you've been sent, or your own template",
       "your cap table, SAFEs and any term sheet",
+      "grant documents for anyone with vesting shares or options",
       "the heads of terms or draft lease for an office"
     ],
     "steps": [
@@ -55,12 +58,17 @@
         "decide": "Which valuation and pool terms to negotiate for."
       },
       {
+        "skill": "vesting-schedule",
+        "you_do": "Give it each grant's shares, start date and terms, and any leaving date.",
+        "you_get": "Cliff and fully-vested dates, what is vested on any date, leaver outcomes, and the 83(b) deadline as an exact date."
+      },
+      {
         "skill": "lease-check",
         "you_do": "Give it the heads of terms or the draft lease.",
         "you_get": "What signing commits you to up to each break and to the end, every notice deadline as a date, and the clauses to push back on with wording.",
         "decide": "Sign, negotiate, or take the guarantee or break clause to a lawyer."
       }
     ],
-    "you_end_with": "Agreements you understand before signing, a cap table you can defend, and an office lease whose cost and exits you know."
+    "you_end_with": "Agreements you understand before signing, a cap table and vesting schedule you can defend, and an office lease whose cost and exits you know."
   }
 }

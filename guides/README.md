@@ -105,6 +105,7 @@ A how-to and a reference page for every pack, generated from the pack's own file
 | Event planner | [Use the Event planner pack](how-to/packs/use-the-event-planner-pack.md) | [Event planner pack reference](reference/packs/pack-event-planner.md) |
 | Interior designer | [Use the Interior designer pack](how-to/packs/use-the-interior-designer-pack.md) | [Interior designer pack reference](reference/packs/pack-interior-designer.md) |
 | Startup legal | [Use the Startup legal pack](how-to/packs/use-the-startup-legal-pack.md) | [Startup legal pack reference](reference/packs/pack-startup-legal.md) |
+| Educator | [Use the Educator pack](how-to/packs/use-the-educator-pack.md) | [Educator pack reference](reference/packs/pack-educator.md) |
 <!-- pack-guides:end -->
 
 ### Per skill
@@ -137,7 +138,8 @@ One how-to for every skill: how to install it, the requests that route to it, wh
 | Operations manager | [shift-roster](how-to/skills/use-shift-roster.md) |
 | Event planner | [run-of-show](how-to/skills/use-run-of-show.md), [seating-plan](how-to/skills/use-seating-plan.md) |
 | Interior designer | [furniture-layout](how-to/skills/use-furniture-layout.md) |
-| Startup legal | [cap-table](how-to/skills/use-cap-table.md), [contract-check](how-to/skills/use-contract-check.md), [lease-check](how-to/skills/use-lease-check.md) |
+| Startup legal | [cap-table](how-to/skills/use-cap-table.md), [contract-check](how-to/skills/use-contract-check.md), [lease-check](how-to/skills/use-lease-check.md), [vesting-schedule](how-to/skills/use-vesting-schedule.md) |
+| Educator | [exam-paper-check](how-to/skills/use-exam-paper-check.md) |
 <!-- skill-guides:end -->
 
 ## explanation
@@ -146,7 +148,7 @@ One how-to for every skill: how to install it, the requests that route to it, wh
 - [Why loops](explanation/loops.md) — why sequencing is its own primitive, and why five loops
 - [Cost-aware model routing](../MODEL-ROUTING.md) — abstract tiers and the provider map
 - [What the benchmark showed](explanation/what-the-benchmark-showed.md) — the gain on skills' own checks, the blind preference, the held-out test that the revised skills failed, and what the winners share
-- [What makes a skill beat the agent](explanation/what-makes-a-skill-beat-the-agent.md) — twelve profession skills measured blind: the kind that won, the kind that lost twice, and the rule that predicts it before anything is built
+- [What makes a skill beat the agent](explanation/what-makes-a-skill-beat-the-agent.md) — fourteen profession skills measured blind: the kind that won, the kind that lost twice, and the rule that predicts it before anything is built
 - [skilldrop, reviewed by its own skills](explanation/own-skills-on-own-site.md) — the site's performance and accessibility, checked with `web-performance-review` and `accessibility-audit`, the findings and the fixes, and `pre-merge-review` on pull requests
 - [Does the agent invent your resume?](explanation/resume-fabrication-comparison.md) — 14 resume and cover-letter requests with the career skills and without: what each added that the person never said
 

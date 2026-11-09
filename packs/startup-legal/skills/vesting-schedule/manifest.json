@@ -1,0 +1,33 @@
+{
+  "name": "vesting-schedule",
+  "version": "0.1.0",
+  "description": "Work out vesting for founder stock, restricted stock, options and RSUs — each grant's cliff date and amount, every vesting date in whole shares, what is vested on any date, what happens when someone leaves (vested, forfeited or repurchasable, and the last day to exercise), single- and double-trigger acceleration on a sale, and the US 83(b) election deadline moved past weekends and holidays — computed by a script that keeps the totals exact. Use when a founder asks \"how much has my co-founder vested\", \"what happens to her shares if she leaves\", \"when does the cliff hit\", \"build our vesting schedule\", \"when is the 83(b) deadline\", or \"what does double-trigger acceleration give us in a sale\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [],
+  "tags": [
+    "vesting",
+    "equity",
+    "83b",
+    "options",
+    "founder",
+    "startup"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "Reads the vesting.json it is given and writes a CSV only to the path passed with --csv."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "Turning grant documents into the script's input and explaining leavers and acceleration is bounded; the script does the date arithmetic."
+  }
+}

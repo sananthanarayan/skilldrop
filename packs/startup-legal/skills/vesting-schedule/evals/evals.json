@@ -1,0 +1,70 @@
+{
+  "skill_name": "vesting-schedule",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "My co-founder Alex is leaving on 30 September 2026. 3,000,000 founder shares, four-year vesting, one-year cliff, monthly, from 1 July 2025; the stock purchase agreement was signed 15 September 2025. How much does Alex keep, and does it matter if Alex never filed the 83(b)?",
+      "assertions": [
+        "Says Alex keeps 875,000 shares and 2,125,000 are unvested and can be bought back",
+        "Gives the cliff as 1 July 2026 with 750,000 shares",
+        "Gives the 83(b) deadline as 15 October 2025, 30 days after the purchase, and says it has passed",
+        "Explains plainly what a missed 83(b) means: each vesting tranche is taxed as it vests",
+        "Does not mention a script or the skill's name, and does not invent terms (acceleration, repurchase price) not in the prompt"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-11-08",
+      "prompt": "my cofounder Dana Okafor has 850,000 founder shares, 4 year vesting with a 1 year cliff, monthly after that, vesting start 31 Jan 2024. she's leaving on 20 Sep 2026. how much has she vested, when did the cliff hit, and what happens to the rest?",
+      "assertions": [
+        "Cliff is 31 January 2025, when 212,500 shares vest (850,000 x 12 / 48)",
+        "Handles the 31st start in short months: the February 2025 vesting date is 28 February 2025 (not 3 March or skipped), with cumulative vested 230,208 (floor of 850,000 x 13 / 48); later dates fall on the last day of shorter months, e.g. 30 June",
+        "Vested on leaving (20 September 2026) is 548,958 shares - 31 months, last vesting date 31 August 2026 (floor of 850,000 x 31 / 48 = 548,958.33); accept 548,959 only if a different rounding is stated",
+        "The September 2026 vesting date (30 September 2026) falls after she leaves, so it does not vest",
+        "Unvested shares are 301,042 (850,000 - 548,958), and the answer says that for founder stock these are normally subject to the company's repurchase right (typically at the original price) or forfeited under the stock agreement, rather than describing an option exercise window",
+        "Does not invent acceleration, a repurchase price, a leaving reason, or 83(b) facts that are not in the prompt, and says the stock agreement governs"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-11-08",
+      "prompt": "We're Larkspur Robotics, Inc. (Delaware) and I need our vesting worked out before a board meeting. Grants:\n\n1. Mei Tanaka (co-founder, CEO): 3,000,000 shares of restricted common stock, vesting commencement date 1 March 2025, 48 months, 12-month cliff, then monthly. Double-trigger acceleration: 100% of unvested shares vest if she is terminated without cause within 12 months after a change of control.\n2. Tomas Herrera (co-founder, CTO): 2,000,000 shares of restricted common stock, same schedule and start date as Mei. Single-trigger acceleration: 25% of his then-unvested shares vest on a change of control. No other acceleration.\n3. Noor Haddad (joining as third co-founder): buys 650,000 shares of restricted common stock on 25 November 2026, vesting commencement date 25 November 2026, 48 months, 12-month cliff, then monthly. No acceleration.\n\nQuestions: (a) What is Noor's 83(b) filing deadline? (b) When is her cliff and how many shares vest then? (c) We have an offer that would close on 15 June 2027. What does each of the three have vested at closing, after any acceleration? (d) If the buyer terminates Mei without cause on 30 September 2027, what does she end up with? (e) What if instead they terminate her without cause on 20 July 2028?",
+      "assertions": [
+        "Noor's 83(b) deadline: 30 days after 25 November 2026 is Friday 25 December 2026, Christmas Day (a federal holiday), followed by a weekend, so the deadline moves to Monday 28 December 2026; the answer advises filing well before it",
+        "Noor's cliff is 25 November 2027 with 162,500 shares (650,000 x 12 / 48); at the 15 June 2027 closing she has 0 vested and, having no acceleration, still 0 after closing",
+        "At closing on 15 June 2027 (27 months, last vesting date 1 June 2027): Mei has 1,687,500 vested (3,000,000 x 27 / 48) and the sale alone does not accelerate her shares (double-trigger needs the termination too)",
+        "Tomas at closing: 1,125,000 vested by schedule (2,000,000 x 27 / 48) plus 25% of his 875,000 unvested = 218,750 accelerated, giving 1,343,750; applies the 25% to unvested shares, not to the whole grant (which would wrongly give 500,000)",
+        "Mei terminated without cause on 30 September 2027 is within 12 months of closing, so double-trigger applies: 1,875,000 vested by schedule (30 months, last vest 1 September 2027) plus 1,125,000 accelerated = all 3,000,000 shares vested",
+        "Mei terminated on 20 July 2028 is outside the 12-month window (which ended 15 June 2028), so there is no acceleration: 2,500,000 vested (40 months, last vest 1 July 2028) and 500,000 unvested, subject to repurchase or forfeiture",
+        "Does not invent an option exercise window for this restricted stock, acceleration for Noor, a purchase or repurchase price, or deal terms not in the prompt"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-11-09",
+      "prompt": "My co-founder Ravi Okafor has 1,250,000 founder shares, 4-year vesting, 1-year cliff, monthly after that, vesting start 31 Aug 2025. He signed his stock purchase agreement on 27 Oct 2026 and hasn't filed an 83(b) yet. Today is 9 Nov 2026. How much has he vested, when did the cliff hit, and what's his 83(b) deadline?",
+      "assertions": [
+        "Cliff date is 31 Aug 2026, with 312,500 shares vesting then (1,250,000 x 12 / 48)",
+        "Vested today (9 Nov 2026) is 364,583 shares: 14 monthly dates have passed (to 31 Oct 2026), floor(1,250,000 x 14 / 48) = floor(364,583.33); unvested 885,417",
+        "Vesting dates fall on the 31st or the last day of shorter months (30 Sep 2025, 30 Nov 2026, 28 Feb 2027 etc.); the next vesting is 30 Nov 2026 for 26,042 shares (390,625 - 364,583), and vesting finishes on 31 Aug 2029",
+        "83(b) deadline: 30 days after the 27 Oct 2026 transfer is Thursday 26 Nov 2026, which is Thanksgiving (a US federal holiday), so the deadline moves to Friday 27 Nov 2026",
+        "Says the 30-day clock runs from the 27 Oct 2026 purchase/transfer date, not the 31 Aug 2025 vesting start, and urges filing promptly since the deadline cannot be extended",
+        "Does not invent a purchase price, a tax amount, acceleration terms or other details not in the prompt"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-11-09",
+      "prompt": "We're Halcyon Loom Inc. and we're in the middle of an acquisition, so I need two vesting questions answered precisely. Today is 9 Nov 2026.\n\n1. Lena Varga, a co-founder, got 1,100,000 shares of restricted stock with a vesting start of 29 March 2024: 48 months, 1-year cliff, monthly vesting after. She resigned effective 4 September 2026. Her stock purchase agreement gives the company the right to repurchase unvested shares at her original price, exercisable by written notice within 60 days of her termination date. We haven't sent any notice. How many shares has she vested, how many can we buy back, and are we still in time?\n\n2. Jonah Pike, an early employee, holds an option over 50,000 shares, vesting start 31 January 2025, same 4-year / 1-year-cliff / monthly terms. His grant has double-trigger acceleration: 100% of unvested shares vest if he is terminated without cause within 12 months after a change of control. The sale is due to close on 15 December 2026 and the buyer says it will keep him. How much is vested at closing, does his acceleration kick in at closing, and if the buyer lets him go without cause on 10 March 2027, how much will he have and what's his last day to exercise? His option agreement gives 90 days after termination to exercise.",
+      "assertions": [
+        "Lena: vesting dates fall on the 29th, except 28 Feb 2025 (and other Februaries); the cliff was 29 Mar 2025; at her 4 Sep 2026 departure 29 months had vested (last date 29 Aug 2026): floor(1,100,000 x 29 / 48) = floor(664,583.33) = 664,583 vested, leaving 435,417 unvested shares subject to repurchase",
+        "Lena's repurchase window: 60 days after 4 Sep 2026 is 3 Nov 2026, which is before today (9 Nov 2026), so the window closed 6 days ago with no notice sent; says the company appears to have lost the right under the agreement as described and should check the agreement's exact wording with counsel, rather than telling them they can still buy back",
+        "Jonah at closing (15 Dec 2026): 22 monthly dates have passed (last 30 Nov 2026, the month-end because November has 30 days): floor(50,000 x 22 / 48) = floor(22,916.67) = 22,916 vested; the cliff was 31 Jan 2026 with 12,500 vesting",
+        "States the double trigger is not met at closing because he is kept on (sale alone is one trigger), so nothing accelerates at closing",
+        "If terminated without cause on 10 Mar 2027 (85 days after closing, within the 12-month window), both triggers are met: without acceleration he would have 26,041 vested (25 months, last date 28 Feb 2027, floor(50,000 x 25 / 48)); acceleration vests the remaining 23,959, so all 50,000 are vested",
+        "Jonah's last day to exercise is 8 Jun 2027 (90 days after 10 Mar 2027)",
+        "Does not invent repurchase prices, exercise prices, tax figures, deal value or terms not in the prompt"
+      ]
+    }
+  ]
+}

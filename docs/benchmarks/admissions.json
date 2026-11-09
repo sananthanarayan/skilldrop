@@ -144,6 +144,38 @@
    ],
    "skill_met": 0.89,
    "baseline_met": 0.86
+  },
+  {
+   "skill": "exam-paper-check",
+   "rfc": "0080",
+   "evals": "4–5",
+   "drafts": 2,
+   "judge1": [
+    2,
+    4
+   ],
+   "judge2": [
+    3,
+    4
+   ],
+   "skill_met": 0.93,
+   "baseline_met": 0.86
+  },
+  {
+   "skill": "vesting-schedule",
+   "rfc": "0080",
+   "evals": "4–5",
+   "drafts": 2,
+   "judge1": [
+    2,
+    4
+   ],
+   "judge2": [
+    2,
+    4
+   ],
+   "skill_met": 0.85,
+   "baseline_met": 0.8
   }
  ]
 }

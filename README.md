@@ -51,7 +51,7 @@ A good result runs your lint, typecheck and tests through a gate script, then a 
 In Claude Code you can use the plugin marketplace instead: run `/plugin marketplace add sananthanarayan/skilldrop`, then `/plugin install dev-team@skilldrop`. [Every install route](guides/how-to/install.md) covers single skills, other IDEs, loops, reviewer subagents, profiles and updates.
 
 <details>
-<summary><b>Choose your role:</b> 24 packs, from product management and architecture to SRE, GRC, job applications, building design and startup legal</summary>
+<summary><b>Choose your role:</b> 25 packs, from product management and architecture to SRE, GRC, job applications, building design, startup legal and teaching</summary>
 
 Install one pack. Every role pack also brings `core` (intake, critique, review council, output hygiene, and the decisions behind a codebase). Each pack page has a starter prompt to paste and says what a good result looks like.
 
@@ -77,7 +77,8 @@ Install one pack. Every role pack also brings `core` (intake, critique, review c
 - **Running a team on shifts:** `operations-manager` — a weekly rota checked for cover, hours, rest between shifts and days in a row, handed back in your own sheet. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/operations-manager/)
 - **Running events:** `event-planner` — a seating plan where every together, keep-apart and access request holds, and a run of show with no room or person booked twice, both checked and drawn. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/event-planner/)
 - **Furnishing rooms:** `interior-designer` — a dimensioned furniture plan for one room, checked for door swings, bed and chair clearances, a clear route to everything and turning space where it's required. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/interior-designer/)
-- **Startup founders:** `startup-legal` — an agreement checked before you sign it, with wording to push back on, your cap table through SAFEs and a priced round, and your first office lease's real cost and exit dates. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/startup-legal/)
+- **Startup founders:** `startup-legal` — an agreement checked before you sign it, with wording to push back on, your cap table through SAFEs and a priced round, vesting with the 83(b) deadline, and your first office lease's real cost and exit dates. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/startup-legal/)
+- **Teachers:** `educator` — an exam paper and its mark scheme checked before printing: totals that add up, parts the scheme misses or marks differently, and balance across objectives. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/educator/)
 - **Everyone:** `core` on its own. [Open pack](https://sananthanarayan.github.io/skilldrop/packs/core/)
 
 </details>

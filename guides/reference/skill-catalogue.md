@@ -262,7 +262,14 @@ Capture a brand once, and plan a deck for its audience. `brand-kit` writes the `
 |---|---|
 | [`contract-check`](../../packs/startup-legal/skills/contract-check/SKILL.md) | An agreement checked before a founder signs or sends it: a script finds blanks left in, references to clauses or exhibits that don't exist, numbering that skips, terms defined twice or never defined, amounts whose words and figures disagree, impossible dates and each renewal notice deadline; then a read from the founder's side for liability, indemnities, IP, payment, renewal and exclusivity, with wording to ask for. |
 | [`cap-table`](../../packs/startup-legal/skills/cap-table/SKILL.md) | Who owns what through post- and pre-money SAFEs, convertible notes with interest and a priced round with an option-pool top-up: each conversion price and whether the cap or discount set it, what the top-up costs the founders in money, the table before and after, and other valuations, checked to sum to 100 %. |
+| [`vesting-schedule`](../../packs/startup-legal/skills/vesting-schedule/SKILL.md) | Vesting for founder stock, restricted stock, options and RSUs: cliff date and amount, every vesting date in whole shares that sum exactly, what is vested on any date, what a leaver keeps and their last day to exercise, single- and double-trigger acceleration, and the US 83(b) deadline moved past weekends and federal holidays. |
 | [`lease-check`](../../packs/startup-legal/skills/lease-check/SKILL.md) | A first office lease turned into its real cost and exits: rent by year through stepped rents and capped index reviews, what signing commits to up to each break and to the end, every break, renewal and notice deadline as a date, and the clauses that hurt a small tenant with wording to ask for. |
+
+## Education
+
+| Skill | What it does |
+|---|---|
+| [`exam-paper-check`](../../packs/educator/skills/exam-paper-check/SKILL.md) | An exam paper and its mark scheme checked before printing: part marks against question totals and questions against the paper's (an either/or counted once), numbering that skips, parts the scheme misses or marks differently, objectives off their weighting, minutes per mark, then the questions read for wording and fairness. |
 
 ## What's in a skill
 

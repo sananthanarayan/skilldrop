@@ -1,12 +1,12 @@
 # skilldrop
 
-> 120 portable skills for the artifacts knowledge work ships (ADRs, design docs,
+> 122 portable skills for the artifacts knowledge work ships (ADRs, design docs,
 > PRDs, runbooks, threat models, decks, postmortems), plus 11 loops that sequence them
 > behind gates. A loop orders skills; a skill never calls a skill, so every one of the
-> 120 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
+> 122 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 1.10.0.
+> Version 1.11.0.
 
 ## Start here
 
@@ -56,7 +56,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Operating model](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/operating-model.md) *(explanation)*: Know which stage your work is in, which loop or skills and pack help there, and where the agent stops for your decision.
 - [skilldrop, reviewed by its own skills](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/own-skills-on-own-site.md) *(explanation)*: The site's performance and accessibility, checked with the catalogue's own web-performance-review and accessibility-audit skills, the findings, and what was fixed. Pull requests are reviewed by pre-merge-review.
 - [Does the agent invent your resume?](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/resume-fabrication-comparison.md) *(explanation)*: The same 14 resume and cover-letter requests run with the career pack's skills and with plain Claude Code - how often each put something in the document that the person never said, and what kind of thing it was.
-- [What makes a skill beat the agent](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/what-makes-a-skill-beat-the-agent.md) *(explanation)*: Twelve profession skills, each measured blind against Claude Code without it - which kind won, which kind lost twice, and the rule that predicts the difference before anything is built.
+- [What makes a skill beat the agent](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/what-makes-a-skill-beat-the-agent.md) *(explanation)*: Fourteen profession skills, each measured blind against Claude Code without it - which kind won, which kind lost twice, and the rule that predicts the difference before anything is built.
 - [What the benchmark showed](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/explanation/what-the-benchmark-showed.md) *(explanation)*: Five days of measuring skills against the agent without them - a large gain on the skills' own checks, no blind preference at first, a gain that did not survive new evals, and what the skills that do win have in common.
 - [Author a new loop](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/author-a-loop.md) *(how-to)*: How to add a loop — the closed loop.json contract, the three stage types, gate rules, and the checks that will reject a loop that only looks like governance.
 - [Author a new skill](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/author-a-skill.md) *(how-to)*: The short version of the authoring path — what a skill must contain, what gates it, and where the full contributor rules live.
@@ -80,6 +80,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use the Data and analytics pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-data-analytics-pack.md) *(how-to)*: Install the Data and analytics pack, run its first task, and follow a typical session step by step.
 - [Use the Design pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-design-pack.md) *(how-to)*: Install the Design pack, run its first task, and follow a typical session step by step.
 - [Use the Dev team pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-dev-team-pack.md) *(how-to)*: Install the Dev team pack, run its first task, and follow a typical session step by step.
+- [Use the Educator pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-educator-pack.md) *(how-to)*: Install the Educator pack, run its first task, and follow a typical session step by step.
 - [Use the Event planner pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-event-planner-pack.md) *(how-to)*: Install the Event planner pack, run its first task, and follow a typical session step by step.
 - [Use the Experience design pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-experience-design-pack.md) *(how-to)*: Install the Experience design pack, run its first task, and follow a typical session step by step.
 - [Use the Frontend pack](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/packs/use-the-frontend-pack.md) *(how-to)*: Install the Frontend pack, run its first task, and follow a typical session step by step.
@@ -144,6 +145,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use dpia](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-dpia.md) *(how-to)*: Draft a data protection impact assessment (DPIA) for one processing activity in the structure GDPR Article 35(7) requires
 - [Use eval-harness-generator](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-eval-harness-generator.md) *(how-to)*: Takes a skill's SKILL.md and generates a set of eval cases
 - [Use event-contract-draft](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-event-contract-draft.md) *(how-to)*: Draft the contract for an event or message interface (Kafka topics, SNS/SQS, EventBridge, Pub/Sub, RabbitMQ, webhooks) as an AsyncAPI 3.0 document plus a short decisions…
+- [Use exam-paper-check](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-exam-paper-check.md) *(how-to)*: Check an exam paper and its mark scheme before they go to print or to a moderator
 - [Use exec-summary](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-exec-summary.md) *(how-to)*: Compress a long technical document, design doc, or proposal into a one-page executive summary aimed at non-technical or time-poor stakeholders
 - [Use feature-implement-loop](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-feature-implement-loop.md) *(how-to)*: Implement a feature or story so it ends up *verified*, not just generated
 - [Use feedback-synthesis](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-feedback-synthesis.md) *(how-to)*: Turn raw customer feedback
@@ -218,6 +220,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Use user-journey-map](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-user-journey-map.md) *(how-to)*: Map a customer's end-to-end journey toward an outcome
 - [Use user-story-splitter](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-user-story-splitter.md) *(how-to)*: Split an epic, feature request, or PRD chunk into independently shippable user stories with testable Gherkin acceptance criteria and a recommended build order
 - [Use ux-writing](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-ux-writing.md) *(how-to)*: Write the interface copy for a flow or component
+- [Use vesting-schedule](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-vesting-schedule.md) *(how-to)*: Work out vesting for founder stock, restricted stock, options and RSUs
 - [Use web-performance-review](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/skills/use-web-performance-review.md) *(how-to)*: Read a Lighthouse report or PageSpeed Insights result, with field data when there is any (CrUX, PSI loadingExperience or RUM p75), and say what makes the page slow for…
 - [Supply credentials to skills](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/supply-credentials.md) *(how-to)*: How to provide API keys and tokens to skills that declare env.required — covers local shells, CI environments, and enterprise secret managers.
 - [Upgrade installed skills](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/how-to/upgrade-skills.md) *(how-to)*: Check which installed skills and loops are stale and bring them current, keeping any files you edited and your hook wiring.
@@ -241,6 +244,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [Data and analytics pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-data-analytics.md) *(reference)*: Every skill in the Data and analytics pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Design pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-design.md) *(reference)*: Every skill in the Design pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Dev team pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-dev-team.md) *(reference)*: Every skill in the Dev team pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
+- [Educator pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-educator.md) *(reference)*: Every skill in the Educator pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Event planner pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-event-planner.md) *(reference)*: Every skill in the Event planner pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Experience design pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-experience-design.md) *(reference)*: Every skill in the Experience design pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 - [Frontend pack reference](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/reference/packs/pack-frontend.md) *(reference)*: Every skill in the Frontend pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
@@ -306,7 +310,8 @@ except `api-builder` requires `core`, which installs with it.
 - **operations-manager** (1 skills, requires core): Staff rotas from who is available, what each shift needs and the working-time rules: a week or fortnight built and drawn as a grid, shown only once a script has checked every shift's cover and skills, and every person's hours, rest between shifts and days in a row.
 - **event-planner** (2 skills, requires core): Seated dinners and event days that hold together: a table plan where every guest has one seat and every together, keep-apart and access request holds, and a run of show where no room or person is booked twice and every changeover has the time it needs, each checked by a script and drawn before anyone prints it.
 - **interior-designer** (1 skills, requires core): Furniture plans for one room: every piece at its real size and facing the way it's used, drawn as a dimensioned SVG, and shown only once a script has checked it for overlaps, pieces in a door's swing, blocked bed sides, chair pull-backs and wardrobe doors, and a clear walking route to everything.
-- **startup-legal** (3 skills, requires core): Legal groundwork for a startup that can't yet pay a lawyer for everything: an agreement checked before you sign it (blanks, broken cross-references, mismatched amounts, the renewal date, and the clauses that hurt a small company, with wording to ask for), your cap table modelled through SAFEs, notes and a priced round, and your first office lease turned into its real commitment and exit dates. Each says what is worth a lawyer's hour.
+- **startup-legal** (4 skills, requires core): Legal groundwork for a startup that can't yet pay a lawyer for everything: an agreement checked before you sign it (blanks, broken cross-references, mismatched amounts, the renewal date, and the clauses that hurt a small company, with wording to ask for), your cap table modelled through SAFEs, notes and a priced round, vesting schedules with leavers, acceleration and the 83(b) deadline, and your first office lease turned into its real commitment and exit dates. Each says what is worth a lawyer's hour.
+- **educator** (1 skills, requires core): Assessments that hold up in the exam room and at moderation: an exam paper and its mark scheme checked by a script for totals that don't add up, either/or questions worth different marks, numbering that skips, parts the scheme misses or marks differently, and objectives off their weighting, then read for wording and fairness.
 
 ## Outcomes — browse by why you are here
 
@@ -329,7 +334,8 @@ except `api-builder` requires `core`, which installs with it.
 - **staff-the-shifts** (1 skills): Turn who is available and what each shift needs into a rota with every shift covered by the right people, and nobody double-booked, over their hours or short of rest.
 - **plan-an-event** (2 skills): Seat every guest with the people they should and shouldn't be near, and run the day with no room or person booked twice.
 - **furnish-a-room** (1 skills): Fit a room's furniture at real sizes with every door, bed side, chair and route clear, and each turning space where it's needed, drawn to scale and checked.
-- **handle-the-legal-basics** (3 skills): Sign agreements you understand and know what a round does to your ownership, with a clear line on what is worth paying a lawyer for.
+- **handle-the-legal-basics** (4 skills): Sign agreements you understand and know what a round does to your ownership, with a clear line on what is worth paying a lawyer for.
+- **set-a-fair-assessment** (1 skills): Send out a test whose marks add up, whose mark scheme matches it part by part, and whose questions are balanced and clear.
 
 ## Reviewer subagents
 
@@ -345,10 +351,10 @@ except `api-builder` requires `core`, which installs with it.
 - [catalogue.json](https://sananthanarayan.github.io/skilldrop/catalogue.json): every skill, loop, pack and outcome as machine-readable JSON — name, description, tier, tags, related. Prefer this over scraping the site.
 - [model-routing.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/model-routing.json): the abstract tier per skill (light/standard/heavy) and the provider map that resolves a tier to a concrete model.
 - [catalogue.json](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/catalogue.json): pack display order and outcome membership; each pack's metadata is in `packs/<pack>/pack.json`.
-- All 120 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
+- All 122 skills live at `packs/<pack>/skills/<name>/SKILL.md`; each has a `manifest.json` beside it. Fetch one directly: `https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/<pack>/skills/<name>/SKILL.md`.
 
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 78 RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 79 RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.

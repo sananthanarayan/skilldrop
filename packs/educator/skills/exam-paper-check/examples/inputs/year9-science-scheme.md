@@ -1,0 +1,16 @@
+# Mark scheme — Year 9 Forces and Energy
+
+1 (a) friction / air resistance [1]
+1 (b) F = m × a (1); = 2 × 3 (1); = 6 N (1) [3]
+1 (c) newton / N [1]
+2 (a)(i) gravitational potential to kinetic (1); some to thermal / sound (1) [2]
+2 (a)(ii) Ep = mgh (1); 0.5 × 10 × 1.8 (1); = 9 J (1) [3]
+2 (a)(iii) energy dissipated as heat and sound on impact [2]
+3 (a) useful output ÷ total input [1]
+3 (c) 0.8 × 2400 (1); = 1920 J (2) [3]
+3 (d) energy wasted as thermal energy to surroundings / sound [2]
+4 Level-marked: see levels of response grid [6]
+5 (a) 300 ÷ 20 (1); = 15 m/s (1) [2]
+5 (b) straight line through origin [2]
+6 Level-marked comparison [12]
+7 Level-marked evaluation [12]

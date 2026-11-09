@@ -1,13 +1,13 @@
 ---
 title: What makes a skill beat the agent
-summary: Twelve profession skills, each measured blind against Claude Code without it - which kind won, which kind lost twice, and the rule that predicts the difference before anything is built.
+summary: Fourteen profession skills, each measured blind against Claude Code without it - which kind won, which kind lost twice, and the rule that predicts the difference before anything is built.
 kind: explanation
 ---
 
 # What makes a skill beat the agent
 
-Between 5 and 9 November 2026 this catalogue built twelve skills for professions it had never
-served: architects, operations managers, event planners, interior designers and founders.
+Between 5 and 9 November 2026 this catalogue built fourteen skills for professions it had never
+served: architects, operations managers, event planners, interior designers, founders and teachers.
 Every one was measured the same way before it could ship, and most did not ship on the first
 try. This page is what those measurements say about which skills are worth building. The
 earlier account of the whole catalogue is [What the benchmark showed](what-the-benchmark-showed.md).
@@ -21,7 +21,7 @@ Claude Code (`claude-sonnet-5-5`, file and shell tools, scripts free to run). Tw
 with no rubric and no skill text, and picked the one that served the person better. A skill
 ships only if both judges prefer it in at least half its pairs. One that loses is revised once,
 from the judges' reasons, and measured again on new blind requests; one that loses twice is
-removed. The decisions and numbers are in RFC-0075 to RFC-0079.
+removed. The decisions and numbers are in RFC-0075 to RFC-0080.
 
 ## What won
 
@@ -31,6 +31,8 @@ removed. The decisions and numbers are in RFC-0075 to RFC-0079.
 | [`contract-check`](../../packs/startup-legal/skills/contract-check/SKILL.md) | startup-legal | 3, 2 | references to clauses that don't exist, blanks left in, words that disagree with figures, renewal notice dates |
 | [`cap-table`](../../packs/startup-legal/skills/cap-table/SKILL.md) | startup-legal | 2, 4 | SAFEs, notes and a pool top-up solved together, checked to sum to 100 % |
 | [`lease-check`](../../packs/startup-legal/skills/lease-check/SKILL.md) | startup-legal | 3, 3 | the committed cost to each break, capped index reviews, notice dates, a term ending on 29 February |
+| [`exam-paper-check`](../../packs/educator/skills/exam-paper-check/SKILL.md) | educator | 2, 3 (second draft) | part, question and paper totals, an either/or counted once, the mark scheme against the paper part by part |
+| [`vesting-schedule`](../../packs/startup-legal/skills/vesting-schedule/SKILL.md) | startup-legal | 2, 2 (second draft) | cliffs, month-end dates, leavers' buy-back windows, double triggers, an 83(b) deadline moved past Thanksgiving |
 | [`locale-check`](../../packs/experience-design/skills/locale-check/SKILL.md) | experience-design | 3, 2 (second draft) | placeholders, plural forms and length limits that break in translation |
 | [`run-of-show`](../../packs/event-planner/skills/run-of-show/SKILL.md) | event-planner | 2, 3 (second draft) | a room or a person booked twice, changeovers too short |
 | [`seating-plan`](../../packs/event-planner/skills/seating-plan/SKILL.md) | event-planner | 2, 2 (second draft) | capacity, keep-apart pairs, accessible places |
@@ -52,7 +54,10 @@ Three attempts in the same week lost on both drafts and were removed:
 - a space programme (a brief's rooms totalled with circulation and checked against the site);
 - a privacy-policy reviewer that scanned an app's code for the services receiving users' data.
 
-`furniture-layout` lost its first two drafts too, and won on its third.
+`furniture-layout` lost its first two drafts too, and won on its third. `exam-paper-check` and
+`vesting-schedule` lost their first: in both, the plain agent's figures were as good, and its
+answers covered more of what was asked (a question impossible without a calculator, a buy-back
+window that had closed). Each second draft won by doing that too, from its own computed result.
 
 Each was correct. The scripts were tested, and their answers agreed with hand calculations.
 They lost because **the plain agent was also correct**: it got the trapezoid envelope and the

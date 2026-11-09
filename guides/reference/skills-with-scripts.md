@@ -33,6 +33,7 @@ What each one declares in its manifest: the packages to install, the environment
 | [`delivery-metrics-report`](../../packs/sre-oncall/skills/delivery-metrics-report/SKILL.md) | sre-oncall | — | — | — | — | named-paths |
 | [`dependency-upgrade-review`](../../packs/dev-team/skills/dependency-upgrade-review/SKILL.md) | dev-team | — | — | `github.com`, `api.github.com`, `registry.npmjs.org`, `pypi.org`, `proxy.golang.org` | `git`, `gh`, `npm`, `pip`, `go` | named-paths |
 | [`event-contract-draft`](../../packs/solution-architect/skills/event-contract-draft/SKILL.md) | solution-architect | — | — | — | — | named-paths |
+| [`exam-paper-check`](../../packs/educator/skills/exam-paper-check/SKILL.md) | educator | — | — | — | — | named-paths |
 | [`feedback-synthesis`](../../packs/product-manager/skills/feedback-synthesis/SKILL.md) | product-manager | — | — | — | — | named-paths |
 | [`figma-diagrams`](../../packs/solution-architect/skills/figma-diagrams/SKILL.md) | solution-architect | `requests==2.34.2` | `FIGMA_TOKEN` | `api.figma.com`, `pypi.org`, `files.pythonhosted.org` | `pip` | named-paths |
 | [`file-to-markdown`](../../packs/converters/skills/file-to-markdown/SKILL.md) | converters | — | — | — | `pdftotext`, `pdftoppm`, `tesseract` | named-paths |
@@ -63,6 +64,7 @@ What each one declares in its manifest: the packages to install, the environment
 | [`team-status-report`](../../packs/trackers/skills/team-status-report/SKILL.md) | trackers | — | — | — | — | named-paths |
 | [`terraform-plan-review`](../../packs/infra-as-code/skills/terraform-plan-review/SKILL.md) | infra-as-code | — | — | — | `terraform` | named-paths |
 | [`tracker-brief-sync`](../../packs/trackers/skills/tracker-brief-sync/SKILL.md) | trackers | — | — | — | — | named-paths |
+| [`vesting-schedule`](../../packs/startup-legal/skills/vesting-schedule/SKILL.md) | startup-legal | — | — | — | — | named-paths |
 | [`web-performance-review`](../../packs/frontend/skills/web-performance-review/SKILL.md) | frontend | — | — | `registry.npmjs.org` | `lighthouse`, `npx` | named-paths |
 <!-- scripts:end -->
 

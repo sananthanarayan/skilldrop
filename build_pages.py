@@ -352,6 +352,7 @@ ROLES = [
     ("Event planner", ["event-planner"]),
     ("Interior designer", ["interior-designer"]),
     ("Startup founder", ["startup-legal"]),
+    ("Teacher", ["educator"]),
 ]
 
 

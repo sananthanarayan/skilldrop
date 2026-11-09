@@ -8,6 +8,12 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.11.0 — 2026-11-09
+
+- **A new pack for teachers: `educator`, with `exam-paper-check`** ([RFC-0080](docs/rfcs/0080-educator-pack-and-vesting-schedule.md)). Give it your paper and mark scheme, as Word, Markdown or text. It reads your own files and adds up every part, question and the paper, counting an either/or once. It lines the mark scheme up against the paper part by part and weighs the marks against your objectives. Then it works each question through under the paper's conditions, catching problems like a square root nobody can do without a calculator. Install it with `npx skilldrop-cli install --pack educator`.
+- **`vesting-schedule` joins `startup-legal`.** It works out cliffs, every vesting date in whole shares that sum exactly, and what a leaver keeps. It gives the company's buy-back deadline and the last day to exercise options, both against today's date. It also handles single- and double-trigger acceleration, and gives the 83(b) election deadline, moved past weekends and federal holidays.
+- Both lost their first blind measurement and won on a second draft (judges preferred them in 2 of 4 and 3 of 4 pairs, and 2 of 4 with each judge). [What makes a skill beat the agent](guides/explanation/what-makes-a-skill-beat-the-agent.md) now covers all fourteen profession skills.
+
 ## 1.10.0 — 2026-11-09
 
 - **`lease-check` joins `startup-legal`** ([RFC-0079](docs/rfcs/0079-lease-check-and-benchmark-timeouts.md)). Give it the heads of terms or the draft lease for your first office, studio or lab. It tells you what signing commits you to up to each break and to the end of the term, rent and service charge together, with every break, renewal and notice deadline as a date. Then it gives you wording to push back on the clauses that hurt a small tenant: break conditions, personal guarantees, uncapped service charges, full repairing terms. Both blind judges preferred it to plain Claude Code in 3 of 4 pairs. Run `npx skilldrop-cli install --pack startup-legal` to get it.
