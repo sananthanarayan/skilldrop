@@ -1,0 +1,45 @@
+{
+  "skill_name": "lease-check",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We've been offered heads of terms for our first office (heads-of-terms.md). The agent wants an answer this week. What are we committing to, and when could we get out?",
+      "assertions": [
+        "Gives the committed cost to the break on 1 January 2030 as about £113,400 (rent after 3 months rent-free plus service charge) and to the end as about £203,990",
+        "Gives the break notice deadline as 1 July 2029",
+        "Warns that the break's conditions (all sums paid, vacant possession) can make it fail, and gives wording to narrow them",
+        "Flags the personal guarantee, the uncapped service charge and full repairing with no schedule of condition, with wording to ask for",
+        "Computes the year-3 review at the 4% cap compounded over three years (about £40,495) or explains the range",
+        "Does not mention a script or the skill's name, and does not invent lease terms not in the heads of terms"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-11-08",
+      "prompt": "check this lease before I sign - heads-of-terms.md. how much are we committing to and when's the break notice date?",
+      "assertions": [
+        "Notices that a 5-year term from 1 March 2027 ends on 29 February 2032 (2032 is a leap year), and flags the heads of terms' 'expiring on 1 March 2032' as inconsistent with the stated term",
+        "Rent year by year: year 1 GBP 12,000 (6 months rent-free, then 6 x 2,000), year 2 GBP 24,000, years 3, 4 and 5 GBP 26,400 each",
+        "Committed to the break (to 28 February 2030): rent 12,000 + 24,000 + 26,400 = GBP 62,400 plus service charge 3 x 3,600 = GBP 10,800, total GBP 73,200 (exclusive of VAT, service charge at the current budget), with the convention stated",
+        "Committed to the end of the term: rent 12,000 + 24,000 + 3 x 26,400 = GBP 115,200 plus service charge 5 x 3,600 = GBP 18,000, total GBP 133,200",
+        "Break notice must be served on or before 28 August 2029 (6 months before the 28 February 2030 break date), and the answer warns that the break fails if any sum is unpaid or vacant possession is not given",
+        "Flags at least two tenant-hostile terms: the director's personal guarantee for the whole term, the uncapped service charge, and full repairing with no schedule of condition",
+        "Does not invent a rent deposit, VAT rate, open-market rent review, or other terms not in the heads of terms"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-11-08",
+      "prompt": "We're Quokka Bio, a 9-person biotech, and this would be our first lab. Our landlord's agent sent heads-of-agreement.md and wants it signed off this week. Can you work out what we'd be committing to pay to the break and to the end of the term, give me every notice date we need in the calendar, and tell me which clauses I should push back on? Treat all money as ex GST, and use the outgoings estimate as flat for the whole term.",
+      "assertions": [
+        "Flags the conflict between '3 months rent-free from the commencement date' (rent would start 1 December 2027) and the stated rent commencement date of 1 November 2027 (only 2 months), says which it used and asks for it to be fixed",
+        "Gives the CPI reviews as a range using the collar and cap: from 1 September 2028 rent is A$97,920 (2%) to A$100,800 (5%); from 1 September 2029 A$99,878.40 (2% on 2%) to A$105,840 (5% on 5%); the minimum is what is committed",
+        "Committed to the 31 August 2029 break using the 3-month rent-free: rent 72,000 (9 months of year 1) + 97,920 = A$169,920 plus outgoings 2 x 14,400 = A$28,800, total A$198,720 at the 2% collar (A$201,600 at the 5% cap), plus a break fee of 3 months' rent of A$24,480 (A$25,200 at cap), so about A$223,200 to A$226,800 to exit at the break; accept figures recomputed consistently on the 2-month reading if the convention is stated",
+        "Committed to the end of the term (31 August 2030): rent 72,000 + 97,920 + 99,878.40 = A$269,798.40 plus outgoings 3 x 14,400 = A$43,200, total A$312,998.40 at the collar (A$321,840 at the cap)",
+        "Break notice must be given no later than 28 February 2029 (6 months before 31 August 2029; there is no 29 February in 2029); the option to renew can only be exercised between 28 February 2030 (accept 1 March 2030) and 31 May 2030",
+        "Flags as hostile to a small tenant at least: the break condition voided by any breach at notice or break date, the upward-only market review on renewal, the uncapped outgoings, and the make-good to base-building condition",
+        "Does not invent a CPI figure presented as fact, a guarantor, a fit-out contribution, or other terms not in the heads of agreement"
+      ]
+    }
+  ]
+}

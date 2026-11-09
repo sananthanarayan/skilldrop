@@ -241,7 +241,8 @@
       "description": "Sign agreements you understand and know what a round does to your ownership, with a clear line on what is worth paying a lawyer for.",
       "skills": [
         "contract-check",
-        "cap-table"
+        "cap-table",
+        "lease-check"
       ]
     }
   },

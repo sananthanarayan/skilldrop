@@ -75,6 +75,7 @@ import json
 import os
 import random
 import shutil
+import signal
 import subprocess
 import sys
 import tempfile
@@ -137,15 +138,37 @@ ALLOW_BASH = False  # set from --allow-bash
 VIEWER = os.path.join(ROOT, "packs", "converters", "skills", "file-to-markdown", "scripts", "to_markdown.py")
 
 
+def run_group(argv, user, cwd, timeout, env=None):
+    """Run argv in its own process group and return its stdout. On timeout the whole group is
+    killed: killing only `claude` leaves a command it started (a network call the sandbox never
+    answers, say) holding the output pipe open, and the wait for it never ends."""
+    p = subprocess.Popen(argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+                         cwd=cwd, env=env, start_new_session=(os.name != "nt"))
+    try:
+        out, _ = p.communicate(input=user, timeout=timeout)
+        return out
+    except subprocess.TimeoutExpired:
+        if os.name != "nt":
+            try:
+                os.killpg(p.pid, signal.SIGKILL)
+            except (ProcessLookupError, PermissionError):
+                pass
+        else:
+            p.kill()
+        try:
+            p.communicate(timeout=10)
+        except subprocess.TimeoutExpired:
+            pass
+        raise
+
+
 def cli_run(cmd, user, cwd, timeout, env=None):
     """One `claude -p` run; returns (text, response) in the shape the API path returns, with the
     cost Claude Code reports (list price for the tokens used, cache reads included)."""
     r = {}
     for attempt in range(3):
         try:
-            p = subprocess.run(["claude", "-p"] + cmd + CLI_BASE, input=user, capture_output=True, text=True,
-                               cwd=cwd, timeout=timeout, env=env)
-            r = json.loads(p.stdout)
+            r = json.loads(run_group(["claude", "-p"] + cmd + CLI_BASE, user, cwd, timeout, env))
         except subprocess.TimeoutExpired:
             # a session that hangs once will hang again; retrying it three times stalls the whole run
             raise APIError("claude -p timed out after %d seconds" % timeout)

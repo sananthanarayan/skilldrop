@@ -8,6 +8,12 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.10.0 — 2026-11-09
+
+- **`lease-check` joins `startup-legal`** ([RFC-0079](docs/rfcs/0079-lease-check-and-benchmark-timeouts.md)). Give it the heads of terms or the draft lease for your first office, studio or lab. It tells you what signing commits you to up to each break and to the end of the term, rent and service charge together, with every break, renewal and notice deadline as a date. Then it gives you wording to push back on the clauses that hurt a small tenant: break conditions, personal guarantees, uncapped service charges, full repairing terms. Both blind judges preferred it to plain Claude Code in 3 of 4 pairs. Run `npx skilldrop-cli install --pack startup-legal` to get it.
+- **A new explanation: [what makes a skill beat the agent](guides/explanation/what-makes-a-skill-beat-the-agent.md).** Twelve profession skills were measured blind. The ones with a script that checks a constraint the plain agent quietly breaks won; arithmetic the agent already gets right lost twice. It also gives the rule to apply before building one.
+- **Benchmark runs no longer hang.** When an agent session left a command running, `run_bench.py` could wait for it for hours. Each session now runs in its own process group, and a timeout ends all of it.
+
 ## 1.9.0 — 2026-11-06
 
 - **A new pack for founders without a lawyer on retainer: `startup-legal`** ([RFC-0078](docs/rfcs/0078-startup-legal-pack.md)). Install it with `npx skilldrop-cli install --pack startup-legal`.

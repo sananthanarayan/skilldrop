@@ -1,5 +1,5 @@
 {
-  "description": "Legal groundwork for a startup that can't yet pay a lawyer for everything: an agreement checked before you sign it (blanks, broken cross-references, mismatched amounts, the renewal date, and the clauses that hurt a small company, with wording to ask for), and your cap table modelled through SAFEs, notes and a priced round. Each says what is worth a lawyer's hour.",
+  "description": "Legal groundwork for a startup that can't yet pay a lawyer for everything: an agreement checked before you sign it (blanks, broken cross-references, mismatched amounts, the renewal date, and the clauses that hurt a small company, with wording to ask for), your cap table modelled through SAFEs, notes and a priced round, and your first office lease turned into its real commitment and exit dates. Each says what is worth a lawyer's hour.",
   "display_name": "Startup legal",
   "keywords": [
     "legal",
@@ -9,7 +9,8 @@
     "NDA",
     "SAFE",
     "cap table",
-    "dilution"
+    "dilution",
+    "lease"
   ],
   "links": {
     "documentation": "https://sananthanarayan.github.io/skilldrop/packs/startup-legal/"
@@ -37,7 +38,8 @@
     "when": "You're a founder without a lawyer on retainer, and an agreement, a round or a launch is coming.",
     "you_bring": [
       "the agreement you've been sent, or your own template",
-      "your cap table, SAFEs and any term sheet"
+      "your cap table, SAFEs and any term sheet",
+      "the heads of terms or draft lease for an office"
     ],
     "steps": [
       {
@@ -51,8 +53,14 @@
         "you_do": "Give it your shareholders, SAFEs, notes and the term sheet.",
         "you_get": "What each founder and investor owns after the round, what each SAFE converted at, and what the pool top-up cost you.",
         "decide": "Which valuation and pool terms to negotiate for."
+      },
+      {
+        "skill": "lease-check",
+        "you_do": "Give it the heads of terms or the draft lease.",
+        "you_get": "What signing commits you to up to each break and to the end, every notice deadline as a date, and the clauses to push back on with wording.",
+        "decide": "Sign, negotiate, or take the guarantee or break clause to a lawyer."
       }
     ],
-    "you_end_with": "Agreements you understand before signing, and a cap table you can defend in a negotiation."
+    "you_end_with": "Agreements you understand before signing, a cap table you can defend, and an office lease whose cost and exits you know."
   }
 }

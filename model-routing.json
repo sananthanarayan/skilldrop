@@ -351,6 +351,10 @@
       "tier": "standard",
       "rationale": "Checks evidence against a fixed checklist. Bounded synthesis, not adversarial review."
     },
+    "lease-check": {
+      "tier": "standard",
+      "rationale": "Extracting lease terms and reading clauses from the tenant's side is bounded; the script does the dates and sums."
+    },
     "llm-eval-harness": {
       "tier": "light",
       "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 71% and 71% of checks in two tier trials, against standard's 71% and heavy's 71% and 71%, within 5 points of the best both times."

@@ -128,6 +128,22 @@
    ],
    "skill_met": 0.79,
    "baseline_met": 0.75
+  },
+  {
+   "skill": "lease-check",
+   "rfc": "0079",
+   "evals": "2–3",
+   "drafts": 1,
+   "judge1": [
+    3,
+    4
+   ],
+   "judge2": [
+    3,
+    4
+   ],
+   "skill_met": 0.89,
+   "baseline_met": 0.86
   }
  ]
 }

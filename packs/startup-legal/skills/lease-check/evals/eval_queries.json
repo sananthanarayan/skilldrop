@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Review this office lease before we sign",
+    "should_trigger": true
+  },
+  {
+    "query": "What's the notice date for our lease break clause?",
+    "should_trigger": true
+  },
+  {
+    "query": "How much are we committing to on this lease?",
+    "should_trigger": true
+  },
+  {
+    "query": "When can we get out of our office lease and what does it cost to stay?",
+    "should_trigger": true
+  },
+  {
+    "query": "Review this SaaS agreement before I sign it",
+    "should_trigger": false
+  },
+  {
+    "query": "Find us coworking spaces in Manchester",
+    "should_trigger": false
+  },
+  {
+    "query": "Should we rent or buy a flat?",
+    "should_trigger": false
+  }
+]

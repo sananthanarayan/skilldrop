@@ -1,0 +1,33 @@
+{
+  "name": "lease-check",
+  "version": "0.1.0",
+  "description": "Check a commercial lease before a startup signs it for its first office, studio or lab — a script turns the lease's terms into every date and sum the tenant must plan around (rent year by year through stepped rents, fixed and index-linked reviews with caps and collars, rent-free months, what the company is committed to pay up to each break and to the end, and each break, renewal and notice deadline as a date), then flags terms that can't all be true and deadlines already passed — and reads the lease for the clauses that hurt a small tenant. Use when a founder says \"review this office lease\", \"what's our break clause notice date\", \"how much are we committing to on this lease\", \"check this lease before I sign\", \"when can we get out of this lease\", or \"what does the rent review do\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [],
+  "tags": [
+    "lease",
+    "office",
+    "rent-review",
+    "break-clause",
+    "startup",
+    "property"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "Reads the terms.json it is given and writes nothing."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "Extracting lease terms and reading clauses from the tenant's side is bounded; the script does the dates and sums."
+  }
+}
