@@ -933,9 +933,32 @@ def main():
     # against code nothing installs or runs. run_bench.py restores the name in the workspace.
     for rel in subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True).stdout.splitlines():
         if re.search(r"/(evals/files|examples/inputs)/", rel) and (
-                DEPENDENCY_FILE.match(rel.rsplit("/", 1)[-1]) or re.search(r"/\.github/workflows/[^/]+\.ya?ml$", rel)):
+                DEPENDENCY_FILE.match(rel.rsplit("/", 1)[-1]) or re.search(r"/(\.|dot\.)github/workflows/[^/]+\.ya?ml$", rel)):
             fail("fixtures", f"{rel}: a dependency file in a fixture must be named {rel.rsplit('/', 1)[-1]}.fixture "
                              "(git mv it); run_bench.py gives it its real name in the run's workspace")
+
+    # RFC-0082: a description other installers can read. agentbundle's metadata reader takes a
+    # brace in an unquoted frontmatter value for a nested mapping and refuses the skill.
+    for d, p in sorted(SKILL_PATH.items()):
+        fm = dict(re.findall(r"^(name|description):\s*(.+?)\s*$", frontmatter(open(os.path.join(p, "SKILL.md"), encoding="utf-8").read()), re.M))
+        if re.search(r"[{}]", fm.get("description", "")):
+            fail(catalog.rel(p), "description has a { or }: agentbundle (agent-ready-repo) reads it as a nested value and "
+                                 "refuses the skill; say it in words")
+
+    # RFC-0082: nothing in a skill folder is hidden. agentbundle (agent-ready-repo) refuses a skill
+    # whose folder holds a dotfile, so one fixture's .github would make the whole pack uninstallable
+    # there. A fixture or example input that needs a dot is stored as dot.<name>; run_bench.py
+    # restores the real name in the run's workspace.
+    for rel in subprocess.run(["git", "ls-files", "packs"], cwd=ROOT, capture_output=True, text=True).stdout.splitlines():
+        if "/skills/" in rel:
+            inside = rel.split("/skills/", 1)[1].split("/")[1:]
+            hidden = [p for p in inside if p.startswith(".")]
+            if hidden:
+                fail("fixtures", f"{rel}: '{hidden[0]}' is hidden; store it as 'dot.{hidden[0][1:]}' (git mv it). "
+                                 "Other installers refuse a skill folder with a hidden entry; run_bench.py restores the dot")
+            if len(inside) > 1 and inside[-1] == "SKILL.md":
+                fail("fixtures", f"{rel}: a SKILL.md below a skill's own reads as a nested skill to other installers; "
+                                 "store it as SKILL.md.fixture (git mv it); run_bench.py restores the name")
 
     # A fixture's Dockerfile pins its base images by digest. OpenSSF Scorecard reads every file
     # with "dockerfile" in its name, whatever the suffix, so renaming can't hide one the way

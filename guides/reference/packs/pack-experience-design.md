@@ -107,9 +107,9 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/experience-design/skill
 
 ### `locale-check`
 
-Check a product's translations against the source strings before they ship — every key present, every placeholder ({name}, %s, %1$d, ICU plural and select) carried over intact, the plural forms each language needs, markup tags balanced, and strings over their character budget — with a script that reads JSON, ARB, gettext .po, Android strings.xml and iOS .strings, and lists each problem with its key and locale.
+Check a product's translations against the source strings before they ship — every key present, every placeholder (named, %s, %1$d, ICU plural and select) carried over intact, the plural forms each language needs, markup tags balanced, and strings over their character budget — with a script that reads JSON, ARB, gettext .po, Android strings.xml and iOS .strings, and lists each problem with its key and locale.
 
-Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/experience-design/skills/locale-check/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/locale-check/)
+Tier **standard** · v0.1.1 · [SKILL.md](../../../packs/experience-design/skills/locale-check/SKILL.md) · [skill page](https://sananthanarayan.github.io/skilldrop/skills/locale-check/)
 
 **Use it when** someone asks to "check the translations", "QA these locale files", "will the German fit", "why does the French build crash on this string", or hands over locale files before a release.
 

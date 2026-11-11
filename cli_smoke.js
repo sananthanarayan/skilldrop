@@ -162,6 +162,27 @@ check("loop-stats reads a log and writes the dashboard", () => {
   expect(fs.readFileSync(html, "utf8").includes("Content-Security-Policy"), "dashboard has no CSP");
 });
 
+check("a same-name skill from another catalogue is refused, then replaced cleanly", () => {
+  const other = path.join(TMP, "other-catalogue");
+  fs.mkdirSync(path.join(other, "skills", "ux-writing"), { recursive: true });
+  fs.writeFileSync(path.join(other, "skills", "ux-writing", "SKILL.md"),
+    "---\nname: ux-writing\ndescription: Another catalogue's ux-writing, a different skill.\n---\n\n# ux-writing\n");
+  fs.writeFileSync(path.join(other, "skills", "ux-writing", "manifest.json"), JSON.stringify({
+    name: "ux-writing", version: "9.0.0", description: "Another catalogue's ux-writing, a different skill.", entrypoint: "SKILL.md",
+    model: { tier: "standard", rationale: "test fixture" } }));
+  const d = dir("dest-clash");
+  run(["install", "ux-writing", "--dest", d]);
+  const ours = fs.readdirSync(path.join(d, "ux-writing")).sort().join(",");
+  const out = run(["install", "ux-writing", "--from", other, "--dest", d], { ok: false });
+  expect(/different skill with the same name/.test(out) && /--replace/.test(out), "refusal did not name the clash and the way out");
+  expect(fs.readdirSync(path.join(d, "ux-writing")).sort().join(",") === ours, "a refused install still changed the folder");
+  expect(/would refuse ux-writing/.test(run(["install", "ux-writing", "--from", other, "--dest", d, "--dry-run"])), "dry run did not show the refusal");
+  run(["install", "ux-writing", "--from", other, "--dest", d, "--replace"]);
+  expect(fs.readdirSync(path.join(d, "ux-writing")).sort().join(",") === "SKILL.md,manifest.json", "--replace left the first catalogue's files mixed in");
+  expect(/skilldrop has its own ux-writing/.test(run(["doctor", "--dest", d])), "doctor did not flag the shadowed name");
+  run(["install", "ux-writing", "--from", other, "--dest", d]);  // same catalogue again: a plain reinstall, no refusal
+});
+
 check("a private catalogue: init, new-skill, validate", () => {
   const c = path.join(TMP, "team-catalogue");
   run(["init-catalogue", c, "--pack", "team"]);

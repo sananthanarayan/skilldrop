@@ -278,7 +278,11 @@ def workspace_name(rel):
     """A dependency file in a fixture (package.json, go.mod, a CI workflow) is kept in the repo
     as <name>.fixture, so GitHub's dependency graph never reads a fake project's pins as ours
     and raises alerts against code nothing runs (validate.py enforces it). The run sees the
-    real name."""
+    real name.
+
+    A hidden file or folder (.github, .npmrc, .mcp.json) is kept as dot.<name>, because other
+    installers refuse a skill folder with a hidden entry in it (RFC-0082). The run sees the dot."""
+    rel = "/".join("." + p[4:] if p.startswith("dot.") and len(p) > 4 else p for p in rel.split("/"))
     return rel[:-len(FIXTURE)] if rel.endswith(FIXTURE) else rel
 
 

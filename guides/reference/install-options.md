@@ -38,6 +38,7 @@ npx skilldrop-cli search <words> [--kind skill|loop|agent|pack] [--limit N] [--j
 | `--all` | Installs every skill in the catalogue. |
 | `--profile <name>` | Installs a named bundle of packs, agents and loops; see [Install a profile](../how-to/profiles.md). |
 | `--with-related` | Also installs each skill's `related` companions, one level deep. |
+| `--replace` | Replaces a skill that was installed from a different catalogue under the same name, removing the old folder first. Without it, install refuses and says where each came from (RFC-0082). |
 | `--loop <name...>` | Installs a loop as an invokable skill (its `LOOP.md` is already `SKILL.md`-shaped) plus the skills its stages name. |
 | `--no-skills` | With `--loop`: the loop alone. It still runs, because each stage degrades through its declared `fallback`. |
 | `--loop --pack <name>` | Every loop a pack declares. |

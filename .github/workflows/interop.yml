@@ -1,0 +1,84 @@
+# skilldrop and agent-ready-repo install each other's packs (RFC-0082), checked weekly.
+#
+# Inbound: skilldrop-cli still reads agent-ready-repo's catalogue (packs/<pack>/pack.toml with
+# .apm/skills/), and still refuses to let one of its skills replace a skilldrop skill of the same
+# name unasked. His format moves fast, and a reader that stops parsing it would fail quietly.
+# Reverse: agentbundle, his installer, still installs every skilldrop pack in full from a clone,
+# which breaks if a skill folder gains a hidden file or a nested SKILL.md (validate.py keeps both
+# out) or if agentbundle's rules change.
+name: interop
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "bin/skilldrop.js"
+      - ".github/workflows/interop.yml"
+      - ".github/tools/requirements-interop.txt"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: interop-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  ARR: https://github.com/eugenelim/agent-ready-repo
+
+jobs:
+  inbound:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: skilldrop-cli reads agent-ready-repo's catalogue
+        run: |
+          count=$(node bin/skilldrop.js list --from "$ARR" --json | python3 -c "import json,sys; print(json.load(sys.stdin)['count'])")
+          echo "agent-ready-repo skills read: $count" | tee -a "$GITHUB_STEP_SUMMARY"
+          test "$count" -ge 50
+      - name: and installs one of its packs
+        run: node bin/skilldrop.js install --pack desk-research --from "$ARR" --dest "$RUNNER_TEMP/inbound"
+      - name: and won't let its skill replace a skilldrop skill of the same name unasked
+        run: |
+          d="$RUNNER_TEMP/clash"
+          node bin/skilldrop.js install ux-writing --dest "$d"
+          if node bin/skilldrop.js install ux-writing --from "$ARR" --dest "$d"; then
+            echo "a same-name skill from another catalogue replaced skilldrop's without --replace"; exit 1
+          fi
+          node bin/skilldrop.js install ux-writing --from "$ARR" --dest "$d" --replace
+
+  reverse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install agentbundle, locked by hash
+        # Into its own environment, so it doesn't depend on HOME, which the next step moves.
+        run: |
+          python3 --version
+          python3 -m venv "$RUNNER_TEMP/agentbundle"
+          "$RUNNER_TEMP/agentbundle/bin/pip" install --quiet --disable-pip-version-check --require-hashes --only-binary :all: -r .github/tools/requirements-interop.txt
+      - name: agentbundle installs every skilldrop pack in full
+        run: |
+          ab="$RUNNER_TEMP/agentbundle/bin/agentbundle"
+          export HOME="$RUNNER_TEMP/home"; mkdir -p "$HOME"
+          failed=""
+          for pack in packs/*/; do
+            p=$(basename "$pack")
+            ws="$RUNNER_TEMP/ws-$p"; mkdir -p "$ws"; git -C "$ws" init -q
+            if ! (cd "$ws" && "$ab" install "$GITHUB_WORKSPACE/packs/$p" --all-skills --scope repo --adapter claude-code --yes > "$RUNNER_TEMP/$p.log" 2>&1); then
+              failed="$failed $p"; sed -n 1,5p "$RUNNER_TEMP/$p.log"; continue
+            fi
+            want=$(find "packs/$p/skills" -mindepth 1 -maxdepth 1 -type d | wc -l)
+            got=$(find "$ws/.claude/skills" -mindepth 1 -maxdepth 1 -type d | wc -l)
+            [ "$want" -eq "$got" ] || { failed="$failed $p($got/$want)"; }
+          done
+          echo "agentbundle: every pack installed in full${failed:+ except:$failed}" | tee -a "$GITHUB_STEP_SUMMARY"
+          test -z "$failed"

@@ -50,6 +50,7 @@ New here? Start with the [operating model](explanation/operating-model.md): the 
 - [Contain a skill's reach](how-to/contain-skills.md) — run a project's shell commands in Claude Code's sandbox, limited to what its skills declare
 - [Govern skills across an organisation](how-to/govern-skills.md) — a policy the installer enforces, an inventory of every machine, and an audit log that shows if it was edited
 - [Use with MCP servers](how-to/use-with-mcp-servers.md) — which servers pair with which skills, adding one in each tool, and the security rules
+- [Use skilldrop with agent-ready-repo](how-to/use-with-agent-ready-repo.md) — install each catalogue's packs with the other's installer, and keep the skills both name the same way apart
 - [Use with Jira](how-to/integrate-with-jira.md) — bug triage, story splitting, implementation loops, and release notes from Jira tickets
 - [Use with GitHub Projects](how-to/integrate-with-github-projects.md) — implementation loops, review gates, and release notes linked to GitHub issues
 - [Use with Figma](how-to/integrate-with-figma.md) — generate diagrams for FigJam, reverse-engineer decisions from mockups
@@ -69,6 +70,7 @@ New here? Start with the [operating model](explanation/operating-model.md): the 
 - [The skilldrop GitHub Action](reference/ci-action.md) — every input and output of the Action, what it never runs, good fits, cost and privacy
 - [Benchmark options and report](reference/benchmark-options.md) — every `run_bench.py` flag, how each run is isolated, what it writes, and what each number in the report means
 - [MCP servers and skills](reference/mcp-servers.md) — which MCP servers pair with which skills and loops, config for each tool, security rules and troubleshooting
+- [skilldrop and agent-ready-repo, side by side](reference/agent-ready-repo-map.md) — packs that cover the same work, and the skill names both catalogues use for different skills
 - [Skills that ship scripts](reference/skills-with-scripts.md) — every skill with scripts and what each declares it needs, and how to invoke a skill
 - [skilldrop and the OWASP Top 10s](reference/owasp-mapping.md) — what skilldrop covers in the Agentic Skills Top 10 and LLM Top 10 2025, and the gaps
 - [Policy file and audit log](reference/policy-and-audit.md) — every field of the organisation policy, how it fails, and the audit log and inventory formats
