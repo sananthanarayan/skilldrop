@@ -133,6 +133,8 @@ Options:
   --json             machine-readable output for list | info | packs | agents | outdated | doctor —
                      one JSON object on stdout, nothing else (for agents, scripts, CI)
   --with-related     also install each skill's related companions (one level)
+  --replace          replace a skill installed from a different catalogue that has the same
+                     name (install refuses otherwise); the old folder is removed first
   --with-hooks       also wire any hooks a skill declares (RFC-0006) — git pre-commit
                      reminders and Claude Code session-start context; degrades where the
                      target has no hook mechanism. Off by default so installs never touch
@@ -188,6 +190,15 @@ function gitHead(dir) {
 function splitSource(source) {
   const i = source.lastIndexOf("#");
   return i > 0 ? [source.slice(0, i), source.slice(i + 1)] : [source, ""];
+}
+/* Two catalogue sources are the same catalogue when they name the same place, whatever ref or
+   spelling: git+https://host/o/r.git#abc, https://host/o/r and https://host/o/r/ are one source. */
+function sourceId(source) {
+  if (!source || source === BUNDLED) return BUNDLED;
+  let s = splitSource(String(source))[0].trim().replace(/^git\+/, "").replace(/\/+$/, "").replace(/\.git$/, "");
+  if (/^[a-z]+:\/\//i.test(s)) s = s.replace(/^([a-z]+:\/\/[^/]+)/i, (h) => h.toLowerCase());
+  else s = path.resolve(s);
+  return s;
 }
 function isPinned(source) { return !!source && SHA_RE.test(splitSource(source)[1]); }
 
@@ -1471,11 +1482,15 @@ function installUnits(args) {
   const policy = enforcePolicy(args.flags, cat, names, "skill");
   const { dest, ide } = target(args.flags);
   const contain = containmentFor(args.flags, cat, names, dest, ide, policy);
-  if (args.flags["dry-run"]) { planInstall(cat, names, dest, ide, args.flags); if (contain) applyContainment(contain, true); return; }
+  const clashes = sourceClashes(cat, names, dest);
+  if (args.flags["dry-run"]) { planInstall(cat, names, dest, ide, args.flags, clashes); if (contain) applyContainment(contain, true); return; }
+  if (clashes.length && !args.flags.replace) die(clashMessage(clashes, cat, dest));
   fs.mkdirSync(dest, { recursive: true });
   const l = ledger(dest);
   const pipDeps = [], suggestions = new Set(), notes = [];
   for (const s of names) {
+    // A replaced skill's folder goes first, so no file of the other catalogue's skill is left mixed in.
+    if (clashes.some((c) => c.name === s)) fs.rmSync(path.join(dest, s), { recursive: true, force: true });
     const m = copyOne(cat, s, dest, ide, l, notes);
     if (fs.existsSync(path.join(skillDir(cat, s), "requirements.txt"))) pipDeps.push(s);
     for (const r of m.related || []) if (!names.includes(r) && !l.data[r]) suggestions.add(r);
@@ -1537,14 +1552,39 @@ function installUnits(args) {
   if (pk && pk["first-value"]) console.log("\n" + firstValueLines(pk).join("\n"));
 }
 
+/* Two catalogues can each ship a skill with the same name, and they are different skills. Copying
+   one over the other would replace it silently and leave the first one's extra files mixed in, so
+   install refuses unless asked (--replace), and says where each came from. */
+function sourceClashes(cat, names, dest) {
+  const l = ledger(dest), out = [];
+  for (const s of names) {
+    const have = l.data[s];
+    if (!have || isLoopEntry(have)) continue;
+    if (sourceId(lsrc(have)) !== sourceId(cat.source)) out.push({ name: s, from: lsrc(have) });
+  }
+  return out;
+}
+function clashMessage(clashes, cat, dest) {
+  const what = (src) => src === BUNDLED ? "skilldrop" : `'${src}'`;
+  return clashes.map((c) => `'${c.name}' in ${dest} came from ${what(c.from)}; this install is from ${what(cat.source)}, a different skill with the same name.`).join("\n       ") +
+    "\n       Nothing was installed. Keep the one you have, or replace it: rerun with --replace (the old folder is removed first)," +
+    "\n       or install into a separate folder with --dest <dir>.";
+}
+
 /* install --dry-run: everything install would write, and nothing written. */
-function planInstall(cat, names, dest, ide, flags) {
+function planInstall(cat, names, dest, ide, flags, clashes = []) {
   const l = ledger(dest);
   console.log(`dry run — nothing will be written. Target: ${dest} (${ide})\n`);
   for (const s of names) {
     const m = manifestOf(cat, s);
     const have = l.data[s];
-    const verb = !have ? "install" : lver(have) === m.version ? "reinstall" : `replace ${lver(have)} with`;
+    const clash = clashes.find((c) => c.name === s);
+    if (clash && !flags.replace) {
+      console.log(`would refuse ${s}: installed from ${clash.from === BUNDLED ? "skilldrop" : clash.from}, a different catalogue (add --replace to replace it)`);
+      continue;
+    }
+    const verb = clash ? `replace ${clash.from === BUNDLED ? "skilldrop" : clash.from}'s ${s} with` :
+      !have ? "install" : lver(have) === m.version ? "reinstall" : `replace ${lver(have)} with`;
     const edits = editedFiles(dest, s, have);
     console.log(`would ${verb} ${s}@${m.version} -> ${path.join(dest, s)}`);
     if (edits.length) console.log(`  overwrites your edits in: ${edits.join(", ")} (update keeps them; install does not)`);
@@ -1818,6 +1858,9 @@ function doctor(args) {
   for (const n of names) {
     const note = lsrc(data[n]) === BUNDLED && retiredNote(resolveCatalog(), n, isLoopEntry(data[n]));
     if (note) add("warn", note, `skilldrop uninstall ${n}${targetHint(args.flags)}, or keep it as it is; it will not update`);
+    if (lsrc(data[n]) !== BUNDLED && !isLoopEntry(data[n]) && skillExists(resolveCatalog(), n))
+      add("info", `${n} here came from '${lsrc(data[n])}'; skilldrop has its own ${n}, a different skill with the same name`,
+          `keep it, or switch with: skilldrop install ${n} --replace${targetHint(args.flags)} (or install skilldrop's into another --dest)`);
     if (!fs.existsSync(path.join(dest, n))) add("error", `${n} is in the ledger but its folder is gone`, `skilldrop install ${n} (or uninstall ${n} to drop the record)`);
     else if (!data[n].file) {
       const loop = isLoopEntry(data[n]);

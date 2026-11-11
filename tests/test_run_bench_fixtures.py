@@ -66,6 +66,11 @@ class FixtureNameTest(unittest.TestCase):
     def test_fixture_suffix_is_stripped(self):
         self.assertEqual(run_bench.workspace_name("a/go.mod.fixture"), "a/go.mod")
         self.assertEqual(run_bench.workspace_name("a/notes.md"), "a/notes.md")
+        # a hidden name is stored as dot.<name>, and the run sees the dot (RFC-0082)
+        self.assertEqual(run_bench.workspace_name("dot.github/workflows/ci.yml.fixture"), ".github/workflows/ci.yml")
+        self.assertEqual(run_bench.workspace_name("app/dot.npmrc"), "app/.npmrc")
+        self.assertEqual(run_bench.workspace_name("dot./x"), "dot./x")
+        self.assertEqual(run_bench.workspace_name("dotted/notes.md"), "dotted/notes.md")
 
 
 if __name__ == "__main__":

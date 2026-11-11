@@ -8,6 +8,14 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.13.0 — 2026-11-11
+
+- **Install from skilldrop and agent-ready-repo together without one replacing the other** ([RFC-0082](docs/rfcs/0082-interop-with-agent-ready-repo.md)).
+  - `install` now refuses to put a skill over one of the same name installed from a different catalogue. It says where each came from. Rerun with `--replace` to swap cleanly, or use `--dest` to keep both. Before, it replaced the skill silently and left the old one's files mixed in.
+  - `doctor` lists any installed third-party skill that shares a name with one of skilldrop's own.
+  - Seven skill names are in both catalogues, as different skills. [skilldrop and agent-ready-repo, side by side](guides/reference/agent-ready-repo-map.md) says what each does, and which packs cover the same work.
+- **Every skilldrop pack now installs with agent-ready-repo's `agentbundle`.** Clone skilldrop, then `agentbundle install ./skilldrop/packs/<pack> --all-skills`. Four packs, `core` among them, used to be refused. [Use skilldrop with agent-ready-repo](guides/how-to/use-with-agent-ready-repo.md) covers both directions, and a weekly check keeps them working.
+
 ## 1.12.0 — 2026-11-09
 
 - **`manuscript-check` joins `research`** ([RFC-0081](docs/rfcs/0081-manuscript-check.md)). Give it a paper, thesis chapter or report (Word, Markdown or text). It checks every citation against the reference list and every reference against the citations, numbered or author–year. It names near misses: the right author with another year, a misspelt name. It finds duplicate references, and Figure, Table and Section references to things that don't exist or are never mentioned. When numbered references are out of citation order, it gives the whole renumbering. Then it checks the abstract's and the text's numbers against your tables and results. It lost its first blind measurement and won its second (2 of 4 pairs with each judge). Run `npx skilldrop-cli install --pack research` to get it.

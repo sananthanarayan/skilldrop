@@ -5,9 +5,9 @@
 > We're about to roll this Claude Code setup out to the whole data team for tidewater-ingest.
 > Anything we should change first?
 
-Files: [`inputs/tidewater-ingest/.claude/settings.json`](inputs/tidewater-ingest/.claude/settings.json),
-[`inputs/tidewater-ingest/.mcp.json`](inputs/tidewater-ingest/.mcp.json),
-[`inputs/tidewater-ingest/.gitignore`](inputs/tidewater-ingest/.gitignore).
+Files: [`inputs/tidewater-ingest/dot.claude/settings.json`](inputs/tidewater-ingest/dot.claude/settings.json),
+[`inputs/tidewater-ingest/.mcp.json`](inputs/tidewater-ingest/dot.mcp.json),
+[`inputs/tidewater-ingest/.gitignore`](inputs/tidewater-ingest/dot.gitignore).
 
 ## What the scan listed (abridged, real output)
 

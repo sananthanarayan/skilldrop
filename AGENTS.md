@@ -59,7 +59,7 @@ node bin/skilldrop.js install --agent <name...> [--project | --dest <dir>]   # s
 node bin/skilldrop.js install --loop <name...> [--no-skills]     # loops + the stage skills they sequence (RFC-0028)
 node bin/skilldrop.js install --loop --pack <name>               # every loop a pack declares
 node bin/skilldrop.js uninstall --loop <name...>                 # removes the loop; stage skills stay
-node bin/skilldrop.js install <skill...> [--pack <name>] [--all] [--with-related] [--from <src>] [--project | --local | --ide cursor|kiro|codex|antigravity|copilot | --dest <dir>]
+node bin/skilldrop.js install <skill...> [--pack <name>] [--all] [--with-related] [--from <src>] [--replace] [--project | --local | --ide cursor|kiro|codex|antigravity|copilot | --dest <dir>]
 node bin/skilldrop.js update | outdated | uninstall <skill...>   # same target flags; update follows each skill's recorded source
 node bin/skilldrop.js install | update | uninstall ... --dry-run # print what would change, change nothing
 node bin/skilldrop.js diff <skill> | doctor                      # installed copy vs catalog; ledger vs disk (report-only)
@@ -135,7 +135,7 @@ Every version bump lands with a matching entry at the top of [`CHANGELOG.md`](CH
 | Input files a worked example was made from | `packs/<pack>/skills/<skill-name>/examples/inputs/` — like eval fixtures, the scan lists what it finds there without raising it |
 | Adversarial-sweep checklist (devils-advocate style) | `packs/<pack>/skills/<skill-name>/lenses/<name>.md` |
 | Per-archetype quality bar (doc-critique style) | `packs/<pack>/skills/<skill-name>/rubrics/<archetype>.md` |
-| Input files an eval's prompt names | `packs/<pack>/skills/<skill-name>/evals/files/<eval id>/` — copied into the working directory of a benchmark run (RFC-0040). A dependency file in one (`package.json`, `go.mod`, a CI workflow) is named `<name>.fixture`; the run sees the real name (RFC-0058). Git history the eval needs is a `git-history.json` there, replayed into a real repository for the run (RFC-0065) |
+| Input files an eval's prompt names | `packs/<pack>/skills/<skill-name>/evals/files/<eval id>/` — copied into the working directory of a benchmark run (RFC-0040). A dependency file in one (`package.json`, `go.mod`, a CI workflow) is named `<name>.fixture`; the run sees the real name (RFC-0058). A hidden name is stored as `dot.<name>` (`dot.github/`, `dot.npmrc`) and a nested `SKILL.md` as `SKILL.md.fixture`, so other installers such as `agentbundle` accept the skill (RFC-0082) Git history the eval needs is a `git-history.json` there, replayed into a real repository for the run (RFC-0065) |
 | Acceptance checks for a skill | `packs/<pack>/skills/<skill-name>/evals/evals.json` (prompt + assertions) + `evals/eval_queries.json` (should/shouldn't-trigger phrases) |
 | RFC for a new skill or structural change | `docs/rfcs/NNNN-<kebab-slug>.md` — copy [`docs/rfcs/0000-template.md`](docs/rfcs/0000-template.md), next sequential number |
 | Long-form design doc (bigger than an RFC, not a skill) | `docs/designs/<name>.md` — e.g. the CLI command surface, the telemetry collection spec |

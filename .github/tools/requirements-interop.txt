@@ -1,0 +1,7 @@
+# agentbundle (agent-ready-repo's installer) for the weekly interop check (RFC-0082), locked by hash.
+# pip install --require-hashes --only-binary :all: -r .github/tools/requirements-interop.txt
+# Dependabot keeps the versions and hashes current (.github/dependabot.yml, pip in /.github/tools).
+agentbundle==0.60.3 \
+    --hash=sha256:8ee14d71df013b253a092f6e91895dfc29ff8be04b277596199b45228ad39712
+credbroker==0.7.0 \
+    --hash=sha256:1a3bda81cc00346c7d014f8fc96236eee2fc2aeca38937e93b0144db653c9490
