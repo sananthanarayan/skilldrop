@@ -60,12 +60,14 @@ jobs:
         with:
           persist-credentials: false
       - name: Install agentbundle, locked by hash
+        # Into its own environment, so it doesn't depend on HOME, which the next step moves.
         run: |
           python3 --version
-          python3 -m pip install --quiet --user --require-hashes --only-binary :all: -r .github/tools/requirements-interop.txt
+          python3 -m venv "$RUNNER_TEMP/agentbundle"
+          "$RUNNER_TEMP/agentbundle/bin/pip" install --quiet --disable-pip-version-check --require-hashes --only-binary :all: -r .github/tools/requirements-interop.txt
       - name: agentbundle installs every skilldrop pack in full
         run: |
-          ab="$(python3 -m site --user-base)/bin/agentbundle"   # found before HOME moves
+          ab="$RUNNER_TEMP/agentbundle/bin/agentbundle"
           export HOME="$RUNNER_TEMP/home"; mkdir -p "$HOME"
           failed=""
           for pack in packs/*/; do
@@ -74,7 +76,8 @@ jobs:
             if ! (cd "$ws" && "$ab" install "$GITHUB_WORKSPACE/packs/$p" --all-skills --scope repo --adapter claude-code --yes > "$RUNNER_TEMP/$p.log" 2>&1); then
               failed="$failed $p"; sed -n 1,5p "$RUNNER_TEMP/$p.log"; continue
             fi
-            want=$(ls "packs/$p/skills" | wc -l); got=$(ls "$ws/.claude/skills" | wc -l)
+            want=$(find "packs/$p/skills" -mindepth 1 -maxdepth 1 -type d | wc -l)
+            got=$(find "$ws/.claude/skills" -mindepth 1 -maxdepth 1 -type d | wc -l)
             [ "$want" -eq "$got" ] || { failed="$failed $p($got/$want)"; }
           done
           echo "agentbundle: every pack installed in full${failed:+ except:$failed}" | tee -a "$GITHUB_STEP_SUMMARY"
