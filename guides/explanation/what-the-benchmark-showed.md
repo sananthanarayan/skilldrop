@@ -501,3 +501,25 @@ renders. The 23 October run it replaces is kept as
   three, because the model already follows most of what the instructions say. Which
   instruction-only skills add a rule the model breaks is the question every skill now faces.
 
+### Loops after plain-words replies
+
+[RFC-0083](../../docs/rfcs/0083-loop-replies-in-plain-words.md) gave every loop a rule that its
+reply says the outcome in plain words, with no gate ids, verdict words or run-log talk. It also
+made sure a person's decision never holds back work that can be delivered. All 11 loops then ran
+on two fresh held-out evals each ([`loops-1.14.0.json`](../../docs/benchmarks/loops-1.14.0.json)).
+
+| | Loop | Its skills, no loop | Plain agent |
+|---|---|---|---|
+| Assertions met | 85% | 77% | 74% |
+
+| Blind pair | Judge 1 | Judge 2 |
+|---|---|---|
+| Loop preferred to the plain agent | 65% (50 to 80) | 70% (55 to 84) |
+| Loop preferred to its skills without it | 52% (36 to 68) | 59% (43 to 75) |
+
+- **Gate talk went from 38 of 44 loop replies to none,** and the loops moved from behind their
+  own skills to even with them.
+- **`ship-agent`, `clarify` and `provision` are clearly ahead of their skills.**
+- **`build` and `design` still lost to theirs,** on what they did rather than how they said it.
+  Both are being rebuilt for a third measurement.
+

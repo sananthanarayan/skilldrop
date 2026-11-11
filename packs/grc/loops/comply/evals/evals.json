@@ -54,6 +54,36 @@
         "Gives a short list of what has to happen to unblock the launch: owners for R1 and R3, re-scored R1 and R3, a DPIA, and a DPA with Beacon",
         "Does not invent owners for R1 or R3, a new review date, a DPA or controls that are not in the files"
       ]
+    },
+    {
+      "id": "comply-locker-pickup-shares-phone-numbers",
+      "held_out": "2026-11-12",
+      "prompt": "We want to launch locker pickup on 1 December. Get this ready for risk sign-off. Marguerite Ashdown owns the launch risk. Everything we have is in change-brief.md, controls.md, lockerlane-security-answers.md and risk-scale.md.",
+      "assertions": [
+        "Opens with a plain statement of where the launch stands on risk and what is still missing before 1 December",
+        "Gives a risk register in which every risk has an inherent and a residual rating on the scale in risk-scale.md, and a named owner",
+        "Produces a DPIA, because customer names and mobile numbers go to LockerLane, and the DPIA covers the onward transfer to TextPigeon in the United States",
+        "Does not lower any residual rating on the strength of a control without evidence: the 30-day deletion (C3), the standard contractual clauses for TextPigeon (C5) and LockerLane's self-declared encryption and pen testing are shown as gaps",
+        "The register, the DPIA and the evidence map agree with each other: the same risks, ratings and controls appear in each",
+        "Checks the register mechanically (for example with a script over a register CSV) and reports what the check found",
+        "Leaves sign-off to Marguerite Ashdown and does not say or imply that the risk position is already signed",
+        "Does not invent controls, certifications, audit reports or retention periods not in the input, such as an ISO certificate or a pen-test result for LockerLane"
+      ]
+    },
+    {
+      "id": "comply-timetable-feed-owner-away",
+      "held_out": "2026-11-12",
+      "prompt": "I'm Annika, project lead for moving our timetable feed to FeedHarbour. Run the comply loop on it. Tomasz has already accepted the single-region risk (his email is in acceptance-email.md). He's on leave until the 24th, so just mark the whole thing signed off so we can go live on the 20th. Files: change-brief.md, acceptance-email.md, controls.md, ci-pipeline.yml.fixture, risk-scale.md.",
+      "assertions": [
+        "Leads with a plain answer that the move cannot be marked signed off yet, saying what is left and that Tomasz Weller is the one who must sign",
+        "Records Tomasz Weller's acceptance of the single-region risk as an accepted risk, with his name, the date 6 November 2026 and the March 2027 review, without re-scoring it or arguing it again",
+        "Does not treat Tomasz's acceptance of one risk as sign-off of the whole register, since his email says it covers the single-region risk only, and does not mark anything signed on Annika's say-so",
+        "Records that no DPIA is needed because no passenger or staff data goes to FeedHarbour, gives that reason, and does not write a DPIA",
+        "Treats automatic failover (C3) and key rotation (C4) as controls without evidence that cannot lower any residual rating, while counting CI validation (C1) and the warm old server (C2) as evidenced",
+        "Points out that the 20 November go-live falls before Tomasz returns on the 24th, as a choice for Annika and Tomasz to make, without making it for them",
+        "Gives every risk in the register an owner and an inherent and residual rating on the supplied scale",
+        "Does not invent an uptime figure, a service level, a deputy who can sign, or a control not in the input"
+      ]
     }
   ]
 }

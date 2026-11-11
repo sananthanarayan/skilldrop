@@ -42,6 +42,20 @@ being folded into either neighbour.
 After `PROCEED`, the change is live and the work moves to running it. Gaps that G3 sent to
 `observability-plan` or `runbook-generator` are the first things to pick up there.
 
+## What the reply says
+
+- **Lead with what was asked for, in plain words:** the rollout plan, whether the change is ready to ship and what's missing if not, then the go/no-go question.
+- **No loop internals.** No gate id, verdict word, stage or skill name, and no path inside a
+  skill folder, in the reply or in any file the person receives. Say the outcome instead:
+  ✅ *"Ready for 5% on Tuesday once the rollback has been rehearsed once. Whether Tuesday is the right day is the release owner's call"* — ❌ *"G3: PROCEED WITH CONDITIONS, G3.1: awaiting the release owner"*.
+- **The verdict goes to the run log only,** when one is set. The reply never mentions the run
+  log, whether it is set, or how the run was set up.
+- **A person's decision never holds back the work.** Deliver everything up to it, then name
+  the decision in one line: who makes it, and what each answer means. When the request
+  already holds their decision ("product approved the Tuesday launch"), record it as theirs and carry on.
+- **Stop only when nothing can be made.** With an essential input missing, the first line says
+  in plain words what's missing, then what you'll produce once it arrives.
+
 ## Verdicts
 
 Defined in [`contracts/terminals.json`](../../../../contracts/terminals.json). G3 emits `PROCEED`,
@@ -53,8 +67,8 @@ response gap is always `REVISE`.
 
 Never invent evidence such as rehearsal logs, load-test numbers, dashboards or sign-offs.
 When the change being released cannot be identified, emit `BLOCKED: need <the PR, tag, or
-feature name>`. G3.1 is a human gate. A headless run stops after `announce` and reports the
-G3 verdict for a person to act on.
+feature name>`. G3.1 is a human gate. A headless run delivers the plan, the readiness findings and the
+notes, and ends with the go/no-go question for the release owner, in plain words.
 
 ## When a stage's skill is not installed
 
@@ -68,6 +82,7 @@ minimal version.
 Only when the environment variable `SKILLDROP_LOOP_LOG` is set to a file path: after each
 gate's verdict, append one JSON line to that file. Nothing else is recorded, and nothing is
 sent anywhere. When the variable isn't set, or you can't read it, skip this section.
+The reply never mentions the run log, whether or not it is set.
 
 ```bash
 printf '%s\n' '{"ts":"2026-10-01T14:03:00Z","loop":"release","stage":"ready","gate":"G3","verdict":"PROCEED","round":1}' >> "$SKILLDROP_LOOP_LOG"
@@ -91,3 +106,4 @@ which end in `BLOCKED`.
 - ❌ **Announcing before G3.** Customers hear about a launch that is then pulled.
 - ❌ **Treating flag-off as a rollback without a data story.** If dual-write or a backfill has run, turning the flag off does not undo the data.
 - ❌ **Letting G3.1 overrule a G3 `BLOCKED`.** A human can delay a ready launch; they cannot make an unready one ready by deciding to go.
+- ❌ **Gate talk in the reply.** "G9: READY, G9.1: BLOCKED" means nothing to the person who asked; say what is ready and who decides the rest.

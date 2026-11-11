@@ -63,6 +63,36 @@
         "Delivers the work in this reply rather than stopping to ask for the call data",
         "Does not invent call volumes or complaint themes presented as fact, or service details not on the page such as sticker delivery times, bin delivery times or collection days"
       ]
+    },
+    {
+      "id": "clarify-repair-reporting",
+      "held_out": "2026-11-12",
+      "prompt": "Tenants can't use our report-a-repair service and the phones never stop. The current page is page.md, the form is form.md, last month's call reasons are in calls.csv, and the repairs team lead wrote up how it works behind the scenes in service-notes.md. Run the clarify loop.",
+      "assertions": [
+        "The reply opens with a plain summary of what will change on the page and form, and which problems need fixing behind the scenes instead. The spec and tables come after that",
+        "The page rewrite drops the E/U/R jargon. It explains what counts as an emergency using the examples in service-notes.md, and it gives the real timescales: triage within 2 working days, then 24 hours, 5 working days or 20 working days",
+        "The string table covers every field, hint, button, error and confirmation string in form.md. 'Error 413' becomes a message that gives the limit (up to 3 photos, 5 MB each) and what to do next",
+        "The tenancy reference hint tells people where to find it (top right of a rent statement) and shows the format, OHT- then 6 digits",
+        "The blueprint takes each of the six call reasons in calls.csv to a fail point and says whether the page or string changes reach it",
+        "It finds that missed appointments and much of the chasing come from the contractor only texting tenants who have a mobile number on record (about 30% don't). It says new wording or a phone field alone won't fix this unless the number reaches the booking system, and sends it to the IT systems manager or product",
+        "It flags that tenant-responsibility requests are closed with no message as a backstage gap, while the page lists those items so people know before they submit",
+        "It does not invent timescales, phone numbers, call counts or eligibility rules that are not in the input"
+      ]
+    },
+    {
+      "id": "clarify-leisure-card-upload-dropped",
+      "held_out": "2026-11-12",
+      "prompt": "We've already made one call on the Leisure Access Card: on 3 November our service manager, Amara Lindqvist, decided we will stop asking people to upload proof of address. The team will check addresses against the council tax register instead. We still need proof of eligibility. The page is page.md, the form is form.md, and the complaints summary is complaints.md. Run the clarify loop on it with that decision in mind.",
+      "assertions": [
+        "The reply opens with a plain summary of the new page and form and of what still needs a decision behind the scenes. The detail comes after that",
+        "It records Amara Lindqvist's decision of 3 November: no proof-of-address upload, addresses checked against the council tax register, proof of eligibility still required. It carries the decision through the page, strings and blueprint",
+        "No proof-of-address upload label, hint or error is left in the string table. The removed strings are listed as cut because of the decision",
+        "The page rewrite no longer tells people to find a bill or bank statement. It says the council will check their address itself",
+        "The blueprint adds the council tax register check as a backstage step with an owner. It shows the 61 blurry or cropped bill rejections as removed by the decision, not by better wording",
+        "It flags that people not named on the council tax register, such as lodgers and adults living with their parents (the 38 complaints), may fail the new check. It sends what happens to them to the service manager or product rather than covering it with copy",
+        "It treats the Orchard Rise 'postcode not found' complaints as an out-of-date address list behind the form, not a wording problem",
+        "It does not invent which benefits qualify, register-check timescales or other rules that are not in the input"
+      ]
     }
   ]
 }

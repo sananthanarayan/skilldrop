@@ -44,7 +44,10 @@ cat packs/dev-team/loops/build/LOOP.md
 ```
 
 Your `LOOP.md` repeats `loop.json`'s `name` and `description` exactly and ships a `Quality bar`
-and `Anti-patterns to avoid` section, like a skill.
+and `Anti-patterns to avoid` section, like a skill. It also carries `## What the reply says`
+([RFC-0083](../../docs/rfcs/0083-loop-replies-in-plain-words.md)): the reply gives the person what
+they asked for in plain words, with no gate ids or verdict words, and delivers everything up to
+a decision that's theirs.
 
 ## Draw the loop into the operating model
 

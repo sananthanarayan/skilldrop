@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0069. An agent from idea to a launch a person signed. The threat model is the gate because a path from untrusted content to private data and out is fixed in the design, not in the config; the launch gate is human because only the owner can accept the residual risk and the eval result together.",
   "name": "ship-agent",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Take an AI agent from an idea to a launch a person signed: the loop spec with its exit criteria and cap, the spend caps per stage, a threat model where every lethal-trifecta path has an architectural fix, an eval harness with its pass bar set before the first run, and a review of the real agent configuration before launch, with a gate that sends the design back when a path to exfiltration stays open. Use when the user says \"we're building an agent\", \"design and ship this agent safely\", \"run the ship-agent loop\", or wants an agent taken from design to launch with its risks and evals settled.",
   "entrypoint": "LOOP.md",
   "kind": "loop",

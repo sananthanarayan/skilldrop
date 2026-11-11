@@ -73,6 +73,20 @@ can accept what the recordings don't cover and approve every intended change.
 
    The person decides.
 
+## What the reply says
+
+- **Lead with what was asked for, in plain words:** whether the new component behaves like the old one, every difference found, and the cutover decision.
+- **No loop internals.** No gate id, verdict word, stage or skill name, and no path inside a
+  skill folder, in the reply or in any file the person receives. Say the outcome instead:
+  ✅ *"The new batch matches the old on 1,180 of 1,184 accounts. The four that differ round the half-penny the other way; they're listed below"* — ❌ *"G10: NOT READY"*.
+- **The verdict goes to the run log only,** when one is set. The reply never mentions the run
+  log, whether it is set, or how the run was set up.
+- **A person's decision never holds back the work.** Deliver everything up to it, then name
+  the decision in one line: who makes it, and what each answer means. When the request
+  already holds their decision ("finance has accepted the new rounding"), record it as theirs and carry on.
+- **Stop only when nothing can be made.** With an essential input missing, the first line says
+  in plain words what's missing, then what you'll produce once it arrives.
+
 ## Verdicts
 
 Defined in [`contracts/terminals.json`](../../../../contracts/terminals.json).
@@ -91,7 +105,8 @@ Defined in [`contracts/terminals.json`](../../../../contracts/terminals.json).
 ## Non-interactive runs
 
 With no person present, G10.1 cannot be satisfied. Run every stage through G10, deliver the
-evidence, and emit `BLOCKED: need the cutover decision from <the owner>`. Never mark an
+evidence, and end with the cutover decision in plain words: who makes it, what the recordings
+cover and what they don't. The cutover is never approved on the owner's behalf. Never mark an
 intended change as approved, and never widen a normalisation rule to reach `READY`.
 
 ## When a stage's skill is not installed
@@ -106,6 +121,7 @@ G10 degraded. Never skip `capture` or G10.1.
 Only when the environment variable `SKILLDROP_LOOP_LOG` is set to a file path: after each
 gate's verdict, append one JSON line to that file. Nothing else is recorded, and nothing is
 sent anywhere. When the variable isn't set, or you can't read it, skip this section.
+The reply never mentions the run log, whether or not it is set.
 
 ```bash
 printf '%s\n' '{"ts":"2026-10-20T14:03:00Z","loop":"modernize","stage":"prove","gate":"G10","verdict":"NOT READY","round":1}' >> "$SKILLDROP_LOOP_LOG"
@@ -132,3 +148,4 @@ The log holds verdicts only: never recordings, code or data.
 - ❌ **Calling the migration done at G10.** Equivalence on the recordings is evidence; the cutover is a person's decision, with a rollback.
 - ❌ **Skipping `survey` because the old code is "well known".** The callers and side effects nobody remembers are the ones that break.
 - ❌ **Rewriting without reading the decisions behind the old code.** A constraint someone recorded years ago, such as a retention period or an ordering guarantee, is easy to drop in a rewrite and expensive to rediscover in production.
+- ❌ **Gate talk in the reply.** "G9: READY, G9.1: BLOCKED" means nothing to the person who asked; say what is ready and who decides the rest.

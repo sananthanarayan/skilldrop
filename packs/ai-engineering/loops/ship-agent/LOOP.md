@@ -51,12 +51,24 @@ check about itself.
 8. **Review the launch at G12.1.** Run `agent-config-review` on the real configuration, then
    check each granted capability against `threat.md`: a grant the threat model did not allow
    is a finding, however harmless it looks. Put the review verdict, the eval result against
-   the pass bar, and every residual risk in front of the agent's owner. Only they choose the
-   verdict. In a non-interactive run, stop and write the decision they face.
+   the pass bar, and every residual risk in front of the agent's owner. The launch is their call:
+   deliver everything else, and write the decision they face.
 9. **Hand over the decision, then the working.** Lead with what the agent will be able to do,
    what it can't, and what still stands between it and launch. The documents go underneath.
-   Close with each gate on its own line, `G12: <VERDICT>` and `G12.1: <VERDICT>` (or
-   `G12.1: awaiting <role>`), and one sentence of reasons.
+
+## What the reply says
+
+- **Lead with what was asked for, in plain words:** what the agent will be able to do, what it can't, and what still stands between it and launch. The design, budget, threat model and eval plan go underneath.
+- **No loop internals.** No gate id, verdict word, stage or skill name, and no path inside a
+  skill folder, in the reply or in any file the person receives. Say the outcome instead:
+  ✅ *"Not ready to launch: the GitHub token can push, which the design ruled out. Swap it for a read-only one and rerun the evals"* — ❌ *"G12.1: REVISE"*.
+- **The verdict goes to the run log only,** when one is set. The reply never mentions the run
+  log, whether it is set, or how the run was set up.
+- **A person's decision never holds back the work.** Deliver everything up to it, then name
+  the decision in one line: who makes it, and what each answer means. When the request
+  already holds their decision ("the platform lead signed off the threat model"), record it as theirs and carry on.
+- **Stop only when nothing can be made.** With an essential input missing, the first line says
+  in plain words what's missing, then what you'll produce once it arrives.
 
 ## Verdicts
 
@@ -85,9 +97,9 @@ the job's scope is the problem.
 
 With no tool or data list, `agent-threat-model` emits
 `BLOCKED: need the agent's tool/permission inventory`; carry it through and run no further
-stages. Before the agent is built, the loop ends after `evals` with
-`G12.1: awaiting the built agent's configuration and one eval run`. G12.1 never passes without
-its owner.
+stages. Before the agent is built, deliver the design, budget, threat model and eval plan, and say
+that the launch review needs the built agent's configuration and one eval run. The launch is
+never approved on the owner's behalf.
 
 ## When a stage's skill is not installed
 
@@ -101,6 +113,7 @@ can't be judged without them. Never skip G12 or G12.1.
 Only when the environment variable `SKILLDROP_LOOP_LOG` is set to a file path: after each
 gate's verdict, append one JSON line to that file. Nothing else is recorded, and nothing is
 sent anywhere. When the variable isn't set, or you can't read it, skip this section.
+The reply never mentions the run log, whether or not it is set.
 
 ```bash
 printf '%s\n' '{"ts":"2026-11-03T10:15:00Z","loop":"ship-agent","stage":"threat","gate":"G12","verdict":"REVISE","round":1}' >> "$SKILLDROP_LOOP_LOG"
@@ -117,7 +130,7 @@ The log holds verdicts only: never the design, the capabilities or the findings.
 - **G12 passes only on architectural fixes.** "The prompt tells it not to" is not a fix for an open path.
 - **Every threat-model attack is an eval case in the critical subset,** and the pass bar is set before the first run.
 - **The launch review checks the built configuration against the threat model.** A grant the model didn't allow is a finding.
-- **G12.1 is the owner's call.** The loop writes the decision they face; it never records their verdict.
+- **G12.1 is the owner's call.** The loop writes the decision they face, and records their verdict only when they have given it.
 
 ## Anti-patterns to avoid
 
@@ -126,3 +139,4 @@ The log holds verdicts only: never the design, the capabilities or the findings.
 - ❌ **Setting the pass bar after the first eval run.** A bar set after seeing results is chosen to pass.
 - ❌ **Reviewing the configuration the design describes instead of the one the team built.** The gap between them is what the launch review is for.
 - ❌ **Skipping the budget because the agent is small.** A loop with no token cap and no abort rule is how a small agent sends a large bill.
+- ❌ **Gate talk in the reply.** "G9: READY, G9.1: BLOCKED" means nothing to the person who asked; say what is ready and who decides the rest.

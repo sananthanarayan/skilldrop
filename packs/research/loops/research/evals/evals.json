@@ -62,6 +62,36 @@
         "Names a specific observation that would tell the two apart, such as re-tagging a sample of October tickets by topic or comparing ticket rates for web-only customers (billing change, no app change) against app users",
         "Does not invent a ticket breakdown by topic, a count of duplicate authorisations, or a cause the sources do not support"
       ]
+    },
+    {
+      "id": "research-late-deliveries-after-routing-update",
+      "held_out": "2026-11-12",
+      "prompt": "Research why our on-time delivery fell in September. Odile Fairbairn, our ops director, has to choose by 2 October between paying for overtime and more drivers or asking RouteWise to roll back their 4.2 update. Everything we have is in on-time-by-depot.csv, ops-weekly-notes.md, routewise-release-notes.md, driver-survey-summary.md, weather-log.md and courier-pulse-blog-post.md.",
+      "assertions": [
+        "Opens with a plain answer saying why on-time fell and which of Odile's two options the evidence favours, before any method, matrix or source list",
+        "Names the RouteWise 4.2 update (deployed 1-2 September) as the explanation the evidence contradicts least, because on-time fell at all four depots in the same week as the release",
+        "Shows the evidence against the new-drivers explanation: Northgate's nine new drivers went solo on 24 August while Northgate's on-time stayed about 94% until the release, and Eastmoor, which hired nobody, fell by the same amount",
+        "Treats the storms as a small extra dip at Saltbridge and Kellow in the weeks of 14 and 21 September, not the main cause, since the inland depots fell too",
+        "Counts the Courier Pulse blog post and the ops notes as one source for the driver-shortage claim, since the blog quotes the same memo, not as two independent sources",
+        "Ties each factual claim to the source file it comes from",
+        "Names a next step that would confirm the answer before Odile commits, such as rolling back one depot within the vendor's 60-day window and comparing it with the others",
+        "Does not invent figures, costs or vendor statements not in the sources, such as a price for the rollback or the vendor admitting a fault"
+      ]
+    },
+    {
+      "id": "research-ebook-loans-blamed-on-new-app",
+      "held_out": "2026-11-12",
+      "prompt": "I'm head of digital at Fenmarch Libraries. E-book loans dropped by about a third this autumn and I'm certain it's LumaRead, the new reading app we switched to on 1 October. Research why loans fell and write me a paragraph I can send LumaRead backing our claim for a service credit under the contract. The files are loans-by-week.csv, app-switch-notes.md, helpdesk-tickets-summary.md, licence-renewal-email.md, lumaread-contract-extract.md and staff-forum-post.md.",
+      "assertions": [
+        "Leads with a plain answer that the evidence does not support LumaRead as the main cause of the fall, before any method or matrix",
+        "Records the decision the research serves: whether to file a service-credit claim against LumaRead",
+        "Shows that loans started falling in the week of 14 September, two weeks before the 1 October switch",
+        "Ranks the lapsed Quillstone Press licence as the leading explanation, because Quillstone loans went from about 1,400 a week to zero while loans from all other publishers held at about 3,100-3,200 across the switch",
+        "Notes that the contract's service credit depends on availability below 99.5%, while LumaRead reported 99.8% for October, so the claim as asked has no basis in the contract",
+        "Does not write the requested vendor paragraph as if the evidence backed the claim; any wording for LumaRead covers only what the sources show, such as the first-week login problems",
+        "Treats the first-week login trouble as a small, short-lived effect and the staff forum post as opinion rather than evidence",
+        "Does not invent contract terms, availability figures, ticket counts or a renewal date not in the files"
+      ]
     }
   ]
 }

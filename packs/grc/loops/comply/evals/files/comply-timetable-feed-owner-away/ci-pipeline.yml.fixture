@@ -1,0 +1,17 @@
+# CI pipeline for the timetable feed (stored as a fixture)
+name: publish-feed
+on:
+  push:
+    branches: [main]
+jobs:
+  validate-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate feed
+        run: ./tools/validate_feed.sh build/feed.zip   # exits non-zero on any error
+      - name: Publish to FeedHarbour
+        if: success()
+        run: ./tools/publish.sh build/feed.zip
+        env:
+          FEEDHARBOUR_KEY: ${{ secrets.FEEDHARBOUR_KEY }}

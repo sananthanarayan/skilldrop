@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0069. A described need to an apply a person approved. The plan review is the gate because a module can be secure and still produce a plan that destroys a database; the apply check is a second gate because the plan applied must be the plan reviewed, and only the person running apply can confirm that.",
   "name": "provision",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Take an infrastructure change from a described need to a Terraform apply a person approved: a module with secure defaults, a review of the real plan that names every destroy, replace, widening and out-of-scope change, and a check right before apply that the plan being applied is the one reviewed, with a gate that sends the module back when the plan would destroy state or widen access unasked. Use when the user says \"write the terraform and check it before we apply\", \"provision this safely\", \"run the provision loop\", or wants new infrastructure from module to apply in one pass.",
   "entrypoint": "LOOP.md",
   "kind": "loop",

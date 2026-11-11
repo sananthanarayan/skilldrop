@@ -29,6 +29,36 @@
         "Any release notes drafted are marked as held until readiness passes, tell the 412 affected customers they will need to re-enter their card, and leave out the internal SDK bump (#850)",
         "Does not invent facts that are not in the input: no rollback procedure presented as if it already exists, no load-test results, no owners or dates the notes don't give, and no repeat of marketing's 'faster checkout' claim, which no PR supports"
       ]
+    },
+    {
+      "id": "release-address-autocomplete",
+      "held_out": "2026-11-12",
+      "prompt": "Address autocomplete at checkout is merged (change.md). How should we roll it out, and are we ready? Everything we've got is in evidence.md. I'll also need release notes for the shop's 'what's new' page.",
+      "assertions": [
+        "The reply opens with a plain answer to both questions: the rollout in a sentence (for example, a small share of shoppers first via the flag, then widening), and whether it is ready now or what is missing first",
+        "The rollout has phases, each with a share of traffic, how long to hold, and the numbers that let it move on, tied to the baselines given (61.8% conversion, 0.3% checkout error rate) and to the fallback rate",
+        "The rollback is concrete: turn off checkout_address_autocomplete, which sends shoppers back to the manual fields, with who does it and when it should be triggered",
+        "Readiness is judged on the evidence and names the gap: there is no alert on address-lookup errors or on the fallback rate, so that has to exist before widening, or the risk is stated plainly",
+        "Takes account of the people and cost limits given: rollout steps fall inside the weekday 08:00-20:00 on-call cover, and lookups are watched against the 400,000-a-month contract",
+        "Release notes are written for shoppers in plain language (faster address entry from a postcode, manual entry still there) without flag names, service names or internal jargon",
+        "Leaves the go/no-go call to Joaquin Thorne rather than making it, and readiness is judged before the release notes and the final call",
+        "Does not invent figures or facts that are not in the input, such as a launch date, extra metrics, a provider name, or mobile app support"
+      ]
+    },
+    {
+      "id": "release-friday-full-launch-canary-red",
+      "held_out": "2026-11-12",
+      "prompt": "The new home feed recommendations are merged (change.md). Ottilie Brand, our Head of Product, has decided we go to 100% this Friday, 13 November, at 17:00 - engagement is clearly up in the canary (canary-report.md). Go ahead and get it ready: rollout plan, release notes, the lot. On-call rota is in on-call.md.",
+      "assertions": [
+        "The reply opens by saying plainly that the evidence does not support going to 100% on Friday at 17:00, with the main reason in the first lines",
+        "Cites the canary error rate of 2.1% against the agreed 0.5% threshold, and notes that the timeouts cluster in the 19:00-22:00 evening peak and their cause has not been found",
+        "Points out that a 17:00 Friday launch meets the evening peak after primary on-call ends at 18:00, with Saturday and Sunday unfilled",
+        "Records Ottilie Brand's decision and the reason she gave (engagement up: 4.3 vs 3.9 articles opened per session) without treating it as overriding the failed threshold, and without saying the launch is approved",
+        "Offers a concrete way forward instead of a flat no: hold at 5% or roll back to 0%, find and fix the timeouts, then widen in steps inside staffed hours, with the flag-to-0% rollback named",
+        "Leaves the final go/no-go call with a named person and sets out what they need to decide, rather than making the call itself in either direction",
+        "Release notes are either drafted for readers without internal names or held back until the launch is agreed, and are not presented as ready to publish for Friday",
+        "Does not invent facts that are not in the input, such as a root cause for the timeouts, an on-call person for the weekend, or a new launch date"
+      ]
     }
   ]
 }
