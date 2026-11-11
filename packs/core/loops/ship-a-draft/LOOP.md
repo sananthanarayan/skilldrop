@@ -35,6 +35,21 @@ check the argument and the surface after.
 5. **Polish last.** Run `output-hygiene` only once the argument is settled. It is a surface
    pass; running it on a draft that is about to be rewritten wastes it.
 
+## What the reply says
+
+- **Lead with what was asked for, in plain words:** the finished document, ready for its reader, then the changes the critique asked for and what the scrub didn't touch.
+- **No loop internals.** No gate id, verdict word, stage or skill name, and no path inside a
+  skill folder, in the reply or in any file the person receives. Say the outcome instead:
+  ✅ *"Ready to send. Two claims in section 3 were cut back to what the notes support"* — ❌ *"G5: SHIP WITH CHANGES"*.
+- **The verdict goes to the run log only,** when one is set. The reply never mentions the run
+  log, whether it is set, or how the run was set up.
+- **A person's decision never holds back the work.** Deliver everything up to it, then name
+  the decision in one line: who makes it, and what each answer means. When the request
+  already holds their decision ("the head of support has approved this wording"), record it as theirs and carry on.
+- **Stop only when nothing can be made.** With an essential input missing, the first line says
+  in plain words what's missing, then what you'll produce once it arrives.
+- **The critique's findings are written as edits and their reasons,** never as a verdict word.
+
 ## Verdicts
 
 Defined in [`contracts/terminals.json`](../../../../contracts/terminals.json). G5 emits the critique
@@ -52,6 +67,7 @@ mode this wrapper exists to prevent.
 Only when the environment variable `SKILLDROP_LOOP_LOG` is set to a file path: after each
 gate's verdict, append one JSON line to that file. Nothing else is recorded, and nothing is
 sent anywhere. When the variable isn't set, or you can't read it, skip this section.
+The reply never mentions the run log, whether or not it is set.
 
 ```bash
 printf '%s\n' '{"ts":"2026-10-01T14:03:00Z","loop":"ship-a-draft","stage":"critique","gate":"G5","verdict":"SHIP IT","round":1}' >> "$SKILLDROP_LOOP_LOG"
@@ -75,3 +91,4 @@ which end in `BLOCKED`.
 - ❌ **Skipping `intake` because the input "is already structured."** A Slack thread that looks organized is still untagged — nobody downstream can tell what was inferred.
 - ❌ **Looping `critique` → `draft` instead of `critique` → `intake`.** Re-drafting from the same incomplete brief reproduces the same gaps with new words.
 - ❌ **Treating `WRONG ARTIFACT` as a severe `MAJOR REWRITE`.** It is a redirect: the user wanted a different document, and revising this one cannot get there.
+- ❌ **Gate talk in the reply.** "G9: READY, G9.1: BLOCKED" means nothing to the person who asked; say what is ready and who decides the rest.

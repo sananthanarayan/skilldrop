@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0052. A question to an answer the evidence can carry. The gate sits after the comparison because a synthesis can't tell you whether its own evidence separates the explanations; the matrix can.",
   "name": "research",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Take a question that turns on why something happened to an answer the evidence can carry: a plan tied to the decision it serves, a synthesis of the sources with every claim cited, and rival explanations ranked by how little evidence contradicts them, with a gate that sends the work back for the observation that would tell the leaders apart. Use when the user says \"research why…\", \"find out what's causing…\", \"run the research loop\", or needs a decision-ready answer on which explanation the evidence supports.",
   "entrypoint": "LOOP.md",
   "kind": "loop",

@@ -58,8 +58,20 @@ when the module was, and checks at apply time that nothing moved between review 
    Only they choose the verdict. Never run `terraform apply` yourself in this loop.
 7. **Hand over the verdict and what apply will do.** Lead with what changes in plain words,
    what is destroyed or replaced, and the checks to do first. The review goes underneath.
-   Close with each gate on its own line, `G13: <VERDICT>` and `G13.1: <VERDICT>` (or
-   `G13.1: awaiting <role>`), and one sentence of reasons.
+
+## What the reply says
+
+- **Lead with what was asked for, in plain words:** what the change does in plain words, what is destroyed or replaced, and the checks to do before apply. The review goes underneath.
+- **No loop internals.** No gate id, verdict word, stage or skill name, and no path inside a
+  skill folder, in the reply or in any file the person receives. Say the outcome instead:
+  ✅ *"Safe to apply after one fix: the plan replaces the billing database because its engine version changed. Pin it and re-plan"* — ❌ *"G13: REVISE"*.
+- **The verdict goes to the run log only,** when one is set. The reply never mentions the run
+  log, whether it is set, or how the run was set up.
+- **A person's decision never holds back the work.** Deliver everything up to it, then name
+  the decision in one line: who makes it, and what each answer means. When the request
+  already holds their decision ("the platform lead approved this plan"), record it as theirs and carry on.
+- **Stop only when nothing can be made.** With an essential input missing, the first line says
+  in plain words what's missing, then what you'll produce once it arrives.
 
 ## Verdicts
 
@@ -84,9 +96,10 @@ so the change needs a person to rethink it.
 ## Non-interactive runs
 
 Missing provider or Terraform versions degrade to `terraform-module`'s `[assumption]` tags.
-With no plan and no way to run one, the loop ends after `module` with
-`G13: BLOCKED: need a saved plan (terraform plan -out=tfplan, then terraform show -json tfplan)`.
-G13.1 always stops at the person who runs apply.
+With no plan and no way to run one, deliver the module and the scope, and say plainly that the
+review needs a saved plan, with the two commands that make one (`terraform plan -out=tfplan`,
+then `terraform show -json tfplan`). Apply is always the person's: deliver the review and the
+checks, and name their decision.
 
 ## When a stage's skill is not installed
 
@@ -101,6 +114,7 @@ G13.1.
 Only when the environment variable `SKILLDROP_LOOP_LOG` is set to a file path: after each
 gate's verdict, append one JSON line to that file. Nothing else is recorded, and nothing is
 sent anywhere. When the variable isn't set, or you can't read it, skip this section.
+The reply never mentions the run log, whether or not it is set.
 
 ```bash
 printf '%s\n' '{"ts":"2026-11-03T10:15:00Z","loop":"provision","stage":"plan","gate":"G13","verdict":"REVISE","round":1}' >> "$SKILLDROP_LOOP_LOG"
@@ -126,3 +140,4 @@ The log holds verdicts only: never resource names, plan contents or values.
 - ❌ **Passing G13 because the destroy is "probably fine".** A stateful destroy without a confirmed backup is `DO NOT APPLY`, and the loop maps it to `REVISE` or `RECONSIDER`.
 - ❌ **Applying a fresh plan after reviewing an old one.** Anything merged in between is unreviewed.
 - ❌ **Treating `RECONSIDER` as a bigger `REVISE`.** A change that has to replace state is a migration; another module edit won't make it safe.
+- ❌ **Gate talk in the reply.** "G9: READY, G9.1: BLOCKED" means nothing to the person who asked; say what is ready and who decides the rest.

@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "apmail": {
+      "type": "http",
+      "url": "https://mail-mcp.larkspur.example/mcp?mailbox=invoices&mode=read-only",
+      "headers": {
+        "Authorization": "Bearer ${APMAIL_READ_TOKEN}"
+      }
+    },
+    "erp": {
+      "type": "http",
+      "url": "https://erp-mcp.larkspur.example/mcp",
+      "headers": {
+        "Authorization": "Bearer ${ERP_READ_TOKEN}"
+      }
+    },
+    "finq": {
+      "type": "http",
+      "url": "https://finq-mcp.larkspur.example/mcp",
+      "headers": {
+        "Authorization": "Bearer ${FINQ_DRAFT_TOKEN}"
+      }
+    }
+  }
+}

@@ -27,7 +27,10 @@ definition, because a query can be correct and still compute the wrong thing.
    SQL is read. Every surviving chart names its metric by defined name, grain, window and
    comparison. A metric with no written definition is marked `undefined`. Write it down as
    the person states it, or leave it as a question for the metric's owner. Don't define it
-   yourself.
+   yourself, with one exception: when the people who own it have handed the call to the
+   analyst ("happy for analytics to call it"), propose a definition, mark it *proposed,
+   unconfirmed*, say why in one line, and carry on with it. When only the numbers were asked
+   for, keep the spec as working notes and deliver the numbers.
 2. **Collect one query per surviving metric.** The person supplies the SQL, the dbt model or
    the view that computes each one, with the engine and what one output row represents.
    Where none exists yet, draft one from the definition and the schema they supply, and
@@ -50,8 +53,24 @@ definition, because a query can be correct and still compute the wrong thing.
    - what changed and by how much, from the verification queries;
    - every assumption the review made about keys, time zones and exclusions.
 
-   The owner confirms that this is what the business means by the metric. The BI developer
-   builds only from a spec that has passed G9.1.
+   The owner confirms that this is what the business means by the metric. Deliver everything
+   that can be built now: a metric whose definition is confirmed, or agreed in the request,
+   goes to the BI developer, and each one still open is listed with who confirms it and what
+   changes if they say no. Only an open metric waits.
+
+## What the reply says
+
+- **Lead with what was asked for, in plain words:** the numbers and the charts that can be built now, then who confirms what is still open. Give the spec document only when a dashboard was asked for, not when only the numbers were.
+- **No loop internals.** No gate id, verdict word, stage or skill name, and no path inside a
+  skill folder, in the reply or in any file the person receives. Say the outcome instead:
+  ✅ *"Five of the six tiles can be built now. Finance confirms whether 'active' means paid or logged in, before the sixth goes live"* — ❌ *"G9: READY, G9.1: BLOCKED"*.
+- **The verdict goes to the run log only,** when one is set. The reply never mentions the run
+  log, whether it is set, or how the run was set up.
+- **A person's decision never holds back the work.** Deliver everything up to it, then name
+  the decision in one line: who makes it, and what each answer means. When the request
+  already holds their decision ("happy for analytics to call it", a definition already agreed in the thread), record it as theirs and carry on.
+- **Stop only when nothing can be made.** With an essential input missing, the first line says
+  in plain words what's missing, then what you'll produce once it arrives.
 
 ## Verdicts
 
@@ -65,16 +84,20 @@ Defined in [`contracts/terminals.json`](../../../../contracts/terminals.json).
     a `SHIP WITH NOTES` caveat shown on the chart, or a data gap with its date.
   - `REVISE`: an owner says the definition is wrong (the wrong time zone, an exclusion
     missing, the wrong grain). Return to `spec` with their definition.
-  - `BLOCKED`: an `undefined` metric has no owner to define it, or an owner is unavailable.
+  - `BLOCKED`: an `undefined` metric has no owner to define it and nobody has handed the call
+    to the analyst.
 
-An `undefined` metric can't pass G9.1. Its owner defines it, or the chart moves to the cut
-list with the reason.
+An `undefined` metric can't pass G9.1. Its owner defines it, the owner's hand-off lets the
+analyst propose it, or the chart moves to the cut list with the reason. An owner who is
+unavailable doesn't block the rest: the metrics already confirmed go ahead, and theirs is
+listed as open.
 
 ## Non-interactive runs
 
-With no person present, G9.1 cannot be satisfied. Run `spec` and `review`, deliver the spec
-with each query's review, and emit `BLOCKED: need each metric owner's confirmation of
-<every metric on the spec>`. A metric whose query passed G9 still needs its owner: the review
+With no person present, run `spec` and `review` and deliver both: the numbers, each query's
+review, and a plain list of the confirmations still open, one line per metric with who
+confirms it. A definition the request already agreed, or handed to the analyst, is used as
+the request gives it. A metric whose query passed review still needs its owner: the review
 says the SQL computes the definition, not that the definition is right. Never confirm a definition on an owner's behalf, and never fill an
 `undefined` metric with a plausible one: two teams will each read it as theirs.
 
@@ -90,6 +113,7 @@ because those are the bugs that change the number. Never skip G9.1.
 Only when the environment variable `SKILLDROP_LOOP_LOG` is set to a file path: after each
 gate's verdict, append one JSON line to that file. Nothing else is recorded, and nothing is
 sent anywhere. When the variable isn't set, or you can't read it, skip this section.
+The reply never mentions the run log, whether or not it is set.
 
 ```bash
 printf '%s\n' '{"ts":"2026-10-19T14:03:00Z","loop":"measure","stage":"review","gate":"G9","verdict":"NOT READY","round":1}' >> "$SKILLDROP_LOOP_LOG"
@@ -107,6 +131,8 @@ The log holds verdicts only: never a query, a table name or a figure.
 - **A fixed query goes back through the spec.** The corrected number can move a target or a threshold, and the spec is where those live.
 - **The owner sees the change in the number.** The verification queries' before and after go to G9.1, not only the corrected SQL.
 - **The metric's owner signs the definition.** A correct query for the wrong definition is still the wrong number.
+- **A hand-off is used, not refused.** When the owners leave the definition to the analyst, a proposed, unconfirmed definition goes ahead and is marked as such.
+- **What can be built now is delivered now.** One open metric holds back its own chart, not the dashboard.
 
 ## Anti-patterns to avoid
 
@@ -115,4 +141,7 @@ The log holds verdicts only: never a query, a table name or a figure.
 - ❌ **Shipping the corrected SQL without telling the owner the number moved.** A revenue figure that drops a third overnight with no explanation gets reverted.
 - ❌ **Passing G9 on a clean lint.** The lint can't see join fan-out; the review reads the joins.
 - ❌ **Treating `SHIP WITH NOTES` as `SHIP IT`.** The notes go to the owner and, where they change how the chart reads, onto the chart.
-- ❌ **Building before G9.1.** A dashboard built on an unconfirmed definition is the one the two teams will argue about.
+- ❌ **Building an open metric before its owner confirms it.** A chart built on an unconfirmed definition is the one the two teams will argue about. The confirmed ones don't wait for it.
+- ❌ **Refusing a definition the owners handed over.** "Happy for analytics to call it" is a decision; propose the definition and mark it unconfirmed.
+- ❌ **A spec document when only the numbers were asked for.** Deliver the numbers; keep the spec as working notes.
+- ❌ **Gate talk in the reply.** "G9: READY, G9.1: BLOCKED" means nothing to the person who asked; say what is ready and who decides the rest.

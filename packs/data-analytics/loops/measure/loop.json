@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0052. A dashboard request to a spec whose every number is defined and whose every query has been reviewed. The spec comes first so only the queries behind charts that survive the cut list are reviewed; the metric's owner signs last, because only they can say a definition is what the business means.",
   "name": "measure",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Take a dashboard request to a spec a BI developer can build on numbers people can defend: the decision it serves and one chart per question, every metric defined, the SQL behind each metric reviewed for the bugs that quietly inflate a figure, and the metric owner's sign-off on each definition before anything is built. Use when the user says \"we need a dashboard for…\", \"run the measure loop\", \"make sure these numbers are right before the BI team builds it\", or two teams disagree about a number that is about to go on a dashboard.",
   "entrypoint": "LOOP.md",
   "kind": "loop",

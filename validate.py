@@ -389,6 +389,12 @@ def check_loops(dir_set):
         for section in ("## Quality bar", "## Anti-patterns"):
             if not re.search(rf"^{re.escape(section)}", md, re.M):
                 fail(where, f"LOOP.md has no `{section}` section — a loop without one is a diagram")
+        # RFC-0083: gate ids, verdict words and run-log talk in a loop's reply were the commonest
+        # reason a loop lost to its own skills (RFC-0074), so every LOOP.md says what the reply says.
+        if not re.search(r"^## What the reply says", md, re.M):
+            fail(where, "LOOP.md has no `## What the reply says` section (RFC-0083): the reply leads with what "
+                        "was asked for in plain words, with no gate id, verdict word, stage or skill name, "
+                        "and no mention of the run log")
         if not re.search(r"^## Run log \(opt-in\)", md, re.M) or "SKILLDROP_LOOP_LOG" not in md:
             fail(where, "LOOP.md has no `## Run log (opt-in)` section — every loop logs its gate verdicts the same way, so `skilldrop loop-stats` can read them")
         if len(md.splitlines()) > 500:

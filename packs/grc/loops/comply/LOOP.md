@@ -70,6 +70,20 @@ It is not legal or audit advice, and every document it produces says so once, at
    Each owner accepts their own risks. A high or critical residual risk that its own owner
    accepts needs a sign-off from someone above them, named in the summary.
 
+## What the reply says
+
+- **Lead with what was asked for, in plain words:** the risk position: what is evidenced, what isn't, and who has to sign each part.
+- **No loop internals.** No gate id, verdict word, stage or skill name, and no path inside a
+  skill folder, in the reply or in any file the person receives. Say the outcome instead:
+  ✅ *"Two risks rest on an access review nobody has run yet. The CISO signs once it's attached"* — ❌ *"G8: NOT READY"*.
+- **The verdict goes to the run log only,** when one is set. The reply never mentions the run
+  log, whether it is set, or how the run was set up.
+- **A person's decision never holds back the work.** Deliver everything up to it, then name
+  the decision in one line: who makes it, and what each answer means. When the request
+  already holds their decision ("the CISO accepted the residual risk in writing"), record it as theirs and carry on.
+- **Stop only when nothing can be made.** With an essential input missing, the first line says
+  in plain words what's missing, then what you'll produce once it arrives.
+
 ## Verdicts
 
 Defined in [`contracts/terminals.json`](../../../../contracts/terminals.json).
@@ -88,7 +102,7 @@ Defined in [`contracts/terminals.json`](../../../../contracts/terminals.json).
 ## Non-interactive runs
 
 With no person present, G8.1 cannot be satisfied. Run every stage through G8, deliver the
-documents, and emit `BLOCKED: need sign-off from <the named owners>`. Never accept a risk
+documents, and say in plain words who signs what, and what each signature accepts. Never accept a risk
 on someone's behalf, never fill an owner, a retention period or a vendor location with a
 plausible guess, and leave the DPIA's DPO advice and decision fields blank.
 
@@ -105,6 +119,7 @@ Never skip G8.1.
 Only when the environment variable `SKILLDROP_LOOP_LOG` is set to a file path: after each
 gate's verdict, append one JSON line to that file. Nothing else is recorded, and nothing is
 sent anywhere. When the variable isn't set, or you can't read it, skip this section.
+The reply never mentions the run log, whether or not it is set.
 
 ```bash
 printf '%s\n' '{"ts":"2026-10-19T14:03:00Z","loop":"comply","stage":"check","gate":"G8","verdict":"READY","round":1}' >> "$SKILLDROP_LOOP_LOG"
@@ -131,3 +146,4 @@ The log holds verdicts only: never a risk, an owner's name or any personal data.
 - ❌ **Running the evidence map on the whole SOC 2 scope.** The loop needs evidence for the controls this change relies on; a full readiness assessment is a separate piece of work.
 - ❌ **Self-signing at G8.1.** A clean check says the register is well-formed. It cannot say the risk is acceptable.
 - ❌ **Writing a guessed vendor location or retention period** to complete the DPIA. It stays `[to confirm: …]` and becomes a DPO question.
+- ❌ **Gate talk in the reply.** "G9: READY, G9.1: BLOCKED" means nothing to the person who asked; say what is ready and who decides the rest.

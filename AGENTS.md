@@ -317,7 +317,10 @@ this section.
 5. **`LOOP.md`** — frontmatter `name` + `description` matching `loop.json` exactly, the stage
    table, how to run it, and the same `Quality bar` + `Anti-patterns to avoid` sections a
    skill ships. Include the degradation line: what to do when a stage's skill isn't installed,
-   and the `## Run log (opt-in)` section copied from an existing loop (RFC-0038).
+   the `## Run log (opt-in)` section copied from an existing loop (RFC-0038), and a
+   `## What the reply says` section (RFC-0083): the reply leads with what was asked for in plain
+   words, carries no gate id, verdict word, stage or skill name, never mentions the run log, and
+   delivers everything up to a person's decision instead of stopping at it.
 6. **No model tier.** A loop sequences skills and makes no model call of its own, so it has no
    entry in `model-routing.json`; `validate.py` fails one that does, by name.
 7. **A loop's name may not collide with a skill's.** On install, `LOOP.md` projects to
@@ -378,7 +381,7 @@ See `packs/converters/skills/md-to-docx/scripts/md_to_docx.py` for the reference
 - [ ] **Outcome membership** — new skill added to at least one entry in `catalogue.json` `outcomes` (RFC-0026).
 - [ ] **`CHANGELOG.md` entry** if the version was bumped — the site build fails without one.
 - [ ] **GitHub About updated** if the skill/pack/subagent counts changed — `gh repo edit --description "…"`. This is the one surface `validate.py` cannot see (it is stdlib-only and off-repo), so it is the one that goes stale: it sat at `62 skills … 7 packs` for a while after the catalogue was 56 and 6. It is also what shows in search results and on the repo card, so it is the first thing a stranger reads.
-- [ ] **Loop (if any) is complete** — `loop.json` validates against the closed contract, every named skill exists, gate ids are repo-unique, every verdict is in `contracts/terminals.json`, and `LOOP.md` carries `Quality bar` + `Anti-patterns to avoid`.
+- [ ] **Loop (if any) is complete** — `loop.json` validates against the closed contract, every named skill exists, gate ids are repo-unique, every verdict is in `contracts/terminals.json`, and `LOOP.md` carries `What the reply says`, `Quality bar` + `Anti-patterns to avoid`.
 - [ ] **No loop in `model-routing.json`** — loops carry no tier.
 - [ ] **`handoff` (if present) is complete** — every entry has `to`/`when`/`purpose`/`fallback`, and every `to` is also in `related`.
 - [ ] **`python3 build_llms.py` run** if skills, loops, packs, contracts or guides changed — `llms.txt` is generated and drift fails the lint.

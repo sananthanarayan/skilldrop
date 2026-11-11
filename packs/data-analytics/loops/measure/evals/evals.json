@@ -53,6 +53,36 @@
         "Reports that the sign-off gate has not passed, so the Active customers tile is not ready to build, and says who needs to decide what",
         "Does not invent a metric owner, a reconciled Active customers figure, or a split of the 17,700 gap by cause, none of which are in the input"
       ]
+    },
+    {
+      "id": "measure-second-van-dashboard",
+      "held_out": "2026-11-12",
+      "prompt": "We need a dashboard for the operations board so they can decide each month where the second van goes. The request is in request.md, the schema in schema.md, and the two queries we use today are households_served.sql and stockout_rate.sql. Make sure the numbers are right before the BI developer builds it.",
+      "assertions": [
+        "Opens with the dashboard in plain words: the decision it serves (which district the second van visits next month) and the questions it answers",
+        "Gives one chart per question, each backed by a metric defined precisely enough to build (what is counted, the grain, the time window and how NULL travel_km is handled)",
+        "Catches that households_served.sql counts parcel items, not households, because the join to parcel_items repeats each visit about 14 times, and that a household visiting weekly is counted once per visit; gives corrected SQL using a distinct count of households",
+        "Catches that stockout_rate.sql divides an integer by an integer, so the rate comes out as 0 (or 100) rather than a real share, and gives corrected SQL",
+        "Says in plain words which way each bug would have moved the figure the board saw, for example demand hugely overstated",
+        "Leaves the 'total parcels ever given' counter off the dashboard, or questions it, because it does not help decide where the van goes",
+        "Names Hollis Fenwick and Esme Tarrant as the owners of their metrics and leaves each definition waiting for its owner's sign-off rather than calling it approved",
+        "Does not invent metrics, targets or data sources not in the input, such as a deprivation index or a demand forecast"
+      ]
+    },
+    {
+      "id": "measure-net-revenue-handed-to-analyst",
+      "held_out": "2026-11-12",
+      "prompt": "I'm Noor, the analyst at Pellwick Outdoor. Sales and Finance have argued about net revenue for weeks and have now handed the definition to me (handoff-thread.md). Give me the spec for the board's revenue dashboard. Their two queries are sales_net_revenue.sql and finance_net_revenue.sql, and the schema is in schema.md.",
+      "assertions": [
+        "Opens with the net revenue definition it settled on, in plain words: what is included and excluded (VAT, shipping, refunds) and when revenue counts",
+        "Records the hand-off as the basis for the definition, naming Dana Ruskin and Callum Brightwater as having given the decision to Noor, and does not send the choice back to them",
+        "Settles Dana's open question on shipping charges one way or the other and says so, rather than leaving it undefined",
+        "Explains what changes for each team compared with its current query, as the thread asks",
+        "Catches that sales_net_revenue.sql sums order_total after joining order_lines, so each order is counted once per line (about three times)",
+        "Catches that `r.reason <> 'test'` in finance_net_revenue.sql also drops refunds whose reason is NULL, which is most of them, so refunds are under-deducted and net revenue is overstated; gives corrected SQL",
+        "Handles the month boundary in Europe/London rather than UTC in the SQL for the chosen definition, or flags it as needing a fix",
+        "Does not invent revenue figures, the size of the gap between the two queries, or accounting policies not in the input"
+      ]
     }
   ]
 }

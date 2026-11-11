@@ -47,8 +47,21 @@ itself to change. Neither writing skill can judge that about its own output.
    return counts against the cap.
 7. **Hand over what changes and what can't change here.** Lead with the complaints the new page
    and form should stop, and the ones they can't, with the backstage fix and its owner. The
-   page, the strings and the blueprint go underneath. Close with the gate on its own line,
-   `G14: <VERDICT>`, and one sentence of reasons.
+   page, the strings and the blueprint go underneath.
+
+## What the reply says
+
+- **Lead with what was asked for, in plain words:** the complaints the new page and form should stop, the ones they can't, and the backstage fix and its owner for each of those.
+- **No loop internals.** No gate id, verdict word, stage or skill name, and no path inside a
+  skill folder, in the reply or in any file the person receives. Say the outcome instead:
+  ✅ *"The new page should stop the 'which documents count' calls. 'Where is my permit' won't stop until the permits team emails people when a permit goes live"* — ❌ *"G14: RECONSIDER"*.
+- **The verdict goes to the run log only,** when one is set. The reply never mentions the run
+  log, whether it is set, or how the run was set up.
+- **A person's decision never holds back the work.** Deliver everything up to it, then name
+  the decision in one line: who makes it, and what each answer means. When the request
+  already holds their decision ("the permits team has agreed to send the email"), record it as theirs and carry on.
+- **Stop only when nothing can be made.** With an essential input missing, the first line says
+  in plain words what's missing, then what you'll produce once it arrives.
 
 ## Verdicts
 
@@ -87,6 +100,7 @@ Never skip G14.
 Only when the environment variable `SKILLDROP_LOOP_LOG` is set to a file path: after each
 gate's verdict, append one JSON line to that file. Nothing else is recorded, and nothing is
 sent anywhere. When the variable isn't set, or you can't read it, skip this section.
+The reply never mentions the run log, whether or not it is set.
 
 ```bash
 printf '%s\n' '{"ts":"2026-11-03T10:15:00Z","loop":"clarify","stage":"blueprint","gate":"G14","verdict":"REVISE","round":1}' >> "$SKILLDROP_LOOP_LOG"
@@ -112,3 +126,4 @@ The log holds verdicts only: never the page, the complaints or the quotes.
 - ❌ **Writing the strings before the page.** The form then names things one way and the page another.
 - ❌ **Passing G14 because readability improved.** A lower grade level is not a complaint reached.
 - ❌ **Treating `RECONSIDER` as failure.** Finding that the service, not the page, causes the calls is the result.
+- ❌ **Gate talk in the reply.** "G9: READY, G9.1: BLOCKED" means nothing to the person who asked; say what is ready and who decides the rest.

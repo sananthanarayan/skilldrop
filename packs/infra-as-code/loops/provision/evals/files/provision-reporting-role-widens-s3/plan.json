@@ -1,0 +1,225 @@
+{
+  "format_version": "1.2",
+  "terraform_version": "1.9.5",
+  "planned_values": {
+    "root_module": {
+      "child_modules": [
+        {
+          "address": "module.ledger_report_role",
+          "resources": [
+            {
+              "address": "module.ledger_report_role.aws_iam_role.this",
+              "mode": "managed",
+              "type": "aws_iam_role",
+              "name": "this",
+              "provider_name": "registry.terraform.io/hashicorp/aws",
+              "schema_version": 0,
+              "values": {
+                "name": "ledger-report-task",
+                "assume_role_policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"ecs-tasks.amazonaws.com\"\n      }\n    }\n  ]\n}",
+                "description": null,
+                "force_detach_policies": false,
+                "max_session_duration": 3600,
+                "path": "/",
+                "permissions_boundary": null,
+                "tags": {
+                  "team": "finance-data",
+                  "cost-centre": "cc-2207",
+                  "module": "task-s3-read-role"
+                },
+                "tags_all": {
+                  "team": "finance-data",
+                  "cost-centre": "cc-2207",
+                  "module": "task-s3-read-role"
+                }
+              },
+              "sensitive_values": {
+                "tags": {},
+                "tags_all": {}
+              }
+            },
+            {
+              "address": "module.ledger_report_role.aws_iam_policy.this",
+              "mode": "managed",
+              "type": "aws_iam_policy",
+              "name": "this",
+              "provider_name": "registry.terraform.io/hashicorp/aws",
+              "schema_version": 0,
+              "values": {
+                "name": "ledger-report-task-s3",
+                "description": null,
+                "path": "/",
+                "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"S3Access\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"s3:GetObject\",\n        \"s3:ListBucket\",\n        \"s3:PutObject\",\n        \"s3:DeleteObject\"\n      ],\n      \"Resource\": [\n        \"arn:aws:s3:::*\",\n        \"arn:aws:s3:::*/*\"\n      ]\n    }\n  ]\n}",
+                "tags": {
+                  "team": "finance-data",
+                  "cost-centre": "cc-2207",
+                  "module": "task-s3-read-role"
+                },
+                "tags_all": {
+                  "team": "finance-data",
+                  "cost-centre": "cc-2207",
+                  "module": "task-s3-read-role"
+                }
+              },
+              "sensitive_values": {
+                "tags": {},
+                "tags_all": {}
+              }
+            },
+            {
+              "address": "module.ledger_report_role.aws_iam_role_policy_attachment.this",
+              "mode": "managed",
+              "type": "aws_iam_role_policy_attachment",
+              "name": "this",
+              "provider_name": "registry.terraform.io/hashicorp/aws",
+              "schema_version": 0,
+              "values": {
+                "role": "ledger-report-task"
+              },
+              "sensitive_values": {}
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "resource_changes": [
+    {
+      "address": "module.ledger_report_role.aws_iam_role.this",
+      "module_address": "module.ledger_report_role",
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "this",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "name": "ledger-report-task",
+          "assume_role_policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"ecs-tasks.amazonaws.com\"\n      }\n    }\n  ]\n}",
+          "description": null,
+          "force_detach_policies": false,
+          "max_session_duration": 3600,
+          "path": "/",
+          "permissions_boundary": null,
+          "tags": {
+            "team": "finance-data",
+            "cost-centre": "cc-2207",
+            "module": "task-s3-read-role"
+          },
+          "tags_all": {
+            "team": "finance-data",
+            "cost-centre": "cc-2207",
+            "module": "task-s3-read-role"
+          }
+        },
+        "after_unknown": {
+          "arn": true,
+          "id": true,
+          "unique_id": true,
+          "create_date": true,
+          "managed_policy_arns": true,
+          "inline_policy": true,
+          "name_prefix": true
+        },
+        "before_sensitive": false,
+        "after_sensitive": {
+          "tags": {},
+          "tags_all": {}
+        }
+      }
+    },
+    {
+      "address": "module.ledger_report_role.aws_iam_policy.this",
+      "module_address": "module.ledger_report_role",
+      "mode": "managed",
+      "type": "aws_iam_policy",
+      "name": "this",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "name": "ledger-report-task-s3",
+          "description": null,
+          "path": "/",
+          "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"S3Access\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"s3:GetObject\",\n        \"s3:ListBucket\",\n        \"s3:PutObject\",\n        \"s3:DeleteObject\"\n      ],\n      \"Resource\": [\n        \"arn:aws:s3:::*\",\n        \"arn:aws:s3:::*/*\"\n      ]\n    }\n  ]\n}",
+          "tags": {
+            "team": "finance-data",
+            "cost-centre": "cc-2207",
+            "module": "task-s3-read-role"
+          },
+          "tags_all": {
+            "team": "finance-data",
+            "cost-centre": "cc-2207",
+            "module": "task-s3-read-role"
+          }
+        },
+        "after_unknown": {
+          "arn": true,
+          "id": true,
+          "policy_id": true,
+          "attachment_count": true,
+          "name_prefix": true
+        },
+        "before_sensitive": false,
+        "after_sensitive": {
+          "tags": {},
+          "tags_all": {}
+        }
+      }
+    },
+    {
+      "address": "module.ledger_report_role.aws_iam_role_policy_attachment.this",
+      "module_address": "module.ledger_report_role",
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "this",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "role": "ledger-report-task"
+        },
+        "after_unknown": {
+          "id": true,
+          "policy_arn": true
+        },
+        "before_sensitive": false,
+        "after_sensitive": {}
+      }
+    }
+  ],
+  "configuration": {
+    "provider_config": {
+      "aws": {
+        "name": "aws",
+        "full_name": "registry.terraform.io/hashicorp/aws",
+        "version_constraint": "~> 5.70",
+        "expressions": {
+          "region": {
+            "constant_value": "eu-west-2"
+          }
+        }
+      }
+    },
+    "root_module": {
+      "module_calls": {
+        "ledger_report_role": {
+          "source": "../../modules/task-s3-read-role"
+        }
+      }
+    }
+  },
+  "timestamp": "2026-11-11T09:15:33Z",
+  "applyable": true,
+  "complete": true,
+  "errored": false
+}

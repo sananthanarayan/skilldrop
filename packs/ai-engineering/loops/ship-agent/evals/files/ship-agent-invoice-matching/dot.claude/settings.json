@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "mcp__apmail__list_messages",
+      "mcp__apmail__get_message",
+      "mcp__apmail__get_attachment",
+      "mcp__erp__get_purchase_order",
+      "mcp__erp__get_goods_received",
+      "mcp__finq__create_draft_note"
+    ],
+    "deny": [
+      "Bash",
+      "WebFetch",
+      "WebSearch",
+      "Write",
+      "Edit",
+      "mcp__erp__get_supplier_bank_details"
+    ]
+  },
+  "enableAllProjectMcpServers": false,
+  "enabledMcpjsonServers": ["apmail", "erp", "finq"]
+}

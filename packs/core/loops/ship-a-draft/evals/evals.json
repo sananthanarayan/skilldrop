@@ -48,6 +48,36 @@
         "Does not stop to ask questions; the brief, draft and critique are delivered in this run",
         "Does not invent a launch date, price or feature scope the ticket has not settled, such as stating 12 November, 26 November or $15 a month as fact"
       ]
+    },
+    {
+      "id": "ship-a-draft-double-charge-runbook",
+      "held_out": "2026-11-12",
+      "prompt": "Can you turn support-notes.md into a finished runbook for the support team on handling double charges? It goes into the help-centre wiki tomorrow, so it needs to be ready to publish, not a draft.",
+      "assertions": [
+        "Leads with the finished runbook itself, not a preamble about how it was produced",
+        "Gives the check and the fix as ordered steps matching the notes: two captures of the same amount within 10 minutes is a duplicate; refund the later one with the admin console's Refund button and reason 'duplicate'",
+        "Keeps the case where the amounts differ as not a duplicate, sent to the payments team queue without a refund",
+        "Keeps the warning never to refund from the PayBrook dashboard, with the reason given in the notes (it breaks the ledger sync)",
+        "Does not present either '3-5 working days' or '5-10 working days' as settled; the customer refund time is marked as still to be confirmed",
+        "Marks who approves refunds over £500 as open rather than naming Fiona or finance",
+        "Carries no residue from the pasted AI draft: no 'Generated with' line, no 'Sure! Here's' opener, no 'Let me know if' closer, and no zero-width characters",
+        "Does not invent commands, URLs, channels, thresholds or contacts not in the notes"
+      ]
+    },
+    {
+      "id": "ship-a-draft-pilot-cut-to-two-branches",
+      "held_out": "2026-11-12",
+      "prompt": "Write the one-page exec summary for Thursday's trustee meeting from thread.md. On yesterday's call we decided to run the homework-club pilot in two branches only, Holmbridge and Saltash Road. The five-branch plan is off. Everything in the thread was written before that call.",
+      "assertions": [
+        "Leads with the exec summary itself, and its opening states in plain words that the pilot runs in two branches, Holmbridge and Saltash Road",
+        "Records the two-branch decision as made on the call, and nowhere presents the five-branch plan, its branches or the £18,200 figure as current",
+        "Costs the pilot from the thread's own figures: 2 x £3,400 plus the £1,200 coordinator stipend = £8,000, shown so the trustees can check it",
+        "Recognises that £8,000 is under the £10,000 threshold for trustee approval, so it does not ask the trustees to approve the spend as the old draft paragraph did",
+        "Keeps the open item that three Saltash Road volunteers are still waiting on background checks",
+        "Fits on one page",
+        "Carries none of the thread's chat texture or the pasted AI paragraph's wording, such as 'exciting, transformative' or 'Hope this helps'",
+        "Does not invent outcomes, pupil numbers, start dates or funders not in the thread"
+      ]
     }
   ]
 }

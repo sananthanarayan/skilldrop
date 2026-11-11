@@ -1,0 +1,387 @@
+{
+  "format_version": "1.2",
+  "terraform_version": "1.9.5",
+  "planned_values": {
+    "root_module": {
+      "child_modules": [
+        {
+          "address": "module.order_events",
+          "resources": [
+            {
+              "address": "module.order_events.aws_kms_key.queue",
+              "mode": "managed",
+              "type": "aws_kms_key",
+              "name": "queue",
+              "provider_name": "registry.terraform.io/hashicorp/aws",
+              "schema_version": 0,
+              "values": {
+                "description": "order-events queue encryption",
+                "enable_key_rotation": true,
+                "deletion_window_in_days": 30,
+                "is_enabled": true,
+                "key_usage": "ENCRYPT_DECRYPT",
+                "customer_master_key_spec": "SYMMETRIC_DEFAULT",
+                "bypass_policy_lockout_safety_check": false,
+                "custom_key_store_id": null,
+                "xks_key_id": null,
+                "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"AccountAdmin\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"kms:*\",\n      \"Resource\": \"*\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::111122223333:root\"\n      }\n    },\n    {\n      \"Sid\": \"AllowSourceTopic\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"kms:GenerateDataKey\",\n        \"kms:Decrypt\"\n      ],\n      \"Resource\": \"*\",\n      \"Principal\": {\n        \"Service\": \"sns.amazonaws.com\"\n      },\n      \"Condition\": {\n        \"ArnEquals\": {\n          \"aws:SourceArn\": \"arn:aws:sns:eu-west-2:111122223333:orders-created\"\n        }\n      }\n    }\n  ]\n}",
+                "tags": {
+                  "team": "fulfilment",
+                  "cost-centre": "cc-4410",
+                  "module": "order-events-queue"
+                },
+                "tags_all": {
+                  "team": "fulfilment",
+                  "cost-centre": "cc-4410",
+                  "module": "order-events-queue"
+                }
+              },
+              "sensitive_values": {
+                "tags": {},
+                "tags_all": {}
+              }
+            },
+            {
+              "address": "module.order_events.aws_sqs_queue.dlq",
+              "mode": "managed",
+              "type": "aws_sqs_queue",
+              "name": "dlq",
+              "provider_name": "registry.terraform.io/hashicorp/aws",
+              "schema_version": 0,
+              "values": {
+                "name": "order-events-dlq",
+                "delay_seconds": 0,
+                "fifo_queue": false,
+                "kms_data_key_reuse_period_seconds": 300,
+                "max_message_size": 262144,
+                "message_retention_seconds": 1209600,
+                "receive_wait_time_seconds": 0,
+                "visibility_timeout_seconds": 30,
+                "tags": {
+                  "team": "fulfilment",
+                  "cost-centre": "cc-4410",
+                  "module": "order-events-queue"
+                },
+                "tags_all": {
+                  "team": "fulfilment",
+                  "cost-centre": "cc-4410",
+                  "module": "order-events-queue"
+                }
+              },
+              "sensitive_values": {
+                "tags": {},
+                "tags_all": {}
+              }
+            },
+            {
+              "address": "module.order_events.aws_sqs_queue.main",
+              "mode": "managed",
+              "type": "aws_sqs_queue",
+              "name": "main",
+              "provider_name": "registry.terraform.io/hashicorp/aws",
+              "schema_version": 0,
+              "values": {
+                "name": "order-events",
+                "delay_seconds": 0,
+                "fifo_queue": false,
+                "kms_data_key_reuse_period_seconds": 300,
+                "max_message_size": 262144,
+                "message_retention_seconds": 345600,
+                "receive_wait_time_seconds": 0,
+                "visibility_timeout_seconds": 60,
+                "tags": {
+                  "team": "fulfilment",
+                  "cost-centre": "cc-4410",
+                  "module": "order-events-queue"
+                },
+                "tags_all": {
+                  "team": "fulfilment",
+                  "cost-centre": "cc-4410",
+                  "module": "order-events-queue"
+                }
+              },
+              "sensitive_values": {
+                "tags": {},
+                "tags_all": {}
+              }
+            },
+            {
+              "address": "module.order_events.aws_sqs_queue_policy.main",
+              "mode": "managed",
+              "type": "aws_sqs_queue_policy",
+              "name": "main",
+              "provider_name": "registry.terraform.io/hashicorp/aws",
+              "schema_version": 1,
+              "values": {
+                "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"AllowSourceTopicSend\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"sqs:SendMessage\",\n      \"Resource\": \"arn:aws:sqs:eu-west-2:111122223333:order-events\",\n      \"Principal\": {\n        \"Service\": \"sns.amazonaws.com\"\n      },\n      \"Condition\": {\n        \"ArnEquals\": {\n          \"aws:SourceArn\": \"arn:aws:sns:eu-west-2:111122223333:orders-created\"\n        }\n      }\n    }\n  ]\n}"
+              },
+              "sensitive_values": {}
+            },
+            {
+              "address": "module.order_events.aws_sns_topic_subscription.main",
+              "mode": "managed",
+              "type": "aws_sns_topic_subscription",
+              "name": "main",
+              "provider_name": "registry.terraform.io/hashicorp/aws",
+              "schema_version": 0,
+              "values": {
+                "topic_arn": "arn:aws:sns:eu-west-2:111122223333:orders-created",
+                "protocol": "sqs",
+                "raw_message_delivery": true,
+                "confirmation_timeout_in_minutes": 1,
+                "endpoint_auto_confirms": false,
+                "delivery_policy": null,
+                "filter_policy": null,
+                "redrive_policy": null,
+                "replay_policy": null,
+                "subscription_role_arn": null
+              },
+              "sensitive_values": {}
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "resource_changes": [
+    {
+      "address": "module.order_events.aws_kms_key.queue",
+      "module_address": "module.order_events",
+      "mode": "managed",
+      "type": "aws_kms_key",
+      "name": "queue",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "description": "order-events queue encryption",
+          "enable_key_rotation": true,
+          "deletion_window_in_days": 30,
+          "is_enabled": true,
+          "key_usage": "ENCRYPT_DECRYPT",
+          "customer_master_key_spec": "SYMMETRIC_DEFAULT",
+          "bypass_policy_lockout_safety_check": false,
+          "custom_key_store_id": null,
+          "xks_key_id": null,
+          "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"AccountAdmin\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"kms:*\",\n      \"Resource\": \"*\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::111122223333:root\"\n      }\n    },\n    {\n      \"Sid\": \"AllowSourceTopic\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"kms:GenerateDataKey\",\n        \"kms:Decrypt\"\n      ],\n      \"Resource\": \"*\",\n      \"Principal\": {\n        \"Service\": \"sns.amazonaws.com\"\n      },\n      \"Condition\": {\n        \"ArnEquals\": {\n          \"aws:SourceArn\": \"arn:aws:sns:eu-west-2:111122223333:orders-created\"\n        }\n      }\n    }\n  ]\n}",
+          "tags": {
+            "team": "fulfilment",
+            "cost-centre": "cc-4410",
+            "module": "order-events-queue"
+          },
+          "tags_all": {
+            "team": "fulfilment",
+            "cost-centre": "cc-4410",
+            "module": "order-events-queue"
+          }
+        },
+        "after_unknown": {
+          "arn": true,
+          "id": true,
+          "key_id": true,
+          "multi_region": true,
+          "rotation_period_in_days": true
+        },
+        "before_sensitive": false,
+        "after_sensitive": {
+          "tags": {},
+          "tags_all": {}
+        }
+      }
+    },
+    {
+      "address": "module.order_events.aws_sqs_queue.dlq",
+      "module_address": "module.order_events",
+      "mode": "managed",
+      "type": "aws_sqs_queue",
+      "name": "dlq",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "name": "order-events-dlq",
+          "delay_seconds": 0,
+          "fifo_queue": false,
+          "kms_data_key_reuse_period_seconds": 300,
+          "max_message_size": 262144,
+          "message_retention_seconds": 1209600,
+          "receive_wait_time_seconds": 0,
+          "visibility_timeout_seconds": 30,
+          "tags": {
+            "team": "fulfilment",
+            "cost-centre": "cc-4410",
+            "module": "order-events-queue"
+          },
+          "tags_all": {
+            "team": "fulfilment",
+            "cost-centre": "cc-4410",
+            "module": "order-events-queue"
+          }
+        },
+        "after_unknown": {
+          "arn": true,
+          "id": true,
+          "url": true,
+          "kms_master_key_id": true,
+          "policy": true,
+          "redrive_allow_policy": true,
+          "sqs_managed_sse_enabled": true,
+          "deduplication_scope": true,
+          "fifo_throughput_limit": true,
+          "content_based_deduplication": true,
+          "name_prefix": true,
+          "redrive_policy": true
+        },
+        "before_sensitive": false,
+        "after_sensitive": {
+          "tags": {},
+          "tags_all": {}
+        }
+      }
+    },
+    {
+      "address": "module.order_events.aws_sqs_queue.main",
+      "module_address": "module.order_events",
+      "mode": "managed",
+      "type": "aws_sqs_queue",
+      "name": "main",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "name": "order-events",
+          "delay_seconds": 0,
+          "fifo_queue": false,
+          "kms_data_key_reuse_period_seconds": 300,
+          "max_message_size": 262144,
+          "message_retention_seconds": 345600,
+          "receive_wait_time_seconds": 0,
+          "visibility_timeout_seconds": 60,
+          "tags": {
+            "team": "fulfilment",
+            "cost-centre": "cc-4410",
+            "module": "order-events-queue"
+          },
+          "tags_all": {
+            "team": "fulfilment",
+            "cost-centre": "cc-4410",
+            "module": "order-events-queue"
+          }
+        },
+        "after_unknown": {
+          "arn": true,
+          "id": true,
+          "url": true,
+          "kms_master_key_id": true,
+          "policy": true,
+          "redrive_allow_policy": true,
+          "sqs_managed_sse_enabled": true,
+          "deduplication_scope": true,
+          "fifo_throughput_limit": true,
+          "content_based_deduplication": true,
+          "name_prefix": true,
+          "redrive_policy": true
+        },
+        "before_sensitive": false,
+        "after_sensitive": {
+          "tags": {},
+          "tags_all": {}
+        }
+      }
+    },
+    {
+      "address": "module.order_events.aws_sqs_queue_policy.main",
+      "module_address": "module.order_events",
+      "mode": "managed",
+      "type": "aws_sqs_queue_policy",
+      "name": "main",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"AllowSourceTopicSend\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"sqs:SendMessage\",\n      \"Resource\": \"arn:aws:sqs:eu-west-2:111122223333:order-events\",\n      \"Principal\": {\n        \"Service\": \"sns.amazonaws.com\"\n      },\n      \"Condition\": {\n        \"ArnEquals\": {\n          \"aws:SourceArn\": \"arn:aws:sns:eu-west-2:111122223333:orders-created\"\n        }\n      }\n    }\n  ]\n}"
+        },
+        "after_unknown": {
+          "id": true,
+          "queue_url": true
+        },
+        "before_sensitive": false,
+        "after_sensitive": {}
+      }
+    },
+    {
+      "address": "module.order_events.aws_sns_topic_subscription.main",
+      "module_address": "module.order_events",
+      "mode": "managed",
+      "type": "aws_sns_topic_subscription",
+      "name": "main",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "topic_arn": "arn:aws:sns:eu-west-2:111122223333:orders-created",
+          "protocol": "sqs",
+          "raw_message_delivery": true,
+          "confirmation_timeout_in_minutes": 1,
+          "endpoint_auto_confirms": false,
+          "delivery_policy": null,
+          "filter_policy": null,
+          "redrive_policy": null,
+          "replay_policy": null,
+          "subscription_role_arn": null
+        },
+        "after_unknown": {
+          "arn": true,
+          "id": true,
+          "endpoint": true,
+          "confirmation_was_authenticated": true,
+          "filter_policy_scope": true,
+          "owner_id": true,
+          "pending_confirmation": true
+        },
+        "before_sensitive": false,
+        "after_sensitive": {}
+      }
+    }
+  ],
+  "configuration": {
+    "provider_config": {
+      "aws": {
+        "name": "aws",
+        "full_name": "registry.terraform.io/hashicorp/aws",
+        "version_constraint": "~> 5.70",
+        "expressions": {
+          "region": {
+            "constant_value": "eu-west-2"
+          }
+        }
+      }
+    },
+    "root_module": {
+      "module_calls": {
+        "order_events": {
+          "source": "../../modules/order-events-queue"
+        }
+      }
+    }
+  },
+  "timestamp": "2026-11-10T16:42:07Z",
+  "applyable": true,
+  "complete": true,
+  "errored": false
+}

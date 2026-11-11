@@ -50,9 +50,21 @@ evidence separates the explanations, which none of the three can judge about its
 7. **Hand over the answer, then the verdict.** Lead with the explanation the evidence favours
    and its confidence, then what that means for the decision named in the plan, then the
    open conditions. The matrix and the synthesis go underneath, for anyone who wants to
-   check. Close with the gate on its own line, `G7: <VERDICT>`, and one sentence of reasons.
-   The skills keep their own terms out of a reply; the loop's verdict is the exception,
-   because the run log and the next round both read it.
+   check. A next round reads the saved files and the run log, never the reply.
+
+## What the reply says
+
+- **Lead with what was asked for, in plain words:** the explanation the evidence favours, how sure it is, what that means for the decision, and the open conditions. The matrix and the synthesis go underneath.
+- **No loop internals.** No gate id, verdict word, stage or skill name, and no path inside a
+  skill folder, in the reply or in any file the person receives. Say the outcome instead:
+  ✅ *"Most of the drop is a tracking change, not the new onboarding: the cohort that never saw onboarding fell by the same amount"* — ❌ *"G7: PROCEED WITH CONDITIONS"*.
+- **The verdict goes to the run log only,** when one is set. The reply never mentions the run
+  log, whether it is set, or how the run was set up.
+- **A person's decision never holds back the work.** Deliver everything up to it, then name
+  the decision in one line: who makes it, and what each answer means. When the request
+  already holds their decision ("the growth lead decides by 1 November"), record it as theirs and carry on.
+- **Stop only when nothing can be made.** With an essential input missing, the first line says
+  in plain words what's missing, then what you'll produce once it arrives.
 
 ## Verdicts
 
@@ -95,6 +107,7 @@ Never skip G7.
 Only when the environment variable `SKILLDROP_LOOP_LOG` is set to a file path: after each
 gate's verdict, append one JSON line to that file. Nothing else is recorded, and nothing is
 sent anywhere. When the variable isn't set, or you can't read it, skip this section.
+The reply never mentions the run log, whether or not it is set.
 
 ```bash
 printf '%s\n' '{"ts":"2026-10-19T14:03:00Z","loop":"research","stage":"compare","gate":"G7","verdict":"REVISE","round":1}' >> "$SKILLDROP_LOOP_LOG"
@@ -121,3 +134,4 @@ The log holds verdicts only: never the question, the sources or the findings.
 - ❌ **Passing G7 on volume.** Ten consistent rows that every rival also explains don't separate anything.
 - ❌ **Looping past the cap in search of certainty.** At the cap, say that the evidence doesn't settle it and name the next check.
 - ❌ **Re-planning inside the loop after `RECONSIDER`.** A new question is a new run, with its own plan and stopping rule.
+- ❌ **Gate talk in the reply.** "G9: READY, G9.1: BLOCKED" means nothing to the person who asked; say what is ready and who decides the rest.

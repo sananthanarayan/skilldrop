@@ -8,6 +8,12 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.14.0 — 2026-11-12
+
+- **Every loop now answers in plain words** ([RFC-0083](docs/rfcs/0083-loop-replies-in-plain-words.md)). You get the plan, the answer or the decision you face, without gate codes like `G9: READY`, verdict words or talk of the run log, which were the commonest reason a loop lost to its own skills. A sign-off you're waiting on no longer holds back work that can be delivered, and a decision your request already gives is recorded as yours. On fresh held-out evals the 11 loops went from even with plain Claude Code to preferred in 65% and 70% of pairs, and from behind their own skills to even with them.
+- **`measure` 0.2.0 proposes a metric definition when your teams hand that call to the analyst,** delivers the metrics that can be built now while the others wait for their owners, and skips the spec when you only asked for the numbers. It went from losing every pair to its own skills to even with them.
+- **`ship-agent`, `clarify` and `provision` are the loops clearly ahead of their own skills.** `build` and `design` still lost to theirs, and are being rebuilt and measured once more.
+
 ## 1.13.0 — 2026-11-11
 
 - **Install from skilldrop and agent-ready-repo together without one replacing the other** ([RFC-0082](docs/rfcs/0082-interop-with-agent-ready-repo.md)).

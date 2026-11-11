@@ -1,7 +1,7 @@
 {
   "$comment": "RFC-0057. A legacy component replaced without changing what it does. The old system's behaviour is recorded before anything is rebuilt, a script decides G10 from the recordings, and a person decides the cutover, because only they can accept the coverage and the listed changes.",
   "name": "modernize",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Replace or rewrite a legacy component without changing what it does: orient in the old code, plan the restructuring and the move, record the old system's behaviour before anything is rebuilt, rebuild in small steps, prove the new one gives the same results on the recordings, and cut over only when a person accepts the evidence. Use when the user is migrating, rewriting or porting a legacy service, batch job or module (COBOL to Java, Python 2 to 3, a monolith to a service, one framework to another), says \"run the modernize loop\", or asks how to replace old code without breaking what depends on it.",
   "entrypoint": "LOOP.md",
   "kind": "loop",

@@ -41,6 +41,20 @@ a script, and why the decision is recorded only *after* the panel agrees.
    A supersession recorded on one side only is the most common way a decision log starts to
    lie.
 
+## What the reply says
+
+- **Lead with what was asked for, in plain words:** the decision and its reasons, with any dissent stated, then the design, the diagrams and the threats.
+- **No loop internals.** No gate id, verdict word, stage or skill name, and no path inside a
+  skill folder, in the reply or in any file the person receives. Say the outcome instead:
+  ✅ *"Use event sourcing for orders. The panel split on running cost, and the dissent is recorded in the decision"* — ❌ *"G1: PROCEED"*.
+- **The verdict goes to the run log only,** when one is set. The reply never mentions the run
+  log, whether it is set, or how the run was set up.
+- **A person's decision never holds back the work.** Deliver everything up to it, then name
+  the decision in one line: who makes it, and what each answer means. When the request
+  already holds their decision ("the architecture lead has already chosen Postgres"), record it as theirs and carry on.
+- **Stop only when nothing can be made.** With an essential input missing, the first line says
+  in plain words what's missing, then what you'll produce once it arrives.
+
 ## Verdicts
 
 Defined in [`contracts/terminals.json`](../../../../contracts/terminals.json). `PROCEED WITH
@@ -50,8 +64,8 @@ decision, and `record` must carry them into the ADR.
 ## Non-interactive runs
 
 `council-review` can be run by an agent seating the panel itself, so G1 is satisfiable without
-a human. `SPLIT` is not — a genuine unresolved split needs a person. Emit
-`BLOCKED: need a decision-maker for <the crux>` and name the positions.
+a human. `SPLIT` is not — a genuine unresolved split needs a person. Deliver the design and both
+positions, and name the decision and who makes it, in plain words.
 
 ## When a stage's skill is not installed
 
@@ -64,6 +78,7 @@ from the design's own quality attributes and say the seating was improvised.
 Only when the environment variable `SKILLDROP_LOOP_LOG` is set to a file path: after each
 gate's verdict, append one JSON line to that file. Nothing else is recorded, and nothing is
 sent anywhere. When the variable isn't set, or you can't read it, skip this section.
+The reply never mentions the run log, whether or not it is set.
 
 ```bash
 printf '%s\n' '{"ts":"2026-10-01T14:03:00Z","loop":"design","stage":"ratify","gate":"G1","verdict":"PROCEED","round":1}' >> "$SKILLDROP_LOOP_LOG"
@@ -90,3 +105,4 @@ which end in `BLOCKED`.
 - ❌ **Treating `PROCEED WITH CONDITIONS` as `PROCEED`.** The conditions must reach the ADR; dropping them is how a conditional approval silently becomes unconditional.
 - ❌ **Designing over a decision nobody read.** A new design that quietly contradicts a current ADR leaves two decisions in force on one system, and the next reader can't tell which one wins.
 - ❌ **Skipping `constrain` because the NFRs are "obvious".** Obvious targets are the ones nobody writes down and everybody remembers differently.
+- ❌ **Gate talk in the reply.** "G9: READY, G9.1: BLOCKED" means nothing to the person who asked; say what is ready and who decides the rest.

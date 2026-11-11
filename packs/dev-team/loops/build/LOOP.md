@@ -38,6 +38,20 @@ one. Every skill named below stays independently installable and runnable on its
    `council-review` rather than arguing them inside the diff; `RECONSIDER` and `SPLIT` both
    leave this loop rather than revising within it.
 
+## What the reply says
+
+- **Lead with what was asked for, in plain words:** whether the change is ready to merge, what was fixed, and anything left for the person to decide.
+- **No loop internals.** No gate id, verdict word, stage or skill name, and no path inside a
+  skill folder, in the reply or in any file the person receives. Say the outcome instead:
+  ✅ *"Ready to merge: lint, types and all 214 tests pass. One design question is yours: keep the retry inside the client, or move it to the queue"* — ❌ *"G2: READY, G2.1: PROCEED"*.
+- **The verdict goes to the run log only,** when one is set. The reply never mentions the run
+  log, whether it is set, or how the run was set up.
+- **A person's decision never holds back the work.** Deliver everything up to it, then name
+  the decision in one line: who makes it, and what each answer means. When the request
+  already holds their decision ("approved, merge when it's green"), record it as theirs and carry on.
+- **Stop only when nothing can be made.** With an essential input missing, the first line says
+  in plain words what's missing, then what you'll produce once it arrives.
+
 ## Verdicts
 
 Defined in [`contracts/terminals.json`](../../../../contracts/terminals.json). G2 emits
@@ -56,6 +70,7 @@ stage, and record that the stage ran degraded. A missing skill is never a reason
 Only when the environment variable `SKILLDROP_LOOP_LOG` is set to a file path: after each
 gate's verdict, append one JSON line to that file. Nothing else is recorded, and nothing is
 sent anywhere. When the variable isn't set, or you can't read it, skip this section.
+The reply never mentions the run log, whether or not it is set.
 
 ```bash
 printf '%s\n' '{"ts":"2026-10-01T14:03:00Z","loop":"build","stage":"verify","gate":"G2","verdict":"READY","round":1}' >> "$SKILLDROP_LOOP_LOG"
@@ -80,3 +95,4 @@ which end in `BLOCKED`.
 - ❌ **Treating `PROCEED WITH CONDITIONS` as `PROCEED`.** The conditions travel with the artifact; dropping them is how conditional approvals become unconditional ones.
 - ❌ **Running `decide` for every change.** G2.1 exists for escalated disagreement and the merge itself, not as a ceremony on top of a green gate.
 - ❌ **Starting at `implement` because the story "is obvious."** Unshaped work is what produces a diff nobody can review against anything.
+- ❌ **Gate talk in the reply.** "G9: READY, G9.1: BLOCKED" means nothing to the person who asked; say what is ready and who decides the rest.
