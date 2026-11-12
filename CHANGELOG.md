@@ -8,6 +8,13 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.15.0 — 2026-11-12
+
+- **`build` and `design` now beat their own skills** ([RFC-0084](docs/rfcs/0084-build-and-design-rebuilt.md)). Both had lost to them twice.
+  - **`build` 0.4.0 reviews a colleague's pull request without changing it.** It reports the failed check with the run that shows it, and offers the fix as a suggestion or a patch. It checks data-loss cases (blank keys, duplicates, truncation) beyond what the tests cover, and "safe to merge" waits on them. An approval in your request is recorded as yours: the loop never merges, deploys or pushes. A vague request gets written acceptance criteria first, with the assumed ones marked.
+  - **`design` 0.4.0 records a decision as the decider made it.** It no longer writes conditions they never set into the ADR, and the reply names only files it wrote. It leads with your decision or question, and gives the review as trade-offs, with no talk of a panel.
+  - On fresh held-out evals, the judges preferred `build` to its skills in 62% and 88% of pairs, and `design` in 75% and 50%. Both still lose to plain Claude Code more often than they win, so a fourth rebuild is planned.
+
 ## 1.14.0 — 2026-11-12
 
 - **Every loop now answers in plain words** ([RFC-0083](docs/rfcs/0083-loop-replies-in-plain-words.md)). You get the plan, the answer or the decision you face, without gate codes like `G9: READY`, verdict words or talk of the run log, which were the commonest reason a loop lost to its own skills. A sign-off you're waiting on no longer holds back work that can be delivered, and a decision your request already gives is recorded as yours. On fresh held-out evals the 11 loops went from even with plain Claude Code to preferred in 65% and 70% of pairs, and from behind their own skills to even with them.
