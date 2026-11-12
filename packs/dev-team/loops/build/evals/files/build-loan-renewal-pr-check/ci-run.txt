@@ -1,0 +1,16 @@
+tests / unittest (pull_request)  -  PR 41  -  passed in 14s
+
+test_cannot_lend_twice (tests.test_loans.LendTests.test_cannot_lend_twice) ... ok
+test_held_item_goes_to_first_in_queue (tests.test_loans.LendTests.test_held_item_goes_to_first_in_queue) ... ok
+test_lend_sets_due_date (tests.test_loans.LendTests.test_lend_sets_due_date) ... ok
+test_can_renew_twice (tests.test_loans.RenewTests.test_can_renew_twice) ... ok
+test_hold_by_someone_else_blocks_renewal (tests.test_loans.RenewTests.test_hold_by_someone_else_blocks_renewal) ... ok
+test_only_borrower_can_renew (tests.test_loans.RenewTests.test_only_borrower_can_renew) ... ok
+test_own_hold_does_not_block (tests.test_loans.RenewTests.test_own_hold_does_not_block) ... ok
+test_renew_moves_due_date_from_current_due_date (tests.test_loans.RenewTests.test_renew_moves_due_date_from_current_due_date) ... ok
+test_renewal_limit (tests.test_loans.RenewTests.test_renewal_limit) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.001s
+
+OK

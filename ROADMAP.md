@@ -4,12 +4,11 @@ What is being worked on next. Not a commitment — a direction. Shipped work mov
 
 ## Upcoming
 
-- **Rebuild `build` and `design`, then measure them a third time.** With plain-words replies, both still lost to their own skills ([RFC-0083](docs/rfcs/0083-loop-replies-in-plain-words.md)). Neither leaked gate jargon. They lost on what the loop pushed the agent to do:
-  - **build** edited someone else's change when it should have reported a failed check, and missed a data-loss edge case its skills caught;
-  - **design** wrote into an ADR conditions the decider never set, and named files it hadn't written;
-  - **both** narrated a review panel the agent had seated itself.
+- **Get `build` and `design` ahead of plain Claude Code.** Rebuilt, both now beat their own skills, but they still lose to the plain agent more often than they win ([RFC-0084](docs/rfcs/0084-build-and-design-rebuilt.md)). The judges' reasons name two side effects of the rebuild:
+  - **build** restates what it didn't do ("nothing was merged or pushed", "no quiet data-loss cases") where none of it applied;
+  - **design** keeps the risks it finds out of the ADR altogether, where the house format wants them listed as open, and edits accepted records the house rules said to leave alone.
 
-  If either loses a third time, it's retired, and its skills are run in order instead.
+  The fix is measured on fresh held-out evals against the plain agent as well as the skills.
 
 ## Considering
 

@@ -31,22 +31,40 @@ a script, and why the decision is recorded only *after* the panel agrees.
    artifact in two renderings. A diagram that disagrees with the doc is a defect in both.
 3. **Attack it before ratifying.** `threat-model` consumes the design directly. Running it
    after G1 means the panel ratified something nobody had attacked.
-4. **Ratify at G1.** `council-review` seats the standing panel, takes positions *before*
-   cross-talk, names the cruxes, and records dissent with "what would change our mind".
-   `REVISE` returns to `shape`. `SPLIT` and `RECONSIDER` leave the loop.
-5. **Record last.** `adr-generator` writes the decision *after* it is a decision, with the
-   rejected options and the reasoning that killed them. An ADR written before G1 is a proposal
-   wearing an ADR's clothes. Then run `context-graph` again. Every record the new ADR
+4. **Ratify at G1.** `council-review` takes positions *before* cross-talk, names the cruxes,
+   and records what would change each position. `REVISE` returns to `shape`. `SPLIT` and
+   `RECONSIDER` leave the loop. What comes out is a set of trade-offs and open risks; the
+   people who decide read those, not the positions or who held them.
+5. **Record last, and record only what was decided.** `adr-generator` writes the decision
+   *after* it is a decision, with the rejected options and the reasoning that killed them. An
+   ADR written before G1 is a proposal wearing an ADR's clothes. When the request already holds
+   the decision ("the CTO chose Kafka"), the ADR records what the decider decided, in their
+   terms, as theirs. The threats, gaps and conditions you found go in the reply as risks for
+   them to weigh, never into the ADR as conditions, fallbacks or acceptances they didn't give.
+   When nobody has decided yet, the ADR's status is `Proposed` and names who decides. Then run
+   `context-graph` again. Every record the new ADR
    supersedes must now say "Superseded by" it, and the new ADR must name the code it governs.
    A supersession recorded on one side only is the most common way a decision log starts to
    lie.
+6. **Name only files that exist.** Write each file into the working folder before the reply
+   names it, and list them by the paths they were written to. A design, diagram or ADR you
+   describe but didn't write is not named as a file.
 
 ## What the reply says
 
-- **Lead with what was asked for, in plain words:** the decision and its reasons, with any dissent stated, then the design, the diagrams and the threats.
+- **Lead with the person's decision or question, in plain words:** what was decided (or the
+  answer to what they asked) and why, then the risks it carries, then the quality targets, the
+  design and the diagrams.
 - **No loop internals.** No gate id, verdict word, stage or skill name, and no path inside a
   skill folder, in the reply or in any file the person receives. Say the outcome instead:
-  ✅ *"Use event sourcing for orders. The panel split on running cost, and the dissent is recorded in the decision"* — ❌ *"G1: PROCEED"*.
+  ✅ *"Use event sourcing for orders. The open trade-off is running cost: replaying 40 million events takes about two hours, so a snapshot store is worth adding before year two"* — ❌ *"G1: PROCEED"*.
+- **No narrated panel.** Present the review as trade-offs and open risks. Never name
+  reviewers, personas or seats, and never write "dissent", "the panel overruled" or a note
+  that no panel ran.
+- **A decision already made is recorded as the decider made it.** The ADR holds their choice
+  in their terms. Your threats and gaps go in the reply as risks for them, never into the ADR
+  as conditions, fallbacks or acceptances they didn't give.
+- **Name only files that exist in the working folder,** by the paths they were written to.
 - **The verdict goes to the run log only,** when one is set. The reply never mentions the run
   log, whether it is set, or how the run was set up.
 - **A person's decision never holds back the work.** Deliver everything up to it, then name
@@ -59,19 +77,22 @@ a script, and why the decision is recorded only *after* the panel agrees.
 
 Defined in [`contracts/terminals.json`](../../../../contracts/terminals.json). `PROCEED WITH
 CONDITIONS` is the common outcome and the most abused: the conditions are part of the
-decision, and `record` must carry them into the ADR.
+decision. When a person ratified it, `record` carries their conditions into the ADR. When the
+loop ratified it, the conditions go to the decider as open risks and the ADR stays `Proposed`
+until they accept them.
 
 ## Non-interactive runs
 
-`council-review` can be run by an agent seating the panel itself, so G1 is satisfiable without
-a human. `SPLIT` is not — a genuine unresolved split needs a person. Deliver the design and both
-positions, and name the decision and who makes it, in plain words.
+`council-review` can be run by the agent itself, so G1 is satisfiable without a human. The
+reply never says how the review was run; it gives the trade-offs and risks it found. `SPLIT` is
+not satisfiable alone — a genuine unresolved split needs a person. Deliver the design and both
+options with what each costs, and name the decision and who makes it, in plain words.
 
 ## When a stage's skill is not installed
 
 Name the missing skill and skilldrop as its source, do the minimal inline version, and record
-the stage as degraded. If `council-review` is missing, do not skip G1 — run the panel inline
-from the design's own quality attributes and say the seating was improvised.
+the stage as degraded in the run log, not the reply. If `council-review` is missing, do not
+skip G1 — review the design inline against its own quality attributes.
 
 ## Run log (opt-in)
 
@@ -93,7 +114,10 @@ which end in `BLOCKED`.
 
 - **Quality targets exist before structure does.** `nfr-spec` is stage 1 because a design without numbers can only be argued about.
 - **The ADR names what was rejected and why.** A decision record with one option is a description of what happened, not a decision.
-- **Dissent is recorded, not resolved away.** A panel that always reaches consensus is not seating real positions.
+- **Disagreement is kept, not resolved away.** It reaches the person as a trade-off with what each side costs; a review that always agrees isn't testing anything.
+- **The ADR says only what the decider decided.** Every condition in it traces to them; every risk the loop found is in the reply.
+- **Every file the reply names exists** in the working folder at the path given.
+- **The reply leads with the person's decision or question,** before threats, NFRs and diagrams.
 - **The diagram and the doc say the same thing.** They are checked against each other before G1, not after someone builds from the wrong one.
 - **The design names the decisions already in force where it lands,** and which of them it keeps or supersedes.
 - **After `record`, the records agree with each other:** each record the new ADR supersedes says so too.
@@ -102,7 +126,11 @@ which end in `BLOCKED`.
 
 - ❌ **Writing the ADR before G1.** It pre-commits the panel to a decision it has not made, and every reviewer can feel it.
 - ❌ **Running `threat-model` after ratification.** The panel then ratified an unattacked design, which is the failure this ordering exists to prevent.
-- ❌ **Treating `PROCEED WITH CONDITIONS` as `PROCEED`.** The conditions must reach the ADR; dropping them is how a conditional approval silently becomes unconditional.
+- ❌ **Treating `PROCEED WITH CONDITIONS` as `PROCEED`.** The conditions must reach the decider, and the ADR once they accept them; dropping them is how a conditional approval silently becomes unconditional.
 - ❌ **Designing over a decision nobody read.** A new design that quietly contradicts a current ADR leaves two decisions in force on one system, and the next reader can't tell which one wins.
 - ❌ **Skipping `constrain` because the NFRs are "obvious".** Obvious targets are the ones nobody writes down and everybody remembers differently.
+- ❌ **Writing your conditions into their decision.** "Accepted, provided a fallback to Postgres" when the decider said only "use Kafka" puts words in their record. Put the fallback in the reply as a risk.
+- ❌ **Narrating the panel.** "The security reviewer dissented" or "I didn't run the separate panel" describes the process, not the design; give the trade-off.
+- ❌ **Naming a file you didn't write.** "See `docs/adr/0012.md`" when it isn't there sends the reader to nothing.
+- ❌ **Leading with the threat model.** The person asked about a decision; answer it first.
 - ❌ **Gate talk in the reply.** "G9: READY, G9.1: BLOCKED" means nothing to the person who asked; say what is ready and who decides the rest.

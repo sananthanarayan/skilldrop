@@ -1,0 +1,96 @@
+{
+ "date": "2026-11-12",
+ "backend": "claude-cli",
+ "judge_model": "claude-sonnet-5-5",
+ "trials": 2,
+ "note": "build 0.4.0 and design 0.4.0 after the RFC-0084 rebuild, on two fresh held-out evals each, with --allow-bash. Third measurement.",
+ "kind": "loops",
+ "floor": 0.06696428571428571,
+ "models": {
+  "claude-sonnet-5-5": {
+   "label": "standard",
+   "evals": 4,
+   "runs": 8,
+   "loops": 2,
+   "held_out_evals": 4,
+   "errors": 0,
+   "skipped": 0,
+   "loop": 0.890625,
+   "cost_loop": 0.1719131375,
+   "stages": 0.921875,
+   "cost_stages": 0.1165843125,
+   "baseline": 0.921875,
+   "cost_baseline": 0.09427513750000002,
+   "win_pairwise": 0.375,
+   "win_pairwise_ci": [
+    0.125,
+    0.5
+   ],
+   "win_loop_vs_stages": 0.6875,
+   "win_loop_vs_stages_ci": [
+    0.5,
+    0.875
+   ],
+   "win_stages_vs_baseline": 0.4375,
+   "win_stages_vs_baseline_ci": [
+    0.125,
+    0.8125
+   ],
+   "win_pairwise2": 0.25,
+   "win_pairwise2_ci": [
+    0.0,
+    0.5
+   ],
+   "win_loop_vs_stages2": 0.6875,
+   "win_loop_vs_stages2_ci": [
+    0.25,
+    1.0
+   ],
+   "win_stages_vs_baseline2": 0.5625,
+   "win_stages_vs_baseline2_ci": [
+    0.125,
+    1.0
+   ]
+  }
+ },
+ "loops": [
+  {
+   "loop": "build",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "held_out_evals": 2,
+   "loop_met": 1.0,
+   "cost_loop": 0.080380225,
+   "stages_met": 1.0,
+   "cost_stages": 0.06781427500000001,
+   "baseline_met": 1.0,
+   "cost_baseline": 0.057389825000000005,
+   "preferred": 0.5,
+   "stages_preferred": 0.625,
+   "loop_over_stages": 0.625,
+   "preferred2": 0.25,
+   "stages_preferred2": 0.625,
+   "loop_over_stages2": 0.875,
+   "reading": "mixed"
+  },
+  {
+   "loop": "design",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "held_out_evals": 2,
+   "loop_met": 0.78125,
+   "cost_loop": 0.26344605000000004,
+   "stages_met": 0.84375,
+   "cost_stages": 0.16535435,
+   "baseline_met": 0.84375,
+   "cost_baseline": 0.13116045,
+   "preferred": 0.25,
+   "stages_preferred": 0.25,
+   "loop_over_stages": 0.75,
+   "preferred2": 0.25,
+   "stages_preferred2": 0.5,
+   "loop_over_stages2": 0.5,
+   "reading": "mixed"
+  }
+ ]
+}

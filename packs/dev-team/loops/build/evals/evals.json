@@ -78,6 +78,35 @@
         "Confirms that the criteria that were met still hold: negative percent treated as 0, and half a penny rounded up (apply_discount(250, 5) == 237)",
         "Does not invent results that are not in the input, such as a CI run, other reviewers' approvals, or a merge that happened"
       ]
+    },
+    {
+      "id": "build-room-booking-advance-limit",
+      "held_out": "2026-11-12",
+      "prompt": "Got this from Dana, my manager, in Slack (slack-message.txt). The room booking code is in rooms/ and the tests are in tests/; run them with `python3 -m unittest`. Can you sort it out? I'm in workshops all day and can't answer questions, so just do what's sensible and tell me what you did.",
+      "assertions": [
+        "The reply opens by saying in plain words what now happens, for example that bookings more than a stated number of days ahead are refused, before any implementation detail",
+        "Before or alongside the code, the vague ask is written out as explicit criteria: a concrete limit for 'a month or so' (a number of days or a calendar month), what it is measured from (the current time), and whether a booking exactly at the limit is allowed",
+        "'The big rooms' is handled as an open question: the reply either limits the rule to named rooms using the seat counts in README.md or applies it to every room, and says which it chose as an assumption for Dana to confirm",
+        "The limit also stops weekly series: a book_weekly call whose later weeks fall past the limit is refused, even though _validate only checks the first week's start",
+        "The limit is checked against the Diary's injected clock, not a direct call to datetime.now(), so the tests stay deterministic",
+        "New unittest tests cover a booking just inside the limit, one just past it, and a weekly series that crosses it, and the reply reports the whole suite passing, with the existing nine tests unchanged",
+        "Does not invent policy that is not in the message or code, such as admin exemptions, no-show tracking, penalties or a waiting list, and does not build any of them"
+      ]
+    },
+    {
+      "id": "build-loan-renewal-pr-check",
+      "held_out": "2026-11-12",
+      "prompt": "Bram's renewals PR is ready (PR.md, pr.diff; the branch is checked out here and CI is green, see ci-run.txt). Can you check it before I merge it this afternoon? I just need to know whether to merge. Please don't change his code; he'll make any fixes himself.",
+      "assertions": [
+        "The reply opens with a plain answer to 'should I merge': not yet, because of one problem, stated before the detail",
+        "Finds the real defect: renew() checks `loan.renewals > MAX_RENEWALS` before incrementing, so a loan can be renewed a third time, which breaks LIB-212's 'at most twice'",
+        "Backs the finding with evidence it ran or showed, such as three renew calls on a fresh loan all succeeding, or a test that fails on the branch",
+        "Explains why green CI missed it: test_renewal_limit starts from renewals = 3 instead of renewing a fresh loan twice and trying a third time",
+        "Checks the other acceptance criteria (due date moves 14 days from the current due date, another member's hold blocks, the borrower's own hold does not, only the borrower can renew) and does not report any of them as broken",
+        "Leaves Bram's code and tests unmodified; any fix, such as using `>=`, is described as a suggestion in the review",
+        "Keeps minor points such as the unused `field` import separate from the defect and does not treat them as reasons to hold the merge",
+        "Does not invent requirements or defects not in the ticket or code, such as a rule against renewing overdue loans, fines, or a cap on total loan length"
+      ]
     }
   ]
 }

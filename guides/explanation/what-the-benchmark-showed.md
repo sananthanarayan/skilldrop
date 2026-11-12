@@ -521,5 +521,26 @@ on two fresh held-out evals each ([`loops-1.14.0.json`](../../docs/benchmarks/lo
   own skills to even with them.
 - **`ship-agent`, `clarify` and `provision` are clearly ahead of their skills.**
 - **`build` and `design` still lost to theirs,** on what they did rather than how they said it.
-  Both are being rebuilt for a third measurement.
+
+### build and design, rebuilt
+
+[RFC-0084](../../docs/rfcs/0084-build-and-design-rebuilt.md) rebuilt both from the judges'
+reasons:
+- **`build`** reports a failed check on a colleague's change without applying the fix, and
+  makes "safe to merge" wait on data-loss cases.
+- **`design`** records a decision as the decider made it, and names only files it wrote.
+
+Both ran on two fresh held-out evals each ([`loops-1.15.0.json`](../../docs/benchmarks/loops-1.15.0.json)).
+
+| Loop preferred to… (judges 1, 2) | Its skills, no loop | Plain agent |
+|---|---|---|
+| `build` | 62%, 88% | 50%, 25% |
+| `design` | 75%, 50% | 25%, 25% |
+
+- **Each rule fixed what it was written for.** `build` left the author's code alone and showed
+  the run that proved the defect. `design`'s fresh design won every pair against its skills.
+- **Each also had a side effect, and that is where both lost to the plain agent.** `build`
+  restated what it hadn't done, such as "nothing was merged or pushed" in a folder with no git.
+  `design` read "risks go in the reply" as "risks stay out of the ADR", and both judges
+  preferred an ADR that listed them as open. A rule about what not to do is easy to over-apply.
 

@@ -90,6 +90,36 @@
         "The ADR, or the reply around it, puts the threat findings in front of the decision-maker as conditions or open risks, such as moving to private storage with checked, short-lived links and deletion that also purges the CDN, rather than leaving them out of the record",
         "Does not invent facts that are not in the input, such as a different deadline, a legal ruling, a cost figure other than the 3 days, or an approval from anyone other than the CTO"
       ]
+    },
+    {
+      "id": "design-offline-gate-scanning",
+      "held_out": "2026-11-12",
+      "prompt": "The product council ratified REQ-031 last week (requirement.md): gates have to keep admitting fans when a venue's internet drops. How should we build it? Our current setup is in notes/system-overview.md and our existing decisions are in adr/. I need a design I can take to the architecture group, and the ADR for it.",
+      "assertions": [
+        "The reply opens with the recommended design in a few plain sentences, saying how a handheld admits a fan while the uplink is down, before the detailed sections; the detail includes at least one diagram of the offline admission path",
+        "Works out the peak load from the given figures (70% of 25,000 in 30 minutes is about 580 scans a minute across 40 gates, about 15 a minute per gate) and uses it with the 20-minute outage and 1-second scan as stated constraints",
+        "Stays within ADR-0005: no venue server or appliance, and no signing or issuing keys on handhelds; or, if it needs either, it says plainly that ADR-0005 would have to be superseded and why",
+        "Says how one ticket is stopped from entering through two gates while the uplink is down (for example handhelds sharing scans over venue Wi-Fi), and what happens when venue Wi-Fi fails too, rather than claiming zero risk with no mechanism",
+        "Handles tickets transferred shortly before or during an outage: offline handhelds may not know the new QR code (the real holder is turned away) or that the old one is void (the old code still works)",
+        "Spots the clash between photo-ID checks offline and ADR-0007's ban on storing fans' personal data on handhelds, and either solves it without storing names on the device or says ADR-0007 would need changing",
+        "Includes a threat model with a mitigation for at least a lost or stolen handheld and a QR code copied or screenshotted to several people, and the residual risks it leaves are carried into the Consequences of an ADR draft written in the existing ADRs' format (Status, Date, Deciders, Context, Decision, Consequences)",
+        "Does not invent facts not in the input, such as handheld hardware like Bluetooth or NFC, venue counts or costs, presented as given"
+      ]
+    },
+    {
+      "id": "design-record-tenant-db-consolidation",
+      "held_out": "2026-11-12",
+      "prompt": "Rosalind made the call at Tuesday's architecture sync to consolidate our tenant databases (decision-notes.md). It's decided and she doesn't want it reopened. I just need the ADR written up for adr/, matching our existing ones. Background on our setup is in notes/.",
+      "assertions": [
+        "The reply opens with the ADR (or says plainly that it is written) and, up front, that there is one risk Rosalind needs to hear about before it is merged",
+        "Finds the real risk: moving every tenant onto pg-main in uk-south and retiring pg-eu1 would move Mosel Steuerberatung's and Norderhof Treuhand's data, backups included, out of the EU, against their contract clauses in customer-commitments.md",
+        "Records the decision as Rosalind made it, without re-arguing consolidation and without quietly changing it (for example by writing in an EU exception she did not decide); the residency risk is put to her to resolve",
+        "Numbers the ADR ADR-0007, the next free number given that 0003 and 0005 are not reused, and uses the existing format: Status, Date, Decider, Context, Decision, Consequences",
+        "Marks the new ADR as superseding ADR-0002 and says ADR-0002's status line and the adr/README.md index need updating to match",
+        "Carries the rationale from the notes accurately: 14 tenants, 14 migration runs and the two half-applied migrations, about £9,400 a month falling to about £3,900",
+        "Consequences cover what ADR-0002 gave up: row-level security becomes the only tenant boundary, so a missing tenant_id filter or RLS mistake can expose one practice's data to another, and per-tenant restore now needs the side-restore runbook, which bears on Fenrow Lowe's one-business-day restore commitment",
+        "Does not invent facts not in the input, such as a legal reading of the contract clauses, customer consent, a migration date or new cost figures"
+      ]
     }
   ]
 }
