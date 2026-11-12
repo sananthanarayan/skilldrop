@@ -1,8 +1,8 @@
 # Future ideas
 
 Everything raised in the 2026 reviews (the agent-ready-repo comparisons, the OWASP mapping and
-the backlog rounds) that hasn't been built. None of it is committed to; [ROADMAP.md](../../ROADMAP.md)
-is what's next. Each item says why it matters, roughly how big it is, and what it depends on,
+the backlog rounds) that hasn't been built. None of it is committed to; what has shipped is in
+the [changelog](../../CHANGELOG.md). Each item says why it matters, roughly how big it is, and what it depends on,
 so you can pick one up without re-deriving the context. Sizes are rough: **S** is an hour or
 two, **M** a day, **L** several days.
 

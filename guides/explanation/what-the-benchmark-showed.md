@@ -364,7 +364,7 @@ evals:
 | Mixed (29) | the rest |
 
 - **The first five were the list for keep, rebuild or retire.** They lost to the plain agent
-  in each trial, with both judges, which is the roadmap's bar. The decision on each is in
+  in each trial, with both judges, which was the bar set before the run. The decision on each is in
   [RFC-0068](../../docs/rfcs/0068-five-skills-that-lost-to-the-plain-agent.md):
   - **Checked against the outputs first:** four of the five make a file, and a blind judge
     reading a reply could have been rewarding the plain agent's prose over a converted file.
@@ -375,7 +375,7 @@ evals:
 - **The instructions earn their cost on five skills.** Each beat both the plain agent and its
   own scripts: four on two to four evals, and `context-graph` on 14. So the right question is
   which skills need their instructions, not whether skills do.
-- **The list was fixed before the reasons were read,** as the roadmap required. The reasons
+- **The list was fixed before the reasons were read,** as the plan required. The reasons
   were then read only for those five, to decide on them.
 - **The next three were decided on a third trial** ([RFC-0072](../../docs/rfcs/0072-the-last-three-and-figma-diagrams.md)),
   with every output read. Two added no rule the plain agent breaks and were retired.
