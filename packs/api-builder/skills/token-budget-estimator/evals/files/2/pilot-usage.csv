@@ -1,0 +1,17 @@
+# Pilot run, September 2026, 5 applications. Stage 2 used the 2,000-character draft rubric, not the final 8,000-character rubric.
+application,stage,input_tokens,output_tokens
+A-101,extract,5180,410
+A-101,score,17420,790
+A-101,summary,4860,395
+A-102,extract,4950,388
+A-102,score,17050,812
+A-102,summary,4700,402
+A-103,extract,15820,455
+A-103,score,18300,840
+A-103,summary,15400,410
+A-104,extract,5400,402
+A-104,score,17900,775
+A-104,summary,5050,388
+A-105,extract,5010,396
+A-105,score,16880,801
+A-105,summary,4790,399

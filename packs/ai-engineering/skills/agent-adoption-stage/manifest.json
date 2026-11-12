@@ -1,0 +1,38 @@
+{
+  "name": "agent-adoption-stage",
+  "version": "0.1.4",
+  "description": "Place an engineering team on the agentic-coding adoption ladder (0 gated → 4 intent-steered) using observables like agents-in-flight per engineer and who writes the code, name the one bottleneck gating the next step, prescribe the single next unlock, and state which current guardrail must change. Use when a leader asks \"how far along are we with coding agents\", \"why has our AI adoption plateaued\", or \"what do we do next to get more out of this\". Do NOT use to assess organisational preconditions like data, policy, and culture (that's ai-readiness-assessment) or to plan a tool's human rollout (that's ai-adoption-rollout).",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "agent-budget",
+    "agent-loop-design",
+    "agent-threat-model",
+    "agents-md-generator",
+    "ai-adoption-rollout",
+    "ai-readiness-assessment",
+    "ai-use-case-triage",
+    "devils-advocate",
+    "pre-merge-review",
+    "subagent-design"
+  ],
+  "tags": [
+    "ai-adoption",
+    "agentic-coding",
+    "maturity-ladder",
+    "orchestration",
+    "engineering-leadership",
+    "bottleneck"
+  ],
+  "model": {
+    "tier": "light",
+    "rationale": "Measured (RFC-0073): on its held-out evals the light tier met 79% and 86% of checks in two tier trials, against standard's 82% and heavy's 79% and 79%, within 5 points of the best both times."
+  }
+}

@@ -1,0 +1,29 @@
+Employee No,First Name,Surname,Job Title,Contracted Hrs/Wk,Qualifications (current),Email
+BL1001,Rhiannon,Tull,Duty Manager,37.5,Duty Manager; NPLQ; Reception; First Aid,rhiannon.tull@brackenmoor-leisure.example
+BL1002,Kwame,Asante-Byrne,Duty Manager,37.5,Duty Manager; NPLQ; First Aid,kwame.asantebyrne@brackenmoor-leisure.example
+BL1003,Fenella,Orchard,Duty Manager,37.5,Duty Manager; NPLQ; Reception; First Aid,fenella.orchard@brackenmoor-leisure.example
+BL1004,Tadeusz,Wren,Assistant Duty Manager,30,Duty Manager; NPLQ; First Aid,tadeusz.wren@brackenmoor-leisure.example
+BL1005,Marisol,Penhale,Assistant Duty Manager,24,Duty Manager; NPLQ; First Aid,marisol.penhale@brackenmoor-leisure.example
+BL1101,Joanna,Kettleby,Receptionist,37.5,Reception; First Aid,joanna.kettleby@brackenmoor-leisure.example
+BL1102,Arjun,Mistry-Hale,Receptionist,30,Reception,arjun.mistryhale@brackenmoor-leisure.example
+BL1103,Siobhan,Daley,Receptionist,22.5,Reception,siobhan.daley@brackenmoor-leisure.example
+BL1104,Ewan,Brackley,Receptionist (relief),16,Reception,ewan.brackley@brackenmoor-leisure.example
+BL1201,Oluwaseun,Hartley,Lifeguard,37.5,NPLQ; First Aid,oluwaseun.hartley@brackenmoor-leisure.example
+BL1202,Greta,Lindqvist,Lifeguard,37.5,NPLQ; Swim Teacher L2; First Aid,greta.lindqvist@brackenmoor-leisure.example
+BL1203,Callum,Feeney,Lifeguard,37.5,NPLQ; First Aid,callum.feeney@brackenmoor-leisure.example
+BL1204,Priya,Somerton,Lifeguard,37.5,NPLQ; First Aid,priya.somerton@brackenmoor-leisure.example
+BL1205,Dmitri,Coles,Lifeguard,37.5,NPLQ,dmitri.coles@brackenmoor-leisure.example
+BL1206,Hollie,Ashworth,Lifeguard,30,NPLQ; First Aid,hollie.ashworth@brackenmoor-leisure.example
+BL1207,Benedict,Ogunleye,Lifeguard,37.5,NPLQ; First Aid,benedict.ogunleye@brackenmoor-leisure.example
+BL1208,Saskia,Vermeulen,Lifeguard,24,NPLQ,saskia.vermeulen@brackenmoor-leisure.example
+BL1301,Jaden,Okafor,Casual Lifeguard,20,NPLQ,jaden.okafor@brackenmoor-leisure.example
+BL1302,Maisie,Thorne,Casual Lifeguard,20,NPLQ; Swim Teacher L2,maisie.thorne@brackenmoor-leisure.example
+BL1303,Rory,Venn,Casual Lifeguard,16,NPLQ,rory.venn@brackenmoor-leisure.example
+BL1304,Amira,Haddad,Casual Lifeguard,20,NPLQ,amira.haddad@brackenmoor-leisure.example
+BL1305,Theo,Blackwood,Casual Lifeguard,16,NPLQ,theo.blackwood@brackenmoor-leisure.example
+BL1306,Lucia,Ferrante,Casual Lifeguard,20,NPLQ,lucia.ferrante@brackenmoor-leisure.example
+BL1307,Owen,Garside,Casual Lifeguard,16,NPLQ,owen.garside@brackenmoor-leisure.example
+BL1401,Bethan,Lloyd-Pryce,Swim Teacher,16,Swim Teacher L2,bethan.lloydpryce@brackenmoor-leisure.example
+BL1402,Nikhil,Rao,Swim Teacher,12,Swim Teacher L2,nikhil.rao@brackenmoor-leisure.example
+BL1403,Cerys,Mallory,Swim Teacher,12,Swim Teacher L2,cerys.mallory@brackenmoor-leisure.example
+BL1404,Ifeoma,Barrett,Swim Teacher,10,Swim Teacher L2,ifeoma.barrett@brackenmoor-leisure.example

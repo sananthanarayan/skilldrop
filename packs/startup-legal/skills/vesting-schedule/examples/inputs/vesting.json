@@ -1,0 +1,8 @@
+{
+  "company": "Brightloop Labs, Inc.",
+  "jurisdiction": "US",
+  "grants": [
+    {"holder": "Alex (co-founder)", "type": "founder stock", "shares": 3000000, "grant_date": "2025-09-15", "vesting_start": "2025-07-01",
+     "months": 48, "cliff_months": 12, "frequency": "monthly", "leave_date": "2026-09-30"}
+  ]
+}

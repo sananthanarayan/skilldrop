@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "jira": {
+      "command": "npx",
+      "args": ["-y", "mcp-jira-helpr@latest"],
+      "env": {
+        "_comment": "AWS creds added 16 Oct so the attach-to-S3 tool works",
+        "JIRA_BASE_URL": "https://quillon.atlassian.example",
+        "JIRA_USER": "agent-svc@quillon.example",
+        "JIRA_API_TOKEN": "<jira-api-token-placeholder>",
+        "AWS_ACCESS_KEY_ID": "<aws-access-key-id-placeholder>",
+        "AWS_SECRET_ACCESS_KEY": "<aws-secret-access-key-placeholder>"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/workspace/quillon-portal"]
+    }
+  }
+}

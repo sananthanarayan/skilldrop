@@ -1,0 +1,18 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9951bcc823800e62153b06d6e56d8ed6c5c10e7a # v4.1.1
+      - uses: actions/setup-python@a0a57c5ce737a953c85cefc45772185c9fafddbc # v5.0.0
+        with:
+          python-version: "3.11"
+      - run: pip install --require-hashes -r requirements.txt
+      - run: pip install pytest==8.2.0
+      - run: pytest tests/

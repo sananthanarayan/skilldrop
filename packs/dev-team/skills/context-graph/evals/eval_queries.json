@@ -1,0 +1,14 @@
+[
+  {"query": "Why do we use Kafka for order events? Is the ADR that chose it still the current decision?", "should_trigger": true},
+  {"query": "I'm about to refactor services/billing/invoice.py. Which architecture decisions govern it that I should read first?", "should_trigger": true},
+  {"query": "Our docs/adr folder has 40 records going back five years. Find the ones that are stale, superseded without being marked, or contradict each other", "should_trigger": true},
+  {"query": "Give me a map of our RFCs and ADRs: what supersedes what, and which folders each one covers, for onboarding the new hires", "should_trigger": true},
+  {"query": "Is ADR-0012 still true? I think the code it talks about was deleted last year", "should_trigger": true},
+  {"query": "We just decided to move our search from Postgres full-text to a hosted search engine. Write the ADR for it in MADR format", "should_trigger": false},
+  {"query": "I start on the checkout repo on Monday. How do I run it locally, run the tests, and where's the code for applying discount codes?", "should_trigger": false},
+  {"query": "There are no design docs for this monolith. Work out its architecture from the code and the docker-compose file and draw me a C4 diagram", "should_trigger": false},
+  {"query": "Here are the notes from this morning's pricing steering meeting. Pull out what was decided, who owns each action and when it's due", "should_trigger": false},
+  {"query": "ADR-0009 says order events go through one SQS queue per tenant. Has the orders service drifted from that since we decided it, and who changed it?", "should_trigger": true},
+  {"query": "Before I rewrite the billing batch job, what decisions did we record about it, and has anyone changed the code since without updating them?", "should_trigger": true},
+  {"query": "Show me who committed to services/orders in the last month and summarise what changed", "should_trigger": false}
+]

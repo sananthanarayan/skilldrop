@@ -1,0 +1,11 @@
+Basketful — orders dashboard, trailing 28 days (exported 2026-10-14)
+
+Users who open the home screen with a past order:   1,200 per hour (average), 2,600 peak (18:00-20:00)
+Order placement failure rate (all orders):          1.5%
+Home-screen-to-order conversion (users with a past order): 18%
+POST /v2/orders p95 latency:                        640 ms
+POST /v2/orders p99 latency:                        1,900 ms
+Payment declines (share of charge attempts):        2.2%
+Substitution complaints (support tickets per 1,000 orders): 4.1
+
+Note: no metric yet splits orders by `source`.

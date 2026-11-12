@@ -1,0 +1,44 @@
+{
+  "skill_name": "reverse-architecture",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Reverse-engineer the architecture of this repo — it has Terraform, Kubernetes manifests, and an OpenAPI spec.",
+      "assertions": [
+        "Every node carries a source-of-truth file path as evidence; nothing appears in the diagram without a reference",
+        "Inferred components are marked as inferred rather than asserted as fact",
+        "Edges carry direction and, where the source reveals it, protocol",
+        "Nodes are grouped by deployment boundary as the artifacts reveal it",
+        "The output is derived from the supplied artifacts, not from a written description of intent"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "I've just taken over the Gilded Lantern Theatre's box-office system and there's no architecture diagram. The files I have are docker-compose.yml, nginx.conf, env.example, worker-requirements.txt and an old README.md. Draw what actually exists — one Mermaid diagram plus a description of no more than 300 words — and save both in as-is.md.",
+      "assertions": [
+        "as-is.md is saved with one Mermaid diagram and a description of no more than about 300 words",
+        "The diagram shows the services defined in docker-compose.yml (proxy, web, worker, db, cache), with both web and worker connecting to the database and Redis",
+        "Notes that the README's RabbitMQ does not appear in the files and that the worker uses Redis (rq) as its queue",
+        "Flags that nginx routes /admin/ to an 'admin' service that is not defined in docker-compose.yml, rather than drawing it as a working service without comment",
+        "Marks legacy-reports as not started by default (it sits in the 'manual' profile)",
+        "Shows the payment gateway, the SMTP server and the seat-map host as external dependencies",
+        "Does not invent components that are not in the files (for example load balancers, Kubernetes, monitoring or extra databases)"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "our postdoc left and nobody in the lab knows how the greenhouse sensor setup works. this is what's on the raspberry pi in the greenhouse. can you tell me what talks to what? short please, I'm a plant scientist not a programmer\n\ncrontab -l:\n*/10 * * * * /home/pi/gh/read_sensors.py >> /home/pi/gh/log.txt 2>&1\n0 2 * * * rsync -a /home/pi/gh/data/ archive@backup.lab.test:/srv/greenhouse/\n30 6 * * * /home/pi/gh/water.py --zone all\n\n/home/pi/gh/config.ini:\n[sensors]\ntype = dht22\ngpio_pins = 4,17,27\n[storage]\ncsv_dir = /home/pi/gh/data\n[watering]\nrelay_pin = 22\nduration_seconds = 90\n[alerts]\nenabled = false\nwebhook = https://hooks.example.test/greenhouse",
+      "assertions": [
+        "Explains that the sensors are read every 10 minutes and the readings saved to files on the Pi",
+        "Explains that the data is copied to a backup server every night at 2am",
+        "Explains that watering runs every day at 6:30am, switched by a relay, with a configured duration of 90 seconds",
+        "Points out that alerts are switched off, so nobody is notified if something goes wrong",
+        "Says what cannot be told from these files (for example what the scripts do inside, or what happens on the backup server) rather than guessing",
+        "Does not invent devices, services or behaviour that are not in the crontab or config",
+        "Is short and in plain language for a non-programmer"
+      ]
+    }
+  ]
+}

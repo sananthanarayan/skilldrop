@@ -1,0 +1,48 @@
+{
+ "type": "architecture",
+ "title": "What a checkout request touches",
+ "question": "What happens between a shopper pressing Pay and a courier being booked?",
+ "summary": "The API prices the cart from Redis (falling back to Postgres), charges Stripe, records the order and puts it on a RabbitMQ queue; a separate worker books the courier and marks the order booked. The shopper's response returns before the courier is booked.",
+ "groups": [
+  {"id": "compose", "label": "docker-compose stack"},
+  {"id": "data", "label": "Data", "parent": "compose"}
+ ],
+ "nodes": [
+  {"id": "shopper", "label": "Shopper's browser", "kind": "client", "assumed": true, "detail": "Nothing in this repo shows the client; the API's POST /checkout is the entry point."},
+  {"id": "api", "label": "Checkout API", "kind": "service", "note": "FastAPI · POST /checkout", "group": "compose",
+   "evidence": ["api/checkout.py:29-41#def checkout", "docker-compose.yml:2-8"]},
+  {"id": "cache", "label": "Price cache", "kind": "cache", "note": "Redis, 5 min TTL", "group": "data",
+   "evidence": ["api/checkout.py:20-24#ex=300", "docker-compose.yml:17-18"]},
+  {"id": "db", "label": "Orders database", "kind": "database", "note": "Postgres 16", "group": "data",
+   "evidence": ["api/checkout.py:22#from products", "api/checkout.py:36#insert into orders", "docker-compose.yml:15-16"]},
+  {"id": "broker", "label": "fulfilment queue", "kind": "queue", "note": "RabbitMQ", "group": "compose",
+   "evidence": ["api/checkout.py:39-40#routing_key=\"fulfilment\"", "docker-compose.yml:19-20"]},
+  {"id": "worker", "label": "Fulfilment worker", "kind": "worker", "group": "compose",
+   "evidence": ["worker/fulfil.py:13-19#def on_message", "docker-compose.yml:9-14"]},
+  {"id": "stripe", "label": "Stripe", "kind": "external", "note": "PaymentIntent",
+   "evidence": ["api/checkout.py:32-35#stripe.PaymentIntent.create"]},
+  {"id": "courier", "label": "Courier API", "kind": "external", "note": "courier.example",
+   "evidence": ["worker/fulfil.py:16#courier.example/v2/bookings"]}
+ ],
+ "edges": [
+  {"id": "pay", "from": "shopper", "to": "api", "label": "POST /checkout", "emphasis": true, "assumed": true},
+  {"id": "price", "from": "api", "to": "cache", "label": "get price:<sku>", "evidence": ["api/checkout.py:20"]},
+  {"id": "miss", "from": "api", "to": "db", "label": "price on cache miss, insert order", "evidence": ["api/checkout.py:22", "api/checkout.py:36-38"]},
+  {"id": "charge", "from": "api", "to": "stripe", "label": "create + confirm payment", "emphasis": true, "evidence": ["api/checkout.py:32-35"]},
+  {"id": "publish", "from": "api", "to": "broker", "label": "publish order_id", "style": "dashed", "evidence": ["api/checkout.py:39-40"]},
+  {"id": "consume", "from": "broker", "to": "worker", "label": "consume", "style": "dashed", "evidence": ["worker/fulfil.py:22#basic_consume"]},
+  {"id": "book", "from": "worker", "to": "courier", "label": "book courier", "evidence": ["worker/fulfil.py:16"]},
+  {"id": "mark", "from": "worker", "to": "db", "label": "read address, mark booked", "evidence": ["worker/fulfil.py:15", "worker/fulfil.py:17"]}
+ ],
+ "story": [
+  {"text": "The shopper's browser posts the cart to the Checkout API (the client itself is not in this repo).", "edges": ["pay"]},
+  {"text": "Each line is priced from Redis; a miss reads Postgres and caches the price for five minutes.", "edges": ["price", "miss"]},
+  {"text": "Stripe is charged and confirmed in the same call; anything but 'succeeded' returns 402.", "edges": ["charge"]},
+  {"text": "The order is inserted, then its id is published to the fulfilment queue, and the API answers the shopper.", "edges": ["miss", "publish"]},
+  {"text": "Later, the worker takes the id, reads the address, books the courier and marks the order booked.", "edges": ["consume", "book", "mark"]}
+ ],
+ "notes": [
+  "The worker reads orders.address, but the API's insert does not write an address. Where it comes from is not in this repo.",
+  "Left out: the products table's other readers, and anything after the courier booking."
+ ]
+}

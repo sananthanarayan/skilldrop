@@ -1,0 +1,11 @@
+[
+  {"query": "We ported our tax calculation from Java to Go. I have recorded outputs from both on 2,000 real invoices. How do I prove they behave the same?", "should_trigger": true},
+  {"query": "Our shadow-traffic diff between the old and new checkout API shows a bunch of differences. Are these just noise or real regressions?", "should_trigger": true},
+  {"query": "Set up a golden master comparison for the legacy report generator before we replace it", "should_trigger": true},
+  {"query": "The new billing service matches the old one apart from some timestamps and a few 1p differences. Can we sign off parity?", "should_trigger": true},
+  {"query": "Review these normalisation rules for our approval tests and tell me if they hide anything", "should_trigger": true},
+  {"query": "Plan how we break up the 3,000-line OrderService into smaller pieces without stopping feature work", "should_trigger": false},
+  {"query": "Write a phased plan to move our orders table from MySQL to Postgres with a backfill and zero downtime", "should_trigger": false},
+  {"query": "Write a test plan for the new loyalty-points feature before release", "should_trigger": false},
+  {"query": "I'm new to this repo, where does the legacy pricing code live and how do I run its tests?", "should_trigger": false}
+]

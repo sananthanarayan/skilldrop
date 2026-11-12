@@ -1,0 +1,29 @@
+name: codex-triage
+
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  triage:
+    runs-on: [self-hosted, linux, harrow-runner]
+    env:
+      DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Triage with Codex
+        # writable_roots didn't fix docker compose inside the sandbox (HF-412);
+        # override until platform-tools resolves it.
+        run: |
+          codex exec --profile ci -c sandbox_mode="danger-full-access" \
+            "Triage this issue per AGENTS.md. Apply labels. If it is a small bug, open a PR with a fix. Issue: ${{ github.event.issue.title }} -- ${{ github.event.issue.body }}"

@@ -1,0 +1,2 @@
+id,title,cause,event,consequence,owner,inherent_likelihood,inherent_impact,residual_likelihood,residual_impact,treatment,controls,due_date,next_review,review_trigger,status
+R-001,<short noun phrase>,<because of ... (the condition that exists today)>,<... may happen (the uncertain event)>,<leading to ... (the effect on objectives)>,<named person or role>,1-5,1-5,1-5,1-5,avoid|reduce|transfer|accept,<existing and planned controls; semicolon-separated>,YYYY-MM-DD,YYYY-MM-DD,<the event that reopens this risk>,open|closed

@@ -1,0 +1,16 @@
+{
+  "checkout": {
+    "title": "الدفع",
+    "pay_button": "ادفع {amount}",
+    "items_zero": "سلتك فارغة",
+    "items_one": "عنصر واحد في سلتك",
+    "items_two": "عنصران في سلتك",
+    "items_few": "{{count}} عناصر في سلتك",
+    "items_many": "{{count}} عنصرًا في سلتك",
+    "items_other": "{{count}} عنصر في سلتك",
+    "delivery": "يصل بحلول {date}.",
+    "promo_applied": "تم تطبيق الرمز <b>{code}</b>.",
+    "saved_cards": "{count, plural, one {بطاقة محفوظة واحدة} other {# بطاقات محفوظة}}",
+    "error_declined": "Your card was declined. Try another card."
+  }
+}

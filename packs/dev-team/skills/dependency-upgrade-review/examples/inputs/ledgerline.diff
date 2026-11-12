@@ -1,0 +1,38 @@
+diff --git a/poetry.lock b/poetry.lock
+index f6ddbc1..3b139f9 100644
+--- a/poetry.lock
++++ b/poetry.lock
+@@ -2,7 +2,7 @@
+ 
+ [[package]]
+ name = "charset-sniff"
+-version = "1.4.0"
++version = "1.4.1"
+ description = "Guess the text encoding of a byte string"
+ optional = false
+ python-versions = ">=3.9"
+@@ -10,7 +10,7 @@ files = []
+ 
+ [[package]]
+ name = "tidyparse"
+-version = "2.2.0"
++version = "2.2.2"
+ description = "Forgiving CSV and TSV parser"
+ optional = false
+ python-versions = ">=3.9"
+@@ -22,4 +22,4 @@ charset-sniff = ">=1.4,<2"
+ [metadata]
+ lock-version = "2.0"
+ python-versions = "^3.11"
+-content-hash = "0000000000000000000000000000000000000000000000000000000000000001"
++content-hash = "0000000000000000000000000000000000000000000000000000000000000002"
+diff --git a/pyproject.toml b/pyproject.toml
+index 12e2f0a..9848a83 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -6,4 +6,4 @@ authors = ["Ledgerline maintainers"]
+ 
+ [tool.poetry.dependencies]
+ python = "^3.11"
+-tidyparse = "^2.2.0"
++tidyparse = "^2.2.2"

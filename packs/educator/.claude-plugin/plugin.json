@@ -1,0 +1,22 @@
+{
+  "name": "educator",
+  "version": "1.18.0",
+  "description": "Assessments that hold up in the exam room and at moderation: an exam paper and its mark scheme checked by a script for totals that don't add up, either/or questions worth different marks, numbering that skips, parts the scheme misses or marks differently, and objectives off their weighting, then read for wording and fairness. (6 skills, 1 loop)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/educator/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "teacher",
+    "exam",
+    "test",
+    "mark scheme",
+    "assessment",
+    "moderation",
+    "school",
+    "education"
+  ]
+}

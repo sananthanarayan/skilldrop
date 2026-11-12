@@ -1,0 +1,76 @@
+{
+  "skill_name": "web-performance-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our marketing lead says the raincoats collection page is fine because PageSpeed gives it 92 on mobile, but Search Console keeps flagging LCP as poor. Here's the PageSpeed Insights API response: psi.json. What's actually making it slow and what should the team fix first?",
+      "assertions": [
+        "Opens by saying real mobile users do have a problem: field LCP at p75 is 4.3 s, which is poor against the 2.5 s threshold, and that the 92 is a lab score from one run rather than a Core Web Vitals verdict",
+        "Names the LCP element as img.collection-hero__image (the raincoats hero image) and identifies that it has loading=\"lazy\", with resource load delay (about 1.19 s, half of the lab LCP) as the largest phase",
+        "Makes removing loading=\"lazy\" from the hero image and adding fetchpriority=\"high\" the first fix",
+        "Does not rank 'Serve images in next-gen formats' (est. 2.85 s / 1,240 KiB) as an LCP fix, and says it covers the product-grid images and has no LCP saving",
+        "Reads field CLS as 0.14 (needs improvement), not 14, notes it is higher than the lab CLS of 0.04 so some shifts happen after load and are not in this run, and names the unsized product-card images or the late web font as the culprits the run does show",
+        "Does not make TBT, long tasks or the third-party scripts a top priority, because field INP is 168 ms, which is good",
+        "Does not add the estimated savings of different audits into a total, and mentions that this is a single lab run on an emulated mid-range phone with slow 4G",
+        "Does not invent metrics, elements, URLs or field numbers that are not in psi.json"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We deferred the ChatterBox chat widget on the Fernhill autumn-lights event page until after load, and Lighthouse went from 58 to 71. Before the change our RUM had INP at p75 = 380 ms on mobile. Did we fix our INP problem? Runs attached: before.json (before the change) and after.json (after).",
+      "assertions": [
+        "Answers in the first lines that these runs do not show INP is fixed",
+        "Points out the two runs are not comparable because after.json was run with a 2x CPU slowdown and before.json with 4x, so part or all of the TBT and score change comes from the settings",
+        "States that TBT is a lab proxy and not INP, that a load run records no interactions, and that the check is RUM INP p75 after the change against the 200 ms threshold (380 ms was needs improvement)",
+        "Says each side is a single run and recommends the median of 3 to 5 runs per side with identical settings",
+        "Confirms ChatterBox no longer appears in the after run's long tasks or third-party list, so the deferral did take it out of the load",
+        "Names the first-party seatmap.4f2a91.js as the largest remaining long task (620 ms before, 410 ms after at 2x CPU) and the likely next target for INP work",
+        "Does not invent RUM or field numbers for the period after the change"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Quick one for the Slack thread, under 200 words please. Lighthouse mobile gives the Lumen Ledger pricing page a 48 — are we failing Core Web Vitals? What I can see in the report: Performance 48. FCP 3.2 s, LCP 6.8 s, TBT 1,450 ms, CLS 0.02, Speed Index 5.9 s. LCP element: <div class=\"pricing-hero\" style=\"background-image:url(/img/pricing-hero.jpg)\">. LCP breakdown: TTFB 380 ms, Load Delay 4,900 ms, Load Time 1,100 ms, Render Delay 420 ms. Opportunities: Reduce unused JavaScript, est savings 2.9 s; Eliminate render-blocking resources, est savings 1.1 s. Third-party: HelpDock 980 ms main-thread time.",
+      "assertions": [
+        "Says that whether the page passes or fails Core Web Vitals cannot be told from a lab run alone, and that field data at p75 (Search Console, CrUX or PageSpeed field data, or RUM) is needed",
+        "Does not present TBT 1,450 ms as INP; calls it a lab proxy",
+        "Identifies the LCP element as the CSS background image on div.pricing-hero and resource load delay (4.9 s of 6.8 s) as the dominant phase",
+        "Recommends making the hero image discoverable early: an <img> in the HTML with fetchpriority=\"high\", or a preload of /img/pricing-hero.jpg with fetchpriority=\"high\"",
+        "Does not add the 2.9 s and 1.1 s savings into a combined figure, and does not claim the unused-JavaScript saving moves LCP by 2.9 s",
+        "Mentions that this is one lab run on emulated mobile",
+        "Does not invent numbers, elements or field data not in the message",
+        "Stays under 200 words"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-20",
+      "prompt": "hey, quick one. attached the PSI run for our jacket PDP from this morning (psi-pdp-mobile-2026-10-19.json) plus two exports from our RUM tool (rum-inp-daily.csv and rum-inp-attribution-oct14-19.csv). we shipped the 'defer chatnest until after load' change on oct 13 and lighthouse went 78 -> 91, TBT 640 -> 290. PM wants to close the INP ticket today. search console still says INP poor but i assume that's just lag?? did our change fix INP or not, and if not what do we do next",
+      "assertions": [
+        "Answers the actual question up front: the change helped but did not fix INP, so the ticket should not be closed. It cites the RUM daily file, where PDP mobile INP p75 drops from roughly 539-580 ms (Oct 6-12) to roughly 459-481 ms (Oct 14-19). That is still above the 200 ms 'good' threshold (in the needs-improvement band).",
+        "Explains that the Lighthouse score and TBT gains (78 -> 91, 640 -> 290 ms) cannot show INP is fixed, because a lab navigation run has no user interactions and does not measure INP. TBT is only a load-time proxy.",
+        "Points out that the PSI field data has origin_fallback: true, so the INP p75 of 540 ms is for the whole fernhollow-outfitters.example origin, not this PDP URL. It also notes that CrUX/Search Console use a rolling 28-day window that is mostly from before the Oct 13 deploy, so they cannot confirm or refute the change yet. Lag is only part of the explanation.",
+        "Names button.add-to-cart as the main remaining INP problem (inp p75 486 ms, 4120 interactions). Its processing time dominates (processing p75 362 ms vs input delay p75 38 ms), and it is attributed to pdp-cart.8c1e.js. The fix offered is to shorten or split that handler, e.g. yield to the main thread, paint the feedback first and defer the non-visual work.",
+        "Uses the attribution data correctly: input delay on add-to-cart is small, so ChatNest contention is no longer the main cause there. It still flags that the ChatNest launcher interaction is poor (610 ms p75, input delay 290 ms, though only 520 interactions), and that ChatNest was deferred, not removed (820 ms main-thread time and two long tasks after TTI in the lab run).",
+        "Keeps the focus on INP. It does not lead with LCP, render-blocking CSS or the unused-JavaScript opportunity, and if it mentions them it says they do not bear on the INP question.",
+        "Gives a concrete way to verify the next fix: watch the RUM INP p75 per day and per target after deploying, and check CrUX/Search Console again once a full 28-day window has passed since the fix. Any lookup that needs the network (PSI/CrUX API, Search Console) is written as a command or step for the user, not reported as a result.",
+        "Invents nothing. Every number, selector, script URL, entity name and date it cites appears in the three provided files or the prompt, and it does not claim a URL-level CrUX value or post-deploy CrUX figures that the files do not contain."
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-20",
+      "prompt": "Our agency, Brightline Digital, ran Lighthouse on the Quillstack homepage (lighthouse-home-mobile.json) and is proposing a three-week code-splitting project, because the top opportunity in the report is \"Reduce unused JavaScript\" with estimated savings of 1.9 s. Search Console shows the homepage failing Core Web Vitals on mobile. I've also pulled the CrUX API record for the page (crux-home-phone.json). Before I sign the SOW: will that project get us passing Core Web Vitals? If not, what should we fix instead? I'll forward your answer to our VP of Marketing, so please keep it short and non-technical where you can.",
+      "assertions": [
+        "Answers directly at the start: no, the unused-JavaScript project will not get the homepage passing Core Web Vitals. The field data fails only on CLS (p75 0.27, poor, above 0.25), while LCP p75 is 2100 ms and INP p75 is 160 ms, both already 'good'.",
+        "Explains that the 1.9 s figure is a lab estimate tied to load metrics (the report lists FCP 900 / LCP 1050 metric savings) and does nothing for layout shift. It also notes that Lighthouse's estimated savings overlap (for example with render-blocking-resources' 620 ms on FCP/LCP), so they cannot simply be added up.",
+        "Names the biggest shift correctly. The element that moves is body > main#content (score 0.091), and it moves because the late TallyConsent cookie banner (cdn.tallyconsent.example/v2/banner.js) is inserted above it; the banner itself is not the shifted element. The fix offered is to render the banner as a fixed or bottom overlay, or to reserve its space up front.",
+        "Names the second shift: section.hero > h1 (0.038), caused by the web font northwind-sans-bold.woff2 loading. It notes that the passing font-display audit (text visible with swap) does not prevent this shift, and recommends preloading the font and/or matching the fallback font's metrics (size-adjust / ascent-override), or using font-display: optional.",
+        "Ranks the fixes by CLS impact: cookie banner first, web font second, and the unsized Brightmoor logo image in ul.logo-strip (0.011, also flagged by unsized-images) last as a small width/height or aspect-ratio fix.",
+        "Notes that lab CLS (0.14) understates the field p75 (0.27), so a good Lighthouse number after the fix does not prove the page passes. Success should be confirmed in field data (CrUX's 28-day window, collection period here Sep 19 - Oct 16, or RUM), which takes up to about four weeks to show.",
+        "Is sized for forwarding to a VP: a short answer (roughly under 300 words, or a few bullets) in plain language. It is not an audit of every Lighthouse item, and it does not dwell on the 0.68 performance score, which is not what Core Web Vitals assessment uses.",
+        "Invents nothing. Every metric, selector, URL, vendor name and date it cites appears in lighthouse-home-mobile.json, crux-home-phone.json or the prompt, and it does not give made-up effort estimates or post-fix CLS numbers as if they were measured."
+      ]
+    }
+  ]
+}

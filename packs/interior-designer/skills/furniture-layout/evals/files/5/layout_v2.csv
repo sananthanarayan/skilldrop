@@ -1,0 +1,14 @@
+Room,Item,W (cm),D (cm),X (cm),Y (cm)
+Living room,3-seat sofa,95,220,0,100
+Living room,Coffee table,60,110,85,155
+Living room,TV unit,45,180,475,140
+Living room,Armchair,85,85,300,300
+Living room,Sideboard,160,45,150,0
+Living room,Bookcase,90,35,100,375
+Living room,Floor lamp,40,40,0,330
+Living room,Plant,40,40,0,0
+Bedroom,Super king bed 180x200,180,200,55,90
+Study,Desk,140,70,60,230
+Study,Filing cabinet,47,62,200,238
+Study,Reading armchair,80,80,100,90
+Study,Bookcase,30,90,0,30

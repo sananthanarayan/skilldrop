@@ -1,0 +1,14 @@
+{
+  "name": "user-story-splitter",
+  "version": "0.1.0",
+  "description": "Split an epic, feature request, or PRD chunk into independently shippable user stories with testable Gherkin acceptance criteria and a recommended build order. Use whenever the user wants to \"break this down\", turn an epic or PRD into a backlog, slice a feature for sprint planning, or write acceptance criteria for a story.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": ["feature-implement-loop"],
+  "handoff": [
+    { "to": "feature-implement-loop", "when": "a story has acceptance criteria a test can assert", "purpose": "Implement the slice through a capped generate-verify loop.", "fallback": "If feature-implement-loop is absent, implement inline but still challenge the result and cap the rounds at three." }
+  ],
+  "tags": ["user-stories", "agile", "backlog", "acceptance-criteria", "planning", "sprint"],
+  "model": { "tier": "standard", "rationale": "Decomposes an epic into INVEST slices with testable ACs. Structured synthesis; escalation rules cover large or contradictory PRDs." }
+}

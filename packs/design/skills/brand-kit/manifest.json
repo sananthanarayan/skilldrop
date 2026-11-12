@@ -1,0 +1,31 @@
+{
+  "name": "brand-kit",
+  "version": "0.1.4",
+  "description": "Capture a brand once as a reusable brand.json — logo files (and an on-dark version), colour roles as hex codes, heading and body fonts, voice, imagery rules, a PowerPoint template, contact details and the legal footer — plus a one-page BRAND.md, with text contrast checked and every value traced to where it came from. Use when the user wants decks, flyers or documents in their branding, says \"use our brand\", \"here's our logo and colours\", \"set up our brand kit\", or hands over brand guidelines.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "md-to-pptx",
+    "md-to-docx"
+  ],
+  "tags": [
+    "brand",
+    "logo",
+    "colours",
+    "fonts",
+    "design",
+    "style-guide"
+  ],
+  "permissions": {"network": [], "commands": [], "files": "none", "notes": "The checker reads brand.json and the files it names, and writes nothing."},
+  "model": {
+    "tier": "standard",
+    "rationale": "Extracts and normalises brand facts from files and pages, then runs a checker. Bounded synthesis."
+  }
+}

@@ -1,0 +1,265 @@
+{
+  "account": {
+    "delete": {
+      "confirm": "هل تريد حذف حسابك؟ لا يمكن التراجع عن ذلك."
+    },
+    "greeting": "مرحباً {name}",
+    "member_since": "عضو منذ {year}",
+    "privacy": "اقرأ <link>سياسة الخصوصية</link> و<b>إدارة ملفات تعريف الارتباط</b>.",
+    "role": "{role, select, admin {مسؤول} member {عضو} other {زائر}}",
+    "welcome_back": "مرحباً بعودتك يا {name}"
+  },
+  "address": {
+    "deliver_to": "التوصيل إلى {city}، {postcode}"
+  },
+  "app": {
+    "name": "Lumio"
+  },
+  "button": {
+    "add_to_cart": "أضف إلى السلة",
+    "apply": "تطبيق",
+    "back": "رجوع",
+    "cancel": "إلغاء",
+    "checkout": "الانتقال إلى الدفع",
+    "close": "إغلاق",
+    "contact_support": "اتصل بالدعم",
+    "continue": "متابعة",
+    "create_account": "إنشاء حساب",
+    "download_invoice": "تنزيل الفاتورة",
+    "edit": "تعديل",
+    "place_order": "تأكيد الطلب",
+    "remove": "إزالة",
+    "reset_password": "إعادة تعيين كلمة المرور",
+    "retry": "حاول مرة أخرى",
+    "save": "حفظ",
+    "sign_in": "تسجيل الدخول",
+    "sign_out": "تسجيل الخروج",
+    "track_order": "تتبع الطلب",
+    "view_details": "عرض التفاصيل"
+  },
+  "cart": {
+    "empty": "سلتك فارغة",
+    "free_shipping": "تبقى <b>{amount}</b> للحصول على توصيل مجاني",
+    "item_removed": "تمت إزالة {product} من سلتك",
+    "items": {
+      "count": "{count, plural, zero {لا توجد منتجات} one {منتج واحد} two {منتجان} few {# منتجات} many {# منتجاً} other {# منتج}}"
+    },
+    "points": "ستحصل على {points, plural, zero {لا نقاط} one {نقطة واحدة} two {نقطتين} few {# نقاط} many {# نقطة} other {# نقطة}} مع هذا الطلب",
+    "subtotal": "المجموع الفرعي: {total}"
+  },
+  "checkout": {
+    "shipping": {
+      "eta": "يصل بحلول {date}"
+    },
+    "summary": {
+      "title": "ملخص الطلب"
+    }
+  },
+  "delivery": {
+    "days": "{days, plural, zero {التوصيل اليوم} one {التوصيل خلال يوم واحد} two {التوصيل خلال يومين} few {التوصيل خلال # أيام} many {التوصيل خلال # يوماً} other {التوصيل خلال # يوم}}",
+    "slot": "التوصيل بين {start} و{end}"
+  },
+  "footer": {
+    "copyright": "© {year} Lumio Retail Ltd."
+  },
+  "form": {
+    "birth_date": {
+      "invalid": "تاريخ الميلاد غير صالح",
+      "label": "تاريخ الميلاد",
+      "placeholder": "أدخل تاريخ الميلاد",
+      "required": "تاريخ الميلاد مطلوب"
+    },
+    "card_number": {
+      "invalid": "رقم البطاقة غير صالح",
+      "label": "رقم البطاقة",
+      "placeholder": "أدخل رقم البطاقة",
+      "required": "رقم البطاقة مطلوب"
+    },
+    "city": {
+      "invalid": "المدينة غير صالح",
+      "label": "المدينة",
+      "placeholder": "أدخل المدينة",
+      "required": "المدينة مطلوب"
+    },
+    "company": {
+      "invalid": "الشركة غير صالح",
+      "label": "الشركة",
+      "placeholder": "أدخل الشركة",
+      "required": "الشركة مطلوب"
+    },
+    "country": {
+      "invalid": "الدولة غير صالح",
+      "label": "الدولة",
+      "placeholder": "أدخل الدولة",
+      "required": "الدولة مطلوب"
+    },
+    "coupon": {
+      "invalid": "رمز القسيمة غير صالح",
+      "label": "رمز القسيمة",
+      "placeholder": "أدخل رمز القسيمة",
+      "required": "رمز القسيمة مطلوب"
+    },
+    "cvc": {
+      "invalid": "رمز الأمان غير صالح",
+      "label": "رمز الأمان",
+      "placeholder": "أدخل رمز الأمان",
+      "required": "رمز الأمان مطلوب"
+    },
+    "delivery_notes": {
+      "invalid": "ملاحظات التوصيل غير صالح",
+      "label": "ملاحظات التوصيل",
+      "placeholder": "أدخل ملاحظات التوصيل",
+      "required": "ملاحظات التوصيل مطلوب"
+    },
+    "email": {
+      "invalid": "عنوان البريد الإلكتروني غير صالح",
+      "label": "عنوان البريد الإلكتروني",
+      "placeholder": "أدخل عنوان البريد الإلكتروني",
+      "required": "عنوان البريد الإلكتروني مطلوب"
+    },
+    "expiry": {
+      "invalid": "تاريخ الانتهاء غير صالح",
+      "label": "تاريخ الانتهاء",
+      "placeholder": "أدخل تاريخ الانتهاء",
+      "required": "تاريخ الانتهاء مطلوب"
+    },
+    "first_name": {
+      "invalid": "الاسم الأول غير صالح",
+      "label": "الاسم الأول",
+      "placeholder": "أدخل الاسم الأول",
+      "required": "الاسم الأول مطلوب"
+    },
+    "gift_message": {
+      "invalid": "رسالة الهدية غير صالح",
+      "label": "رسالة الهدية",
+      "placeholder": "أدخل رسالة الهدية",
+      "required": "رسالة الهدية مطلوب"
+    },
+    "last_name": {
+      "invalid": "اسم العائلة غير صالح",
+      "label": "اسم العائلة",
+      "placeholder": "أدخل اسم العائلة",
+      "required": "اسم العائلة مطلوب"
+    },
+    "order_ref": {
+      "invalid": "رقم الطلب غير صالح",
+      "label": "رقم الطلب",
+      "placeholder": "أدخل رقم الطلب",
+      "required": "رقم الطلب مطلوب"
+    },
+    "password": {
+      "invalid": "كلمة المرور غير صالح",
+      "label": "كلمة المرور",
+      "placeholder": "أدخل كلمة المرور",
+      "required": "كلمة المرور مطلوب"
+    },
+    "phone": {
+      "invalid": "رقم الهاتف غير صالح",
+      "label": "رقم الهاتف",
+      "placeholder": "أدخل رقم الهاتف",
+      "required": "رقم الهاتف مطلوب"
+    },
+    "postcode": {
+      "invalid": "الرمز البريدي غير صالح",
+      "label": "الرمز البريدي",
+      "placeholder": "أدخل الرمز البريدي",
+      "required": "الرمز البريدي مطلوب"
+    },
+    "street": {
+      "invalid": "عنوان الشارع غير صالح",
+      "label": "عنوان الشارع",
+      "placeholder": "أدخل عنوان الشارع",
+      "required": "عنوان الشارع مطلوب"
+    },
+    "username": {
+      "invalid": "اسم المستخدم غير صالح",
+      "label": "اسم المستخدم",
+      "placeholder": "أدخل اسم المستخدم",
+      "required": "اسم المستخدم مطلوب"
+    },
+    "vat": {
+      "invalid": "الرقم الضريبي غير صالح",
+      "label": "الرقم الضريبي",
+      "placeholder": "أدخل الرقم الضريبي",
+      "required": "الرقم الضريبي مطلوب"
+    }
+  },
+  "giftcard": {
+    "received": "أرسل إليك {sender} بطاقة هدية بقيمة {amount}"
+  },
+  "legal": {
+    "terms": "بإتمام طلبك، فإنك توافق على <link>شروط البيع</link>."
+  },
+  "nav": {
+    "about": "من نحن",
+    "account": "الحساب",
+    "addresses": "العناوين",
+    "deals": "العروض",
+    "gift_cards": "بطاقات الهدايا",
+    "help": "المساعدة",
+    "home": "الرئيسية",
+    "new_in": "وصل حديثاً",
+    "notifications": "الإشعارات",
+    "orders": "الطلبات",
+    "payment_methods": "طرق الدفع",
+    "returns": "المرتجعات",
+    "settings": "الإعدادات",
+    "shop": "المتجر",
+    "wishlist": "قائمة الأمنيات"
+  },
+  "notifications": {
+    "unread": "{count, plural, one {إشعار واحد غير مقروء} other {# إشعارات غير مقروءة}}"
+  },
+  "order": {
+    "confirmation": "شكراً يا {name}! تم تأكيد طلبك {orderId}.",
+    "placed_on": "تم الطلب في {date}",
+    "status": {
+      "cancelled": "أُلغي",
+      "delivered": "تم التوصيل",
+      "failed": "فشل الدفع",
+      "on_hold": "معلّق",
+      "out_for_delivery": "خرج للتوصيل",
+      "pending": "قيد الانتظار",
+      "processing": "قيد المعالجة",
+      "refunded": "تم الاسترداد",
+      "returned": "تم الإرجاع",
+      "shipped": "تم الشحن"
+    },
+    "total": "إجمالي الطلب: {total}",
+    "tracking": "رقم التتبع: {trackingId}"
+  },
+  "orders": {
+    "count": "{count, plural, zero {لا توجد طلبات} one {طلب واحد} two {طلبان} few {# طلبات} many {# طلباً} other {# طلب}}"
+  },
+  "payment": {
+    "card_ending": "بطاقة تنتهي بـ {last4}"
+  },
+  "promo": {
+    "banner": "احصل على <b>خصم {percent}%</b> على طلبك الأول",
+    "expires": "ينتهي العرض في {date}"
+  },
+  "returns": {
+    "deadline": "الإرجاع قبل {date}",
+    "policy": "الإرجاع مجاني خلال <b>30 يوماً</b>."
+  },
+  "reviews": {
+    "count": "{count, plural, zero {لا توجد مراجعات} one {مراجعة واحدة} two {مراجعتان} few {# مراجعات} many {# مراجعة} other {# مراجعة}}",
+    "rating": "التقييم {rating} من 5"
+  },
+  "search": {
+    "placeholder": "ابحث عن المنتجات",
+    "results_for": "نتائج البحث عن «{query}»"
+  },
+  "security": {
+    "notice": "<b>لا</b> تشارك كلمة المرور مع أي شخص."
+  },
+  "stock": {
+    "left": "{count, plural, zero {نفدت الكمية} one {بقيت قطعة واحدة فقط} two {بقيت قطعتان فقط} few {بقيت # قطع فقط} many {بقيت # قطعة فقط} other {بقيت # قطعة فقط}}"
+  },
+  "support": {
+    "hours": "الدعم متاح من {openTime} إلى {closeTime}"
+  },
+  "wishlist": {
+    "count": "{count, plural, =0 {قائمة أمنياتك فارغة} zero {لا توجد عناصر} one {عنصر محفوظ واحد} two {عنصران محفوظان} few {# عناصر محفوظة} many {# عنصراً محفوظاً} other {# عنصر محفوظ}}"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "currency": "GBP",
+  "start": "2027-01-01",
+  "term_months": 60,
+  "rent": {
+    "annual": 36000,
+    "payable": "quarterly",
+    "rent_free_months": 3,
+    "reviews": [{"month": 36, "type": "cpi", "assumed": 0.04, "cap": 0.04, "collar": 0.01, "years": 3, "upward_only": true}]
+  },
+  "service_charge": {"annual": 4800},
+  "deposit": {"months": 6},
+  "breaks": [{"month": 36, "notice_months": 6, "party": "tenant", "conditions": ["all rent paid", "vacant possession"]}],
+  "notice_to_leave_months": 6
+}

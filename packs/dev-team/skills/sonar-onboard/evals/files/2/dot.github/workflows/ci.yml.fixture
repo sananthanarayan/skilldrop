@@ -1,0 +1,10 @@
+# DEPRECATED: CI moved to GitLab in March. This workflow no longer runs; kept until the old
+# runners are retired. Do not add jobs here.
+name: ci
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -e . pytest && pytest

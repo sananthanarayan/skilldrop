@@ -1,0 +1,11 @@
+{
+  "duration_minutes": 50,
+  "total": 50,
+  "objectives": {"AO1": 40, "AO2": 40, "AO3": 20},
+  "assesses": {
+    "1a": "AO1", "1b": "AO2", "1c": "AO1",
+    "2a(i)": "AO1", "2a(ii)": "AO2", "2a(iii)": "AO2", "2b": "AO3",
+    "3a": "AO1", "3b": "AO3", "3c": "AO2",
+    "4": ["AO1", "AO3"]
+  }
+}

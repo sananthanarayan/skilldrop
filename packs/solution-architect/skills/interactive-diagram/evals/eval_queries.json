@@ -1,0 +1,12 @@
+[
+  {"query": "Make an interactive diagram of what happens when someone places an order in this repo", "should_trigger": true},
+  {"query": "Visualize our request flow as an HTML page I can click around and send to the team", "should_trigger": true},
+  {"query": "Turn this description of our purchase approval process into an interactive flowchart", "should_trigger": true},
+  {"query": "Give me an explorable ERD of schema.sql as a single HTML file", "should_trigger": true},
+  {"query": "Map how this service talks to the database and the queue, with links back to the code", "should_trigger": true},
+  {"query": "Show what this branch changes in the architecture compared with main, as an interactive diagram", "should_trigger": true},
+  {"query": "Write a Mermaid C4 container diagram for the design doc from this description", "should_trigger": false},
+  {"query": "My mermaid flowchart says parse error on line 3, can you fix it and export a PNG", "should_trigger": false},
+  {"query": "Reverse-engineer the as-is architecture from our Terraform and write it up in C4 levels", "should_trigger": false},
+  {"query": "Build a dashboard chart of weekly signups from this CSV", "should_trigger": false}
+]

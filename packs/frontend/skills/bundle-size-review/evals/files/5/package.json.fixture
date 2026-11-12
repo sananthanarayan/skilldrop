@@ -1,0 +1,22 @@
+{
+  "name": "ops-dashboard",
+  "version": "2.7.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs --watch"
+  },
+  "dependencies": {
+    "core-js": "^3.38.1",
+    "glyphset": "^5.0.2",
+    "plotline": "^4.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sheetsmith": "^1.8.0",
+    "tempora": "^3.1.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.23.1"
+  }
+}

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Parcelo</string>
+    <string name="tab_home">Inicio</string>
+    <string name="tab_track">Seguimiento</string>
+    <string name="tab_send">Enviar</string>
+    <string name="tab_account">Cuenta</string>
+    <string name="action_continue">Continuar</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_retry">Reintentar</string>
+    <string name="action_save">Guardar</string>
+    <string name="action_scan">Escanear etiqueta</string>
+    <string name="action_share">Compartir</string>
+    <string name="login_title">Inicia sesión en Parcelo</string>
+    <string name="login_email_hint">Correo electrónico</string>
+    <string name="login_password_hint">Contraseña</string>
+    <string name="login_forgot">¿Olvidaste tu contraseña?</string>
+    <string name="greeting">Hola, %1$s</string>
+    <string name="track_title">Rastrear un paquete</string>
+    <string name="track_hint">Introduce el número de seguimiento</string>
+    <string name="order_status_title">Pedido %s</string>
+    <string name="status_in_transit">En tránsito</string>
+    <string name="status_out_for_delivery">En reparto</string>
+    <string name="status_delivered">Entregado</string>
+    <string name="status_delivered_at">Entregado a las %1$s el %2$s</string>
+    <string name="status_exception">Problema con la entrega</string>
+    <string name="eta_label">Llegada prevista: %1$s</string>
+    <string name="delivery_window_note">Your courier will text you a one-hour window on the morning of delivery.</string>
+    <string name="send_title">Enviar un paquete</string>
+    <string name="send_recipient_hint">Nombre del destinatario</string>
+    <string name="send_address_hint">Dirección de entrega</string>
+    <string name="send_weight_label">Peso: %1$.1f kg</string>
+    <string name="send_price">Precio: %1$s</string>
+    <string name="send_confirm_route">¿Enviar este paquete de %2$s a %1$s?</string>
+    <string name="send_confirm_button">Pagar y enviar</string>
+    <string name="pickup_scheduled">Recogida programada el %1$s entre las %2$s y las %3$s</string>
+    <string name="account_title">Tu cuenta</string>
+    <string name="account_addresses">Direcciones guardadas</string>
+    <string name="account_payment">Métodos de pago</string>
+    <string name="account_notifications">Notificaciones</string>
+    <string name="account_language">Idioma</string>
+    <string name="account_sign_out">Cerrar sesión</string>
+    <string name="card_ending">Tarjeta terminada en %1$s</string>
+    <string name="error_network">Sin conexión. Comprueba tu red e inténtalo de nuevo.</string>
+    <string name="error_address">No encontramos esa dirección.</string>
+    <string name="error_weight">Los paquetes pueden pesar hasta %1$d kg.</string>
+    <string name="support_title">Ayuda</string>
+    <string name="support_chat">Habla con nosotros</string>
+    <string name="rating_prompt">¿Qué tal tu entrega de %1$s?</string>
+    <string name="share_tracking">Sigue mi paquete de %1$s: %2$s</string>
+    <string name="notification_channel_updates">Actualizaciones de entrega</string>
+    <plurals name="parcels_in_transit">
+        <item quantity="one">%d paquete en camino</item>
+        <item quantity="other">%d paquetes en camino</item>
+    </plurals>
+    <plurals name="photos_selected">
+        <item quantity="other">%d fotos seleccionadas</item>
+    </plurals>
+    <plurals name="days_until_return">
+        <item quantity="one">Queda %d día para devolverlo</item>
+        <item quantity="other">Quedan %d días para devolverlo</item>
+    </plurals>
+</resources>

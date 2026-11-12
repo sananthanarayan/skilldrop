@@ -1,0 +1,45 @@
+{
+  "skill_name": "api-contract-draft",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Draft the OpenAPI contract for our orders API — clients need to create an order, fetch one, and list a customer's orders.",
+      "assertions": [
+        "The emitted YAML is parseable OpenAPI 3.1 and every $ref resolves",
+        "Paths are resource-oriented rather than RPC-style verbs in the URL",
+        "Every operation enumerates its 4xx set with stable machine-switchable code values — not a bare '400: Bad Request'",
+        "Errors follow RFC 9457 problem-details shape",
+        "Pagination, idempotency, and versioning are each decided explicitly rather than deferred",
+        "Every operation carries at least one example",
+        "Each decision in the log has a rationale, and any deviation from the skill's conventions is logged rather than made silently"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "Draft the API contract for our room bookings. The brief is booking-brief.md and the facilities policy that applies is facilities-policy-excerpt.md. The partner team starts building on Monday.",
+      "assertions": [
+        "Saves openapi.yaml, which parses as YAML and declares an OpenAPI 3.1.x version",
+        "Cancelling does not erase the booking: cancelled bookings are kept (for example as a status change), and the reply explains this against the policy's 24-month retention rule instead of silently building the requested delete-everything behaviour",
+        "Notices that the brief's 30-minute slots conflict with the policy's 15-minute increments (minimum 30 minutes, maximum 4 hours) and says which the contract follows",
+        "The list-bookings operation supports paging, or the reply explains why it is needed, given one group made 412 bookings last year despite the app team's 'few items' claim",
+        "Defines how a re-sent booking request is handled so that a dropped connection does not create a duplicate booking",
+        "Does not define endpoints that create or edit rooms; rooms are referenced by ID from the existing Facilities API",
+        "Does not invent business rules or fields not in the brief or policy without marking them as assumptions"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "hey, I organise the Oakridge Harriers 10k (running club, about 600 runners). the timing company says they can 'push results to an API' if we give them one, so our website can show results live. can you write whatever they need? just the endpoints and what goes in each one, keep it short, I'm not a developer",
+      "assertions": [
+        "Delivers a usable draft straight away rather than stopping to ask questions",
+        "Covers the timing company sending results to the club, with the fields each result carries",
+        "Says what happens when a result is re-sent or corrected (the runner's result is updated, not duplicated)",
+        "Includes a way for the club to know the sender really is the timing company, explained in plain terms",
+        "Does not invent features beyond results (registration, payments, merchandise) or facts such as the race date; anything assumed is marked as an assumption",
+        "Is short (about a page or less) and explains the endpoints in plain words a non-developer can pass on"
+      ]
+    }
+  ]
+}

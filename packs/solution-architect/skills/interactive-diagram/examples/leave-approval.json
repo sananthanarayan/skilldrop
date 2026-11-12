@@ -1,0 +1,28 @@
+{
+ "type": "workflow",
+ "title": "How annual leave gets approved",
+ "question": "What happens to a leave request from the moment it is submitted?",
+ "summary": "Every request goes to the line manager; requests over ten working days also need HR, and anything that clashes with the year-end freeze needs the director. Approved leave is booked in the team calendar automatically.",
+ "nodes": [
+  {"id": "submit", "label": "Submit request in the HR portal", "kind": "start", "evidence": ["user: you request leave in the HR portal"]},
+  {"id": "manager", "label": "Line manager reviews", "kind": "manual", "evidence": ["user: it goes to your line manager first"]},
+  {"id": "long", "label": "Over 10 working days?", "kind": "decision", "evidence": ["user: anything over ten working days also needs HR"]},
+  {"id": "hr", "label": "HR approves", "kind": "manual", "evidence": ["user: also needs HR"]},
+  {"id": "freeze", "label": "In the year-end freeze?", "kind": "decision", "evidence": ["user: nothing in the last two weeks of December without the director"]},
+  {"id": "director", "label": "Director approves", "kind": "manual", "evidence": ["user: without the director"]},
+  {"id": "booked", "label": "Booked in team calendar", "kind": "end", "evidence": ["user: once it's approved it shows up in the team calendar by itself"]},
+  {"id": "declined", "label": "Employee told it's declined", "kind": "end", "assumed": true, "detail": "The description doesn't say what happens when someone says no."}
+ ],
+ "edges": [
+  {"from": "submit", "to": "manager", "evidence": ["user: it goes to your line manager first"]},
+  {"from": "manager", "to": "long", "label": "approves", "evidence": ["user: it goes to your line manager first"]},
+  {"from": "manager", "to": "declined", "label": "declines", "assumed": true},
+  {"from": "long", "to": "hr", "label": "yes", "evidence": ["user: anything over ten working days also needs HR"]},
+  {"from": "long", "to": "freeze", "label": "no", "evidence": ["user: anything over ten working days also needs HR"]},
+  {"from": "hr", "to": "freeze", "evidence": ["user: also needs HR"]},
+  {"from": "freeze", "to": "director", "label": "yes", "evidence": ["user: without the director"]},
+  {"from": "freeze", "to": "booked", "label": "no", "evidence": ["user: once it's approved it shows up in the team calendar by itself"]},
+  {"from": "director", "to": "booked", "evidence": ["user: once it's approved it shows up in the team calendar by itself"]}
+ ],
+ "notes": ["Not in the description, so drawn as an assumption: what happens when HR or the director says no."]
+}

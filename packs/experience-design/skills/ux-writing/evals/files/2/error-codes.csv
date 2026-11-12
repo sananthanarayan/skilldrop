@@ -1,0 +1,6 @@
+code,engineering_description,current_draft_message,user_can_fix
+E12,Connector not detected / cable not fully seated,Error E12 occurred,yes
+E27,Vehicle rejected charge (vehicle-side fault or vehicle charge limit reached),Charger fault. Please try again later.,partly
+E43,Payment pre-authorisation declined by card issuer,Your card has expired.,yes
+E51,Ground fault detected — unit locks itself for safety,Error E51 occurred,no
+E60,Network unavailable; unit cannot authorise payment,Error E60 occurred,no

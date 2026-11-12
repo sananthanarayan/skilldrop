@@ -1,0 +1,13 @@
+ID,Question
+Q1,Do you have a documented information security policy approved by management?
+Q2,Is customer data encrypted in transit?
+Q3,Is customer data encrypted at rest?
+Q4,Are you ISO 27001 certified?
+Q5,Do you hold a current SOC 2 Type II report?
+Q6,Are employees required to complete security awareness training annually?
+Q7,Have you had an independent penetration test in the last 12 months?
+Q8,Do you have a documented incident response plan?
+Q9,Is multi-factor authentication enforced for all staff?
+Q10,Are backups performed and tested?
+Q11,What is your retention period for customer data after contract termination?
+Q12,Do you carry cyber liability insurance?

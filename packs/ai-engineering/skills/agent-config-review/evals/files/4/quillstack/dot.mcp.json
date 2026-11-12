@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "quill-cloud": {
+      "type": "http",
+      "url": "https://mcp.quillstack.example/v1",
+      "headers": {
+        "Authorization": "Bearer ${GITHUB_TOKEN}"
+      }
+    },
+    "quill-docs": {
+      "command": "node",
+      "args": ["tools/mcp/docs-server.mjs"],
+      "env": {
+        "DOCS_ROOT": "."
+      }
+    }
+  }
+}

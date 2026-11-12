@@ -1,0 +1,23 @@
+{
+  "name": "interior-designer",
+  "version": "1.18.0",
+  "description": "Furniture plans for one room: every piece at its real size and facing the way it's used, drawn as a dimensioned SVG, and shown only once a script has checked it for overlaps, pieces in a door's swing, blocked bed sides, chair pull-backs and wardrobe doors, and a clear walking route to everything. (6 skills, 1 loop)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/interior-designer/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "interior design",
+    "furniture",
+    "layout",
+    "space planning",
+    "clearances",
+    "room plan",
+    "bedroom",
+    "living room",
+    "office fit-out"
+  ]
+}

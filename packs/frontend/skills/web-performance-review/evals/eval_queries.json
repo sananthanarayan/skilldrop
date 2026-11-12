@@ -1,0 +1,38 @@
+[
+  {
+    "query": "Here's our Lighthouse JSON for the product page, why is it slow and what should we fix first?",
+    "should_trigger": true
+  },
+  {
+    "query": "PageSpeed says 92 but Search Console says LCP is poor on mobile. Which one is right?",
+    "should_trigger": true
+  },
+  {
+    "query": "We deferred the analytics scripts and the Lighthouse score went up 12 points. Did that fix INP?",
+    "should_trigger": true
+  },
+  {
+    "query": "Review this PSI result and tell me how to get the homepage passing Core Web Vitals",
+    "should_trigger": true
+  },
+  {
+    "query": "What is the LCP element in this Lighthouse report and why is load delay so high?",
+    "should_trigger": true
+  },
+  {
+    "query": "Lighthouse flagged contrast and missing labels on the checkout form, can you audit it against WCAG?",
+    "should_trigger": false
+  },
+  {
+    "query": "Our main.js is 1.4 MB, here's the webpack stats file, what's making it so big?",
+    "should_trigger": false
+  },
+  {
+    "query": "Should the blog and product pages be SSR or static with revalidation in Next.js?",
+    "should_trigger": false
+  },
+  {
+    "query": "Set up real-user monitoring and alerts for Core Web Vitals across our site",
+    "should_trigger": false
+  }
+]

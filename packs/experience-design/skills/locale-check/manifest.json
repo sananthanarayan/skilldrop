@@ -1,0 +1,45 @@
+{
+  "name": "locale-check",
+  "version": "0.1.1",
+  "description": "Check a product's translations against the source strings before they ship — every key present, every placeholder (named, %s, %1$d, ICU plural and select) carried over intact, the plural forms each language needs, markup tags balanced, and strings over their character budget — with a script that reads JSON, ARB, gettext .po, Android strings.xml and iOS .strings, and lists each problem with its key and locale. Use when someone asks to \"check the translations\", \"QA these locale files\", \"will the German fit\", \"why does the French build crash on this string\", or hands over locale files before a release.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "content-design",
+    "ux-writing"
+  ],
+  "handoff": [
+    {
+      "to": "ux-writing",
+      "when": "a source string is the cause: too long for its slot in every language, two strings for one concept, or a sentence built from fragments",
+      "purpose": "Rewrite the source string so every translation can fit and agree.",
+      "fallback": "If ux-writing is absent, name the source string, the slot and its budget, and say why it can't be translated well as written."
+    }
+  ],
+  "tags": [
+    "localization",
+    "l10n",
+    "i18n",
+    "translation-qa",
+    "plurals",
+    "placeholders",
+    "icu"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "Reads the string files and the budget file it is given, and writes the report to the path passed with -o."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "The script finds every mechanical defect; the model ranks them by what breaks first, writes the mechanical fixes and tells a wrong-meaning translation from an acceptable one."
+  }
+}

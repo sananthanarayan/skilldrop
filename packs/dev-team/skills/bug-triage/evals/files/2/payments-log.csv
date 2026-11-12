@@ -1,0 +1,15 @@
+timestamp_utc,order_id,account,event,amount_usd,app_version,pass_issued
+2026-10-14T18:02:11Z,ord-40917,acct_2290,AUTH,6.50,3.1.4,
+2026-10-14T18:02:40Z,ord-40918,acct_2290,AUTH,6.50,3.1.4,
+2026-10-14T18:02:42Z,ord-40918,acct_2290,CAPTURE,6.50,3.1.4,yes
+2026-10-14T18:32:11Z,ord-40917,acct_2290,VOID,6.50,3.1.4,
+2026-10-16T11:48:05Z,ord-42230,acct_5012,AUTH,2.75,3.2.0,
+2026-10-16T11:48:31Z,ord-42231,acct_5012,AUTH,2.75,3.2.0,
+2026-10-16T11:48:33Z,ord-42231,acct_5012,CAPTURE,2.75,3.2.0,yes
+2026-10-16T12:18:05Z,ord-42230,acct_5012,VOID,2.75,3.2.0,
+2026-10-16T12:14:58Z,ord-42261,acct_7781,AUTH,6.50,3.2.0,
+2026-10-16T12:15:31Z,ord-42262,acct_7781,AUTH,6.50,3.2.0,
+2026-10-16T12:15:33Z,ord-42262,acct_7781,CAPTURE,6.50,3.2.0,yes
+2026-10-16T12:44:58Z,ord-42261,acct_7781,VOID,6.50,3.2.0,
+# An AUTH that is never captured is voided automatically 30 minutes later.
+# Orders 2026-10-14 00:00Z to 2026-10-16 13:00Z: 4,812 total. The rows above are all the cases where one account had two AUTHs within 60 seconds.

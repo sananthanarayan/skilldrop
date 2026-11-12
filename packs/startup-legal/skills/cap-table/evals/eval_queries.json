@@ -1,0 +1,30 @@
+[
+  {
+    "query": "How much of my company will I own after this Series A?",
+    "should_trigger": true
+  },
+  {
+    "query": "Model our three SAFEs converting into the seed round",
+    "should_trigger": true
+  },
+  {
+    "query": "Compare founder dilution at a $12M and a $16M pre-money",
+    "should_trigger": true
+  },
+  {
+    "query": "How much have we given away in SAFEs so far?",
+    "should_trigger": true
+  },
+  {
+    "query": "Review this SAFE agreement before I sign it",
+    "should_trigger": false
+  },
+  {
+    "query": "Build a three-statement financial model for our seed deck",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the business case for hiring two engineers",
+    "should_trigger": false
+  }
+]

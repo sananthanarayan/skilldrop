@@ -1,0 +1,12 @@
+{
+  "checkout": {
+    "title": "Kasa",
+    "pay_button": "Zapłać {amount}",
+    "items_one": "{{count}} produkt w koszyku",
+    "items_other": "{{count}} produktów w koszyku",
+    "delivery": "Dostawa do {date}.",
+    "promo_applied": "Kod <b>{code} zastosowany.",
+    "saved_cards": "{count, plural, one {# zapisana karta} few {# zapisane karty} many {# zapisanych kart} other {# zapisanej karty}}",
+    "error_declined": "Twoja karta została odrzucona. Spróbuj innej karty."
+  }
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Write a test plan for this feature",
+    "should_trigger": true
+  },
+  {
+    "query": "What should we test before this release, ranked by risk?",
+    "should_trigger": true
+  },
+  {
+    "query": "Map these acceptance criteria to test cases",
+    "should_trigger": true
+  },
+  {
+    "query": "Generate a risk-based QA plan for this PR",
+    "should_trigger": true
+  },
+  {
+    "query": "Split this epic into user stories with acceptance criteria",
+    "should_trigger": false
+  },
+  {
+    "query": "Review my code and tell me which tests are missing",
+    "should_trigger": false
+  },
+  {
+    "query": "Run the Sonar scan on my branch",
+    "should_trigger": false
+  },
+  {
+    "query": "Draft the PRD for this feature",
+    "should_trigger": false
+  }
+]

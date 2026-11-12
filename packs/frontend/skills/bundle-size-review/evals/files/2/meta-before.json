@@ -1,0 +1,360 @@
+{
+ "inputs": {
+  "src/main.tsx": {
+   "bytes": 1460,
+   "imports": [
+    {
+     "path": "node_modules/react/index.js",
+     "kind": "import-statement",
+     "original": "react"
+    },
+    {
+     "path": "node_modules/react-dom/client.js",
+     "kind": "import-statement",
+     "original": "react-dom/client"
+    },
+    {
+     "path": "src/App.tsx",
+     "kind": "import-statement",
+     "original": "./App"
+    },
+    {
+     "path": "src/styles/app.css",
+     "kind": "import-statement",
+     "original": "./styles/app.css"
+    }
+   ],
+   "format": "esm"
+  },
+  "src/App.tsx": {
+   "bytes": 5210,
+   "imports": [
+    {
+     "path": "node_modules/react/index.js",
+     "kind": "import-statement",
+     "original": "react"
+    },
+    {
+     "path": "src/components/Toolbar.tsx",
+     "kind": "import-statement",
+     "original": "./components/Toolbar"
+    },
+    {
+     "path": "src/routes/Orders.tsx",
+     "kind": "dynamic-import",
+     "original": "./routes/Orders"
+    },
+    {
+     "path": "src/routes/Analytics.tsx",
+     "kind": "dynamic-import",
+     "original": "./routes/Analytics"
+    },
+    {
+     "path": "src/api/client.ts",
+     "kind": "import-statement",
+     "original": "./api/client"
+    }
+   ],
+   "format": "esm"
+  },
+  "src/components/Toolbar.tsx": {
+   "bytes": 4380,
+   "imports": [
+    {
+     "path": "node_modules/react/index.js",
+     "kind": "import-statement",
+     "original": "react"
+    },
+    {
+     "path": "node_modules/clsx/dist/clsx.mjs",
+     "kind": "import-statement",
+     "original": "clsx"
+    }
+   ],
+   "format": "esm"
+  },
+  "src/api/client.ts": {
+   "bytes": 6120,
+   "imports": [
+    {
+     "path": "node_modules/ky/distribution/index.js",
+     "kind": "import-statement",
+     "original": "ky"
+    }
+   ],
+   "format": "esm"
+  },
+  "src/routes/Orders.tsx": {
+   "bytes": 9840,
+   "imports": [
+    {
+     "path": "node_modules/react/index.js",
+     "kind": "import-statement",
+     "original": "react"
+    },
+    {
+     "path": "node_modules/@tanstack/react-table/build/lib/index.mjs",
+     "kind": "import-statement",
+     "original": "@tanstack/react-table"
+    }
+   ],
+   "format": "esm"
+  },
+  "src/routes/Analytics.tsx": {
+   "bytes": 7310,
+   "imports": [
+    {
+     "path": "node_modules/react/index.js",
+     "kind": "import-statement",
+     "original": "react"
+    },
+    {
+     "path": "node_modules/plotly.js-basic-dist-min/plotly-basic.min.js",
+     "kind": "import-statement",
+     "original": "plotly.js-basic-dist-min"
+    }
+   ],
+   "format": "esm"
+  },
+  "node_modules/react/index.js": {
+   "bytes": 190,
+   "imports": [
+    {
+     "path": "node_modules/react/cjs/react.production.min.js",
+     "kind": "require-call",
+     "original": "./cjs/react.production.min.js"
+    }
+   ],
+   "format": "cjs"
+  },
+  "node_modules/react/cjs/react.production.min.js": {
+   "bytes": 6930,
+   "imports": [],
+   "format": "cjs"
+  },
+  "node_modules/react-dom/client.js": {
+   "bytes": 619,
+   "imports": [
+    {
+     "path": "node_modules/react-dom/index.js",
+     "kind": "require-call",
+     "original": "react-dom"
+    }
+   ],
+   "format": "cjs"
+  },
+  "node_modules/react-dom/index.js": {
+   "bytes": 1363,
+   "imports": [
+    {
+     "path": "node_modules/react-dom/cjs/react-dom.production.min.js",
+     "kind": "require-call",
+     "original": "./cjs/react-dom.production.min.js"
+    }
+   ],
+   "format": "cjs"
+  },
+  "node_modules/react-dom/cjs/react-dom.production.min.js": {
+   "bytes": 131882,
+   "imports": [
+    {
+     "path": "node_modules/react/index.js",
+     "kind": "require-call",
+     "original": "react"
+    },
+    {
+     "path": "node_modules/scheduler/index.js",
+     "kind": "require-call",
+     "original": "scheduler"
+    }
+   ],
+   "format": "cjs"
+  },
+  "node_modules/scheduler/index.js": {
+   "bytes": 198,
+   "imports": [
+    {
+     "path": "node_modules/scheduler/cjs/scheduler.production.min.js",
+     "kind": "require-call",
+     "original": "./cjs/scheduler.production.min.js"
+    }
+   ],
+   "format": "cjs"
+  },
+  "node_modules/scheduler/cjs/scheduler.production.min.js": {
+   "bytes": 4274,
+   "imports": [],
+   "format": "cjs"
+  },
+  "node_modules/clsx/dist/clsx.mjs": {
+   "bytes": 368,
+   "imports": [],
+   "format": "esm"
+  },
+  "node_modules/ky/distribution/index.js": {
+   "bytes": 1210,
+   "imports": [
+    {
+     "path": "node_modules/ky/distribution/core/Ky.js",
+     "kind": "import-statement",
+     "original": "./core/Ky.js"
+    }
+   ],
+   "format": "esm"
+  },
+  "node_modules/ky/distribution/core/Ky.js": {
+   "bytes": 11870,
+   "imports": [],
+   "format": "esm"
+  },
+  "node_modules/@tanstack/react-table/build/lib/index.mjs": {
+   "bytes": 4120,
+   "imports": [
+    {
+     "path": "node_modules/@tanstack/table-core/build/lib/index.mjs",
+     "kind": "import-statement",
+     "original": "@tanstack/table-core"
+    }
+   ],
+   "format": "esm"
+  },
+  "node_modules/@tanstack/table-core/build/lib/index.mjs": {
+   "bytes": 118640,
+   "imports": [],
+   "format": "esm"
+  },
+  "node_modules/plotly.js-basic-dist-min/plotly-basic.min.js": {
+   "bytes": 1034212,
+   "imports": [],
+   "format": "cjs"
+  },
+  "src/styles/app.css": {
+   "bytes": 22980,
+   "imports": []
+  }
+ },
+ "outputs": {
+  "dist/main-7KQ2M4XA.js": {
+   "imports": [
+    {
+     "path": "dist/chunk-R5T2WB3N.js",
+     "kind": "import-statement"
+    },
+    {
+     "path": "dist/Orders-3HX8KQ2L.js",
+     "kind": "dynamic-import"
+    },
+    {
+     "path": "dist/Analytics-L4N7Q2PZ.js",
+     "kind": "dynamic-import"
+    }
+   ],
+   "exports": [],
+   "inputs": {
+    "src/main.tsx": {
+     "bytesInOutput": 388
+    },
+    "src/App.tsx": {
+     "bytesInOutput": 2214
+    },
+    "src/components/Toolbar.tsx": {
+     "bytesInOutput": 1980
+    },
+    "src/api/client.ts": {
+     "bytesInOutput": 2630
+    },
+    "node_modules/clsx/dist/clsx.mjs": {
+     "bytesInOutput": 322
+    },
+    "node_modules/ky/distribution/index.js": {
+     "bytesInOutput": 640
+    },
+    "node_modules/ky/distribution/core/Ky.js": {
+     "bytesInOutput": 6120
+    }
+   },
+   "bytes": 14706,
+   "entryPoint": "src/main.tsx",
+   "cssBundle": "dist/main-M2B7TQ4K.css"
+  },
+  "dist/chunk-R5T2WB3N.js": {
+   "imports": [],
+   "exports": [],
+   "inputs": {
+    "node_modules/react/index.js": {
+     "bytesInOutput": 120
+    },
+    "node_modules/react/cjs/react.production.min.js": {
+     "bytesInOutput": 6930
+    },
+    "node_modules/react-dom/client.js": {
+     "bytesInOutput": 210
+    },
+    "node_modules/react-dom/index.js": {
+     "bytesInOutput": 420
+    },
+    "node_modules/react-dom/cjs/react-dom.production.min.js": {
+     "bytesInOutput": 131882
+    },
+    "node_modules/scheduler/index.js": {
+     "bytesInOutput": 96
+    },
+    "node_modules/scheduler/cjs/scheduler.production.min.js": {
+     "bytesInOutput": 4274
+    }
+   },
+   "bytes": 144344
+  },
+  "dist/Orders-3HX8KQ2L.js": {
+   "imports": [
+    {
+     "path": "dist/chunk-R5T2WB3N.js",
+     "kind": "import-statement"
+    }
+   ],
+   "exports": [],
+   "inputs": {
+    "src/routes/Orders.tsx": {
+     "bytesInOutput": 4410
+    },
+    "node_modules/@tanstack/react-table/build/lib/index.mjs": {
+     "bytesInOutput": 2210
+    },
+    "node_modules/@tanstack/table-core/build/lib/index.mjs": {
+     "bytesInOutput": 51380
+    }
+   },
+   "bytes": 58412,
+   "entryPoint": "src/routes/Orders.tsx"
+  },
+  "dist/Analytics-L4N7Q2PZ.js": {
+   "imports": [
+    {
+     "path": "dist/chunk-R5T2WB3N.js",
+     "kind": "import-statement"
+    }
+   ],
+   "exports": [],
+   "inputs": {
+    "src/routes/Analytics.tsx": {
+     "bytesInOutput": 3120
+    },
+    "node_modules/plotly.js-basic-dist-min/plotly-basic.min.js": {
+     "bytesInOutput": 1034212
+    }
+   },
+   "bytes": 1037744,
+   "entryPoint": "src/routes/Analytics.tsx"
+  },
+  "dist/main-M2B7TQ4K.css": {
+   "imports": [],
+   "inputs": {
+    "src/styles/app.css": {
+     "bytesInOutput": 14210
+    }
+   },
+   "bytes": 14210,
+   "entryPoint": "src/main.tsx"
+  }
+ }
+}

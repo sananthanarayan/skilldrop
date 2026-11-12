@@ -1,0 +1,34 @@
+{
+  "name": "floor-plan-layout",
+  "version": "0.1.0",
+  "description": "Lay out a schematic floor plan from a space programme and a footprint, and draw it as a dimensioned SVG — rooms placed as rectangles at real sizes, doors and windows on real walls, overall dimensions, a scale bar and north arrow — with a script that fails the plan when rooms overlap, a room spills outside the footprint, a door sits on no shared wall or a room can't be reached from the entrance. Use when an architect asks to \"draw a floor plan\", \"lay out these rooms\", \"make a plan for a 10 × 9 m footprint\", for a concept plan, a test fit, a zoning diagram or a dimensioned layout from room sizes.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [],
+  "tags": [
+    "architecture",
+    "floor-plan",
+    "layout",
+    "test-fit",
+    "zoning",
+    "svg",
+    "dimensions"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "Reads the plan.json it is given and writes the SVG to the path passed with --svg."
+  },
+  "model": {
+    "tier": "heavy",
+    "rationale": "Spatial layout is design judgment: zoning, adjacencies, daylight and circulation traded against areas, with a checker to iterate against."
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "skill_name": "user-journey-map",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Map the customer journey for freelance designers trying our invoicing app. We believe they drop off between signup and sending their first invoice. No research data yet — this is the team's hypothesis.",
+      "assertions": [
+        "One specific persona and one outcome are named in the map's title",
+        "Evidence level is declared as assumption-based at the top and framed as a hypothesis that directs research",
+        "The start trigger is an event in the persona's life (e.g. a client asks for an invoice), not 'visits the landing page'",
+        "3-6 stages, each a phase of the persona's goal — not one stage per screen",
+        "Every stage has all four rows: actions (persona's words, frontstage only), emotion score 1-5 with a reason, pains, opportunities",
+        "Opportunities are outcome-shaped, not feature suggestions like 'add a button'",
+        "The steepest dips, the highest peak, and the ending emotion are explicitly marked",
+        "A Mermaid journey diagram is emitted with valid syntax: one section per stage, actions scored 1-5",
+        "Opportunities are ranked and exactly 1-2 are named as targets; the rest are explicitly deprioritized with reasons",
+        "Hand-offs route committed work to prd-draft/user-story-splitter and measurement to success-metrics"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "[Non-interactive run — no user available to answer questions] Map the journey.",
+      "assertions": [
+        "No journey is drafted — with no persona or outcome derivable, the output is BLOCKED: need persona + outcome",
+        "The BLOCKED output names both missing anchors and what to rerun with",
+        "No invented persona, stages, or Mermaid diagram appear"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "We run the city's emergency rent relief programme. Our research notes are in research_notes.md. Do what the ask at the bottom says.",
+      "assertions": [
+        "Identifies landlord confirmation (3,100 to 1,500) as the largest drop in the funnel, rather than adopting the programme manager's view that document upload is the main problem",
+        "Does not propose removing the landlord-confirmation step, which the funding rules require; improvements work within it",
+        "Reports the overall success rate correctly as about 1 in 4 (1,180 of 4,800), catching the manager's '1 in 3'",
+        "Flags that all six interviews were in English while about 40% of applications were started in Spanish, so the experience of Spanish-language applicants is not evidenced",
+        "Pains and emotions trace to the interview notes or funnel data; does not invent quotes, statistics, or research not in the notes",
+        "Stays within about two pages"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "im a solo wedding photographer. couples keep telling me booking me was 'stressful' even though they love the photos. can you map out what it's like for them from first inquiry to getting their photos back? one page max, i just want to know where to fix things",
+      "assertions": [
+        "Delivers the map without asking questions first",
+        "Covers the whole span from first inquiry to the couple receiving their photos",
+        "Fits on one page",
+        "Ends with a clear pointer to the few places to fix first, specific to a solo wedding photographer (for example slow replies to inquiries, contract and deposit, or the long wait for photos)",
+        "Does not present invented client quotes, survey results, or statistics as real findings; pains the user did not mention are framed as likely or as things to check",
+        "Plain language for a solo business owner, without UX jargon"
+      ]
+    }
+  ]
+}

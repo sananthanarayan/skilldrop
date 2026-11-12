@@ -1,0 +1,151 @@
+{
+  "export": "orchestrator run export v2",
+  "pipeline": "nightly-sky-ingest",
+  "run_id": "run-4471",
+  "observatory": "Example Ridge Observatory",
+  "timezone": "UTC",
+  "run_status": "succeeded",
+  "run_reported_finished_at": "2026-10-17T01:25:00Z",
+  "steps": [
+    {
+      "id": "s01",
+      "name": "nightly-sky-ingest",
+      "parent_id": null,
+      "started_at": "2026-10-17T01:00:00Z",
+      "finished_at": "2026-10-17T01:25:00Z",
+      "status": "succeeded",
+      "host": "orchestrator"
+    },
+    {
+      "id": "s02",
+      "name": "checkout_config",
+      "parent_id": "s01",
+      "started_at": "2026-10-17T01:00:00Z",
+      "finished_at": "2026-10-17T01:00:20Z",
+      "status": "succeeded",
+      "host": "runner-2"
+    },
+    {
+      "id": "s03",
+      "name": "fetch_frames",
+      "parent_id": "s01",
+      "started_at": "2026-10-17T01:00:20Z",
+      "finished_at": "2026-10-17T01:10:20Z",
+      "status": "succeeded",
+      "host": "runner-2"
+    },
+    {
+      "id": "s04",
+      "name": "fetch_north",
+      "parent_id": "s03",
+      "started_at": "2026-10-17T01:00:22Z",
+      "finished_at": "2026-10-17T01:05:00Z",
+      "status": "succeeded",
+      "host": "runner-3",
+      "site": "north-dome"
+    },
+    {
+      "id": "s05",
+      "name": "fetch_south",
+      "parent_id": "s03",
+      "started_at": "2026-10-17T01:00:22Z",
+      "finished_at": "2026-10-17T01:10:10Z",
+      "status": "succeeded",
+      "host": "runner-4",
+      "site": "south-dome"
+    },
+    {
+      "id": "s06",
+      "name": "fetch_east",
+      "parent_id": "s03",
+      "started_at": "2026-10-17T01:00:22Z",
+      "finished_at": "2026-10-17T01:04:00Z",
+      "status": "succeeded",
+      "host": "runner-5",
+      "site": "east-dome"
+    },
+    {
+      "id": "s07",
+      "name": "verify_checksums",
+      "parent_id": "s03",
+      "started_at": "2026-10-17T01:10:10Z",
+      "finished_at": "2026-10-17T01:10:18Z",
+      "status": "succeeded",
+      "host": "runner-2"
+    },
+    {
+      "id": "s08",
+      "name": "calibrate",
+      "parent_id": "s01",
+      "started_at": "2026-10-17T01:10:20Z",
+      "finished_at": "2026-10-17T01:18:20Z",
+      "status": "succeeded",
+      "host": "gpu-1"
+    },
+    {
+      "id": "s09",
+      "name": "load_darks",
+      "parent_id": "s08",
+      "started_at": "2026-10-17T01:10:20Z",
+      "finished_at": "2026-10-17T01:10:50Z",
+      "status": "succeeded",
+      "host": "gpu-1"
+    },
+    {
+      "id": "s10",
+      "name": "load_flats",
+      "parent_id": "s08",
+      "started_at": "2026-10-17T01:10:50Z",
+      "finished_at": "2026-10-17T01:11:20Z",
+      "status": "succeeded",
+      "host": "gpu-1"
+    },
+    {
+      "id": "s11",
+      "name": "stack_and_publish",
+      "parent_id": "s01",
+      "started_at": "2026-10-17T01:18:20Z",
+      "finished_at": "2026-10-17T01:24:52Z",
+      "status": "succeeded",
+      "host": "runner-2"
+    },
+    {
+      "id": "s12",
+      "name": "stack_mosaic",
+      "parent_id": "s11",
+      "started_at": "2026-10-17T01:18:20Z",
+      "finished_at": "2026-10-17T01:23:00Z",
+      "status": "succeeded",
+      "host": "gpu-1"
+    },
+    {
+      "id": "s13",
+      "name": "publish_catalog",
+      "parent_id": "s11",
+      "started_at": "2026-10-17T01:23:00Z",
+      "finished_at": "2026-10-17T01:24:50Z",
+      "status": "succeeded",
+      "host": "runner-2",
+      "target": "catalog-db"
+    },
+    {
+      "id": "s14",
+      "name": "upload_thumbnails",
+      "parent_id": "s11",
+      "started_at": "2026-10-17T01:23:05Z",
+      "finished_at": "2026-10-17T01:28:40Z",
+      "status": "succeeded",
+      "host": "runner-6",
+      "detached": true
+    },
+    {
+      "id": "s15",
+      "name": "send_summary",
+      "parent_id": "s01",
+      "started_at": "2026-10-17T01:24:52Z",
+      "finished_at": "2026-10-17T01:25:00Z",
+      "status": "succeeded",
+      "host": "runner-2"
+    }
+  ]
+}

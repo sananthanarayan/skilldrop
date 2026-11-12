@@ -1,0 +1,34 @@
+[
+  {
+    "query": "How far along are we with coding agents?",
+    "should_trigger": true
+  },
+  {
+    "query": "Our AI adoption has plateaued — what's the next unlock?",
+    "should_trigger": true
+  },
+  {
+    "query": "Which stage of agentic coding maturity is my team at?",
+    "should_trigger": true
+  },
+  {
+    "query": "We want engineers running more agents — are we ready to scale that?",
+    "should_trigger": true
+  },
+  {
+    "query": "Assess whether our organisation's data and governance are ready for AI",
+    "should_trigger": false
+  },
+  {
+    "query": "Plan the rollout cohorts and enablement for this tool",
+    "should_trigger": false
+  },
+  {
+    "query": "Which AI use cases should we build first?",
+    "should_trigger": false
+  },
+  {
+    "query": "Design the subagent topology for this specific fleet",
+    "should_trigger": false
+  }
+]

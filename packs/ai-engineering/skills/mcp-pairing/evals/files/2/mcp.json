@@ -1,0 +1,32 @@
+{
+  "mcpServers": {
+    "github": {
+      "type": "http",
+      "url": "https://github-mcp.example.invalid/mcp",
+      "headers": { "Authorization": "Bearer tok_FAKE_9f3c_example_not_real" },
+      "note": "classic token, scopes: repo, admin:org, workflow"
+    },
+    "jira": {
+      "command": "npx",
+      "args": ["-y", "@harbourline/jira-mcp"],
+      "env": {
+        "JIRA_URL": "https://brightwell.atlassian.example.invalid",
+        "JIRA_TOKEN": "tok_FAKE_41aa_example_not_real"
+      },
+      "note": "found on a blog post, does create/update/transition/comment"
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@harbourline/pg-mcp@latest"],
+      "env": {
+        "DATABASE_URL": "postgres://app_owner:FAKE_PASSWORD@orders-primary.internal.example.invalid:5432/orders"
+      }
+    },
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@harbourline/slack-mcp"],
+      "env": { "SLACK_TOKEN": "tok_FAKE_77de_example_not_real" },
+      "note": "bot scopes: channels:history, groups:history, im:history, chat:write, admin"
+    }
+  }
+}

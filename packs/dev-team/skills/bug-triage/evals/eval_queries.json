@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Turn this vague bug report into an actionable ticket",
+    "should_trigger": true
+  },
+  {
+    "query": "A customer says it's broken on mobile sometimes — triage it",
+    "should_trigger": true
+  },
+  {
+    "query": "Write up this Slack complaint as a proper bug with repro steps",
+    "should_trigger": true
+  },
+  {
+    "query": "Triage and prioritize this support ticket",
+    "should_trigger": true
+  },
+  {
+    "query": "Review this diff for bugs and edge cases",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the blameless postmortem for the outage",
+    "should_trigger": false
+  },
+  {
+    "query": "Split this epic into user stories",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a test plan for this release",
+    "should_trigger": false
+  }
+]

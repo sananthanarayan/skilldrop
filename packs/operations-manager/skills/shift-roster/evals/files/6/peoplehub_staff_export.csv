@@ -1,0 +1,14 @@
+Employee ID,Surname,Forename,Job Title,Contracted Hrs/Wk,Skills / Endorsements,Start Date,Status,Leaving Date,Work Email
+QM1171,ASHDOWN,Tom,Claims Handler,32.0,,30/10/2023,Active,,tom.ashdown@quillmoor.example
+QM1240,DOYLE,Megan,Claims Handler,32.0,,07/07/2022,Active,,megan.doyle@quillmoor.example
+QM1231,GRANT,Lewis,Claims Handler (student),16.0,,15/09/2025,Active,,lewis.grant@quillmoor.example
+QM1150,HUGHES,Catrin,Claims Handler,24.0,Welsh (fluent),05/09/2025,Active,,catrin.hughes@quillmoor.example
+QM1077,KOWAL,Dariusz,Team Leader,40.0,Team Leader cover,14/06/2021,Active,,dariusz.kowal@quillmoor.example
+QM1118,LLEWELLYN,Rhys,Claims Handler,32.0,Welsh (fluent),22/01/2020,Active,,rhys.llewellyn@quillmoor.example
+QM1205,MARCHETTI,Sofia,Claims Handler,24.0,,02/06/2025,Active,,sofia.marchetti@quillmoor.example
+QM1192,MENSAH,Kwame,Claims Handler,32.0,,18/03/2024,Active,,kwame.mensah@quillmoor.example
+QM1042,MORGAN,Bethan,Team Leader,40.0,Team Leader cover; Welsh (fluent),03/02/2019,Active,,bethan.morgan@quillmoor.example
+QM1164,NAIR,Priya,Claims Handler,32.0,,11/04/2022,Active,,priya.nair@quillmoor.example
+QM1103,OSEI,Amara,Team Leader,24.0,Team Leader cover,01/09/2023,Active,,amara.osei@quillmoor.example
+QM1012,PENRY,Gareth,Team Leader,40.0,Team Leader cover; Welsh (fluent),12/05/2016,Leaver,31/10/2026,gareth.penry@quillmoor.example
+QM1189,WHITLOCK,Jade,Claims Handler,24.0,,06/01/2025,Active,,jade.whitlock@quillmoor.example

@@ -1,0 +1,30 @@
+[
+  {
+    "query": "How much has my co-founder vested if she leaves next month?",
+    "should_trigger": true
+  },
+  {
+    "query": "When is the 83(b) deadline for the stock we signed last week?",
+    "should_trigger": true
+  },
+  {
+    "query": "Build the vesting schedule for our first three hires' options",
+    "should_trigger": true
+  },
+  {
+    "query": "What does double-trigger acceleration give our team if we're acquired?",
+    "should_trigger": true
+  },
+  {
+    "query": "How much of the company will I own after the Series A?",
+    "should_trigger": false
+  },
+  {
+    "query": "Review this employment contract before I send it",
+    "should_trigger": false
+  },
+  {
+    "query": "What strike price should our options have?",
+    "should_trigger": false
+  }
+]

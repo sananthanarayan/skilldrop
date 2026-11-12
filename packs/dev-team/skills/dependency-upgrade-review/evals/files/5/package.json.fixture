@@ -1,0 +1,21 @@
+{
+  "name": "@harrowfield/ledger-ui",
+  "version": "5.12.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint-mini src",
+    "test": "vitest-lite run",
+    "build": "rollup-lite -c",
+    "release": "node scripts/release.mjs"
+  },
+  "dependencies": {
+    "tally-format": "^2.3.0"
+  },
+  "devDependencies": {
+    "eslint-mini": "^9.1.0",
+    "release-notary": "^1.8.2",
+    "rollup-lite": "^4.0.3",
+    "vitest-lite": "^2.0.0"
+  }
+}

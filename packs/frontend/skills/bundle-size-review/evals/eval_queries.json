@@ -1,0 +1,12 @@
+[
+  { "query": "why is our webpack bundle so big? stats.json attached", "should_trigger": true },
+  { "query": "what can we cut from the Vite bundle, I've got the visualizer raw-data json", "should_trigger": true },
+  { "query": "this PR made main.js grow by 80 KB, here's the esbuild metafile from before and after, what grew?", "should_trigger": true },
+  { "query": "why is moment in our bundle when nothing imports it?", "should_trigger": true },
+  { "query": "we have two versions of date-fns in the bundle, which dependency pulls in the second one?", "should_trigger": true },
+  { "query": "set a bundle size budget per entry that CI can check", "should_trigger": true },
+  { "query": "here's our Lighthouse report, why is LCP 4.8 seconds on mobile?", "should_trigger": false },
+  { "query": "Dependabot wants to bump webpack from 5.88 to 5.94, is the PR safe to merge?", "should_trigger": false },
+  { "query": "review my PR that adds the CSV export button before I merge it", "should_trigger": false },
+  { "query": "should the product pages be server-rendered or statically generated?", "should_trigger": false }
+]

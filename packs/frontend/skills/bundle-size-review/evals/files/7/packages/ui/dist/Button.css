@@ -1,0 +1,3 @@
+.qm-btn { font: inherit; border-radius: 6px; padding: 0.5rem 1rem; border: 1px solid transparent; }
+.qm-btn--primary { background: #1f4e79; color: #fff; }
+.qm-btn--secondary { background: #fff; color: #1f4e79; border-color: #1f4e79; }

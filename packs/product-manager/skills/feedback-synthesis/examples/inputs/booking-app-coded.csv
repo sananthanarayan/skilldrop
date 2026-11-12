@@ -1,0 +1,17 @@
+item_id,person_id,source,plan,country,themes,severity
+T-501,S-12,tickets,Team,UK,reschedule-double-book,S1
+T-502,S-12,tickets,Team,UK,reschedule-double-book,S1
+T-503,S-12,tickets,Team,UK,reschedule-double-book,S1
+T-504,S-31,tickets,Team,UK,reschedule-double-book,S1
+T-505,S-07,tickets,Solo,UK,instagram-new-clients,S3
+T-506,S-44,tickets,Solo,IE,page-brand-mismatch,S4
+T-507,S-19,tickets,Team,UK,,
+T-508,S-52,tickets,Solo,UK,page-hard-to-read-on-phone,S3
+C-01,S-31,csat,Team,UK,reschedule-double-book,S2
+C-02,S-07,csat,Solo,UK,+deposits,
+C-03,S-60,csat,Solo,UK,+deposits,
+C-04,S-44,csat,Solo,IE,page-brand-mismatch,S4
+C-05,S-52,csat,Solo,UK,,
+I-1,S-07,interview,Solo,UK,instagram-new-clients,S2
+I-2,S-12,interview,Team,UK,reschedule-double-book,S2
+I-3,S-73,interview,Team,UK,instagram-new-clients;reschedule-double-book:S3,S3

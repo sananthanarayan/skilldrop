@@ -1,0 +1,12 @@
+[
+  { "query": "Map the customer journey through our onboarding flow", "should_trigger": true },
+  { "query": "Where do users feel the most friction in the purchase experience?", "should_trigger": true },
+  { "query": "Create a journey map for a new user's first week", "should_trigger": true },
+  { "query": "Turn this pile of user feedback into a customer experience map", "should_trigger": true },
+  { "query": "Map the touchpoints from trial signup to activation", "should_trigger": true },
+
+  { "query": "Design the screen-by-screen flow for the checkout wizard", "should_trigger": false },
+  { "query": "Diagram how the order service talks to the payment service", "should_trigger": false },
+  { "query": "Map our internal ticket-escalation process", "should_trigger": false },
+  { "query": "Write the PRD for the onboarding redesign", "should_trigger": false }
+]

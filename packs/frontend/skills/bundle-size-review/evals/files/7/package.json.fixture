@@ -1,0 +1,9 @@
+{
+  "name": "quillmark",
+  "private": true,
+  "workspaces": ["packages/*", "apps/*"],
+  "browserslist": ["defaults and supports es6-module"],
+  "devDependencies": {
+    "typescript": "5.5.4"
+  }
+}

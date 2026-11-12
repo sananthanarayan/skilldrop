@@ -1,0 +1,23 @@
+{
+  "name": "event-planner",
+  "version": "1.18.0",
+  "description": "Seated dinners and event days that hold together: a table plan where every guest has one seat and every together, keep-apart and access request holds, and a run of show where no room or person is booked twice and every changeover has the time it needs, each checked by a script and drawn before anyone prints it. (7 skills, 1 loop)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/event-planner/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "events",
+    "event planning",
+    "seating plan",
+    "table plan",
+    "wedding",
+    "run of show",
+    "running order",
+    "agenda",
+    "conference"
+  ]
+}

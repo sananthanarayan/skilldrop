@@ -1,0 +1,33 @@
+{
+  "name": "exam-paper-check",
+  "version": "0.1.0",
+  "description": "Check an exam paper and its mark scheme before they go to print or to a moderator — a script reads the teacher's own files and finds part marks that don't add up to a question's total, questions that don't add up to the paper's total (an either/or choice counted once), numbering that skips or repeats, parts with no marks, parts the mark scheme misses or marks differently, and objectives that are never assessed or far off their weighting — then reads the questions for clarity and fairness. Use when a teacher asks to \"check my exam paper\", \"proofread this test\", \"does the mark scheme match the paper\", \"do the marks add up\", \"check this assessment before moderation\", or \"is this paper balanced across the objectives\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [],
+  "tags": [
+    "exam",
+    "assessment",
+    "mark-scheme",
+    "teacher",
+    "moderation",
+    "education"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "Reads the paper, mark scheme and spec files it is given and writes nothing."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "The arithmetic and the scheme-against-paper comparison come from the script; reading the questions for clarity and fairness is bounded judgment."
+  }
+}

@@ -1,0 +1,9 @@
+api-gateway traffic, last 30 days (exported from dashboard 2026-10-19)
+
+peak rps (weekday 15:00-17:00 UTC):     ~4,200
+overnight trough rps:                    ~600
+active tenants:                          ~1,150
+top 20 tenants share of requests:        71%
+tenants on enterprise plan:              37
+rl_v1 429s / day (all tenants):          ~2,900
+redis-gw CPU at peak:                    58%

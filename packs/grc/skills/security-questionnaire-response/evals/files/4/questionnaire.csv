@@ -1,0 +1,11 @@
+id,question,answer,comment
+Q1,Are all client documents and scanned images encrypted at rest?,,
+Q2,Is multi-factor authentication enforced for all remote and administrative access?,,
+Q3,Do you hold a current SOC 2 Type II report? Please attach.,,
+Q4,Do you perform criminal background checks on all employees?,,
+Q5,Will you notify us of any security incident affecting our data within 24 hours of discovery?,,
+Q6,Has an independent penetration test been performed in the last 12 months? Were all high findings remediated?,,
+Q7,Is your information security policy reviewed at least annually?,,
+Q8,Do you have a tested business continuity plan covering your storage facilities?,,
+Q9,Are physical storage areas protected by access control and CCTV?,,
+Q10,Do you securely destroy client records at the end of the retention period and issue a certificate of destruction?,,

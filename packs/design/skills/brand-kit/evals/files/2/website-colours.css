@@ -1,0 +1,9 @@
+/* Coldharbour Orchards website: 2026 refresh */
+:root {
+  --brand-primary: #1F4D2B;   /* darker green, 2026 site refresh */
+  --brand-secondary: #A0522D;
+  --brand-accent: #F2C94C;
+  --brand-bg: #FBF6EA;
+  --font-heading: "Fenwick Serif", Georgia, serif;
+  --font-body: "Larkspur Sans", Arial, sans-serif;
+}

@@ -1,0 +1,1421 @@
+{
+ "hash": "a1f0855e2613021d5cfc",
+ "version": "5.94.0",
+ "time": 21930,
+ "builtAt": 1760702400000,
+ "publicPath": "/",
+ "outputPath": "/ci/quillmark/apps/backoffice/dist",
+ "assetsByChunkName": {
+  "main": [
+   "main.2fa96c10.js"
+  ],
+  "analytics": [
+   "analytics.e71b4d08.js"
+  ]
+ },
+ "assets": [
+  {
+   "type": "asset",
+   "name": "main.2fa96c10.js",
+   "size": 451088,
+   "emitted": true,
+   "chunkNames": [
+    "main"
+   ],
+   "chunks": [
+    179
+   ],
+   "info": {
+    "immutable": true,
+    "minimized": true,
+    "javascriptModule": false
+   }
+  },
+  {
+   "type": "asset",
+   "name": "analytics.e71b4d08.js",
+   "size": 1206,
+   "emitted": true,
+   "chunkNames": [
+    "analytics"
+   ],
+   "chunks": [
+    604
+   ],
+   "info": {
+    "immutable": true,
+    "minimized": true,
+    "javascriptModule": false
+   }
+  },
+  {
+   "type": "asset",
+   "name": "index.html",
+   "size": 612,
+   "emitted": true,
+   "chunkNames": [],
+   "chunks": [],
+   "info": {}
+  }
+ ],
+ "chunks": [
+  {
+   "rendered": true,
+   "initial": true,
+   "entry": true,
+   "id": 179,
+   "names": [
+    "main"
+   ],
+   "files": [
+    "main.2fa96c10.js"
+   ],
+   "size": 846939,
+   "sizes": {
+    "javascript": 840995,
+    "runtime": 5944
+   },
+   "hash": "9297675cddbe0708",
+   "parents": [],
+   "children": [
+    604
+   ],
+   "origins": [
+    {
+     "moduleName": "",
+     "loc": "main",
+     "request": "./src/index.tsx"
+    }
+   ]
+  },
+  {
+   "rendered": true,
+   "initial": false,
+   "entry": false,
+   "id": 604,
+   "names": [
+    "analytics"
+   ],
+   "files": [
+    "analytics.e71b4d08.js"
+   ],
+   "size": 2140,
+   "sizes": {
+    "javascript": 2140
+   },
+   "hash": "d82afaf52ff3b58f",
+   "parents": [
+    179
+   ],
+   "children": [],
+   "origins": [
+    {
+     "moduleName": "./src/App.tsx",
+     "loc": "7:18-58",
+     "request": "./pages/Analytics"
+    }
+   ]
+  }
+ ],
+ "modules": [
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7000,
+   "identifier": "/ci/quillmark/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use[0]!/ci/quillmark/apps/backoffice/src/index.tsx",
+   "name": "./src/index.tsx",
+   "size": 610,
+   "sizes": {
+    "javascript": 610
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": null,
+   "issuerId": null,
+   "depth": 0,
+   "reasons": [],
+   "providedExports": [
+    "default"
+   ],
+   "usedExports": [
+    "default"
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7038,
+   "identifier": "/ci/quillmark/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use[0]!/ci/quillmark/apps/backoffice/src/App.tsx",
+   "name": "./src/App.tsx",
+   "size": 2620,
+   "sizes": {
+    "javascript": 2620
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "./src/index.tsx",
+   "issuerId": 7000,
+   "depth": 1,
+   "reasons": [
+    {
+     "moduleId": 7000,
+     "moduleName": "./src/index.tsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./App",
+     "active": true
+    }
+   ],
+   "providedExports": [
+    "default"
+   ],
+   "usedExports": [
+    "default"
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7076,
+   "identifier": "/ci/quillmark/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use[0]!/ci/quillmark/apps/backoffice/src/pages/Users.tsx",
+   "name": "./src/pages/Users.tsx",
+   "size": 5480,
+   "sizes": {
+    "javascript": 5480
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "./src/App.tsx",
+   "issuerId": 7038,
+   "depth": 2,
+   "reasons": [
+    {
+     "moduleId": 7038,
+     "moduleName": "./src/App.tsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./pages/Users",
+     "active": true
+    }
+   ],
+   "providedExports": [
+    "default"
+   ],
+   "usedExports": [
+    "default"
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7114,
+   "identifier": "/ci/quillmark/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use[0]!/ci/quillmark/apps/backoffice/src/pages/Orders.tsx",
+   "name": "./src/pages/Orders.tsx",
+   "size": 4930,
+   "sizes": {
+    "javascript": 4930
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "./src/App.tsx",
+   "issuerId": 7038,
+   "depth": 2,
+   "reasons": [
+    {
+     "moduleId": 7038,
+     "moduleName": "./src/App.tsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./pages/Orders",
+     "active": true
+    }
+   ],
+   "providedExports": [
+    "default"
+   ],
+   "usedExports": [
+    "default"
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7152,
+   "identifier": "/ci/quillmark/node_modules/babel-loader/lib/index.js??ruleSet[1].rules[0].use[0]!/ci/quillmark/apps/backoffice/src/pages/Analytics.tsx",
+   "name": "./src/pages/Analytics.tsx",
+   "size": 2140,
+   "sizes": {
+    "javascript": 2140
+   },
+   "chunks": [
+    604
+   ],
+   "issuerName": "./src/App.tsx",
+   "issuerId": 7038,
+   "depth": 2,
+   "reasons": [
+    {
+     "moduleId": 7038,
+     "moduleName": "./src/App.tsx",
+     "type": "import()",
+     "userRequest": "./pages/Analytics",
+     "active": true
+    }
+   ],
+   "providedExports": [
+    "default"
+   ],
+   "usedExports": [
+    "default"
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7190,
+   "identifier": "/ci/quillmark/node_modules/react/index.js",
+   "name": "../../node_modules/react/index.js",
+   "size": 190,
+   "sizes": {
+    "javascript": 190
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "./src/App.tsx",
+   "issuerId": 7038,
+   "depth": 2,
+   "reasons": [
+    {
+     "moduleId": 7038,
+     "moduleName": "./src/App.tsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "react",
+     "active": true
+    },
+    {
+     "moduleId": 7076,
+     "moduleName": "./src/pages/Users.tsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "react",
+     "active": true
+    },
+    {
+     "moduleId": 7114,
+     "moduleName": "./src/pages/Orders.tsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "react",
+     "active": true
+    },
+    {
+     "moduleId": 7152,
+     "moduleName": "./src/pages/Analytics.tsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "react",
+     "active": true
+    },
+    {
+     "moduleId": 7570,
+     "moduleName": "../../packages/ui/dist/Button.js",
+     "type": "cjs require",
+     "userRequest": "react",
+     "active": true
+    },
+    {
+     "moduleId": 7760,
+     "moduleName": "../../packages/ui/dist/PriceTag.js",
+     "type": "cjs require",
+     "userRequest": "react",
+     "active": true
+    },
+    {
+     "moduleId": 7798,
+     "moduleName": "../../packages/ui/dist/Modal.js",
+     "type": "cjs require",
+     "userRequest": "react",
+     "active": true
+    },
+    {
+     "moduleId": 7836,
+     "moduleName": "../../packages/ui/dist/DataGrid.js",
+     "type": "cjs require",
+     "userRequest": "react",
+     "active": true
+    },
+    {
+     "moduleId": 7874,
+     "moduleName": "../../packages/ui/dist/DatePicker.js",
+     "type": "cjs require",
+     "userRequest": "react",
+     "active": true
+    },
+    {
+     "moduleId": 7912,
+     "moduleName": "../../packages/ui/dist/Chart.js",
+     "type": "cjs require",
+     "userRequest": "react",
+     "active": true
+    },
+    {
+     "moduleId": 7418,
+     "moduleName": "../../node_modules/react-dom/cjs/react-dom.production.min.js",
+     "type": "cjs require",
+     "userRequest": "react",
+     "active": true
+    },
+    {
+     "moduleId": 7266,
+     "moduleName": "../../node_modules/react/jsx-runtime.js",
+     "type": "cjs require",
+     "userRequest": "react",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7228,
+   "identifier": "/ci/quillmark/node_modules/react/cjs/react.production.min.js",
+   "name": "../../node_modules/react/cjs/react.production.min.js",
+   "size": 6930,
+   "sizes": {
+    "javascript": 6930
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../node_modules/react/index.js",
+   "issuerId": 7190,
+   "depth": 3,
+   "reasons": [
+    {
+     "moduleId": 7190,
+     "moduleName": "../../node_modules/react/index.js",
+     "type": "cjs require",
+     "userRequest": "./cjs/react.production.min.js",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7266,
+   "identifier": "/ci/quillmark/node_modules/react/jsx-runtime.js",
+   "name": "../../node_modules/react/jsx-runtime.js",
+   "size": 214,
+   "sizes": {
+    "javascript": 214
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "./src/index.tsx",
+   "issuerId": 7000,
+   "depth": 1,
+   "reasons": [
+    {
+     "moduleId": 7000,
+     "moduleName": "./src/index.tsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "react/jsx-runtime",
+     "active": true
+    },
+    {
+     "moduleId": 7038,
+     "moduleName": "./src/App.tsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "react/jsx-runtime",
+     "active": true
+    },
+    {
+     "moduleId": 7076,
+     "moduleName": "./src/pages/Users.tsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "react/jsx-runtime",
+     "active": true
+    },
+    {
+     "moduleId": 7114,
+     "moduleName": "./src/pages/Orders.tsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "react/jsx-runtime",
+     "active": true
+    },
+    {
+     "moduleId": 7152,
+     "moduleName": "./src/pages/Analytics.tsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "react/jsx-runtime",
+     "active": true
+    },
+    {
+     "moduleId": 7570,
+     "moduleName": "../../packages/ui/dist/Button.js",
+     "type": "cjs require",
+     "userRequest": "react/jsx-runtime",
+     "active": true
+    },
+    {
+     "moduleId": 7760,
+     "moduleName": "../../packages/ui/dist/PriceTag.js",
+     "type": "cjs require",
+     "userRequest": "react/jsx-runtime",
+     "active": true
+    },
+    {
+     "moduleId": 7798,
+     "moduleName": "../../packages/ui/dist/Modal.js",
+     "type": "cjs require",
+     "userRequest": "react/jsx-runtime",
+     "active": true
+    },
+    {
+     "moduleId": 7836,
+     "moduleName": "../../packages/ui/dist/DataGrid.js",
+     "type": "cjs require",
+     "userRequest": "react/jsx-runtime",
+     "active": true
+    },
+    {
+     "moduleId": 7874,
+     "moduleName": "../../packages/ui/dist/DatePicker.js",
+     "type": "cjs require",
+     "userRequest": "react/jsx-runtime",
+     "active": true
+    },
+    {
+     "moduleId": 7912,
+     "moduleName": "../../packages/ui/dist/Chart.js",
+     "type": "cjs require",
+     "userRequest": "react/jsx-runtime",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7304,
+   "identifier": "/ci/quillmark/node_modules/react/cjs/react-jsx-runtime.production.min.js",
+   "name": "../../node_modules/react/cjs/react-jsx-runtime.production.min.js",
+   "size": 859,
+   "sizes": {
+    "javascript": 859
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../node_modules/react/jsx-runtime.js",
+   "issuerId": 7266,
+   "depth": 2,
+   "reasons": [
+    {
+     "moduleId": 7266,
+     "moduleName": "../../node_modules/react/jsx-runtime.js",
+     "type": "cjs require",
+     "userRequest": "./cjs/react-jsx-runtime.production.min.js",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7342,
+   "identifier": "/ci/quillmark/node_modules/react-dom/client.js",
+   "name": "../../node_modules/react-dom/client.js",
+   "size": 619,
+   "sizes": {
+    "javascript": 619
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "./src/index.tsx",
+   "issuerId": 7000,
+   "depth": 1,
+   "reasons": [
+    {
+     "moduleId": 7000,
+     "moduleName": "./src/index.tsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "react-dom/client",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7380,
+   "identifier": "/ci/quillmark/node_modules/react-dom/index.js",
+   "name": "../../node_modules/react-dom/index.js",
+   "size": 1363,
+   "sizes": {
+    "javascript": 1363
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../node_modules/react-dom/client.js",
+   "issuerId": 7342,
+   "depth": 2,
+   "reasons": [
+    {
+     "moduleId": 7342,
+     "moduleName": "../../node_modules/react-dom/client.js",
+     "type": "cjs require",
+     "userRequest": "react-dom",
+     "active": true
+    },
+    {
+     "moduleId": 7798,
+     "moduleName": "../../packages/ui/dist/Modal.js",
+     "type": "cjs require",
+     "userRequest": "react-dom",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7418,
+   "identifier": "/ci/quillmark/node_modules/react-dom/cjs/react-dom.production.min.js",
+   "name": "../../node_modules/react-dom/cjs/react-dom.production.min.js",
+   "size": 131882,
+   "sizes": {
+    "javascript": 131882
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../node_modules/react-dom/index.js",
+   "issuerId": 7380,
+   "depth": 3,
+   "reasons": [
+    {
+     "moduleId": 7380,
+     "moduleName": "../../node_modules/react-dom/index.js",
+     "type": "cjs require",
+     "userRequest": "./cjs/react-dom.production.min.js",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7456,
+   "identifier": "/ci/quillmark/node_modules/scheduler/index.js",
+   "name": "../../node_modules/scheduler/index.js",
+   "size": 198,
+   "sizes": {
+    "javascript": 198
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../node_modules/react-dom/cjs/react-dom.production.min.js",
+   "issuerId": 7418,
+   "depth": 4,
+   "reasons": [
+    {
+     "moduleId": 7418,
+     "moduleName": "../../node_modules/react-dom/cjs/react-dom.production.min.js",
+     "type": "cjs require",
+     "userRequest": "scheduler",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7494,
+   "identifier": "/ci/quillmark/node_modules/scheduler/cjs/scheduler.production.min.js",
+   "name": "../../node_modules/scheduler/cjs/scheduler.production.min.js",
+   "size": 4206,
+   "sizes": {
+    "javascript": 4206
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../node_modules/scheduler/index.js",
+   "issuerId": 7456,
+   "depth": 5,
+   "reasons": [
+    {
+     "moduleId": 7456,
+     "moduleName": "../../node_modules/scheduler/index.js",
+     "type": "cjs require",
+     "userRequest": "./cjs/scheduler.production.min.js",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7532,
+   "identifier": "/ci/quillmark/packages/ui/dist/index.js",
+   "name": "../../packages/ui/dist/index.js",
+   "size": 2310,
+   "sizes": {
+    "javascript": 2310
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "./src/pages/Users.tsx",
+   "issuerId": 7076,
+   "depth": 3,
+   "reasons": [
+    {
+     "moduleId": 7076,
+     "moduleName": "./src/pages/Users.tsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "@quillmark/ui",
+     "active": true
+    },
+    {
+     "moduleId": 7076,
+     "moduleName": "./src/pages/Users.tsx",
+     "type": "harmony import specifier",
+     "userRequest": "@quillmark/ui",
+     "active": true
+    },
+    {
+     "moduleId": 7114,
+     "moduleName": "./src/pages/Orders.tsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "@quillmark/ui",
+     "active": true
+    },
+    {
+     "moduleId": 7114,
+     "moduleName": "./src/pages/Orders.tsx",
+     "type": "harmony import specifier",
+     "userRequest": "@quillmark/ui",
+     "active": true
+    },
+    {
+     "moduleId": 7152,
+     "moduleName": "./src/pages/Analytics.tsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "@quillmark/ui",
+     "active": true
+    },
+    {
+     "moduleId": 7152,
+     "moduleName": "./src/pages/Analytics.tsx",
+     "type": "harmony import specifier",
+     "userRequest": "@quillmark/ui",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7570,
+   "identifier": "/ci/quillmark/packages/ui/dist/Button.js",
+   "name": "../../packages/ui/dist/Button.js",
+   "size": 1820,
+   "sizes": {
+    "javascript": 1820
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../packages/ui/dist/index.js",
+   "issuerId": 7532,
+   "depth": 4,
+   "reasons": [
+    {
+     "moduleId": 7532,
+     "moduleName": "../../packages/ui/dist/index.js",
+     "type": "cjs require",
+     "userRequest": "./Button",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7608,
+   "identifier": "/ci/quillmark/node_modules/style-loader/dist/cjs.js!/ci/quillmark/node_modules/css-loader/dist/cjs.js!/ci/quillmark/packages/ui/dist/Button.css",
+   "name": "../../node_modules/style-loader/dist/cjs.js!../../node_modules/css-loader/dist/cjs.js!../../packages/ui/dist/Button.css",
+   "size": 1180,
+   "sizes": {
+    "javascript": 1180
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../packages/ui/dist/Button.js",
+   "issuerId": 7570,
+   "depth": 5,
+   "reasons": [
+    {
+     "moduleId": 7570,
+     "moduleName": "../../packages/ui/dist/Button.js",
+     "type": "cjs require",
+     "userRequest": "./Button.css",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7646,
+   "identifier": "/ci/quillmark/node_modules/css-loader/dist/cjs.js!/ci/quillmark/packages/ui/dist/Button.css",
+   "name": "../../node_modules/css-loader/dist/cjs.js!../../packages/ui/dist/Button.css",
+   "size": 640,
+   "sizes": {
+    "javascript": 640
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../node_modules/style-loader/dist/cjs.js!../../node_modules/css-loader/dist/cjs.js!../../packages/ui/dist/Button.css",
+   "issuerId": 7608,
+   "depth": 6,
+   "reasons": [
+    {
+     "moduleId": 7608,
+     "moduleName": "../../node_modules/style-loader/dist/cjs.js!../../node_modules/css-loader/dist/cjs.js!../../packages/ui/dist/Button.css",
+     "type": "harmony side effect evaluation",
+     "userRequest": "!!../../../node_modules/css-loader/dist/cjs.js!./Button.css",
+     "active": true
+    }
+   ],
+   "providedExports": [
+    "default"
+   ],
+   "usedExports": [
+    "default"
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7684,
+   "identifier": "/ci/quillmark/node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js",
+   "name": "../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js",
+   "size": 2350,
+   "sizes": {
+    "javascript": 2350
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../node_modules/style-loader/dist/cjs.js!../../node_modules/css-loader/dist/cjs.js!../../packages/ui/dist/Button.css",
+   "issuerId": 7608,
+   "depth": 6,
+   "reasons": [
+    {
+     "moduleId": 7608,
+     "moduleName": "../../node_modules/style-loader/dist/cjs.js!../../node_modules/css-loader/dist/cjs.js!../../packages/ui/dist/Button.css",
+     "type": "harmony side effect evaluation",
+     "userRequest": "!../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7722,
+   "identifier": "/ci/quillmark/node_modules/css-loader/dist/runtime/api.js",
+   "name": "../../node_modules/css-loader/dist/runtime/api.js",
+   "size": 2290,
+   "sizes": {
+    "javascript": 2290
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../node_modules/css-loader/dist/cjs.js!../../packages/ui/dist/Button.css",
+   "issuerId": 7646,
+   "depth": 7,
+   "reasons": [
+    {
+     "moduleId": 7646,
+     "moduleName": "../../node_modules/css-loader/dist/cjs.js!../../packages/ui/dist/Button.css",
+     "type": "harmony side effect evaluation",
+     "userRequest": "../../../node_modules/css-loader/dist/runtime/api.js",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7760,
+   "identifier": "/ci/quillmark/packages/ui/dist/PriceTag.js",
+   "name": "../../packages/ui/dist/PriceTag.js",
+   "size": 1240,
+   "sizes": {
+    "javascript": 1240
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../packages/ui/dist/index.js",
+   "issuerId": 7532,
+   "depth": 4,
+   "reasons": [
+    {
+     "moduleId": 7532,
+     "moduleName": "../../packages/ui/dist/index.js",
+     "type": "cjs require",
+     "userRequest": "./PriceTag",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7798,
+   "identifier": "/ci/quillmark/packages/ui/dist/Modal.js",
+   "name": "../../packages/ui/dist/Modal.js",
+   "size": 3410,
+   "sizes": {
+    "javascript": 3410
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../packages/ui/dist/index.js",
+   "issuerId": 7532,
+   "depth": 4,
+   "reasons": [
+    {
+     "moduleId": 7532,
+     "moduleName": "../../packages/ui/dist/index.js",
+     "type": "cjs require",
+     "userRequest": "./Modal",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7836,
+   "identifier": "/ci/quillmark/packages/ui/dist/DataGrid.js",
+   "name": "../../packages/ui/dist/DataGrid.js",
+   "size": 9850,
+   "sizes": {
+    "javascript": 9850
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../packages/ui/dist/index.js",
+   "issuerId": 7532,
+   "depth": 4,
+   "reasons": [
+    {
+     "moduleId": 7532,
+     "moduleName": "../../packages/ui/dist/index.js",
+     "type": "cjs require",
+     "userRequest": "./DataGrid",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7874,
+   "identifier": "/ci/quillmark/packages/ui/dist/DatePicker.js",
+   "name": "../../packages/ui/dist/DatePicker.js",
+   "size": 7420,
+   "sizes": {
+    "javascript": 7420
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../packages/ui/dist/index.js",
+   "issuerId": 7532,
+   "depth": 4,
+   "reasons": [
+    {
+     "moduleId": 7532,
+     "moduleName": "../../packages/ui/dist/index.js",
+     "type": "cjs require",
+     "userRequest": "./DatePicker",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7912,
+   "identifier": "/ci/quillmark/packages/ui/dist/Chart.js",
+   "name": "../../packages/ui/dist/Chart.js",
+   "size": 2960,
+   "sizes": {
+    "javascript": 2960
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../packages/ui/dist/index.js",
+   "issuerId": 7532,
+   "depth": 4,
+   "reasons": [
+    {
+     "moduleId": 7532,
+     "moduleName": "../../packages/ui/dist/index.js",
+     "type": "cjs require",
+     "userRequest": "./Chart",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7950,
+   "identifier": "/ci/quillmark/node_modules/@tanstack/table-core/build/lib/index.js",
+   "name": "../../node_modules/@tanstack/table-core/build/lib/index.js",
+   "size": 118940,
+   "sizes": {
+    "javascript": 118940
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../packages/ui/dist/DataGrid.js",
+   "issuerId": 7836,
+   "depth": 5,
+   "reasons": [
+    {
+     "moduleId": 7836,
+     "moduleName": "../../packages/ui/dist/DataGrid.js",
+     "type": "cjs require",
+     "userRequest": "@tanstack/table-core",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7988,
+   "identifier": "/ci/quillmark/node_modules/dayjs/dayjs.min.js",
+   "name": "../../node_modules/dayjs/dayjs.min.js",
+   "size": 7146,
+   "sizes": {
+    "javascript": 7146
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../packages/ui/dist/DatePicker.js",
+   "issuerId": 7874,
+   "depth": 5,
+   "reasons": [
+    {
+     "moduleId": 7874,
+     "moduleName": "../../packages/ui/dist/DatePicker.js",
+     "type": "cjs require",
+     "userRequest": "dayjs",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7029,
+   "identifier": "/ci/quillmark/node_modules/chart.js/auto/auto.cjs",
+   "name": "../../node_modules/chart.js/auto/auto.cjs",
+   "size": 128,
+   "sizes": {
+    "javascript": 128
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../packages/ui/dist/Chart.js",
+   "issuerId": 7912,
+   "depth": 5,
+   "reasons": [
+    {
+     "moduleId": 7912,
+     "moduleName": "../../packages/ui/dist/Chart.js",
+     "type": "cjs require",
+     "userRequest": "chart.js/auto",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7067,
+   "identifier": "/ci/quillmark/node_modules/chart.js/dist/chart.cjs",
+   "name": "../../node_modules/chart.js/dist/chart.cjs",
+   "size": 398760,
+   "sizes": {
+    "javascript": 398760
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../node_modules/chart.js/auto/auto.cjs",
+   "issuerId": 7029,
+   "depth": 6,
+   "reasons": [
+    {
+     "moduleId": 7029,
+     "moduleName": "../../node_modules/chart.js/auto/auto.cjs",
+     "type": "cjs require",
+     "userRequest": "../dist/chart.cjs",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7105,
+   "identifier": "/ci/quillmark/node_modules/chart.js/dist/chunks/helpers.segment.cjs",
+   "name": "../../node_modules/chart.js/dist/chunks/helpers.segment.cjs",
+   "size": 101520,
+   "sizes": {
+    "javascript": 101520
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../node_modules/chart.js/dist/chart.cjs",
+   "issuerId": 7067,
+   "depth": 7,
+   "reasons": [
+    {
+     "moduleId": 7067,
+     "moduleName": "../../node_modules/chart.js/dist/chart.cjs",
+     "type": "cjs require",
+     "userRequest": "./chunks/helpers.segment.cjs",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "javascript/auto",
+   "id": 7143,
+   "identifier": "/ci/quillmark/node_modules/@kurkle/color/dist/color.cjs.js",
+   "name": "../../node_modules/@kurkle/color/dist/color.cjs.js",
+   "size": 18930,
+   "sizes": {
+    "javascript": 18930
+   },
+   "chunks": [
+    179
+   ],
+   "issuerName": "../../node_modules/chart.js/dist/chunks/helpers.segment.cjs",
+   "issuerId": 7105,
+   "depth": 8,
+   "reasons": [
+    {
+     "moduleId": 7105,
+     "moduleName": "../../node_modules/chart.js/dist/chunks/helpers.segment.cjs",
+     "type": "cjs require",
+     "userRequest": "@kurkle/color",
+     "active": true
+    }
+   ],
+   "providedExports": null,
+   "usedExports": true,
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "type": "module",
+   "moduleType": "runtime",
+   "identifier": "webpack/runtime/jsonp chunk loading",
+   "name": "webpack/runtime/jsonp chunk loading",
+   "size": 3120,
+   "sizes": {
+    "runtime": 3120
+   },
+   "chunks": [
+    179
+   ],
+   "depth": null,
+   "reasons": [],
+   "optimizationBailout": []
+  },
+  {
+   "type": "module",
+   "moduleType": "runtime",
+   "identifier": "webpack/runtime/load script",
+   "name": "webpack/runtime/load script",
+   "size": 1310,
+   "sizes": {
+    "runtime": 1310
+   },
+   "chunks": [
+    179
+   ],
+   "depth": null,
+   "reasons": [],
+   "optimizationBailout": []
+  },
+  {
+   "type": "module",
+   "moduleType": "runtime",
+   "identifier": "webpack/runtime/compat get default export",
+   "name": "webpack/runtime/compat get default export",
+   "size": 340,
+   "sizes": {
+    "runtime": 340
+   },
+   "chunks": [
+    179
+   ],
+   "depth": null,
+   "reasons": [],
+   "optimizationBailout": []
+  },
+  {
+   "type": "module",
+   "moduleType": "runtime",
+   "identifier": "webpack/runtime/define property getters",
+   "name": "webpack/runtime/define property getters",
+   "size": 308,
+   "sizes": {
+    "runtime": 308
+   },
+   "chunks": [
+    179
+   ],
+   "depth": null,
+   "reasons": [],
+   "optimizationBailout": []
+  },
+  {
+   "type": "module",
+   "moduleType": "runtime",
+   "identifier": "webpack/runtime/publicPath",
+   "name": "webpack/runtime/publicPath",
+   "size": 866,
+   "sizes": {
+    "runtime": 866
+   },
+   "chunks": [
+    179
+   ],
+   "depth": null,
+   "reasons": [],
+   "optimizationBailout": []
+  }
+ ],
+ "entrypoints": {
+  "main": {
+   "name": "main",
+   "chunks": [
+    179
+   ],
+   "assets": [
+    {
+     "name": "main.2fa96c10.js",
+     "size": 451088
+    }
+   ],
+   "filteredAssets": 0,
+   "assetsSize": 451088,
+   "auxiliaryAssets": [],
+   "filteredAuxiliaryAssets": 0,
+   "auxiliaryAssetsSize": 0,
+   "children": {},
+   "childAssets": {}
+  }
+ },
+ "namedChunkGroups": {
+  "main": {
+   "name": "main",
+   "chunks": [
+    179
+   ],
+   "assets": [
+    {
+     "name": "main.2fa96c10.js",
+     "size": 451088
+    }
+   ],
+   "filteredAssets": 0,
+   "assetsSize": 451088,
+   "auxiliaryAssets": [],
+   "filteredAuxiliaryAssets": 0,
+   "auxiliaryAssetsSize": 0,
+   "children": {},
+   "childAssets": {}
+  },
+  "analytics": {
+   "name": "analytics",
+   "chunks": [
+    604
+   ],
+   "assets": [
+    {
+     "name": "analytics.e71b4d08.js",
+     "size": 1206
+    }
+   ],
+   "filteredAssets": 0,
+   "assetsSize": 1206,
+   "auxiliaryAssets": [],
+   "filteredAuxiliaryAssets": 0,
+   "auxiliaryAssetsSize": 0,
+   "children": {},
+   "childAssets": {}
+  }
+ },
+ "errors": [],
+ "errorsCount": 0,
+ "warnings": [],
+ "warningsCount": 0
+}

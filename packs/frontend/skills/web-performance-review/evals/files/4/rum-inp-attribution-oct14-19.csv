@@ -1,0 +1,6 @@
+target_selector,interaction_type,interactions,inp_p75_ms,input_delay_p75_ms,processing_p75_ms,presentation_delay_p75_ms,top_script_url
+button.add-to-cart,pointer,4120,486,38,362,74,https://www.fernhollow-outfitters.example/static/js/pdp-cart.8c1e.js
+button#chatnest-launcher,pointer,520,610,290,240,80,https://widget.chatnest.example/v3/launcher.js
+div.variant-swatch,pointer,6310,214,41,118,52,https://www.fernhollow-outfitters.example/static/js/pdp-variants.2b7d.js
+select#size-select,pointer,2870,176,30,92,48,https://www.fernhollow-outfitters.example/static/js/pdp-variants.2b7d.js
+img.gallery-thumb,pointer,5480,132,26,60,44,https://www.fernhollow-outfitters.example/static/js/pdp-gallery.e01f.js

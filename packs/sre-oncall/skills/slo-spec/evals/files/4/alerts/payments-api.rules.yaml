@@ -1,0 +1,16 @@
+groups:
+  - name: payments-api
+    rules:
+      # Added 2025-11 after the Halberd outage. 402 included because a burst of
+      # declines "can mean the gateway is broken".
+      - alert: PaymentsApiHighErrorRate
+        expr: |
+          sum(rate(http_server_requests_total{service="payments-api", status=~"5..|402"}[5m]))
+            /
+          sum(rate(http_server_requests_total{service="payments-api"}[5m]))
+          > 0.01
+        for: 5m
+        labels:
+          severity: page
+        annotations:
+          summary: "payments-api error rate above 1%"

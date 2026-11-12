@@ -1,0 +1,17 @@
+response_id,submitted_at,account_id,plan,platform,csat_score,comment
+CS-301,2026-07-12,ACC-1099,Business,iOS,5,The receipt scanner is honestly magic. Snap and done.
+CS-302,2026-07-18,ACC-1170,Business,iOS,5,"Scanning receipts is the best part of Tallyweave, saves me so much time."
+CS-303,2026-07-25,ACC-1135,Business,iOS,4,Love the receipt scanning. Wish approvals emails were quicker.
+CS-304,2026-08-02,ACC-1042,Business,Web,1,Exports still broken. Have raised it repeatedly.
+CS-305,2026-08-06,ACC-1023,Starter,Web,2,Still no way to handle part payments properly. I spend too long fixing invoices.
+CS-306,2026-08-11,ACC-1177,Business,iOS,5,Receipt capture is spot on every time.
+CS-307,2026-08-15,ACC-1188,Enterprise,Web,4,The new approval flow is so much simpler than before.
+CS-308,2026-08-20,ACC-1048,Business,Android,2,Scanner gets amounts wrong constantly on our phones.
+CS-309,2026-08-22,ACC-1250,Starter,Web,3,Fine overall but customers pay me in instalments and I can't show what's left to pay.
+CS-310,2026-08-28,ACC-1208,Enterprise,iOS,5,Our lawyers actually submit expenses on time now because scanning is so easy.
+CS-311,2026-09-03,ACC-1203,Business,Web,4,Approvals are clearer now. Good update.
+CS-312,2026-09-09,ACC-1182,Business,Web,5,Invoices look professional and clients pay faster.
+CS-313,2026-09-12,ACC-1074,Starter,Web,4,Does what we need for a small team.
+CS-314,2026-09-17,ACC-1163,Starter,Web,2,Price went up again this year for the Starter plan.
+CS-315,2026-09-22,ACC-1112,Starter,iOS,5,"Easy to use, good support."
+CS-316,2026-09-26,ACC-1094,Business,Web,3,OK.

@@ -1,0 +1,3 @@
+| ID | Item | Where | Cost today (evidence) | Fix size | Decision | Trigger | Owner |
+|---|---|---|---|---|---|---|---|
+| TD-11 | `billing` imports from `web`, so anything that imports billing starts the web app | `billing/` | The nightly dunning job runs as an HTTP call to a hidden admin endpoint because the batch worker can't import billing; that endpoint timed out on 3 nights in September and dunning emails went out a day late. `billing/proration.py` has no tests; `billing/invoices.py` and `billing/dunning.py` are covered by `tests/billing/`. | M | Pay now | Another missed dunning run | Billing team |

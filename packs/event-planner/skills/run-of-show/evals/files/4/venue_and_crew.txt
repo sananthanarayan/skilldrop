@@ -1,0 +1,27 @@
+FIELDWORK 2026 - venue + crew info
+Kelso Exchange, Tue 1 Dec
+
+Venue hours: building open 08:00-18:30, we have to be out by 18:30.
+Registration + coffee in the Foyer 08:00-09:00. Drinks in the Foyer 17:45-18:30.
+
+Rooms
+  Main Hall    - seats 400. needs 15 min between sessions (stage reset + mic swap)
+  Birch Room   - seats 80.  10 min turnaround
+  Cedar Room   - seats 60.  10 min turnaround
+  Workshop Lab - 24 laptops. 20 min turnaround (reset the laptops)
+Don't put a session in a room smaller than its expected attendance.
+
+Fixed bits
+  09:00-09:45 opening keynote, Main Hall - NOTHING else running
+  12:30-13:30 lunch in the Foyer - nothing running anywhere
+  15:15-15:35 afternoon break - nothing running
+  17:00-17:45 closing keynote, Main Hall - nothing else from 17:00
+
+Speakers doing more than one thing need at least 10 mins between them if it's a different room.
+Hollis Grant chairs both panels.
+
+AV crew (one per room, all day)
+  Main Hall - Dom Ferraro
+  Birch - Lou Akintola
+  Cedar - Petra Sandoval
+  Lab - Wes Harlow (also does the laptops)

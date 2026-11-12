@@ -1,0 +1,42 @@
+[
+  {
+    "query": "put this runbook in Confluence under the SRE space",
+    "should_trigger": true
+  },
+  {
+    "query": "Convert README.md to Confluence storage format so I can paste it into the source editor",
+    "should_trigger": true
+  },
+  {
+    "query": "Publish design-notes.md as a wiki page under Architecture on our atlassian site",
+    "should_trigger": true
+  },
+  {
+    "query": "update Confluence page 48213 with the new deploy-checklist.md",
+    "should_trigger": true
+  },
+  {
+    "query": "our team docs live in Confluence, can you get this markdown onto a page with the code blocks looking right",
+    "should_trigger": true
+  },
+  {
+    "query": "Convert this markdown to a Word document legal can track changes in",
+    "should_trigger": false
+  },
+  {
+    "query": "Turn the markdown report into a single HTML file I can email",
+    "should_trigger": false
+  },
+  {
+    "query": "Create Jira epics and issues from this PRD",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a runbook for the payments service before it goes to on-call",
+    "should_trigger": false
+  },
+  {
+    "query": "Render the Mermaid flowchart in arch.mmd to a PNG",
+    "should_trigger": false
+  }
+]

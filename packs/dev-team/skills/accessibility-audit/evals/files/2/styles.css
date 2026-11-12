@@ -1,0 +1,56 @@
+body {
+  font-family: "Source Sans", Arial, sans-serif;
+  font-size: 16px;
+  color: #1a1a1a;
+  background: #ffffff;
+}
+
+*:focus {
+  outline: none;
+}
+
+.form-panel {
+  background: #f2f2f2;
+  padding: 24px;
+  max-width: 520px;
+}
+
+.help-text {
+  color: #767676;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.field-title {
+  display: block;
+  font-weight: 600;
+  margin-top: 16px;
+}
+
+.stepper .step {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #1a1a1a;
+}
+
+input.invalid {
+  border: 2px solid #d0021b;
+}
+
+/* Brand orange is fixed by the council style guide and must not change. */
+.btn-primary {
+  background: #e87722;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 10px 24px;
+  border: none;
+}
+
+.divider {
+  width: 100%;
+  height: 8px;
+}

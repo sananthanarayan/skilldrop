@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Create a service blueprint for our returns process",
+    "should_trigger": true
+  },
+  {
+    "query": "What happens behind the scenes when a customer reports a fault? Show frontstage, backstage and where it breaks",
+    "should_trigger": true
+  },
+  {
+    "query": "Take our onboarding journey map and show the teams, systems and handoffs behind each step",
+    "should_trigger": true
+  },
+  {
+    "query": "Find the fail points and wait times in how we deliver a mortgage application",
+    "should_trigger": true
+  },
+  {
+    "query": "Map our customer's onboarding journey with emotions and pain points at each stage",
+    "should_trigger": false
+  },
+  {
+    "query": "Draw the system architecture for our claims platform as a C4 diagram",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a PRD for fixing the slow refund process",
+    "should_trigger": false
+  }
+]

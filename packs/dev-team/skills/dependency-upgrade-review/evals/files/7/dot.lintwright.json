@@ -1,0 +1,7 @@
+{
+  "extends": ["lintwright:recommended"],
+  "ignore": ["dist/", "coverage/"],
+  "rules": {
+    "no-console": "error"
+  }
+}

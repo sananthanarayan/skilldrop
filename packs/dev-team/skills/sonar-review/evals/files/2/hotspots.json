@@ -1,0 +1,7 @@
+{
+  "hotspots": [
+    {"key": "HSa01", "ruleKey": "python:S4790", "securityCategory": "weak-cryptography", "vulnerabilityProbability": "LOW",
+     "status": "TO_REVIEW", "component": "brookmere-intake:intake/api.py", "line": 41,
+     "message": "Make sure this weak hash algorithm is not used in a sensitive context here."}
+  ]
+}

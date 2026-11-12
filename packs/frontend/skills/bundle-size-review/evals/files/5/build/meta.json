@@ -1,0 +1,371 @@
+{
+  "inputs": {
+    "src/main.jsx": {
+      "bytes": 1200,
+      "imports": [
+        {
+          "path": "src/polyfills.js",
+          "kind": "import-statement",
+          "original": "./polyfills"
+        },
+        {
+          "path": "node_modules/react/index.js",
+          "kind": "import-statement",
+          "original": "react"
+        },
+        {
+          "path": "node_modules/react-dom/client.js",
+          "kind": "import-statement",
+          "original": "react-dom/client"
+        },
+        {
+          "path": "src/App.jsx",
+          "kind": "import-statement",
+          "original": "./App"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/polyfills.js": {
+      "bytes": 260,
+      "imports": [
+        {
+          "path": "node_modules/core-js/modules/es.promise.js",
+          "kind": "import-statement",
+          "original": "core-js/modules/es.promise"
+        },
+        {
+          "path": "node_modules/core-js/modules/es.array.flat.js",
+          "kind": "import-statement",
+          "original": "core-js/modules/es.array.flat"
+        },
+        {
+          "path": "node_modules/core-js/modules/es.object.from-entries.js",
+          "kind": "import-statement",
+          "original": "core-js/modules/es.object.from-entries"
+        },
+        {
+          "path": "node_modules/core-js/modules/es.string.replace-all.js",
+          "kind": "import-statement",
+          "original": "core-js/modules/es.string.replace-all"
+        },
+        {
+          "path": "node_modules/core-js/modules/es.array.at.js",
+          "kind": "import-statement",
+          "original": "core-js/modules/es.array.at"
+        },
+        {
+          "path": "node_modules/core-js/modules/es.object.group-by.js",
+          "kind": "import-statement",
+          "original": "core-js/modules/es.object.group-by"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/core-js/modules/es.promise.js": {
+      "bytes": 9400,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/core-js/modules/es.array.flat.js": {
+      "bytes": 1100,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/core-js/modules/es.object.from-entries.js": {
+      "bytes": 900,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/core-js/modules/es.string.replace-all.js": {
+      "bytes": 2300,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/core-js/modules/es.array.at.js": {
+      "bytes": 700,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/core-js/modules/es.object.group-by.js": {
+      "bytes": 1500,
+      "imports": [],
+      "format": "cjs"
+    },
+    "src/App.jsx": {
+      "bytes": 3800,
+      "imports": [
+        {
+          "path": "node_modules/react/index.js",
+          "kind": "import-statement",
+          "original": "react"
+        },
+        {
+          "path": "src/routes/Overview.jsx",
+          "kind": "import-statement",
+          "original": "./routes/Overview"
+        },
+        {
+          "path": "src/routes/Shipments.jsx",
+          "kind": "import-statement",
+          "original": "./routes/Shipments"
+        },
+        {
+          "path": "src/routes/Exports.jsx",
+          "kind": "dynamic-import",
+          "original": "./routes/Exports"
+        },
+        {
+          "path": "src/components/Icon.jsx",
+          "kind": "import-statement",
+          "original": "./components/Icon"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/routes/Overview.jsx": {
+      "bytes": 6200,
+      "imports": [
+        {
+          "path": "node_modules/plotline/dist/index.js",
+          "kind": "import-statement",
+          "original": "plotline"
+        },
+        {
+          "path": "node_modules/tempora/dist/index.mjs",
+          "kind": "import-statement",
+          "original": "tempora"
+        },
+        {
+          "path": "src/components/Icon.jsx",
+          "kind": "import-statement",
+          "original": "../components/Icon"
+        },
+        {
+          "path": "src/utils/groupRows.js",
+          "kind": "import-statement",
+          "original": "../utils/groupRows"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/routes/Shipments.jsx": {
+      "bytes": 5400,
+      "imports": [
+        {
+          "path": "node_modules/tempora/dist/index.mjs",
+          "kind": "import-statement",
+          "original": "tempora"
+        },
+        {
+          "path": "src/components/Icon.jsx",
+          "kind": "import-statement",
+          "original": "../components/Icon"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/routes/Exports.jsx": {
+      "bytes": 2100,
+      "imports": [
+        {
+          "path": "node_modules/sheetsmith/dist/sheetsmith.js",
+          "kind": "import-statement",
+          "original": "sheetsmith"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/components/Icon.jsx": {
+      "bytes": 600,
+      "imports": [
+        {
+          "path": "node_modules/glyphset/dist/index.js",
+          "kind": "import-statement",
+          "original": "glyphset"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/groupRows.js": {
+      "bytes": 400,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/plotline/dist/index.js": {
+      "bytes": 88000,
+      "imports": [
+        {
+          "path": "node_modules/plotline/node_modules/tempora/index.js",
+          "kind": "import-statement",
+          "original": "tempora"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/plotline/node_modules/tempora/index.js": {
+      "bytes": 61000,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/tempora/dist/index.mjs": {
+      "bytes": 54000,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/glyphset/dist/index.js": {
+      "bytes": 412000,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/sheetsmith/dist/sheetsmith.js": {
+      "bytes": 386000,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/react/index.js": {
+      "bytes": 190,
+      "imports": [
+        {
+          "path": "node_modules/react/cjs/react.production.min.js",
+          "kind": "require-call",
+          "original": "./cjs/react.production.min.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/react/cjs/react.production.min.js": {
+      "bytes": 6900,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/react-dom/client.js": {
+      "bytes": 620,
+      "imports": [
+        {
+          "path": "node_modules/react-dom/cjs/react-dom.production.min.js",
+          "kind": "require-call",
+          "original": "./cjs/react-dom.production.min.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/react-dom/cjs/react-dom.production.min.js": {
+      "bytes": 131800,
+      "imports": [
+        {
+          "path": "node_modules/react/index.js",
+          "kind": "require-call",
+          "original": "react"
+        }
+      ],
+      "format": "cjs"
+    }
+  },
+  "outputs": {
+    "dist/assets/main-7QX2KD.js": {
+      "imports": [
+        {
+          "path": "dist/assets/Exports-M4PZ1A.js",
+          "kind": "dynamic-import"
+        }
+      ],
+      "exports": [],
+      "entryPoint": "src/main.jsx",
+      "inputs": {
+        "src/main.jsx": {
+          "bytesInOutput": 310
+        },
+        "src/polyfills.js": {
+          "bytesInOutput": 0
+        },
+        "node_modules/core-js/modules/es.promise.js": {
+          "bytesInOutput": 3900
+        },
+        "node_modules/core-js/modules/es.array.flat.js": {
+          "bytesInOutput": 420
+        },
+        "node_modules/core-js/modules/es.object.from-entries.js": {
+          "bytesInOutput": 380
+        },
+        "node_modules/core-js/modules/es.string.replace-all.js": {
+          "bytesInOutput": 960
+        },
+        "node_modules/core-js/modules/es.array.at.js": {
+          "bytesInOutput": 290
+        },
+        "node_modules/core-js/modules/es.object.group-by.js": {
+          "bytesInOutput": 610
+        },
+        "src/App.jsx": {
+          "bytesInOutput": 1450
+        },
+        "src/routes/Overview.jsx": {
+          "bytesInOutput": 2600
+        },
+        "src/routes/Shipments.jsx": {
+          "bytesInOutput": 2200
+        },
+        "src/components/Icon.jsx": {
+          "bytesInOutput": 180
+        },
+        "src/utils/groupRows.js": {
+          "bytesInOutput": 120
+        },
+        "node_modules/plotline/dist/index.js": {
+          "bytesInOutput": 41200
+        },
+        "node_modules/plotline/node_modules/tempora/index.js": {
+          "bytesInOutput": 23800
+        },
+        "node_modules/tempora/dist/index.mjs": {
+          "bytesInOutput": 6900
+        },
+        "node_modules/glyphset/dist/index.js": {
+          "bytesInOutput": 198400
+        },
+        "node_modules/react-dom/client.js": {
+          "bytesInOutput": 90
+        },
+        "node_modules/react-dom/cjs/react-dom.production.min.js": {
+          "bytesInOutput": 129600
+        },
+        "node_modules/react/index.js": {
+          "bytesInOutput": 40
+        },
+        "node_modules/react/cjs/react.production.min.js": {
+          "bytesInOutput": 6700
+        }
+      },
+      "bytes": 421400
+    },
+    "dist/assets/main-7QX2KD.js.map": {
+      "imports": [],
+      "exports": [],
+      "inputs": {},
+      "bytes": 1402300
+    },
+    "dist/assets/Exports-M4PZ1A.js": {
+      "imports": [],
+      "exports": [
+        "default"
+      ],
+      "entryPoint": "src/routes/Exports.jsx",
+      "inputs": {
+        "src/routes/Exports.jsx": {
+          "bytesInOutput": 820
+        },
+        "node_modules/sheetsmith/dist/sheetsmith.js": {
+          "bytesInOutput": 214300
+        }
+      },
+      "bytes": 215500
+    },
+    "dist/assets/Exports-M4PZ1A.js.map": {
+      "imports": [],
+      "exports": [],
+      "inputs": {},
+      "bytes": 702900
+    }
+  }
+}

@@ -1,0 +1,18 @@
+services:
+  app:
+    build: .
+    ports: ["3000:3000"]
+    env_file: .env
+    depends_on: [postgres, redis]
+  worker:
+    build: .
+    command: ["node", "dist/jobs/worker.js"]
+    env_file: .env
+    depends_on: [redis]
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: example-only
+  redis:
+    image: redis:7
+    ports: ["6379:6379"]

@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Write an operational runbook for this service",
+    "should_trigger": true
+  },
+  {
+    "query": "We're launching a service — what does on-call need documented?",
+    "should_trigger": true
+  },
+  {
+    "query": "Document deploy, rollback, and incident response for this system",
+    "should_trigger": true
+  },
+  {
+    "query": "Generate the runbook covering escalation and common failures",
+    "should_trigger": true
+  },
+  {
+    "query": "Design our SLIs, SLOs, and burn-rate alerts",
+    "should_trigger": false
+  },
+  {
+    "query": "We're in an incident right now — draft the status page update",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the postmortem for the outage",
+    "should_trigger": false
+  },
+  {
+    "query": "Sweep the full non-functional requirements catalog",
+    "should_trigger": false
+  }
+]

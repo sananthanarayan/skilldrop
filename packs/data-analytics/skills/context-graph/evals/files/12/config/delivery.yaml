@@ -1,0 +1,4 @@
+retry:
+  max_attempts: 20
+  base_delay_seconds: 10
+timeout_seconds: 10

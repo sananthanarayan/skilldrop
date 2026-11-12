@@ -1,0 +1,12 @@
+[
+  { "query": "Plan a canary rollout for the new pricing engine — it's behind a feature flag", "should_trigger": true },
+  { "query": "What percentages should we ramp the checkout_v2 flag through, and when do we promote each step?", "should_trigger": true },
+  { "query": "How long does our 1% canary need to run before the error numbers mean anything?", "should_trigger": true },
+  { "query": "Write a progressive delivery plan with rollback criteria for the new recommendations widget", "should_trigger": true },
+  { "query": "We're turning on the new login flow for users next week — how do we do it gradually and safely?", "should_trigger": true },
+  { "query": "Plan the backfill and expand-contract migration for splitting the users table", "should_trigger": false },
+  { "query": "Are we ready to launch the new checkout on Monday? Give me a go/no-go", "should_trigger": false },
+  { "query": "Write the release notes for version 4.2", "should_trigger": false },
+  { "query": "Design SLOs and burn-rate alerts for the payments API", "should_trigger": false },
+  { "query": "How will we know if the new onboarding flow worked? Define the success metrics", "should_trigger": false }
+]

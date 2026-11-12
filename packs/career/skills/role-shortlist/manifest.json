@@ -1,0 +1,38 @@
+{
+  "name": "role-shortlist",
+  "version": "0.1.1",
+  "description": "Read every open role on an employer's careers page, a job-board export or a folder of saved postings, and say which ones one person should apply for — each role judged only from its own posting text, roles that couldn't be read listed as unread instead of guessed from their titles, a role whose screening requirement the person doesn't meet named as out whatever else fits, and the same role posted twice counted once. Works for any occupation. Use when the user asks \"which of these jobs should I apply for\", \"go through this company's openings\", \"shortlist these postings against my CV\", or has more postings than they want to check one by one.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "job-fit-analysis",
+    "resume-tailor"
+  ],
+  "handoff": [
+    {
+      "to": "job-fit-analysis",
+      "when": "the shortlist has put one or two roles under Apply",
+      "purpose": "Check the first-choice role requirement by requirement before writing the application.",
+      "fallback": "If job-fit-analysis is absent, compare that one posting's required items with the resume line by line, naming any that are not met."
+    }
+  ],
+  "tags": [
+    "job-search",
+    "resume",
+    "cv",
+    "job-posting",
+    "shortlist",
+    "career"
+  ],
+  "model": {
+    "tier": "standard",
+    "rationale": "Reads many postings against one resume and sorts them. Each comparison is bounded; the rule (no posting read, no verdict) is mechanical."
+  }
+}

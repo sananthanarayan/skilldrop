@@ -1,0 +1,12 @@
+{
+  "name": "dispatch-api",
+  "version": "3.4.0",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint .",
+    "format": "prettier --write src",
+    "migrate": "node scripts/migrate.js",
+    "dev": "docker compose up"
+  }
+}

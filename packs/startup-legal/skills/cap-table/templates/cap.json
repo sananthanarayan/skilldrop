@@ -1,0 +1,23 @@
+{
+  "company": "Example Labs, Inc.",
+  "currency": "USD",
+  "holders": [
+    {"name": "Founder A", "class": "common", "shares": 4500000},
+    {"name": "Founder B", "class": "common", "shares": 4500000}
+  ],
+  "options": {"granted": 250000, "pool_unissued": 750000},
+  "safes": [
+    {"holder": "Angel syndicate", "amount": 500000, "type": "post", "cap": 8000000},
+    {"holder": "Accelerator", "amount": 125000, "type": "post", "cap": 6000000, "discount": 0.2},
+    {"holder": "Early angel", "amount": 100000, "type": "pre", "cap": 5000000, "discount": 0.2}
+  ],
+  "notes": [
+    {"holder": "Friends and family note", "principal": 50000, "rate": 0.06, "issued": "2025-06-01", "cap": 5000000, "discount": 0.2}
+  ],
+  "round": {
+    "pre_money": 16000000,
+    "investors": [{"name": "Series A lead", "amount": 4000000}, {"name": "Series A follow-on", "amount": 1000000}],
+    "pool_target": 0.10,
+    "close": "2026-12-15"
+  }
+}

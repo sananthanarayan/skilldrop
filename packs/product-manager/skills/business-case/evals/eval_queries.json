@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Write the business case for building our own feature-flag service versus buying one",
+    "should_trigger": true
+  },
+  {
+    "query": "Should we invest two engineer-quarters in rebuilding search? I need something to take to the sponsor",
+    "should_trigger": true
+  },
+  {
+    "query": "Compare build vs buy vs defer for the new data pipeline, with the cost of doing nothing priced",
+    "should_trigger": true
+  },
+  {
+    "query": "I need budget approval for an observability overhaul — help me justify the spend",
+    "should_trigger": true
+  },
+  {
+    "query": "The investment's approved — now write the PRD for the ML router",
+    "should_trigger": false
+  },
+  {
+    "query": "Pick between Kafka, Kinesis, and Pub/Sub for the approved event bus",
+    "should_trigger": false
+  },
+  {
+    "query": "Compress this 12-page business case into a one-page summary for the board",
+    "should_trigger": false
+  }
+]

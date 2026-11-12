@@ -1,0 +1,11 @@
+Ref,Item,Width along x (mm),Depth along y (mm),X (mm),Y (mm),Fixed,Notes
+W1,Built-in wardrobe & luggage niche,1500,2400,0,0,Y,joinery - built in
+BP1,Bathroom pod (walls),2150,2400,2850,0,Y,pod walls; bathroom door in its west wall
+F01,Bed - king 1800x2000,1800,2000,1350,3600,N,headboard against north wall
+F02,Bedside table L,450,400,900,5200,N,
+F03,Bedside table R,450,400,3150,5200,N,
+F04,Desk,550,1150,4450,2400,N,against east wall
+F05,Desk chair,550,550,3900,2700,N,tucked in
+F06,Armchair,800,800,4200,4300,N,by the window
+F07,Side table,450,450,4550,3900,N,
+F08,Luggage rack,450,900,1500,300,N,in lobby by wardrobe

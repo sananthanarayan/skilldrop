@@ -1,0 +1,12 @@
+{"case_id": "c01", "label": "one standard-rate line", "request": {"currency": "GBP", "items": [{"sku": "TEA-001", "qty": 1}]}}
+{"case_id": "c02", "label": "two standard-rate lines", "request": {"currency": "GBP", "items": [{"sku": "TEA-001", "qty": 2}, {"sku": "MUG-002", "qty": 1}]}}
+{"case_id": "c03", "label": "one reduced-rate line", "request": {"currency": "GBP", "items": [{"sku": "CHILD-SEAT-01", "qty": 1}]}}
+{"case_id": "c04", "label": "reduced-rate booster seat", "request": {"currency": "GBP", "items": [{"sku": "BOOSTER-02", "qty": 1}]}}
+{"case_id": "c05", "label": "reduced-rate, qty 2", "request": {"currency": "GBP", "items": [{"sku": "BOOSTER-02", "qty": 2}]}}
+{"case_id": "c06", "label": "reduced-rate, qty 3", "request": {"currency": "GBP", "items": [{"sku": "BOOSTER-02", "qty": 3}]}}
+{"case_id": "c07", "label": "pram plus tea, mixed bands", "request": {"currency": "GBP", "items": [{"sku": "PRAM-03", "qty": 1}, {"sku": "TEA-001", "qty": 1}]}}
+{"case_id": "c08", "label": "zero, standard and repeated lines", "request": {"currency": "GBP", "items": [{"sku": "BOOK-05", "qty": 1}, {"sku": "MUG-002", "qty": 1}, {"sku": "TEA-001", "qty": 2}, {"sku": "TEA-001", "qty": 1}]}}
+{"case_id": "c09", "label": "empty basket", "request": {"currency": "GBP", "items": []}}
+{"case_id": "c10", "label": "unknown sku", "request": {"currency": "GBP", "items": [{"sku": "XYZ-999", "qty": 1}]}}
+{"case_id": "c11", "label": "zero quantity", "request": {"currency": "GBP", "items": [{"sku": "MUG-002", "qty": 0}]}}
+{"case_id": "c12", "label": "large basket", "request": {"currency": "GBP", "items": [{"sku": "MUG-002", "qty": 100}, {"sku": "CHILD-SEAT-01", "qty": 4}, {"sku": "TEA-001", "qty": 50}]}}

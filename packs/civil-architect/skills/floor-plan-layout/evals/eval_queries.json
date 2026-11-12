@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Draw a floor plan for these rooms in a 12 × 15 m footprint",
+    "should_trigger": true
+  },
+  {
+    "query": "Lay out a 3BHK in this footprint and give me a dimensioned plan",
+    "should_trigger": true
+  },
+  {
+    "query": "Can you do a quick test fit of the clinic programme on the ground floor?",
+    "should_trigger": true
+  },
+  {
+    "query": "Make a zoning diagram for the house with the bedrooms away from the road",
+    "should_trigger": true
+  },
+  {
+    "query": "Make a Figma diagram of our microservices",
+    "should_trigger": false
+  },
+  {
+    "query": "Draw a sequence diagram of the checkout flow",
+    "should_trigger": false
+  },
+  {
+    "query": "Build an interactive diagram of our data pipeline I can click through",
+    "should_trigger": false
+  }
+]

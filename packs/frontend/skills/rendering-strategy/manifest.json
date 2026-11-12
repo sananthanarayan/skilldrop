@@ -1,0 +1,50 @@
+{
+  "name": "rendering-strategy",
+  "version": "0.1.0",
+  "description": "Decide route by route how each page of a web app is rendered — static at build (SSG), static with revalidation (ISR, stale-while-revalidate), server-rendered per request (SSR, streaming), client-rendered (CSR, SPA), at the edge, or a mix with islands and server components — from how fresh each route's data must be, whether it is personalised, whether it must be indexed or shared, what it costs per request at the stated traffic and how much JavaScript it needs, with the cache keys, invalidation events and failure modes of each choice. Use when the user asks \"should this be SSR or static\", \"SSR vs SSG vs ISR\", \"how should each page be rendered\", \"do we need SSR for SEO\", \"which pages can we cache\", or is choosing rendering modes in Next.js, Nuxt, Remix, React Router, SvelteKit or Astro.",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "adr-generator",
+    "design-doc",
+    "nfr-spec"
+  ],
+  "handoff": [
+    {
+      "to": "nfr-spec",
+      "when": "the routes have no stated freshness, latency or availability targets to decide against",
+      "purpose": "Pin the freshness and time-to-first-byte targets each route's mode must meet.",
+      "fallback": "If nfr-spec is absent, state each route's freshness tolerance and TTFB target inline, tagged [assumption] where the user gave none."
+    },
+    {
+      "to": "adr-generator",
+      "when": "the route table is agreed and the team wants it on record",
+      "purpose": "Record the rendering strategy, the options rejected and why, as a numbered decision.",
+      "fallback": "If adr-generator is absent, add a short decision note under the table: the decision, the alternative rejected (such as SSR everywhere) and the reason."
+    }
+  ],
+  "tags": [
+    "frontend",
+    "rendering",
+    "ssr",
+    "caching",
+    "seo"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "scripts/render_load.py reads a routes CSV from a named path or stdin and writes a Markdown report to stdout or the path given with -o. No network."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "Choosing static, server, client or incremental rendering per route follows fixed trade-offs (freshness, personalisation, SEO, cost); bounded judgment."
+  }
+}

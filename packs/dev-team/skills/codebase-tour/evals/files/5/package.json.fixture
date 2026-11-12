@@ -1,0 +1,13 @@
+{
+  "name": "cabinbook",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "gen": "node scripts/gen-schema.mjs",
+    "gen:check": "node scripts/gen-schema.mjs --check",
+    "test": "npm test --workspaces",
+    "dev:api": "npm run dev -w @cabinbook/api"
+  }
+}

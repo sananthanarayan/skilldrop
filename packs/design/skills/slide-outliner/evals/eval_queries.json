@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Outline the slides for my architecture review",
+    "should_trigger": true
+  },
+  {
+    "query": "Give me slide titles, key points, and speaker notes for this pitch",
+    "should_trigger": true
+  },
+  {
+    "query": "Structure this into a deck outline I can build from",
+    "should_trigger": true
+  },
+  {
+    "query": "What slides do I need for this technical presentation?",
+    "should_trigger": true
+  },
+  {
+    "query": "Generate the actual .pptx file for me",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a one-page executive summary of this doc",
+    "should_trigger": false
+  },
+  {
+    "query": "What are the structural rules for presenting to a board?",
+    "should_trigger": false
+  },
+  {
+    "query": "Draw the architecture diagram for this system",
+    "should_trigger": false
+  }
+]

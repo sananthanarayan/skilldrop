@@ -1,0 +1,34 @@
+[
+  {
+    "query": "What are the non-functional requirements for this service?",
+    "should_trigger": true
+  },
+  {
+    "query": "Sweep the NFRs — latency, availability, privacy, accessibility, operability",
+    "should_trigger": true
+  },
+  {
+    "query": "Set performance and availability targets for this feature",
+    "should_trigger": true
+  },
+  {
+    "query": "We keep forgetting the -ilities; give me the full NFR ledger",
+    "should_trigger": true
+  },
+  {
+    "query": "Write the functional requirements and user stories",
+    "should_trigger": false
+  },
+  {
+    "query": "Draft the OpenAPI contract for this service",
+    "should_trigger": false
+  },
+  {
+    "query": "Design the dashboards, SLOs, and alerts we should build",
+    "should_trigger": false
+  },
+  {
+    "query": "Model the capacity and cost for this workload",
+    "should_trigger": false
+  }
+]

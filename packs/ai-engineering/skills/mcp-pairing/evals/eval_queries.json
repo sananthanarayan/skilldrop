@@ -1,0 +1,13 @@
+[
+  { "query": "Which MCP servers should we hook up for our release loop? We use GitLab, Linear and Grafana", "should_trigger": true },
+  { "query": "What token scopes does each stage of our build loop need for the GitHub MCP server?", "should_trigger": true },
+  { "query": "Here's our .mcp.json — is this too much access for a weekly status report?", "should_trigger": true },
+  { "query": "We want the on-call agent to read Sentry and Slack. What should we connect and with what permissions?", "should_trigger": true },
+  { "query": "Should our research workflow get a web browsing server and write access to Notion?", "should_trigger": true },
+
+  { "query": "Threat-model this agent: it reads support tickets, queries our customer DB and can send email", "should_trigger": false },
+  { "query": "Design an agent loop that keeps our runbooks up to date, with exit criteria and a human gate", "should_trigger": false },
+  { "query": "How should I split this code migration across parallel subagents?", "should_trigger": false },
+  { "query": "Write our company's policy on which AI tools staff may use with client data", "should_trigger": false },
+  { "query": "Walk me through connecting Jira to Claude Code step by step", "should_trigger": false }
+]

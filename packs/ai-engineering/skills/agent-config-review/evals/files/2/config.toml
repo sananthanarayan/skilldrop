@@ -1,0 +1,21 @@
+# ~/.codex/config.toml
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+[sandbox_workspace_write]
+network_access = false
+
+[shell_environment_policy]
+inherit = "all"
+
+[profiles.fast]
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+
+[mcp_servers.billing_db]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-postgres", "postgresql://billing_rw:EXAMPLE-PASSWORD-0000@billing-db.internal.example:5432/billing"]
+
+[mcp_servers.linear]
+command = "npx"
+args = ["-y", "mcp-remote", "https://mcp.linear.example/sse"]

@@ -1,0 +1,14 @@
+# Evaluated in notification-svc (server-side). Owner: growth-eng
+key: smart_reminders_v2
+description: Model-chosen reminder send times instead of the user's fixed time
+default: false
+rules:
+  - name: staff
+    match:
+      user.email_domain: ["larkspur.app"]
+    serve: true
+  - name: ramp
+    percentage:
+      value: 0
+      bucket_by: device_id
+    serve: true

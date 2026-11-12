@@ -1,0 +1,55 @@
+{
+  "name": "agent-incident-response",
+  "version": "0.2.0",
+  "description": "Plan the first hour after something went wrong with an AI coding agent or its tooling — a leaked or stolen API key, a destructive command (a dropped table, a force-push), a runaway bill, a malicious MCP server or skill, an agent prompt-injected into sending data out. It answers the person's actual question first, reads their logs for what they didn't mention, splits a bill from the usage export, gives the exact recovery for what was destroyed, revokes at the provider before cleanup when the evidence says the credential is in someone else's hands, and lays out the first 15 minutes, the next hour and who to tell. Use when the user says \"I leaked my API key\", \"the agent committed a secret\", \"the agent deleted / force-pushed / dropped something\", \"is the table gone for good\", \"huge bill overnight\", \"we installed a malicious MCP server\", \"our agent platform was breached\", or \"what do I do now\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "agent-budget",
+    "agent-config-review",
+    "agent-threat-model",
+    "incident-comms",
+    "postmortem-generator",
+    "runbook-generator"
+  ],
+  "handoff": [
+    {
+      "to": "postmortem-generator",
+      "when": "the credential is revoked, the agent is contained and the incident's 'is it over' test passes",
+      "purpose": "Write the blameless account of what happened and the control changes that stop a repeat.",
+      "fallback": "If postmortem-generator is absent, write a short timeline in UTC from the person's facts, the conditions that let it happen (never a person), and one or two follow-ups each with how to tell it's done."
+    },
+    {
+      "to": "incident-comms",
+      "when": "customers or users may be affected and need an update",
+      "purpose": "Draft the customer, internal and exec messages, leading with impact and never a cause that isn't confirmed.",
+      "fallback": "If incident-comms is absent, draft one short message that says what the reader is affected by, what is being done, and when the next update comes, with no unconfirmed cause."
+    }
+  ],
+  "tags": [
+    "security",
+    "incident-response",
+    "secrets",
+    "agentic",
+    "credentials"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [
+      "git"
+    ],
+    "files": "named-paths",
+    "notes": "scripts/find_secret_exposure.py runs read-only git commands (log, grep, branch, tag, rev-parse) in the repository it is given, reads the log files it is given, and writes only the -o path when given; it never prints the key (matches are masked to the first 8 and last 4 characters). scripts/usage_split.py reads the CSV usage export it is given (or stdin) and writes only the -o path when given. The git commands in SKILL.md and reference.md are recovery steps for the user to run in their own clone. No network."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "A time-ordered containment checklist for a leaked credential or a runaway agent; the order is fixed, the judgment is in scoping what was reachable."
+  }
+}

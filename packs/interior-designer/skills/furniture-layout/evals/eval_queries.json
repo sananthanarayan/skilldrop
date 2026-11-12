@@ -1,0 +1,11 @@
+[
+  {"query": "Lay out this living room: 5 × 4 m, door in the corner, here's our furniture", "should_trigger": true},
+  {"query": "Will a king bed fit in a 3.4 × 3 m bedroom with the wardrobe?", "should_trigger": true},
+  {"query": "Arrange the furniture in our studio flat so we can still walk round", "should_trigger": true},
+  {"query": "Plan this office for 8 desks and check the clearances", "should_trigger": true},
+  {"query": "Where should the sofa go so the door doesn't hit it?", "should_trigger": true},
+  {"query": "Draw a floor plan for these rooms in a 12 × 15 m footprint", "should_trigger": false},
+  {"query": "Lay out a 2-bed apartment's rooms in a 7.2 × 10.8 m footprint", "should_trigger": false},
+  {"query": "Check our checkout page for WCAG contrast and keyboard issues", "should_trigger": false},
+  {"query": "Reorganise our help centre's layout so people can find articles", "should_trigger": false}
+]

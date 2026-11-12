@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Here's our AWS CUR for the last two months \u2014 where are we wasting money?",
+    "should_trigger": true
+  },
+  {
+    "query": "Why did our Azure bill jump in September? Cost export attached",
+    "should_trigger": true
+  },
+  {
+    "query": "Review this GCP billing export for idle resources, untagged spend and committed use coverage",
+    "should_trigger": true
+  },
+  {
+    "query": "Should we buy more savings plans? Here's the cost and usage report",
+    "should_trigger": true
+  },
+  {
+    "query": "Estimate what the new search service will cost to run at 10x our current traffic",
+    "should_trigger": false
+  },
+  {
+    "query": "Our log volume is out of control \u2014 design what we should log, sample, and alert on",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the postmortem for the runaway batch job that burned $40k last weekend",
+    "should_trigger": false
+  },
+  {
+    "query": "Report how much each engineer spent on Claude and Cursor this month from the usage log",
+    "should_trigger": false
+  }
+]

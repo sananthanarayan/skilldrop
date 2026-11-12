@@ -1,0 +1,45 @@
+{
+  "skill_name": "ai-readiness-assessment",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're a 200-person fintech. Engineering has Copilot licences that about a third of people use, we have no written AI policy, our docs are spread across Confluence and Notion, and leadership keeps asking when we'll 'be an AI company'. Are we ready?",
+      "assertions": [
+        "All six dimensions (data, tooling, skills, governance, process, culture) are scored 0-4 — none is omitted",
+        "Every score carries a one-line evidence reference drawn from the input, or is marked [insufficient evidence: <what to collect>]",
+        "Gaps are ranked by what blocks adoption first, with the dependency named — not simply sorted by lowest score",
+        "Every gap has a concrete first action and an owner expressed as a role, not a person's name",
+        "The posture sentence takes a position and names the condition that would change it",
+        "No facts are invented beyond what the prompt supplies"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "I'm the transformation manager at Kestrel Water (a regional water utility, about 300 staff). The board wants to know whether we're ready to bring in AI. The first ideas are a customer-service assistant for billing queries and predicting which water mains will burst. My interview notes are in `interview-notes.md`, IT's systems inventory is in `it-inventory.md`, the governance status is in `governance-status.md`, and the CEO's view is in `ceo-note.md`. Write the readiness assessment for the board, one page, and tell us whether we're ahead of other water companies.",
+      "assertions": [
+        "It does not accept that the data is ready: 38% of mains records are still in spreadsheets, and they are the cast-iron mains where most bursts happen, so burst prediction is held back by that data (and the untested FieldLog history)",
+        "It corrects the training figure: 120 of 300 staff is 40%, not 52%",
+        "It says there is no approved AI policy (only draft v0.3, due at committee in January 2027), despite what the CEO and the Customer Service Lead said",
+        "It notes that the billing system has no API, with 9 months quoted to add one, as an obstacle for the billing assistant",
+        "It does not claim Kestrel is ahead of or behind other water companies, and says the inputs contain no comparison data",
+        "It does not invent facts or figures that are not in the files",
+        "It fits on one page (roughly 500 words or fewer)"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "I own a small dental practice, 6 staff. We're thinking about AI for the front desk (booking, reminders, answering the phone after hours) and maybe for writing up clinical notes. Our patient records are on a system we've had since 2014 and nobody here is very techy. Are we ready? Few bullets please.",
+      "assertions": [
+        "It gives a direct answer on readiness in this reply (for example, closer to ready for some uses than others), not only a list of questions",
+        "It treats the front desk and clinical notes differently, with clinical notes needing more care, such as a clinician checking every note",
+        "It flags the 2014 records system as something to check (whether it can connect to new tools or export data) without asserting that it can or cannot",
+        "It raises the handling of patients' information and who in the practice decides and is responsible, without stating specific laws as fact",
+        "It gives at least one concrete first step",
+        "It does not invent product names, prices or features",
+        "It is a few bullets"
+      ]
+    }
+  ]
+}

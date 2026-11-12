@@ -1,0 +1,11 @@
+{
+  "name": "prompt-caching-advisor",
+  "version": "1.0.1",
+  "description": "Analyzes a prompt or conversation structure and identifies the highest-value cache breakpoints — where to insert cache_control checkpoints to minimize repeated token processing. Use when designing or optimizing a Claude API integration that uses prompt caching, when input costs are dominated by a static system prompt or few-shot block, or when a multi-turn conversation reprocesses the same context on every turn.",
+  "entrypoint": "SKILL.md",
+  "deps": { "npm": [], "pip": [] },
+  "env": { "required": [], "optional": [] },
+  "related": ["token-budget-estimator"],
+  "tags": ["claude-api", "caching", "cost", "optimization", "prompt-engineering"],
+  "model": { "tier": "heavy", "rationale": "Measured (RFC-0073): on its held-out evals the heavy tier met 90% and 90% of checks in two tier trials, against standard's 63% and light's 83% and 73%, more than 5 points ahead both times; moved once its examples/ oracle shipped (RFC-0074)." }
+}

@@ -1,0 +1,41 @@
+{
+  "$comment": "RFC-0069. A described need to an apply a person approved. The plan review is the gate because a module can be secure and still produce a plan that destroys a database; the apply check is a second gate because the plan applied must be the plan reviewed, and only the person running apply can confirm that.",
+  "name": "provision",
+  "version": "0.1.1",
+  "description": "Take an infrastructure change from a described need to a Terraform apply a person approved: a module with secure defaults, a review of the real plan that names every destroy, replace, widening and out-of-scope change, and a check right before apply that the plan being applied is the one reviewed, with a gate that sends the module back when the plan would destroy state or widen access unasked. Use when the user says \"write the terraform and check it before we apply\", \"provision this safely\", \"run the provision loop\", or wants new infrastructure from module to apply in one pass.",
+  "entrypoint": "LOOP.md",
+  "kind": "loop",
+  "cap": 3,
+  "stages": [
+    {
+      "id": "module",
+      "type": "generate",
+      "intent": "Write or change the module for the stated need, with typed variables, secure defaults and the intended scope written down as resource addresses.",
+      "skills": ["terraform-module"]
+    },
+    {
+      "id": "plan",
+      "type": "verify",
+      "intent": "Review the real plan from a saved planfile against the stated scope: every destroy, replace, stateful change, access widening and drift.",
+      "skills": ["terraform-plan-review"],
+      "gate": {
+        "id": "G13",
+        "kind": "review",
+        "verdicts": ["PROCEED", "PROCEED WITH CONDITIONS", "REVISE", "RECONSIDER", "BLOCKED"],
+        "revise_to": "module"
+      }
+    },
+    {
+      "id": "apply",
+      "type": "gate",
+      "intent": "Right before apply, confirm the planfile being applied is the one reviewed, with the same resource changes, and the person running apply approves it.",
+      "skills": ["terraform-plan-review"],
+      "gate": {
+        "id": "G13.1",
+        "kind": "human",
+        "verdicts": ["PROCEED", "REVISE", "BLOCKED"],
+        "revise_to": "plan"
+      }
+    }
+  ]
+}

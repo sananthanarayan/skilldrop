@@ -1,0 +1,15 @@
+Ref,Description,Size E-W (mm),Size N-S (mm),X from west wall (mm),Y from south wall (mm),Fixed?,Supplier,Notes
+S1,"Wall shelving range, single-sided (window bay south side)",2400,350,0,1650,Yes,,bolted to floor and wall
+S2,"Wall shelving range, single-sided (window bay north side)",2400,350,0,3300,Yes,,bolted to floor and wall
+T5,"Accessible study table, height adjustable",800,1200,0,2050,Yes,Oakcroft Library Supply,on the floor box (power/data) - can't move
+RT1,"Reading table, 6 seats",1800,900,800,4900,No,Oakcroft Library Supply,3 chairs each long side
+RT2,"Reading table, 6 seats",1800,900,5600,900,No,Oakcroft Library Supply,3 chairs each long side
+RT3,"Reading table, 6 seats",1800,900,7900,1200,No,Oakcroft Library Supply,3 chairs each long side
+R3,"Mobile shelving range, double-sided",600,2800,6000,2700,No,Brackenfold Shelving,non-fiction 000-399
+R4,"Mobile shelving range, double-sided",600,2800,7400,2700,No,Brackenfold Shelving,non-fiction 400-799
+R5,"Wall shelving range, single-sided",350,2800,9650,2700,No,Brackenfold Shelving,non-fiction 800-999
+LC1,Lounge armchair,800,800,400,300,No,,
+LC2,Lounge armchair,800,800,2100,300,No,,
+LT1,Low table,600,600,1350,400,No,,
+DS1,Newspaper display stand,1200,450,6000,6300,No,Brackenfold Shelving,
+TR1,Returns trolley,900,500,3950,200,No,,on castors

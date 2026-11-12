@@ -1,0 +1,16 @@
+#lakeshore-transit-app  (2026-10-16, times UTC-4)
+
+09:20 Dana R. (Customer Operations Manager)
+  Another double charge on mobile tickets. This is a P0 - it's happening to everyone since the
+  3.2 release. I need it fixed today and I need something to tell customers.
+
+09:26 Kofi A. (iOS developer)
+  3.2.0 went live in the app stores yesterday at 10:00 our time. It's definitely the new
+  payment retry logic in 3.2, I'd bet money on it. We can roll back.
+
+09:31 Mei L. (Support lead)
+  We've had 3 tickets like this since Tuesday. All say "charged twice". One also says the pass
+  didn't appear.
+
+09:40 Dana R.
+  Can someone write this up properly for the payments squad?

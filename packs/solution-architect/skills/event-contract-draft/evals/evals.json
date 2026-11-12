@@ -1,0 +1,106 @@
+{
+  "skill_name": "event-contract-draft",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're moving fulfilment, loyalty and analytics off polling our order API and onto Kafka events. Our brief is in order-events-brief.md. Can you draft the event contract so the three teams can start building?",
+      "assertions": [
+        "Does not publish an event named CreateShipment; renames it to a past-tense fact in the order domain such as OrderPaid, and explains that the warehouse decides to pick when it sees that fact",
+        "Declines the analytics request for one global order across all orders, keys the order events by order id, and says what ordering that gives (per order) and what it does not (across orders)",
+        "Puts the order events whose relative order matters (paid, cancelled) on the same channel with the same key",
+        "Drops customerEmail because no listed consumer needs it, and keeps the delivery address for fulfilment marked as personal data",
+        "Does not rename total to totalAmount in place on the live OrderPlaced event; ships the change as a new field beside the old one or a new version published alongside the old, with a deprecation date that is agreed with fulfilment rather than invented",
+        "Every message carries a required envelope: event id, event type, version, occurred-at in UTC RFC 3339, producer and correlation id; money is integer minor units, not 42.50",
+        "States at-least-once delivery and says how each consumer stays idempotent (for example dedupe on event id, or loyalty points keyed on order id)",
+        "States retention (7 days, from the brief), whether consumers can replay, and what goes to a dead-letter queue, and lists who watches it as open rather than inventing a team",
+        "Does not invent volumes, dates, team names or consumers not in the brief; anything assumed is marked as an assumption"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Quick one: we publish PaymentCaptured and PaymentRefunded to Kafka, keyed by paymentId. The ledger team says they need to see the refund after the capture for the same order, and an order can have several payments. Are we covered?",
+      "assertions": [
+        "Answers in the first lines: no, not for the order as a whole",
+        "Explains that Kafka orders only within a partition, so keying by paymentId orders one payment's events but gives no order across payments of the same order",
+        "Recommends keying by order id (or giving a per-order sequence the ledger can sort on) if the ledger needs order-level ordering, and notes that changing the key on a live topic is a breaking change",
+        "Says delivery is at-least-once and the ledger must deduplicate on an event id",
+        "Is a short answer, not a full AsyncAPI document",
+        "Does not invent partition counts, volumes or team details not in the question"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We're a small invoicing SaaS. Customers want a webhook when an invoice is paid so their accounting system can mark it settled. Product wants us to include the payer's full card number and email in the payload so they can reconcile. Draft the webhook contract.",
+      "assertions": [
+        "Refuses to put the card number on the webhook and says so in the first lines, offering a card reference or last four digits instead",
+        "Leaves out the payer's email or justifies it with a named consumer need and marks it as personal data",
+        "Names the event as a past-tense fact such as InvoicePaid, with an event id, type, version, occurred-at in UTC and producer in every delivery",
+        "States that delivery is at-least-once with retries and that receivers must deduplicate on the event id",
+        "States that webhooks have no ordering guarantee and gives receivers a way to handle out-of-order or stale deliveries",
+        "Specifies a signature over the payload with a timestamp so receivers can verify the sender and reject replays",
+        "States the retry schedule or its cap and what happens to deliveries that keep failing, without inventing a customer or vendor name",
+        "Additive-only versioning is stated, and receivers are told to ignore unknown fields"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-20",
+      "prompt": "We're the tracking-core team at Parcelway. Our draft message schema for the `shipments` Kafka topic is in schemas/shipment-update.json and our working notes (consumers, incidents, plans) are in NOTES.md. Three teams consume it: notify-svc, analytics and billing. Before we lock it down for peak season, can you turn this into a proper contract the consumers can sign off on — an AsyncAPI doc plus whatever short write-up of the decisions they'll need — and tell us what's wrong with the current draft?",
+      "assertions": [
+        "Produces an AsyncAPI 3.0 document (asyncapi: 3.0.0, with channels and operations for the `shipments` topic and message schemas) plus a short decisions page, and also lists what is wrong with the current draft as asked.",
+        "Replaces the single imperative `UpdateShipment` / `action` enum with separate past-tense facts about the shipment, and specifically flags SEND_DELIVERY_SMS as a command to notify-svc rather than something that happened, removing it from the producer's contract.",
+        "Adds a required envelope with a unique event id and an unambiguous UTC (ISO 8601) occurrence time replacing the depot-local `dd/MM/yyyy HH:mm` timestamp, and ties the ~3,000 duplicate 'out for delivery' SMS after the rebalance to at-least-once redelivery, telling notify-svc and billing to deduplicate on the event id (billing must not charge or remit codAmount twice).",
+        "Changes the partition key from `carrierId` to `shipmentId`, explains that this gives ordering per shipment only (none across shipments or carriers), connects it to 'delivered' arriving before 'out_for_delivery', and warns that the planned 12 -> 48 partition increase in November remaps keys to partitions so per-shipment ordering can break around the change.",
+        "Applies data minimisation: drops `recipient.dateOfBirth` (and questions sending phone/email/address to every consumer, including analytics which keeps data forever), and marks whatever recipient PII remains as PII in the schema.",
+        "Rejects the Q1 plan to rename `status` -> `state` and switch `weight` from kg to grams as a v2 on the same topic, because both are breaking; proposes additive-only changes (e.g. a new field with an explicit unit) or a new topic/major version run in parallel with a dated deprecation for the old one.",
+        "Addresses retention, replay and dead letters: points out the 7-day default retention cannot support analytics replaying events from last year (needs longer retention, compaction or replay from the lake), and replaces billing's crash-restart loop on unparseable messages with a dead-letter topic and a defined redrive process; also flags codAmount as a float without currency.",
+        "Invents nothing that isn't in the input (no extra consumers, partition counts, incidents, field values or tooling claimed to exist beyond the two files), and answers the actual request directly — a contract plus the list of draft problems — without padding."
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-10-20",
+      "prompt": "hey, we're finally doing outgoing webhooks at Ledgerly (invoicing SaaS). customers want to hear when an invoice gets paid, goes overdue or gets voided. PM says it HAS to be exactly once and in order because customers reconcile their books against it. plan rn: POST the whole invoice object to the customer's URL (example in invoice.example.json), add a header X-Ledgerly-Version: 1 and change the payload when we need to, our http client times out at 10s, retry 3x then give up. a couple of customers already told us their endpoint does ERP sync work before it responds and takes ~40s. so: how should we version these and how do we actually guarantee delivery? write up the spec thing too i guess",
+      "assertions": [
+        "Answers the two questions (versioning, guaranteed delivery) directly and early, and tells the user plainly that exactly-once delivery over HTTP webhooks is not achievable: the honest guarantee is at-least-once, with a unique event id on every delivery that receivers store to deduplicate.",
+        "States that ordering cannot be guaranteed across retries and parallel deliveries, and gives receivers a way to cope (e.g. use `updated_at` or a per-invoice sequence number to discard stale events, or re-fetch the invoice from the API) rather than promising in-order delivery.",
+        "Spots that the ~40s ERP-sync endpoints will always exceed the 10s client timeout, so every delivery to them would be retried and duplicated; advises receivers to acknowledge with a 2xx quickly and process asynchronously.",
+        "Replaces 'retry 3x then give up' with retries on a backoff schedule over a longer window, and after retries are exhausted keeps the event (dead-letter / failed-delivery log) with a way for customers to see and replay or redeliver it, instead of silently dropping it.",
+        "On versioning, rejects 'change the payload when we need to' under an unchanging header: proposes a version pinned per endpoint/account, additive-only changes within a version, and breaking changes only in a new version with a dated deprecation window for the old one.",
+        "Applies data minimisation to the payload: does not send `internal_notes`, and drops or justifies `customer.tax_id`, `customer.billing_address`, `customer.contact_email` and `payment.card_last4` (e.g. send a thin event with the invoice id and key fields, and let the receiver fetch details), marking any PII kept; also flags `amount`/`unit_amount` 1299.9 as a float and recommends integer minor units with `currency`.",
+        "Provides a compact AsyncAPI 3.0 document describing the webhook messages (a common envelope with event id, type and occurrence time, and messages for the paid/overdue/voided cases with past-tense names) plus a short decisions summary, and recommends signing deliveries (e.g. an HMAC signature header with a timestamp) so receivers can verify the sender and reject replays.",
+        "Invents nothing not in the input (no made-up existing Ledgerly endpoints, customer names, SLAs or numbers beyond 10s, 3 retries, ~40s and the example invoice), and keeps the answer sized to a chatty question — direct answers first, then the spec — rather than a sprawling design document."
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-10-22",
+      "prompt": "We're pulling order handling out of the Larkspur Goods checkout monolith. Right now the only 'contract' for the `orders` Kafka topic is src/checkout/order_events.py, and the topic config is in infra/topics.yaml. Three teams will consume it: fulfilment (needs every event for a given order in the order it happened), loyalty (counts orders per customer), and analytics (re-loads the last 7 days from the topic every Monday into the warehouse). Please draft a proper AsyncAPI contract for the topic that we can review with those teams, and tell me what has to change on the producer side.",
+      "assertions": [
+        "Answers the actual request directly: delivers an AsyncAPI 3.0 document (asyncapi: 3.0.x, with channels plus operations using action send/receive, not 2.x publish/subscribe) for the `orders` topic, plus a short list of producer-side changes / decisions rather than a long essay.",
+        "Renames the event types create_order, update_order_status and cancel_order to past-tense facts (e.g. OrderPlaced, OrderCancelled) and replaces the generic update_order_status with specific past-tense events for paid/packed/shipped/delivered or an explicitly justified OrderStatusChanged.",
+        "Removes card_number and card_expiry from the event payload entirely (not merely tagging them) and marks customer_email, customer_phone and shipping_address as PII, dropping or justifying them per consumer since none of fulfilment, loyalty or analytics obviously needs all of them.",
+        "Replaces key=None (round-robin, which gives no ordering at all) with an explicit partition key, choosing order_id (or justifying customer_id), and states that ordering holds only per key within one partition; also flags that raising partitions from 6 to 24 before the November peak remaps keys to partitions and breaks per-order ordering across the change unless handled (e.g. drain first or create a new topic).",
+        "Flags that retention.ms 86400000 (1 day) cannot support analytics' 7-day Monday replay and recommends retention of at least 7 days (with margin) or a different replay source.",
+        "Defines a required envelope with a unique event id (plus type, occurred-at time, schema version), states delivery is at-least-once, tells consumers to deduplicate on the event id, and notes the producer's acks=1 / enable.idempotence=false setting as at odds with the guarantees (recommend acks=all and idempotence).",
+        "Flags that _publish runs before session.commit() so an event can be emitted for an order that then rolls back, and recommends publishing after commit via a transactional outbox (or equivalent).",
+        "Invents nothing not in the input: no extra consumer teams, fields, SLAs, throughput figures or tooling are presented as existing facts; any proposed values (retention length, deprecation dates, DLQ topic names) are labelled as proposals for the review."
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-10-22",
+      "prompt": "partners keep complaining they get invoice_paid twice, and our webhook doc (docs/webhooks.yaml) is a mess. can u redo it as asyncapi 3? also while we're at it change amount to amount_cents as an int, the float thing is embarrassing. want to ship next sprint. oh and Brightwell Payroll says sometimes they get paid before created?? not sure if thats related",
+      "assertions": [
+        "Answers the actual request directly: returns a rewritten AsyncAPI 3.0 document for the Tallyfern invoice webhooks (operations with action, the 2.6 `subscribe` mapped to Tallyfern sending) plus a brief decisions note sized for a quick review, not a lecture.",
+        "Does not rename or retype `amount` in place: calls that a breaking change for existing partners, adds a new integer minor-unit field alongside the deprecated `amount`, and gives a dated deprecation/removal plan rather than shipping the swap next sprint.",
+        "Catches that the currency enum includes JPY (zero decimal places), so a field named amount_cents is wrong for it; uses minor units with the currency exponent (e.g. amount_minor) or otherwise defines the scale per currency.",
+        "Explains the duplicate invoice_paid deliveries as expected under at-least-once delivery with the 10s timeout and up-to-5 retries, adds a required unique event id that stays the same across retries, and tells partners to deduplicate on it and return 2xx quickly before processing.",
+        "Addresses Brightwell Payroll's paid-before-created report as a separate issue from duplicates: states webhooks have no ordering guarantee (retries can reorder them) and gives consumers a way to cope, such as an occurred-at timestamp or per-invoice sequence/version, tolerating unknown invoices, or fetching current invoice state.",
+        "Replaces 'after the 5th failure the event is dropped' with keeping failed deliveries (dead-letter) and a way for partners to replay or redeliver them, with any retention window marked as a proposal for the team to decide.",
+        "Marks customer.email and customer.tax_id (and name) as PII and minimises the payload, e.g. dropping tax_id or the embedded customer object in favour of an id, and flags that the HMAC signature covers only raw_body with no timestamp, so a captured request can be replayed; recommends signing a timestamp and enforcing a tolerance window.",
+        "Invents nothing not in the input: no partner names other than Brightwell Payroll, no endpoints, API routes, fields or existing features beyond those in docs/webhooks.yaml are presented as current fact; new elements are clearly proposed."
+      ]
+    }
+  ]
+}

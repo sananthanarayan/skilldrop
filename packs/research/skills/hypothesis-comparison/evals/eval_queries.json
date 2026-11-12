@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Our signup rate fell 25% last week and we have four theories. Which one does the evidence actually support?",
+    "should_trigger": true
+  },
+  {
+    "query": "Run an analysis of competing hypotheses on why our API latency doubled after the migration",
+    "should_trigger": true
+  },
+  {
+    "query": "Build a consistency matrix for these rival explanations of the churn spike and tell me which one survives",
+    "should_trigger": true
+  },
+  {
+    "query": "The team keeps arguing about what caused the drop in NPS. Help me weigh the competing explanations against the evidence.",
+    "should_trigger": true
+  },
+  {
+    "query": "Compare Snowflake, BigQuery and Databricks for our analytics platform and recommend one",
+    "should_trigger": false
+  },
+  {
+    "query": "Do a SWOT on entering the Canadian market",
+    "should_trigger": false
+  },
+  {
+    "query": "Summarise these five papers on remote work and productivity, with citations",
+    "should_trigger": false
+  },
+  {
+    "query": "Critique this root-cause write-up before I send it to the VP",
+    "should_trigger": false
+  }
+]

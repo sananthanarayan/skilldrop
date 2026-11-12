@@ -1,0 +1,133 @@
+{
+  "skill_name": "furniture-layout",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Lay out our bedroom: 3.6 m wide × 3.3 m deep, door at the right end of the south wall opening in, window centred on the north wall with a 0.9 m sill. Furniture: a king bed (1.8 × 2.0 m), two nightstands, a 1.2 m wardrobe with hinged doors, and a small desk with a chair.",
+      "assertions": [
+        "Writes a layout file, runs the layout checker, and shows a plan only after the checker passes (no FAIL lines in the final run)",
+        "Writes an SVG plan in the working directory with the room's overall dimensions, each piece's size, a scale bar and a north arrow",
+        "The king bed has at least 0.6 m clear on both sides and at the foot, and nothing sits in the door's swing",
+        "The wardrobe's doors open into clear floor, not against the bed or the desk",
+        "If any piece had to change size or be left out to fit, says which one, by how much, and why, with the number",
+        "States the zoning (where the bed's head goes and why, where the route runs) before or with the plan",
+        "Does not call the layout code- or accessibility-compliant, and does not mention scripts, JSON or skill folders in the reply"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Here are my measurements and what we want in the living room (living-room-notes.md). Where should everything go? The kids' path from the front door to the kitchen has to stay clear.",
+      "assertions": [
+        "Converts the feet-and-inches measurements correctly (16 ft 6 in × 12 ft 9 in, about 5.03 × 3.89 m), and gives the plan in the units the notes use or both",
+        "Shows a plan only after the layout checker passes, with the route from the front door to the kitchen doorway clear at the walkway width",
+        "Nothing sits in the front door's swing, and nothing blocks the kitchen doorway",
+        "The sofa and loveseat face the TV console or each other across the coffee table, and the route doesn't run through the middle of the seating group",
+        "Keeps tall pieces (the 6 ft bookcase) out from in front of the window, and says what it did with the radiator",
+        "Every piece on the list is on the plan, or the reply says which piece was left out and the dimension that kept it out",
+        "Does not invent furniture, doors or windows that the notes don't mention"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Can you plan the studio office in office-brief.md? Non-interactive: no follow-up questions, just give me the answer.",
+      "assertions": [
+        "Uses the brief's 1.2 m route width and the 1.5 m turning space, not a narrower default",
+        "Answers the question directly: whether all 8 desks fit, and if not, the largest number that passes the checker and what stops the next one, in metres",
+        "No desk, chair zone or the cabinet's door zone overlaps the column or another piece",
+        "Every desk's chair side is reachable from the door on a 1.2 m route, and a 1.5 m turning circle is reachable",
+        "The plan shown has passed the checker, drawn as a dimensioned SVG with the column marked",
+        "Makes no accessibility-code compliance claim; says the plan meets the widths the brief set",
+        "Does not ask a follow-up question; anything it assumes (chair depth, desk orientation) is stated as an assumption"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-11-06",
+      "prompt": "We're fitting out our new office at Harrow Wharf - plan this office for 8 desks plus the meeting room, director's office and kitchenette. Site survey is site_survey.txt and the furniture schedule from the supplier quote is furniture_schedule.csv. Please lay out all four rooms and draw them. Our standards: 900 clear walkways, 750 behind any desk or table for the chair, 1000 clear in front of the kitchen counter, and no door swings blocked. Noor uses a wheelchair, so she needs a 1500 turning circle next to her desk with a 900 route to it from the office door, and a 1500 turning circle in the meeting room as well.",
+      "assertions": [
+        "Writes the layout, runs the furniture-layout check script on it, and shows a layout only after a run with no failures, drawn as a dimensioned SVG per room in mm (room sizes, piece sizes, door swings)",
+        "Places all 8 desks (7 bench desks and Noor's height-adjustable desk, each 1600 x 800) in the open office, each with 750 mm clear behind it for the chair and at least 900 mm clear in the aisle between desk rows, and none overlaps the 400 x 400 column at 4600-5000 E-W / 2800-3200 N-S",
+        "Keeps every piece and every chair space out of all four door swings (900 mm leaves opening inwards; the kitchenette door is hinged on the east side at 3100), with nothing overlapping or outside its room, and treats the fitted kitchen run (y 3000-3600) as fixed",
+        "Gives Noor's desk a clear 1500 mm turning circle beside it and a route at least 900 mm wide from the open office door to it, and gives the meeting room a clear 1500 mm turning circle",
+        "Seats 8 at the 2400 x 1000 meeting table with 750 mm behind every chair (3900 x 2500 mm including the chair spaces) and puts the 1600 x 450 credenza where it doesn't cut into any chair space",
+        "Keeps the 1000 mm in front of the kitchenette counter clear, gives the 1200 x 800 cafe table 750 mm of chair space for its 4 chairs, and leaves a route at least 900 mm wide from the kitchenette door to the counter",
+        "Uses only the pieces and quantities in the schedule (8 desks, 9 task chairs, 3 cabinets, 1 printer station, 8 meeting chairs and so on, with the pedestals under the desks) and does not invent furniture, rooms or dimensions not in the survey or schedule"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-11-06",
+      "prompt": "Can you check my furniture layout for the Pellow Road flat before it goes to the clients? The layout is layout_v2.csv and the room sizes and doors are in measurements.txt. I work to 90 cm walkways, 70 cm each side of a bed, 75 cm behind a desk for the chair, and door swings kept clear. The clients are adamant they're keeping their super king (180 x 200) and they want 70 cm both sides of it. Fix whatever you can and give me a drawing I can send them.",
+      "assertions": [
+        "Runs the furniture-layout check script on the layout as supplied and reports what it fails before changing anything",
+        "Finds the living room coffee table (X 85-145) overlapping the sofa (X 0-95) by 10 cm and moves it clear of the sofa",
+        "Finds the study bookcase on the west wall (Y 30-120) inside the 80 cm swing of the study door hinged at X 15, and moves it out of the swing",
+        "Finds only 60 cm between the study desk's front edge (Y 230) and the reading armchair (top at Y 170), short of the 75 cm for the chair, and moves the armchair so the chair space is clear",
+        "Says the 180 x 200 bed cannot have 70 cm on both sides in the 290 x 290 bedroom whichever way it faces (180 + 70 + 70 = 320 > 290; the layout's 55 cm each side is the most it gets), and puts this to the clients with options (a 150 cm bed gives exactly 70 both sides, or accept 55) rather than claiming a fix or breaking another clearance to get it",
+        "Does not flag correct entries as errors: the 90 cm between the armchair and the TV unit on the way to the balcony door and the 90 cm at the foot of the bed meet the walkway rule",
+        "Re-runs the check on the corrected layout so only the bed-side shortfall remains, and draws the corrected rooms as a dimensioned SVG",
+        "Does not invent furniture, rooms or measurements that are not in the layout or the measurements file, such as a new bedside table or a different room size"
+      ]
+    },
+    {
+      "id": 6,
+      "held_out": "2026-11-07",
+      "prompt": "We're reopening Wrenfold Cafe after the refit and need the seating laid out. The builder's survey is site_measurements.txt, the furniture we own is furniture_stock.csv, and our access consultant's requirements are in access_consultant_email.txt. Get as many covers in as you can - we need at least 26 for the numbers to work - using only what we've got. Send me a dimensioned drawing I can forward to Mo and the landlord, and a list of where each table goes so the fitters can mark out the floor.",
+      "assertions": [
+        "Seats at least 26 covers, including one wheelchair place, using only the stock owned (at most 6 four-tops, 8 two-tops and 32 chairs), and the cover count stated matches the drawing",
+        "Leaves a clear route at least 1200 wide from the entrance door (south wall, x 600-1500) to the ordering zone at the counter and to the WC door (west wall, y 4800-5650), with no tables or chair zones in it",
+        "Keeps clear the 1200-deep queue zone in front of the counter (x 6200-10200, y 4800-6000), the column (x 2950-3350, y 5300-5700), the 900 swing of the entrance door, the 850 swing of the WC door, and the 1500 turning circle in front of the WC door",
+        "Gives every chair 750 behind the table edge, and keeps at least 900 between neighbouring tables' chair zones (or a chair zone and a bare table edge), with no table or chair zone overlapping another",
+        "One table has a wheelchair place with its chair taken away and a 1500 turning circle clear of furniture right in front of it",
+        "Delivers a to-scale SVG with dimensions showing the 10200 x 6800 room, the counter, the column, both doors with their swings and the clearance zones, plus a table schedule giving each table's position from the SW corner for the fitters",
+        "Reports the result of checking the layout against each of the consultant's five requirements, and every one passes",
+        "Does not invent furniture (no banquettes, extra tables, or the high stools the stock list says are no longer needed), and does not move the counter, column or doors or change the room's size"
+      ]
+    },
+    {
+      "id": 7,
+      "held_out": "2026-11-07",
+      "prompt": "This is the furniture layout for Room 214, one of our accessible rooms, exported from the designer's CAD (room_214_layout.csv), with the room details and our brand's accessible-room standard in room_and_brand_standard.txt. Can you check it against the standard before the furniture goes in next week? Tell me what fails, fix whatever can be fixed by moving furniture, and send back the corrected schedule in the same format, plus a dimensioned plan the installers can follow.",
+      "assertions": [
+        "Flags that the side table (y 3900-4350) overlaps the armchair (from y 4300) by 50 mm, and moves it clear",
+        "Flags that the luggage rack (x 1500-1950, y 300-1200) is inside the entrance door's 900 swing (its nearest corner is about 626 from the hinge), and moves it somewhere outside both door swings and every clearance zone",
+        "Flags that neither side of the bed meets standard (c): 1350 on the west side to the wall and 1050 on the east side to the armchair, against 1500 on one side. It fixes this, for example by moving the bed and both bedside tables 150 east, giving 1500 on the west and 900 on the east (at least 800 needed) while keeping the 900 at the foot clear",
+        "Flags that the 1500 turning circle in front of the bathroom door cannot be met: the lobby is only 1350 wide between the built-in wardrobe (x 1500) and the bathroom pod (x 2850), both fixed, so no furniture move fixes it. It is reported as needing a building change or a brand waiver, not as passing",
+        "Raises no false alarms: the desk chair's 750 pull-back zone, the 900 clear at the foot of the bed, and the routes to the desk and bathroom door are not reported as failures",
+        "The corrected layout meets every part of the standard except (d): no overlaps, nothing in either door swing, 1500 and at least 800 at the bed sides, 900 at the foot, 750 at the desk, and a 900 route from the entrance to the bed's 1500 side, the desk and the bathroom door",
+        "Returns room_214_layout.csv in the same columns with the moved items' new X/Y marked, plus a dimensioned SVG plan showing the door swings and clearance zones",
+        "Does not move or resize the built-in wardrobe, the bathroom pod, the doors or the room, and does not add or remove furniture"
+      ]
+    },
+    {
+      "id": 8,
+      "held_out": "2026-11-08",
+      "prompt": "I'm redoing the waiting room at a small dental practice. The practice manager's email with the room measurements and the access audit points is in email_from_practice_manager.txt, and the furniture they're keeping is in furniture_we_are_keeping.csv. Can you lay it out and give me a plan with dimensions I can send her?",
+      "assertions": [
+        "Places every piece on the client's list at its listed size - 8 waiting chairs, the two-seat sofa, the bariatric chair, coffee table, play table, toy box, leaflet bookcase, water cooler and plant (16 pieces) - giving all 11 seats the list allows",
+        "Keeps a clear 1500 x 1500 mm turning space directly in front of the accessible WC door on the right-hand wall (0.7-1.6 m from the front wall), with no furniture in it or in that door's outward swing",
+        "Keeps a clear 1500 x 1500 mm space in front of the lowered left-hand 900 mm of the reception counter (4.0-4.9 m from the left-hand wall), not in front of the full-height part",
+        "Provides one 900 x 1400 mm wheelchair waiting space next to other seats and outside every walkway",
+        "Keeps the entrance door's inward swing clear and shows clear routes at least 1200 mm wide from the entrance to the counter, the WC and the corridor door",
+        "Converts the furniture sizes from centimetres to the same units as the room (e.g. the 140 cm sofa as 1400 mm) rather than mixing units",
+        "Delivers a dimensioned plan (SVG or equivalent) of the 6800 x 5400 mm room and runs or reports a clearance check of the layout",
+        "Does not invent furniture, doors, sockets or room features not in the input, such as new chairs, a TV, a second entrance or a radiator"
+      ]
+    },
+    {
+      "id": 9,
+      "held_out": "2026-11-08",
+      "prompt": "I've done a furniture schedule for our library reading room (reading_room_schedule.csv) and the room notes and our standards are in room_notes.txt. Can you check it and send me the schedule back corrected? I paste it straight into the county asset register, so keep it the same as mine.",
+      "assertions": [
+        "Flags that reading table RT3 leaves only 600 mm on its north long side to the shelving ranges (900 mm needed for chair pull-back) and fixes it, e.g. RT3 at Y 900 giving 900 mm both sides",
+        "Flags the returns trolley TR1 sitting in the main door's swing (the door opens in, 4000-4900 mm from the west wall) and moves it out of the swing and the main route",
+        "Flags the 800 mm aisle between ranges R3 and R4 (1000 mm needed) and moves a range to restore it without breaking another clearance",
+        "Flags that the newspaper stand DS1 narrows the route to the fire exit to 800 mm above the shelving ranges (1200 mm needed) and moves it to restore the route",
+        "Says the 1500 x 1500 turning space in front of T5 cannot fit in the window bay because the bay between fixed ranges S1 and S2 is only 1300 mm wide, reports it as unmet rather than passing, does not move S1, S2 or T5 in the schedule, and gives the librarian options to decide on",
+        "Returns the schedule as CSV with the same columns, header, row order, refs and millimetre units, changing only the positions of the pieces it moved",
+        "Does not report false problems with pieces that already meet the standards, such as RT1, RT2, R5 or the lounge chairs",
+        "Does not invent furniture, dimensions, doors or standards not in the input, such as a new location for the floor box or a second accessible table"
+      ]
+    }
+  ]
+}

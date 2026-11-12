@@ -1,0 +1,25 @@
+{
+  "id": "inv_7Qd2KxP9",
+  "number": "INV-2026-00418",
+  "account_id": "acct_3mZt81",
+  "status": "paid",
+  "amount": 1299.9,
+  "currency": "EUR",
+  "due_date": "2026-10-31",
+  "updated_at": "2026-10-20T09:14:52Z",
+  "customer": {
+    "name": "Hollis & Varga GmbH",
+    "contact_email": "ap@hollis-varga.example",
+    "tax_id": "DE000000000",
+    "billing_address": "Musterweg 12, 10115 Berlin"
+  },
+  "payment": {
+    "method": "card",
+    "card_last4": "4242",
+    "paid_at": "2026-10-20T09:14:50Z"
+  },
+  "line_items": [
+    { "description": "Pro plan, October", "quantity": 1, "unit_amount": 1299.9 }
+  ],
+  "internal_notes": "Customer asked for net-30, approved by finance"
+}

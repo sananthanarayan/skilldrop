@@ -1,0 +1,10 @@
+alert,condition,routes_to,fired_last_30d,actioned_last_30d
+RefillApiCpuHigh,CPU > 80% for 5m on any pod,page,140,2
+RefillApiMemoryHigh,memory > 85% for 10m,page,61,0
+RefillApi5xx,any 5xx in 1m,page,212,9
+DmsLatencyHigh,DMS p99 > 2s for 5m,page,18,6
+NotifierQueueDepth,SMS queue > 500 for 10m,ticket,4,3
+DiskUsage,disk > 90% on any node,page,7,7
+PodRestart,any pod restart,page,95,1
+CertExpiry,TLS cert expires in < 14 days,ticket,1,1
+SyntheticRefillCheck,synthetic refill request fails 3 times in a row,email,0,0

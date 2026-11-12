@@ -1,0 +1,57 @@
+{
+  "skill_name": "backlog-triage",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's the Northwind checkout backlog exported from Jira: examples/northwind-backlog.csv. Refinement is Thursday. Find the duplicates, tell me what isn't ready, and give me an order for what we pull next. Anything untouched for 30 days counts as stale.",
+      "assertions": [
+        "Runs the triage script (or states the counts from the export) rather than estimating counts",
+        "Each duplicate names both keys, why they are the same work, and which one survives",
+        "Rejects or questions candidates that are similar in title but different work, rather than closing every flagged pair",
+        "Each item in the proposed ordering has a reason and says whether it is ready to pull",
+        "Oversized items are handed to user-story-splitter rather than scheduled as is",
+        "Priority changes are presented as proposals with the facts behind them, not applied silently",
+        "Ends with a change list of key, change and reason",
+        "Does not invent owners, dates, estimates or customer counts not in the export"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Acme's platform team has 340 open GitHub issues. I ran gh issue list --json number,title,body,state,assignees,labels,updatedAt > issues.json. We don't use estimates or a priority field, just labels like p1/p2. Clean it up.",
+      "assertions": [
+        "Notes that the estimate and priority columns are missing and that the oversized and priority checks are skipped or mapped from labels",
+        "Uses --map or label-based priority rather than guessing priorities",
+        "Reports staleness from updatedAt with exact day counts",
+        "Confirms duplicates by reading descriptions, not title similarity alone",
+        "Does not invent a priority or estimate for items that have none"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "Parks maintenance backlog for Brackenford's east area, exported from Jira this morning (16 Oct 2026): parks-backlog.csv. I've got two crews for the next fortnight, and the cherry picker is away for its service the whole fortnight. Story points here are crew-days. Can you sort it out - dupes, what's not ready, and what we should pull for the next two weeks? Also give me the total crew-days for the whole backlog so I can tell my manager. Nothing in there's older than six months, so don't worry about stale stuff. Needs to fit on one page for Monday's huddle.",
+      "assertions": [
+        "Identifies PARK-101 and PARK-117 as the same work, and does not merge the north and south gate benches (PARK-104/105) or the pothole patch and the full resurface (PARK-118/115)",
+        "The proposed two-week pull leaves out PARK-110 and PARK-112, which need the cherry picker, and adds up to no more than about 20 crew-days of estimated work",
+        "Flags that PARK-108 (exposed wiring) is at Low priority despite being a safety hazard, and proposes raising it rather than silently changing it",
+        "Does not give a total for the whole backlog as if it were known; reports the 37 crew-days across the 14 estimated items and says the rest have no estimate",
+        "Corrects the claim that nothing is older than six months, naming PARK-113 and PARK-115 (and PARK-114) as older",
+        "Does not invent owners, estimates or dates not in the export",
+        "Fits on about one page"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-10-18",
+      "prompt": "I run the volunteers at our community theatre. our to-do list is a mess, someone pasted it out of the board:\n- fix dimmer stage left (Ray?)\n- costumes for panto!!!\n- panto costumes\n- raffle licence - council needs it by 1 Dec\n- tidy props cupboard\n- new website??\n- grant application to the arts fund, deadline 20 Nov\n- fire extinguishers - annual check overdue since Sept\n- repaint foyer\n- costume for panto\njust tell me the top 5 things to do first, bullets",
+      "assertions": [
+        "Gives exactly five bullets",
+        "Treats the three panto costume entries as one item, not several",
+        "Puts the overdue fire extinguisher check in the top five, and ranks the dated grant (20 Nov) and raffle licence (1 Dec) above undated nice-to-haves like repainting the foyer or the website",
+        "Gives each item a short reason",
+        "Does not invent dates, owners or a panto date not in the list, and treats Ray as uncertain",
+        "Uses plain language with no tracker jargon"
+      ]
+    }
+  ]
+}

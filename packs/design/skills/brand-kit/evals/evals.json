@@ -1,0 +1,44 @@
+{
+  "skill_name": "brand-kit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Set up our brand kit. Logo is ./brand/northwind-logo.png and there's a white version ./brand/northwind-logo-white.png. Our colours are #0E5A46 and #F2A541. We use Georgia for headings. Website is northwindhealth.example.",
+      "assertions": [
+        "Writes brand.json next to the logo files, with logo.primary and logo.on_dark set to the two supplied paths",
+        "colors.primary is #0E5A46 and colors.accent is #F2A541; secondary, background and text are filled and listed as derived",
+        "fonts.heading.family is Georgia; the body font is either asked for or marked as a default, not presented as the brand's",
+        "Every value has a source, with derived values tagged [inferred]",
+        "Runs check_brand.py and reports its contrast figures",
+        "Writes a one-page BRAND.md with a colour table (role, hex, use)",
+        "Invents no tagline, phone number, address or legal footer"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "We're the Coldharbour Orchards Co-operative. I've put everything I could find in this folder: brand-guidelines.md, website-colours.css, logo.svg and contact-sheet.txt. Please set up a brand.json our deck and flyer tools can read, plus a one-page brand summary for the volunteers who make our posters. The AGM poster goes out next week, so I need this usable now.",
+      "assertions": [
+        "Writes a brand.json that is valid JSON and holds the brand's colours as hex codes, the heading and body fonts, and the logo file",
+        "It notices that the two sources give different primary greens (#2E5E3A in the guidelines, #1F4D2B in the website CSS) and says which it used and why, or marks it for the user to confirm; it does not silently pick one",
+        "It warns that Blossom Yellow (#F2C94C) text on white is too low in contrast to read, and the summary does not tell volunteers to use it for body text",
+        "It says the on-dark logo (logo-white.svg) was not supplied, and brand.json does not point to it as if the file exists",
+        "It notices that the website and shop address differ between the guidelines and the contact sheet and says which it used or flags it, and it leaves the registered society number as unknown rather than inventing one",
+        "The summary is one page or less, written for poster-making volunteers, and carries the voice and imagery rules (no 'artisanal' or 'craft', no stock photos of apples)",
+        "It does not invent colours, fonts, taglines, contact details or rules that are not in the files"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "hi I run Muddy Paws, a mobile dog grooming van. my logo is muddy-paws-logo.png and my colours are a sort of teal and a coral. can you set up my brand stuff so the flyers my nephew makes all match? keep it simple, I'm not a design person",
+      "assertions": [
+        "Writes a brand.json that is valid JSON with the logo file and the brand colours as hex codes",
+        "The teal and coral hex codes are taken from the logo (close to #1A8C8C and #F07E6E), or, if they are guesses, they are clearly marked as suggestions for the owner to check",
+        "It does not invent contact details, an address, a website, a tagline, a legal footer or fonts presented as the owner's own; anything missing is marked to fill in",
+        "Any text-on-colour pairing it recommends is readable; it does not suggest white text on the coral, which is too low in contrast",
+        "Any explanation or summary is short and in plain words, and it delivers without asking questions first"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+Chat export: #lesson-sync-oncall
+Exported by: support-mei
+Times shown in Asia/Kolkata (UTC+05:30)
+
+[15/10/2026, 03:08] deploy-bot: lesson-sync v4.12.0 rolling out to prod (started by @dev-ravi)
+[15/10/2026, 03:10] deploy-bot: lesson-sync v4.12.0 healthy on 6/6 pods
+[15/10/2026, 03:31] support-mei: schools in the north region say lesson downloads are stuck at 0% in the app. opening ticket 8812
+[15/10/2026, 03:36] oncall-ana: looking. seeing "manifest checksum mismatch" in lesson-sync since about 03:22
+[15/10/2026, 03:44] oncall-ana: only on the v4.12.0 pods as far as I can tell
+[15/10/2026, 03:55] oncall-ana: rolling back to v4.11.3
+[15/10/2026, 03:58] dev-ravi: did anyone purge the CDN? I *think* a purge ran around 03:50 but I can't find who or when, don't quote me
+[15/10/2026, 04:01] deploy-bot: lesson-sync v4.11.3 healthy on 6/6 pods
+[15/10/2026, 04:06] oncall-ana: errors stopped at 04:03. watching
+[15/10/2026, 04:20] oncall-ana: support says the school confirmed downloads work again. going to bed, will look at why 4.12 broke checksums in the morning
+[15/10/2026, 11:42] dev-ravi: bumping max_retries 3 -> 5 on the lesson-sync config, been meaning to do that for weeks anyway
+[15/10/2026, 12:10] support-mei: closing 8812

@@ -1,0 +1,15 @@
+{
+  "_note": "Max characters per string, from the Figma specs. Applies to every locale.",
+  "button.place_order": 24,
+  "button.add_to_cart": 20,
+  "button.checkout": 20,
+  "button.download_invoice": 22,
+  "button.sign_in": 16,
+  "button.track_order": 20,
+  "nav.orders": 14,
+  "nav.account": 14,
+  "nav.help": 14,
+  "nav.deals": 14,
+  "checkout.summary.title": 28,
+  "order.status.out_for_delivery": 24
+}

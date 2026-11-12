@@ -1,0 +1,25 @@
+{
+  "name": "startup-legal",
+  "version": "1.18.0",
+  "description": "Legal groundwork for a startup that can't yet pay a lawyer for everything: an agreement checked before you sign it (blanks, broken cross-references, mismatched amounts, the renewal date, and the clauses that hurt a small company, with wording to ask for), your cap table modelled through SAFEs, notes and a priced round, vesting schedules with leavers, acceleration and the 83(b) deadline, and your first office lease turned into its real commitment and exit dates. Each says what is worth a lawyer's hour. (9 skills, 1 loop)",
+  "author": {
+    "name": "Sanjay Ananthanarayan",
+    "url": "https://github.com/sananthanarayan"
+  },
+  "homepage": "https://sananthanarayan.github.io/skilldrop/packs/startup-legal/",
+  "repository": "https://github.com/sananthanarayan/skilldrop",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "legal",
+    "startup",
+    "founder",
+    "contract review",
+    "NDA",
+    "SAFE",
+    "cap table",
+    "dilution",
+    "vesting",
+    "83(b)",
+    "lease"
+  ]
+}

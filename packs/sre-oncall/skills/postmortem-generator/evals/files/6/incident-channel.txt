@@ -1,0 +1,27 @@
+Chat export, Thursday 8 October (times UTC)
+
+==== #support-escalations ====
+[14:31] Marta (Support): heads up, ticket 88213. Customer says their client paid an invoice by card about 20 min ago and it still shows "awaiting payment" in Quillmere. Anyone seen this?
+[14:44] Marta (Support): two more like it now (88219, 88224). Feels like a pattern?
+[14:52] Jonas (Eng): looking
+
+==== #deploys ====
+[14:07] deploybot: webhook-consumer deploy #4471 finished (config: consumer pool tuning), author tomasz, reviewer jonas
+
+==== #inc-0412 ====
+[15:02] Rhiannon: declaring incident. paid invoices not flipping to paid. queue depth alert firing on webhook-consumer.
+[15:06] Jonas: it's the DB failover from this morning, 100%. replica lag is making the status writes fail. seen this exact thing before.
+[15:09] Ade (VP Customer Success): how many customers are affected? I need an exact number and the £ value of the stuck invoices for the board update
+[15:12] Rhiannon: @Ade not known yet, we'll get you what we can
+[15:14] Jonas: hmm, replica lag is flat, under 1s all afternoon, and the status writes that do arrive are succeeding. so not the db. I was guessing, sorry
+[15:19] Kasia: consumer throughput dropped off a cliff at ~14:07. only 4 workers running, normally 40. deploy #4471 changed pool_size from 40 to 4
+[15:25] Rhiannon: ok that's it. rolling back #4471
+[15:31] deploybot: webhook-consumer rollback to #4470 started
+[15:47] deploybot: webhook-consumer rollback to #4470 finished
+[15:52] Kasia: throughput back to normal, 40 workers. backlog draining
+[15:58] Kasia: some Paygrove webhooks went to the dead-letter queue while the backlog was building (their retries timed out). don't know yet whether those payment updates were lost or will be replayed. looking.
+[16:03] Marta (Support): also the 15:00 payment reminder job ran, so some clients who'd already paid probably got a "your invoice is overdue" email. no idea how many yet
+[16:20] Kasia: backlog cleared
+[16:24] Jonas: open q for the review: the PR was reviewed (by me) and passed CI, but nothing in CI checks consumer config values. also we only alert on queue depth and the threshold is high, nothing on how long a payment takes to be processed
+[16:30] Ade (VP Customer Success): still need that customer number and £ figure please, even rough
+[16:41] Rhiannon: DLQ question still open, Kasia on it tomorrow. reminder count also open. closing incident as mitigated.

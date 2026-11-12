@@ -1,0 +1,12 @@
+{
+  "company": "Example Labs, Inc.",
+  "jurisdiction": "US",
+  "grants": [
+    {"holder": "Founder A", "type": "founder stock", "shares": 4500000, "grant_date": "2026-01-31", "vesting_start": "2026-01-31",
+     "months": 48, "cliff_months": 12, "frequency": "monthly", "acceleration": {"double": 1.0, "window_months": 12}},
+    {"holder": "First engineer", "type": "option", "shares": 120000, "grant_date": "2026-03-02", "vesting_start": "2026-02-16",
+     "months": 48, "cliff_months": 12, "frequency": "monthly", "leave_date": "2027-08-20", "exercise_window_days": 90},
+    {"holder": "Advisor", "type": "option", "shares": 25000, "grant_date": "2026-05-01", "vesting_start": "2026-05-01",
+     "months": 24, "cliff_months": 3, "frequency": "quarterly"}
+  ]
+}

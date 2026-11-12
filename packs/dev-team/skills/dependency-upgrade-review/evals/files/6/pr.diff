@@ -1,0 +1,42 @@
+diff --git a/go.mod b/go.mod
+index 4be19a2..d07c3e1 100644
+--- a/go.mod
++++ b/go.mod
+@@ -3,14 +3,15 @@ module example.internal/payments-gateway
+ go 1.23
+
+ require (
+-	github.com/fernwire/httpkit v1.8.1
++	github.com/fernwire/httpkit v1.8.4
+ 	github.com/quillstack/zlogx v0.11.2
+ 	github.com/stretchr/testify v1.9.0
+ )
+
+ require (
+ 	github.com/davecgh/go-spew v1.1.1 // indirect
+-	github.com/fernwire/backoff v0.3.0 // indirect
++	github.com/fernwire/backoff v0.4.0 // indirect
++	github.com/fernwire/otelshim v0.1.0 // indirect
+ 	github.com/pmezard/go-difflib v1.0.0 // indirect
+ 	gopkg.in/yaml.v3 v3.0.1 // indirect
+ )
+diff --git a/go.sum b/go.sum
+index 7a10c3f..e41b9d8 100644
+--- a/go.sum
++++ b/go.sum
+@@ -1,10 +1,12 @@
+ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
+ github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+-github.com/fernwire/backoff v0.3.0 h1:Qm3kT0n1Zr8vYx2LdP4eWc7sHf9aJbN6uE5tGiKoR1s=
+-github.com/fernwire/backoff v0.3.0/go.mod h1:Hc2pW8yTn5sLq0FvB3xJdM7eKa4rZu9gYiN1oPtE6Xw=
+-github.com/fernwire/httpkit v1.8.1 h1:Tz4xR9cWm1bPq7Ls2nVe8KdJ3hYf0aGu6oNiE5rBtXk=
+-github.com/fernwire/httpkit v1.8.1/go.mod h1:Lw6pD2sNx9bRe4Ty1qZa7HmKc3jUf8vGo0iEnB5tYsQ=
++github.com/fernwire/backoff v0.4.0 h1:Bv7nQ2xKp4cLz9Ws1mTe6RdH0yJa3fGu8oNiE5rCtWk=
++github.com/fernwire/backoff v0.4.0/go.mod h1:Hc2pW8yTn5sLq0FvB3xJdM7eKa4rZu9gYiN1oPtE6Xw=
++github.com/fernwire/httpkit v1.8.4 h1:Kp9sT3vWn2cRq6Lx1mBe7JdH4yGf0aZu5oNiE8rAtYk=
++github.com/fernwire/httpkit v1.8.4/go.mod h1:Rm3dF8sNx1bWe6Ty2qZa9HkKc4jUf7vGo0iEnB5tXsP=
++github.com/fernwire/otelshim v0.1.0 h1:Wd2mR7xKq5cLp8Vs3nTe1RfH6yJb0aGu4oNiE9rDtUk=
++github.com/fernwire/otelshim v0.1.0/go.mod h1:Ty5nB3sMx7bQe2Rw8qZa4HjKc1jUf6vGo9iEnC0tWsL=
+ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
+ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+ github.com/quillstack/zlogx v0.11.2 h1:Jn8cV4xTq1bLm7Rs2pWe5KdF3hYg0aHu9oNiE6rBtZk=

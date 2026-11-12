@@ -1,0 +1,53 @@
+{
+  "name": "feedback-synthesis",
+  "version": "0.1.1",
+  "description": "Turn raw customer feedback — interview notes, support tickets, NPS or CSAT verbatims, app-store reviews, sales-call notes — into ranked themes a product decision can rest on, each a problem statement rather than a feature request, counted by distinct people or accounts not mentions, with segments, severity kept separate from frequency, verbatim quotes with source IDs, what people value, where sources disagree, what the sample cannot tell, and the questions for the next interviews. A stdlib script computes the counts. Use when the user says \"what are customers telling us\", \"synthesise this feedback\", \"find the themes in these tickets / reviews / NPS comments\", \"affinity map these interview notes\", or \"what should we fix first based on feedback\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [
+    "backlog-triage",
+    "brief-intake",
+    "hypothesis-comparison",
+    "requirements-interview",
+    "source-synthesis",
+    "user-journey-map"
+  ],
+  "handoff": [
+    {
+      "to": "brief-intake",
+      "when": "the ranked themes and their evidence are agreed",
+      "purpose": "Turn the top themes into a brief whose problem, audience and open questions carry the counted evidence.",
+      "fallback": "If brief-intake is absent, end the synthesis with a short brief: the top theme as the problem, who has it, the evidence counts and quotes, and the interview questions as open risks."
+    },
+    {
+      "to": "requirements-interview",
+      "when": "the synthesis ends with open questions that only new interviews can answer",
+      "purpose": "Turn the questions for the next interviews into a ranked interview kit.",
+      "fallback": "If requirements-interview is absent, keep the questions list as the kit: open, past-behaviour questions tied to each theme, with one that could disconfirm the top theme."
+    }
+  ],
+  "tags": [
+    "customer-feedback",
+    "synthesis",
+    "discovery",
+    "voice-of-customer",
+    "research"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "Reads the coding sheet CSV it is given; writes only the paths passed to -o and --json."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "Coding feedback into themes is bounded judgment; the counts by distinct person and segment come from its script."
+  }
+}

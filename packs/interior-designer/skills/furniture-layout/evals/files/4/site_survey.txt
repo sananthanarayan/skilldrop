@@ -1,0 +1,22 @@
+SITE SURVEY - Unit 4, Harrow Wharf (2nd floor)
+measured 28/10, all internal dims in mm, rooms are rectangles. x = along the south wall from the SW corner, y = north from the south wall.
+every room has its door in the south wall off the corridor. all doors 900 leaf, open INTO the room.
+
+OPEN OFFICE  9600 (E-W) x 6000 (N-S)
+ - door: opening 300-1200 from SW corner, hinged on the west side (at 300)
+ - windows along the whole north wall, sill 850 so desks can go under
+ - CONCRETE COLUMN 400 x 400, centre at 4800 / 3000 (so 4600-5000 E-W, 2800-3200 N-S). can't move it obviously
+ - floor boxes everywhere, desks can go anywhere
+
+MEETING ROOM  5400 x 4800
+ - door: opening 300-1200, hinged west side (at 300)
+ - window north wall, screen goes on the east wall (wall mounted, ignore)
+
+DIRECTOR'S OFFICE  3200 x 3600
+ - door: opening 200-1100, hinged west side (at 200)
+ - window east wall
+
+KITCHENETTE  3200 x 3600
+ - door: opening 2200-3100, hinged EAST side (at 3100)
+ - kitchen run already fitted: full width along north wall, 600 deep (so y 3000-3600). sink + dishwasher in it
+ - no window

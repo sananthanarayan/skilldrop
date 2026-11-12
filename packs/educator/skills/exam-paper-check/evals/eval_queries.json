@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Check my exam paper before it goes to print",
+    "should_trigger": true
+  },
+  {
+    "query": "Does the mark scheme match the paper?",
+    "should_trigger": true
+  },
+  {
+    "query": "Do the marks on this test add up?",
+    "should_trigger": true
+  },
+  {
+    "query": "Check this assessment is balanced across AO1 to AO3 before moderation",
+    "should_trigger": true
+  },
+  {
+    "query": "Write ten multiple-choice questions on photosynthesis",
+    "should_trigger": false
+  },
+  {
+    "query": "Make a slide deck for my Year 9 lesson on forces",
+    "should_trigger": false
+  },
+  {
+    "query": "Proofread this research paper's citations",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,73 @@
+{
+  "skill_name": "exam-paper-check",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Can you check my Year 9 forces test before it goes to the printers? Paper is year9-science.md and the mark scheme is year9-science-scheme.md. Our grid is AO1 40%, AO2 40%, AO3 20%.",
+      "assertions": [
+        "Says the questions add up to 41 marks while the cover says 50, counting only one of the either/or Questions 6 and 7",
+        "Flags that Questions 6 and 7 are a choice but worth 12 and 10 marks",
+        "Flags that Question 3 goes from (a) to (c)",
+        "Flags that the mark scheme has no entry for 2(b) and gives Question 7 twelve marks where the paper says ten",
+        "Leads with what to fix before printing, in plain words",
+        "Does not mention a script or the skill's name, and does not invent questions or marks that aren't in the files"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-11-08",
+      "prompt": "Can you check my Year 10 mock before it goes to reprographics? Paper is mock-paper1.md, mark scheme is mock-paper1-ms.md.",
+      "assertions": [
+        "Finds that Question 3's part marks (2 + 3 + 2 = 7) do not add up to its stated total of 8 marks",
+        "Finds that Question 4's parts go (a), (b), (d) - part (c) is skipped",
+        "Finds that the mark scheme awards 3 marks (M1 M1 A1) for Question 5(b) while the paper shows [2], so Question 5 would be out of 5 not 4",
+        "Finds that the mark scheme has no entry for Question 6(c), a 3-mark part",
+        "Reports the paper total correctly: the stated question totals add to 48, matching the cover, but the part marks add to 47 (3+4+7+8+4+8+5+8), so 48 only holds once Question 3 is fixed",
+        "Flags Question 7(b), finding the square root of 37 to 2 decimal places, as unfair or unsuitable on a paper marked non-calculator, and suggests a fix (e.g. ask for an estimate or between which two integers it lies)",
+        "Does not invent problems in Questions 1, 2 or 8 (their parts add up and match the scheme) and does not invent a mark value for the missing Question 4(c)"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-11-08",
+      "prompt": "I'm module lead for HIST1042 and the Week 8 quiz goes to our external moderator on Friday. Files are hist1042-quiz.md and hist1042-quiz-markscheme.md. Please check that the marks add up, that the mark scheme covers every part of the paper with the same marks, and that the quiz is balanced across our learning outcomes. The module handbook targets LO1 (knowledge of key terms and events) 20%, LO2 (analysis and evaluation of sources) 20%, LO3 (sustained historical argument) 30%, LO4 (use of quantitative and statistical evidence) 30%. Our mapping is: Q1 and Q2 assess LO1; Q3 and Q7 assess LO2; Q4 and Q5 assess LO3. Also tell me if any question wording would be unfair to students.",
+      "assertions": [
+        "Finds that the Section B either/or choice is unequal: Question 4 is worth 15 marks and Question 5 only 12, so a student choosing Q5 can score at most 47 (20 + 12 + 15) against the stated 50, while Q4 gives 50 (20 + 15 + 15)",
+        "Counts the either/or choice once when totalling the paper (does not add Q4 and Q5 together to get 62)",
+        "Finds that the question numbering skips Question 6 (Q5 is followed by Q7)",
+        "Finds that the mark scheme gives Question 3(c) 3 marks while the paper shows [4 marks]",
+        "Reports the objective balance on the 50-mark (Q4) route: LO1 10 marks = 20% (on target), LO2 25 marks = 50% against a 20% target, LO3 15 marks = 30% (on target, or 12/47 = about 25.5% on the Q5 route), and LO4 0 marks against 30% - LO4 is never assessed",
+        "Flags Question 2(b) ('Explain why the Corn Laws were a disaster for everyone in Britain') as leading or presupposing its answer, and suggests neutral wording such as 'How far...' or 'Explain the effects of...'",
+        "Does not invent a Question 6, marks for it, or learning outcomes and targets beyond the four given"
+      ]
+    },
+    {
+      "id": 4,
+      "held_out": "2026-11-09",
+      "prompt": "Can you check my Year 11 chemistry mock before it goes to print? Paper is chem-mock-paper.md, mark scheme is chem-mock-scheme.md.",
+      "assertions": [
+        "Flags Question 2: its parts are worth 2 + 3 + 4 = 9 marks but its heading says 'Total for Question 2: 8 marks'; notes the stated question totals (8 + 8 + 12 + 15 = 43) therefore disagree with the paper total of 44, which matches the parts (8 + 9 + 12 + 15 = 44)",
+        "Flags that the numbering jumps from Question 3 to Question 5, with no Question 4, and asks whether a question is missing or the paper should be renumbered",
+        "Flags that 3(b) is worth 3 marks on the paper but 2 marks in the mark scheme",
+        "Flags that the mark scheme has no entry for 5(c) (percentage yield, 3 marks), and that the scheme's rows add to 40 (8 + 9 + 11 + 12), not its stated 'Total: 44 marks'",
+        "Flags that 3(c) asks for 53.9 / 37 and 0.0539 / 24.0 to 3 significant figures (1.46 cm3/s, 0.00225 mol) although the instructions say calculators must not be used",
+        "Flags that 5(d) uses the command word 'State' for a 6-mark, level-of-response question whose scheme expects an explanation (alternative pathway, lower activation energy)",
+        "Does not invent faults or content not in the files: does not call the 44-mark paper total wrong, and does not make up a Question 4 or marks for it"
+      ]
+    },
+    {
+      "id": 5,
+      "held_out": "2026-11-09",
+      "prompt": "I'm head of economics at Calderbrook Sixth Form. Attached are our Year 13 Paper 2 mock (econ-p2-paper.md) and its mark scheme (econ-p2-scheme.md). They go to the external moderator on Friday. Please check that the marks add up and that the paper and scheme match, and flag anything in the questions a student could reasonably complain about. Don't rewrite the paper - just give me a list of what to fix, most serious first.",
+      "assertions": [
+        "Flags the Section B either/or as unequal: Question 3 is 10 + 15 = 25 marks but Question 4 is 10 + 12 = 22 marks although both headings (and the instructions) say 25; so the paper totals 38 + 25 = 63 for a Question 3 candidate but 38 + 22 = 60 for a Question 4 candidate",
+        "Flags that Question 1's parts go (a), (b), (c), (e) with no (d)",
+        "Flags that 2(a) is worth 5 marks on the paper but 6 in the mark scheme",
+        "Flags that the scheme's 'Total for Section A: 40 marks' does not match its own rows (2 + 2 + 4 + 10 + 6 + 15 = 39), nor the paper's Section A (18 + 20 = 38)",
+        "Flags that 1(b) cannot be answered: it asks for the change in nominal GDP from 2022 to 2024 but Extract A gives no 2024 GDP figure",
+        "Flags 2(b) ('Discuss why the Bank of Estoria was right to cut interest rates') as a leading question that presupposes the conclusion, so a balanced answer arguing the cut was wrong is discouraged",
+        "Returns a prioritised list of fixes without rewriting the paper, and does not invent faults or data not in the files (e.g. a 2024 GDP figure, assessment objectives or weightings the paper never states)"
+      ]
+    }
+  ]
+}

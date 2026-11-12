@@ -1,0 +1,34 @@
+{
+  "name": "cap-table",
+  "version": "0.1.0",
+  "description": "Work out who owns what in a startup through its SAFEs, convertible notes and a priced round — each SAFE's and note's conversion price and whether its cap or discount applied, the price per share, the option-pool top-up and who it dilutes, the fully diluted cap table before and after, and founder ownership at other valuations — computed by a script that checks the post-money and the 100 % total. Use when a founder asks \"how much of my company will I own after this round\", \"model our SAFEs converting\", \"what does this term sheet do to our cap table\", \"how much have I given away in SAFEs\", or \"compare a $12M and a $16M pre-money\".",
+  "entrypoint": "SKILL.md",
+  "deps": {
+    "npm": [],
+    "pip": []
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "related": [],
+  "tags": [
+    "cap-table",
+    "safe",
+    "convertible-note",
+    "fundraising",
+    "dilution",
+    "option-pool",
+    "startup"
+  ],
+  "permissions": {
+    "network": [],
+    "commands": [],
+    "files": "named-paths",
+    "notes": "Reads the cap.json it is given and writes a CSV only to the path passed with --csv."
+  },
+  "model": {
+    "tier": "standard",
+    "rationale": "Turning SAFEs, notes and a term sheet into the script's input and explaining the result is bounded; the script does the conversion math."
+  }
+}

@@ -1,0 +1,1358 @@
+{
+ "version": "5.91.0",
+ "hash": "a81d07c3e5f92b6d4e08",
+ "time": 15306,
+ "builtAt": 1790000000000,
+ "publicPath": "/static/",
+ "outputPath": "/app/dist",
+ "assetsByChunkName": {
+  "main": [
+   "main.2c7f4e90.js",
+   "main.2c7f4e90.css"
+  ],
+  "vendors": [
+   "vendors.9a3e5d17.js"
+  ],
+  "reports": [
+   "reports.e6b1f2a8.js"
+  ],
+  "settings": [
+   "settings.0b9de6a1.js"
+  ]
+ },
+ "assets": [
+  {
+   "name": "vendors.9a3e5d17.js",
+   "size": 792840,
+   "chunks": [
+    216
+   ],
+   "chunkNames": [
+    "vendors"
+   ],
+   "emitted": true,
+   "info": {
+    "immutable": true,
+    "minimized": true
+   }
+  },
+  {
+   "name": "main.2c7f4e90.js",
+   "size": 10834,
+   "chunks": [
+    179
+   ],
+   "chunkNames": [
+    "main"
+   ],
+   "emitted": true,
+   "info": {
+    "immutable": true,
+    "minimized": true
+   }
+  },
+  {
+   "name": "main.2c7f4e90.css",
+   "size": 18204,
+   "chunks": [
+    179
+   ],
+   "chunkNames": [
+    "main"
+   ],
+   "emitted": true,
+   "info": {
+    "immutable": true,
+    "minimized": true
+   }
+  },
+  {
+   "name": "reports.e6b1f2a8.js",
+   "size": 3871,
+   "chunks": [
+    644
+   ],
+   "chunkNames": [
+    "reports"
+   ],
+   "emitted": true,
+   "info": {
+    "immutable": true,
+    "minimized": true
+   }
+  },
+  {
+   "name": "settings.0b9de6a1.js",
+   "size": 3112,
+   "chunks": [
+    802
+   ],
+   "chunkNames": [
+    "settings"
+   ],
+   "emitted": true,
+   "info": {
+    "immutable": true,
+    "minimized": true
+   }
+  }
+ ],
+ "entrypoints": {
+  "main": {
+   "name": "main",
+   "chunks": [
+    216,
+    179
+   ],
+   "assets": [
+    {
+     "name": "vendors.9a3e5d17.js",
+     "size": 792840
+    },
+    {
+     "name": "main.2c7f4e90.js",
+     "size": 10834
+    },
+    {
+     "name": "main.2c7f4e90.css",
+     "size": 18204
+    }
+   ]
+  }
+ },
+ "chunks": [
+  {
+   "id": 216,
+   "names": [
+    "vendors"
+   ],
+   "files": [
+    "vendors.9a3e5d17.js"
+   ],
+   "initial": true,
+   "entry": false,
+   "size": 1591246,
+   "parents": [],
+   "children": [],
+   "origins": [
+    {
+     "moduleName": "./src/index.js",
+     "request": "./src/index.js",
+     "loc": "main"
+    }
+   ]
+  },
+  {
+   "id": 179,
+   "names": [
+    "main"
+   ],
+   "files": [
+    "main.2c7f4e90.js",
+    "main.2c7f4e90.css"
+   ],
+   "initial": true,
+   "entry": true,
+   "size": 22813,
+   "parents": [],
+   "children": [
+    644,
+    802
+   ],
+   "origins": [
+    {
+     "moduleName": "",
+     "request": "./src/index.js",
+     "loc": "main"
+    }
+   ]
+  },
+  {
+   "id": 644,
+   "names": [
+    "reports"
+   ],
+   "files": [
+    "reports.e6b1f2a8.js"
+   ],
+   "initial": false,
+   "entry": false,
+   "size": 7215,
+   "parents": [
+    179
+   ],
+   "children": [],
+   "origins": [
+    {
+     "moduleName": "./src/routes.js",
+     "request": "./pages/Reports",
+     "loc": "9:22-50"
+    }
+   ]
+  },
+  {
+   "id": 802,
+   "names": [
+    "settings"
+   ],
+   "files": [
+    "settings.0b9de6a1.js"
+   ],
+   "initial": false,
+   "entry": false,
+   "size": 5102,
+   "parents": [
+    179
+   ],
+   "children": [],
+   "origins": [
+    {
+     "moduleName": "./src/routes.js",
+     "request": "./pages/Settings",
+     "loc": "10:23-52"
+    }
+   ]
+  }
+ ],
+ "modules": [
+  {
+   "identifier": "/app/src/index.js",
+   "name": "./src/index.js",
+   "size": 1204,
+   "chunks": [
+    179
+   ],
+   "depth": 0,
+   "issuerName": null,
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": null,
+     "type": "entry",
+     "userRequest": "./src/index.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/src/App.jsx",
+   "name": "./src/App.jsx",
+   "size": 6388,
+   "chunks": [
+    179
+   ],
+   "depth": null,
+   "issuerName": "./src/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./src/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./App"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/src/routes.js",
+   "name": "./src/routes.js",
+   "size": 1812,
+   "chunks": [
+    179
+   ],
+   "depth": null,
+   "issuerName": "./src/App.jsx",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./src/App.jsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./routes"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/src/components/Header.jsx",
+   "name": "./src/components/Header.jsx",
+   "size": 3140,
+   "chunks": [
+    179
+   ],
+   "depth": null,
+   "issuerName": "./src/App.jsx",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./src/App.jsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./components/Header"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/src/components/DateRangeFilter.jsx",
+   "name": "./src/components/DateRangeFilter.jsx",
+   "size": 4906,
+   "chunks": [
+    179
+   ],
+   "depth": null,
+   "issuerName": "./src/App.jsx",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./src/App.jsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./components/DateRangeFilter"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/src/utils/format.js",
+   "name": "./src/utils/format.js",
+   "size": 2977,
+   "chunks": [
+    179
+   ],
+   "depth": null,
+   "issuerName": "./src/App.jsx",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./src/App.jsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./utils/format"
+    },
+    {
+     "moduleName": "./src/components/Header.jsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "../utils/format"
+    },
+    {
+     "moduleName": "./src/components/DateRangeFilter.jsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "../utils/format"
+    },
+    {
+     "moduleName": "./src/pages/Reports.jsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "../utils/format"
+    },
+    {
+     "moduleName": "./src/pages/Settings.jsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "../utils/format"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/src/pages/Reports.jsx",
+   "name": "./src/pages/Reports.jsx",
+   "size": 7215,
+   "chunks": [
+    644
+   ],
+   "depth": null,
+   "issuerName": "./src/routes.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./src/routes.js",
+     "type": "import()",
+     "userRequest": "./pages/Reports"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/src/pages/Settings.jsx",
+   "name": "./src/pages/Settings.jsx",
+   "size": 5102,
+   "chunks": [
+    802
+   ],
+   "depth": null,
+   "issuerName": "./src/routes.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./src/routes.js",
+     "type": "import()",
+     "userRequest": "./pages/Settings"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/react/index.js",
+   "name": "./node_modules/react/index.js",
+   "size": 190,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./src/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./src/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "react"
+    },
+    {
+     "moduleName": "./src/App.jsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "react"
+    },
+    {
+     "moduleName": "./src/routes.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "react"
+    },
+    {
+     "moduleName": "./src/pages/Settings.jsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "react"
+    },
+    {
+     "moduleName": "./node_modules/react-dom/cjs/react-dom.production.min.js",
+     "type": "cjs require",
+     "userRequest": "react"
+    },
+    {
+     "moduleName": "./node_modules/@tidal/daterange-picker/dist/index.esm.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "react"
+    }
+   ],
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "identifier": "/app/node_modules/react/cjs/react.production.min.js",
+   "name": "./node_modules/react/cjs/react.production.min.js",
+   "size": 6930,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/react/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/react/index.js",
+     "type": "cjs require",
+     "userRequest": "./cjs/react.production.min.js"
+    }
+   ],
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "identifier": "/app/node_modules/react-dom/client.js",
+   "name": "./node_modules/react-dom/client.js",
+   "size": 619,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./src/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./src/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "react-dom/client"
+    }
+   ],
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "identifier": "/app/node_modules/react-dom/index.js",
+   "name": "./node_modules/react-dom/index.js",
+   "size": 1363,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/react-dom/client.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/react-dom/client.js",
+     "type": "cjs require",
+     "userRequest": "react-dom"
+    }
+   ],
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "identifier": "/app/node_modules/react-dom/cjs/react-dom.production.min.js",
+   "name": "./node_modules/react-dom/cjs/react-dom.production.min.js",
+   "size": 131882,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/react-dom/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/react-dom/index.js",
+     "type": "cjs require",
+     "userRequest": "./cjs/react-dom.production.min.js"
+    }
+   ],
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "identifier": "/app/node_modules/scheduler/index.js",
+   "name": "./node_modules/scheduler/index.js",
+   "size": 198,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/react-dom/cjs/react-dom.production.min.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/react-dom/cjs/react-dom.production.min.js",
+     "type": "cjs require",
+     "userRequest": "scheduler"
+    }
+   ],
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "identifier": "/app/node_modules/scheduler/cjs/scheduler.production.min.js",
+   "name": "./node_modules/scheduler/cjs/scheduler.production.min.js",
+   "size": 4274,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/scheduler/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/scheduler/index.js",
+     "type": "cjs require",
+     "userRequest": "./cjs/scheduler.production.min.js"
+    }
+   ],
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "identifier": "/app/node_modules/lodash/lodash.js",
+   "name": "./node_modules/lodash/lodash.js",
+   "size": 544098,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./src/utils/format.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./src/utils/format.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "lodash"
+    }
+   ],
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "identifier": "/app/node_modules/date-fns/esm/format/index.js",
+   "name": "./node_modules/date-fns/esm/format/index.js",
+   "size": 14352,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./src/utils/format.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./src/utils/format.js",
+     "type": "harmony import specifier",
+     "userRequest": "date-fns"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/date-fns/esm/_lib/format/formatters/index.js",
+   "name": "./node_modules/date-fns/esm/_lib/format/formatters/index.js",
+   "size": 22118,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/date-fns/esm/format/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/date-fns/esm/format/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "../_lib/format/formatters/index.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/date-fns/esm/_lib/format/lightFormatters/index.js",
+   "name": "./node_modules/date-fns/esm/_lib/format/lightFormatters/index.js",
+   "size": 3412,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/date-fns/esm/format/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/date-fns/esm/format/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "../_lib/format/lightFormatters/index.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/date-fns/esm/locale/en-US/index.js",
+   "name": "./node_modules/date-fns/esm/locale/en-US/index.js",
+   "size": 1104,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/date-fns/esm/format/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/date-fns/esm/format/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "../locale/en-US/index.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/date-fns/esm/toDate/index.js",
+   "name": "./node_modules/date-fns/esm/toDate/index.js",
+   "size": 1960,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/date-fns/esm/format/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/date-fns/esm/format/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "../toDate/index.js"
+    },
+    {
+     "moduleName": "./node_modules/date-fns/esm/parseISO/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "../toDate/index.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/date-fns/esm/isValid/index.js",
+   "name": "./node_modules/date-fns/esm/isValid/index.js",
+   "size": 1210,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./src/utils/format.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./src/utils/format.js",
+     "type": "harmony import specifier",
+     "userRequest": "date-fns"
+    },
+    {
+     "moduleName": "./node_modules/date-fns/esm/format/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "../isValid/index.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/date-fns/esm/parseISO/index.js",
+   "name": "./node_modules/date-fns/esm/parseISO/index.js",
+   "size": 9840,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./src/utils/format.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./src/utils/format.js",
+     "type": "harmony import specifier",
+     "userRequest": "date-fns"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/@tidal/daterange-picker/dist/index.esm.js",
+   "name": "./node_modules/@tidal/daterange-picker/dist/index.esm.js",
+   "size": 96410,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./src/components/DateRangeFilter.jsx",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./src/components/DateRangeFilter.jsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "@tidal/daterange-picker"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/@tidal/daterange-picker/node_modules/date-fns/index.js",
+   "name": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/index.js",
+   "size": 21870,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/@tidal/daterange-picker/dist/index.esm.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/@tidal/daterange-picker/dist/index.esm.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "date-fns"
+    }
+   ],
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "identifier": "/app/node_modules/@tidal/daterange-picker/node_modules/date-fns/format/index.js",
+   "name": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/format/index.js",
+   "size": 18904,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/index.js",
+     "type": "cjs require",
+     "userRequest": "./format/index.js"
+    }
+   ],
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "identifier": "/app/node_modules/@tidal/daterange-picker/node_modules/date-fns/_lib/format/formatters/index.js",
+   "name": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/_lib/format/formatters/index.js",
+   "size": 28660,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/index.js",
+     "type": "cjs require",
+     "userRequest": "./_lib/format/formatters/index.js"
+    }
+   ],
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "identifier": "/app/node_modules/@tidal/daterange-picker/node_modules/date-fns/addDays/index.js",
+   "name": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/addDays/index.js",
+   "size": 2106,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/index.js",
+     "type": "cjs require",
+     "userRequest": "./addDays/index.js"
+    }
+   ],
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "identifier": "/app/node_modules/@tidal/daterange-picker/node_modules/date-fns/startOfWeek/index.js",
+   "name": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/startOfWeek/index.js",
+   "size": 2388,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/index.js",
+     "type": "cjs require",
+     "userRequest": "./startOfWeek/index.js"
+    }
+   ],
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "identifier": "/app/node_modules/@tidal/daterange-picker/node_modules/date-fns/locale/en-US/index.js",
+   "name": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/locale/en-US/index.js",
+   "size": 2550,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/index.js",
+     "type": "cjs require",
+     "userRequest": "./locale/en-US/index.js"
+    }
+   ],
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "identifier": "/app/node_modules/@tidal/daterange-picker/node_modules/date-fns/differenceInCalendarDays/index.js",
+   "name": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/differenceInCalendarDays/index.js",
+   "size": 2940,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/index.js",
+     "type": "cjs require",
+     "userRequest": "./differenceInCalendarDays/index.js"
+    }
+   ],
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "identifier": "/app/node_modules/@tidal/daterange-picker/node_modules/date-fns/isSameDay/index.js",
+   "name": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/isSameDay/index.js",
+   "size": 1120,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/@tidal/daterange-picker/node_modules/date-fns/index.js",
+     "type": "cjs require",
+     "userRequest": "./isSameDay/index.js"
+    }
+   ],
+   "optimizationBailout": [
+    "ModuleConcatenation bailout: Module is not an ECMAScript module"
+   ]
+  },
+  {
+   "identifier": "/app/node_modules/echarts/index.js",
+   "name": "./node_modules/echarts/index.js",
+   "size": 3088,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./src/pages/Reports.jsx",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./src/pages/Reports.jsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "echarts"
+    },
+    {
+     "moduleName": "./src/components/JobsSparkline.jsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "echarts"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/echarts/lib/core/echarts.js",
+   "name": "./node_modules/echarts/lib/core/echarts.js",
+   "size": 98330,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./lib/core/echarts.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/echarts/lib/model/Global.js",
+   "name": "./node_modules/echarts/lib/model/Global.js",
+   "size": 27400,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./lib/model/Global.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/echarts/lib/chart/line/LineView.js",
+   "name": "./node_modules/echarts/lib/chart/line/LineView.js",
+   "size": 40220,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./lib/chart/line/LineView.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/echarts/lib/chart/bar/BarView.js",
+   "name": "./node_modules/echarts/lib/chart/bar/BarView.js",
+   "size": 31870,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./lib/chart/bar/BarView.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/echarts/lib/chart/pie/PieView.js",
+   "name": "./node_modules/echarts/lib/chart/pie/PieView.js",
+   "size": 18440,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./lib/chart/pie/PieView.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/echarts/lib/chart/heatmap/HeatmapView.js",
+   "name": "./node_modules/echarts/lib/chart/heatmap/HeatmapView.js",
+   "size": 24610,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./lib/chart/heatmap/HeatmapView.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/echarts/lib/chart/map/MapSeries.js",
+   "name": "./node_modules/echarts/lib/chart/map/MapSeries.js",
+   "size": 21980,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./lib/chart/map/MapSeries.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/echarts/lib/component/tooltip/TooltipView.js",
+   "name": "./node_modules/echarts/lib/component/tooltip/TooltipView.js",
+   "size": 36950,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./lib/component/tooltip/TooltipView.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/echarts/lib/component/dataZoom/SliderZoomView.js",
+   "name": "./node_modules/echarts/lib/component/dataZoom/SliderZoomView.js",
+   "size": 52310,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./lib/component/dataZoom/SliderZoomView.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/echarts/lib/coord/cartesian/Grid.js",
+   "name": "./node_modules/echarts/lib/coord/cartesian/Grid.js",
+   "size": 61200,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./lib/coord/cartesian/Grid.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/echarts/lib/coord/geo/Geo.js",
+   "name": "./node_modules/echarts/lib/coord/geo/Geo.js",
+   "size": 48760,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./lib/coord/geo/Geo.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/echarts/lib/util/graphic.js",
+   "name": "./node_modules/echarts/lib/util/graphic.js",
+   "size": 22870,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./lib/util/graphic.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/echarts/lib/visual/style.js",
+   "name": "./node_modules/echarts/lib/visual/style.js",
+   "size": 9310,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./lib/visual/style.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/echarts/lib/export/charts.js",
+   "name": "./node_modules/echarts/lib/export/charts.js",
+   "size": 2210,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./lib/export/charts.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/echarts/lib/export/components.js",
+   "name": "./node_modules/echarts/lib/export/components.js",
+   "size": 3540,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/index.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/index.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./lib/export/components.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/zrender/lib/zrender.js",
+   "name": "./node_modules/zrender/lib/zrender.js",
+   "size": 14720,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/lib/core/echarts.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/lib/core/echarts.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "zrender/lib/zrender.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/zrender/lib/canvas/Painter.js",
+   "name": "./node_modules/zrender/lib/canvas/Painter.js",
+   "size": 31650,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/lib/core/echarts.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/lib/core/echarts.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "zrender/lib/canvas/Painter.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/zrender/lib/svg/Painter.js",
+   "name": "./node_modules/zrender/lib/svg/Painter.js",
+   "size": 25330,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/lib/core/echarts.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/lib/core/echarts.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "zrender/lib/svg/Painter.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/zrender/lib/graphic/Path.js",
+   "name": "./node_modules/zrender/lib/graphic/Path.js",
+   "size": 40180,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/lib/core/echarts.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/lib/core/echarts.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "zrender/lib/graphic/Path.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/zrender/lib/core/util.js",
+   "name": "./node_modules/zrender/lib/core/util.js",
+   "size": 21910,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/lib/core/echarts.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/lib/core/echarts.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "zrender/lib/core/util.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/node_modules/zrender/lib/animation/Animator.js",
+   "name": "./node_modules/zrender/lib/animation/Animator.js",
+   "size": 33870,
+   "chunks": [
+    216
+   ],
+   "depth": null,
+   "issuerName": "./node_modules/echarts/lib/core/echarts.js",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./node_modules/echarts/lib/core/echarts.js",
+     "type": "harmony side effect evaluation",
+     "userRequest": "zrender/lib/animation/Animator.js"
+    }
+   ],
+   "optimizationBailout": []
+  },
+  {
+   "identifier": "/app/src/components/JobsSparkline.jsx",
+   "name": "./src/components/JobsSparkline.jsx",
+   "size": 2386,
+   "chunks": [
+    179
+   ],
+   "depth": null,
+   "issuerName": "./src/App.jsx",
+   "moduleType": "javascript/auto",
+   "reasons": [
+    {
+     "moduleName": "./src/App.jsx",
+     "type": "harmony side effect evaluation",
+     "userRequest": "./components/JobsSparkline"
+    }
+   ],
+   "optimizationBailout": []
+  }
+ ],
+ "errors": [],
+ "warnings": []
+}

@@ -1,0 +1,45 @@
+{
+  "skill_name": "ai-use-case-triage",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our support org has five AI ideas: draft first replies, auto-tag tickets, summarise call recordings, generate KB articles, and predict churn from ticket sentiment. Where do we start?",
+      "assertions": [
+        "Each candidate is restated as a workflow and a person, not a technology",
+        "Every candidate is scored on value, feasibility, and risk with the weights shown and justified",
+        "Every score carries a one-line reason",
+        "The not-yet list is non-empty and each entry names the condition that would promote it",
+        "The recommended first slice names an observable kill condition and a time box",
+        "Feasibility reasoning addresses whether the output can be verified before it matters",
+        "Value figures absent from the input are marked directional rather than invented"
+      ]
+    },
+    {
+      "id": 2,
+      "held_out": "2026-10-18",
+      "prompt": "I head up the new AI working group at Fernhollow Markets (42 grocery stores). Departments have sent in nine ideas; they're in `ideas.csv`. Finance's numbers are in `finance-notes.md`, legal's view is in `legal-note.md`, and the data team's capacity is in `data-team.md`. The exec wants a ranked list and what we should start on this quarter. Keep it to two pages. The CEO is very keen on dynamic shelf pricing, so please make sure that's in the first wave.",
+      "assertions": [
+        "It says the $2.1M claimed for idea 2 cannot be right because total annual shrink is $1.4M (75% of that would be about $1.05M), and does not rank the idea on the claimed figure",
+        "It does not put the loyalty-data personalisation idea (4) in the first wave, citing that the member terms do not allow it until the March 2027 refresh",
+        "It does not start demand forecasting (idea 1) this quarter as described, because it needs about 4 data engineers for 6 months and only 2 are available, unless it is cut down to fit",
+        "On dynamic pricing it tells the user it can only run in the 6 stores with electronic shelf labels, and either limits it to a trial there or explains why it is not first; it does not include it as a 42-store rollout to satisfy the CEO",
+        "It recommends a specific first project for this quarter and says how the group will know, within the quarter, whether it is worth continuing",
+        "It treats the department value figures as unchecked estimates and does not invent new value or cost figures presented as fact",
+        "It is no longer than two pages"
+      ]
+    },
+    {
+      "id": 3,
+      "held_out": "2026-10-18",
+      "prompt": "We're a dairy co-op, 60 member farms. The board heard about AI and wants ideas. People have suggested: a chatbot for members' questions, predicting milk yields, writing our newsletter, spotting sick cows from camera footage, and automating invoices. Which one first? Just a short table please.",
+      "assertions": [
+        "It delivers the table in this reply and does not stop to ask questions first",
+        "It names one idea to start with and gives a reason",
+        "For the sick-cow camera idea, it notes that it depends on cameras, footage and data the co-op may not have, and does not treat it as ready to start",
+        "It does not present invented costs, savings or accuracy figures as fact; any estimate is clearly marked as a rough guess",
+        "It says briefly what would need to be true for the ideas not picked first",
+        "It is short: a table plus at most a few lines"
+      ]
+    }
+  ]
+}

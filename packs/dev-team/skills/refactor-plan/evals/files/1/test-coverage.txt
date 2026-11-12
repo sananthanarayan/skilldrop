@@ -1,0 +1,14 @@
+Coverage for orders/order_service.py (from tests/orders/test_order_service.py)
+
+OrderService.create_order             71%
+OrderService.apply_discounts          38%
+OrderService.calculate_tax             0%
+OrderService.reserve_stock            55%
+OrderService.charge_payment           64%
+OrderService.send_confirmation_email   0%
+OrderService._render_confirmation      0%
+OrderService.cancel_order             22%
+OrderService.refund                    0%
+OrderService.export_for_finance       80%
+
+tests/orders/test_order_service.py: 46 tests, 6m40s in CI (starts a real stock database container)

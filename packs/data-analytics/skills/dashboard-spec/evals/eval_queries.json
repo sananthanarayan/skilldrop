@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Spec a dashboard for our weekly ops review before the BI team builds it",
+    "should_trigger": true
+  },
+  {
+    "query": "What should go on the exec KPI dashboard? Here's the list everyone asked for",
+    "should_trigger": true
+  },
+  {
+    "query": "Our marketing dashboard has 40 charts and nobody uses it, redesign what goes on it",
+    "should_trigger": true
+  },
+  {
+    "query": "Write the requirements for a Looker dashboard for the finance team",
+    "should_trigger": true
+  },
+  {
+    "query": "Define exactly how monthly recurring revenue is calculated",
+    "should_trigger": false
+  },
+  {
+    "query": "Design SLOs, alerts and the service health dashboard for the payments API",
+    "should_trigger": false
+  },
+  {
+    "query": "Pick the success metrics and targets for the new search feature",
+    "should_trigger": false
+  },
+  {
+    "query": "Build a report of how my team is using AI coding tools from this usage log",
+    "should_trigger": false
+  }
+]

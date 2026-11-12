@@ -1,0 +1,160 @@
+/* Tidewatch — Localizable.strings (en) */
+
+/* Tab bar */
+"tab.forecast" = "Forecast";
+
+/* Tab bar */
+"tab.spots" = "Spots";
+
+/* Tab bar */
+"tab.surf" = "Surf";
+
+/* Tab bar */
+"tab.settings" = "Settings";
+
+/* Tide panel */
+"tide.high" = "High tide";
+
+/* Tide panel */
+"tide.low" = "Low tide";
+
+/* Tide panel */
+"tide.rising" = "Rising";
+
+/* Tide panel */
+"tide.falling" = "Falling";
+
+/* Tide panel */
+"tide.next_high" = "Next high tide at %@";
+
+/* Tide panel */
+"tide.summary" = "Low tide at %1$@, high tide at %2$@";
+
+/* Conditions card */
+"swell.height" = "Swell: %.1f m";
+
+/* Conditions card */
+"swell.period" = "Period: %d s";
+
+/* Conditions card */
+"water.temp" = "Water temperature: %.1f°";
+
+/* Conditions card */
+"wind.speed" = "Wind: %1$d km/h from %2$@";
+
+/* Spots list */
+"spot.updated" = "%1$@ updated %2$@ ago";
+
+/* Safety alert banner */
+"alert.rip.title" = "Rip current warning";
+
+/* Safety alert banner */
+"alert.rip.body" = "Strong rip currents. Swimming is not advised.";
+
+/* Safety alert banner */
+"alert.lightning.title" = "Lightning nearby";
+
+/* Safety alert banner */
+"alert.lightning.body" = "Get out of the water and off the beach.";
+
+/* Safety alert banner */
+"alert.uv.body" = "UV index is %d. Wear sunscreen.";
+
+/* Spots list */
+"spot.add" = "Add spot";
+
+/* Spots list */
+"spot.remove" = "Remove spot";
+
+/* Spots list */
+"spot.remove.confirm" = "Remove %@ from your spots?";
+
+/* Spots list */
+"spot.search.placeholder" = "Search beaches";
+
+/* Spots list */
+"spot.empty" = "No saved spots yet";
+
+/* Forecast screen */
+"forecast.updated" = "Updated %@";
+
+/* Forecast screen */
+"forecast.offline" = "You're offline. Showing the last forecast.";
+
+/* Forecast screen */
+"forecast.refresh" = "Refresh";
+
+/* Forecast screen */
+"forecast.source" = "Data from %@";
+
+/* Settings */
+"settings.units" = "Units";
+
+/* Settings */
+"settings.units.metric" = "Metric";
+
+/* Settings */
+"settings.units.imperial" = "Imperial";
+
+/* Settings */
+"settings.notifications" = "Notifications";
+
+/* Settings */
+"settings.notifications.footer" = "We'll alert you when conditions at your saved spots change.";
+
+/* Settings */
+"settings.dawn_patrol" = "Dawn patrol reminder";
+
+/* Settings */
+"settings.dawn_patrol.time" = "Remind me at %@";
+
+/* Settings */
+"settings.privacy" = "Privacy";
+
+/* Settings */
+"settings.about" = "About Tidewatch";
+
+/* Settings */
+"settings.version" = "Version %@ (%d)";
+
+/* Onboarding */
+"onboarding.title" = "Know before you paddle out";
+
+/* Onboarding */
+"onboarding.location" = "Allow location to find beaches near you.";
+
+/* Onboarding */
+"onboarding.continue" = "Continue";
+
+/* Onboarding */
+"onboarding.skip" = "Not now";
+
+/* Error banner */
+"error.network" = "Couldn't load the forecast. Check your connection.";
+
+/* Error banner */
+"error.location_denied" = "Location is off. Turn it on in Settings.";
+
+/* Share sheet */
+"share.forecast" = "Share forecast";
+
+/* Share sheet */
+"share.message" = "Surf at %1$@ is %2$@";
+
+/* Home-screen widget */
+"widget.title" = "Today's tides";
+
+/* Home-screen widget */
+"widget.placeholder" = "Pick a spot in the app";
+
+/* Surf rating */
+"rating.good" = "Good";
+
+/* Surf rating */
+"rating.fair" = "Fair";
+
+/* Surf rating */
+"rating.poor" = "Poor";
+
+/* Surf rating */
+"rating.flat" = "Flat";

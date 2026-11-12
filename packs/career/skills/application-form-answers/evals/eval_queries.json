@@ -1,0 +1,34 @@
+[
+  {
+    "query": "Help me fill in this application form",
+    "should_trigger": true
+  },
+  {
+    "query": "What do I put for these screening questions on the job application?",
+    "should_trigger": true
+  },
+  {
+    "query": "Answer these application questions from my resume",
+    "should_trigger": true
+  },
+  {
+    "query": "The form has a 100-word 'summarise your experience' box, draft it from my CV",
+    "should_trigger": true
+  },
+  {
+    "query": "Is this job a good fit for me?",
+    "should_trigger": false
+  },
+  {
+    "query": "Tailor my resume for this posting",
+    "should_trigger": false
+  },
+  {
+    "query": "Write the cover letter for this application",
+    "should_trigger": false
+  },
+  {
+    "query": "Answer this customer's security questionnaire from our policies",
+    "should_trigger": false
+  }
+]
