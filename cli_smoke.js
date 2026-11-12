@@ -116,6 +116,21 @@ check("project install into a git repo", () => {
   expect(exists(repo, ".cursor", "skills", "md-to-xlsx", "SKILL.md"), "--ide cursor did not write .cursor/skills");
 });
 
+check("--ide all installs into every tool the repo uses", () => {
+  const repo = gitRepo("repo-ide-all");
+  for (const d of [".claude", ".cursor", ".agents", path.join(".github", "workflows")]) fs.mkdirSync(path.join(repo, d), { recursive: true });
+  const out = run(["install", "doc-critique", "--ide", "all"], { cwd: repo });
+  for (const t of [".claude", ".cursor", ".agents"])
+    expect(exists(repo, t, "skills", "doc-critique", "SKILL.md"), `--ide all did not write ${t}/skills`);
+  expect(!exists(repo, ".github", "skills"), "--ide all treated a CI-only .github/ as Copilot");
+  expect(out.includes("codex + antigravity"), "the shared .agents/skills target was not installed once for both");
+  expect(run(["doctor", "--project"], { cwd: repo }).includes("agent tools in this folder"), "doctor does not list the tools it found");
+  run(["uninstall", "doc-critique", "--ide", "all"], { cwd: repo });
+  expect(!exists(repo, ".cursor", "skills", "doc-critique"), "--ide all uninstall left the cursor copy");
+  run(["install", "doc-critique", "--ide", "all"], { cwd: dir("no-tools"), ok: false });
+  run(["install", "doc-critique", "--ide", "all", "--dest", dir("both")], { cwd: repo, ok: false });
+});
+
 check("--local hides the install from git", () => {
   const repo = gitRepo("repo-local");
   run(["install", "output-hygiene", "--local"], { cwd: repo });

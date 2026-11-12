@@ -9,5 +9,5 @@ Nothing is in progress. `build` and `design` were retired after their last measu
 ## Considering
 
 Everything else raised in the 2026 reviews and not yet built, with why, size and dependencies, is in
-[docs/designs/future-ideas.md](docs/designs/future-ideas.md): distribution, the remaining OWASP gaps
+[docs/designs/future-ideas.md](docs/designs/future-ideas.md): the remaining OWASP gaps
 (signing catalogues), live evals, new skills and loops, and docs depth.

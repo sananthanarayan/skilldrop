@@ -50,6 +50,20 @@ npx skilldrop-cli install --pack dev-team --ide codex
 
 The pack lands in `~/.codex/skills/`; use `antigravity` or `copilot` for those tools, and add `--project` to install into the repo instead.
 
+## Install into every tool the repo uses
+
+When a team works in more than one tool, `--ide all` installs into each tool the repo already
+has, at project scope, in one command:
+
+```bash
+npx skilldrop-cli install --pack dev-team --ide all
+```
+
+Run it from the repo root. A `.github/` folder that holds only CI doesn't count as Copilot.
+`npx skilldrop-cli doctor` lists the tools it finds, and
+[Install targets](../reference/install-targets.md) lists what it looks for. `update`, `outdated`,
+`uninstall` and `diff` take `--ide all` too.
+
 ## Try skills in a repo you don't own
 
 `--local` installs into the repo and hides every file it writes from git:

@@ -8,6 +8,10 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.18.0 — 2026-11-12
+
+- **Install into every tool your repo uses in one command** ([RFC-0087](docs/rfcs/0087-ide-all.md)). Run `npx skilldrop-cli install --pack dev-team --ide all` from the repo root. It finds Claude Code, Cursor, Kiro, Codex, Antigravity and GitHub Copilot by the files each keeps in a repo, and installs into each at project scope, Cursor's rule file included. A `.github/` folder that holds only CI doesn't count as Copilot. `update`, `outdated`, `uninstall` and `diff` take `--ide all` too, so the copies stay in step, and `doctor` lists the tools it finds.
+
 ## 1.17.0 — 2026-11-12
 
 - **The `design` loop is retired** ([RFC-0086](docs/rfcs/0086-design-retired.md)). In its fifth measurement, both blind judges preferred its own skills, used in order without it. When your repository allows one decision per ADR, it wrote one bundled record, where the skills wrote one per decision. Run its skills in order instead:

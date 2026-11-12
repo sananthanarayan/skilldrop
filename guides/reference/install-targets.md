@@ -26,6 +26,7 @@ Pick one target per `install`, `update` or `uninstall`:
 | `--ide codex` | `~/.codex/skills/` (`--project`: `./.agents/skills/`) | Codex |
 | `--ide antigravity` | `~/.gemini/antigravity-cli/skills/` (`--project`: `./.agents/skills/`) | Antigravity CLI |
 | `--ide copilot` | `~/.copilot/skills/` (`--project`: `./.github/skills/`) | GitHub Copilot |
+| `--ide all` | the project folder of every tool found in the current folder | Each tool whose files are there: `.claude/` or `CLAUDE.md`, `.cursor/` or `.cursorrules`, `.kiro/`, `.agents/` or `.codex/`, and `.github/` with Copilot's own `skills/`, `copilot-instructions.md`, `instructions/` or `agents/`. A shared folder is installed once. Skills, packs and loops only ([RFC-0087](../../docs/rfcs/0087-ide-all.md)) |
 | `--dest <dir>` | any directory | Continue, Cline, Aider and others |
 
 ## Claude Code
