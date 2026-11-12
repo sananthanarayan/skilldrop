@@ -49,10 +49,6 @@ A good result:
 - **Reference previous ADRs by number**, not by URL, so the cross-references survive folder restructures.
 - **Don't editorialize.** An ADR records what was decided, not what you (the AI) think was wisest.
 
-## Where a loop runs it
-
-- Stage `record` of the [`design` loop](../../../packs/solution-architect/loops/design/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/solution-architect/skills/adr-generator/SKILL.md), the instructions the agent reads

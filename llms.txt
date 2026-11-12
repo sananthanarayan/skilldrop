@@ -1,12 +1,12 @@
 # skilldrop
 
 > 123 portable skills for the artifacts knowledge work ships (ADRs, design docs,
-> PRDs, runbooks, threat models, decks, postmortems), plus 10 loops that sequence them
+> PRDs, runbooks, threat models, decks, postmortems), plus 9 loops that sequence them
 > behind gates. A loop orders skills; a skill never calls a skill, so every one of the
 > 123 installs and runs alone by folder copy in Claude Code, Cursor, Kiro, Codex,
 > Copilot and Antigravity. Zero runtime dependencies. This file indexes the docs so a tool
 > can read the few relevant pages instead of the whole tree. Links are raw file content.
-> Version 1.16.0.
+> Version 1.17.0.
 
 ## Start here
 
@@ -25,7 +25,6 @@ to any generator.
 
 - [clarify](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/experience-design/loops/clarify/LOOP.md) — *loop*, cap 3. Stages: page -> strings -> blueprint. Gates: G14 (review).
 - [comply](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/grc/loops/comply/LOOP.md) — *loop*, cap 3. Stages: register -> assess -> evidence -> check -> sign-off. Gates: G8 (mechanical), G8.1 (human).
-- [design](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/solution-architect/loops/design/LOOP.md) — *loop*, cap 3. Stages: constrain -> shape -> threat -> ratify -> record. Gates: G1 (review).
 - [measure](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/data-analytics/loops/measure/LOOP.md) — *loop*, cap 3. Stages: spec -> review -> sign-off. Gates: G9 (review), G9.1 (human).
 - [modernize](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/dev-team/loops/modernize/LOOP.md) — *loop*, cap 3. Stages: survey -> plan -> capture -> rebuild -> prove -> cutover. Gates: G10 (mechanical), G10.1 (human).
 - [provision](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/packs/infra-as-code/loops/provision/LOOP.md) — *loop*, cap 3. Stages: module -> plan -> apply. Gates: G13 (review), G13.1 (human).
@@ -272,7 +271,7 @@ stdlib JSON Schema subset in validate.py, never by a dependency.
 - [From complaint to closed incident](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/complaint-to-closed-incident.md) *(tutorial)*: A user complaint triggers a full response cycle — find what's broken, fix it, and close it with a postmortem and a runbook update — using the product-manager and sre-oncall skills in order.
 - [From a dashboard request to numbers people can defend](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/dashboard-request-to-defensible-numbers.md) *(tutorial)*: Run the measure loop on a real request. The spec cuts the charts that serve no decision, the SQL review catches a join that inflated revenue, and the loop stops for the metric owners instead of picking between two teams' definitions of an active customer.
 - [From story to merged code — the dev-team workflow](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/dev-team-workflow.md) *(tutorial)*: A complete dev-team session: split the story, implement with checkpoints, gate with the review panel, document what shipped.
-- [Follow one change through the loops](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/follow-a-change-through-the-loops.md) *(tutorial)*: A single realistic change — API rate limiting — walked from a stakeholder complaint to a closed incident, showing what each stage produces and what each gate actually refuses.
+- [Follow one change through the stages](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/follow-a-change-through-the-loops.md) *(tutorial)*: A single realistic change — API rate limiting — walked from a stakeholder complaint to a closed incident, showing what each stage produces and what each check actually refuses.
 - [From idea to shipped feature](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/idea-to-shipped-feature.md) *(tutorial)*: A product idea moves through all five lifecycle stages — find the problem, design, build, release, run it — with each gate refusing until its conditions are met.
 - [From a Terraform module to a plan you can safely apply](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/module-to-safe-apply.md) *(tutorial)*: Write a reusable Terraform module with secure defaults, then review a plan that was meant to resize one app tier and would also have replaced a database, opened SSH to the internet and widened an IAM policy, with the infra-as-code pack.
 - [One Markdown draft, every reader's format](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/guides/tutorial/one-draft-every-format.md) *(tutorial)*: Take one Markdown report to a Word file for the people who edit it, a spreadsheet for the people who total it, and a slide deck for the meeting, then bring a reply back to Markdown, with the converters pack. Nothing is dropped without being named.
@@ -290,7 +289,7 @@ Each skill and loop sits in exactly one pack folder, `packs/<pack>/`. Every role
 except `api-builder` requires `core`, which installs with it.
 
 - **core** (5 skills, loops: ship-a-draft): The cross-role toolkit every pack builds on: structured intake, document critique, the review council, output hygiene, and the decision graph behind a codebase, plus the ship-a-draft wrapper. Installed automatically with every role pack.
-- **solution-architect** (11 skills, loops: design, requires core): Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.
+- **solution-architect** (11 skills, requires core): Design-phase artifacts: diagrams, decision records, design docs, contracts, schemas, threat models, and the reviews that gate them.
 - **product-manager** (9 skills, requires core): Direction to requirements: PR/FAQs, strategy frameworks, OKRs, business cases, interviews, PRDs, journey maps, and success measurement.
 - **dev-team** (20 skills, loops: modernize, release, requires core): Build-and-ship: story splitting, implementation with adversarial review, test plans, triage, pull request descriptions, a ranked technical-debt register, migrations, launch readiness, release notes, agent-policy files, and code-quality gates.
 - **sre-oncall** (8 skills, requires core): Operate the service: runbooks, observability design, incident communications, postmortems, and capacity/cost models.
@@ -358,5 +357,5 @@ except `api-builder` requires `core`, which installs with it.
 ## Optional
 
 - [CHANGELOG.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CHANGELOG.md): what shipped in each release.
-- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 84 RFCs record why each structural decision was made.
+- [docs/rfcs/](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/docs/rfcs/0000-template.md): 85 RFCs record why each structural decision was made.
 - [CONTRIBUTING.md](https://raw.githubusercontent.com/sananthanarayan/skilldrop/main/CONTRIBUTING.md): the contributor lanes and gates.

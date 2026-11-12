@@ -564,3 +564,19 @@ measured again on two fresh held-out evals each
   75% and 50%. It still lost to its skills where the house rules allowed one decision per ADR
   and it wrote several into one.
 
+### design retired
+
+[RFC-0086](../../docs/rfcs/0086-design-retired.md) gave `design` a one-decision-per-record rule
+and measured it on two fresh held-out evals
+([`loops-1.17.0.json`](../../docs/benchmarks/loops-1.17.0.json)). Both judges preferred its
+skills, used without it, in 75% of pairs.
+- **The live-tracking design:** the skills wrote five ADRs, one per decision. The loop wrote one
+  bundled ADR, because the new rule let it list the other decisions in the design doc as still
+  to record.
+- **The hand-off design:** it was split. The loop caught a second conflicting rule, and missed
+  one of the two clauses its design broke.
+
+It was retired on that result. With `build` and `design` gone, `release` is the one loop on the
+lifecycle. The lesson of both retirements is the same: when a loop's skills already hand off to
+each other, each rule added to the loop fixes the last failure and causes the next.
+

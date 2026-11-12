@@ -2,7 +2,6 @@
 title: Solution architect pack reference
 summary: Every skill in the Solution architect pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 kind: reference
-stage: design
 ---
 
 # Solution architect pack reference
@@ -15,7 +14,7 @@ Design-phase artifacts: diagrams, decision records, design docs, contracts, sche
 |---|---|
 | Install | `npx skilldrop-cli install --pack solution-architect` |
 | Skills | 11 plus 5 from core |
-| Loops | design |
+| Loops | none |
 | How-to | [Use the Solution architect pack](../../how-to/packs/use-the-solution-architect-pack.md) |
 
 ## Skills
@@ -267,22 +266,6 @@ Tier **heavy** · v0.1.0 · [SKILL.md](../../../packs/solution-architect/skills/
 - Compliance attestation (SOC2, PCI evidence) — this models attacks, it doesn't certify controls
 - Incident analysis after an exploit — that's `postmortem-generator`
 - Pen-testing a live system — this is paper analysis; it tells the pen test where to aim
-
-## Loops
-
-### `design`
-
-Take a ratified requirement to a recorded architectural decision — constraints, structure, diagrams, threats, then a panel that must agree before the decision is written down.
-
-| Stage | Skills | Gate |
-|---|---|---|
-| constrain | `context-graph`, `nfr-spec` | — |
-| shape | `design-doc`, `architecture-diagrams` | — |
-| threat | `threat-model` | — |
-| ratify | `council-review` | G1 review: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / SPLIT / BLOCKED |
-| record | `adr-generator`, `context-graph` | — |
-
-Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/solution-architect/loops/design/LOOP.md)
 
 ## Included from core
 

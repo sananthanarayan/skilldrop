@@ -32,7 +32,7 @@ mkdir -p packs/<pack>/loops/<name>
 ```
 
 In it, write `loop.json` against the closed contract: stages typed `generate`, `verify` or
-`gate`, and gates numbered by the loop's place in the lifecycle, such as `G1` for `design`, or the next free number for a loop outside it.
+`gate`, and gates numbered by the loop's place in the lifecycle, such as `G3` for `release`, or the next free number for a loop outside it.
 
 ## Write LOOP.md from an existing loop
 

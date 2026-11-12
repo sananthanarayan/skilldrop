@@ -4,7 +4,7 @@ What is being worked on next. Not a commitment — a direction. Shipped work mov
 
 ## Upcoming
 
-- **Get `design` ahead of its own skills on every kind of request.** 0.5.0 beats plain Claude Code and records decisions well, but loses to its skills when the house rules allow one decision per ADR: it bundled several into one record ([RFC-0085](docs/rfcs/0085-build-retired-design-kept.md)). The next rebuild writes one decision per record when the house rules say so, with any others as separate proposed records, and names every file by a path inside the working folder. It is measured on fresh held-out evals against both.
+Nothing is in progress. `build` and `design` were retired after their last measurements ([RFC-0085](docs/rfcs/0085-build-retired-design-kept.md), [RFC-0086](docs/rfcs/0086-design-retired.md)). The next piece of work comes from the list below.
 
 ## Considering
 

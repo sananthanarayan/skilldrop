@@ -1,21 +1,21 @@
 ---
-title: Follow one change through the loops
-summary: A single realistic change — API rate limiting — walked from a stakeholder complaint to a closed incident, showing what each stage produces and what each gate actually refuses.
+title: Follow one change through the stages
+summary: A single realistic change — API rate limiting — walked from a stakeholder complaint to a closed incident, showing what each stage produces and what each check actually refuses.
 kind: tutorial
 ---
 
-# Follow one change through the loops
+# Follow one change through the stages
 
 One change, four stages, start to finish. The point is not the artifacts — it is seeing
-**what each gate refuses**, because a gate that never refuses anything is decoration. One of
-the stages runs as a loop (`design`). Finding the problem, building it and running the service
-run as skills in order: their loops were retired, because on held-out evals the same skills used
-without the loop were preferred.
+**what each check refuses**, because a check that never refuses anything is decoration. All four
+stages run as skills in order: their loops were retired, because on held-out evals the same
+skills used without the loop were preferred.
 
 Install what you need as you go, or take it all up front:
 
 ```bash
-npx skilldrop-cli install --loop design
+npx skilldrop-cli install --pack solution-architect
+npx skilldrop-cli install --pack core
 npx skilldrop-cli install --pack dev-team
 npx skilldrop-cli install --pack product-manager
 npx skilldrop-cli install --pack sre-oncall
@@ -61,9 +61,9 @@ interview: re-briefing cannot fix a wrong problem.
 
 ---
 
-## Loop 1 — `design`
+## Decide how to build it
 
-### `constrain` → `shape` → `threat` → **G1 (review)** → `record`
+### `nfr-spec` → `design-doc` + `architecture-diagrams` → `threat-model` → `council-review` → `adr-generator`
 
 **constrain first, always.** [`nfr-spec`](../../packs/solution-architect/skills/nfr-spec/SKILL.md) before any
 structure: *limit decisions add ≤5ms p99; the limiter survives a Redis failure read-only.*
@@ -77,18 +77,21 @@ in two renderings. A diagram that disagrees with the doc is a defect in both.
 after. It finds that per-API-key limits let one customer's leaked key exhaust the org quota.
 Back to `shape` — and note this cost you nothing, because no code exists yet.
 
-**G1 — review panel.** [`council-review`](../../packs/core/skills/council-review/SKILL.md) seats the
-standing panel, takes positions *before* cross-talk, and records dissent. Verdict:
-`PROCEED WITH CONDITIONS` — ship it, but the operator seat wants the limiter's failure mode
+**review panel.** [`council-review`](../../packs/core/skills/council-review/SKILL.md) seats the
+standing panel, takes positions *before* cross-talk, and records dissent. Its verdict:
+`PROCEED WITH CONDITIONS` — build it, but the operator seat wants the limiter's failure mode
 documented before launch.
 
-**What G1 refuses:** a design nobody attacked, and consensus that was never tested. Treating
+**What the panel refuses:** a design nobody attacked, and consensus that was never tested. Treating
 `PROCEED WITH CONDITIONS` as `PROCEED` is the most common failure here — the condition is
 part of the decision and must reach the ADR.
 
 **record last.** [`adr-generator`](../../packs/solution-architect/skills/adr-generator/SKILL.md) — *after* it is a
-decision, carrying the condition and the rejected options. An ADR written before G1 is a
-proposal in an ADR's clothes.
+decision, carrying the condition and the rejected options, one record per decision. An ADR
+written before the panel agrees is a proposal in an ADR's clothes.
+
+This stage had a loop of its own; it was retired after five measurements, because the same
+skills in this order did better without it.
 
 ---
 
@@ -149,7 +152,7 @@ is its accuracy.
 | Where | Who decides | Refused |
 |---|---|---|
 | Finding the problem | you | a brief with `[missing]` fields nobody filled |
-| **G1** | review panel | a design nobody attacked; untested consensus |
+| Deciding how to build it | review panel, then you | a design nobody attacked; untested consensus |
 | Building it | script, then you | an argument — the exit code decides |
 | Running it | you | a postmortem that changed no procedure |
 
@@ -157,8 +160,8 @@ Each decision is made by whoever fits **how expensive the mistake is to unwind**
 re-brief, months of code, a revert, live users. That is the whole model.
 
 Every skill above also runs standalone. You can invoke
-[`adr-generator`](../../packs/solution-architect/skills/adr-generator/SKILL.md) on its own and never touch a loop;
-the loop is what supplies the order and the gates between them.
+[`adr-generator`](../../packs/solution-architect/skills/adr-generator/SKILL.md) on its own and never touch the others;
+the order above is what makes each one's output the next one's input.
 
 Next: [Why loops](../explanation/loops.md) for the reasoning, or
 [Author a new loop](../how-to/author-a-loop.md) to build your own.

@@ -1010,11 +1010,13 @@ def render(skills, packs, outcomes, version, releases):
             ("release", "Release", "merged code to live users, with a way back"),
             ("operate", "Operate", "a live service through incidents and what you learn")]
     by_loop = {lp["name"]: lp for lp in loop_list}
+    # A stage whose loop was retired (RFC-0074, RFC-0085, RFC-0086) keeps its step: its skills
+    # still do the work, in order, and the operating model shows which.
     flow_steps = "".join(
-        f"""<li class="flow__step"><a href="loops/{n}/"><span class="flow__n">{k + 1:02d}</span>
+        f"""<li class="flow__step"><a href="{f'loops/{n}/' if n in by_loop else 'docs/explanation/operating-model.html'}"><span class="flow__n">{k + 1:02d}</span>
       <b>{label}</b><span class="flow__what">{what}</span>
-      <span class="flow__who">{esc('; '.join(f"{st['id']}: {WHO.get(st['gate']['kind'], st['gate']['kind'])}" for st in by_loop[n]['stages'] if st['gate']))}</span></a></li>"""
-        for k, (n, label, what) in enumerate(LIFE) if n in by_loop)
+      <span class="flow__who">{esc('; '.join(f"{st['id']}: {WHO.get(st['gate']['kind'], st['gate']['kind'])}" for st in by_loop[n]['stages'] if st['gate']) if n in by_loop else 'its skills, in order')}</span></a></li>"""
+        for k, (n, label, what) in enumerate(LIFE))
     own_items = "".join(f'<li><b>{esc(t)}</b><p>{b}</p><a href="{h}">How it works &rarr;</a></li>' for t, b, h in OWN)
     team_items = "".join(f'<li><b>{esc(t)}</b><p>{esc(b)}</p><code>{esc(c)}</code> <a href="{h}">Guide &rarr;</a></li>'
                          for t, b, c, h in TEAM)
@@ -1442,7 +1444,7 @@ a {{ color:var(--accent-700); }}
   <div class="inner">
     <p class="eyebrow">How it works</p>
     <h2>The agent does the work. The decisions you can't undo stay yours.</h2>
-    <p class="lede">Five loops run skills in order and stop at a gate before anything moves on. The cheaper the mistake, the more a script decides; the harder it is to undo, the more it waits for you.</p>
+    <p class="lede">The work moves through five stages. Where a mistake is costly, a loop runs the skills in order and stops at a gate before anything moves on; elsewhere the skills run in order on their own. The cheaper the mistake, the more a script decides; the harder it is to undo, the more it waits for you.</p>
     <ol class="flow">{flow_steps}</ol>
     <p class="flow__more">Plus <a href="loops/ship-a-draft/"><code>ship-a-draft</code></a>, which wraps any document in intake before and critique after. <a href="docs/explanation/operating-model.html">The operating model on one page</a> · <a href="loops/">Every loop &rarr;</a></p>
   </div>

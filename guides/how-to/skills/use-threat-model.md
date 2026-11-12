@@ -61,10 +61,6 @@ A good result:
 - Incident analysis after an exploit — that's `postmortem-generator`
 - Pen-testing a live system — this is paper analysis; it tells the pen test where to aim
 
-## Where a loop runs it
-
-- Stage `threat` of the [`design` loop](../../../packs/solution-architect/loops/design/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/solution-architect/skills/threat-model/SKILL.md), the instructions the agent reads

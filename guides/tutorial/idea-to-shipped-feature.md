@@ -7,12 +7,14 @@ stage: release
 
 # From idea to shipped feature
 
-A customer request becomes a shipped feature. This walkthrough takes one idea through all five lifecycle stages and shows a real refusal at every gate. The refusals are the point: a gate that always passes is decoration. Two stages run as loops (`design`, `release`). Finding the problem, building it and running the service run as skills in order: their loops were retired, because on held-out evals the same skills used without the loop were preferred.
+A customer request becomes a shipped feature. This walkthrough takes one idea through all five lifecycle stages and shows a real refusal at every gate. The refusals are the point: a gate that always passes is decoration. One stage runs as a loop (`release`). Finding the problem, deciding how to build it, building it and running the service run as skills in order: their loops were retired, because on held-out evals the same skills used without the loop were preferred.
 
-Install the two loops and the three packs whose skills cover the other stages:
+Install the loop and the packs whose skills cover the other stages:
 
 ```bash
-npx skilldrop-cli install --loop design release
+npx skilldrop-cli install --loop release
+npx skilldrop-cli install --pack solution-architect
+npx skilldrop-cli install --pack core
 npx skilldrop-cli install --pack dev-team
 npx skilldrop-cli install --pack product-manager
 npx skilldrop-cli install --pack sre-oncall
@@ -67,7 +69,7 @@ The PM tightens the criteria: the export query is scoped to `WHERE account_id = 
 
 ---
 
-## Loop 1 — `design` (G1: council-review)
+## Decide how to build it: skills in order, then `council-review`'s panel
 
 ### `architecture-diagrams`
 
@@ -96,12 +98,12 @@ The engineer runs `architecture-diagrams` with the ratified requirement. The ski
 
 The ADR is updated: expiry shortened to 4 hours; a download event log is added to the architecture.
 
-### Gate G1 — PROCEED WITH CONDITIONS
+### The review panel — PROCEED WITH CONDITIONS
 
 `council-review` runs with devils-advocate, security-reviewer, and code-quality agents:
 
 ```
-G1 PROCEED WITH CONDITIONS
+PROCEED WITH CONDITIONS
 
 security-reviewer: The pre-signed URL expiry fix addresses the primary data
   exposure risk. Condition: every export generation and every download must
@@ -116,10 +118,10 @@ devils-advocate: The async model is correct but the email delivery path is
 code-quality: No objection. The ADR captures the trade-offs clearly.
 ```
 
-The team adds the audit log to the architecture and a "recent exports" page to the PRD. Re-gating:
+The team adds the audit log to the architecture and a "recent exports" page to the PRD. Back to the panel:
 
 ```
-G1 PROCEED
+PROCEED
 Conditions met. Proceed to build.
 ```
 
@@ -165,7 +167,7 @@ The engineer merges, and the `release` loop takes the change from there.
 
 ---
 
-## Loop 2 — `release` (G3: launch-readiness, then G3.1: a human go/no-go)
+## Ship it: the `release` loop (G3: launch-readiness, then G3.1: a human go/no-go)
 
 ### `migration-plan`
 
@@ -240,10 +242,10 @@ The on-call engineer feeds the delta to `runbook-generator`, and adds the per-jo
 | Gate | What it blocked | What would have happened without it |
 |---|---|---|
 | The PM's revision of the PRD | Untestable acceptance criteria ("contains only their data") | Query-layer enforcement would have been an assumption, not a requirement — cross-account data leakage possible |
-| G1 PROCEED WITH CONDITIONS | Missing audit log; no fallback if email fails | No compliance audit trail; users with failed emails would have no way to retrieve their export |
+| The review panel's PROCEED WITH CONDITIONS | Missing audit log; no fallback if email fails | No compliance audit trail; users with failed emails would have no way to retrieve their export |
 | `pre-merge-review` NOT READY | Audit log failure path silently swallowed | A log write failure during export would have been invisible — compliance gap, no alert |
 | G3 REVISE | Exports kept in S3 with no deletion rule | Every customer's data export would have stayed in the bucket indefinitely |
 | G3.1 RECONSIDER | Launching into the quarter-end freeze without the on-call engineer | A first-week problem would have landed on someone who did not know the export path |
 | The postmortem's runbook delta | Binary column handling not in threat model; per-job alerting missing | Next binary-column incident would have gone undetected for the same reason |
 
-The gates did not slow the feature down. The PM's revision caught a testability gap in the acceptance criteria — that conversation would have happened anyway, just later and more expensively in code review. G1's conditions added the audit log before build started, not after a compliance audit found it missing. `pre-merge-review`'s gate script caught a silent failure mode in a compliance-critical path. G3 kept customer data from piling up in a bucket, and G3.1 moved the launch by three days, not three weeks. The postmortem's delta closed a gap the threat model did not anticipate.
+The gates did not slow the feature down. The PM's revision caught a testability gap in the acceptance criteria — that conversation would have happened anyway, just later and more expensively in code review. The panel's conditions added the audit log before build started, not after a compliance audit found it missing. `pre-merge-review`'s gate script caught a silent failure mode in a compliance-critical path. G3 kept customer data from piling up in a bucket, and G3.1 moved the launch by three days, not three weeks. The postmortem's delta closed a gap the threat model did not anticipate.

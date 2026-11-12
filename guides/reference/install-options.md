@@ -113,5 +113,5 @@ Then delegate by name: *"use the devils-advocate agent on this diff."* Where eac
 - Check what a skill's scripts need: [Skills that ship scripts](skills-with-scripts.md)
 - Add a skill or a loop to this repo: [Author a skill](../how-to/author-a-skill.md) · [Author a loop](../how-to/author-a-loop.md)
 - Understand why it is built this way: [Why loops](../explanation/loops.md) · [ARCHITECTURE.md](../../ARCHITECTURE.md)
-- See one change go through the loops: [Follow one change through the loops](../tutorial/follow-a-change-through-the-loops.md)
+- See one change go through the stages: [Follow one change through the stages](../tutorial/follow-a-change-through-the-loops.md)
 - Point a model at this repo: [`llms.txt`](../../llms.txt), a generated index so a tool reads the few relevant pages instead of the tree

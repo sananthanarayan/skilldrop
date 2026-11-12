@@ -1,0 +1,77 @@
+{
+ "date": "2026-11-12",
+ "backend": "claude-cli",
+ "judge_model": "claude-sonnet-5-5",
+ "trials": 2,
+ "note": "design 0.6.0 (RFC-0086), on two fresh held-out evals, with --allow-bash. Fifth measurement; design was retired on this result.",
+ "kind": "loops",
+ "floor": 0.125,
+ "models": {
+  "claude-sonnet-5-5": {
+   "label": "standard",
+   "evals": 2,
+   "runs": 4,
+   "loops": 1,
+   "held_out_evals": 2,
+   "errors": 0,
+   "skipped": 0,
+   "loop": 0.90625,
+   "cost_loop": 0.16435895,
+   "stages": 0.875,
+   "cost_stages": 0.131445825,
+   "baseline": 0.875,
+   "cost_baseline": 0.11127925,
+   "win_pairwise": 0.25,
+   "win_pairwise_ci": [
+    0.0,
+    0.5
+   ],
+   "win_loop_vs_stages": 0.25,
+   "win_loop_vs_stages_ci": [
+    0.0,
+    0.5
+   ],
+   "win_stages_vs_baseline": 0.25,
+   "win_stages_vs_baseline_ci": [
+    0.0,
+    0.5
+   ],
+   "win_pairwise2": 0.5,
+   "win_pairwise2_ci": [
+    0.0,
+    1.0
+   ],
+   "win_loop_vs_stages2": 0.25,
+   "win_loop_vs_stages2_ci": [
+    0.0,
+    0.5
+   ],
+   "win_stages_vs_baseline2": 0.5,
+   "win_stages_vs_baseline2_ci": [
+    0.5,
+    0.5
+   ]
+  }
+ },
+ "loops": [
+  {
+   "loop": "design",
+   "model": "claude-sonnet-5-5",
+   "evals": 2,
+   "held_out_evals": 2,
+   "loop_met": 0.90625,
+   "cost_loop": 0.16435895,
+   "stages_met": 0.875,
+   "cost_stages": 0.131445825,
+   "baseline_met": 0.875,
+   "cost_baseline": 0.11127925,
+   "preferred": 0.25,
+   "stages_preferred": 0.25,
+   "loop_over_stages": 0.25,
+   "preferred2": 0.5,
+   "stages_preferred2": 0.5,
+   "loop_over_stages2": 0.25,
+   "reading": "mixed"
+  }
+ ]
+}

@@ -9,16 +9,16 @@
       "loops": []
     },
     "architect": {
-      "description": "Design-phase setup: the solution-architect pack and the loops that run it end to end.",
-      "packs": ["solution-architect"],
+      "description": "Design-phase setup: the solution-architect pack, the core skills its stage runs (context-graph, council-review), and the ship-a-draft loop.",
+      "packs": ["solution-architect", "core"],
       "agents": [],
-      "loops": ["design", "ship-a-draft"]
+      "loops": ["ship-a-draft"]
     },
     "full": {
       "description": "The complete catalogue: every pack, every reviewer agent, every loop.",
       "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "api-builder", "converters", "experience-design", "research", "trackers", "data-analytics", "grc", "infra-as-code", "skill-engineering", "career"],
       "agents": ["devils-advocate", "security-reviewer", "code-quality"],
-      "loops": ["design", "release", "ship-a-draft", "research", "comply", "measure", "modernize", "ship-agent", "provision", "clarify"]
+      "loops": ["release", "ship-a-draft", "research", "comply", "measure", "modernize", "ship-agent", "provision", "clarify"]
     }
   }
 }

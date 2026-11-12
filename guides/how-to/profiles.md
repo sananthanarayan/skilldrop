@@ -15,7 +15,7 @@ Profiles are metadata only. Nothing moves into a `profiles/` folder; each skill,
 | Profile | What it installs |
 |---|---|
 | `starter` | `dev-team` pack + review panel (all 3 reviewer agents) |
-| `architect` | `solution-architect` pack + `design` and `ship-a-draft` loops |
+| `architect` | `solution-architect` and `core` packs + `ship-a-draft` loop |
 | `full` | Every pack, every reviewer agent, every loop |
 
 ## List available profiles

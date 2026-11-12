@@ -13,11 +13,10 @@ skilldrop ships **loops**, not just parts. A loop is a named sequence of stages 
 
 A loop *sequences* skills — it never contains one. Every skill stays independently installable and runnable on its own, which is what keeps a single-folder copy working in Cursor, Kiro, or Aider.
 
-The lifecycle has five stages, separated by **reversibility**: how expensive the mistake is to unwind. Two of them have a loop: deciding how to build it, and shipping it. The loops for finding the problem, building it and running it were retired ([RFC-0074](../../docs/rfcs/0074-loops-measured-four-retired.md), [RFC-0085](../../docs/rfcs/0085-build-retired-design-kept.md)), because on held-out evals their own skills, used without the loop, were preferred. Those stages use their skills in order: `feedback-synthesis`, `requirements-interview` or `user-journey-map`, then `prd-draft`; `user-story-splitter` or `bug-triage` (with `codebase-tour` in an unfamiliar repository), then `feature-implement-loop`, then `pre-merge-review`, whose gate script decides and whose merge is yours; and `observability-plan`, `runbook-generator`, `incident-comms`, then `postmortem-generator`.
+The lifecycle has five stages, separated by **reversibility**: how expensive the mistake is to unwind. One of them has a loop: shipping it. The loops for finding the problem, deciding how to build it, building it and running it were retired ([RFC-0074](../../docs/rfcs/0074-loops-measured-four-retired.md), [RFC-0085](../../docs/rfcs/0085-build-retired-design-kept.md), [RFC-0086](../../docs/rfcs/0086-design-retired.md)), because on held-out evals their own skills, used without the loop, were preferred. Those stages use their skills in order: `feedback-synthesis`, `requirements-interview` or `user-journey-map`, then `prd-draft`; `context-graph` and `nfr-spec`, then `design-doc` and `architecture-diagrams`, then `threat-model`, `council-review` and `adr-generator`, one record per decision; `user-story-splitter` or `bug-triage` (with `codebase-tour` in an unfamiliar repository), then `feature-implement-loop`, then `pre-merge-review`, whose gate script decides and whose merge is yours; and `observability-plan`, `runbook-generator`, `incident-comms`, then `postmortem-generator`.
 
 | Loop | Takes | Gate | Produces | Mistake costs |
 |---|---|---|---|---|
-| [`design`](../../packs/solution-architect/loops/design/LOOP.md) | an agreed requirement | **G1** review — `council-review`'s panel | a recorded decision (ADR) | months, unwound in code |
 | [`release`](../../packs/dev-team/loops/release/LOOP.md) | merged code | **G3** review — `launch-readiness` on evidence; **G3.1** human go/no-go | a live, reversible rollout | users and data, often irreversible |
 
 Plus one **wrapper**, which is not a lifecycle stage but the two passes either side of *any* generator:
@@ -41,40 +40,6 @@ And seven loops outside the delivery lifecycle, each for one job that runs along
 Every gate emits a verdict from one shared vocabulary ([`contracts/terminals.json`](../../contracts/terminals.json)) in five classes — pass, conditional, revise, redirect, blocked — so `READY`, `PROCEED` and `SHIP IT` are recognisably the same kind of answer. The diagrams below render on GitHub; their Mermaid sources live in [`docs/loops/`](../../docs/loops) for re-rendering.
 
 *Diagrams below are generated from each loop's `loop.json` by [`build_loops.py`](../../build_loops.py) — edit the contract, not the picture.*
-
-## `design` — a requirement to a recorded decision
-
-Constraints first, then structure and diagrams, then an attack, then a panel that must agree — and only then is the decision written down as an ADR.
-
-<!-- loop:design:start -->
-
-```mermaid
-%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
-flowchart LR
-    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
-    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
-    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
-    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
-
-    constrain["constrain<br/><small>context-graph·nfr-spec</small>"]:::gen
-    shape["shape<br/><small>design-doc·architecture-diagrams</small>"]:::gen
-    threat["threat<br/><small>threat-model</small>"]:::review
-    ratify["ratify<br/><small>council-review</small>"]:::gate
-    record["record<br/><small>adr-generator·context-graph</small>"]:::gen
-    G1{"G1 · review"}:::gate
-    DONE(["complete"]):::ship
-
-    constrain --> shape
-    shape --> threat
-    threat --> ratify
-    ratify --> G1
-    G1 == "PROCEED" ==> record
-    record --> DONE
-
-    G1 -- "REVISE (max 3)" --> shape
-```
-
-<!-- loop:design:end -->
 
 ## `release` — merged code to live users
 
