@@ -40,7 +40,7 @@ Read a shipped loop and copy its shape, including the `## Run log (opt-in)` sect
 example line changed to your loop's name and first gate.
 
 ```bash
-cat packs/dev-team/loops/build/LOOP.md
+cat packs/dev-team/loops/release/LOOP.md
 ```
 
 Your `LOOP.md` repeats `loop.json`'s `name` and `description` exactly and ships a `Quality bar`

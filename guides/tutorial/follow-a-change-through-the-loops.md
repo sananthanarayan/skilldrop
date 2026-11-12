@@ -7,15 +7,16 @@ kind: tutorial
 # Follow one change through the loops
 
 One change, four stages, start to finish. The point is not the artifacts — it is seeing
-**what each gate refuses**, because a gate that never refuses anything is decoration. Two of
-the stages run as loops (`design`, `build`). Finding the problem and running the service run
-as skills in order: their loops were retired, because on held-out evals the same skills used
+**what each gate refuses**, because a gate that never refuses anything is decoration. One of
+the stages runs as a loop (`design`). Finding the problem, building it and running the service
+run as skills in order: their loops were retired, because on held-out evals the same skills used
 without the loop were preferred.
 
 Install what you need as you go, or take it all up front:
 
 ```bash
-npx skilldrop-cli install --loop design build
+npx skilldrop-cli install --loop design
+npx skilldrop-cli install --pack dev-team
 npx skilldrop-cli install --pack product-manager
 npx skilldrop-cli install --pack sre-oncall
 ```
@@ -91,28 +92,29 @@ proposal in an ADR's clothes.
 
 ---
 
-## Loop 2 — `build`
+## Build it
 
-### `shape` → `implement` → **G2 (mechanical)** → `decide` → **G2.1 (human)**
+### `user-story-splitter` → `feature-implement-loop` → `pre-merge-review` → **you merge**
 
 **shape.** [`user-story-splitter`](../../packs/dev-team/skills/user-story-splitter/SKILL.md) turns the ADR
 into vertical slices with criteria a test can assert. "Rate limiting works" is not a slice;
 *"a key over its plan limit gets 429 with Retry-After"* is.
 
 **implement.** [`feature-implement-loop`](../../packs/dev-team/skills/feature-implement-loop/SKILL.md) runs
-its own capped generate-challenge cycle inside this stage.
+its own capped generate-challenge cycle on each slice.
 
-**G2 — mechanical.** [`pre-merge-review`](../../packs/dev-team/skills/pre-merge-review/SKILL.md) runs
+**check.** [`pre-merge-review`](../../packs/dev-team/skills/pre-merge-review/SKILL.md) runs
 `gate.py`. **The exit code is the verdict.** Round 1: `NOT READY` — no test for the Redis-down
-path, which the NFR explicitly required. Back to `implement`. Round 2: `READY`.
+path, which the NFR explicitly required. Back to `feature-implement-loop`. Round 2: `READY`.
 
-**What G2 refuses:** an argument. You cannot reason a red gate green, and editing the gate or
-the test to make it pass converts a mechanical gate into a decorative one. The cap is 3 — on
-a third `NOT READY`, stop and emit `BLOCKED` naming what did not converge. A fourth round is
-a defect in the loop, not diligence.
+**What the script refuses:** an argument. You cannot reason a red gate green, and editing the
+gate or the test to make it pass turns a mechanical check into a decorative one.
 
-**G2.1 — human.** A person merges. Design disagreements surfaced at G2 escalate to
-`council-review` rather than getting argued inside the diff.
+**merge.** A person merges. A design disagreement the review surfaces goes back to the
+decision, not into an argument inside the diff.
+
+This stage had a loop of its own; it was retired after four measurements, because the same
+skills in this order did better without it.
 
 ---
 
@@ -148,7 +150,7 @@ is its accuracy.
 |---|---|---|
 | Finding the problem | you | a brief with `[missing]` fields nobody filled |
 | **G1** | review panel | a design nobody attacked; untested consensus |
-| **G2** | script | an argument — the exit code decides |
+| Building it | script, then you | an argument — the exit code decides |
 | Running it | you | a postmortem that changed no procedure |
 
 Each decision is made by whoever fits **how expensive the mistake is to unwind** — a

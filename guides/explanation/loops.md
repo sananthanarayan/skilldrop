@@ -45,7 +45,7 @@ Making `fallback` a required field turns it into a contract: every hand-off stat
 when its target is absent. A hand-off now degrades in a stated, reviewable way instead of
 dead-ending or being silently skipped.
 
-## Why five stages, not three, and loops for only three of them
+## Why five stages, not three, and loops for only two of them
 
 The obvious model is discovery → build → release. skilldrop uses five stages, on the
 criterion that actually distinguishes them: **reversibility**, which is also what decides who
@@ -55,7 +55,7 @@ is allowed to sign off.
 |---|---|---|
 | Find the problem | a re-brief | **you** — no check can tell you that you solved the wrong problem well |
 | `design` | months, unwound in code | a **review panel** — independent positions, recorded dissent |
-| `build` | a revert | **mechanical** — a script's exit code, which cannot be argued with |
+| Build it | a revert | **mechanical** — `pre-merge-review`'s script exit code, which cannot be argued with — then **you** merge |
 | `release` | users and data, often irreversible | a **review** on evidence (can it ship?), then a **human** (should it ship now?) |
 | Run it | live users; irreversible | **you**, closing the incident |
 
@@ -64,18 +64,19 @@ design docs, contracts, threat models, ADRs) do not fold into discovery without 
 panel gate that makes them worth having, and the SRE skills have no home at all in a
 three-stage model.
 
-Finding the problem and running the service had loops too, and both were retired. On
-held-out evals, their own skills used without the loop were preferred: the loops' gates
-stopped for decisions the person had already made, and their replies carried gate jargon. Those
-stages now run as their skills, in order, and the decisions stay with you.
+Finding the problem, building it and running the service had loops too, and all three were
+retired. On held-out evals, their own skills used without the loop were preferred: the loops'
+gates stopped for decisions the person had already made, their replies carried gate jargon, and
+the build loop's rebuilds each overshot on the next evals. Those stages now run as their skills,
+in order, and the decisions stay with you.
 
 `ship-a-draft` is deliberately **not** a lifecycle stage. It is a wrapper whose middle is any
 generator: collect the input properly before, check the argument and the surface after. It
 applies to an ADR, a deck, or a postmortem alike, which is exactly why it cannot be a phase.
 The gate codes follow the same order. The whole number is the stage's place in the
 lifecycle, G1 at `design` to G3 at `release`, and a decimal is a second gate inside the same
-loop, so G3.1 is the human go/no-go that follows the G3 readiness review. G0 and G4 went with
-the retired loops and are not reused. The loops outside the lifecycle take the next numbers,
+loop, so G3.1 is the human go/no-go that follows the G3 readiness review. G0, G2 and G4 went
+with the retired loops and are not reused. The loops outside the lifecycle take the next numbers,
 from G5 for `ship-a-draft` upward. The [operating model](operating-model.md) draws every stage
 and gate on one page.
 

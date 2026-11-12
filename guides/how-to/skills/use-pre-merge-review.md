@@ -60,10 +60,6 @@ A good result:
 - One lens is enough — a pure bug pass is [`devils-advocate`](../../../packs/dev-team/skills/devils-advocate/SKILL.md) standalone; a pure doc pass is `doc-critique`.
 - An open design decision ("Postgres or Dynamo?") — that's `council-review`.
 
-## Where a loop runs it
-
-- Stage `verify` of the [`build` loop](../../../packs/dev-team/loops/build/LOOP.md), where gate G2 decides
-
 ## Next
 
 - [SKILL.md](../../../packs/dev-team/skills/pre-merge-review/SKILL.md), the instructions the agent reads

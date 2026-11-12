@@ -1,9 +1,0 @@
-[project]
-name = "ratelimit"
-version = "2.3.1"
-description = "Per-tenant token buckets for the API gateway"
-requires-python = ">=3.10"
-dependencies = []
-
-[tool.setuptools]
-packages = ["ratelimit"]

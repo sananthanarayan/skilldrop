@@ -95,7 +95,7 @@ def build():
 
 
 # ── The operating-model picture (RFC-0044) ────────────────────────────────────
-# One SVG with the five lifecycle loops on a rail, each gate where it sits, the two loops
+# One SVG with the five lifecycle stages on a rail, each gate where it sits, the two loops
 # outside the lifecycle, and the packs that work at any stage. Stages, skills, gates, who
 # decides and which pack a loop ships in are all read from loop.json and the pack folders;
 # only the plain-English lines for each loop live here, and a loop without them fails --check.
@@ -123,6 +123,8 @@ LIFECYCLE = {
 STAGE_SKILLS = {
     "discover": ("product-manager", [["feedback-synthesis", "requirements-interview", "user-journey-map"],
                                      ["prd-draft"]]),
+    "build":    ("dev-team", [["user-story-splitter", "bug-triage", "codebase-tour"], ["feature-implement-loop"],
+                              ["pre-merge-review"]]),
     "operate":  ("sre-oncall", [["observability-plan"], ["runbook-generator"], ["incident-comms"],
                                 ["postmortem-generator"]]),
 }

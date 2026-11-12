@@ -4,11 +4,7 @@ What is being worked on next. Not a commitment — a direction. Shipped work mov
 
 ## Upcoming
 
-- **Get `build` and `design` ahead of plain Claude Code.** Rebuilt, both now beat their own skills, but they still lose to the plain agent more often than they win ([RFC-0084](docs/rfcs/0084-build-and-design-rebuilt.md)). The judges' reasons name two side effects of the rebuild:
-  - **build** restates what it didn't do ("nothing was merged or pushed", "no quiet data-loss cases") where none of it applied;
-  - **design** keeps the risks it finds out of the ADR altogether, where the house format wants them listed as open, and edits accepted records the house rules said to leave alone.
-
-  The fix is measured on fresh held-out evals against the plain agent as well as the skills.
+- **Get `design` ahead of its own skills on every kind of request.** 0.5.0 beats plain Claude Code and records decisions well, but loses to its skills when the house rules allow one decision per ADR: it bundled several into one record ([RFC-0085](docs/rfcs/0085-build-retired-design-kept.md)). The next rebuild writes one decision per record when the house rules say so, with any others as separate proposed records, and names every file by a path inside the working folder. It is measured on fresh held-out evals against both.
 
 ## Considering
 

@@ -35,26 +35,38 @@ a script, and why the decision is recorded only *after* the panel agrees.
    and records what would change each position. `REVISE` returns to `shape`. `SPLIT` and
    `RECONSIDER` leave the loop. What comes out is a set of trade-offs and open risks; the
    people who decide read those, not the positions or who held them.
-5. **Record last, and record only what was decided.** `adr-generator` writes the decision
-   *after* it is a decision, with the rejected options and the reasoning that killed them. An
-   ADR written before G1 is a proposal wearing an ADR's clothes. When the request already holds
-   the decision ("the CTO chose Kafka"), the ADR records what the decider decided, in their
-   terms, as theirs. The threats, gaps and conditions you found go in the reply as risks for
-   them to weigh, never into the ADR as conditions, fallbacks or acceptances they didn't give.
-   When nobody has decided yet, the ADR's status is `Proposed` and names who decides. Then run
-   `context-graph` again. Every record the new ADR
-   supersedes must now say "Superseded by" it, and the new ADR must name the code it governs.
-   A supersession recorded on one side only is the most common way a decision log starts to
-   lie.
-6. **Name only files that exist.** Write each file into the working folder before the reply
+5. **Read the house rules before writing or touching a record.** Find the repository's ADR
+   README, template or the record that defines how decisions are written. Follow its format,
+   its sections and its rules for changing old records. When it has none, use
+   `adr-generator`'s format.
+6. **Record last, and record the decision as it was made.** `adr-generator` writes the
+   decision *after* it is a decision, with the rejected options and the reasoning that killed
+   them. An ADR written before G1 is a proposal wearing an ADR's clothes. When the request
+   already holds the decision ("the CTO chose Kafka"), the ADR records the decider's choice in
+   their terms, as theirs. The risks, threats and gaps the work found go in the ADR too, where
+   the house format puts consequences (Consequences, Risks, Open issues). Each is marked open
+   and not accepted by the decider, never written as their condition, fallback or acceptance.
+   When nobody has decided yet, the ADR's status is `Proposed` and names who decides.
+7. **Close the supersessions the house rules allow.** Run `context-graph` again. Every record
+   the new ADR replaces gets only the change the house rules permit on an accepted record,
+   such as a "Superseded by" line; nothing else in it is edited. When the new decision replaces
+   only part of an older one, say exactly which part on both sides, and don't mark the whole
+   record superseded while the rest still governs. The new ADR names the code it governs. A
+   supersession recorded on one side only is the most common way a decision log starts to lie.
+8. **Deliver what was asked for, in the form asked for.** When the person names the
+   deliverables ("a design doc and an ADR"), the quality targets, threat model and diagrams go
+   inside those files, as sections, instead of as extra files nobody asked for. When they
+   don't name them, write the design doc and the ADR.
+9. **Name only files that exist.** Write each file into the working folder before the reply
    names it, and list them by the paths they were written to. A design, diagram or ADR you
    describe but didn't write is not named as a file.
 
 ## What the reply says
 
 - **Lead with the person's decision or question, in plain words:** what was decided (or the
-  answer to what they asked) and why, then the risks it carries, then the quality targets, the
-  design and the diagrams.
+  answer to what they asked) and why. When recording a decision already made, the first lines
+  say the record is written and name the single most important risk it carries, in plain
+  words. Then the other risks, the quality targets, the design and the diagrams.
 - **No loop internals.** No gate id, verdict word, stage or skill name, and no path inside a
   skill folder, in the reply or in any file the person receives. Say the outcome instead:
   ✅ *"Use event sourcing for orders. The open trade-off is running cost: replaying 40 million events takes about two hours, so a snapshot store is worth adding before year two"* — ❌ *"G1: PROCEED"*.
@@ -62,8 +74,11 @@ a script, and why the decision is recorded only *after* the panel agrees.
   reviewers, personas or seats, and never write "dissent", "the panel overruled" or a note
   that no panel ran.
 - **A decision already made is recorded as the decider made it.** The ADR holds their choice
-  in their terms. Your threats and gaps go in the reply as risks for them, never into the ADR
-  as conditions, fallbacks or acceptances they didn't give.
+  in their terms, and lists the risks you found as open, not accepted. The reply puts the same
+  risks in front of the decider. None is written as a condition, fallback or acceptance they
+  didn't give.
+- **Say which records changed and how,** in one line each: the new ADR, and the line added to
+  any record it supersedes, in whole or in part.
 - **Name only files that exist in the working folder,** by the paths they were written to.
 - **The verdict goes to the run log only,** when one is set. The reply never mentions the run
   log, whether it is set, or how the run was set up.
@@ -115,12 +130,14 @@ which end in `BLOCKED`.
 - **Quality targets exist before structure does.** `nfr-spec` is stage 1 because a design without numbers can only be argued about.
 - **The ADR names what was rejected and why.** A decision record with one option is a description of what happened, not a decision.
 - **Disagreement is kept, not resolved away.** It reaches the person as a trade-off with what each side costs; a review that always agrees isn't testing anything.
-- **The ADR says only what the decider decided.** Every condition in it traces to them; every risk the loop found is in the reply.
+- **The ADR's decision is the decider's.** Every condition in it traces to them. Every risk the loop found is in it too, marked open and not accepted, and in the reply.
+- **Existing records change only as the house rules allow.** A partial supersession names the part replaced, and the record isn't marked wholly superseded.
+- **The deliverables are the ones asked for.** Quality targets, threats and diagrams sit inside them as sections.
 - **Every file the reply names exists** in the working folder at the path given.
 - **The reply leads with the person's decision or question,** before threats, NFRs and diagrams.
 - **The diagram and the doc say the same thing.** They are checked against each other before G1, not after someone builds from the wrong one.
 - **The design names the decisions already in force where it lands,** and which of them it keeps or supersedes.
-- **After `record`, the records agree with each other:** each record the new ADR supersedes says so too.
+- **After `record`, the records agree with each other:** each record the new ADR supersedes, wholly or in part, says so too.
 
 ## Anti-patterns to avoid
 
@@ -129,7 +146,10 @@ which end in `BLOCKED`.
 - ❌ **Treating `PROCEED WITH CONDITIONS` as `PROCEED`.** The conditions must reach the decider, and the ADR once they accept them; dropping them is how a conditional approval silently becomes unconditional.
 - ❌ **Designing over a decision nobody read.** A new design that quietly contradicts a current ADR leaves two decisions in force on one system, and the next reader can't tell which one wins.
 - ❌ **Skipping `constrain` because the NFRs are "obvious".** Obvious targets are the ones nobody writes down and everybody remembers differently.
-- ❌ **Writing your conditions into their decision.** "Accepted, provided a fallback to Postgres" when the decider said only "use Kafka" puts words in their record. Put the fallback in the reply as a risk.
+- ❌ **Writing your conditions into their decision.** "Accepted, provided a fallback to Postgres" when the decider said only "use Kafka" puts words in their record. List the missing fallback as an open risk instead.
+- ❌ **Leaving the risks out of the record.** An ADR that is silent on a risk the work found reads as if the decider accepted it, and the reply that named it is gone by next quarter. Record it as open.
+- ❌ **Editing an accepted record beyond what the house rules allow,** or marking a whole record superseded when only part of it is replaced. The next reader loses the part that still governs.
+- ❌ **Adding files nobody asked for.** A separate threat model and NFR file beside the two documents requested scatters the decision; fold them in.
 - ❌ **Narrating the panel.** "The security reviewer dissented" or "I didn't run the separate panel" describes the process, not the design; give the trade-off.
 - ❌ **Naming a file you didn't write.** "See `docs/adr/0012.md`" when it isn't there sends the reader to nothing.
 - ❌ **Leading with the threat model.** The person asked about a decision; answer it first.

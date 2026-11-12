@@ -52,8 +52,8 @@ assumes a sibling is present.
 
 Sequencing lives one level up, in a **loop** (`packs/<pack>/loops/<name>/LOOP.md`, RFC-0028). A loop names
 an ordered list of stages, the skills each stage runs, and the gate between them. It composes
-skills by *ordering* them, not by having them call each other — so `build` can run
-`feature-implement-loop` then `pre-merge-review` while both remain standalone skills.
+skills by *ordering* them, not by having them call each other — so `release` can run
+`launch-readiness` then `release-notes` while both remain standalone skills.
 
 - Need step B to follow step A? Add a stage to a loop, or write a new loop.
 - Two skills genuinely need each other's internals? That's a signal to merge them, or to

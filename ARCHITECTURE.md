@@ -47,15 +47,15 @@ is also what determines who is allowed to decide:
 |---|---|---|
 | find the problem (skills, no loop) | a re-brief | you agree the requirement |
 | `design` | months, unwound in code | **G1** review panel |
-| `build` | a revert | **G2** mechanical, then **G2.1** human |
+| build it (skills, no loop) | a revert | `pre-merge-review`'s gate script, then you merge |
 | `release` | users and data, often irreversible | **G3** review, then **G3.1** human |
 | run it (skills, no loop) | live users; irreversible | you close the incident |
 
-The first and last stages lost their loops in RFC-0074: on held-out evals their own skills,
-used without the loop, were preferred. A loop stays only where it is measured to add to its
+The find, build and run stages lost their loops (RFC-0074, RFC-0085): on held-out evals their
+own skills, used without the loop, were preferred. A loop stays only where it is measured to add to its
 skills.
 
-A gate code reads in lifecycle order: the whole number is the loop's place (G1 to G3; G0 and G4 were
+A gate code reads in lifecycle order: the whole number is the loop's place (G1 and G3; G0, G2 and G4 were
 retired with their loops), and a decimal is a second gate inside the same loop. The loops
 outside the lifecycle take the next numbers: `ship-a-draft` (**G5**) is a **wrapper** whose
 middle is any generator, chosen at run time, and the rest each do one job (RFC-0044). Every gate answers from one shared vocabulary

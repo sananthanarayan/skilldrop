@@ -29,7 +29,7 @@
        against catalogue.json by validate.py, so it can't go stale unnoticed. -->
   <text class="mono" x="80" y="486" font-size="24" fill="#ecebe8">run with and without</text>
   <text class="mono" x="388" y="486" font-size="24" fill="#3a3a3f">/</text>
-  <text class="mono" x="418" y="486" font-size="24" fill="#ecebe8"><tspan fill="#a48cff">14 retired</tspan> for losing</text>
+  <text class="mono" x="418" y="486" font-size="24" fill="#ecebe8"><tspan fill="#a48cff">15 retired</tspan> for losing</text>
   <text class="mono" x="742" y="486" font-size="24" fill="#3a3a3f">/</text>
   <text class="mono" x="772" y="486" font-size="24" fill="#ecebe8">gates that say no</text>
 

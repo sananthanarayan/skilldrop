@@ -60,10 +60,6 @@ A good result:
 - Estimating effort in hours/points — this skill orders and sizes by slice, it does not estimate
 - Writing the implementation — hand the story off instead
 
-## Where a loop runs it
-
-- Stage `shape` of the [`build` loop](../../../packs/dev-team/loops/build/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/dev-team/skills/user-story-splitter/SKILL.md), the instructions the agent reads
