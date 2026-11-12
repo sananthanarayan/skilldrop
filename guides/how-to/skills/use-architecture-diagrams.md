@@ -55,10 +55,6 @@ A good result:
 - [c4 container saas](../../../packs/solution-architect/skills/architecture-diagrams/examples/c4-container-saas.md)
 - [microservices sequence](../../../packs/solution-architect/skills/architecture-diagrams/examples/microservices-sequence.md)
 
-## Where a loop runs it
-
-- Stage `shape` of the [`design` loop](../../../packs/solution-architect/loops/design/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/solution-architect/skills/architecture-diagrams/SKILL.md), the instructions the agent reads

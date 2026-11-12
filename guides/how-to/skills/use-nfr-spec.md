@@ -57,10 +57,6 @@ A good result:
 - Designing the architecture that meets the targets — `design-doc`
 - Writing the verification tests themselves — hand the methods to `test-plan-generator`
 
-## Where a loop runs it
-
-- Stage `constrain` of the [`design` loop](../../../packs/solution-architect/loops/design/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/solution-architect/skills/nfr-spec/SKILL.md), the instructions the agent reads

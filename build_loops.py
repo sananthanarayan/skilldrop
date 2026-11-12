@@ -123,6 +123,8 @@ LIFECYCLE = {
 STAGE_SKILLS = {
     "discover": ("product-manager", [["feedback-synthesis", "requirements-interview", "user-journey-map"],
                                      ["prd-draft"]]),
+    "design":   ("solution-architect", [["context-graph", "nfr-spec"], ["design-doc", "architecture-diagrams"],
+                                        ["threat-model"], ["council-review"], ["adr-generator"]]),
     "build":    ("dev-team", [["user-story-splitter", "bug-triage", "codebase-tour"], ["feature-implement-loop"],
                               ["pre-merge-review"]]),
     "operate":  ("sre-oncall", [["observability-plan"], ["runbook-generator"], ["incident-comms"],

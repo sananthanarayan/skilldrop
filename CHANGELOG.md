@@ -8,6 +8,17 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.17.0 — 2026-11-12
+
+- **The `design` loop is retired** ([RFC-0086](docs/rfcs/0086-design-retired.md)). In its fifth measurement, both blind judges preferred its own skills, used in order without it. When your repository allows one decision per ADR, it wrote one bundled record, where the skills wrote one per decision. Run its skills in order instead:
+  1. `context-graph` and `nfr-spec`;
+  2. `design-doc` and `architecture-diagrams`;
+  3. `threat-model`;
+  4. `council-review`;
+  5. `adr-generator`.
+
+  The decision stays yours. `skilldrop outdated` and `doctor` tell you if you have the loop installed. `release` is now the one loop on the lifecycle; the other stages are their skills in order.
+
 ## 1.16.0 — 2026-11-12
 
 - **The `build` loop is retired** ([RFC-0085](docs/rfcs/0085-build-retired-design-kept.md)). In its fourth measurement, both blind judges preferred its own skills, used in order without it, and each rebuild's fix had overshot on the next round's evals. This time it held back a sound pull request over a problem the change didn't have. Run its skills in order instead: `user-story-splitter` or `bug-triage` (with `codebase-tour` in an unfamiliar repo), then `feature-implement-loop`, then `pre-merge-review`. In that order they beat plain Claude Code in every pair. The merge stays yours. `skilldrop outdated` and `doctor` tell you if you have it installed.

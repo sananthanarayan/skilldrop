@@ -75,8 +75,6 @@ A good result:
 
 ## Where a loop runs it
 
-- Stage `constrain` of the [`design` loop](../../../packs/solution-architect/loops/design/LOOP.md)
-- Stage `record` of the [`design` loop](../../../packs/solution-architect/loops/design/LOOP.md)
 - Stage `survey` of the [`modernize` loop](../../../packs/dev-team/loops/modernize/LOOP.md)
 
 ## Next

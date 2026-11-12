@@ -450,7 +450,7 @@ def start_page(packs, loop_by_name):
 
 <h2 id="next">Continue</h2>
 <ul class="pk__bar">
-<li><a href="../docs/tutorial/follow-a-change-through-the-loops.html">Follow one change through every loop</a>, from idea to operating it.</li>
+<li><a href="../docs/tutorial/follow-a-change-through-the-loops.html">Follow one change through every stage</a>, from idea to operating it.</li>
 <li><a href="../docs/explanation/operating-model.html">The operating model</a>: the five stages, the packs in each, and where you decide.</li>
 <li><a href="../docs/how-to/install-per-ide.html">Install into Cursor, Copilot, Kiro or Codex</a>, and <a href="../docs/reference/install-options.html">every install option</a>.</li>
 <li><a href="../catalogue/">Browse every skill</a> or <a href="../loops/">every loop</a>.</li>
@@ -1236,7 +1236,7 @@ def loops_index(loop_list):
         for lp in loop_list)
     body = f"""<main class="inner pk" id="main">
 <h1 class="pk__title">Loops</h1>
-<p class="pk__lede">A loop runs skills in order and stops at a gate before anything moves on. The cheaper the mistake, the more a script decides; the harder it is to undo, the more it waits for you. Two cover lifecycle stages, <code>design</code> and <code>release</code>; the other three stages run their skills in order. <code>ship-a-draft</code> wraps any generator, and the rest each do one job beside the lifecycle. See them all on one page in the <a href="../docs/explanation/operating-model.html">operating model</a>, or read <a href="../docs/explanation/loops.html">why loops</a>.</p>
+<p class="pk__lede">A loop runs skills in order and stops at a gate before anything moves on. The cheaper the mistake, the more a script decides; the harder it is to undo, the more it waits for you. One covers a lifecycle stage, <code>release</code>; the other four stages run their skills in order. <code>ship-a-draft</code> wraps any generator, and the rest each do one job beside the lifecycle. See them all on one page in the <a href="../docs/explanation/operating-model.html">operating model</a>, or read <a href="../docs/explanation/loops.html">why loops</a>.</p>
 <ul class="pk__list">{cards}</ul>
 </main>"""
     return shell("Loops", "Every skilldrop loop: its stages, and who decides at each gate.", f"{SITE_URL}loops/", 1, body,

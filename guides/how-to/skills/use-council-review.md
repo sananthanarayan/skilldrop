@@ -66,7 +66,6 @@ A good result:
 
 ## Where a loop runs it
 
-- Stage `ratify` of the [`design` loop](../../../packs/solution-architect/loops/design/LOOP.md), where gate G1 decides
 - Stage `go` of the [`release` loop](../../../packs/dev-team/loops/release/LOOP.md), where gate G3.1 decides
 
 ## Next

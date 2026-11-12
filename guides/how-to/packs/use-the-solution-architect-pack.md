@@ -2,7 +2,6 @@
 title: Use the Solution architect pack
 summary: Install the Solution architect pack, run its first task, and follow a typical session step by step.
 kind: how-to
-stage: design
 ---
 
 # Use the Solution architect pack
@@ -63,16 +62,6 @@ A session takes about 1–3 hours.
    You get: An ADR in MADR or Nygard format with context, the options and why each was rejected, the decision and its consequences.
 
 You end with: NFR targets, a design doc with matching diagrams, a threat model, the panel's verdict, and an ADR that carries its conditions.
-
-## 4. Run it as a loop
-
-A loop runs the skills in order and stops at each gate for a verdict. Install and start one:
-
-```bash
-npx skilldrop-cli install --loop --pack solution-architect
-```
-
-- **design**: Take a ratified requirement to a recorded architectural decision — constraints, structure, diagrams, threats, then a panel that must agree before the decision is written down. Say "run the design loop on this". Stages: constrain → shape → threat → ratify [G1] → record.
 
 ## Next
 

@@ -7,8 +7,8 @@ kind: how-to
 # Measure your loops
 
 Every loop's gate gives a verdict: READY or NOT READY, SHIP IT or MAJOR REWRITE. Over a few
-weeks those verdicts show where work really gets stuck. Maybe G2 fails first time on most
-changes, or `design` keeps sending decisions back to the panel. The run log records them, on your machine only.
+weeks those verdicts show where work really gets stuck. Maybe G3 sends most launches back
+for evidence, or `measure` keeps waiting on a metric's owner. The run log records them, on your machine only.
 
 ## Turn it on
 

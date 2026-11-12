@@ -48,10 +48,6 @@ A good result:
 - **Risks have mitigations.** A bare list of "things that could go wrong" is anxiety, not engineering.
 - **Rollout criteria are concrete.** "We'll monitor closely" is not a criterion. "Roll forward to 100% if p99 < 80ms for 48h after 10% rollout" is.
 
-## Where a loop runs it
-
-- Stage `shape` of the [`design` loop](../../../packs/solution-architect/loops/design/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/solution-architect/skills/design-doc/SKILL.md), the instructions the agent reads

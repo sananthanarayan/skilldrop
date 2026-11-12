@@ -46,16 +46,16 @@ is also what determines who is allowed to decide:
 | Loop | Mistake costs | Gate |
 |---|---|---|
 | find the problem (skills, no loop) | a re-brief | you agree the requirement |
-| `design` | months, unwound in code | **G1** review panel |
+| decide how to build it (skills, no loop) | months, unwound in code | `council-review`'s panel, then you record the decision |
 | build it (skills, no loop) | a revert | `pre-merge-review`'s gate script, then you merge |
 | `release` | users and data, often irreversible | **G3** review, then **G3.1** human |
 | run it (skills, no loop) | live users; irreversible | you close the incident |
 
-The find, build and run stages lost their loops (RFC-0074, RFC-0085): on held-out evals their
+The find, design, build and run stages lost their loops (RFC-0074, RFC-0085, RFC-0086): on held-out evals their
 own skills, used without the loop, were preferred. A loop stays only where it is measured to add to its
 skills.
 
-A gate code reads in lifecycle order: the whole number is the loop's place (G1 and G3; G0, G2 and G4 were
+A gate code reads in lifecycle order: the whole number is the loop's place (G3; G0, G1, G2 and G4 were
 retired with their loops), and a decimal is a second gate inside the same loop. The loops
 outside the lifecycle take the next numbers: `ship-a-draft` (**G5**) is a **wrapper** whose
 middle is any generator, chosen at run time, and the rest each do one job (RFC-0044). Every gate answers from one shared vocabulary
