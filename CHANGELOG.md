@@ -11,6 +11,7 @@ Bullets say what a user can now do, not which files moved.
 ## 1.18.0 — 2026-11-12
 
 - **Install into every tool your repo uses in one command** ([RFC-0087](docs/rfcs/0087-ide-all.md)). Run `npx skilldrop-cli install --pack dev-team --ide all` from the repo root. It finds Claude Code, Cursor, Kiro, Codex, Antigravity and GitHub Copilot by the files each keeps in a repo, and installs into each at project scope, Cursor's rule file included. A `.github/` folder that holds only CI doesn't count as Copilot. `update`, `outdated`, `uninstall` and `diff` take `--ide all` too, so the copies stay in step, and `doctor` lists the tools it finds.
+- **Once a new version is out, older ones stop installing** ([RFC-0088](docs/rfcs/0088-older-versions-refuse.md)). Before `install` or `update`, the CLI checks npm for the latest `skilldrop-cli`. If a newer one is out, it stops before writing anything and gives you the same command with `npx skilldrop-cli@latest`, so nobody installs skills or loops that have since been fixed or retired. If npm can't be reached, the command runs as before. A pinned CI job or an air-gapped mirror can set `SKILLDROP_ALLOW_OLD_CLI=1`. Older versions are also marked deprecated on npm, so installing one prints a warning.
 
 ## 1.17.0 — 2026-11-12
 

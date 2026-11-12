@@ -123,6 +123,9 @@ Organisation policy (RFC-0050):
 Options:
   --dry-run          install | update | uninstall | new-skill: print what would change, change nothing
   SKILLDROP_NO_STAR=1  don't print the one-time line asking for a GitHub star after the first install
+  SKILLDROP_ALLOW_OLD_CLI=1  let an older CLI install and update. Without it, install and update
+                     ask npm for the latest skilldrop-cli and stop if this one is older
+                     (offline, they run as before)
   --yes              skip the confirmation uninstall and update --force ask for at a terminal
                      (scripts and CI are never asked)
   --agent            operate on subagents instead of skills. Targets:
@@ -2897,12 +2900,69 @@ function bootstrap() {
   console.log(`\nOr install the full catalogue:\n  /plugin install ${BOOTSTRAP_MARKETPLACE_KEY}@${BOOTSTRAP_MARKETPLACE_KEY}`);
 }
 
+/* An older CLI refuses to install or update (RFC-0088): it would install skills and loops that
+   have since been fixed or retired. It asks the registry npm uses (npm_config_registry, so an
+   internal mirror's own latest is the one that counts) for the newest skilldrop-cli. On any
+   error, a non-200 reply or no answer within 2.5 s, it runs as before, so offline use is
+   unchanged. SKILLDROP_ALLOW_OLD_CLI=1 skips the check, for a pinned CI job or an air-gapped
+   mirror. A git checkout of skilldrop is never an old install, so it is not checked unless
+   SKILLDROP_REGISTRY names a registry (how cli_smoke.js tests the refusal). */
+const VERSION_CHECK_COMMANDS = ["install", "update"];
+
+function semverGt(a, b) {
+  const p = (v) => String(v).split("-")[0].split(".").map((n) => parseInt(n, 10) || 0);
+  const x = p(a), y = p(b);
+  for (let i = 0; i < 3; i++) if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0);
+  return false;
+}
+
+function newerOnRegistry(local) {
+  return new Promise((resolve) => {
+    const env = process.env;
+    if (env.SKILLDROP_ALLOW_OLD_CLI) return resolve(null);
+    if (!env.SKILLDROP_REGISTRY && fs.existsSync(path.join(ROOT, ".git"))) return resolve(null);
+    let base = env.SKILLDROP_REGISTRY || env.npm_config_registry || "https://registry.npmjs.org/";
+    if (!base.endsWith("/")) base += "/";
+    let url;
+    try { url = new URL("skilldrop-cli/latest", base); } catch (e) { return resolve(null); }
+    const lib = url.protocol === "https:" ? require("https") : url.protocol === "http:" ? require("http") : null;
+    if (!lib) return resolve(null);
+    const req = lib.get(url, { headers: { accept: "application/json" }, timeout: 2500 }, (res) => {
+      if (res.statusCode !== 200) { res.resume(); return resolve(null); }
+      let body = "";
+      res.setEncoding("utf8");
+      res.on("data", (c) => { body += c; if (body.length > 1e6) req.destroy(); });
+      res.on("end", () => {
+        try { const v = JSON.parse(body).version; resolve(typeof v === "string" && semverGt(v, local) ? v : null); }
+        catch (e) { resolve(null); }
+      });
+    });
+    req.on("timeout", () => req.destroy());
+    req.on("error", () => resolve(null));
+  });
+}
+
 const args = parseArgs(process.argv.slice(2));
 const cmd = args._.shift();
 const commands = { list, search, info, packs: listPacks, profiles: listProfiles, agents: listAgents, loops: listLoops, install, update, outdated, uninstall, diff, doctor, "new-skill": newSkill, "loop-stats": loopStats, "init-catalogue": initCatalogue, package: packageCatalogue, validate: validateCmd, scan, bootstrap,
                    inventory, audit: auditCmd, "verify-mirror": verifyMirrorCmd };
-if (args.flags.version || cmd === "version") console.log(readJSON(path.join(ROOT, "package.json")).version);
-else if (!cmd || cmd === "help" || args.flags.help) console.log(HELP);
-else if (commands[cmd] && args.flags.ide === "all" && IDE_ALL_COMMANDS.includes(cmd)) runForAllTools(cmd, args);
-else if (commands[cmd]) commands[cmd](args);
-else die(`unknown command '${cmd}' — run: skilldrop help`);
+function main() {
+  if (args.flags.version || cmd === "version") console.log(readJSON(path.join(ROOT, "package.json")).version);
+  else if (!cmd || cmd === "help" || args.flags.help) console.log(HELP);
+  else if (commands[cmd] && args.flags.ide === "all" && IDE_ALL_COMMANDS.includes(cmd)) runForAllTools(cmd, args);
+  else if (commands[cmd]) commands[cmd](args);
+  else die(`unknown command '${cmd}' — run: skilldrop help`);
+}
+
+if (VERSION_CHECK_COMMANDS.includes(cmd) && !args.flags.version && !args.flags.help) {
+  const local = readJSON(path.join(ROOT, "package.json")).version;
+  newerOnRegistry(local).then((latest) => {
+    if (latest)
+      die(`this is skilldrop-cli ${local}, and ${latest} is out. An older version can't install or update skills:\n` +
+          "       it would install skills and loops that have since been fixed or retired.\n" +
+          `       Run the latest:  npx skilldrop-cli@latest ${process.argv.slice(2).join(" ")}\n` +
+          "       Installed globally? npm install -g skilldrop-cli@latest\n" +
+          "       (A pinned CI job or an air-gapped mirror can set SKILLDROP_ALLOW_OLD_CLI=1.)");
+    main();
+  });
+} else main();
