@@ -14,7 +14,7 @@ Profiles are metadata only. Nothing moves into a `profiles/` folder; each skill,
 
 | Profile | What it installs |
 |---|---|
-| `starter` | `dev-team` pack + review panel (all 3 reviewer agents) + `build` loop |
+| `starter` | `dev-team` pack + review panel (all 3 reviewer agents) |
 | `architect` | `solution-architect` pack + `design` and `ship-a-draft` loops |
 | `full` | Every pack, every reviewer agent, every loop |
 
@@ -61,7 +61,7 @@ Add an entry to `profiles.json` at the repo root:
       "description": "What our squad installs on day one.",
       "packs": ["dev-team", "stakeholder-comms"],
       "agents": ["devils-advocate", "security-reviewer", "code-quality"],
-      "loops": ["build", "ship-a-draft"]
+      "loops": ["release", "ship-a-draft"]
     }
   }
 }

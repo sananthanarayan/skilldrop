@@ -20,7 +20,7 @@ Prefer the official server, the one the vendor maintains. Every server below is 
 
 | MCP server | What it fetches | Skills and loops | Starter prompt |
 |---|---|---|---|
-| **GitHub** (official, `https://api.githubcopilot.com/mcp/`) | Pull requests, diffs, issues, releases, Actions runs | `pre-merge-review`, `release-notes`, `backlog-triage`, `tracker-brief-sync`, the `build` loop | *"Fetch PR #482 in acme/web with its diff and run pre-merge-review."* |
+| **GitHub** (official, `https://api.githubcopilot.com/mcp/`) | Pull requests, diffs, issues, releases, Actions runs | `pre-merge-review`, `release-notes`, `backlog-triage`, `tracker-brief-sync`, the `release` loop | *"Fetch PR #482 in acme/web with its diff and run pre-merge-review."* |
 | **Atlassian** (official, Jira and Confluence, `https://mcp.atlassian.com/v2/mcp`) | Jira issues, epics and sprints; Confluence pages | `bug-triage`, `backlog-triage`, `team-status-report`, `user-story-splitter`, `prd-draft` | *"Fetch every open bug in project PAY created this week and run backlog-triage."* |
 | **Linear** (official, `https://mcp.linear.app/mcp`) | Issues, projects, cycles | `bug-triage`, `backlog-triage`, `team-status-report`, `user-story-splitter`, `prd-draft` | *"Fetch the current cycle for team ENG and run team-status-report."* |
 | **Figma** (official, `https://mcp.figma.com/mcp`) | Frames, components, variables, layout | `figma-diagrams`, `design-system-spec`, `information-architecture` | *"Fetch the components and variables in this Figma file and run design-system-spec."* |
@@ -35,7 +35,7 @@ Install a skill with `npx skilldrop-cli install <skill>`, or its whole pack with
 
 | Pack | Skills from the table above |
 |---|---|
-| `dev-team` | `pre-merge-review`, `release-notes`, `bug-triage`, `user-story-splitter`, the `build` loop |
+| `dev-team` | `pre-merge-review`, `release-notes`, `bug-triage`, `user-story-splitter`, the `release` loop |
 | `trackers` | `backlog-triage`, `tracker-brief-sync`, `team-status-report` |
 | `product-manager` | `prd-draft` |
 | `solution-architect` | `figma-diagrams` |
@@ -55,11 +55,11 @@ Install a skill with `npx skilldrop-cli install <skill>`, or its whole pack with
 
 ## Loops with servers
 
-A loop doesn't know about servers. You fetch each stage's input and hand it over. In the `build` loop, for example:
+A loop doesn't know about servers. You fetch each stage's input and hand it over. In the `release` loop, for example:
 
 ```
-Fetch issue #311 from acme/web and run the build loop on it. Use the issue text as the input to
-the shape stage. At the verify stage, fetch the PR diff before running pre-merge-review.
+Fetch the pull requests merged into acme/web since v2.3.0 and run the release loop on them. Use
+the PR descriptions as the input to the plan stage, and the PR titles to the release notes.
 ```
 
 When you run a service, `incident-comms` and `postmortem-generator` get the most from Sentry and Slack: the incident timeline is already there.

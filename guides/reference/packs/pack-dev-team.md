@@ -2,7 +2,7 @@
 title: Dev team pack reference
 summary: Every skill in the Dev team pack — what it makes, when to use it, what it needs, its quality bar, and what it hands off to.
 kind: reference
-stage: build
+stage: release
 ---
 
 # Dev team pack reference
@@ -15,7 +15,7 @@ Build-and-ship: story splitting, implementation with adversarial review, test pl
 |---|---|
 | Install | `npx skilldrop-cli install --pack dev-team` |
 | Skills | 20 plus 5 from core |
-| Loops | build, modernize, release |
+| Loops | modernize, release |
 | How-to | [Use the Dev team pack](../../how-to/packs/use-the-dev-team-pack.md) |
 
 ## Skills
@@ -545,19 +545,6 @@ Tier **standard** · v0.1.0 · [SKILL.md](../../../packs/dev-team/skills/user-st
 - Writing the implementation — hand the story off instead
 
 ## Loops
-
-### `build`
-
-Take an agreed requirement to merged code through a capped generate-verify-gate loop, with a mechanical gate that decides and a human who owns the merge.
-
-| Stage | Skills | Gate |
-|---|---|---|
-| shape | `user-story-splitter`, `bug-triage`, `codebase-tour` | — |
-| implement | `feature-implement-loop` | — |
-| verify | `pre-merge-review` | G2 mechanical: READY / NOT READY / BLOCKED |
-| decide | `council-review` | G2.1 human: PROCEED / PROCEED WITH CONDITIONS / REVISE / RECONSIDER / SPLIT / BLOCKED |
-
-Cap: 3 returns before `BLOCKED`. [LOOP.md](../../../packs/dev-team/loops/build/LOOP.md)
 
 ### `modernize`
 

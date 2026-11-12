@@ -153,8 +153,8 @@ check("a policy refuses a blocked skill and writes nothing", () => {
 check("loop-stats reads a log and writes the dashboard", () => {
   const log = path.join(TMP, "loop-log.jsonl");
   fs.writeFileSync(log, [
-    { ts: "2026-10-01T10:00:00Z", loop: "build", stage: "verify", gate: "G2", verdict: "NOT READY", round: 1 },
-    { ts: "2026-10-01T11:00:00Z", loop: "build", stage: "verify", gate: "G2", verdict: "READY", round: 2 },
+    { ts: "2026-10-01T10:00:00Z", loop: "release", stage: "ready", gate: "G3", verdict: "REVISE", round: 1 },
+    { ts: "2026-10-01T11:00:00Z", loop: "release", stage: "ready", gate: "G3", verdict: "PROCEED", round: 2 },
   ].map((x) => JSON.stringify(x)).join("\n") + "\n");
   expect(json(["loop-stats", log, "--json"]).entries === 2, "loop-stats did not count two entries");
   const html = path.join(TMP, "stats.html");

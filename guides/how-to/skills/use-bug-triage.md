@@ -61,10 +61,6 @@ A good result:
 - The post-incident analysis — that's `postmortem-generator`
 - A feature request wearing a bug costume ("bug: there's no dark mode") — route to `user-story-splitter`
 
-## Where a loop runs it
-
-- Stage `shape` of the [`build` loop](../../../packs/dev-team/loops/build/LOOP.md)
-
 ## Next
 
 - [SKILL.md](../../../packs/dev-team/skills/bug-triage/SKILL.md), the instructions the agent reads

@@ -7,12 +7,13 @@ stage: release
 
 # From idea to shipped feature
 
-A customer request becomes a shipped feature. This walkthrough takes one idea through all five lifecycle stages and shows a real refusal at every gate. The refusals are the point: a gate that always passes is decoration. Three stages run as loops (`design`, `build`, `release`). Finding the problem and running the service run as skills in order: their loops were retired, because on held-out evals the same skills used without the loop were preferred.
+A customer request becomes a shipped feature. This walkthrough takes one idea through all five lifecycle stages and shows a real refusal at every gate. The refusals are the point: a gate that always passes is decoration. Two stages run as loops (`design`, `release`). Finding the problem, building it and running the service run as skills in order: their loops were retired, because on held-out evals the same skills used without the loop were preferred.
 
-Install the three loops and the two packs whose skills cover the other stages:
+Install the two loops and the three packs whose skills cover the other stages:
 
 ```bash
-npx skilldrop-cli install --loop design build release
+npx skilldrop-cli install --loop design release
+npx skilldrop-cli install --pack dev-team
 npx skilldrop-cli install --pack product-manager
 npx skilldrop-cli install --pack sre-oncall
 ```
@@ -66,7 +67,7 @@ The PM tightens the criteria: the export query is scoped to `WHERE account_id = 
 
 ---
 
-## Loop 2 — `design` (G1: council-review)
+## Loop 1 — `design` (G1: council-review)
 
 ### `architecture-diagrams`
 
@@ -124,7 +125,7 @@ Conditions met. Proceed to build.
 
 ---
 
-## Loop 3 — `build` (G2: pre-merge-review)
+## Build it: skills in order, then `pre-merge-review`'s gate script
 
 ### `user-story-splitter`
 
@@ -137,14 +138,14 @@ Conditions met. Proceed to build.
 
 ### `feature-implement-loop`
 
-Each story runs through the `build` loop: implement → test → `pre-merge-review`.
+Each story runs through `feature-implement-loop`, then `pre-merge-review`: implement → test → review.
 
 Stories 1–3 pass `pre-merge-review` on first submission.
 
 Story 4 (audit log) is blocked:
 
 ```
-G2 BLOCKED
+pre-merge-review: NOT READY
 
 code-quality: The audit log write has no test coverage for the failure path.
   If the log write fails, the current implementation silently swallows the
@@ -156,7 +157,7 @@ code-quality: The audit log write has no test coverage for the failure path.
 The engineer adds a test for the audit log failure path and makes the export fail closed (job is marked failed; user sees an error and is asked to retry). Re-gating:
 
 ```
-G2 READY
+pre-merge-review: READY
 Audit log failure path is tested and handled correctly. Proceed to ship.
 ```
 
@@ -164,7 +165,7 @@ The engineer merges, and the `release` loop takes the change from there.
 
 ---
 
-## Loop 4 — `release` (G3: launch-readiness, then G3.1: a human go/no-go)
+## Loop 2 — `release` (G3: launch-readiness, then G3.1: a human go/no-go)
 
 ### `migration-plan`
 
@@ -240,9 +241,9 @@ The on-call engineer feeds the delta to `runbook-generator`, and adds the per-jo
 |---|---|---|
 | The PM's revision of the PRD | Untestable acceptance criteria ("contains only their data") | Query-layer enforcement would have been an assumption, not a requirement — cross-account data leakage possible |
 | G1 PROCEED WITH CONDITIONS | Missing audit log; no fallback if email fails | No compliance audit trail; users with failed emails would have no way to retrieve their export |
-| G2 BLOCKED | Audit log failure path silently swallowed | A log write failure during export would have been invisible — compliance gap, no alert |
+| `pre-merge-review` NOT READY | Audit log failure path silently swallowed | A log write failure during export would have been invisible — compliance gap, no alert |
 | G3 REVISE | Exports kept in S3 with no deletion rule | Every customer's data export would have stayed in the bucket indefinitely |
 | G3.1 RECONSIDER | Launching into the quarter-end freeze without the on-call engineer | A first-week problem would have landed on someone who did not know the export path |
 | The postmortem's runbook delta | Binary column handling not in threat model; per-job alerting missing | Next binary-column incident would have gone undetected for the same reason |
 
-The gates did not slow the feature down. The PM's revision caught a testability gap in the acceptance criteria — that conversation would have happened anyway, just later and more expensively in code review. G1's conditions added the audit log before build started, not after a compliance audit found it missing. G2's block caught a silent failure mode in a compliance-critical path. G3 kept customer data from piling up in a bucket, and G3.1 moved the launch by three days, not three weeks. The postmortem's delta closed a gap the threat model did not anticipate.
+The gates did not slow the feature down. The PM's revision caught a testability gap in the acceptance criteria — that conversation would have happened anyway, just later and more expensively in code review. G1's conditions added the audit log before build started, not after a compliance audit found it missing. `pre-merge-review`'s gate script caught a silent failure mode in a compliance-critical path. G3 kept customer data from piling up in a bucket, and G3.1 moved the launch by three days, not three weeks. The postmortem's delta closed a gap the threat model did not anticipate.

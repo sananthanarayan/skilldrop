@@ -8,6 +8,11 @@ cannot ship undocumented.
 Format: `## <version> — <YYYY-MM-DD>`, newest first, one bullet per user-visible change.
 Bullets say what a user can now do, not which files moved.
 
+## 1.16.0 — 2026-11-12
+
+- **The `build` loop is retired** ([RFC-0085](docs/rfcs/0085-build-retired-design-kept.md)). In its fourth measurement, both blind judges preferred its own skills, used in order without it, and each rebuild's fix had overshot on the next round's evals. This time it held back a sound pull request over a problem the change didn't have. Run its skills in order instead: `user-story-splitter` or `bug-triage` (with `codebase-tour` in an unfamiliar repo), then `feature-implement-loop`, then `pre-merge-review`. In that order they beat plain Claude Code in every pair. The merge stays yours. `skilldrop outdated` and `doctor` tell you if you have it installed.
+- **`design` 0.5.0 writes the risks it finds into the decision record,** marked open and not accepted by the person who decided, and names the biggest one first. It follows your repository's ADR rules before touching an older record, and when a new decision replaces only part of an old one, it says which part. Quality targets, threats and diagrams go inside the documents you asked for, not into extra files. The judges now prefer it to plain Claude Code in 75% and 50% of pairs, up from 25% and 25%.
+
 ## 1.15.0 — 2026-11-12
 
 - **`build` and `design` now beat their own skills** ([RFC-0084](docs/rfcs/0084-build-and-design-rebuilt.md)). Both had lost to them twice.

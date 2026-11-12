@@ -19,7 +19,7 @@ npx skilldrop-cli install prfaq --ide cursor            # + writes .cursor/rules
 npx skilldrop-cli install --pack sre-oncall --ide kiro  # .kiro/skills — Kiro IDE + Kiro CLI, discovered natively
 npx skilldrop-cli install adr-generator --dest .agents/skills   # Codex + Copilot CLI
 npx skilldrop-cli loops                                 # every loop, its stages and gates
-npx skilldrop-cli install --loop build                  # a loop + every stage skill it sequences (RFC-0028)
+npx skilldrop-cli install --loop release                # a loop + every stage skill it sequences (RFC-0028)
 npx skilldrop-cli install --loop --pack sre-oncall      # every loop that pack declares
 npx skilldrop-cli agents                                # the reviewer subagents
 npx skilldrop-cli install --agent devils-advocate       # -> ~/.claude/agents/ (RFC-0012)

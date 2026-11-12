@@ -544,3 +544,23 @@ Both ran on two fresh held-out evals each ([`loops-1.15.0.json`](../../docs/benc
   `design` read "risks go in the reply" as "risks stay out of the ADR", and both judges
   preferred an ADR that listed them as open. A rule about what not to do is easy to over-apply.
 
+### build retired, design kept
+
+[RFC-0085](../../docs/rfcs/0085-build-retired-design-kept.md) fixed both side effects and
+measured again on two fresh held-out evals each
+([`loops-1.16.0.json`](../../docs/benchmarks/loops-1.16.0.json)).
+
+| Loop preferred to… (judges 1, 2) | Its skills, no loop | Plain agent |
+|---|---|---|
+| `build` 0.5.0 | 25%, 25% | 12%, 50% |
+| `design` 0.5.0 | 25%, 50% | 75%, 50% |
+
+- **`build` was retired.** Given a colleague's sound pull request, it said "Not yet" over a
+  problem the change didn't have, where its skills alone said yes. Across four measurements it
+  was even with its skills, then behind, ahead and behind again. Each fix traded one failure
+  for the next, and its skills in order beat the plain agent in every pair.
+- **`design` was kept.** It now records a decision with its risks marked open, and amends only
+  the part of an older record that changed. It went from 25% and 25% against the plain agent to
+  75% and 50%. It still lost to its skills where the house rules allowed one decision per ADR
+  and it wrote several into one.
+

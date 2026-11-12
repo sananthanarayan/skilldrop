@@ -5,7 +5,7 @@ description: Take merged code to live users through a planned, reversible rollou
 
 # release
 
-This loop covers the step between `build`, which ends when a human merges, and running the service,
+This loop covers the step between building, which ends when a human merges, and running the service,
 which assumes the service is already live. A merge can be undone with a revert. A launch that
 has touched users or data often cannot be undone, so this loop gets its own gates instead of
 being folded into either neighbour.

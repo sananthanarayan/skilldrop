@@ -1,17 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 2430" width="820" height="2430" role="img" aria-labelledby="om-title om-desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 2402" width="820" height="2402" role="img" aria-labelledby="om-title om-desc">
 <title id="om-title">How work moves through skilldrop</title>
-<desc id="om-desc">Five lifecycle stages, in order. Stage 1, discover, in the product-manager pack: Find the problem worth solving. Start here when a request, a complaint or a strategy question arrives. Gates: none; its skills, in order, with no loop. Ends with a requirement someone agreed to. Stage 2, design, in the solution-architect pack: Decide how to build it. Start here when the problem is agreed, but not the approach. Gates: G1 where a review panel decides. Ends with a recorded decision (ADR). Stage 3, build, in the dev-team pack: Build it. Start here when the work is clear enough to write down. Bug fixes start here. Gates: G2 where a script decides, G2.1 where you decide. Ends with merged code. Stage 4, release, in the dev-team pack: Ship it. Start here when a merged change needs to reach users safely. Gates: G3 where a review panel decides, G3.1 where you decide. Ends with a live, reversible rollout. Stage 5, operate, in the sre-oncall pack: Run it. Start here when the service is live, or something just broke. Gates: none; its skills, in order, with no loop. Ends with a postmortem and runbook changes. Outside the lifecycle, ship-a-draft, in the core pack: Wrap any draft. Gates: G5 where a review panel decides. Outside the lifecycle, research, in the research pack: Answer a why question. Gates: G7 where a review panel decides. Outside the lifecycle, comply, in the grc pack: Sign off a risky change. Gates: G8 where a script decides, G8.1 where you decide. Outside the lifecycle, measure, in the data-analytics pack: Trust a dashboard's numbers. Gates: G9 where a review panel decides, G9.1 where you decide. Outside the lifecycle, modernize, in the dev-team pack: Replace legacy code safely. Gates: G10 where a script decides, G10.1 where you decide. Outside the lifecycle, ship-agent, in the ai-engineering pack: Ship an AI agent. Gates: G12 where a review panel decides, G12.1 where you decide. Outside the lifecycle, provision, in the infra-as-code pack: Change infrastructure safely. Gates: G13 where a review panel decides, G13.1 where you decide. Outside the lifecycle, clarify, in the experience-design pack: Fix a confusing service. Gates: G14 where a review panel decides. Packs for any stage: product-manager, sre-oncall, stakeholder-comms, design, api-builder, converters, trackers, frontend, skill-engineering, career, civil-architect, operations-manager, event-planner, interior-designer, startup-legal, educator.</desc>
+<desc id="om-desc">Five lifecycle stages, in order. Stage 1, discover, in the product-manager pack: Find the problem worth solving. Start here when a request, a complaint or a strategy question arrives. Gates: none; its skills, in order, with no loop. Ends with a requirement someone agreed to. Stage 2, design, in the solution-architect pack: Decide how to build it. Start here when the problem is agreed, but not the approach. Gates: G1 where a review panel decides. Ends with a recorded decision (ADR). Stage 3, build, in the dev-team pack: Build it. Start here when the work is clear enough to write down. Bug fixes start here. Gates: none; its skills, in order, with no loop. Ends with merged code. Stage 4, release, in the dev-team pack: Ship it. Start here when a merged change needs to reach users safely. Gates: G3 where a review panel decides, G3.1 where you decide. Ends with a live, reversible rollout. Stage 5, operate, in the sre-oncall pack: Run it. Start here when the service is live, or something just broke. Gates: none; its skills, in order, with no loop. Ends with a postmortem and runbook changes. Outside the lifecycle, ship-a-draft, in the core pack: Wrap any draft. Gates: G5 where a review panel decides. Outside the lifecycle, research, in the research pack: Answer a why question. Gates: G7 where a review panel decides. Outside the lifecycle, comply, in the grc pack: Sign off a risky change. Gates: G8 where a script decides, G8.1 where you decide. Outside the lifecycle, measure, in the data-analytics pack: Trust a dashboard's numbers. Gates: G9 where a review panel decides, G9.1 where you decide. Outside the lifecycle, modernize, in the dev-team pack: Replace legacy code safely. Gates: G10 where a script decides, G10.1 where you decide. Outside the lifecycle, ship-agent, in the ai-engineering pack: Ship an AI agent. Gates: G12 where a review panel decides, G12.1 where you decide. Outside the lifecycle, provision, in the infra-as-code pack: Change infrastructure safely. Gates: G13 where a review panel decides, G13.1 where you decide. Outside the lifecycle, clarify, in the experience-design pack: Fix a confusing service. Gates: G14 where a review panel decides. Packs for any stage: product-manager, sre-oncall, stakeholder-comms, design, api-builder, converters, trackers, frontend, skill-engineering, career, civil-architect, operations-manager, event-planner, interior-designer, startup-legal, educator.</desc>
 <style>.s,text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;}.title{font-size:24px;font-weight:700;fill:#ececf1;}.sub{font-size:14px;fill:#a3a3ad;}.label{font-size:11px;font-weight:700;letter-spacing:.08em;}.h{font-size:19px;font-weight:700;fill:#ececf1;}.muted{font-size:13px;fill:#b3b3bc;}.mono,.chip{font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;font-size:12px;fill:#d4d4dc;}.chip{font-size:11px;}.arrow{font-size:13px;fill:#6b6b75;}.gate{fill:#FBE3A2;stroke:#D9971E;stroke-width:1.2;}.gatet{font-size:11.5px;font-weight:700;fill:#6B4500;}.ends{font-size:13px;fill:#ececf1;}.endsl,.startl{font-weight:700;}.startl{fill:#d0d0d8;}.card{fill:#1d1d23;stroke:#2f2f38;}.dashed{fill:#18181d;stroke:#4a4a55;stroke-dasharray:5 4;}.rail{stroke:#34344a;stroke-width:3;}.num{font-size:13px;font-weight:700;fill:#fff;text-anchor:middle;}.section{font-size:11px;font-weight:700;letter-spacing:.08em;fill:#a3a3ad;}.pack{fill:#1d1d23;stroke:#3a3a44;}.foot{font-size:11.5px;fill:#8a8a94;}</style>
-<rect width="820" height="2430" rx="16" fill="#16161b"/>
+<rect width="820" height="2402" rx="16" fill="#16161b"/>
 <text x="22" y="48" class="title">How work moves through skilldrop</text>
 <text x="22" y="74" class="sub">Start at the stage your work is in. Each loop stops at its gold gates, where a script,</text>
 <text x="22" y="94" class="sub">a review panel or you decide whether the work moves on.</text>
-<line x1="36" y1="134" x2="36" y2="930" class="rail"/>
+<line x1="36" y1="134" x2="36" y2="902" class="rail"/>
 <circle cx="36" cy="134" r="14" fill="#a08cff"/><text x="36" y="139" class="num">1</text>
 <circle cx="36" cy="312" r="14" fill="#6f9dff"/><text x="36" y="317" class="num">2</text>
 <circle cx="36" cy="518" r="14" fill="#3dbb7c"/><text x="36" y="523" class="num">3</text>
-<circle cx="36" cy="724" r="14" fill="#f06ba1"/><text x="36" y="729" class="num">4</text>
-<circle cx="36" cy="930" r="14" fill="#2bb4c8"/><text x="36" y="935" class="num">5</text>
+<circle cx="36" cy="696" r="14" fill="#f06ba1"/><text x="36" y="701" class="num">4</text>
+<circle cx="36" cy="902" r="14" fill="#2bb4c8"/><text x="36" y="907" class="num">5</text>
 <rect x="72" y="112" width="724" height="156" rx="12" class="card"/>
 <rect x="72" y="124" width="4" height="132" rx="2" fill="#a08cff"/>
 <text x="92" y="138" class="label" fill="#a08cff">STAGE 1 · DISCOVER · SKILLS, NO LOOP</text>
@@ -40,9 +40,9 @@
 <text x="306.7" y="424" class="arrow">→</text>
 <text x="323.7" y="424" class="mono">adr-generator / context-graph</text>
 <text x="92" y="452" class="ends"><tspan class="endsl">Ends with</tspan> a recorded decision (ADR)</text>
-<rect x="72" y="496" width="724" height="184" rx="12" class="card"/>
-<rect x="72" y="508" width="4" height="160" rx="2" fill="#3dbb7c"/>
-<text x="92" y="522" class="label" fill="#3dbb7c">STAGE 3 · BUILD</text>
+<rect x="72" y="496" width="724" height="156" rx="12" class="card"/>
+<rect x="72" y="508" width="4" height="132" rx="2" fill="#3dbb7c"/>
+<text x="92" y="522" class="label" fill="#3dbb7c">STAGE 3 · BUILD · SKILLS, NO LOOP</text>
 <rect x="706.3" y="508" width="69.7" height="20" rx="10" fill="#3dbb7c" fill-opacity=".08" stroke="#3dbb7c" stroke-opacity=".35"/><text x="714.3" y="522" class="chip" fill="#3dbb7c">dev-team</text>
 <text x="92" y="550" class="h">Build it</text>
 <text x="92" y="574" class="muted"><tspan class="startl">Start here when</tspan> The work is clear enough to write down. Bug fixes start here.</text>
@@ -51,199 +51,193 @@
 <text x="465.4" y="602" class="mono">feature-implement-loop</text>
 <text x="631.4" y="602" class="arrow">→</text>
 <text x="648.4" y="602" class="mono">pre-merge-review</text>
-<text x="97.0" y="630" class="arrow">→</text>
-<rect x="114.0" y="616" width="150.4" height="20" rx="10" class="gate"/><text x="124.0" y="630" class="gatet">G2 · a script decides</text>
-<text x="269.4" y="630" class="arrow">→</text>
-<text x="286.4" y="630" class="mono">council-review</text>
-<text x="393.9" y="630" class="arrow">→</text>
-<rect x="410.9" y="616" width="125.6" height="20" rx="10" class="gate"/><text x="420.9" y="630" class="gatet">G2.1 · you decide</text>
-<text x="92" y="658" class="ends"><tspan class="endsl">Ends with</tspan> merged code</text>
-<rect x="72" y="702" width="724" height="184" rx="12" class="card"/>
-<rect x="72" y="714" width="4" height="160" rx="2" fill="#f06ba1"/>
-<text x="92" y="728" class="label" fill="#f06ba1">STAGE 4 · RELEASE</text>
-<rect x="706.3" y="714" width="69.7" height="20" rx="10" fill="#f06ba1" fill-opacity=".08" stroke="#f06ba1" stroke-opacity=".35"/><text x="714.3" y="728" class="chip" fill="#f06ba1">dev-team</text>
-<text x="92" y="756" class="h">Ship it</text>
-<text x="92" y="780" class="muted"><tspan class="startl">Start here when</tspan> A merged change needs to reach users safely.</text>
-<text x="92.0" y="808" class="mono">migration-plan / rollout-plan</text>
-<text x="309.3" y="808" class="arrow">→</text>
-<text x="326.3" y="808" class="mono">launch-readiness</text>
-<text x="448.4" y="808" class="arrow">→</text>
-<rect x="465.4" y="794" width="187.7" height="20" rx="10" class="gate"/><text x="475.4" y="808" class="gatet">G3 · a review panel decides</text>
-<text x="658.1" y="808" class="arrow">→</text>
-<text x="675.1" y="808" class="mono">release-notes</text>
-<text x="97.0" y="836" class="arrow">→</text>
-<text x="114.0" y="836" class="mono">council-review</text>
-<text x="221.5" y="836" class="arrow">→</text>
-<rect x="238.5" y="822" width="125.6" height="20" rx="10" class="gate"/><text x="248.5" y="836" class="gatet">G3.1 · you decide</text>
-<text x="92" y="864" class="ends"><tspan class="endsl">Ends with</tspan> a live, reversible rollout</text>
-<rect x="72" y="908" width="724" height="156" rx="12" class="card"/>
-<rect x="72" y="920" width="4" height="132" rx="2" fill="#2bb4c8"/>
-<text x="92" y="934" class="label" fill="#2bb4c8">STAGE 5 · OPERATE · SKILLS, NO LOOP</text>
-<rect x="692.9" y="920" width="83.1" height="20" rx="10" fill="#2bb4c8" fill-opacity=".08" stroke="#2bb4c8" stroke-opacity=".35"/><text x="700.9" y="934" class="chip" fill="#2bb4c8">sre-oncall</text>
-<text x="92" y="962" class="h">Run it</text>
-<text x="92" y="986" class="muted"><tspan class="startl">Start here when</tspan> The service is live, or something just broke.</text>
-<text x="92.0" y="1014" class="mono">observability-plan</text>
-<text x="228.8" y="1014" class="arrow">→</text>
-<text x="245.8" y="1014" class="mono">runbook-generator</text>
-<text x="375.2" y="1014" class="arrow">→</text>
-<text x="392.2" y="1014" class="mono">incident-comms</text>
-<text x="499.7" y="1014" class="arrow">→</text>
-<text x="516.7" y="1014" class="mono">postmortem-generator</text>
-<text x="92" y="1042" class="ends"><tspan class="endsl">Ends with</tspan> a postmortem and runbook changes</text>
-<text x="72" y="1094" class="section">OUTSIDE THE LIFECYCLE</text>
-<rect x="72.0" y="1108" width="354.0" height="258" rx="12" class="card dashed"/>
-<text x="92.0" y="1134" class="label" fill="#b5b0ab">SHIP-A-DRAFT</text>
-<rect x="363.2" y="1120" width="42.8" height="20" rx="10" fill="#b5b0ab" fill-opacity=".08" stroke="#b5b0ab" stroke-opacity=".35"/><text x="371.2" y="1134" class="chip" fill="#b5b0ab">core</text>
-<text x="92.0" y="1162" class="h">Wrap any draft</text>
-<text x="92.0" y="1186" class="muted"><tspan class="startl">Start here when</tspan> Before and after any generator,</text>
-<text x="92.0" y="1204" class="muted">at any stage.</text>
-<text x="92.0" y="1232" class="mono">brief-intake</text>
-<text x="184.8" y="1232" class="arrow">→</text>
-<text x="201.8" y="1232" class="mono">any generator</text>
+<text x="92" y="630" class="ends"><tspan class="endsl">Ends with</tspan> merged code</text>
+<rect x="72" y="674" width="724" height="184" rx="12" class="card"/>
+<rect x="72" y="686" width="4" height="160" rx="2" fill="#f06ba1"/>
+<text x="92" y="700" class="label" fill="#f06ba1">STAGE 4 · RELEASE</text>
+<rect x="706.3" y="686" width="69.7" height="20" rx="10" fill="#f06ba1" fill-opacity=".08" stroke="#f06ba1" stroke-opacity=".35"/><text x="714.3" y="700" class="chip" fill="#f06ba1">dev-team</text>
+<text x="92" y="728" class="h">Ship it</text>
+<text x="92" y="752" class="muted"><tspan class="startl">Start here when</tspan> A merged change needs to reach users safely.</text>
+<text x="92.0" y="780" class="mono">migration-plan / rollout-plan</text>
+<text x="309.3" y="780" class="arrow">→</text>
+<text x="326.3" y="780" class="mono">launch-readiness</text>
+<text x="448.4" y="780" class="arrow">→</text>
+<rect x="465.4" y="766" width="187.7" height="20" rx="10" class="gate"/><text x="475.4" y="780" class="gatet">G3 · a review panel decides</text>
+<text x="658.1" y="780" class="arrow">→</text>
+<text x="675.1" y="780" class="mono">release-notes</text>
+<text x="97.0" y="808" class="arrow">→</text>
+<text x="114.0" y="808" class="mono">council-review</text>
+<text x="221.5" y="808" class="arrow">→</text>
+<rect x="238.5" y="794" width="125.6" height="20" rx="10" class="gate"/><text x="248.5" y="808" class="gatet">G3.1 · you decide</text>
+<text x="92" y="836" class="ends"><tspan class="endsl">Ends with</tspan> a live, reversible rollout</text>
+<rect x="72" y="880" width="724" height="156" rx="12" class="card"/>
+<rect x="72" y="892" width="4" height="132" rx="2" fill="#2bb4c8"/>
+<text x="92" y="906" class="label" fill="#2bb4c8">STAGE 5 · OPERATE · SKILLS, NO LOOP</text>
+<rect x="692.9" y="892" width="83.1" height="20" rx="10" fill="#2bb4c8" fill-opacity=".08" stroke="#2bb4c8" stroke-opacity=".35"/><text x="700.9" y="906" class="chip" fill="#2bb4c8">sre-oncall</text>
+<text x="92" y="934" class="h">Run it</text>
+<text x="92" y="958" class="muted"><tspan class="startl">Start here when</tspan> The service is live, or something just broke.</text>
+<text x="92.0" y="986" class="mono">observability-plan</text>
+<text x="228.8" y="986" class="arrow">→</text>
+<text x="245.8" y="986" class="mono">runbook-generator</text>
+<text x="375.2" y="986" class="arrow">→</text>
+<text x="392.2" y="986" class="mono">incident-comms</text>
+<text x="499.7" y="986" class="arrow">→</text>
+<text x="516.7" y="986" class="mono">postmortem-generator</text>
+<text x="92" y="1014" class="ends"><tspan class="endsl">Ends with</tspan> a postmortem and runbook changes</text>
+<text x="72" y="1066" class="section">OUTSIDE THE LIFECYCLE</text>
+<rect x="72.0" y="1080" width="354.0" height="258" rx="12" class="card dashed"/>
+<text x="92.0" y="1106" class="label" fill="#b5b0ab">SHIP-A-DRAFT</text>
+<rect x="363.2" y="1092" width="42.8" height="20" rx="10" fill="#b5b0ab" fill-opacity=".08" stroke="#b5b0ab" stroke-opacity=".35"/><text x="371.2" y="1106" class="chip" fill="#b5b0ab">core</text>
+<text x="92.0" y="1134" class="h">Wrap any draft</text>
+<text x="92.0" y="1158" class="muted"><tspan class="startl">Start here when</tspan> Before and after any generator,</text>
+<text x="92.0" y="1176" class="muted">at any stage.</text>
+<text x="92.0" y="1204" class="mono">brief-intake</text>
+<text x="184.8" y="1204" class="arrow">→</text>
+<text x="201.8" y="1204" class="mono">any generator</text>
+<text x="97.0" y="1232" class="arrow">→</text>
+<text x="114.0" y="1232" class="mono">doc-critique</text>
 <text x="97.0" y="1260" class="arrow">→</text>
-<text x="114.0" y="1260" class="mono">doc-critique</text>
+<rect x="114.0" y="1246" width="187.7" height="20" rx="10" class="gate"/><text x="124.0" y="1260" class="gatet">G5 · a review panel decides</text>
 <text x="97.0" y="1288" class="arrow">→</text>
-<rect x="114.0" y="1274" width="187.7" height="20" rx="10" class="gate"/><text x="124.0" y="1288" class="gatet">G5 · a review panel decides</text>
-<text x="97.0" y="1316" class="arrow">→</text>
-<text x="114.0" y="1316" class="mono">output-hygiene</text>
-<text x="92.0" y="1344" class="ends"><tspan class="endsl">Ends with</tspan> a document ready for its reader</text>
-<rect x="442.0" y="1108" width="354.0" height="230" rx="12" class="card dashed"/>
-<text x="462.0" y="1134" class="label" fill="#b5b0ab">RESEARCH</text>
-<rect x="706.3" y="1120" width="69.7" height="20" rx="10" fill="#b5b0ab" fill-opacity=".08" stroke="#b5b0ab" stroke-opacity=".35"/><text x="714.3" y="1134" class="chip" fill="#b5b0ab">research</text>
-<text x="462.0" y="1162" class="h">Answer a why question</text>
-<text x="462.0" y="1186" class="muted"><tspan class="startl">Start here when</tspan> A decision turns on which</text>
-<text x="462.0" y="1204" class="muted">explanation is true.</text>
-<text x="462.0" y="1232" class="mono">research-plan</text>
-<text x="562.2" y="1232" class="arrow">→</text>
-<text x="579.2" y="1232" class="mono">source-synthesis</text>
+<text x="114.0" y="1288" class="mono">output-hygiene</text>
+<text x="92.0" y="1316" class="ends"><tspan class="endsl">Ends with</tspan> a document ready for its reader</text>
+<rect x="442.0" y="1080" width="354.0" height="230" rx="12" class="card dashed"/>
+<text x="462.0" y="1106" class="label" fill="#b5b0ab">RESEARCH</text>
+<rect x="706.3" y="1092" width="69.7" height="20" rx="10" fill="#b5b0ab" fill-opacity=".08" stroke="#b5b0ab" stroke-opacity=".35"/><text x="714.3" y="1106" class="chip" fill="#b5b0ab">research</text>
+<text x="462.0" y="1134" class="h">Answer a why question</text>
+<text x="462.0" y="1158" class="muted"><tspan class="startl">Start here when</tspan> A decision turns on which</text>
+<text x="462.0" y="1176" class="muted">explanation is true.</text>
+<text x="462.0" y="1204" class="mono">research-plan</text>
+<text x="562.2" y="1204" class="arrow">→</text>
+<text x="579.2" y="1204" class="mono">source-synthesis</text>
+<text x="467.0" y="1232" class="arrow">→</text>
+<text x="484.0" y="1232" class="mono">hypothesis-comparison</text>
 <text x="467.0" y="1260" class="arrow">→</text>
-<text x="484.0" y="1260" class="mono">hypothesis-comparison</text>
-<text x="467.0" y="1288" class="arrow">→</text>
-<rect x="484.0" y="1274" width="187.7" height="20" rx="10" class="gate"/><text x="494.0" y="1288" class="gatet">G7 · a review panel decides</text>
-<text x="462.0" y="1316" class="ends"><tspan class="endsl">Ends with</tspan> an answer the evidence carries</text>
-<rect x="72.0" y="1382" width="354.0" height="230" rx="12" class="card dashed"/>
-<text x="92.0" y="1408" class="label" fill="#b5b0ab">COMPLY</text>
-<rect x="369.9" y="1394" width="36.1" height="20" rx="10" fill="#b5b0ab" fill-opacity=".08" stroke="#b5b0ab" stroke-opacity=".35"/><text x="377.9" y="1408" class="chip" fill="#b5b0ab">grc</text>
-<text x="92.0" y="1436" class="h">Sign off a risky change</text>
-<text x="92.0" y="1460" class="muted"><tspan class="startl">Start here when</tspan> A launch, a vendor or new</text>
-<text x="92.0" y="1478" class="muted">personal data.</text>
-<text x="92.0" y="1506" class="mono">risk-register</text>
-<text x="192.2" y="1506" class="arrow">→</text>
-<text x="209.2" y="1506" class="mono">dpia</text>
-<text x="243.4" y="1506" class="arrow">→</text>
-<text x="260.4" y="1506" class="mono">soc2-evidence-map</text>
+<rect x="484.0" y="1246" width="187.7" height="20" rx="10" class="gate"/><text x="494.0" y="1260" class="gatet">G7 · a review panel decides</text>
+<text x="462.0" y="1288" class="ends"><tspan class="endsl">Ends with</tspan> an answer the evidence carries</text>
+<rect x="72.0" y="1354" width="354.0" height="230" rx="12" class="card dashed"/>
+<text x="92.0" y="1380" class="label" fill="#b5b0ab">COMPLY</text>
+<rect x="369.9" y="1366" width="36.1" height="20" rx="10" fill="#b5b0ab" fill-opacity=".08" stroke="#b5b0ab" stroke-opacity=".35"/><text x="377.9" y="1380" class="chip" fill="#b5b0ab">grc</text>
+<text x="92.0" y="1408" class="h">Sign off a risky change</text>
+<text x="92.0" y="1432" class="muted"><tspan class="startl">Start here when</tspan> A launch, a vendor or new</text>
+<text x="92.0" y="1450" class="muted">personal data.</text>
+<text x="92.0" y="1478" class="mono">risk-register</text>
+<text x="192.2" y="1478" class="arrow">→</text>
+<text x="209.2" y="1478" class="mono">dpia</text>
+<text x="243.4" y="1478" class="arrow">→</text>
+<text x="260.4" y="1478" class="mono">soc2-evidence-map</text>
+<text x="97.0" y="1506" class="arrow">→</text>
+<text x="114.0" y="1506" class="mono">risk-register</text>
+<text x="214.2" y="1506" class="arrow">→</text>
+<rect x="231.2" y="1492" width="150.4" height="20" rx="10" class="gate"/><text x="241.2" y="1506" class="gatet">G8 · a script decides</text>
 <text x="97.0" y="1534" class="arrow">→</text>
-<text x="114.0" y="1534" class="mono">risk-register</text>
-<text x="214.2" y="1534" class="arrow">→</text>
-<rect x="231.2" y="1520" width="150.4" height="20" rx="10" class="gate"/><text x="241.2" y="1534" class="gatet">G8 · a script decides</text>
-<text x="97.0" y="1562" class="arrow">→</text>
-<text x="114.0" y="1562" class="mono">doc-critique</text>
-<text x="206.8" y="1562" class="arrow">→</text>
-<rect x="223.8" y="1548" width="125.6" height="20" rx="10" class="gate"/><text x="233.8" y="1562" class="gatet">G8.1 · you decide</text>
-<text x="92.0" y="1590" class="ends"><tspan class="endsl">Ends with</tspan> a risk position its owner signed</text>
-<rect x="442.0" y="1382" width="354.0" height="212" rx="12" class="card dashed"/>
-<text x="462.0" y="1408" class="label" fill="#b5b0ab">MEASURE</text>
-<rect x="666.1" y="1394" width="109.9" height="20" rx="10" fill="#b5b0ab" fill-opacity=".08" stroke="#b5b0ab" stroke-opacity=".35"/><text x="674.1" y="1408" class="chip" fill="#b5b0ab">data-analytics</text>
-<text x="462.0" y="1436" class="h">Trust a dashboard's numbers</text>
-<text x="462.0" y="1460" class="muted"><tspan class="startl">Start here when</tspan> Someone asks for a dashboard.</text>
-<text x="462.0" y="1488" class="mono">dashboard-spec</text>
-<text x="569.5" y="1488" class="arrow">→</text>
-<text x="586.5" y="1488" class="mono">sql-review</text>
+<text x="114.0" y="1534" class="mono">doc-critique</text>
+<text x="206.8" y="1534" class="arrow">→</text>
+<rect x="223.8" y="1520" width="125.6" height="20" rx="10" class="gate"/><text x="233.8" y="1534" class="gatet">G8.1 · you decide</text>
+<text x="92.0" y="1562" class="ends"><tspan class="endsl">Ends with</tspan> a risk position its owner signed</text>
+<rect x="442.0" y="1354" width="354.0" height="212" rx="12" class="card dashed"/>
+<text x="462.0" y="1380" class="label" fill="#b5b0ab">MEASURE</text>
+<rect x="666.1" y="1366" width="109.9" height="20" rx="10" fill="#b5b0ab" fill-opacity=".08" stroke="#b5b0ab" stroke-opacity=".35"/><text x="674.1" y="1380" class="chip" fill="#b5b0ab">data-analytics</text>
+<text x="462.0" y="1408" class="h">Trust a dashboard's numbers</text>
+<text x="462.0" y="1432" class="muted"><tspan class="startl">Start here when</tspan> Someone asks for a dashboard.</text>
+<text x="462.0" y="1460" class="mono">dashboard-spec</text>
+<text x="569.5" y="1460" class="arrow">→</text>
+<text x="586.5" y="1460" class="mono">sql-review</text>
+<text x="467.0" y="1488" class="arrow">→</text>
+<rect x="484.0" y="1474" width="187.7" height="20" rx="10" class="gate"/><text x="494.0" y="1488" class="gatet">G9 · a review panel decides</text>
 <text x="467.0" y="1516" class="arrow">→</text>
-<rect x="484.0" y="1502" width="187.7" height="20" rx="10" class="gate"/><text x="494.0" y="1516" class="gatet">G9 · a review panel decides</text>
-<text x="467.0" y="1544" class="arrow">→</text>
-<text x="484.0" y="1544" class="mono">doc-critique</text>
-<text x="576.8" y="1544" class="arrow">→</text>
-<rect x="593.8" y="1530" width="125.6" height="20" rx="10" class="gate"/><text x="603.8" y="1544" class="gatet">G9.1 · you decide</text>
-<text x="462.0" y="1572" class="ends"><tspan class="endsl">Ends with</tspan> a spec with signed-off metrics</text>
-<rect x="72.0" y="1628" width="354.0" height="342" rx="12" class="card dashed"/>
-<text x="92.0" y="1654" class="label" fill="#b5b0ab">MODERNIZE</text>
-<rect x="336.3" y="1640" width="69.7" height="20" rx="10" fill="#b5b0ab" fill-opacity=".08" stroke="#b5b0ab" stroke-opacity=".35"/><text x="344.3" y="1654" class="chip" fill="#b5b0ab">dev-team</text>
-<text x="92.0" y="1682" class="h">Replace legacy code safely</text>
-<text x="92.0" y="1706" class="muted"><tspan class="startl">Start here when</tspan> A legacy component is being</text>
-<text x="92.0" y="1724" class="muted">rewritten or moved.</text>
-<text x="92.0" y="1752" class="mono">codebase-tour / context-graph</text>
+<text x="484.0" y="1516" class="mono">doc-critique</text>
+<text x="576.8" y="1516" class="arrow">→</text>
+<rect x="593.8" y="1502" width="125.6" height="20" rx="10" class="gate"/><text x="603.8" y="1516" class="gatet">G9.1 · you decide</text>
+<text x="462.0" y="1544" class="ends"><tspan class="endsl">Ends with</tspan> a spec with signed-off metrics</text>
+<rect x="72.0" y="1600" width="354.0" height="342" rx="12" class="card dashed"/>
+<text x="92.0" y="1626" class="label" fill="#b5b0ab">MODERNIZE</text>
+<rect x="336.3" y="1612" width="69.7" height="20" rx="10" fill="#b5b0ab" fill-opacity=".08" stroke="#b5b0ab" stroke-opacity=".35"/><text x="344.3" y="1626" class="chip" fill="#b5b0ab">dev-team</text>
+<text x="92.0" y="1654" class="h">Replace legacy code safely</text>
+<text x="92.0" y="1678" class="muted"><tspan class="startl">Start here when</tspan> A legacy component is being</text>
+<text x="92.0" y="1696" class="muted">rewritten or moved.</text>
+<text x="92.0" y="1724" class="mono">codebase-tour / context-graph</text>
+<text x="97.0" y="1752" class="arrow">→</text>
+<text x="114.0" y="1752" class="mono">refactor-plan / migration-plan</text>
 <text x="97.0" y="1780" class="arrow">→</text>
-<text x="114.0" y="1780" class="mono">refactor-plan / migration-plan</text>
+<text x="114.0" y="1780" class="mono">behaviour-equivalence</text>
 <text x="97.0" y="1808" class="arrow">→</text>
-<text x="114.0" y="1808" class="mono">behaviour-equivalence</text>
+<text x="114.0" y="1808" class="mono">feature-implement-loop</text>
 <text x="97.0" y="1836" class="arrow">→</text>
-<text x="114.0" y="1836" class="mono">feature-implement-loop</text>
+<text x="114.0" y="1836" class="mono">behaviour-equivalence</text>
 <text x="97.0" y="1864" class="arrow">→</text>
-<text x="114.0" y="1864" class="mono">behaviour-equivalence</text>
+<rect x="114.0" y="1850" width="156.6" height="20" rx="10" class="gate"/><text x="124.0" y="1864" class="gatet">G10 · a script decides</text>
 <text x="97.0" y="1892" class="arrow">→</text>
-<rect x="114.0" y="1878" width="156.6" height="20" rx="10" class="gate"/><text x="124.0" y="1892" class="gatet">G10 · a script decides</text>
-<text x="97.0" y="1920" class="arrow">→</text>
-<text x="114.0" y="1920" class="mono">launch-readiness</text>
-<text x="236.1" y="1920" class="arrow">→</text>
-<rect x="253.1" y="1906" width="131.8" height="20" rx="10" class="gate"/><text x="263.1" y="1920" class="gatet">G10.1 · you decide</text>
-<text x="92.0" y="1948" class="ends"><tspan class="endsl">Ends with</tspan> a cutover a person accepted</text>
-<rect x="442.0" y="1628" width="354.0" height="286" rx="12" class="card dashed"/>
-<text x="462.0" y="1654" class="label" fill="#b5b0ab">SHIP-AGENT</text>
-<rect x="666.1" y="1640" width="109.9" height="20" rx="10" fill="#b5b0ab" fill-opacity=".08" stroke="#b5b0ab" stroke-opacity=".35"/><text x="674.1" y="1654" class="chip" fill="#b5b0ab">ai-engineering</text>
-<text x="462.0" y="1682" class="h">Ship an AI agent</text>
-<text x="462.0" y="1706" class="muted"><tspan class="startl">Start here when</tspan> Someone is building an agent</text>
-<text x="462.0" y="1724" class="muted">with tools.</text>
-<text x="462.0" y="1752" class="mono">agent-loop-design / subagent-design</text>
+<text x="114.0" y="1892" class="mono">launch-readiness</text>
+<text x="236.1" y="1892" class="arrow">→</text>
+<rect x="253.1" y="1878" width="131.8" height="20" rx="10" class="gate"/><text x="263.1" y="1892" class="gatet">G10.1 · you decide</text>
+<text x="92.0" y="1920" class="ends"><tspan class="endsl">Ends with</tspan> a cutover a person accepted</text>
+<rect x="442.0" y="1600" width="354.0" height="286" rx="12" class="card dashed"/>
+<text x="462.0" y="1626" class="label" fill="#b5b0ab">SHIP-AGENT</text>
+<rect x="666.1" y="1612" width="109.9" height="20" rx="10" fill="#b5b0ab" fill-opacity=".08" stroke="#b5b0ab" stroke-opacity=".35"/><text x="674.1" y="1626" class="chip" fill="#b5b0ab">ai-engineering</text>
+<text x="462.0" y="1654" class="h">Ship an AI agent</text>
+<text x="462.0" y="1678" class="muted"><tspan class="startl">Start here when</tspan> Someone is building an agent</text>
+<text x="462.0" y="1696" class="muted">with tools.</text>
+<text x="462.0" y="1724" class="mono">agent-loop-design / subagent-design</text>
+<text x="467.0" y="1752" class="arrow">→</text>
+<text x="484.0" y="1752" class="mono">agent-budget</text>
+<text x="576.8" y="1752" class="arrow">→</text>
+<text x="593.8" y="1752" class="mono">agent-threat-model</text>
 <text x="467.0" y="1780" class="arrow">→</text>
-<text x="484.0" y="1780" class="mono">agent-budget</text>
-<text x="576.8" y="1780" class="arrow">→</text>
-<text x="593.8" y="1780" class="mono">agent-threat-model</text>
+<rect x="484.0" y="1766" width="193.9" height="20" rx="10" class="gate"/><text x="494.0" y="1780" class="gatet">G12 · a review panel decides</text>
 <text x="467.0" y="1808" class="arrow">→</text>
-<rect x="484.0" y="1794" width="193.9" height="20" rx="10" class="gate"/><text x="494.0" y="1808" class="gatet">G12 · a review panel decides</text>
+<text x="484.0" y="1808" class="mono">llm-eval-harness</text>
+<text x="606.1" y="1808" class="arrow">→</text>
+<text x="623.1" y="1808" class="mono">agent-config-review</text>
 <text x="467.0" y="1836" class="arrow">→</text>
-<text x="484.0" y="1836" class="mono">llm-eval-harness</text>
-<text x="606.1" y="1836" class="arrow">→</text>
-<text x="623.1" y="1836" class="mono">agent-config-review</text>
-<text x="467.0" y="1864" class="arrow">→</text>
-<rect x="484.0" y="1850" width="131.8" height="20" rx="10" class="gate"/><text x="494.0" y="1864" class="gatet">G12.1 · you decide</text>
-<text x="462.0" y="1892" class="ends"><tspan class="endsl">Ends with</tspan> a launch its owner signed</text>
-<rect x="72.0" y="1986" width="354.0" height="258" rx="12" class="card dashed"/>
-<text x="92.0" y="2012" class="label" fill="#b5b0ab">PROVISION</text>
-<rect x="302.8" y="1998" width="103.2" height="20" rx="10" fill="#b5b0ab" fill-opacity=".08" stroke="#b5b0ab" stroke-opacity=".35"/><text x="310.8" y="2012" class="chip" fill="#b5b0ab">infra-as-code</text>
-<text x="92.0" y="2040" class="h">Change infrastructure safely</text>
-<text x="92.0" y="2064" class="muted"><tspan class="startl">Start here when</tspan> New or changed Terraform is</text>
-<text x="92.0" y="2082" class="muted">about to be applied.</text>
-<text x="92.0" y="2110" class="mono">terraform-module</text>
-<text x="214.1" y="2110" class="arrow">→</text>
-<text x="231.1" y="2110" class="mono">terraform-plan-review</text>
+<rect x="484.0" y="1822" width="131.8" height="20" rx="10" class="gate"/><text x="494.0" y="1836" class="gatet">G12.1 · you decide</text>
+<text x="462.0" y="1864" class="ends"><tspan class="endsl">Ends with</tspan> a launch its owner signed</text>
+<rect x="72.0" y="1958" width="354.0" height="258" rx="12" class="card dashed"/>
+<text x="92.0" y="1984" class="label" fill="#b5b0ab">PROVISION</text>
+<rect x="302.8" y="1970" width="103.2" height="20" rx="10" fill="#b5b0ab" fill-opacity=".08" stroke="#b5b0ab" stroke-opacity=".35"/><text x="310.8" y="1984" class="chip" fill="#b5b0ab">infra-as-code</text>
+<text x="92.0" y="2012" class="h">Change infrastructure safely</text>
+<text x="92.0" y="2036" class="muted"><tspan class="startl">Start here when</tspan> New or changed Terraform is</text>
+<text x="92.0" y="2054" class="muted">about to be applied.</text>
+<text x="92.0" y="2082" class="mono">terraform-module</text>
+<text x="214.1" y="2082" class="arrow">→</text>
+<text x="231.1" y="2082" class="mono">terraform-plan-review</text>
+<text x="97.0" y="2110" class="arrow">→</text>
+<rect x="114.0" y="2096" width="193.9" height="20" rx="10" class="gate"/><text x="124.0" y="2110" class="gatet">G13 · a review panel decides</text>
 <text x="97.0" y="2138" class="arrow">→</text>
-<rect x="114.0" y="2124" width="193.9" height="20" rx="10" class="gate"/><text x="124.0" y="2138" class="gatet">G13 · a review panel decides</text>
+<text x="114.0" y="2138" class="mono">terraform-plan-review</text>
 <text x="97.0" y="2166" class="arrow">→</text>
-<text x="114.0" y="2166" class="mono">terraform-plan-review</text>
-<text x="97.0" y="2194" class="arrow">→</text>
-<rect x="114.0" y="2180" width="131.8" height="20" rx="10" class="gate"/><text x="124.0" y="2194" class="gatet">G13.1 · you decide</text>
-<text x="92.0" y="2222" class="ends"><tspan class="endsl">Ends with</tspan> an apply a person approved</text>
-<rect x="442.0" y="1986" width="354.0" height="230" rx="12" class="card dashed"/>
-<text x="462.0" y="2012" class="label" fill="#b5b0ab">CLARIFY</text>
-<rect x="645.9" y="1998" width="130.1" height="20" rx="10" fill="#b5b0ab" fill-opacity=".08" stroke="#b5b0ab" stroke-opacity=".35"/><text x="653.9" y="2012" class="chip" fill="#b5b0ab">experience-design</text>
-<text x="462.0" y="2040" class="h">Fix a confusing service</text>
-<text x="462.0" y="2064" class="muted"><tspan class="startl">Start here when</tspan> A confusing page and form, and</text>
-<text x="462.0" y="2082" class="muted">the calls they cause.</text>
-<text x="462.0" y="2110" class="mono">content-design</text>
-<text x="569.5" y="2110" class="arrow">→</text>
-<text x="586.5" y="2110" class="mono">ux-writing</text>
+<rect x="114.0" y="2152" width="131.8" height="20" rx="10" class="gate"/><text x="124.0" y="2166" class="gatet">G13.1 · you decide</text>
+<text x="92.0" y="2194" class="ends"><tspan class="endsl">Ends with</tspan> an apply a person approved</text>
+<rect x="442.0" y="1958" width="354.0" height="230" rx="12" class="card dashed"/>
+<text x="462.0" y="1984" class="label" fill="#b5b0ab">CLARIFY</text>
+<rect x="645.9" y="1970" width="130.1" height="20" rx="10" fill="#b5b0ab" fill-opacity=".08" stroke="#b5b0ab" stroke-opacity=".35"/><text x="653.9" y="1984" class="chip" fill="#b5b0ab">experience-design</text>
+<text x="462.0" y="2012" class="h">Fix a confusing service</text>
+<text x="462.0" y="2036" class="muted"><tspan class="startl">Start here when</tspan> A confusing page and form, and</text>
+<text x="462.0" y="2054" class="muted">the calls they cause.</text>
+<text x="462.0" y="2082" class="mono">content-design</text>
+<text x="569.5" y="2082" class="arrow">→</text>
+<text x="586.5" y="2082" class="mono">ux-writing</text>
+<text x="467.0" y="2110" class="arrow">→</text>
+<text x="484.0" y="2110" class="mono">service-blueprint</text>
 <text x="467.0" y="2138" class="arrow">→</text>
-<text x="484.0" y="2138" class="mono">service-blueprint</text>
-<text x="467.0" y="2166" class="arrow">→</text>
-<rect x="484.0" y="2152" width="193.9" height="20" rx="10" class="gate"/><text x="494.0" y="2166" class="gatet">G14 · a review panel decides</text>
-<text x="462.0" y="2194" class="ends"><tspan class="endsl">Ends with</tspan> words that reach the complaints</text>
-<text x="72" y="2278" class="section">PACKS FOR ANY STAGE</text>
-<rect x="72.0" y="2292" width="129.8" height="24" rx="12" class="pack"/><text x="82.0" y="2308" class="mono">product-manager</text>
-<rect x="209.8" y="2292" width="93.2" height="24" rx="12" class="pack"/><text x="219.8" y="2308" class="mono">sre-oncall</text>
-<rect x="311.0" y="2292" width="144.4" height="24" rx="12" class="pack"/><text x="321.0" y="2308" class="mono">stakeholder-comms</text>
-<rect x="463.4" y="2292" width="63.9" height="24" rx="12" class="pack"/><text x="473.4" y="2308" class="mono">design</text>
-<rect x="535.4" y="2292" width="100.5" height="24" rx="12" class="pack"/><text x="545.4" y="2308" class="mono">api-builder</text>
-<rect x="643.9" y="2292" width="93.2" height="24" rx="12" class="pack"/><text x="653.9" y="2308" class="mono">converters</text>
-<rect x="72.0" y="2324" width="78.6" height="24" rx="12" class="pack"/><text x="82.0" y="2340" class="mono">trackers</text>
-<rect x="158.6" y="2324" width="78.6" height="24" rx="12" class="pack"/><text x="168.6" y="2340" class="mono">frontend</text>
-<rect x="245.1" y="2324" width="144.4" height="24" rx="12" class="pack"/><text x="255.1" y="2340" class="mono">skill-engineering</text>
-<rect x="397.6" y="2324" width="63.9" height="24" rx="12" class="pack"/><text x="407.6" y="2340" class="mono">career</text>
-<rect x="469.5" y="2324" width="129.8" height="24" rx="12" class="pack"/><text x="479.5" y="2340" class="mono">civil-architect</text>
-<rect x="607.3" y="2324" width="151.8" height="24" rx="12" class="pack"/><text x="617.3" y="2340" class="mono">operations-manager</text>
-<rect x="72.0" y="2356" width="115.2" height="24" rx="12" class="pack"/><text x="82.0" y="2372" class="mono">event-planner</text>
-<rect x="195.2" y="2356" width="144.4" height="24" rx="12" class="pack"/><text x="205.2" y="2372" class="mono">interior-designer</text>
-<rect x="347.6" y="2356" width="115.2" height="24" rx="12" class="pack"/><text x="357.6" y="2372" class="mono">startup-legal</text>
-<rect x="470.8" y="2356" width="78.6" height="24" rx="12" class="pack"/><text x="480.8" y="2372" class="mono">educator</text>
-<text x="72" y="2408" class="foot">Generated from each loop.json by build_loops.py. Codes like G3 are what a loop prints when it stops at a gate.</text>
+<rect x="484.0" y="2124" width="193.9" height="20" rx="10" class="gate"/><text x="494.0" y="2138" class="gatet">G14 · a review panel decides</text>
+<text x="462.0" y="2166" class="ends"><tspan class="endsl">Ends with</tspan> words that reach the complaints</text>
+<text x="72" y="2250" class="section">PACKS FOR ANY STAGE</text>
+<rect x="72.0" y="2264" width="129.8" height="24" rx="12" class="pack"/><text x="82.0" y="2280" class="mono">product-manager</text>
+<rect x="209.8" y="2264" width="93.2" height="24" rx="12" class="pack"/><text x="219.8" y="2280" class="mono">sre-oncall</text>
+<rect x="311.0" y="2264" width="144.4" height="24" rx="12" class="pack"/><text x="321.0" y="2280" class="mono">stakeholder-comms</text>
+<rect x="463.4" y="2264" width="63.9" height="24" rx="12" class="pack"/><text x="473.4" y="2280" class="mono">design</text>
+<rect x="535.4" y="2264" width="100.5" height="24" rx="12" class="pack"/><text x="545.4" y="2280" class="mono">api-builder</text>
+<rect x="643.9" y="2264" width="93.2" height="24" rx="12" class="pack"/><text x="653.9" y="2280" class="mono">converters</text>
+<rect x="72.0" y="2296" width="78.6" height="24" rx="12" class="pack"/><text x="82.0" y="2312" class="mono">trackers</text>
+<rect x="158.6" y="2296" width="78.6" height="24" rx="12" class="pack"/><text x="168.6" y="2312" class="mono">frontend</text>
+<rect x="245.1" y="2296" width="144.4" height="24" rx="12" class="pack"/><text x="255.1" y="2312" class="mono">skill-engineering</text>
+<rect x="397.6" y="2296" width="63.9" height="24" rx="12" class="pack"/><text x="407.6" y="2312" class="mono">career</text>
+<rect x="469.5" y="2296" width="129.8" height="24" rx="12" class="pack"/><text x="479.5" y="2312" class="mono">civil-architect</text>
+<rect x="607.3" y="2296" width="151.8" height="24" rx="12" class="pack"/><text x="617.3" y="2312" class="mono">operations-manager</text>
+<rect x="72.0" y="2328" width="115.2" height="24" rx="12" class="pack"/><text x="82.0" y="2344" class="mono">event-planner</text>
+<rect x="195.2" y="2328" width="144.4" height="24" rx="12" class="pack"/><text x="205.2" y="2344" class="mono">interior-designer</text>
+<rect x="347.6" y="2328" width="115.2" height="24" rx="12" class="pack"/><text x="357.6" y="2344" class="mono">startup-legal</text>
+<rect x="470.8" y="2328" width="78.6" height="24" rx="12" class="pack"/><text x="480.8" y="2344" class="mono">educator</text>
+<text x="72" y="2380" class="foot">Generated from each loop.json by build_loops.py. Codes like G3 are what a loop prints when it stops at a gate.</text>
 </svg>

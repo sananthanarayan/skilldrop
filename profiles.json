@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "profiles": {
     "starter": {
-      "description": "Everything a new team member needs on day one: the dev-team pack plus the review panel that gates it.",
+      "description": "Everything a new team member needs on day one: the dev-team pack plus the review panel its pre-merge review seats.",
       "packs": ["dev-team"],
       "agents": ["devils-advocate", "security-reviewer", "code-quality"],
-      "loops": ["build"]
+      "loops": []
     },
     "architect": {
       "description": "Design-phase setup: the solution-architect pack and the loops that run it end to end.",
@@ -18,7 +18,7 @@
       "description": "The complete catalogue: every pack, every reviewer agent, every loop.",
       "packs": ["core", "solution-architect", "product-manager", "dev-team", "sre-oncall", "stakeholder-comms", "design", "ai-engineering", "api-builder", "converters", "experience-design", "research", "trackers", "data-analytics", "grc", "infra-as-code", "skill-engineering", "career"],
       "agents": ["devils-advocate", "security-reviewer", "code-quality"],
-      "loops": ["design", "build", "release", "ship-a-draft", "research", "comply", "measure", "modernize", "ship-agent", "provision", "clarify"]
+      "loops": ["design", "release", "ship-a-draft", "research", "comply", "measure", "modernize", "ship-agent", "provision", "clarify"]
     }
   }
 }

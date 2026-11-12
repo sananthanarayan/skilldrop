@@ -120,6 +120,36 @@
         "Consequences cover what ADR-0002 gave up: row-level security becomes the only tenant boundary, so a missing tenant_id filter or RLS mistake can expose one practice's data to another, and per-tenant restore now needs the side-restore runbook, which bears on Fenrow Lowe's one-business-day restore commitment",
         "Does not invent facts not in the input, such as a legal reading of the contract clauses, customer consent, a migration date or new cost figures"
       ]
+    },
+    {
+      "id": "design-account-deletion-two-docs",
+      "held_out": "2026-11-12",
+      "prompt": "We need to design account deletion for Stridewell. The ratified requirement is requirement.md, and our ADRs and house ADR rules are in adr/. I want two documents: a design doc and an ADR. Nothing else; I'll take both to architecture review next week.",
+      "assertions": [
+        "The reply opens by naming the two documents it produced and saying, in plain words, what the design decides",
+        "Delivers exactly a design doc and an ADR, with no extra standalone documents; any threats, diagrams or non-functional targets sit inside the design doc",
+        "The design stays within ADR-0002 and ADR-0004: no new datastore and no external queue, with the cooling-off delay and deletion work run as jobs on the existing jobs table",
+        "Surfaces that ADR-0006's 35-day immutable backups mean deleted data survives in backups past the 30-day requirement, and does not claim backups are cleaned within 30 days; it puts this conflict to the requirement owner or the review to resolve",
+        "Covers the analytics warehouse copy from ADR-0007: because member_ref can be linked back, warehouse rows are personal data that must be deleted, and the data team that owns the warehouse is involved",
+        "Covers deleting the photo object from the media store as well as the key, per ADR-0005",
+        "The ADR follows the house rules in adr/README.md: numbered ADR-0009 (ADR-0008 is retired), status Proposed rather than Accepted, sections in the order Context, Decision, Consequences, Alternatives considered, and a Relates to line listing the ADRs it relies on",
+        "Does not invent facts not in the input, such as a named regulation or legal deadline, systems or teams that are not described, or a backup retention period other than 35 days"
+      ]
+    },
+    {
+      "id": "design-record-catalogue-search-move",
+      "held_out": "2026-11-12",
+      "prompt": "Ines made the call on catalogue search at Monday's platform review; her note is decision-note.md. Our ADRs and the house format are in adr/. Please write it up as an ADR so it's on record before the work starts. It's decided, so don't reopen it.",
+      "assertions": [
+        "The reply opens by saying, in plain words, that the ADR is written and what it records, and names any risk it added that Ines did not raise",
+        "The ADR records the decision as Ines Marwood's, decided on 3 November 2026, and argues neither for nor against it",
+        "The ADR follows adr/README.md: numbered ADR-0013, status Accepted with a Decided by line, and sections in the house order including Consequences and risks",
+        "Ines's two risks are recorded, the indexing time at cutover and the change in result ranking, each with an owner or a mitigation",
+        "Names at least one risk Ines did not mention that the existing ADRs reveal: catalogue search would add read load to the single primary that also serves checkout (ADR-0010, ADR-0012), or shoppers lose the typo-tolerant matching and synonyms that ADR-0011 brought in, which Postgres full-text search does not do by default",
+        "Treats ADR-0011 as only partly replaced: it is marked Amended by the new ADR, not Superseded, and the new ADR says help-centre article search stays on the search cluster",
+        "Keeps the ADR to about a page and does not pad it with sections the house format does not use",
+        "Does not invent facts not in the input, such as cost figures, query volumes, CPU numbers, a read replica that does not exist, or a cutover date other than the week of 18 January 2027"
+      ]
     }
   ]
 }

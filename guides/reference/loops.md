@@ -13,12 +13,11 @@ skilldrop ships **loops**, not just parts. A loop is a named sequence of stages 
 
 A loop *sequences* skills — it never contains one. Every skill stays independently installable and runnable on its own, which is what keeps a single-folder copy working in Cursor, Kiro, or Aider.
 
-The lifecycle has five stages, separated by **reversibility**: how expensive the mistake is to unwind. Three of them have a loop. The loops for the first stage (find the problem) and the last (run it) were retired ([RFC-0074](../../docs/rfcs/0074-loops-measured-four-retired.md)), because on held-out evals their own skills, used without the loop, were preferred. Those stages use their skills in order: `feedback-synthesis`, `requirements-interview` or `user-journey-map`, then `prd-draft`; and `observability-plan`, `runbook-generator`, `incident-comms`, then `postmortem-generator`.
+The lifecycle has five stages, separated by **reversibility**: how expensive the mistake is to unwind. Two of them have a loop: deciding how to build it, and shipping it. The loops for finding the problem, building it and running it were retired ([RFC-0074](../../docs/rfcs/0074-loops-measured-four-retired.md), [RFC-0085](../../docs/rfcs/0085-build-retired-design-kept.md)), because on held-out evals their own skills, used without the loop, were preferred. Those stages use their skills in order: `feedback-synthesis`, `requirements-interview` or `user-journey-map`, then `prd-draft`; `user-story-splitter` or `bug-triage` (with `codebase-tour` in an unfamiliar repository), then `feature-implement-loop`, then `pre-merge-review`, whose gate script decides and whose merge is yours; and `observability-plan`, `runbook-generator`, `incident-comms`, then `postmortem-generator`.
 
 | Loop | Takes | Gate | Produces | Mistake costs |
 |---|---|---|---|---|
 | [`design`](../../packs/solution-architect/loops/design/LOOP.md) | an agreed requirement | **G1** review — `council-review`'s panel | a recorded decision (ADR) | months, unwound in code |
-| [`build`](../../packs/dev-team/loops/build/LOOP.md) | an agreed requirement or triaged defect | **G2** mechanical — `pre-merge-review`'s gate script decides | merged code | a revert |
 | [`release`](../../packs/dev-team/loops/release/LOOP.md) | merged code | **G3** review — `launch-readiness` on evidence; **G3.1** human go/no-go | a live, reversible rollout | users and data, often irreversible |
 
 Plus one **wrapper**, which is not a lifecycle stage but the two passes either side of *any* generator:
@@ -76,41 +75,6 @@ flowchart LR
 ```
 
 <!-- loop:design:end -->
-
-## `build` — a requirement to merged code
-
-A vertical slice becomes shippable code through a self-correcting loop, gated by a script whose exit code decides. The inner generate-challenge cycle is the [`feature-implement-loop`](../../packs/dev-team/skills/feature-implement-loop/SKILL.md) skill.
-
-<!-- loop:build:start -->
-
-```mermaid
-%%{init: {'theme':'base','themeVariables':{'fontFamily':'Segoe UI, Helvetica, Arial','fontSize':'15px','lineColor':'#9AA5B1'},'flowchart':{'curve':'basis','rankSpacing':70,'nodeSpacing':50,'padding':16}}}%%
-flowchart LR
-    classDef gen    fill:#E8F0FE,stroke:#4C7DF0,stroke-width:1.5px,color:#1A3A8F;
-    classDef review fill:#FDEAEA,stroke:#E05B5B,stroke-width:1.5px,color:#8A1F1F;
-    classDef gate   fill:#FBE3A2,stroke:#D9971E,stroke-width:2px,color:#6B4500,font-weight:bold;
-    classDef ship   fill:#E6F7EC,stroke:#34A853,stroke-width:2px,color:#0F6B33,font-weight:bold;
-
-    shape["shape<br/><small>user-story-splitter +2</small>"]:::gen
-    implement["implement<br/><small>feature-implement-loop</small>"]:::gen
-    verify["verify<br/><small>pre-merge-review</small>"]:::review
-    decide["decide<br/><small>council-review</small>"]:::gate
-    G2{"G2 · mechanical"}:::gate
-    G2_1{"G2.1 · human"}:::gate
-    DONE(["complete"]):::ship
-
-    shape --> implement
-    implement --> verify
-    verify --> G2
-    G2 == "READY" ==> decide
-    decide --> G2_1
-    G2_1 == "PROCEED" ==> DONE
-
-    G2 -- "NOT READY (max 3)" --> implement
-    G2_1 -- "REVISE (max 3)" --> shape
-```
-
-<!-- loop:build:end -->
 
 ## `release` — merged code to live users
 

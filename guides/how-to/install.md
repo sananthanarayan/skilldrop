@@ -65,7 +65,7 @@ Add `--with-related` to also take the skills it hands work to. To find one by wh
 A loop runs skills in stages with a gate between each, and installing one brings the skills its stages use:
 
 ```bash
-npx skilldrop-cli install --loop build
+npx skilldrop-cli install --loop release
 ```
 
 The loop installs as a skill you invoke; `npx skilldrop-cli loops` lists every loop with its stages and gates.
