@@ -73,7 +73,7 @@ jobs:
           # version is invisible to `npm view`. The v<version> tag is pushed only after a
           # publish succeeds, so it is the record that this version already went up.
           if [ -n "$(git ls-remote --tags origin "refs/tags/v$LOCAL")" ]; then
-            echo "::notice title=skilldrop-cli@$LOCAL awaiting approval::v$LOCAL is tagged but the registry shows $PUBLISHED. It is staged on npm: approve it with 'npm stage list skilldrop-cli' then 'npm stage approve <id>'."
+            echo "::notice title=skilldrop-cli@$LOCAL awaiting approval::v$LOCAL is tagged but the registry shows $PUBLISHED. It is staged on npm: approve it with 'npm stage list skilldrop-cli' then 'npm stage approve <id>'. Then mark every older version deprecated: npm deprecate \"skilldrop-cli@<$LOCAL\" \"Superseded by skilldrop-cli $LOCAL. Older versions install skills and loops that have since been fixed or retired: use npx skilldrop-cli@latest\"."
             exit 0
           fi
           # Pack once and publish that file, so the tarball attached to the Release below is
@@ -92,6 +92,10 @@ jobs:
           if grep -qi "staged" /tmp/publish.log; then
             echo "::notice title=skilldrop-cli@$LOCAL staged::npm is holding this version until a maintainer approves it with 2FA: 'npm stage list skilldrop-cli', then 'npm stage approve <id>'."
           fi
+          # Older versions are deprecated by hand once this one is live (RFC-0088). Doing it here
+          # would need an npm write token in CI, and a token that can deprecate can also publish,
+          # which would skip the 2FA approval above.
+          echo "::notice title=Deprecate the versions before $LOCAL::Once skilldrop-cli@$LOCAL is live on npm: npm deprecate \"skilldrop-cli@<$LOCAL\" \"Superseded by skilldrop-cli $LOCAL. Older versions install skills and loops that have since been fixed or retired: use npx skilldrop-cli@latest\""
           if git rev-parse "v$LOCAL" >/dev/null 2>&1; then
             echo "tag v$LOCAL already exists — skipping"
           else

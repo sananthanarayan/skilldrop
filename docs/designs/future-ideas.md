@@ -20,13 +20,6 @@ eval trend and monthly assertion run, OCR for scanned PDFs, joined PDF tables ac
 checked the converters' output in Word and Excel. 0.16.34 added `skilldrop search` and ran the CLI
 on Windows in CI ([RFC-0056](../rfcs/0056-search-and-windows-ci.md)).
 
-## Distribution
-
-| Idea | Why | Size | Depends on |
-|---|---|---|---|
-| **`skilldrop install <skill>@<version>`** | Install a specific skill version from the catalogue's history, not just the latest or a commit pin. | M | Version-to-commit lookup, from git tags |
-| **IDE auto-detection and `--ide all`** | Install into every tool found in the repo (`.cursor/`, `.kiro/`, `.github/`, `.agents/`) in one command. Listed as design-only in the CLI design doc. | M | — |
-
 ## Security (from the OWASP gaps)
 
 | Idea | Why | Size | Depends on |

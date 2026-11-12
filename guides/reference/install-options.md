@@ -55,6 +55,21 @@ asking for a GitHub star, and writes `~/.config/skilldrop/star-shown` so the lin
 again. It doesn't print in CI, in a pipe or with `--json`, and nothing is sent anywhere. Set
 `SKILLDROP_NO_STAR=1` to turn it off before it ever shows.
 
+**An older CLI refuses to install or update** ([RFC-0088](../../docs/rfcs/0088-older-versions-refuse.md)).
+Before `install` or `update`, the CLI asks the npm registry for the latest `skilldrop-cli`. If a
+newer version is out, it stops and gives the same command with `npx skilldrop-cli@latest`,
+because an older version would install skills and loops that have since been fixed or retired.
+- **The request carries nothing about you or your files.** It's one `GET <registry>/skilldrop-cli/latest`.
+- **Mirrors:** it asks the registry npm is set to use, so an internal mirror's latest is the one
+  that counts.
+- **Offline:** if the registry can't be reached or doesn't answer within 2.5 seconds, the
+  command runs as before.
+- **Opting out:** a pinned CI job or an air-gapped mirror can set `SKILLDROP_ALLOW_OLD_CLI=1` to
+  skip the check.
+
+Versions before 1.18.0 don't have the check. Each one is marked deprecated on npm once a newer
+version is out, so npm warns when it's installed.
+
 ## The Claude Code plugin marketplace
 
 skilldrop is also a **Claude Code plugin marketplace**: one marketplace with one plugin for the whole catalogue plus one per pack, and no npm step. Add it once:

@@ -116,6 +116,42 @@ check("project install into a git repo", () => {
   expect(exists(repo, ".cursor", "skills", "md-to-xlsx", "SKILL.md"), "--ide cursor did not write .cursor/skills");
 });
 
+check("--ide all installs into every tool the repo uses", () => {
+  const repo = gitRepo("repo-ide-all");
+  for (const d of [".claude", ".cursor", ".agents", path.join(".github", "workflows")]) fs.mkdirSync(path.join(repo, d), { recursive: true });
+  const out = run(["install", "doc-critique", "--ide", "all"], { cwd: repo });
+  for (const t of [".claude", ".cursor", ".agents"])
+    expect(exists(repo, t, "skills", "doc-critique", "SKILL.md"), `--ide all did not write ${t}/skills`);
+  expect(!exists(repo, ".github", "skills"), "--ide all treated a CI-only .github/ as Copilot");
+  expect(out.includes("codex + antigravity"), "the shared .agents/skills target was not installed once for both");
+  expect(run(["doctor", "--project"], { cwd: repo }).includes("agent tools in this folder"), "doctor does not list the tools it found");
+  run(["uninstall", "doc-critique", "--ide", "all"], { cwd: repo });
+  expect(!exists(repo, ".cursor", "skills", "doc-critique"), "--ide all uninstall left the cursor copy");
+  run(["install", "doc-critique", "--ide", "all"], { cwd: dir("no-tools"), ok: false });
+  run(["install", "doc-critique", "--ide", "all", "--dest", dir("both")], { cwd: repo, ok: false });
+});
+
+check("an older CLI refuses to install once a newer one is out", () => {
+  // A throwaway registry in its own process: spawnSync blocks this one, so it couldn't answer.
+  const portFile = path.join(TMP, "registry-port");
+  const server = require("child_process").spawn(process.execPath, ["-e",
+    "const s=require('http').createServer((q,r)=>{if(q.url==='/skilldrop-cli/latest'){r.writeHead(200,{'content-type':'application/json'});r.end('{\"version\":\"99.0.0\"}')}else{r.writeHead(404);r.end()}});" +
+    `s.listen(0,'127.0.0.1',()=>require('fs').writeFileSync(${JSON.stringify(portFile)},String(s.address().port)))`], { stdio: "ignore" });
+  try {
+    const wait = new Int32Array(new SharedArrayBuffer(4));
+    for (let i = 0; i < 100 && !fs.existsSync(portFile); i++) Atomics.wait(wait, 0, 0, 50);
+    const registry = `http://127.0.0.1:${fs.readFileSync(portFile, "utf8")}/`;
+    const d = dir("dest-old-cli");
+    const out = run(["install", "doc-critique", "--dest", d], { ok: false, env: { SKILLDROP_REGISTRY: registry } });
+    expect(out.includes("99.0.0 is out") && out.includes("npx skilldrop-cli@latest"), "the refusal doesn't name the latest version and how to run it");
+    expect(!exists(d, "doc-critique"), "an older CLI still installed the skill");
+    run(["install", "doc-critique", "--dest", d], { env: { SKILLDROP_REGISTRY: registry, SKILLDROP_ALLOW_OLD_CLI: "1" } });
+    expect(exists(d, "doc-critique", "SKILL.md"), "SKILLDROP_ALLOW_OLD_CLI=1 did not let it install");
+    run(["list"], { env: { SKILLDROP_REGISTRY: registry } });
+  } finally { server.kill(); }
+  run(["install", "doc-critique", "--dest", dir("dest-offline")], { env: { SKILLDROP_REGISTRY: "http://127.0.0.1:9/" } });
+});
+
 check("--local hides the install from git", () => {
   const repo = gitRepo("repo-local");
   run(["install", "output-hygiene", "--local"], { cwd: repo });

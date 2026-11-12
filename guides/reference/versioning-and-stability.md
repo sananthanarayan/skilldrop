@@ -14,7 +14,7 @@ change that would break one of them waits for the next major version. The decisi
 
 | Surface | Stable |
 |---|---|
-| The CLI, `skilldrop-cli` | Its commands and their flags, exit codes, and `--json` fields. The [install targets](install-targets.md). The `.skilldrop.json` ledger: any 1.x reads it ([updates and the ledger](update-and-ledger.md)). The `SKILLDROP_POLICY`, `SKILLDROP_AUDIT_LOG`, `SKILLDROP_LOOP_LOG` and `SKILLDROP_NO_STAR` variables |
+| The CLI, `skilldrop-cli` | Its commands and their flags, exit codes, and `--json` fields. The [install targets](install-targets.md). The `.skilldrop.json` ledger: any 1.x reads it ([updates and the ledger](update-and-ledger.md)). The `SKILLDROP_POLICY`, `SKILLDROP_AUDIT_LOG`, `SKILLDROP_LOOP_LOG`, `SKILLDROP_NO_STAR` and `SKILLDROP_ALLOW_OLD_CLI` variables |
 | A skill's folder | The anatomy in the [skill contract](skill-contract.md): `SKILL.md`'s `name` and `description`, `manifest.json`'s fields, and what its `permissions` mean |
 | A skill's name | An installed skill stays installable and updatable under its name |
 | A skill's scripts | The flags and exit codes its `SKILL.md` documents, because loops and CI gate on them |
@@ -51,6 +51,17 @@ outdated` compares them.
   checked](https://sananthanarayan.github.io/skilldrop/evals/)). It keeps a record naming what to
   use instead, for at least one minor release. `skilldrop outdated` and `skilldrop update` tell
   anyone who has it installed. The installed copy keeps working.
+
+## Older versions of the CLI
+
+- **Once a version is out, the ones before it stop installing.** From 1.18.0, `install` and
+  `update` check the npm registry and refuse when a newer `skilldrop-cli` exists, naming the
+  command to run instead ([install options](install-options.md)). `SKILLDROP_ALLOW_OLD_CLI=1`
+  skips the check for a pinned CI job or an air-gapped mirror.
+- **Every older version is deprecated on npm** when a new one goes live, so npm warns anyone who
+  installs it, including the versions from before the check existed.
+- **The other commands keep working on any version,** because they read what you already have:
+  `list`, `outdated`, `doctor`, `diff`, `uninstall` and the rest.
 
 ## Supported runtimes
 

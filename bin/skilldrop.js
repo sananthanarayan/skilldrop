@@ -104,6 +104,9 @@ Install/update/uninstall targets (pick one):
   --ide codex        ~/.codex/skills            Codex (--project: ./.agents/skills)
   --ide antigravity  ~/.gemini/antigravity-cli/skills   Antigravity CLI (--project: ./.agents/skills)
   --ide copilot      ~/.copilot/skills          GitHub Copilot (--project: ./.github/skills)
+  --ide all          every tool this folder uses  project scope in each: .claude/ or CLAUDE.md,
+                     .cursor/, .kiro/, .agents/ or .codex/, and .github/ only with Copilot's own
+                     files there. Skills, packs and loops; doctor lists what it finds
   --dest <dir>       any directory              e.g. Continue / Cline / Aider
   --local            project scope, hidden from git via .git/info/exclude — try skills in a
                      repo you don't own without touching its tracked files or .gitignore
@@ -120,6 +123,9 @@ Organisation policy (RFC-0050):
 Options:
   --dry-run          install | update | uninstall | new-skill: print what would change, change nothing
   SKILLDROP_NO_STAR=1  don't print the one-time line asking for a GitHub star after the first install
+  SKILLDROP_ALLOW_OLD_CLI=1  let an older CLI install and update. Without it, install and update
+                     ask npm for the latest skilldrop-cli and stop if this one is older
+                     (offline, they run as before)
   --yes              skip the confirmation uninstall and update --force ask for at a terminal
                      (scripts and CI are never asked)
   --agent            operate on subagents instead of skills. Targets:
@@ -837,6 +843,55 @@ function target(flags) {
   // --local is a project install the repo never sees (see localExclude), so it implies --project.
   if (flags.project || flags.local || !user) return { dest: path.resolve(...proj), ide };
   return { dest: path.join(os.homedir(), ...user), ide };
+}
+
+/* --ide all (RFC-0087): every agent tool this folder already uses, found by the files each tool
+   keeps in a repo. A bare .github/ doesn't count: nearly every repo has one for CI, so Copilot
+   needs its own files there. AGENTS.md alone doesn't count either, because many tools read it.
+   Codex and Antigravity share .agents/skills, so they are one target. */
+const IDE_MARKERS = {
+  claude: [".claude", "CLAUDE.md"],
+  cursor: [".cursor", ".cursorrules"],
+  kiro: [".kiro"],
+  copilot: [".github/skills", ".github/copilot-instructions.md", ".github/instructions", ".github/agents"],
+  codex: [".codex", ".agents"],
+  antigravity: [".agents"],
+};
+
+function toolsHere(flags = {}) {
+  const groups = [];
+  for (const [ide, markers] of Object.entries(IDE_MARKERS)) {
+    const found = markers.filter((m) => fs.existsSync(path.resolve(...m.split("/"))));
+    if (!found.length) continue;
+    const { dest } = target({ ide, project: true, local: flags.local });
+    const g = groups.find((x) => x.dest === dest);
+    if (g) { g.ides.push(ide); for (const f of found) if (!g.found.includes(f)) g.found.push(f); }
+    else groups.push({ dest, ides: [ide], found });
+  }
+  return groups;
+}
+
+const IDE_ALL_COMMANDS = ["install", "update", "outdated", "uninstall", "diff", "doctor"];
+
+function runForAllTools(cmd, args) {
+  const f = args.flags;
+  if (f.dest) die("--ide all and --dest both choose where skills go; use one");
+  if (f.agent || f.panel || f.profile)
+    die("--ide all covers skills, packs and loops. Agents, panels and profiles go to one tool at a time: name it with --ide <tool>");
+  if (f.json) die("--ide all prints one report per tool; for --json, name one tool with --ide <tool>");
+  const groups = toolsHere(f);
+  if (!groups.length)
+    die("no agent tool found in this folder. --ide all looks for " +
+        [...new Set(Object.values(IDE_MARKERS).flat())].join(", ") +
+        ".\n       Run it from the repo root, or name a tool with --ide <tool>");
+  for (const g of groups) {
+    console.log(`\n== ${g.ides.join(" + ")}: ${path.relative(process.cwd(), g.dest) || "."} (found ${g.found.join(", ")})`);
+    const a = JSON.parse(JSON.stringify(args));
+    a.flags.ide = g.ides[0];
+    if (!a.flags.local) a.flags.project = true;
+    (cmd === "install" ? installUnits : commands[cmd])(a);
+  }
+  if (cmd === "install" && !f["dry-run"]) starNote(f);
 }
 
 /* The target flags again, for a command line printed back to the user. */
@@ -1908,8 +1963,14 @@ function doctor(args) {
     for (const m of body.matchAll(/skilldrop-hook:([^:"\s]+):session-start/g))
       if (!fs.existsSync(path.join(dest, m[1]))) add("warn", `${path.basename(sp)} has a session-start hook for ${m[1]}, which isn't installed`, `skilldrop uninstall ${m[1]} removes it`);
   }
-  if (args.flags.json) return emitJSON({ dest, ide, installed: names.length, findings });
-  console.log(`skilldrop doctor — ${dest} (${ide}), ${names.length} recorded\n`);
+  const tools = toolsHere();
+  if (args.flags.json) return emitJSON({ dest, ide, installed: names.length, findings,
+    tools_here: tools.map((g) => ({ tools: g.ides, target: path.relative(process.cwd(), g.dest), found: g.found })) });
+  console.log(`skilldrop doctor — ${dest} (${ide}), ${names.length} recorded`);
+  if (tools.length)
+    console.log(`agent tools in this folder: ${tools.map((g) => `${g.ides.join(" + ")} (${g.found.join(", ")})`).join("; ")}` +
+                ` — --ide all installs into ${tools.map((g) => path.relative(process.cwd(), g.dest)).join(", ")}`);
+  console.log("");
   const icon = { error: "✗", warn: "!", info: "·" };
   for (const f of findings) console.log(`${icon[f.level]} ${f.msg}\n    fix: ${f.fix}`);
   const bad = findings.filter((f) => f.level !== "info").length;
@@ -2839,11 +2900,69 @@ function bootstrap() {
   console.log(`\nOr install the full catalogue:\n  /plugin install ${BOOTSTRAP_MARKETPLACE_KEY}@${BOOTSTRAP_MARKETPLACE_KEY}`);
 }
 
+/* An older CLI refuses to install or update (RFC-0088): it would install skills and loops that
+   have since been fixed or retired. It asks the registry npm uses (npm_config_registry, so an
+   internal mirror's own latest is the one that counts) for the newest skilldrop-cli. On any
+   error, a non-200 reply or no answer within 2.5 s, it runs as before, so offline use is
+   unchanged. SKILLDROP_ALLOW_OLD_CLI=1 skips the check, for a pinned CI job or an air-gapped
+   mirror. A git checkout of skilldrop is never an old install, so it is not checked unless
+   SKILLDROP_REGISTRY names a registry (how cli_smoke.js tests the refusal). */
+const VERSION_CHECK_COMMANDS = ["install", "update"];
+
+function semverGt(a, b) {
+  const p = (v) => String(v).split("-")[0].split(".").map((n) => parseInt(n, 10) || 0);
+  const x = p(a), y = p(b);
+  for (let i = 0; i < 3; i++) if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0);
+  return false;
+}
+
+function newerOnRegistry(local) {
+  return new Promise((resolve) => {
+    const env = process.env;
+    if (env.SKILLDROP_ALLOW_OLD_CLI) return resolve(null);
+    if (!env.SKILLDROP_REGISTRY && fs.existsSync(path.join(ROOT, ".git"))) return resolve(null);
+    let base = env.SKILLDROP_REGISTRY || env.npm_config_registry || "https://registry.npmjs.org/";
+    if (!base.endsWith("/")) base += "/";
+    let url;
+    try { url = new URL("skilldrop-cli/latest", base); } catch (e) { return resolve(null); }
+    const lib = url.protocol === "https:" ? require("https") : url.protocol === "http:" ? require("http") : null;
+    if (!lib) return resolve(null);
+    const req = lib.get(url, { headers: { accept: "application/json" }, timeout: 2500 }, (res) => {
+      if (res.statusCode !== 200) { res.resume(); return resolve(null); }
+      let body = "";
+      res.setEncoding("utf8");
+      res.on("data", (c) => { body += c; if (body.length > 1e6) req.destroy(); });
+      res.on("end", () => {
+        try { const v = JSON.parse(body).version; resolve(typeof v === "string" && semverGt(v, local) ? v : null); }
+        catch (e) { resolve(null); }
+      });
+    });
+    req.on("timeout", () => req.destroy());
+    req.on("error", () => resolve(null));
+  });
+}
+
 const args = parseArgs(process.argv.slice(2));
 const cmd = args._.shift();
 const commands = { list, search, info, packs: listPacks, profiles: listProfiles, agents: listAgents, loops: listLoops, install, update, outdated, uninstall, diff, doctor, "new-skill": newSkill, "loop-stats": loopStats, "init-catalogue": initCatalogue, package: packageCatalogue, validate: validateCmd, scan, bootstrap,
                    inventory, audit: auditCmd, "verify-mirror": verifyMirrorCmd };
-if (args.flags.version || cmd === "version") console.log(readJSON(path.join(ROOT, "package.json")).version);
-else if (!cmd || cmd === "help" || args.flags.help) console.log(HELP);
-else if (commands[cmd]) commands[cmd](args);
-else die(`unknown command '${cmd}' — run: skilldrop help`);
+function main() {
+  if (args.flags.version || cmd === "version") console.log(readJSON(path.join(ROOT, "package.json")).version);
+  else if (!cmd || cmd === "help" || args.flags.help) console.log(HELP);
+  else if (commands[cmd] && args.flags.ide === "all" && IDE_ALL_COMMANDS.includes(cmd)) runForAllTools(cmd, args);
+  else if (commands[cmd]) commands[cmd](args);
+  else die(`unknown command '${cmd}' — run: skilldrop help`);
+}
+
+if (VERSION_CHECK_COMMANDS.includes(cmd) && !args.flags.version && !args.flags.help) {
+  const local = readJSON(path.join(ROOT, "package.json")).version;
+  newerOnRegistry(local).then((latest) => {
+    if (latest)
+      die(`this is skilldrop-cli ${local}, and ${latest} is out. An older version can't install or update skills:\n` +
+          "       it would install skills and loops that have since been fixed or retired.\n" +
+          `       Run the latest:  npx skilldrop-cli@latest ${process.argv.slice(2).join(" ")}\n` +
+          "       Installed globally? npm install -g skilldrop-cli@latest\n" +
+          "       (A pinned CI job or an air-gapped mirror can set SKILLDROP_ALLOW_OLD_CLI=1.)");
+    main();
+  });
+} else main();
